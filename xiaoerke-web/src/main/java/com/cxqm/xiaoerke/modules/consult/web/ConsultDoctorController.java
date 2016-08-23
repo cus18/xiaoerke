@@ -362,25 +362,27 @@ public class ConsultDoctorController extends BaseController {
                     Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
                     String st = "";
 
-                    if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0){
-                        if(praiseList !=null && praiseList.size() >0){
-                            for(Map<String,Object> evaluationMap :praiseList){
-                                if(Integer.parseInt((String) evaluationMap.get("serviceAttitude"))==0){
-                                    st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
-                                            "<a href='http://s120.xiaork.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
-                                            evaluationMap.get("id") +"&sessionId="+sessionId+ "'>点击这里去评价</a>】";
-                                }else{
-                                    st = "嗨，亲爱的,本次咨询已关闭。";
-                                    break;
+                    if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0) {
+                        if (null != consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")) {
+                            if (praiseList != null && praiseList.size() > 0) {
+                                for (Map<String, Object> evaluationMap : praiseList) {
+                                    if (Integer.parseInt((String) evaluationMap.get("serviceAttitude")) == 0) {
+                                        st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
+                                                "<a href='http://s120.xiaork.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
+                                                evaluationMap.get("id") + "&sessionId=" + sessionId + "'>点击这里去评价</a>】";
+                                    } else {
+                                        st = "嗨，亲爱的,本次咨询已关闭。";
+                                        break;
+                                    }
                                 }
+                            } else {
+                                st = "嗨，亲爱的,本次咨询已关闭。";
                             }
-                        }else {
-                            st = "嗨，亲爱的,本次咨询已关闭。";
+                            WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                         }
-                        WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
-                    }
-                    //分享的代码
+                        //分享的代码
 //                    patientRegisterPraiseService.sendRemindMsgToUser(userId,sessionId);
+                    }
                 }
             }
             String result = consultSessionService.clearSession(sessionId, userId);
