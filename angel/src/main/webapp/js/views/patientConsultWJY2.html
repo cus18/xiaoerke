@@ -13,7 +13,7 @@
                     <img class="wjy_patsanjiao" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_left.png" width="11" height="20">
                 </div>
                 <div ng-if="item.type=='1'" class="message wjy_com">
-                    <img width="100px" ng-src="{{item.content}}" ng-click="tapImgButton('magnifyImg',item.content)">
+                    <img width="100px" ng-src="{{item.content}}" ng-click="showImageBar(item.content)">
                 </div>
             </div>
             <div class="doctorReplyContent"  ng-if="item.senderId!=patientId&&item.type!='4'">
@@ -25,7 +25,7 @@
                     <img class="wjy_docsanjiao" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_right.png" width="11" height="20">
                 </div>
                 <div class="message wjy_com" ng-if="item.type=='1'">
-                    <img width="100px" ng-src="{{item.content}}" ng-click="tapImgButton('magnifyImg',item.content)">
+                    <img width="100px" ng-src="{{item.content}}" ng-click="showImageBar(item.content)">
                 </div>
             </div>
             <div ng-if="item.type=='4'&&item.notifyType=='1001'">
@@ -38,9 +38,9 @@
                 亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1003
             </div>
         </div>
-        <div class="magnifyImg" ng-show='showFlag.magnifyImg' ng-click="tapShowButton('magnifyImg')">
-            <img width="400px" ng-src="{{imageSrc}}">
-        </div>
+        <!--<div class="magnifyImg" ng-show='showFlag.magnifyImg' ng-click="tapShowButton('magnifyImg')">-->
+            <!--<img width="400px" ng-src="{{imageSrc}}">-->
+        <!--</div>-->
         <br/><br/><br/><br/><br/><br/><br/><br/>
     </ion-content>
     <div class="wjy_c">
@@ -61,5 +61,8 @@
     </div>
     <div class="wjy_alert" ng-if="alertFlag">
         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_alert.png" width="197" height="52"/>
+    </div>
+    <div class="imgBar" ng-if="imgBarFlag" ng-click="hideImageBar()">
+        <span><img id="imageBar" ng-src="{{imgSrc}}"/></span>
     </div>
 </ion-view>

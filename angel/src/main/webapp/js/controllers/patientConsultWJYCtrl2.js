@@ -19,6 +19,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.fucengLock = true;//第一次进入页面的浮层
             $scope.alertFlag = false;
             $scope.remoteBabyUrl = "http://rest.ihiss.com:9000/user/children";
+            $scope.imgBarFlag = false;
             /*$scope.openFileListFlag = false;
              $location.hash("fileInput");
              $anchorScroll();
@@ -65,7 +66,11 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                 $http.get('http://rest.ihiss.com:9000/user/current',{
                     headers : {'X-Access-Token':token}
                 }).success(function(data, status, headers, config) {
-                    patientImg = data.avatar;
+                    if(data.avatar == null){
+                        patientImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
+                    }else{
+                        patientImg = data.avatar;
+                    }
                     $scope.patientName = data.name==null?data.mobile:data.name;
                     CreateOrUpdateWJYPatientInfo.save({patientPhone:data.mobile,
                         patientName:$scope.patientName,patientSex:data.sex,source:$scope.source,thirdId:data.id,token:token,remoteUrl:$scope.remoteBabyUrl},function(data){
@@ -75,6 +80,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                             if(data.status=="0"){
                                 $scope.sessionId = data.sessionId;
                                 $scope.lookMore = true;
+                                $scope.fucengLock = false;
                             }else if(data.status=="1"){
                                 $scope.sessionId = "";
                                 /*var val = {
@@ -87,6 +93,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                                     "pageSize":10,"token":$stateParams.token},function (data) {
                                     if(data.consultDataList.length!=0){
                                         $scope.lookMore = true;
+                                        $scope.fucengLock = false;
                                     }else{
                                         $scope.lookMore = false;
                                     }
@@ -108,7 +115,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     //$scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     //ws://s201.xiaork.com:2048;
-                    $scope.socketServer = new WebSocket("ws://s202.xiaork.com:2048/ws&user&"
+                    $scope.socketServer = new WebSocket("ws://s132.baodf.com/wsbackend/ws&user&"
                         + $scope.patientId +"&h5wjy");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {
@@ -177,9 +184,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                 if($scope.consultContent[0]!=undefined){
                     now = $scope.consultContent[0].dateTime;
                 }
-                console.log("now",now);
                 GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":10,"token":$stateParams.token},function (data) {
-                    console.log("dataxiaox33",data);
                     $.each(data.consultDataList,function (index,value) {
                         filterMediaData(value);
                         $scope.consultContent.splice(0,0,value);
@@ -354,6 +359,18 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     }
                 }
             };
+            
+            //点击放大图片
+            $scope.showImageBar = function (src) {
+                $scope.imgBarFlag = true;
+                $scope.imgSrc = src;
+            }
+
+            //取消放大图片
+            $scope.hideImageBar = function () {
+                $scope.imgBarFlag = false;
+            }
+            
 
             //各个子窗口的开关变量
             $scope.showFlag = {

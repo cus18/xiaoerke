@@ -239,3 +239,20 @@ input {
     z-index: 33;
     width: 100%;
 }
+.imgBar{
+    position: absolute;
+    z-index: 99999;
+    width: 100%;
+    height: 100%;
+    background-color:#000000;
+    text-align: center;
+    display: table;
+}
+.imgBar span{
+    display: table-cell;
+    vertical-align: middle;
+}
+.imgBar img{
+    width: 100%;
+    height: auto;
+}
