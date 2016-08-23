@@ -176,7 +176,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             stringBuilder.append("------------------\n");
                             stringBuilder.append(content.substring(0, nameIndex));
                             stringBuilder.append(";");
-                            stringBuilder.append("<a href='http://s120.xiaork.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
+                            stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
                             stringBuilder.append(praiseList.get(0).get("id"));
                             stringBuilder.append("'>评价医生</a>;");
                             stringBuilder.append("<a href='http://s251.baodf.com/keeper/playtour#/playtourShare/6");
