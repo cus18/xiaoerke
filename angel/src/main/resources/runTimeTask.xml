@@ -27,7 +27,7 @@
 	</bean>
 	<bean id="consultManagementCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="consultManagementQuarzTask"/>
-		<property name="cronExpression" value="0 */2 * * * ?"/>
+		<property name="cronExpression" value="0 * */2 * * ?"/>
 	</bean>
 
 	<!--扫描转接表转接状态超过4分钟，将状态置为取消状态-->
