@@ -870,9 +870,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
 
 
-			String welcomeMsg = "很高兴遇见您！我们是一群有爱又专业的儿科医生朋友。\ue022 \n" +
-					"在这里，您可以24H随时咨询妇产科和儿科专家！\uD83C\uDFE5科室齐全，回复超快！\uD83D\uDE80 点击:<a href='http://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR#rd'>咨询医生 </a> \n" +
-					"还可参加和中国最知名的儿童基金联合发起的公益项目\uD83D\uDC6A，可以免费为孩子领取40万的重疾治疗费\uD83D\uDCB0。点击：<a href='http://s165.baodf.com/wisdom/umbrella#/umbrellaPublicize/130300002'>加入公益</a>\n" +
+			String welcomeMsg = "很高兴遇见您！我们是一群有爱又专业的儿科医生朋友。\ue022 \n\n" +
+					"在这里，您可以24H随时咨询妇产科和儿科专家！\uD83C\uDFE5科室齐全，回复超快！\uD83D\uDE80 点击:<a href='http://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR#rd'>咨询医生 </a> \n\n" +
+					"还可参加和中国最知名的儿童公益基金联合发起的公益项目\uD83D\uDC6A，可以免费为孩子领取40万的重疾治疗费\uD83D\uDCB0。点击：<a href='http://s165.baodf.com/wisdom/umbrella#/umbrellaPublicize/130300002'>加入公益</a>\n\n" +
 					"更可加入妈妈社群，和千万宝宝一同快乐成长！☀点击：<a href='http://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236661&idx=3&sn=4c1fd3ee4eb99e6aca415f60dceb6834&scene=1&srcid=0616uPcrUKz7FVGgrmOcZqqq#rd'>加入社群</a>";
 			WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),welcomeMsg);
 		}
