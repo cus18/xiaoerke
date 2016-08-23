@@ -10,7 +10,7 @@ public class RichConsultSession extends ConsultSession {
 	
 	private String serverAddress;
 
-	private String payStatus;
+	private String payStatus = "";
 
 	private String userType;
 
