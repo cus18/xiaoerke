@@ -12,6 +12,7 @@ public class RichConsultSession extends ConsultSession {
 
 	private String payStatus = "";
 
+
 	private String userType;
 
 	public String getUserType() {
