@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultCountTotal;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
@@ -134,7 +135,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		ConsultSessionStatusVo  StatusVo = this.findOneConsultSessionStatusVo(query);
 		if(StatusVo != null){
 			String payStauts = consultSessionStatusVo.getPayStatus();
-			if(null != payStauts){
+			if(null != payStauts|| ConstantUtil.NO_PAY.equals(payStauts)){
 				writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", new Date()).set("payStatus",consultSessionStatusVo.getPayStatus()), ConsultSessionStatusVo.class);
 			}else{
 				writeResult = mongoTemplate.updateMulti(query,new Update().set("lastMessageTime", new Date()), ConsultSessionStatusVo.class);
