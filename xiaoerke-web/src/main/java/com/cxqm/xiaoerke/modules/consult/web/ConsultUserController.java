@@ -300,16 +300,25 @@ public class ConsultUserController extends BaseController {
                         searchMap.put("messageNotSee",true);
                         searchMap.put("dateTime",richConsultSession.getCreateTime());
                         searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
-                            if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
-                                if("distributor".equals(csuserType)){
-                                    Date createTime =(Date) needPayList.get(userId);
-                                    if(null!=createTime&&createTime.getTime()+1000*60*5>new Date().getTime()){
-                                        searchMap.put("notifyType","1002");
-                                    }else{
-                                        searchMap.put("notifyType","1003");
-                                    }
-                                }
-                            }
+
+                        if(null != consultSessionStatusVo&&(ConstantUtil.PAY_SUCCESS+ConstantUtil.USE_TIMES+ConstantUtil.WITHIN_24HOURS).indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                            searchMap.put("notifyType","1001");
+                        } else{
+                            searchMap.put("notifyType","1002");
+                        }
+
+
+//                            if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
+//
+//                                if("distributor".equals(csuserType)){
+//                                    Date creatTime =(Date) needPayList.get(userId);
+//                                    if(null!=creatTime&&creatTime.getTime()+1000*60*5>new Date().getTime()){
+//                                        searchMap.put("notifyType","1002");
+//                                    }else{
+//                                        searchMap.put("notifyType","1003");
+//                                    }
+//                                }
+//                            }
                         responseList.add(searchMap);
                     }
                 }
