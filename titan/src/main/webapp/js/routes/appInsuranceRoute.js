@@ -161,6 +161,7 @@ define(['appInsurance'], function(app){
                             public: true
                         }
                     })
+                    /*手足口*/
                     .state('handfootmouthIndex', {
                         url: '/handfootmouthIndex',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -243,6 +244,41 @@ define(['appInsurance'], function(app){
                                         'styles/handfootmouth/handfootmouthAddBaby.less?ver='+insuranceVersion,
                                     ],
                                     'js/views/handfootmouth/handfootmouthAddBaby.html?ver='+insuranceVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('pneumoniaIndex', {
+                        url: '/pneumoniaIndex',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'pneumoniaIndexCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.pneumoniaIndexCtrl',
+                                    ['js/controllers/insurance/pneumonia/pneumoniaIndexCtrl.js',
+                                        'styles/insurance/insuranceCommon.less?ver='+insuranceVersion,
+                                        'styles/insurance/pneumonia/pneumoniaIndex.less?ver='+insuranceVersion,
+                                    ],
+                                    'js/views/insurance/pneumonia/pneumoniaIndex.html?ver='+insuranceVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('pneumoniaPaySuccess', {
+                        url: '/pneumoniaPaySuccess',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'pneumoniaPaySuccessCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.pneumoniaPaySuccessCtrl',
+                                    ['js/controllers/insurance/pneumonia/pneumoniaPaySuccessCtrl.js',
+                                        'styles/insurance/pneumonia/pneumoniaPaySuccess.less?ver='+insuranceVersion,
+                                    ],
+                                    'js/views/insurance/pneumonia/pneumoniaPaySuccess.html?ver='+insuranceVersion);
                             }
                         },
                         data: {

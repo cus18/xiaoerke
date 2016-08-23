@@ -1,0 +1,71 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="肺炎" ng-init="doRefresh()">
+    <ion-content class="pneumoniaIndex bg1" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="banner">
+                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/pneumonia/banner.png">
+            </div>
+            <dl class="advantage">
+                <dt>
+                    <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/pneumonia/advantage0.png">
+                    <img class="my-img2" width="26%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/pneumonia/advantage_title.png">
+                </dt>
+                <dd>
+                    <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/pneumonia/advantage1.png">
+                </dd>
+                <dd>
+                    <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/pneumonia/advantage2.png">
+                </dd>
+                <dd>
+                    <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/pneumonia/advantage3.png">
+                </dd>
+            </dl>
+            <img class="line my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/pneumonia/line.png">
+            <div class="content">
+                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/pneumonia/content1.png">
+
+            </div>
+            <img class="line my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/pneumonia/line.png">
+            <div class="insurance problem">
+                <h3 class="f4 c3 fw0">常见问题：</h3>
+                <dl >
+                    <dt class="f4 c3 fw0">
+                        <span>1、</span>肺炎宝对宝宝的户籍和出生地有限制吗？
+                    </dt>
+                    <dd class="f4 c5">没有限制。</dd>
+                    <dt class="f4 c3 fw0">
+                        <span>2、</span>如果我在购买日起一年内领取了补贴，能在领取后就再次购买吗？
+                    </dt>
+                    <dd class="f4 c5">不能，一年之内只能购买一次。</dd>
+                    <dt class="f4 c3 fw0">
+                        <span>3、</span>对看病的医院有什么要求吗？
+                    </dt>
+                    <dd class="f4 c5">全国三级以上医院都可以</dd>
+                </dl>
+            </div>
+            <div class="insurance declare">
+                <h3 class="f4 c3 fw0 margin0 ">重要声明:
+                    <div class="read c5" ng-click="read()">
+                        已阅读
+                        <a>
+                            <img ng-if="readLock" width="18" height="auto"
+                                 src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fread.png">
+                        </a>
+                    </div>
+                </h3>
+                <p class="margin0 f4 c4">
+                    宝大夫平台拥有对本服务的最终解释权。<br>
+                    任何骗取补贴的行为将承担非常严重的法律责任。<br>
+                    宝大夫平台将保留向相关当事人实施追偿的权利。<br>
+                </p>
+            </div>
+            <br><br><br><br> <br><br> <br><br>
+        </ion-scroll>
+    </ion-content>
+    <a href="tel:4006237120"><img  class="icon-pay"  width="68" height="auto"
+             src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fhandfootmouth%2Fhfmindex_kefu.png">
+    </a>
+    <button ng-disabled="!readLock" class="bottom-btn"  style="background-color: #fe5071;" ng-click="goPay()">
+        立即购买  ￥68（一年）
+    </button>
+</ion-view>
