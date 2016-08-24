@@ -27,7 +27,7 @@ angular.module('controllers', ['ionic']).controller('pneumoniaIndexCtrl', [
         }
         
         $scope.shareInit = function(){
-            var share = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=30";
+            var share = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=38";
             var timestamp;//时间戳
             var nonceStr;//随机字符串
             var signature;//得到的签名
