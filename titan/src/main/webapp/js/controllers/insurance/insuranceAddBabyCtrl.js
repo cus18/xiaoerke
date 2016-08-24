@@ -12,9 +12,8 @@ angular.module('controllers', ['ionic']).controller('insuranceAddBabyCtrl', [
 
         $scope.$on('$ionicView.enter',function() {
             type=$stateParams.type;
-            console.log(type);
             var routePath = "/insuranceBBBBBB" + $location.path();
-           /* GetUserLoginStatus.save({routePath:routePath},function(data){
+            GetUserLoginStatus.save({routePath:routePath},function(data){
                 if(data.status=="9") {
                     window.location.href = data.redirectURL;
                 } else if(data.status=="8"){
@@ -22,8 +21,7 @@ angular.module('controllers', ['ionic']).controller('insuranceAddBabyCtrl', [
                 }else {
                     initDate();
                 }
-            });*/
-            initDate();
+            });
         });
 
         /* 选择性别*/
@@ -44,8 +42,8 @@ angular.module('controllers', ['ionic']).controller('insuranceAddBabyCtrl', [
             }
             saveBabyInfo.get({"sex":$scope.sex.toString(),"name":encodeURI($scope.baby.name),"birthDay":$("#birthday").val()}, function (data){
                 if(data.resultCode=='1'){
-                    //window.location.href="http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType="+type;
-                    window.location.href="/keeper/wxPay/patientPay.do?serviceType="+type;
+                    window.location.href="http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType="+type;
+                    //window.location.href="/keeper/wxPay/patientPay.do?serviceType="+type;
                 }
             });
 
