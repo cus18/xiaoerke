@@ -106,6 +106,9 @@ public class ScheduledTask {
     @Autowired
     private BabyUmbrellaInfoService babyUmbrellaInfoService;
 
+    @Autowired
+    private ConsultSessionPropertyService consultSessionPropertyService;
+
     //将所有任务放到一个定时器里，减少并发
     //@Scheduled(cron = "0 */1 * * * ?")
     public void letsGoReminder() {
@@ -1180,6 +1183,23 @@ public class ScheduledTask {
         consultRecordService.removeConsultRankRecord(new Query());
     }
 
+    void test() {
+        List<Object> objectList = sessionRedisCache.getSessionIdByKey();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND, 0);
+        for (Object o : objectList){
+            Integer sessionId = (Integer)o;
+            ConsultSession consultSession = consultSessionService.selectByPrimaryKey(sessionId);
+            if(consultSession!=null && consultSession.getCreateTime().getTime() < (calendar.getTimeInMillis())){
+                sessionRedisCache.removeConsultSessionBySessionId(consultSession.getId());
+                sessionRedisCache.removeUserIdSessionIdPair(consultSession.getUserId());
+            }
+        }
+
+    }
+
     public void testMappingTask() {
         //删除会话排名中的临时数据
         System.out.println("userChannelMapping的大小为：" + ConsultSessionManager.getSessionManager().userChannelMapping.size());
@@ -1495,6 +1515,11 @@ public class ScheduledTask {
         for(String openid:remindUser){
             WechatMessageUtil.templateModel("邀请卡", " 电烤箱、面包机、儿童被……众多大奖还在等你，赶紧邀请好友一起闯关赢豪礼吧！", "待办事项: 邀请好友玩游戏赢大奖\n优先级：很高哦", "", "", "马上去赚大奖", token, "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37", openid, "tCQGoqfVSv_bCYVGUPbXzsJ2sxKzyoiDbKAKB1KO_Qg");
         }
+    }
+
+    //每个月赠送给用户四次咨询机会
+    public void updateMonthTime(){
+        consultSessionPropertyService.updateMonthTime();
     }
 
 }

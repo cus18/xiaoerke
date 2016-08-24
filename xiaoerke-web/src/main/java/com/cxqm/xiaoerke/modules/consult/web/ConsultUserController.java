@@ -5,6 +5,8 @@ package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
+import com.cxqm.xiaoerke.common.persistence.Page;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.utils.CoopConsultUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
@@ -13,8 +15,11 @@ import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
+import com.cxqm.xiaoerke.modules.sys.entity.MongoLog;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
+import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import net.sf.json.JSONObject;
 import org.json.JSONArray;
@@ -27,6 +32,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -58,6 +66,10 @@ public class ConsultUserController extends BaseController {
     private ConsultPayUserService consultPayUserService;
 
     @Autowired
+    private ConsultSessionPropertyService consultSessionPropertyService;
+
+    @Autowired
+    private MongoDBService<MongoLog> mongoDBServiceLog;
     private UserInfoService userInfoService;
 
     @Autowired
@@ -98,34 +110,34 @@ public class ConsultUserController extends BaseController {
     @RequestMapping(value = "/getUserSessionTimesByUserId", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> getUserSessionTimesByUserId(@RequestParam(required = true) String userId) {
+    Map<String, Object> getUserSessionTimesByUserId(@RequestParam(required=true) String userId) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
-        HashMap<String, Object> response = new HashMap<String, Object>();
+        HashMap<String,Object> response = new HashMap<String, Object>();
         ConsultSession consultSession = new ConsultSession();
         consultSession.setUserId(userId);
         List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSession);
-        response.put("userSessionTimes", consultSessions == null ? 1 : consultSessions.size());
+        response.put("userSessionTimes",consultSessions == null ? 1 : consultSessions.size());
         return response;
     }
 
     @RequestMapping(value = "/getCurrentUserByCSId", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> getCurrentUserByCSId(@RequestParam(required = true) String csUserId) {
+    Map<String, Object> getCurrentUserByCSId(@RequestParam(required=true) String csUserId) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
         Map<String, Object> response = new HashMap<String, Object>();
         ConsultSession consultSession = new ConsultSession();
-        if (StringUtils.isNull(csUserId)) {
+        if(StringUtils.isNull(csUserId)){
             csUserId = UserUtils.getUser().getId();
         }
         consultSession.setCsUserId(csUserId);
         consultSession.setStatus(ConsultSession.STATUS_ONGOING);
 
         List<ConsultSession> consultSessions = null;//consultSessionService.getAlreadyAccessUsers(consultSession);
-        if (consultSessions != null && consultSessions.size() > 0) {
-            response.put("alreadyAccessUsers", consultSessions);
+        if(consultSessions!=null && consultSessions.size()>0){
+            response.put("alreadyAccessUsers",consultSessions);
         }
         response.put("status", 0);
         response.put("msg", "OK");
@@ -135,15 +147,14 @@ public class ConsultUserController extends BaseController {
 
     /**
      * 聊天咨询文件上传
-     *
      * @param file
      * @param data
      * @return {"status","success"}
      * @throws UnsupportedEncodingException
      */
-    @RequestMapping(value = "/uploadMediaFile", method = {RequestMethod.POST, RequestMethod.GET})
-    public HashMap<String, Object> UploadFile(@RequestParam("file") MultipartFile file,
-                                              @RequestParam("data") String data) throws UnsupportedEncodingException {
+    @RequestMapping(value="/uploadMediaFile",method = {RequestMethod.POST, RequestMethod.GET})
+    public HashMap<String,Object> UploadFile(@RequestParam("file") MultipartFile file,
+                                             @RequestParam("data") String data) throws UnsupportedEncodingException {
         HashMap<String, Object> response = consultRecordService.uploadMediaFile(file, data);
         return response;
     }
@@ -153,48 +164,46 @@ public class ConsultUserController extends BaseController {
      */
     @RequestMapping(value = "/getUserList", method = {RequestMethod.POST, RequestMethod.GET})
     public
-    @ResponseBody
-    Map<String, Object> getUserList(@RequestBody Map<String, Object> params) {
+    @ResponseBody Map<String, Object> getUserList(@RequestBody Map<String, Object> params) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
-        Map<String, Object> response = new HashMap<String, Object>();
+        Map<String,Object> response = new HashMap<String, Object>();
         Integer pageNo = (Integer) params.get("pageNo");
         Integer pageSize = (Integer) params.get("pageSize");
         Integer dateNum = (Integer) params.get("dateNum");
         String csUserId = String.valueOf(params.get("CSDoctorId"));
         Date date = null;
-        if (dateNum != 10000) {
+        if(dateNum != 10000){
             String dateTemp;
             Calendar ca = Calendar.getInstance();
-            if (dateNum == 0) {
+            if(dateNum == 0){
                 ca.set(Calendar.HOUR, 0);
                 ca.set(Calendar.SECOND, 0);
                 ca.set(Calendar.MINUTE, 0);
-            } else {
+            }else{
                 ca.add(Calendar.DATE, -dateNum);// 30为增加的天数，可以改变的
             }
             dateTemp = DateUtils.DateToStr(ca.getTime(), "datetime");
-            date = DateUtils.StrToDate(dateTemp, "datetime");
+            date = DateUtils.StrToDate(dateTemp,"datetime");
         }
 
         Query query;
-        if (dateNum == 10000) {
-            if (csUserId.equals("allCS")) {
+        if(dateNum == 10000){
+            if(csUserId.equals("allCS")){
                 query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
-            } else {
+            }else {
                 query = new Query().addCriteria(new Criteria().where("csUserId").regex(csUserId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
             }
-        } else if (!csUserId.equals("allCS")) {
+        }else if(!csUserId.equals("allCS")){
             query = new Query().addCriteria(new Criteria().where("csUserId").regex(csUserId).andOperator(Criteria.where("lastMessageTime").gte(date))).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
         } else {
-            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
-            ;
+            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));;
         }
 
         PaginationVo<ConsultSessionStatusVo> pagination = consultRecordService.getUserMessageList(pageNo, pageSize, query);
         List<ConsultSessionStatusVo> resultList = new ArrayList<ConsultSessionStatusVo>();
-        if (pagination.getDatas() != null && pagination.getDatas().size() > 0) {
-            for (ConsultSessionStatusVo consultSessionStatusVo : pagination.getDatas()) {
+        if(pagination.getDatas()!=null && pagination.getDatas().size()>0){
+            for(ConsultSessionStatusVo consultSessionStatusVo :pagination.getDatas()){
                 ConsultSessionStatusVo vo = new ConsultSessionStatusVo();
                 vo.setUserName(consultSessionStatusVo.getUserName());
                 vo.setUserId(consultSessionStatusVo.getUserId());
@@ -202,14 +211,14 @@ public class ConsultUserController extends BaseController {
                 vo.setCsUserName(consultSessionStatusVo.getCsUserName());
                 vo.setLastMessageTime(consultSessionStatusVo.getLastMessageTime());
                 //根据userId查询CsUserId
-                ConsultSession consultSession = new ConsultSession();
+                ConsultSession consultSession =new ConsultSession();
                 consultSession.setId(Integer.valueOf(consultSessionStatusVo.getSessionId()));
                 List<ConsultSession> sessionList = consultSessionService.getCsUserByUserId(consultSession);
-                if (sessionList != null && sessionList.size() > 0) {
+                if(sessionList!=null && sessionList.size() > 0){
                     String csUserName = "";
-                    for (ConsultSession session : sessionList) {
-                        if (session != null) {
-                            csUserName = csUserName + " " + session.getNickName();
+                    for(ConsultSession session :sessionList){
+                        if(session!=null){
+                            csUserName = csUserName + " " +session.getNickName();
                         }
                     }
                     vo.setCsUserName(csUserName);
@@ -254,54 +263,62 @@ public class ConsultUserController extends BaseController {
     HashMap<String, Object> getCurrentUserList(@RequestBody Map<String, Object> params) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
-        HashMap<String, Object> response = new HashMap<String, Object>();
+        HashMap<String,Object> response = new HashMap<String, Object>();
         PaginationVo<ConsultRecordMongoVo> pagination = null;
         String csUserId = String.valueOf(params.get("csUserId"));
-        String csuserType = (String) params.get("userType");
-        ConcurrentHashMap<String, Object> needPayList = new ConcurrentHashMap<String, Object>();
-        try {
-            needPayList = consultPayUserService.getneepPayConsultSession((String) params.get("csUserId"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String csuserType =(String)params.get("userType");
+        ConcurrentHashMap<String,Object> needPayList = new ConcurrentHashMap<String, Object>();
 
-        if (StringUtils.isNotNull(csUserId)) {
+        if(StringUtils.isNotNull(csUserId)){
             int pageNo = (Integer) params.get("pageNo");
             int pageSize = (Integer) params.get("pageSize");
-            List<HashMap<String, Object>> responseList = new ArrayList<HashMap<String, Object>>();
+            List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
 
             ConsultSession consultSessionSearch = new ConsultSession();
             consultSessionSearch.setCsUserId(csUserId);
             consultSessionSearch.setStatus(ConsultSession.STATUS_ONGOING);
             List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSessionSearch);
 
-            if (consultSessions != null && consultSessions.size() > 0) {
-                for (ConsultSession consultSession : consultSessions) {
-                    HashMap<String, Object> searchMap = new HashMap<String, Object>();
+            if(consultSessions!=null && consultSessions.size()>0){
+                for(ConsultSession consultSession :consultSessions){
+                    HashMap<String,Object> searchMap = new HashMap<String, Object>();
                     RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(consultSession.getId());
-                    if (richConsultSession != null && StringUtils.isNotNull(richConsultSession.getUserId())) {
+
+                    Query sessionquery = (new Query()).addCriteria(where("sessionId").is(""+consultSession.getId()+""));
+                    ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(sessionquery);
+
+                    if(richConsultSession !=null && StringUtils.isNotNull(richConsultSession.getUserId())){
                         String userId = richConsultSession.getUserId();
                         Query query = new Query(where("userId").is(userId)).with(new Sort(Direction.ASC, "createDate"));
                         pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "temporary");
-                        searchMap.put("patientId", userId);
-                        searchMap.put("source", richConsultSession.getSource());
+                        searchMap.put("patientId",userId);
+                        searchMap.put("source",richConsultSession.getSource());
                         searchMap.put("patientName", richConsultSession.getUserName());
-                        searchMap.put("serverAddress", richConsultSession.getServerAddress());
-                        searchMap.put("sessionId", richConsultSession.getId());
-                        searchMap.put("isOnline", true);
-                        searchMap.put("messageNotSee", true);
-                        searchMap.put("dateTime", richConsultSession.getCreateTime());
-                        searchMap.put("consultValue", ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
-                        if (null != needPayList && consultPayUserService.angelChargeCheck(userId)) {
-                            if ("distributor".equals(csuserType)) {
-                                Date createTime = (Date) needPayList.get(userId);
-                                if (null != createTime && createTime.getTime() + 1000 * 60 * 5 > new Date().getTime()) {
-                                    searchMap.put("notifyType", "1002");
-                                } else {
-                                    searchMap.put("notifyType", "1003");
-                                }
-                            }
+                        searchMap.put("serverAddress",richConsultSession.getServerAddress());
+                        searchMap.put("sessionId",richConsultSession.getId());
+                        searchMap.put("isOnline",true);
+                        searchMap.put("messageNotSee",true);
+                        searchMap.put("dateTime",richConsultSession.getCreateTime());
+                        searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
+
+                        if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.PAY_SUCCESS+ConstantUtil.USE_TIMES+ConstantUtil.WITHIN_24HOURS).indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                            searchMap.put("notifyType","1001");
+                        } else{
+                            searchMap.put("notifyType","1002");
                         }
+
+
+//                            if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
+//
+//                                if("distributor".equals(csuserType)){
+//                                    Date creatTime =(Date) needPayList.get(userId);
+//                                    if(null!=creatTime&&creatTime.getTime()+1000*60*5>new Date().getTime()){
+//                                        searchMap.put("notifyType","1002");
+//                                    }else{
+//                                        searchMap.put("notifyType","1003");
+//                                    }
+//                                }
+//                            }
                         responseList.add(searchMap);
                     }
                 }
@@ -533,6 +550,24 @@ public class ConsultUserController extends BaseController {
         return response;
     }
 
+    @RequestMapping(value = "/addMePermTimes", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> addMePermTimes2Users(HttpServletRequest request, HttpSession session,@RequestBody Map<String, Object> params){
+        String openid = WechatUtil.getOpenId(session,request);
+        String shareType = (String)params.get("shareType");
+        String nowDate = DateUtils.DateToStr(new Date(),"yyyy-MM");
+        Query queryInLog = new Query();
+        queryInLog.addCriteria(new Criteria("title").is(shareType).andOperator(
+                new Criteria("create_date").gte(nowDate)).andOperator(new Criteria("parameters").in(openid)));
+        long pushBaodfNum = mongoDBServiceLog.queryCount(queryInLog);
+        if(pushBaodfNum==0){
+            consultSessionPropertyService.addPermTimes(openid);
+            LogUtils.saveLog(shareType,openid);
+        }
+
+        return null;
+    }
 
     public class saveCoopThirdBabyInfoThread implements Runnable {
         private HashMap<String, Object> params;

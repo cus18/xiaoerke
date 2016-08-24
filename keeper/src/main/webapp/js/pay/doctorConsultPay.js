@@ -1,5 +1,5 @@
-var payLock = false;
-var moneys = 8;
+var payLock = true;
+var moneys = 9.9;
 var leaveNotes = "reward";
 
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
@@ -43,11 +43,11 @@ var doRefresh = function(){
     });
 
      $('#money').html(moneys);
-    recordLogs("consult_chargetest_once_information");
+    recordLogs("consult_charge_twice_information_payclick");
 };
 
 function wechatPay() {
-    recordLogs("consult_chargetest_once_paypage_paybutton");
+    recordLogs("consult_charge_twice_paypage_paybutton");
     var u = navigator.userAgent, app = navigator.appVersion;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('linux') > -1; //g
     var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
@@ -79,7 +79,7 @@ function wechatPay() {
                         paySign: obj.paySign,  // 支付签名
                         success: function (res) {
                             if (res.errMsg == "chooseWXPay:ok") {
-                              window.location.href="http://s202.xiaork.com/angel/patient/consult#/doctorConsultPaySuccess";
+                              window.location.href="http://s120.xiaork.com/angel/patient/consult#/doctorConsultPaySuccess";
                             } else {
                                 alert("支付失败,请重新支付")
                             }

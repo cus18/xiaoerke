@@ -11,7 +11,9 @@ import java.util.Map;
 public interface SessionRedisCache {
 	
 	void putSessionIdConsultSessionPair(Integer sessionId, RichConsultSession consultSession);
-	
+
+	List<Object> getSessionIdByKey();
+
 	void putUserIdSessionIdPair(String userId, Integer sessionId);
 	
 	RichConsultSession getConsultSessionBySessionId(Integer sessionId);

@@ -510,7 +510,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaJoin/1467962511697/130000002");
 				articleList.add(article);
 			}
-		}else if(EventKey.indexOf("qrscene_15")>-1){//扫码分享
+		}else if(EventKey.indexOf("qrscene_15")>-1||EventKey.startsWith("150")){//扫码分享
 
 			Integer openLevel = Integer.parseInt(Global.getConfig("OPEN_LEVEL"));
 			Map parameter = systemService.getWechatParameter();
@@ -547,7 +547,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 				}
 
 				//	如果是新用户推广者加一
-				if(olyGamesService.getNewAttentionByOpenId(xmlEntity.getFromUserName())== 0){
+				if(olyGamesService.getNewAttentionByOpenId(xmlEntity.getFromUserName())== 0&&!EventKey.startsWith("150")){
 					olyBabyGamesVo.setInviteFriendNumber(alreadyInviteNum);
 
 					String msg = "";
@@ -557,7 +557,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 						needInviteNum += i;
 					}
 					needInviteNum -=alreadyInviteNum;
-					if(alreadyInviteNum>=3){
+					if(gemeLevel>=openLevel){
 						msg = "已开通第"+gemeLevel+"关";
 						if(openLevel ==6)msg = "满六关：您已成功开通所有关卡";
 
@@ -867,8 +867,14 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236661&idx=3&sn=4c1fd3ee4eb99e6aca415f60dceb6834&scene=1&srcid=0616uPcrUKz7FVGgrmOcZqqq&from=singlemessage&isappinstalled=0&key=18e81ac7415f67c44d3973b3eb8e53f264f47c1109eceefa8d6be994349fa7f152bb8cfdfab15b36bd16a4400cd1bd87&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=ZgGIH5%2B8%2FkhHiHeeRG9v6qbPZmK5qPlBL02k0Qo%2FHCK7eLMOZexAypBy0dzPjzaZ");
 			articleList.add(article);
 
-			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
+//			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
 
+
+			String welcomeMsg = "很高兴遇见您！我们是一群有爱又专业的儿科医生朋友。\ue022 \n\n" +
+					"在这里，您可以24H随时咨询妇产科和儿科专家！\uD83C\uDFE5科室齐全，回复超快！\uD83D\uDE80 点击:<a href='http://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR#rd'>咨询医生 </a> \n\n" +
+					"还可参加和中国最知名的儿童公益基金联合发起的公益项目\uD83D\uDC6A，可以免费为孩子领取40万的重疾治疗费\uD83D\uDCB0。点击：<a href='http://s165.baodf.com/wisdom/umbrella#/umbrellaPublicize/130300002'>加入公益</a>\n\n" +
+					"更可加入妈妈社群，和千万宝宝一同快乐成长！☀点击：<a href='http://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236661&idx=3&sn=4c1fd3ee4eb99e6aca415f60dceb6834&scene=1&srcid=0616uPcrUKz7FVGgrmOcZqqq#rd'>加入社群</a>";
+			WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),welcomeMsg);
 		}
 
 		return processScanEvent(xmlEntity,"newUser",request,response);

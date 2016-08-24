@@ -1,12 +1,17 @@
-<ion-view ng-init="doctorConsultJumpFirstInit()">
-    <div class="doctorConsultPaySuccess bg1" >
-        <div class="intro">
-            <img class="my-img1 line2" width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fh_03.png">
+<ion-view ng-init="doctorConsultPaySuccess()">
+    <ion-content>
+        <div class="doctorConsultPaySuccess">
+            <div class="bg1">
+                <div class="intro">
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fa_03.png" alt=""/>
+                    支付成功
+                </div>
+                <div class="weChat ">
+                    <div>现在你已拥有一次咨询医生的机会</div>
+                    <div>24小时内医生都可回复你！</div>
+                </div>
+                <div class="consultButton button" ng-click="closeDoctorConsultPaySuccess()">现在去问医生</div>
+            </div>
         </div>
-        <div class="weChat ">
-            <div>医生已就位，现在立即去咨询吧！</div>
-            <div>未来<span>24小时</span>享受医生秒回服务</div>
-        </div>
-        <div class="consultButton" ng-click="closeDoctorConsultPaySuccess()" ><a>点击问医生</a></div>
-    </div>
+    </ion-content>
 </ion-view>

@@ -231,7 +231,7 @@ public class ConsultDoctorController extends BaseController {
      */
     @RequestMapping(value = "/GetCSDoctorList", method = {RequestMethod.POST, RequestMethod.GET})
     public
-    @ResponseBody
+    @ResponseBody//@RequestBody
     Map<String, Object> GetCSDoctorList(@RequestBody Map<String, Object> params) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
@@ -243,11 +243,32 @@ public class ConsultDoctorController extends BaseController {
         if (StringUtils.isNotNull(userId)) {
             user.setId(userId);
         }
-        users = consultDoctorInfoService.findUserOrderByDepartment(user);
+        String userName = String.valueOf(params.get("userName"));
+        if (StringUtils.isNotNull(userName)) {
+            user.setName(userName);
+            users = consultDoctorInfoService.findUserByUserName(user);
+
+        }else{
+            users = consultDoctorInfoService.findUserOrderByDepartment(user);
+        }
         if (users != null && users.size() > 0) {
             response.put("CSList", users);
             response.put("status", "success");
         }
+        return response;
+    }
+
+    /**
+     * 获取客服医生列表
+     */
+    @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody//@RequestBody
+    Map<String, Object> test( Map<String, Object> params) {
+
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put("userName","李军");
+        GetCSDoctorList(response);
         return response;
     }
 
@@ -332,54 +353,37 @@ public class ConsultDoctorController extends BaseController {
                 } else if ("wxcxqm".equalsIgnoreCase(richConsultSession.getSource())) {
 
                     //判断是否有权限推送消息
+
                     Map param = new HashMap();
                     param.put("userId",richConsultSession.getCsUserId());
+                    param.put("consultSessionId",richConsultSession.getId());
+                    List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(param);
                     List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
                     Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                    /*if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0){
-                        if(null !=consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")){
-                            String st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
-                                    "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
-                                    params.get("uuid") +"&sessionId="+sessionId+ "'>点击这里去评价</a>】";
-                            WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
-                        }
-                    }*/
-                    if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0){
-                        if(null !=consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")){
-                            String st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
-                                    "<a href='http://s147.xiaork.com:8083/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
-                                    params.get("uuid") +"&sessionId="+sessionId+ "'>点击这里去评价</a>】";
-                            WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
-                        }
-                    }
-                    //jiangzg 2016年6月21日16:22:59 add ps:在线咨询仅供参考
-                    /*String csUserId = richConsultSession.getCsUserId();
-                    if(StringUtils.isNotNull(csUserId)){
-                        List<Map> consultDoctorInfo = consultDoctorInfoService.getDoctorInfoMoreByUserId(csUserId);
-                        if(consultDoctorInfo != null && consultDoctorInfo.size() > 0){
-                            if(consultDoctorInfo.get(0).get("userType") !=null && "consultDoctor".equalsIgnoreCase((String)consultDoctorInfo.get(0).get("userType"))){
-                                WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, "感谢您咨询宝大夫，因不能面诊，在线咨询回复仅供参考！");
+                    String st = "";
+
+                    if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0) {
+                        if (null != consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")) {
+                            if (praiseList != null && praiseList.size() > 0) {
+                                for (Map<String, Object> evaluationMap : praiseList) {
+                                    if (Integer.parseInt((String) evaluationMap.get("serviceAttitude")) == 0) {
+                                        st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
+                                                "<a href='http://s120.xiaork.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
+                                                evaluationMap.get("id") + "&sessionId=" + sessionId + "'>点击这里去评价</a>】";
+                                    } else {
+                                        st = "嗨，亲爱的,本次咨询已关闭。";
+                                        break;
+                                    }
+                                }
+                            } else {
+                                st = "嗨，亲爱的,本次咨询已关闭。";
                             }
+                            WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                         }
-                    }*/
-                }/*else if("h5wjyUser".equalsIgnoreCase(richConsultSession.getSource())){
-                    String patientId = richConsultSession.getUserId();
-                    Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(patientId);
-                    JSONObject obj = new JSONObject();
-                    if (userChannel != null && userChannel.isActive()) {
-                        obj.put("type", "4");
-                        obj.put("notifyType", "4001");
-                        TextWebSocketFrame csframe = new TextWebSocketFrame(obj.toJSONString());
-                        userChannel.writeAndFlush(csframe.retain());
-                    } else {
-                        String doctorId = richConsultSession.getCsUserId();
-                        Channel doctorChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(doctorId);
-                        obj.put("type", "4");
-                        obj.put("notifyType", "0015");
-                        TextWebSocketFrame csframe = new TextWebSocketFrame(obj.toJSONString());
-                        doctorChannel.writeAndFlush(csframe.retain());
+                        //分享的代码
+//                    patientRegisterPraiseService.sendRemindMsgToUser(userId,sessionId);
                     }
-                }*/
+                }
             }
             String result = consultSessionService.clearSession(sessionId, userId);
             response.put("result", result);

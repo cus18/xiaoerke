@@ -1,4 +1,4 @@
-﻿angular.module('controllers', ['ionic']).controller('umbrellaJoinCtrl', [
+﻿﻿angular.module('controllers', ['ionic']).controller('umbrellaJoinCtrl', [
     '$scope','$state','$stateParams','JoinUs','updateActivationTime','ifExistOrder','getNickNameAndRanking',
     function ($scope,$state,$stateParams,JoinUs,updateActivationTime,ifExistOrder,getNickNameAndRanking) {
         $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";

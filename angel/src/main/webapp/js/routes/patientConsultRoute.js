@@ -128,6 +128,24 @@ define(['appPatientConsult'], function(app){
                         data: {
                             public: true
                         }
+                    })
+                    .state('patientConsultBHQ', {
+                        url: '/patientConsultBHQ/:token',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'patientConsultBHQCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultBHQCtrl',
+                                    ['js/controllers/patientConsultBHQCtrl.js',
+                                        'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                        "js/libs/jquery.qqFace.js","js/libs/jquery.browser.min.js",
+                                        'js/styles/patientConsultBHQ.css'],
+                                    'js/views/patientConsultBHQ.html?ver='+patientConsultVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
                     });
 
                 //$urlRouterProvider.otherwise('patientConsultFirst');

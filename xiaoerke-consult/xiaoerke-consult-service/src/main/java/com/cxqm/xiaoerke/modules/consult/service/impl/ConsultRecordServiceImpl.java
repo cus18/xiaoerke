@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
@@ -13,12 +14,14 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
+import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.mongodb.WriteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,7 +47,7 @@ import java.util.concurrent.Executors;
  */
 @Service
 @Transactional(readOnly = false)
-public class ConsultRecordServiceImpl implements ConsultRecordService {
+public class ConsultRecordServiceImpl implements ConsultRecordService{
 
 
     @Autowired
@@ -98,6 +101,11 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     @Override
     public PaginationVo<ConsultSessionStatusVo> getUserMessageList(int pageNo, int pageSize, Query query) {
         return consultRecordMongoDBService.getUserMessageList(pageNo, pageSize, query);
+    }
+
+    @Override
+    public List<ConsultSessionStatusVo> queryUserMessageList(Query query){
+        return consultRecordMongoDBService.queryUserMessageList(query);
     }
 
     @Override
@@ -237,6 +245,9 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
         consultSessionStatusVo.setCsUserName(consultSession.getCsUserName());
         consultSessionStatusVo.setCsUserId(consultSession.getCsUserId());
         consultSessionStatusVo.setSource(consultSession.getSource());
+        consultSessionStatusVo.setCreateDate(new Date());
+        consultSessionStatusVo.setPayStatus(consultSession.getPayStatus());
+        consultSessionStatusVo.setFirstTransTime(null);
         consultRecordMongoDBService.upsertConsultSessionStatusVo(consultSessionStatusVo);
     }
 
@@ -277,5 +288,11 @@ public class ConsultRecordServiceImpl implements ConsultRecordService {
     @Override
     public WriteResult removeConsultRankRecord(Query query) {
         return consultRecordMongoDBService.removeConsultRankRecord(query);
+    }
+
+    //jiangzg add 2016-8-11 18:32:02 更新mongo集合中字段
+    @Override
+    public int updateConsultSessionFirstTransferDate(Query query, Update update, Class t) {
+       return  consultRecordMongoDBService.updateConsultSessionFirstTransferDate(query,update,t);
     }
 }

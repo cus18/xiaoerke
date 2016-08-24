@@ -1,11 +1,13 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSON;
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
@@ -245,6 +247,15 @@ public class ConsultDoctorTransferController extends BaseController {
                 dataValue.put("fromCsUserName",user.getName());
                 dataValue.put("fromCsUserId",waitJoinListVo.getFromUserId());
                 dataValue.put("chooseFlag",true);
+
+                Query sessionquery = (new Query()).addCriteria(where("sessionId").is(""+waitJoinListVo.getConversationId()+""));
+                ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(sessionquery);
+                if(null != consultSessionStatusVo&&(ConstantUtil.PAY_SUCCESS+ConstantUtil.USE_TIMES+ConstantUtil.WITHIN_24HOURS).indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                    dataValue.put("notifyType","1001");
+                } else{
+                    dataValue.put("notifyType","1002");
+                }
+
                 dataList.add(dataValue);
             }
         }

@@ -32,6 +32,9 @@ define(['app'], function (app) {
         }])
 	    .factory('saveBabyInfo',['$resource',function ($resource){
 	        return $resource(user_h5 + 'healthRecord/saveBabyInfo');
-	    }]);
+	    }])
 
+        .factory('addMePermTimes',['$resource',function ($resource){
+            return $resource(user_h5 + 'consult/user/addMePermTimes');
+        }]);
 })

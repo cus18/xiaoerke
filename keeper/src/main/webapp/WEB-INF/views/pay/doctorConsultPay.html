@@ -16,23 +16,14 @@
 <body onload="doRefresh()">
 <div class="doctorConsultPay bg1" >
     <div class="intro">
-        <img class="my-img1 line2" width="100%" height="270px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fa_02.png">
-        <div class="poImg">
-            <img class="my-img1 line2" width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fbb_03.png">
-            <div class="money">￥8</div>
-        </div>
+        <img width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fb_03.png" alt=""/>
+        <span>你需支付</span>
+        <span>咨询服务费￥9.9</span>
     </div>
-    <div class="leave-words">
-        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Ff_03.png" alt=""/>
+    <div class="weChat">
+        <div>购买一次，开支咨询后，24小时内医生都会回复</div>
     </div>
-    <div class="weChat ">
-        <div>着急问医生，领取秒回特权</div>
-        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fd_03.png" alt="left" class="right"/>
-        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fd_05.png" alt="right"/>
-        <div>未来<span>24小时</span>享受医生秒回服务</div>
-    </div>
-    <div onclick="wechatPay()" id="payButton"  class="button" ><a class="change">点我支付（￥<span id="money"></span>元）</a></div>
-    <div id="payButton" class="button" ><a onclick="wechatPay()" class="change">点我支付（￥<span id="money"></span>元）</a></div>
+    <div id="payButton" class="button" ><a onclick="wechatPay()" class="change">确认支付</a></div>
 </div>
 </body>
 </html>

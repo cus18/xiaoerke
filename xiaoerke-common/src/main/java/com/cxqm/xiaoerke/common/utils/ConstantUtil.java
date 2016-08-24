@@ -44,4 +44,12 @@ public class ConstantUtil {
 	public static String KEEPER_WEB_URL = Global.getConfig("KEEPER_WEB_URL");
 	public static String DOCTOR_WEB_URL = Global.getConfig("DOCTOR_WEB_URL");
 	public static String TITAN_WEB_URL = Global.getConfig("TITAN_WEB_URL");
+	//咨询支付
+	public static String NO_PAY = "noPay";
+	public static String PAY_SUCCESS = "paySuccess";
+	public static String USE_TIMES = "useTimes";
+	public static String WITHIN_24HOURS = "within24Hours";
+
+	public static String DISTRIBUTOR = "distributor";
+	public static String CONSULTDOCTOR = "consultDoctor";
 }

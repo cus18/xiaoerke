@@ -1,5 +1,5 @@
 angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
-    .controller('patientConsultWJYCtrl2', ['$scope','$location','$anchorScroll',
+    .controller('patientConsultBHQCtrl', ['$scope','$location','$anchorScroll',
         'GetSessionId','GetUserLoginStatus','$upload','$sce','$stateParams',
         'CreateOrUpdateWJYPatientInfo','GetUserCurrentConsultContent','$http','GetWJYHistoryRecord','$ionicScrollDelegate',
         function ($scope,$location,$anchorScroll,GetSessionId,GetUserLoginStatus,$upload,$sce,$stateParams,
@@ -11,7 +11,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.sessionId = "";
             $scope.socketServer = "";
             $scope.glued = true;
-            $scope.source = "h5wjyUser";
+            $scope.source = "h5bhqUser";
             $scope.loseConnectionFlag = false;
             var heartBeatNum = 0;
             $scope.lookMore = false;//查看更多
@@ -37,13 +37,13 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
              */
             //提示语
             /*var tishi = {
-                'type':"0",
-                'content':"欢迎咨询宝大夫,三甲医院儿科专家24小时在线，咨询秒回不等待。24小时全天：小儿内科全天分时段：小儿皮肤科、保健科、妇产科、外科、眼科、耳鼻喉科、口腔科、预防接种科、中医科、心理科",
-                'dateTime':"",
-                'senderId':"1",
-                'senderName':"",
-                'sessionId':""
-            }*/
+             'type':"0",
+             'content':"欢迎咨询宝大夫,三甲医院儿科专家24小时在线，咨询秒回不等待。24小时全天：小儿内科全天分时段：小儿皮肤科、保健科、妇产科、外科、眼科、耳鼻喉科、口腔科、预防接种科、中医科、心理科",
+             'dateTime':"",
+             'senderId':"1",
+             'senderName':"",
+             'sessionId':""
+             }*/
 
             function randomString(len) {
                 len = len || 32;
@@ -116,7 +116,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     //ws://s201.xiaork.com:2048;
                     $scope.socketServer = new WebSocket("ws://s132.baodf.com/wsbackend/ws&user&"
-                        + $scope.patientId +"&h5wjy");//cs,user,distributor*/
+                        + $scope.patientId +"&h5bhq");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {
                         var consultData = JSON.parse(event.data);
@@ -279,7 +279,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                             "content": data.showFile,
                             "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                             "senderId": $scope.patientId,
-                            "senderName": "微家园"+$scope.patientName,
+                            "senderName": "保护圈"+$scope.patientName,
                             "sessionId": parseInt($scope.sessionId),
                             "avatar":patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                         };
@@ -314,7 +314,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                         "content": $("#saytext").val(),
                         "dateTime": moment().format("YYYY-MM-DD HH:mm:ss"),
                         "senderId":$scope.patientId,
-                        "senderName":"微家园"+$scope.patientName,
+                        "senderName":"保护圈"+$scope.patientName,
                         "sessionId":parseInt($scope.sessionId),
                         "source":$scope.source,
                         "avatar":patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
@@ -359,7 +359,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     }
                 }
             };
-            
+
             //点击放大图片
             $scope.showImageBar = function (src) {
                 $scope.imgBarFlag = true;
@@ -370,7 +370,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.hideImageBar = function () {
                 $scope.imgBarFlag = false;
             }
-            
+
 
             //各个子窗口的开关变量
             $scope.showFlag = {
@@ -441,10 +441,11 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                 val = val.replace(/\[em_73\]/g, '/:showlove');val = val.replace(/\[em_74\]/g, '/:love');val = val.replace(/\[em_75\]/g, '/<L>');
                 return val;
             };
-            
+
             //让输入框在失去焦点的时候，重新获取焦点，输入键盘就会一直存在
             $scope.getautoFocus = function () {
                 $("#saytext").focus();
             }
 
         }]);
+

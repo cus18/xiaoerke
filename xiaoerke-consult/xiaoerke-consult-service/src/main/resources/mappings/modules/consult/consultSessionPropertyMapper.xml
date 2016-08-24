@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionPropertyDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
+    <result column="month_times" property="monthTimes" jdbcType="INTEGER" />
+    <result column="perm_times" property="permTimes" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, sys_user_id, month_times, perm_times, create_by, create_time, update_time
+  </sql>
+  <select id="selectByField" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo" >
+    select 
+    <include refid="Base_Column_List" />
+    from consult_session_property
+    where 1=1
+    <if test="id != null" >
+      and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="sysUserId != null" >
+      and sys_user_id = #{sysUserId,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from consult_session_property
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo" >
+    insert into consult_session_property (id, sys_user_id, month_times, 
+      perm_times, create_by, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{sysUserId,jdbcType=VARCHAR}, #{monthTimes,jdbcType=INTEGER}, 
+      #{permTimes,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo" useGeneratedKeys="true" keyProperty="planId">
+    insert into consult_session_property
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sysUserId != null" >
+        sys_user_id,
+      </if>
+      <if test="monthTimes != null" >
+        month_times,
+      </if>
+      <if test="permTimes != null" >
+        perm_times,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sysUserId != null" >
+        #{sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="monthTimes != null" >
+        #{monthTimes,jdbcType=INTEGER},
+      </if>
+      <if test="permTimes != null" >
+        #{permTimes,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo" >
+    update consult_session_property
+    <set >
+      <if test="sysUserId != null" >
+        sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="monthTimes != null" >
+        month_times = #{monthTimes,jdbcType=INTEGER},
+      </if>
+      <if test="permTimes != null" >
+        perm_times = #{permTimes,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo" >
+    update consult_session_property
+    set sys_user_id = #{sysUserId,jdbcType=VARCHAR},
+      month_times = #{monthTimes,jdbcType=INTEGER},
+      perm_times = #{permTimes,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="addPermTimes" parameterType="java.lang.String">
+    update consult_session_property
+    set
+      perm_times = perm_times+1
+    where sys_user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <select id="findConsultSessionPropertyByUserId" parameterType="java.lang.String" resultType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo">
+    select
+    <include refid="Base_Column_List" />
+    from consult_session_property
+    where 1=1
+    and sys_user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateMonthTime">
+    update consult_session_property
+    set month_times = 4
+  </update>
+</mapper>

@@ -10,13 +10,17 @@ import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseServic
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.order.service.SysConsultPhoneService;
+import com.cxqm.xiaoerke.modules.sys.entity.MongoLog;
 import com.cxqm.xiaoerke.modules.sys.interceptor.SystemServiceLog;
 import com.cxqm.xiaoerke.modules.sys.service.*;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import net.sf.json.JSONObject;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +63,9 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 
     @Autowired
     ConsultPhoneOrderService consultPhoneOrderService;
+
+	@Autowired
+	private MongoDBService<MongoLog> mongoDBServiceLog;
 
 
     //将取消原因插入到patient_register_praise表中
@@ -406,5 +413,66 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 	@Override
 	public List<Map<String, Object>> findDissatisfiedList(Map map) {
 		return patientRegisterPraiseDao.findDissatisfiedList(map);
+	}
+
+	@Override
+	public void sendRemindMsgToUser(String userId,String sessionId) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("consultSessionId",sessionId);
+		String msg = "";
+//		String nowDate = DateUtils.DateToStr(new Date(),"yyyy-MM");
+
+		List<Map<String,Object>>  evaluationList = patientRegisterPraiseDao.getCustomerEvaluationListByInfo(params);
+		if(null == evaluationList||evaluationList.size() == 0){
+//                        发送消息+提示用户评价的信息
+			msg= "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
+					"<a href='http://120.25.161.33/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
+					params.get("uuid") +"&sessionId="+sessionId+ "'>点击这里去评价</a>】";
+		}else{
+			msg = "嗨，亲爱的,本次咨询已关闭。";
+		}
+
+//		检测是否分享宝大夫
+//		Query queryInLog = new Query();
+//		queryInLog.addCriteria(new Criteria("title").is("consultfirstchargefree").andOperator(
+//				new Criteria("create_date").gte(nowDate)));
+//		long shareBaodfNum = mongoDBServiceLog.queryCount(queryInLog);
+//		queryInLog = new Query();
+//		queryInLog.addCriteria(new Criteria("title").is("pushconsultfirstchargefree").andOperator(
+//				new Criteria("create_date").gte(nowDate)).andOperator(new Criteria("parameters").in(userId)));
+//		long pushBaodfNum = mongoDBServiceLog.queryCount(queryInLog);
+
+//
+//		queryInLog = new Query();
+//		queryInLog.addCriteria(new Criteria("title").is("BHS_TXXX_LJJH"));
+//		long joinUmbrella = mongoDBServiceLog.queryCount(queryInLog);
+//		queryInLog = new Query();
+//		queryInLog.addCriteria(new Criteria("title").is("PUSH_BHS_TXXX_LJJH").andOperator(new Criteria("parameters").in(userId)));
+//		long pushJoinUmbrella = mongoDBServiceLog.queryCount(queryInLog);
+//
+//
+//		queryInLog = new Query();
+//		queryInLog.addCriteria(new Criteria("title").is("consultfirstchargefree").andOperator(
+//				new Criteria("create_date").gte(nowDate)));
+//		long shareUmbrella = mongoDBServiceLog.queryCount(queryInLog);
+//		queryInLog = new Query();
+//		queryInLog.addCriteria(new Criteria("title").is("pushconsultfirstchargefree").andOperator(
+//				new Criteria("create_date").gte(nowDate)).andOperator(new Criteria("parameters").in(userId)));
+//		long pushUmbrella = mongoDBServiceLog.queryCount(queryInLog);
+
+
+//		if(shareBaodfNum == 0&&pushBaodfNum<=3){
+//			msg =  "嗨，亲爱的,本次咨询已关闭 \n------------------\n本月4次免费咨询机会已用完，轻轻动动手指即可获得一次机会哦\n>><a href=''>分享宝大夫给朋友</a>";
+//			LogUtils.saveLog("pushconsultfirstchargefree",userId);
+//		}else if(joinUmbrella == 0&&pushJoinUmbrella<=3){
+//			msg =  "嗨，亲爱的,本次咨询已关闭 \n------------------\n加入宝护伞不仅能获得最高40万重疾保障，还能获得一次免费咨询机会哦！\n>><a href=''>抢购宝护伞</a>";
+//			LogUtils.saveLog("PUSH_BHS_TXXX_LJJH",userId);
+//		}else if(shareUmbrella == 0&&pushUmbrella<=3){
+//			msg =  "嗨，亲爱的,本次咨询已关闭 \n------------------\n动动手指传递爱，分享宝护伞即可免费咨询一次医生哦！\n>><a href=''>分享宝护伞给朋友</a>";
+//			LogUtils.saveLog("pushconsultfirstchargefree",userId);
+//		}
+		Map<String,Object> parameter = systemService.getWechatParameter();
+		String token = (String)parameter.get("token");
+		WechatUtil.sendMsgToWechat(token,userId,msg);
 	}
 }
