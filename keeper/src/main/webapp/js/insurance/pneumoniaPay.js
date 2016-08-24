@@ -33,7 +33,7 @@ $(function(){
     });
 
     initDate();
-    setLog("FYB_XX");
+    recordLogs("FYB_XX");
 });
 
 /*锚链接跳转*/
@@ -248,10 +248,21 @@ var changeDate = function (time) {
     return moment(time).format("YYYY-MM-DD");
 }
 
+
 //记录日志
-var setLog = function (item) {
-    var pData = {logContent:encodeURI(item)};
-    $http({method:'post',url:'util/recordLogs',params:pData});
+var recordLogs = function(val){
+    $.ajax({
+        url:"util/recordLogs",// 跳转到 action
+        async:true,
+        type:'get',
+        data:{logContent:encodeURI(val)},
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+        },
+        error : function() {
+        }
+    });
 }
 
 //初始化时间控件
