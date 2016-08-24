@@ -161,6 +161,7 @@ define(['appInsurance'], function(app){
                             public: true
                         }
                     })
+                    /*手足口*/
                     .state('handfootmouthIndex', {
                         url: '/handfootmouthIndex',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -189,6 +190,83 @@ define(['appInsurance'], function(app){
                                         'styles/handfootmouth/handfootmouthPaySuccess.less?ver='+insuranceVersion,
                                     ],
                                     'js/views/handfootmouth/handfootmouthPaySuccess.html?ver='+insuranceVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('handfootmouthAddBaby', {
+                        url: '/handfootmouthAddBaby',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'handfootmouthAddBabyCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.handfootmouthAddBabyCtrl',
+                                    ['js/controllers/handfootmouth/handfootmouthAddBabyCtrl.js',
+                                        'js/libs/mobiscroll.custom-2.17.0.min.js',
+                                        'styles/lib/mobiscroll.custom-2.17.0.min.css',
+                                        'js/libs/moment.min.js',
+                                        'styles/handfootmouth/handfootmouthAddBaby.less?ver='+insuranceVersion,
+                                    ],
+                                    'js/views/handfootmouth/handfootmouthAddBaby.html?ver='+insuranceVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    /*肺炎宝*/
+                    .state('pneumoniaIndex', {
+                        url: '/pneumoniaIndex',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'pneumoniaIndexCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.pneumoniaIndexCtrl',
+                                    ['js/controllers/insurance/pneumonia/pneumoniaIndexCtrl.js?ver='+insuranceVersion,
+                                        'styles/insurance/insuranceCommon.less?ver='+insuranceVersion,
+                                        'styles/insurance/pneumonia/pneumoniaIndex.less?ver='+insuranceVersion,
+                                    ],
+                                    'js/views/insurance/pneumonia/pneumoniaIndex.html?ver='+insuranceVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+
+                    .state('insurancePaySuccess', {
+                        url: '/insurancePaySuccess/:id',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'insurancePaySuccessCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.insurancePaySuccessCtrl',
+                                    ['js/controllers/insurance/insurancePaySuccessCtrl.js?ver='+insuranceVersion,
+                                        'styles/insurance/insurancePaySuccess.less?ver='+insuranceVersion,
+                                    ],
+                                    'js/views/insurance/insurancePaySuccess.html?ver='+insuranceVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('insuranceAddBaby', {
+                        url: '/insuranceAddBaby/:type',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'insuranceAddBabyCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.insuranceAddBabyCtrl',
+                                    ['js/controllers/insurance/insuranceAddBabyCtrl.js?ver='+insuranceVersion,
+                                        'js/libs/mobiscroll.custom-2.17.0.min.js',
+                                        'styles/lib/mobiscroll.custom-2.17.0.min.css',
+                                        'js/libs/moment.min.js',
+                                        'styles/insurance/insuranceAddBaby.less?ver='+insuranceVersion,
+                                    ],
+                                    'js/views/insurance/insuranceAddBaby.html?ver='+insuranceVersion);
                             }
                         },
                         data: {
@@ -229,26 +307,7 @@ define(['appInsurance'], function(app){
                             public: true
                         }
                     })
-                    .state('handfootmouthAddBaby', {
-                        url: '/handfootmouthAddBaby',
-                        templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'handfootmouthAddBabyCtrl',
-                        resolve: {
-                            load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.handfootmouthAddBabyCtrl',
-                                    ['js/controllers/handfootmouth/handfootmouthAddBabyCtrl.js',
-                                        'js/libs/mobiscroll.custom-2.17.0.min.js',
-                                        'styles/lib/mobiscroll.custom-2.17.0.min.css',
-                                        'js/libs/moment.min.js',
-                                        'styles/handfootmouth/handfootmouthAddBaby.less?ver='+insuranceVersion,
-                                    ],
-                                    'js/views/handfootmouth/handfootmouthAddBaby.html?ver='+insuranceVersion);
-                            }
-                        },
-                        data: {
-                            public: true
-                        }
-                    })
+
 
 
                 $urlRouterProvider.otherwise('antiDogLead');

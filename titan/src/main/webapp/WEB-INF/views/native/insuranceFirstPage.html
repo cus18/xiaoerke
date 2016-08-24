@@ -1,28 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <base href="/titan/"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
-    <meta content="yes" name="apple-mobile-web-app-capable">
-    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
-    <title>宝贝保</title>
-    <link rel="stylesheet" href="styles/native/insuranceFirstPage.less" type="text/css" />
-    <link rel="stylesheet" href="styles/lib/ionic.min.css"/>
-    <link rel="stylesheet" href="styles/lib/ionicons.min.css"/>
-    <link rel="stylesheet" href="styles/lib/animate.min.css"/>
-    <link rel="stylesheet" href="styles/main.less"/>
-    <script src="js/native/insuranceFirstPage.js"></script>
-    <script src="js/libs/jquery-2.1.3.min.js"></script>
-    <script src="js/libs/lodash.min.js"></script>
-    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 </head>
-<body onload="doRefresh()">
-<div  class="insuranceDog">
-    <img onclick="goHandfootmouth()" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FinsuranceHand.png" width="100%" height="225px"/>
-    <img onclick="goantiDog()" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FinsuranceDog.png" width="100%" height="225px"/>
+<base href="/titan/"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<meta name="format-detection" content="telephone=no" />
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title>宝贝保</title>
+<link rel="stylesheet" href="styles/native/insuranceFirstPage.less" type="text/css" />
+<body onload="pageInit()">
+<div class="insuranceFirst" id="wrapper">
+    <div class="scroller">
+        <div class="pic ">
+            <img onclick="goPneumonia()" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/first/insurancePneumonia.png" width="100%" height="200"/>
+            <img onclick="goHandfootmouth()" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/first/insuranceHand.png" width="100%" height="200"/>
+            <img onclick="goantiDog()" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/first/insuranceDog.png" width="100%" height="200"/>
+        </div>
+        <br><br><br><br>
+    </div>
 </div>
-<img onclick="goPay()" id="payOut" class="icon-pay"  width="56" height="auto"
-     src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Ficon_pay.png">
+<img onclick="goPay()" id="payOut" class="icon-pay"  width="56" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/antiDog/icon_pay.png">
 </body>
+<link rel="stylesheet" href="styles/lib/ionic.min.css"/>
+<link rel="stylesheet" href="styles/lib/ionicons.min.css"/>
+<link rel="stylesheet" href="styles/lib/animate.min.css"/>
+<link rel="stylesheet" href="styles/main.less"/>
+<script src="js/libs/jquery-2.1.3.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="js/native/insuranceFirstPage.js?ver=1.7"></script>
+<script src="js/libs/iscroll.js"></script>
+<script>
+    var myScroll;
+    function loaded(){
+        setTimeout(function(){
+                    myScroll = new iScroll('wrapper', {
+                        hideScrollbar: true,
+                        checkDOMChanges:true
+                    }) },
+                100 );
+    }
+    window.addEventListener("load",loaded,false);
+</script>
 </html>
