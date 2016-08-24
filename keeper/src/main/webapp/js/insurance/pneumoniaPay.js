@@ -1,9 +1,10 @@
 var babyList = [];
 var babySex = 1;//男孩
 var parentSex = 0;//妈妈
-var needPayMoney =68;//手足口保险
+var needPayMoney =1;//手足口保险
 var babyID;
-var Ip = "s68.baodf.com";
+//var Ip = "s68.baodf.com";
+var Ip = "s120.xiaork,com.com";
 
 $(function(){
     var param = '{routePath:"/wxPay/patientPay.do?serviceType=pneumonia"}';

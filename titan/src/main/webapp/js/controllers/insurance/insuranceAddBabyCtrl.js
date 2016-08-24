@@ -6,7 +6,8 @@ angular.module('controllers', ['ionic']).controller('insuranceAddBabyCtrl', [
         $scope.sex = 1;
         $scope.boyLock = true;
         $scope.baby = {};
-        var Ip = "s251.baodf.com";
+        //var Ip = "s251.baodf.com";
+        var Ip = "s120.xiaork.com";
         var type;
 
 
