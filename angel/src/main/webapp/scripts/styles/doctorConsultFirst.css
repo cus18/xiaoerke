@@ -18,7 +18,7 @@
 .m-left-top div.tab-content-chat {
     float: left;
     text-align: center;
-    padding: 8px 23px;
+    padding: 8px 25px;
 }
 
 .tab-content-chat h3 {
@@ -128,7 +128,7 @@ div#ddjr {
 
 .consultNowList div:nth-child(1) {
     padding: 12px 0 12px 3px;
-    width: 16px;
+    width: 26px;
 }
 
 .consultNowList div:nth-child(2) {
@@ -672,7 +672,7 @@ p.historymessage span {
 
 /*textarea输入框*/
 .inputcontent, .facebox, .chatlist, .nametop {
-    padding-left: 190px;
+    padding-left: 200px;
     padding-right: 405px;
 }
 
