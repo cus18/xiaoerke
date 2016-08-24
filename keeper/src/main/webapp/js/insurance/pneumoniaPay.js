@@ -1,7 +1,7 @@
 var babyList = [];
 var babySex = 1;//男孩
 var parentSex = 0;//妈妈
-var needPayMoney =0.01;//手足口保险
+var needPayMoney =0.01;//保险金额
 var babyID;
 //var Ip = "s68.baodf.com";
 var Ip = "s120.xiaork.com";
