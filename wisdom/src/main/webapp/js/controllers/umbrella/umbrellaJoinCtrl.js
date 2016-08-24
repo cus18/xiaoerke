@@ -1,4 +1,4 @@
-﻿﻿angular.module('controllers', ['ionic']).controller('umbrellaJoinCtrl', [
+﻿angular.module('controllers', ['ionic']).controller('umbrellaJoinCtrl', [
     '$scope','$state','$stateParams','JoinUs','updateActivationTime','ifExistOrder','getNickNameAndRanking',
     function ($scope,$state,$stateParams,JoinUs,updateActivationTime,ifExistOrder,getNickNameAndRanking) {
         $scope.title="宝护伞-宝大夫儿童家庭重疾互助计划";
@@ -43,18 +43,14 @@
             $scope.shareLock=true;
             /* 随机分享文案*/
             var shareTextArray=[
-                "有了这个相当于多了个重疾保险，免费加入就能换来40万，一确诊就能给钱，比保险快多了！",
+                "不怕一万，就怕万一呀～",
+                "感觉现在面对重病最大的问题就是高昂治疗费。这个公益项目不错，希望能帮助更多的无助的家庭！",
+                "送给别人的一份爱心，更是送给自己的一份保障！这个宝护伞还是挺可以的！",
+                "当了妈之后，总是想给孩子最好的，最好的环境、最好的教育，但是健康却总是无法保障的！",
                 "墙裂推荐，绝非广告，这个真的是很需要。是对孩子和家庭的负责！我已经加入啦，你还不快来！",
-                "我为孩子健康负责，免费领取了40万的大病治疗费，你也来领吧！",
-                "我为宝宝健康负责，竟然免费获得了40万的大病治疗费！你需要吗？",
-                "领取40万的大病治疗费，万一看病不用愁，限时免费，先到先得啦！",
-                "每天都有孩子因没钱治病而死。现在有40万治疗费，送给你！",
-                "没什么好送的，40万的大病治疗费，送给你！",
-                "最美的妈妈你别走，送你40万，让孩子健康去成长！",
-                "如需江湖救急，这有40万的大病治疗费，速速来拿！"
-
+                "有了这个相当于多了个重疾保险，免费加入就能换来40万，一确诊就能给钱，比保险快多了！"
             ];
-            var randomNum=parseInt(9*Math.random());//分享文案随机数
+            var randomNum=parseInt(6*Math.random());//分享文案随机数
             /*   $(".share p").html( shareTextArray[randomNum]);*/
             $scope.shareRandomText=shareTextArray[randomNum];
         };
@@ -282,7 +278,7 @@
                         wx.ready(function () {
                             // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                             wx.onMenuShareTimeline({
-                                title: '为了你的孩子，'+nickName+'邀请你加入爱心公益，并赠送40万的现金保障！', // 分享标题
+                                title: '限时免费加入宝护伞爱心公益，小孩、大人得了重病都给钱！最高40万！', // 分享标题
                                 link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status,
                                 imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                 success: function (res) {
@@ -305,7 +301,7 @@
                                 }
                             });
                             wx.onMenuShareAppMessage({
-                                title: '为了你的孩子，'+nickName+'邀请你加入爱心公益，并赠送40万的现金保障！', // 分享标题
+                                title: '限时免费加入宝护伞爱心公益，小孩、大人得了重病都给钱！最高40万！', // 分享标题
                                 desc: "由宝大夫和中国儿童少年基金会联合发起，绝对值得信赖！", // 分享描述
                                 link:  "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$scope.umbrellaId+"/"+$scope.status, // 分享链接
                                 imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
