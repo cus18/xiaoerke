@@ -36,10 +36,6 @@ $(function(){
     recordLogs("FYB_XX");
 });
 
-/*锚链接跳转*/
-var skip=function(item){
-    myScroll.scrollToElement('#'+item, 100)
-}
 //获取宝宝基本信息
 var getBabyInfo = function(){
     $.ajax({
