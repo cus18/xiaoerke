@@ -322,7 +322,7 @@ public class ConsultWechatController extends BaseController {
                 }
             }
             if (null == consultSessionStatusVos || consultSessionStatusVos.size() == 0 || consultSessionStatusVos.get(0).getFirstTransTime() == null) {
-                if(messageFlag == 0){
+                if(messageFlag == 0 && consultSessionPropertyVo.getMonthTimes() >0){
                     String content = "嗨，亲爱的，你本月还剩" + consultSessionPropertyVo.getMonthTimes() + "次免费咨询的机会，每次发起咨询后，24小时内有效^-^\n";
                     WechatUtil.sendMsgToWechat(token, openId, content);
                     if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
