@@ -315,8 +315,10 @@ public class ConsultWechatController extends BaseController {
                 consultSessionPropertyVo.setSysUserId(openId);
                 consultSessionPropertyVo.setCreateBy(openId);
                 consultSessionPropertyService.insertUserConsultSessionProperty(consultSessionPropertyVo);
+//                String  content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^"+
+//                        "\n-----------\n"+"<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>";
                 String  content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^"+
-                        "-----------\n"+"<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>";
+                        "\n-----------\n"+"机会用完可付费购买";
                 messageFlag = 1;
                 WechatUtil.sendMsgToWechat(token, openId, content);
                 if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
@@ -326,7 +328,7 @@ public class ConsultWechatController extends BaseController {
             if (null == consultSessionStatusVos || consultSessionStatusVos.size() == 0 || consultSessionStatusVos.get(0).getFirstTransTime() == null) {
                 if(messageFlag == 0 && consultSessionPropertyVo.getMonthTimes() >0){
                     String  content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^"+
-                            "-----------\n"+"<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>";
+                            "\n-----------\n"+"机会用完可付费购买";
                     WechatUtil.sendMsgToWechat(token, openId, content);
                     if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
                         ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
@@ -343,14 +345,14 @@ public class ConsultWechatController extends BaseController {
                         String content;
                         if (consultSessionPropertyVo.getMonthTimes() > 0  ) {
                             content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^"+
-                                    "-----------\n"+"<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>";
+                                    "\n-----------\n"+"机会用完可付费购买";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
                                 ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
                             }
                         } else if (consultSessionPropertyVo.getPermTimes() > 0 ) {
-                            content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getPermTimes() + "次24小时咨询服务哦^-^"+
-                                    "-----------\n"+"<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>";
+                            content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^"+
+                                    "\n-----------\n"+"机会用完可付费购买";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
                                 ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
