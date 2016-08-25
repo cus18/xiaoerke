@@ -164,6 +164,11 @@ public class PayController {
             model.addAttribute("intervalFlag", "1");
             return "insurance/pneumoniaPay";
         }
+        else if("insurance".equals(serviceType)){
+            model.addAttribute("type", 2);
+            model.addAttribute("price", 10);
+            return "pay/insurancePay";
+        }
         else if("umbrellaPay".equals(serviceType)){
             model.addAttribute("payPrice", 5.0);
             model.addAttribute("intervalFlag", "1");
