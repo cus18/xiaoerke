@@ -143,7 +143,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                 }
             } else if (senderId.equals(csUserId)) {
                 //如果是医生作为发送者，则用户接收
-                if (richConsultSession.getSource().equals("h5cxqm")||richConsultSession.getSource().equals("h5wjy")) {
+                if (richConsultSession.getSource().equals("h5cxqm")||richConsultSession.getSource().equals("h5wjy") || richConsultSession.getSource().equals("h5bhq")) {
                     Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
                     if (userChannel != null && userChannel.isActive()) {
                         userChannel.writeAndFlush(msg.retain());
@@ -241,6 +241,21 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             }else if(msgMap.get("source").equals("h5wjyUser") && msgMap.get("senderId") != null){
                 RichConsultSession consultSession = ConsultSessionManager.getSessionManager().
                         createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5wjy");
+
+                //保存聊天记录
+                if (consultSession != null) {
+                    //将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
+                    msgMap.put("sessionId", consultSession.getId());
+                    msgMap.put("serverAddress", consultSession.getServerAddress());
+                    Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+                    TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
+                    csChannel.writeAndFlush(csUserMsg.retain());
+                    consultRecordService.buildRecordMongoVo((String) msgMap.get("senderId"), String.valueOf(msgType),
+                            (String) msgMap.get("content"), consultSession);
+                }
+            }else if(msgMap.get("source").equals("h5bhqUser") && msgMap.get("senderId") != null){
+                RichConsultSession consultSession = ConsultSessionManager.getSessionManager().
+                        createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5bhq");
 
                 //保存聊天记录
                 if (consultSession != null) {

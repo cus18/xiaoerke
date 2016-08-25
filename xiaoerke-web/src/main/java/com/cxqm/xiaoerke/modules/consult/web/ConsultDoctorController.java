@@ -412,6 +412,8 @@ public class ConsultDoctorController extends BaseController {
                 int count = babyUmbrellaInfoService.getUmbrellaCount();
                 String title = "免费送您一份40万的保障！";
                 String description = "限时免费加入宝护伞爱心公益，小孩、大人得了重病都给钱！最高40万！包括75种疾病，还能安排专家治疗！";
+                String title = "免费送您一份40万的保障！";
+                String description = "限时免费加入宝护伞爱心公益，小孩、大人得了重病都给钱！最高40万！包括75中疾病，还能安排专家治疗！";
                 //String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
                 String url = "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000003/a";
                 String picUrl = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella";

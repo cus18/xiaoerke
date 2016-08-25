@@ -223,11 +223,16 @@ public class ConsultRecordServiceImpl implements ConsultRecordService{
             consultRecordMongoVo.setType(type);
             consultRecordMongoVo.setMessage(messageContent);
             consultRecordMongoVo.setSenderId(senderId);
-            consultRecordMongoVo.setSenderName(consultSession.getUserName());
+            if(senderId.equalsIgnoreCase(consultSession.getUserId())){
+                consultRecordMongoVo.setSenderName(consultSession.getUserName());
+            }else{
+                consultRecordMongoVo.setSenderName(consultSession.getCsUserName());
+            }
             consultRecordMongoVo.setUserId(consultSession.getUserId());
             consultRecordMongoVo.setCsUserId(consultSession.getCsUserId());
             consultRecordMongoVo.setDoctorName(consultSession.getCsUserName());
             consultRecordMongoVo.setCreateDate(new Date());
+            consultRecordMongoVo.setSource(consultSession.getSource());
             saveConsultRecord(consultRecordMongoVo);
             saveConsultRecordTemporary(consultRecordMongoVo);
         }

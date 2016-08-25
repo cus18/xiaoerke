@@ -1,0 +1,44 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="购买成功" ng-init="doRefresh()">
+    <ion-content class="insurancePaySuccess" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="buy-success">
+                <img class="my-img-block" width="96.5" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fpay_success.png">
+                <div ng-if="insurance.insuranceType==3">
+                    您已成功购买“宝大夫小儿肺炎宝”服务
+                </div>
+                <p>
+                    自当前时间起<span>24小时</span>后起效
+                </p>
+            </div>
+            <div class="apart"></div>
+            <div class="info">
+                <ul>
+                    <li>
+                        <span>宝宝姓名：</span>{{insurance.babyName}}
+                    </li>
+                    <li>
+                        <span>服务开始：</span>{{insurance.startTime | date:'yyyy-MM-dd HH:mm:ss'}}
+                    </li>
+                    <li>
+                        <span>服务结束：</span>{{insurance.endTime | date:'yyyy-MM-dd HH:mm:ss'}}
+                    </li>
+
+                </ul>
+            </div>
+            <div class="code">
+                <img  data-tap-disabled="true" width="108" height="auto" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/code/baodf_code_insurance{{insurance.insuranceType}}.jpg" >
+                <p>
+                    关注宝大夫 <br>
+                    随时随地咨询宝宝健康  <br>
+                    随时随地预约专家门诊 <br>
+                    更可随时查看购买服务详情哦
+                </p>
+            </div>
+            <div class="tel">
+                <p>如有疑问，请联系宝大夫客服<a href="tel:4006237120">400-623-7120</a></p>
+                <button class="button foot-btn" ng-click="goFirstPage()" >返回首页</button>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

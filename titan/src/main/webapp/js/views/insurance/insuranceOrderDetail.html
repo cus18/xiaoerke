@@ -4,7 +4,7 @@
         <!--补贴弹框提示-->
         <div class="c-shadow" ng-if="parRemindLock" ng-click="cancelPayRemind()"></div>
         <div class="remind-box" ng-if="parRemindLock">
-            <img ng-click="cancelPayRemind()"  width="30" height="30" src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png">
+            <img ng-click="cancelPayRemind()"  width="30" height="30" ng-src="http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/common%2Fclose.png">
             <div>
                 <p>
                     如需领取互助补贴<br>
@@ -15,8 +15,7 @@
         </div>
         <ion-scroll direction="y" has-bouncing="true">
             <div class="banner">
-                <img ng-if="insurance.insuranceType==1" class="my-img-block"  width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FbigDog.png">
-                <img ng-if="insurance.insuranceType==2" class="my-img-block"  width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FbigHandfootmouth.png">
+                <img  class="my-img-block"  width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/orderDetail/insuranceDetail{{insurance.insuranceType}}.png">
             </div>
             <!--  <div class="text">
                   待审核
@@ -60,13 +59,13 @@
                     <li>
                         <span>身份证号：</span>{{insurance.idCard}}
                     </li>
-                    <!--                     <li> -->
-                    <!--                         <span style="width:85px;">已上传图片：</span> -->
-                    <!--                         <div class="pic"> -->
-                    <!--                             <img width="70" height="70" src="images/a1.png"> -->
-                    <!--                             <img width="70" height="70" src="images/a2.png"> -->
-                    <!--                         </div> -->
-                    <!--                     </li> -->
+                     <!--<li>
+                         <span style="width:85px;">已上传图片：</span>
+                         <div class="pic">
+                             <img width="70" height="70" src="images/a1.png">
+                             <img width="70" height="70" src="images/a2.png">
+                         </div>
+                     </li> -->
 
                 </ul>
             </div>
