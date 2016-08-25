@@ -130,7 +130,7 @@ define(['appPatientConsult'], function(app){
                         }
                     })
                     .state('patientConsultBHQ', {
-                        url: '/patientConsultBHQ/:token',
+                        url: '/patientConsultBHQ/:id,:name,:image',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'patientConsultBHQCtrl',
                         resolve: {
