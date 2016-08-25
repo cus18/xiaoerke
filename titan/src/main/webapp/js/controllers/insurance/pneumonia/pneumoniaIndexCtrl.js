@@ -2,8 +2,8 @@ angular.module('controllers', ['ionic']).controller('pneumoniaIndexCtrl', [
     '$scope','$state','$stateParams','$location','$http',
     function ($scope,$state,$stateParams,$location,$http) {
         $scope.readLock = true;
-       // var Ip = "s251.baodf.com";
-        var Ip = "s120.xiaork.com";
+        var Ip = "s251.baodf.com";
+        //var Ip = "s120.xiaork.com";
 
         $scope.$on('$ionicView.enter', function(){
             setLog("FYB_SY");
