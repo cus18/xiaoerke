@@ -4,7 +4,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
         'CreateOrUpdateWJYPatientInfo','GetUserCurrentConsultContent','$http','GetWJYHistoryRecord','$ionicScrollDelegate',
         function ($scope,$location,$anchorScroll,GetSessionId,GetUserLoginStatus,$upload,$sce,$stateParams,
                   CreateOrUpdateWJYPatientInfo,GetUserCurrentConsultContent,$http,GetWJYHistoryRecord,$ionicScrollDelegate) {
-            //f09b10f3-a582-4164-987f-6663c1a7e82a
+
             $scope.consultContent = [];
             $scope.info={};
             $scope.upFile = {};
@@ -20,30 +20,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.alertFlag = false;
             $scope.remoteBabyUrl = "http://rest.ihiss.com:9000/user/children";
             $scope.imgBarFlag = false;
-            /*$scope.openFileListFlag = false;
-             $location.hash("fileInput");
-             $anchorScroll();
-             $scope.openFileList = function(){
-             if($scope.openFileListFlag == true){
-             $scope.openFileListFlag = false;
-             $location.hash("fileInput");
-             $anchorScroll();
-             }else{
-             $scope.openFileListFlag = true;
-             $location.hash("fileInputList");
-             $anchorScroll();
-             }
-             };
-             */
-            //提示语
-            /*var tishi = {
-             'type':"0",
-             'content':"欢迎咨询宝大夫,三甲医院儿科专家24小时在线，咨询秒回不等待。24小时全天：小儿内科全天分时段：小儿皮肤科、保健科、妇产科、外科、眼科、耳鼻喉科、口腔科、预防接种科、中医科、心理科",
-             'dateTime':"",
-             'senderId':"1",
-             'senderName':"",
-             'sessionId':""
-             }*/
+
 
             function randomString(len) {
                 len = len || 32;
@@ -61,19 +38,17 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                 $scope.getQQExpression();
                 $scope.getQQExpression();
 
-                //根据微家园的token来获取用的基本信息
-                var token = $stateParams.token;
-                $http.get('http://rest.ihiss.com:9000/user/current',{
-                    headers : {'X-Access-Token':token}
-                }).success(function(data, status, headers, config) {
-                    if(data.avatar == null){
+                //
+                var id = $stateParams.id;
+
+                    if($stateParams.image == null){
                         patientImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
                     }else{
-                        patientImg = data.avatar;
+                        patientImg = $stateParams.image;
                     }
-                    $scope.patientName = data.name==null?data.mobile:data.name;
-                    CreateOrUpdateWJYPatientInfo.save({patientPhone:data.mobile,
-                        patientName:$scope.patientName,patientSex:data.sex,source:$scope.source,thirdId:data.id,token:token,remoteUrl:$scope.remoteBabyUrl},function(data){
+                    $scope.patientName = $stateParams.name==null?$stateParams.id:$stateParams.name;
+                    CreateOrUpdateWJYPatientInfo.save({
+                        patientName:$scope.patientName,source:$scope.source,thirdId:id},function(data){
                         $scope.patientId = data.patientId;
                         GetSessionId.get({"userId":$scope.patientId},function(data){
                             console.log("data",data);
@@ -90,7 +65,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                                  $scope.consultContent.push(val);*/
                                 var now = moment().format("YYYY-MM-DD HH:mm:ss");
                                 GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,
-                                    "pageSize":10,"token":$stateParams.token},function (data) {
+                                    "pageSize":10,"token":""},function (data) {
                                     if(data.consultDataList.length!=0){
                                         $scope.lookMore = true;
                                         $scope.fucengLock = false;
@@ -102,7 +77,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                         });
                         $scope.initConsultSocket();
                     });
-                })
             };
 
             //初始化接口
@@ -184,7 +158,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                 if($scope.consultContent[0]!=undefined){
                     now = $scope.consultContent[0].dateTime;
                 }
-                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":10,"token":$stateParams.token},function (data) {
+                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":10,"token":""},function (data) {
                     $.each(data.consultDataList,function (index,value) {
                         filterMediaData(value);
                         $scope.consultContent.splice(0,0,value);
