@@ -194,7 +194,7 @@ public class ConsultH5CoopController {
                                                         /**
                                                          * 加入聊天记录提取代码
                                                          */
-                                                        Query query = new Query(Criteria.where("createDate").exists(true).andOperator(Criteria.where("createDate").gte(10), Criteria.where("createDate").lte(40)).and("source").is(source));
+                                                        Query query = new Query(Criteria.where("createDate").exists(true).andOperator(Criteria.where("createDate").gte(10), Criteria.where("createDate").lte(40)).and("source").is("h5bhq"));
                                                         query.with(new Sort(Sort.Direction.DESC,"createDate"));
                                                         List<ConsultRecordMongoVo> consultRecordMongoVos = consultRecordService.getCurrentUserHistoryRecord(query);
                                                         if(consultRecordMongoVos != null && consultRecordMongoVos.size() >0){
