@@ -15,6 +15,9 @@
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity.iml" filepath="$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity-api/xiaoerke-activity-api.iml" filepath="$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity-api/xiaoerke-activity-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity-service/xiaoerke-activity-service.iml" filepath="$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity-service/xiaoerke-activity-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay.iml" filepath="$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay-api/xiaoerke-alipay-api.iml" filepath="$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay-api/xiaoerke-alipay-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay-service/xiaoerke-alipay-service.iml" filepath="$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay-service/xiaoerke-alipay-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-cms/xiaoerke-cms.iml" filepath="$PROJECT_DIR$/xiaoerke-cms/xiaoerke-cms.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-cms/xiaoerke-cms-api/xiaoerke-cms-api.iml" filepath="$PROJECT_DIR$/xiaoerke-cms/xiaoerke-cms-api/xiaoerke-cms-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-cms/xiaoerke-cms-service/xiaoerke-cms-service.iml" filepath="$PROJECT_DIR$/xiaoerke-cms/xiaoerke-cms-service/xiaoerke-cms-service.iml" />

@@ -1,3 +1,4 @@
+/*
 package com.cxqm.xiaoerke.modules.umbrella.web;
 
 
@@ -6,10 +7,10 @@ import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
-import com.cxqm.xiaoerke.modules.alipay.service.AlipayService;
-import com.cxqm.xiaoerke.modules.alipay.util.AlipayNotify;
-import com.cxqm.xiaoerke.modules.alipay.util.httpClient.HttpsUtil;
-import com.cxqm.xiaoerke.modules.alipay.util.httpClient.StringUtil;
+//PayRecordServiceimport com.cxqm.xiaoerke.modules.alipay.service.AlipayService;
+//import com.cxqm.xiaoerke.modules.alipay.util.AlipayNotify;
+//import com.cxqm.xiaoerke.modules.alipay.util.httpClient.HttpsUtil;
+//import com.cxqm.xiaoerke.modules.alipay.util.httpClient.StringUtil;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
@@ -43,10 +44,12 @@ import java.util.Map;
 
 //import com.cxqm.xiaoerke.modules.alipay.service.AlipayService;
 
+*/
 /**@author guozengguang
  * @version 16/7/6
  * 非微信环境下的保护伞
- */
+ *//*
+
 @Controller
 @RequestMapping(value = "umbrella/thirdParty")
 public class UmbrellaThirdPartyController  {
@@ -69,15 +72,21 @@ public class UmbrellaThirdPartyController  {
     @Autowired
     private HealthRecordsService healthRecordsService;
 
+*/
+/*
     @Autowired
     private AlipayService alipayService;
+*//*
+
 
     @Autowired
     private PayRecordService payRecordService;
 
-    /**
-     *获取保护伞首页信息-已有多少人加入互助计划
     */
+/**
+     *获取保护伞首页信息-已有多少人加入互助计划
+    *//*
+
     @RequestMapping(value = "/firstPageMutualHelpCount", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody Map<String, Object> firstPageData() {
@@ -89,9 +98,11 @@ public class UmbrellaThirdPartyController  {
         return map;
     }
 
-    /**
+    */
+/**
      *根据用户输入的手机号判断该用户是否已经购买宝护伞以及是否关注平台
-     */
+     *//*
+
     @RequestMapping(value = "/checkIsBuyAndAttention", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -138,10 +149,12 @@ public class UmbrellaThirdPartyController  {
         return result;
     }
 
-    /**
+    */
+/**
      * 第三方加入保护伞
      * 在信息页点击下一步按钮触发
-     */
+     *//*
+
     @RequestMapping(value = "/joinUs", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -208,9 +221,11 @@ public class UmbrellaThirdPartyController  {
         return result;
     }
 
-    /**
+    */
+/**
      * 获取用户专属临时二维码
-     */
+     *//*
+
     @RequestMapping(value = "/getUserQRCode", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -234,10 +249,12 @@ public class UmbrellaThirdPartyController  {
         }
     }
 
-    /**
+    */
+/**
      * 非微信平台(第三方)支付宝支付
      * @author guozengguang
-     */
+     *//*
+
     //@RequestMapping(value = "/alipayment", method = {RequestMethod.POST, RequestMethod.GET})
     //public
     //String  alipayment(@RequestBody Map<String, Object> params,HttpServletResponse response) {
@@ -304,7 +321,8 @@ public class UmbrellaThirdPartyController  {
         //payRecordService.insertPayInfo(payRecord);
 
 
-        //调用支付
+    */
+/*    //调用支付
         String result = alipayService.alipayment(totleFee, body, describe, showUrl,out_trade_no);
         try {
             StringUtil.writeToWeb(result, "html", response);
@@ -312,12 +330,15 @@ public class UmbrellaThirdPartyController  {
             e.printStackTrace();
         }
         return null;
-    }
+    }*//*
 
-    /**
+
+    */
+/**
      * 支付宝异步返回通知(支付结果信息)
      * @author guozengguang
-     */
+     *//*
+
     @RequestMapping(value = "/notification",method = {RequestMethod.POST})
     public String notification(HttpServletRequest request, HttpServletResponse response) {
         // 获取请求数据
@@ -353,11 +374,13 @@ public class UmbrellaThirdPartyController  {
     }
 
 
-    /**
+    */
+/**
      * 根据宝护伞id更新支付状态pay_result
      * 说明:只有支付成功时才调用该接口,保存信息的时候默认该状态为fail;
      * @author guozengguang
-     */
+     *//*
+
     @RequestMapping(value = "/updateBabyUmbrellaInfoById", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -374,3 +397,4 @@ public class UmbrellaThirdPartyController  {
     }
 
 }
+*/

@@ -200,6 +200,9 @@ public class FieldworkWechatController {
             url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/heightForecast";
         }else if("37".equals(url)){
             url = ConstantUtil.TITAN_WEB_URL + "titan/olympicBaby#/olympicBabyFirst";
+        }else if("38".equals(url)){
+            //肺炎保
+            url = ConstantUtil.TITAN_WEB_URL + "titan/insurance#/pneumoniaIndex";
         }
 
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
