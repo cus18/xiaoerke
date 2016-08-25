@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.ConsultEvaluateCoopDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.ConsultEvaluateCoopVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="session_id" property="sessionId" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="sys_user_id_cs" property="csUserId" jdbcType="VARCHAR" />
+    <result column="sys_user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="evaluate_level" property="evaluateLevel" jdbcType="INTEGER" />
+    <result column="suggest_message" property="suggestMessage" jdbcType="VARCHAR" />
+    <result column="evaluate_date" property="evaluateDate" jdbcType="TIMESTAMP" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, session_id, create_date, sys_user_id_cs, sys_user_id, evaluate_level, suggest_message, evaluate_date, source
+  </sql>
+  <select id="findConsultEvaluateCoops" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultEvaluateCoopVo" >
+    select 
+    <include refid="Base_Column_List" />
+    from consult_evaluate_coop
+    where 1=1
+    <if test="id != null and id != ''">
+        and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="source != null and source != ''">
+        and source = #{source,jdbcType=VARCHAR}
+    </if>
+    <if test="evaluateLevel != null and  evaluateLevel != ''">
+        and evaluate_level = #{evaluateLevel,jdbcType=INTEGER}
+    </if>
+    <if test="sessionId != null and sessionId != ''">
+        and session_id = #{sessionId,jdbcType=INTEGER}
+    </if>
+    order by create_date desc
+  </select>
+
+  <insert id="saveConsultEvaluateCoops" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultEvaluateCoopVo" useGeneratedKeys="true"
+          keyProperty="id">
+    insert into consult_evaluate_coop(id,session_id, create_date,sys_user_id_cs,sys_user_id,evaluate_level,suggest_message,evaluate_date,source)
+    values (#{id,jdbcType=INTEGER},#{sessionId,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP},#{csUserId,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},
+    #{evaluateLevel,jdbcType=INTEGER},#{suggestMessage,jdbcType=VARCHAR},#{evaluateDate,jdbcType=TIMESTAMP},#{source,jdbcType=VARCHAR})
+  </insert>
+
+</mapper>
