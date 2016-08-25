@@ -76,28 +76,28 @@ public class ConsultH5CoopController {
                 String dateTime = (String) params.get("dateTime");
                 Integer pageSize = (Integer) params.get("pageSize");
                 String currentUrl = "http://rest.tx2010.com/user/current";   //获取当前登录人信息
-                String token = "f09b10f3-a582-4164-987f-6663c1a7e82a";
-                if(StringUtils.isNotNull((String)params.get("token"))){
-                        token =  (String)params.get("token");
-                }
-                String access_token = "{'X-Access-Token':'" + token + "'}";
-                String method = "GET";
-                String dataType = "json";
-                String result = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, access_token, "", 2);
                 String imgUrl = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
-                if(result != null){
-                        JSONObject jsonObject = JSONObject.fromObject(result);
-                        if(StringUtils.isNotNull((String)jsonObject.get("avatar"))){
-                                imgUrl = (String)jsonObject.get("avatar");
+                String docHeaderImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png";
+//                String token = "f09b10f3-a582-4164-987f-6663c1a7e82a";
+                if(StringUtils.isNotNull(String.valueOf(params.get("token")))){
+                        String token =  (String)params.get("token");
+                        String access_token = "{'X-Access-Token':'" + token + "'}";
+                        String method = "GET";
+                        String dataType = "json";
+                        String result = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, access_token, "", 2);
+                        if(result != null){
+                                JSONObject jsonObject = JSONObject.fromObject(result);
+                                if(StringUtils.isNotNull((String)jsonObject.get("avatar"))){
+                                        imgUrl = (String)jsonObject.get("avatar");
+                                }
                         }
                 }
-                String docHeaderImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png";
                 List<ConsultRecordMongoVo> currentUserHistoryRecord = null;
                 Date date = null;
                 if (dateTime.indexOf("-") != -1) {
                         date = DateUtils.StrToDate(dateTime, "datetime");
                 } else if (dateTime.indexOf("/") != -1) {
-                        date = DateUtils.StrToDate(dateTime, "xiangang");
+                        date = DateUtils.StrToDate(dateTime, "xianggang");
                 }
                 Query query = new Query().addCriteria(Criteria.where("userId").is(userId).and("createDate").lt(date)).
                         with(new Sort(Sort.Direction.DESC, "createDate")).limit(pageSize);
