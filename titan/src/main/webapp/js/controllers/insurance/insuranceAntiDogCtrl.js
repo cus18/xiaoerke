@@ -1,46 +1,38 @@
-angular.module('controllers', ['ionic']).controller('antiDogIndexCtrl', [
+angular.module('controllers', ['ionic']).controller('insuranceAntiDogCtrl', [
     '$scope','$state','$stateParams','$location','$http','getInsuranceRegisterServiceByOpenid',
     function ($scope,$state,$stateParams,$location,$http,getInsuranceRegisterServiceByOpenid) {
-
         $scope.num = "";
         $scope.parRemindLock =false;
         $scope.readLock =true;
+        //var Ip = "s251.baodf.com";
+        var Ip = "localhost:8080";
 
         // 点击已阅读
         $scope.read = function(){
-            if($scope.readLock){
-                $scope.readLock =false;
-            }
-            else{
-                $scope.readLock =true;
-            }
+            $scope.readLock=! $scope.readLock;
         };
-        //点击页面右下角 赔
-        $scope.goPay = function(){
-            var pData = {logContent:encodeURI("FQB_FWXQ_PEI")};
-        	$http({method:'post',url:'util/recordLogs',params:pData});
-            $state.go('antiDogOrderList');
+        // 点击接种疫苗医院清单
+        $scope.hospitalList = function(){
+            $state.go("antiDogHospital");
+
         };
-
-
         //点击立即购买
         $scope.goBuy = function(){
-        	var pData = {logContent:encodeURI("FQB_FWXQ_LJGM")};
-        	$http({method:'post',url:'util/recordLogs',params:pData});
-            window.location.href = "http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=antiDogPay";
-        };
+            var pData = {logContent:encodeURI("FQB_FWXQ_LJGM")};
+            $http({method:'post',url:'util/recordLogs',params:pData});
+            window.location.href = "http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=insurance&insuranceType=1";
 
+        };
         $scope.$on('$ionicView.enter', function(){
-        	var pData = {logContent:encodeURI("FQB_FWXQ")};
-        	$http({method:'post',url:'util/recordLogs',params:pData});
-        	getInsuranceRegisterServiceByOpenid.get(function (data){
-             	if(data.insurance=="0"){
-                 	$("#payOut").hide();
+            var pData = {logContent:encodeURI("FQB_FWXQ")};
+            $http({method:'post',url:'util/recordLogs',params:pData});
+            getInsuranceRegisterServiceByOpenid.get(function (data){
+                if(data.insurance=="0"){
+                    $("#payOut").hide();
                 }
-             });
+            });
         })
-        
-        $scope.doRefresh = function(){
+        $scope.shareInit = function(){
             var timestamp;//时间戳
             var nonceStr;//随机字符串
             var signature;//得到的签名
@@ -79,7 +71,7 @@ angular.module('controllers', ['ionic']).controller('antiDogIndexCtrl', [
                                 success: function (res) {
                                     //记录用户分享文章
                                     UpdateMarketingActivities.save({"id":$stateParams.id,"ifShare":"1"}, function (data) {
-                                        
+
                                     });
                                     setLog("FXJG_FXPYQDog");
                                 },

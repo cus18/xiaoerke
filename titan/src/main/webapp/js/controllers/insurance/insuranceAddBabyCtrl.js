@@ -7,12 +7,11 @@ angular.module('controllers', ['ionic']).controller('insuranceAddBabyCtrl', [
         $scope.boyLock = true;
         $scope.baby = {};
         //var Ip = "s251.baodf.com";
-        var Ip = "s120.xiaork.com";
-        var type;
+        //var Ip = "s120.xiaork.com";
+        var Ip = "localhost:8080";
 
 
         $scope.$on('$ionicView.enter',function() {
-            type=$stateParams.type;
             var routePath = "/insuranceBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
                 if(data.status=="9") {
@@ -43,8 +42,7 @@ angular.module('controllers', ['ionic']).controller('insuranceAddBabyCtrl', [
             }
             saveBabyInfo.get({"sex":$scope.sex.toString(),"name":encodeURI($scope.baby.name),"birthDay":$("#birthday").val()}, function (data){
                 if(data.resultCode=='1'){
-                    window.location.href="http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType="+type;
-                    //window.location.href="/keeper/wxPay/patientPay.do?serviceType="+type;
+                    window.location.href="http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=insurance";
                 }
             });
 

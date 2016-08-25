@@ -144,23 +144,6 @@ define(['appInsurance'], function(app){
                             public: true
                         }
                     })
-                    .state('antiDogHospital', {
-                        url: '/antiDogHospital',
-                        templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'antiDogHospitalCtrl',
-                        resolve: {
-                            load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.antiDogHospitalCtrl',
-                                    ['js/controllers/antiDog/antiDogHospitalCtrl.js',
-                                        'styles/antiDog/antiDogHospital.less?ver='+insuranceVersion,
-                                    ],
-                                    'js/views/antiDog/antiDogHospital.html?ver='+insuranceVersion);
-                            }
-                        },
-                        data: {
-                            public: true
-                        }
-                    })
                     /*手足口*/
                     .state('handfootmouthIndex', {
                         url: '/handfootmouthIndex',
@@ -216,6 +199,8 @@ define(['appInsurance'], function(app){
                             public: true
                         }
                     })
+
+
                     /*肺炎宝*/
                     .state('pneumoniaIndex', {
                         url: '/pneumoniaIndex',
@@ -236,6 +221,77 @@ define(['appInsurance'], function(app){
                         }
                     })
 
+                    .state('insuranceAntiDog', {
+                        url: '/insuranceAntiDog',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'insuranceAntiDogCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.insuranceAntiDogCtrl',
+                                    ['js/controllers/insurance/insuranceAntiDogCtrl.js?ver='+insuranceVersion,
+                                        'styles/insurance/insuranceAntiDog.less?ver='+insuranceVersion,
+                                        'styles/insurance/insuranceFirstCommon.less?ver='+insuranceVersion,
+                                    ],
+                                    'js/views/insurance/insuranceAntiDog.html?ver='+insuranceVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('antiDogHospital', {
+                        url: '/antiDogHospital',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'antiDogHospitalCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.antiDogHospitalCtrl',
+                                    ['js/controllers/insurance/antiDogHospitalCtrl.js',
+                                        'styles/insurance/antiDogHospital.less?ver='+insuranceVersion,
+                                    ],
+                                    'js/views/insurance/antiDogHospital.html?ver='+insuranceVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('insuranceHandFootMouth', {
+                        url: '/insuranceHandFootMouth',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'insuranceHandFootMouthCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.insuranceHandFootMouthCtrl',
+                                    ['js/controllers/insurance/insuranceHandFootMouthCtrl.js?ver='+insuranceVersion,
+                                        'styles/insurance/insuranceFirstCommon.less?ver='+insuranceVersion,
+                                        'styles/insurance/insuranceHandFootMouth.less?ver='+insuranceVersion,
+                                    ],
+                                    'js/views/insurance/insuranceHandFootMouth.html?ver='+insuranceVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('insurancePneumonia', {
+                        url: '/insurancePneumonia',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'insurancePneumoniaCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.insurancePneumoniaCtrl',
+                                    ['js/controllers/insurance/insurancePneumoniaCtrl.js?ver='+insuranceVersion,
+                                        'styles/insurance/insuranceFirstCommon.less?ver='+insuranceVersion,
+                                        'styles/insurance/insurancePneumonia.less?ver='+insuranceVersion,
+                                    ],
+                                    'js/views/insurance/insurancePneumonia.html?ver='+insuranceVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
                     .state('insurancePaySuccess', {
                         url: '/insurancePaySuccess/:id',
                         templateProvider: function() { return lazyDeferred.promise; },

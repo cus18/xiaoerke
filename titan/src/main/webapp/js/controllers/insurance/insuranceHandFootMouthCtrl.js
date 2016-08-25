@@ -1,33 +1,27 @@
-angular.module('controllers', ['ionic']).controller('pneumoniaIndexCtrl', [
+angular.module('controllers', ['ionic']).controller('insuranceHandFootMouthCtrl', [
     '$scope','$state','$stateParams','$location','$http',
     function ($scope,$state,$stateParams,$location,$http) {
         $scope.readLock = true;
-       // var Ip = "s251.baodf.com";
-        var Ip = "s120.xiaork.com";
+        //var Ip = "s251.baodf.com";
+        var Ip = "localhost:8080";
 
-        $scope.$on('$ionicView.enter', function(){
-            setLog("FYB_SY");
-        });
         //阅读
         $scope.read = function () {
-            $scope.readLock=!$scope.readLock;
-        }
-
+            $scope.readLock = !$scope.readLock;
+        };
         //支付
-        $scope.goPay = function(){
-            setLog("FYB_SY_LJGM");
-            window.location.href = "http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=pneumonia";
-            //window.location.href = "/keeper/wxPay/patientPay.do?serviceType=pneumonia";
-        }
-
+        $scope.goBuy = function(){
+            setLog("SZKB_FWXQ_LJGM_");
+            window.location.href = "http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=handfootmouth&insuranceType=3";
+        };
         //日志
         var setLog = function (item) {
             var pData = {logContent:encodeURI(item)};
             $http({method:'post',url:'util/recordLogs',params:pData});
         }
-        
+
         $scope.shareInit = function(){
-            var share = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=38";
+            var share = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=30";
             var timestamp;//时间戳
             var nonceStr;//随机字符串
             var signature;//得到的签名
@@ -60,25 +54,25 @@ angular.module('controllers', ['ionic']).controller('pneumoniaIndexCtrl', [
                         wx.ready(function () {
                             // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                             wx.onMenuShareTimeline({
-                                title: '小儿肺炎宝', // 分享标题
+                                title: '妈妈要当心，儿童最高发的传染病——手足口病又来了，预防和保障一个不能少！', // 分享标题
                                 link: share, // 分享链接
-                                imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/orderList/insuranceList3.png', // 分享图标
+                                imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fhandfootmouth.jpg', // 分享图标
                                 success: function (res) {
 
-                                    setLog("FYB_SY_FX");
+                                    setLog("SZKB_FXPPQ");
                                 },
                                 fail: function (res) {
                                 }
                             });
 
                             wx.onMenuShareAppMessage({
-                                title: '小儿肺炎宝', // 分享标题
-                                desc: '你绝对想不到，导致儿童死亡的疾病排名第一的竟然是常见的肺炎！', // 分享描述
+                                title: '小儿手足口宝', // 分享标题
+                                desc: '妈妈要当心，儿童最高发的传染病——手足口病又来了，预防和保障一个不能少！', // 分享描述
                                 link:share, // 分享链接
-                                imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/orderList/insuranceList3.png', // 分享图标
+                                imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fhandfootmouth.jpg', // 分享图标
                                 success: function (res) {
 
-                                    setLog("FYB_SY_FX");
+                                    setLog("SZKB_FXPP");
                                 },
                                 fail: function (res) {
                                 }
@@ -92,6 +86,10 @@ angular.module('controllers', ['ionic']).controller('pneumoniaIndexCtrl', [
                 }
             });
         }
+        $scope.$on('$ionicView.enter', function(){
+            setLog("SZKB_FWXQ");
+        });
+
     }]);
 
 

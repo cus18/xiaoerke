@@ -21,9 +21,6 @@ angular.module('controllers', ['ionic']).controller('insurancePaySuccessCtrl', [
         });
 
         $scope.goFirstPage = function (){
-            var pData = {logContent:encodeURI("SZKB_GMCC_FHSY")};
-            $http({method:'post',url:'util/recordLogs',params:pData});
-            //$state.go('handfootmouthIndex');
             window.location.href = "firstPage/insurance";
         };
 

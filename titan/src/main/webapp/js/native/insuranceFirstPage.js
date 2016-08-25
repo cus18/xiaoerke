@@ -1,28 +1,35 @@
-
+//var Ip = "s251.baodf.com";
+var Ip = "localhost:8080";
+var Ip1 = "localhost:8080";
 var pageInit = function () {
     setLog("FWLB");
     share();
 }
-//肺炎宝
-var goPneumonia = function () {
-    window.location.href = "insurance#/pneumoniaIndex";
+//点击图片 查看宝贝保详情
+function goLook(n) {
+    switch(n)
+    {
+        case 1:
+            window.location.href = "http://"+Ip+"/titan/insurance#/insuranceAntiDog";
+            break;
+        case 2:
+            window.location.href = "http://"+Ip+"/titan/insurance#/insuranceHandFootMouth";
+            break;
+        case 3:
+            window.location.href = "http://"+Ip+"/titan/insurance#/insurancePneumonia";
+            break;
+        default:
+            window.location.href = "http://"+Ip+"/titan/insurance#/insuranceAntiDog";
+    }
 }
 
-//手足口
-var goHandfootmouth = function () {
-    window.location.href = "insurance#/handfootmouthIndex";
-}
-//防犬宝
-var goantiDog = function () {
-    window.location.href = "firstPage/antiDogFirst";
-}
 //购买保险列表
-var goPay = function () {
+function goPay() {
     setLog("FWLB_PEI_");
     window.location.href = "insurance#/insuranceOrderList";
 }
 
-var setLog = function (item) {
+function setLog(item) {
     $.ajax({
         url:"util/recordLogs",// 跳转到 action
         async:true,
@@ -37,8 +44,8 @@ var setLog = function (item) {
     });
 }
 
-var share = function(){
-    var share = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=29";
+function share(){
+    var share = "http://"+Ip1+"/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=29";
     var timestamp;//时间戳
     var nonceStr;//随机字符串
     var signature;//得到的签名
