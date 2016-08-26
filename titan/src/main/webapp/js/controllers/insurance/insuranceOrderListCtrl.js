@@ -6,6 +6,7 @@ angular.module('controllers', ['ionic']).controller('insuranceOrderListCtrl', [
         $scope.service = "current";
         $scope.insuranceViedList=[];
         $scope.insuranceInvalidList=[];
+
         $scope.$on('$ionicView.enter', function(){
             var routePath = "/insuranceBBBBBB" + $location.path();
             GetUserLoginStatus.save({routePath:routePath},function(data){
@@ -35,5 +36,4 @@ angular.module('controllers', ['ionic']).controller('insuranceOrderListCtrl', [
         };
 
     }]);
-
 
