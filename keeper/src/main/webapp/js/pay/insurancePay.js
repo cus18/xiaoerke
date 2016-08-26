@@ -5,12 +5,12 @@ var needPayMoney =10;//保险金额
 var babyID;
 var insuranceType="1";
 //var Ip = "s68.baodf.com";
-//var Ip = "s120.xiaork.com";
-var Ip = "localhost:8080";
+var Ip = "s120.xiaork.com";
+//var Ip = "localhost:8080";
 
 $(function(){
     var param = '{routePath:"/wxPay/patientPay.do?serviceType=insurance"}';
-  /*  $.ajax({
+    $.ajax({
         type: "POST",
         url: "auth/info/loginStatus",
         contentType: 'application/json',
@@ -25,16 +25,16 @@ $(function(){
                 if(data.openId=="noOpenId"){
                     window.location.href = "http://s251.baodf.com/keeper/wechatInfo/" +
                         "fieldwork/wechat/author?url=http://s251.baodf.com/" +
-                        "keeper/wechatInfo/getUserWechatMenId?url=30";
+                        "keeper/wechatInfo/getUserWechatMenId?url=39";
                 }else{
                     initWx();//初始化微信
                     getBabyInfo();//获取宝宝信息
                 }
             }
         }
-    });*/
-    initWx();//初始化微信
-    getBabyInfo();//获取宝宝信息
+    });
+   /* initWx();//初始化微信
+    getBabyInfo();//获取宝宝信息*/
     getPrice();// 获取价格
 
     initDate();
