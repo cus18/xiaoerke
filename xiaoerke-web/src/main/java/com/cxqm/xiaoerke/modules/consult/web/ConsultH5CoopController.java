@@ -67,7 +67,7 @@ public class ConsultH5CoopController {
                 return "11111" ;
         }
 
-        @RequestMapping(value = "/getHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
+        @RequestMapping(value = "/getHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET },produces = "application/json")
         public
         @ResponseBody
         HashMap<String, Object> getUserHistoryRecord(@RequestBody Map<String, Object> params) {
@@ -139,7 +139,7 @@ public class ConsultH5CoopController {
          *  jiangzg 2016-8-23 12:00:37
          *
          */
-        @RequestMapping(value="/getConsultDataByCoop",method = {RequestMethod.POST,RequestMethod.GET})
+        @RequestMapping(value="/getConsultDataByCoop",method = {RequestMethod.POST,RequestMethod.GET},produces = "application/json")
         public @ResponseBody JSONObject getConsultDataByCoop(@RequestBody Map params){
 
                 DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
