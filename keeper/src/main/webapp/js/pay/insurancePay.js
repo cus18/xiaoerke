@@ -1,8 +1,9 @@
 var babyList = [];
 var babySex = 1;//男孩
 var parentSex = 0;//妈妈
-var needPayMoney =0.01;//保险金额
+var needPayMoney =10;//保险金额
 var babyID;
+var insuranceType="1";
 //var Ip = "s68.baodf.com";
 //var Ip = "s120.xiaork.com";
 var Ip = "localhost:8080";
@@ -34,17 +35,58 @@ $(function(){
     });*/
     initWx();//初始化微信
     getBabyInfo();//获取宝宝信息
+    getPrice();// 获取价格
+
     initDate();
     recordLogs("FYB_XX");
-    console.log( GetQueryString("serviceType"));
+
 });
+//获取保险价格
+function getPrice(){
+    $.ajax({
+        url:"insurance/getInsuranceInfo",//
+        async:true,
+        type:'post',
+        data: "",
+        cache:false,
+        dataType:'json',
+        contentType: "application/json; charset=utf-8",
+        success:function(data) {
+            if(insuranceType=="1"){
+                needPayMoney=parseFloat((data.insuranceInfo.antiDog.split(";"))[0]);
+                console.log(needPayMoney);
+                if(needPayMoney=="" || needPayMoney==undefined){
+                    needPayMoney=19.8;
+                }
+            }
+            if(insuranceType=="2"){
+                needPayMoney=parseFloat((data.insuranceInfo.handFootMouth.split(";"))[0]);
+                console.log(needPayMoney);
+                if(needPayMoney=="" || needPayMoney==undefined){
+                    needPayMoney=26.8;
+                }
+            }
+            if(insuranceType=="3"){
+                needPayMoney=parseFloat((data.insuranceInfo.pneumonia.split(";"))[0]);
+                console.log(needPayMoney);
+                if(needPayMoney=="" || needPayMoney==undefined){
+                    needPayMoney=68;
+                }
+            }
+            $("#payButton").text(" 微信支付  ￥"+needPayMoney);
+        },
+        error : function() {
+        }
+    });
+}
 //初始化微信
 
 function isHaveInsurance (object) {
     $.ajax({
         type: 'POST',
         url: "insurance/getInsuranceRegisterServiceIfValid",
-        data: "{'babyId':'"+object.id+"','insuranceType':'3'}",
+        data: "{'babyId':'"+object.id+"','insuranceType':'"+insuranceType+"'}",
+        //data: "{'babyId':'"+object.id+"','insuranceType':'3'}",
         contentType: "application/json; charset=utf-8",
         success: function(data){
             getBaby(object);
@@ -160,7 +202,7 @@ function payLast(id,babySex,babyBirthday,card,phone,parentname,parentSex) {
         type: 'POST',
         async:false,
         url: "insurance/saveInsuranceRegisterService",
-        data: "{'babyId':'"+id+"','sex':'"+babySex+"','birthday':'"+babyBirthday+"','idCard':'"+card+"','parentPhone':'"+phone+"','insuranceType':'3','parentName':'"+parentname+"','parentType':'"+parentSex+"'}",
+        data: "{'babyId':'"+id+"','sex':'"+babySex+"','birthday':'"+babyBirthday+"','idCard':'"+card+"','parentPhone':'"+phone+"','insuranceType':'"+insuranceType+"','parentName':'"+parentname+"','parentType':'"+parentSex+"'}",
         contentType: "application/json; charset=utf-8",
         success: function(result){
             if(result.id!=""){
