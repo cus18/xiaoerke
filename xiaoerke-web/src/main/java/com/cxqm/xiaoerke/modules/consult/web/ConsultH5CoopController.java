@@ -67,7 +67,7 @@ public class ConsultH5CoopController {
                 return "11111" ;
         }
 
-        @RequestMapping(value = "/getHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET },produces = "application/json")
+        @RequestMapping(value = "/getHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET })
         public
         @ResponseBody
         HashMap<String, Object> getUserHistoryRecord(@RequestBody Map<String, Object> params) {
@@ -242,7 +242,7 @@ public class ConsultH5CoopController {
          *  jiangzg 2016-8-23 12:00:37
          *
          */
-        @RequestMapping(value="/consultEvaluateUserByCoop",method = {RequestMethod.POST,RequestMethod.GET})
+        @RequestMapping(value="/consultEvaluateUserByCoop",method = {RequestMethod.POST,RequestMethod.GET},produces = "application/json")
         public @ResponseBody JSONObject consultEvaluateUserByCoop(@RequestBody Map params){
                 JSONObject jsonObject = new JSONObject();
                 int sessionId = StringUtils.isNotNull(String.valueOf(params.get("id")))?Integer.valueOf(String.valueOf(params.get("id"))):0;
