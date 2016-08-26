@@ -26,8 +26,7 @@ angular.module('controllers', ['ionic']).controller('insuranceOrderListCtrl', [
                         $scope.insuranceArr=$scope.insuranceArr.concat(data.insuranceInfo.antiDog.split(";"));
                         $scope.insuranceArr=$scope.insuranceArr.concat(data.insuranceInfo.handFootMouth.split(";"));
                         $scope.insuranceArr=$scope.insuranceArr.concat(data.insuranceInfo.pneumonia.split(";"));
-                         console.log(" $scope.insuranceArr", $scope.insuranceArr);
-
+                        console.log(" $scope.insuranceArr", $scope.insuranceArr);
 
                     });
                 }
