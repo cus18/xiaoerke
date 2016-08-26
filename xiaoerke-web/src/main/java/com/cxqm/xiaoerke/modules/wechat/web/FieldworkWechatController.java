@@ -202,7 +202,7 @@ public class FieldworkWechatController {
             url = ConstantUtil.TITAN_WEB_URL + "titan/olympicBaby#/olympicBabyFirst";
         }else if("38".equals(url)){
             //肺炎保
-            url = ConstantUtil.TITAN_WEB_URL + "titan/insurance#/pneumoniaIndex";
+            url = ConstantUtil.TITAN_WEB_URL + "titan/firstPage/insurance";
         }
         else if("39".equals(url)){
             //肺炎保
