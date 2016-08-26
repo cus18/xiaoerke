@@ -321,18 +321,14 @@ public class ConsultWechatController extends BaseController {
                         "\n-----------\n"+"机会用完可付费购买";
                 messageFlag = 1;
                 WechatUtil.sendMsgToWechat(token, openId, content);
-                if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
-                    ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
-                }
+                onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
             }
             if (null == consultSessionStatusVos || consultSessionStatusVos.size() == 0 || consultSessionStatusVos.get(0).getFirstTransTime() == null) {
                 if(messageFlag == 0 && consultSessionPropertyVo.getMonthTimes() >0){
                     String  content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^"+
                             "\n-----------\n"+"机会用完可付费购买";
                     WechatUtil.sendMsgToWechat(token, openId, content);
-                    if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
-                        ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
-                    }
+                    onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                 }
             } else {
                 long pastMillisSecond = DateUtils.pastMillisSecond(consultSessionStatusVos.get(0).getFirstTransTime());
@@ -347,16 +343,12 @@ public class ConsultWechatController extends BaseController {
                             content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^"+
                                     "\n-----------\n"+"机会用完可付费购买";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
-                            if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
-                                ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
-                            }
+                            onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                         } else if (consultSessionPropertyVo.getPermTimes() > 0 ) {
-                            content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^"+
+                            content = "嗨，亲爱的，你还可享受" + consultSessionPropertyVo.getPermTimes() + "次24小时咨询服务哦^-^"+
                                     "\n-----------\n"+"机会用完可付费购买";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
-                            if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
-                                ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
-                            }
+                            onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                         } else if(messageFlag == 0){
                             richConsultSession.setPayStatus(ConstantUtil.NO_PAY);
                             content = "嗨，亲爱的，你本月咨询次数已用完，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
@@ -370,6 +362,18 @@ public class ConsultWechatController extends BaseController {
                 }
             }
             return consultSessionPropertyVo != null ? (consultSessionPropertyVo.getMonthTimes() + consultSessionPropertyVo.getPermTimes()) : null;
+        }
+
+        private void onlyDoctorOnlineHandle(RichConsultSession richConsultSession, ConsultSessionPropertyVo consultSessionPropertyVo) {
+            Query query;
+            if(richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)){
+                Query qry = (new Query()).addCriteria(where("userId").is(richConsultSession.getUserId())).with(new Sort(Sort.Direction.DESC, "createDate"));
+                ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(qry);
+                query = new Query().addCriteria(where("_id").is(consultSessionStatusVo.getId()));
+                Update update = new Update().set("firstTransTime", new Date());
+                consultRecordService.updateConsultSessionFirstTransferDate(query, update, ConsultSessionStatusVo.class);
+                ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
+            }
         }
     }
 
