@@ -71,7 +71,7 @@ var share = function(){
                 wx.ready(function () {
                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                     wx.onMenuShareTimeline({
-                        title: '小儿肺炎宝', // 分享标题
+                        title: '每天只需几分钱，宝宝健康一整年!', // 分享标题
                         link: share, // 分享链接
                         imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/orderList/insuranceList3.png', // 分享图标
                         success: function (res) {
@@ -83,8 +83,8 @@ var share = function(){
                     });
 
                     wx.onMenuShareAppMessage({
-                        title: '小儿肺炎宝', // 分享标题
-                        desc: '你绝对想不到，导致儿童死亡的疾病排名第一的竟然是常见的肺炎！', // 分享描述
+                        title: '宝贝保', // 分享标题
+                        desc: '每天只需几分钱，宝宝健康一整年!', // 分享描述
                         link:share, // 分享链接
                         imgUrl: 'http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/orderList/insuranceList3.png', // 分享图标
                         success: function (res) {

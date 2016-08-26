@@ -81,7 +81,7 @@
             /*校验手机号*/
             $scope.checkPhone= function(){
                 var phoneNumber = $scope.info.phoneNum+"";
-                if (phoneNumber.match(/^1[3578]\d{9}$/)){
+                if (phoneNumber.match(/^1[43578]\d{9}$/)){
                     $scope.checkLock = true;
                 }
                 else{
