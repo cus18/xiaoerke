@@ -2,8 +2,8 @@ angular.module('controllers', ['ionic']).controller('insuranceHandFootMouthCtrl'
     '$scope','$state','$stateParams','$location','$http',
     function ($scope,$state,$stateParams,$location,$http) {
         $scope.readLock = true;
-        //var Ip = "s251.baodf.com";
-        var Ip = "localhost:8080";
+        var Ip = "s251.baodf.com";
+       // var Ip = "localhost:8080";
 
         //阅读
         $scope.read = function () {
