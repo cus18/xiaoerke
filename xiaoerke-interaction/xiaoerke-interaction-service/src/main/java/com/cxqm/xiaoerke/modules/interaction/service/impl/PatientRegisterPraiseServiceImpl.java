@@ -188,7 +188,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
         try {
         	patientRegisterPraiseDao.saveCustomerEvaluation(params);;
         	String st = "您已评价成功，为了让更多的宝爸宝妈体验到我们真诚的服务，您可将此次体验分享给您的朋友。【" +
-                    "<a href='http://xiaork.com/titan/appoint#/consultShare'>我要分享</a>】";
+                    "<a href='http://s68.baodf.com/titan/appoint#/consultShare'>我要分享</a>】";
         Map<String,Object> parameter = systemService.getWechatParameter();
         String token = (String)parameter.get("token");
         WechatUtil.sendMsgToWechat(token,openId,st);
