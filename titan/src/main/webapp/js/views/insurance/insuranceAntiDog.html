@@ -1,0 +1,63 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="宝大夫小儿防犬宝" ng-init="shareInit()">
+    <ion-content class="insuranceAntiDog index bg1 " >
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="pic-list">
+                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/antiDog/index01.png">
+                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/antiDog/index02.png">
+                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/antiDog/index03.png">
+                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/antiDog/index04.png">
+                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/antiDog/index05.png">
+                <img class="my-img2" width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/antiDog/index06.png">
+                <div class="service-content">
+                    <img width="100%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/antiDog/index07.jpg">
+                    <div class="hospital" ng-click="hospitalList()"></div>
+                </div>
+
+            </div>
+            <div class="insuranceText problem">
+                <h3 class="f4 c3 fw0">常见问题：</h3>
+                <dl >
+                    <dt class="f4 c3 fw0">
+                        <span>1、</span>防犬宝对宝宝的户籍和出生地有限制吗？
+                    </dt>
+                    <dd class="f4 c5"> 没有限制，但是必须要在北京地区的医院就诊，才能领取补贴。</dd>
+                    <dt class="f4 c3 fw0">
+                        <span>2、</span>如果我在购买日起一年内领取了补贴，能在领取后就再次购买吗？
+                    </dt>
+                    <dd class="f4 c5">不能，一年之内只能购买一次。</dd>
+                    <dt class="f4 c3 fw0">
+                        <span>3、</span>对注射疫苗的医院有什么要求吗？必须在可注射疫苗医院清单中的医院注射才能领取补贴吗？
+                    </dt>
+                    <dd class="f4 c5">疫苗并不是每家医疗机构都有，我们提供的医院清单只是为了方便客户，免得跑错医院。实际上只要是北京的医院注射疫苗，即使不在我们的清单上也可以领补贴。</dd>
+                </dl>
+            </div>
+            <div class="insuranceText declare">
+                <h3 class="f4 c3 fw0 margin0 ">重要声明:
+                    <div class="read c5" ng-click="read()">
+                        已阅读
+                        <a>
+                            <img ng-if="readLock" width="18" height="auto"
+                                 src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fread.png">
+                        </a>
+                    </div>
+                </h3>
+                <p class="margin0 f4 c4">
+                    宝大夫平台拥有对本服务的最终解释权。<br>
+                    任何骗取补贴的行为将承担非常严重的法律责任。<br>
+                    宝大夫平台将保留向相关当事人实施追偿的权利。<br>
+                </p>
+            </div>
+            <div class="serviceTel tc f3 c4" >
+                如有疑问，请联系宝大夫客服<a class="c1 " href="tel:4006237120"> 400-623-7120 </a>
+            </div>
+            <br><br><br><br> <br><br>
+        </ion-scroll>
+    </ion-content>
+    <a href="tel:4006237120">
+        <img  class="icon-pay"  width="68" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2Fhandfootmouth%2Fhfmindex_kefu.png">
+    </a>
+    <button ng-disabled="!readLock" class="bottom-btn"  style="background-color: #ff355b;" ng-click="goBuy()">
+        立即购买  ￥19.8（一年）
+    </button>
+</ion-view>

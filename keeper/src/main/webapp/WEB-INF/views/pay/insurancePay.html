@@ -69,7 +69,7 @@
             </div>
             <div>
                 <h3 class="hd">家长信息</h3>
-                <label class="f-in" for="parentName" onclick="skip('parentName')">
+                <label class="f-in" for="parentName" >
                     <span>姓名：</span>
                     <input type="text" id="parentName"  placeholder="家长的真实姓名" >
                 </label>
@@ -84,7 +84,7 @@
                     <span>手机号：</span>
                     <input type="text" id="phone"  disabled="true" placeholder="" maxlength="11"  onblur="checkPhone();" >
                 </label>
-                <label class="f-in" for="IdCard" style="margin-bottom: 10px;" onclick="skip('IdCard')">
+                <label class="f-in" for="IdCard" style="margin-bottom: 10px;" >
                     <span>身份证号：</span>
                     <input type="text" id="IdCard" placeholder="填写正确的身份证号" maxlength="18"  onblur="checkIdCard();"  >
                 </label>
@@ -100,7 +100,7 @@
     </div>
 </div>
 <button onclick="payInsurance()" id="payButton" style="background-color: #fe5071;" class="button btn-bottom" >
-    微信支付  ￥68
+
 </button>
 </body>
 <script src="js/pay/insurancePay.js"></script>

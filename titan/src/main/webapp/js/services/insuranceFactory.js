@@ -51,4 +51,8 @@ define(['appInsurance'], function (app) {
         .factory('getInsuranceHospitalListByInfo',['$resource',function ($resource){
             return $resource(antiDog + 'getInsuranceHospitalListByInfo');
         }])
+        //获取类保险价格和保险名称
+        .factory('getInsuranceInfo',['$resource',function ($resource){
+            return $resource(antiDog + 'getInsuranceInfo');
+        }])
 })

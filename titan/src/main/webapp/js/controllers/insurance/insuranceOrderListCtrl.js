@@ -1,11 +1,13 @@
 angular.module('controllers', ['ionic']).controller('insuranceOrderListCtrl', [
-    '$scope','$state','$stateParams','getInsuranceRegisterServiceListByUserid','$location','GetUserLoginStatus',
-    function ($scope,$state,$stateParams,getInsuranceRegisterServiceListByUserid,$location,GetUserLoginStatus) {
+    '$scope','$state','$stateParams','getInsuranceRegisterServiceListByUserid','$location','GetUserLoginStatus','getInsuranceInfo',
+    function ($scope,$state,$stateParams,getInsuranceRegisterServiceListByUserid,$location,GetUserLoginStatus,getInsuranceInfo) {
 
         $scope.num = "";
         $scope.service = "current";
         $scope.insuranceViedList=[];
         $scope.insuranceInvalidList=[];
+        $scope.insuranceArr=[];
+
 
         $scope.$on('$ionicView.enter', function(){
             var routePath = "/insuranceBBBBBB" + $location.path();
@@ -18,6 +20,15 @@ angular.module('controllers', ['ionic']).controller('insuranceOrderListCtrl', [
                     getInsuranceRegisterServiceListByUserid.get({},function (data){
                         $scope.insuranceViedList=data.insuranceViedList;
                         $scope.insuranceInvalidList=data.insuranceInvalidList;
+                    });
+                    getInsuranceInfo.save({},function (data){
+                        console.log("data.insuranceInfo ",data.insuranceInfo);
+                        $scope.insuranceArr=$scope.insuranceArr.concat(data.insuranceInfo.antiDog.split(";"));
+                        $scope.insuranceArr=$scope.insuranceArr.concat(data.insuranceInfo.handFootMouth.split(";"));
+                        $scope.insuranceArr=$scope.insuranceArr.concat(data.insuranceInfo.pneumonia.split(";"));
+                         console.log(" $scope.insuranceArr", $scope.insuranceArr);
+
+
                     });
                 }
             });

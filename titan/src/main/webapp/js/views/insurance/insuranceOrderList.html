@@ -17,11 +17,11 @@
                     <li ng-repeat="item in insuranceViedList" ng-click="lookDetail(item.id)">
                         <img  class="my-img-block" width="64" height="64" ng-src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance/orderList/insuranceList{{item.Insurance_type}}.png">
                         <div class="text">
-                            <span>{{item.Insurance_type==1?'宝大夫小儿防犬宝':''}}{{item.Insurance_type==2?'宝大夫小儿手足口宝':''}}{{item.Insurance_type==3?'宝大夫小儿肺炎宝':''}}</span>
+                            <span>{{insuranceArr[2*item.Insurance_type-1]}}</span>
                             <span>宝宝姓名：{{item.name}}</span>
                             <span>有效期至 {{item.end_time | date:'yyyy-MM-dd'}}</span>
                         </div>
-                        <div class="price"> &nbsp;{{item.Insurance_type==1?'￥19.8':''}}{{item.Insurance_type==2?'￥26.8':''}}{{item.Insurance_type==3?'￥68':''}}</div>
+                        <div class="price"> &nbsp;{{insuranceArr[2*item.Insurance_type-2]}}</div>
                         <span class="state">{{item.state==0?'待生效':''}}{{item.state==1?'有效':''}}{{item.state==2?'待审核':''}}</span>
                     </li>
                     <!--无 当前服务 订单时显示-->

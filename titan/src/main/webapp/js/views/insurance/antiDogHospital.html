@@ -1,0 +1,30 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="接种疫苗医院" ng-init="doRefresh()">
+    <ion-content class="antiDogHospital" style="top:0;"  >
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="hospital" id="hospital">
+                <dl ng-repeat="item in districtList">
+                    <dt ng-click="openMore($index)" id="{{$index}}">
+                        {{districtList[$index].district}}
+                        <img  width="13" height="7" src="{{openImg}}">
+                    </dt>
+                    <dd  ng-repeat="prop in hospitalList" ng-if="selectItem==$parent.$index" >
+                        <div>
+                            <img class="my-img1" width="12.5" height="12.5" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fhospital_name.png">
+                            &nbsp;{{prop.hospitalName}}
+                        </div>
+                        <div>
+                            <img  class="my-img1" width="12.5" height="12.5"  src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fhospital_tel.png">
+                            &nbsp;<!--{{prop.phone}}--><a class="c5" ng-href="tel:{{prop.phone}}">{{prop.phone}}</a>
+                        </div>
+                        <div>
+                            <img class="my-img1" width="12.5" height="12.5" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/insurance%2FantiDog%2Fhospital_position.png">
+                            &nbsp;{{prop.location}}
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+            <br><br><br>
+        </ion-scroll>
+    </ion-content>
+</ion-view>
