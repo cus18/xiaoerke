@@ -16,15 +16,15 @@ angular.module('controllers', ['ionic']).controller('insurancePneumoniaCtrl', [
         //支付
         $scope.goBuy = function(){
             setLog("FYB_SY_LJGM");
-            window.location.href = "http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=pneumonia&insuranceType=3";
+            window.location.href = "http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=insurance&insuranceType=3";
 
-        }
+        };
 
         //日志
         var setLog = function (item) {
             var pData = {logContent:encodeURI(item)};
             $http({method:'post',url:'util/recordLogs',params:pData});
-        }
+        };
         
         $scope.shareInit = function(){
             var share = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=38";

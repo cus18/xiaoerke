@@ -12,7 +12,7 @@ angular.module('controllers', ['ionic']).controller('insuranceHandFootMouthCtrl'
         //支付
         $scope.goBuy = function(){
             setLog("SZKB_FWXQ_LJGM_");
-            window.location.href = "http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=handfootmouth&insuranceType=3";
+            window.location.href = "http://"+Ip+"/keeper/wxPay/patientPay.do?serviceType=insurance&insuranceType=2";
         };
         //日志
         var setLog = function (item) {
