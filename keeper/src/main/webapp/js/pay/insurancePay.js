@@ -9,8 +9,11 @@ var Ip = "s120.xiaork.com";
 //var Ip = "localhost:8080";
 
 $(function(){
-    //insuranceType= GetQueryString("insuranceType");
-    var param = '{routePath:"/wxPay/patientPay.do?serviceType=insurance"}';
+    insuranceType= GetQueryString("insuranceType");
+    if(insuranceType==null){
+        window.location.href = "http://"+Ip+"/titan/firstPage/insurance";
+    }
+    var param = '{routePath:"/wxPay/patientPay.do?serviceType=insurance&insuranceType='+insuranceType+ '"}';
     $.ajax({
         type: "POST",
         url: "auth/info/loginStatus",
@@ -30,7 +33,7 @@ $(function(){
                 }else{
                     initWx();//初始化微信
                     getBabyInfo();//获取宝宝信息
-                    GetQueryString("insuranceType")
+
                 }
             }
         }
