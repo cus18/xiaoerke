@@ -25,22 +25,31 @@ $(function(){
                 if(data.openId=="noOpenId"){
                     window.location.href = "http://s251.baodf.com/keeper/wechatInfo/" +
                         "fieldwork/wechat/author?url=http://s251.baodf.com/" +
-                        "keeper/wechatInfo/getUserWechatMenId?url=39";
+                        "keeper/wechatInfo/getUserWechatMenId?url=29";
                 }else{
                     initWx();//初始化微信
                     getBabyInfo();//获取宝宝信息
+                    GetQueryString()
                 }
             }
         }
     });
    /* initWx();//初始化微信
     getBabyInfo();//获取宝宝信息*/
-    getPrice();// 获取价格
-
     initDate();
     recordLogs("FYB_XX");
 
 });
+//获取页面参数值
+function GetQueryString(name) {
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null){
+        return  unescape(r[2]);
+        getPrice();// 获取价格
+    }
+    return null;
+}
 //获取保险价格
 function getPrice(){
     $.ajax({
@@ -350,12 +359,7 @@ function initDate() {
     };
     $("#birthday").mobiscroll(opt);
 }
-//获取页面参数值
-function GetQueryString(name) {
-    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);
-    if(r!=null)return  unescape(r[2]); return null;
-}
+
 //记录日志
 function recordLogs(val){
     $.ajax({
