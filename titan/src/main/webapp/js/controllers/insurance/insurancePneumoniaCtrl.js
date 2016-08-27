@@ -2,7 +2,8 @@ angular.module('controllers', ['ionic']).controller('insurancePneumoniaCtrl', [
     '$scope','$state','$stateParams','$location','$http',
     function ($scope,$state,$stateParams,$location,$http) {
         $scope.readLock = true;
-        var Ip = "s251.baodf.com";
+       //var Ip = "s251.baodf.com";
+        var Ip = "s120.xiaoerk.com";
         //var Ip = "localhost:8080";
 
         $scope.$on('$ionicView.enter', function(){

@@ -4,8 +4,8 @@ angular.module('controllers', ['ionic']).controller('insuranceAntiDogCtrl', [
         $scope.num = "";
         $scope.parRemindLock =false;
         $scope.readLock =true;
-        var Ip = "s251.baodf.com";
-        //var Ip = "localhost:8080";
+       // var Ip = "s251.baodf.com";
+        var Ip = "s120.xiaork.com";
 
         // 点击已阅读
         $scope.read = function(){

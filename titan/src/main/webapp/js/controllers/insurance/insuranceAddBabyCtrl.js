@@ -7,8 +7,8 @@ angular.module('controllers', ['ionic']).controller('insuranceAddBabyCtrl', [
         $scope.boyLock = true;
         $scope.baby = {};
         //var Ip = "s251.baodf.com";
-        //var Ip = "s120.xiaork.com";
-        var Ip = "localhost:8080";
+        var Ip = "s120.xiaork.com";
+        //var Ip = "localhost:8080";
 
 
         $scope.$on('$ionicView.enter',function() {
