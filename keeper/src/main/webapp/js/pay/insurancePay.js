@@ -9,6 +9,7 @@ var Ip = "s120.xiaork.com";
 //var Ip = "localhost:8080";
 
 $(function(){
+    //insuranceType= GetQueryString("insuranceType");
     var param = '{routePath:"/wxPay/patientPay.do?serviceType=insurance"}';
     $.ajax({
         type: "POST",
@@ -29,7 +30,7 @@ $(function(){
                 }else{
                     initWx();//初始化微信
                     getBabyInfo();//获取宝宝信息
-                    GetQueryString()
+                    GetQueryString("insuranceType")
                 }
             }
         }
