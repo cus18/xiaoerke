@@ -356,8 +356,6 @@ public class ConsultSessionManager {
             consultSessionService.saveConsultInfo(consultSession);
             Integer sessionId = consultSession.getId();
             System.out.println("sessionId-----" + sessionId + "consultSession.getCsUserId()" + consultSession.getUserId());
-            sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
-            sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
             saveCustomerEvaluation(consultSession);
             response.put("csChannel", csChannel);
             response.put("sessionId", sessionId);
