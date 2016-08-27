@@ -187,6 +187,8 @@ public class ConsultWechatController extends BaseController {
                 }
                 //咨询收费处理
                 consultTimes = consultCharge(openId, sessionId, consultSession);
+                sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
+                sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
             }
 
             //会话创建成功，拿到了csChannel,给接诊员(或是医生)发送消息
@@ -197,7 +199,6 @@ public class ConsultWechatController extends BaseController {
                     obj.put("senderId", userId);
                     obj.put("dateTime", DateUtils.DateToStr(new Date()));
                     obj.put("senderName", userName);
-
                     boolean payFlage = (ConstantUtil.PAY_SUCCESS+ConstantUtil.USE_TIMES+ConstantUtil.WITHIN_24HOURS).indexOf(consultSession.getPayStatus())>-1;
                     if (consultTimes > 0||payFlage) {
                         obj.put("notifyType", "1001");
