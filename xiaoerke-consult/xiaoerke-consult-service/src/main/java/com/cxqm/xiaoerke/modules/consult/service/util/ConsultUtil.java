@@ -22,6 +22,8 @@ public class ConsultUtil {
 		consultSession.setStatus((String) consultSessionMap.get("status"));
 		consultSession.setTitle((String) consultSessionMap.get("title"));
 		consultSession.setId((Integer) consultSessionMap.get("id"));
+		consultSession.setPayStatus((String) consultSessionMap.get("payStatus"));
+		consultSession.setNickName((String) consultSessionMap.get("nickName"));
 		return consultSession;
 	}
 
