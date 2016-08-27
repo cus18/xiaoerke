@@ -36,7 +36,6 @@ public class ConsultUtil {
 		consultSessionMap.put("csUserId", consultSession.getCsUserId());
 		consultSessionMap.put("status", consultSession.getStatus());
 		consultSessionMap.put("title", consultSession.getTitle());
-		consultSessionMap.put("id", consultSession.getId());
 		consultSessionMap.put("payStatus", consultSession.getPayStatus());
 		consultSessionMap.put("nickName", consultSession.getNickName());
 		consultSessionMap.put("id", consultSession.getId());
