@@ -301,12 +301,13 @@ public class ConsultUserController extends BaseController {
                         searchMap.put("dateTime",richConsultSession.getCreateTime());
                         searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
 
-                        if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.PAY_SUCCESS+ConstantUtil.USE_TIMES+ConstantUtil.WITHIN_24HOURS).indexOf(consultSessionStatusVo.getPayStatus())>-1){
-                            searchMap.put("notifyType","1001");
-                        } else{
-                            searchMap.put("notifyType","1002");
+                        if (ConstantUtil.PAY_SUCCESS.indexOf(consultSessionStatusVo.getPayStatus())>-1) {
+                            searchMap.put("notifyType", "1001");
+                        } else if(ConstantUtil.NO_PAY.indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                            searchMap.put("notifyType", "1002");
+                        }else {
+                            searchMap.put("notifyType", "1003");
                         }
-
 
 //                            if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
 //
