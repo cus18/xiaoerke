@@ -13,6 +13,9 @@ $(function(){
     if(insuranceType==null){
         window.location.href = "http://"+Ip+"/titan/firstPage/insurance";
     }
+    else{
+        getPrice();// 获取价格
+    }
     var param = '{routePath:"/wxPay/patientPay.do?serviceType=insurance&insuranceType='+insuranceType+ '"}';
     $.ajax({
         type: "POST",
@@ -50,7 +53,6 @@ function GetQueryString(name) {
     var r = window.location.search.substr(1).match(reg);
     if(r!=null){
         return  unescape(r[2]);
-        getPrice();// 获取价格
     }
     return null;
 }
