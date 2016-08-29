@@ -1,24 +1,27 @@
 var babyList = [];
 var babySex = 1;//男孩
 var parentSex = 0;//妈妈
-var needPayMoney =10.00;//保险金额
+var needPayMoney ;//保险金额
 var babyID;
-var insuranceType="1";
+var insuranceType;
 //var Ip = "s68.baodf.com";
 var Ip = "s120.xiaork.com";
 //var Ip = "localhost:8080";
 
 $(function(){
     insuranceType= GetQueryString("insuranceType");
-    if(insuranceType==null){
-        window.location.href = "http://"+Ip+"/titan/firstPage/insurance";
+    console.log("insuranceType",insuranceType);
+    if(insuranceType==""||insuranceType==null){
+        // window.location.href = "http://"+Ip+"/titan/firstPage/insurance";
+        insuranceType = localStorage.getItem("type");
+        getPrice();
     }
     else{
         getPrice();// 获取价格
     }
-    var param = '{routePath:"/wxPay/patientPay.do?serviceType=insurance&insuranceType='+insuranceType+ '"}';
+    // var param = '{routePath:"/wxPay/patientPay.do?serviceType=insurance&insuranceType='+insuranceType+ '"}';
+    var param = '{routePath:"/wxPay/patientPay.do?serviceType=insurance"}';
     $.ajax({
-        type: "POST",
         url: "auth/info/loginStatus",
         contentType: 'application/json',
         data: param,
@@ -30,8 +33,8 @@ $(function(){
                 window.location.href = data.redirectURL;
             } else if (data.status == "20") {
                 if(data.openId=="noOpenId"){
-                    window.location.href = "http://s251.baodf.com/keeper/wechatInfo/" +
-                        "fieldwork/wechat/author?url=http://s251.baodf.com/" +
+                    window.location.href = "http://"+Ip+"/keeper/wechatInfo/" +
+                        "fieldwork/wechat/author?url=http://"+Ip+"/" +
                         "keeper/wechatInfo/getUserWechatMenId?url=29";
                 }else{
                     initWx();//初始化微信
@@ -41,8 +44,8 @@ $(function(){
             }
         }
     });
-   /* initWx();//初始化微信
-    getBabyInfo();//获取宝宝信息*/
+    /* initWx();//初始化微信
+     getBabyInfo();//获取宝宝信息*!*/
     initDate();
     recordLogs("FYB_XX");
 
@@ -73,21 +76,20 @@ function getPrice(){
                 if(needPayMoney=="" || needPayMoney==undefined){
                     needPayMoney=19.8;
                 }
-            }
-            if(insuranceType=="2"){
+            }else if(insuranceType=="2"){
                 needPayMoney=parseFloat((data.insuranceInfo.handFootMouth.split(";"))[0]);
                 console.log(needPayMoney);
                 if(needPayMoney=="" || needPayMoney==undefined){
                     needPayMoney=26.8;
                 }
-            }
-            if(insuranceType=="3"){
+            }else if(insuranceType=="3"){
                 needPayMoney=parseFloat((data.insuranceInfo.pneumonia.split(";"))[0]);
                 console.log(needPayMoney);
                 if(needPayMoney=="" || needPayMoney==undefined){
                     needPayMoney=68;
                 }
             }
+            localStorage.type = insuranceType;
             $("#payButton").text(" 微信支付  ￥"+needPayMoney);
         },
         error : function() {
@@ -213,6 +215,7 @@ function saveBaby (name,sex,birthday) {
 //保存订单并进行支付
 function payLast(id,babySex,babyBirthday,card,phone,parentname,parentSex) {
     recordLogs("SZKB_DDTX_WXZF");
+    alert(needPayMoney);
     $.ajax({
         type: 'POST',
         async:false,

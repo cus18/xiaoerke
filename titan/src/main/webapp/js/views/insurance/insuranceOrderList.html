@@ -21,7 +21,7 @@
                             <span>宝宝姓名：{{item.name}}</span>
                             <span>有效期至 {{item.end_time | date:'yyyy-MM-dd'}}</span>
                         </div>
-                        <div class="price"> &nbsp;{{insuranceArr[2*item.Insurance_type-2]}}</div>
+                        <div class="price"> &nbsp;￥{{insuranceArr[2*item.Insurance_type-2]}}</div>
                         <span class="state">{{item.state==0?'待生效':''}}{{item.state==1?'有效':''}}{{item.state==2?'待审核':''}}</span>
                     </li>
                     <!--无 当前服务 订单时显示-->
