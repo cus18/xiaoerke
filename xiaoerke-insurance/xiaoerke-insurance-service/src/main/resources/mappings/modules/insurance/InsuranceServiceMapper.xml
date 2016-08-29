@@ -47,8 +47,8 @@
 				now(),
 				now(),
 				#{babyId,jdbcType=VARCHAR},
-				DATE_ADD(now(),INTERVAL 1 DAY),
-				DATE_ADD(DATE_ADD(now(),INTERVAL 1 DAY),INTERVAL 1 YEAR),
+				#{startTime},
+				#{endTime},
 				#{updateBy,jdbcType=VARCHAR},
 				#{source,jdbcType=VARCHAR}
 			)
