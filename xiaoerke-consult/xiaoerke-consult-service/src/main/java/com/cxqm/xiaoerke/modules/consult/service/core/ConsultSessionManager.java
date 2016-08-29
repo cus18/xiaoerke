@@ -675,13 +675,14 @@ public class ConsultSessionManager {
                                                 if(defaultTimes > 0){
                                                     defaultTimes--;
                                                     consultSessionPropertyVo.setMonthTimes(defaultTimes);
+                                                    consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
                                                 }else{
                                                     if(additionalTimes > 0){
                                                         additionalTimes--;
                                                         consultSessionPropertyVo.setPermTimes(additionalTimes);
+                                                        consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
                                                     }
                                                 }
-                                                consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
                                             }
                                         }
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
@@ -1032,11 +1033,11 @@ public class ConsultSessionManager {
             consultSession.setStatus("ongoing");
             consultSession.setCreateTime(new Date());
             consultSession.setId(lastConsultSessionId);
-            consultSessionService.updateSessionInfo(consultSession);
+            flag = consultSessionService.updateSessionInfo(consultSession);
             /**
              * Mongo 状态更改
              */
-            Query query2 = new Query().addCriteria(where("sessionId").is(lastConsultSessionId));
+            Query query2 = new Query().addCriteria(where("sessionId").is(String.valueOf(lastConsultSessionId)));
             ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query2);
             if(consultSessionStatusVo != null ){
                 String csUserId = consultSessionStatusVo.getCsUserId();
