@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.insurance.web;
 
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceHospitalVo;
@@ -23,10 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "insurance")
@@ -65,12 +63,27 @@ public class InsuranceController {
             babyBaseInfoService.updateByPrimaryKeySelective(babyBaseInfoVo);
         }
 
+        Date startDate =new Date();
+        Date endDate = new Date();
+        Calendar c = Calendar.getInstance();
+        int days = 0;
+        if("3".equals(params.get("insuranceType").toString())){//肺炎宝待生效是15天
+            days = 15;
+        }else{
+            days = 1;
+        }
+        c.add(Calendar.DAY_OF_YEAR, days);
+        startDate = c.getTime();
+        c.add(Calendar.YEAR,1);
+        endDate = c.getTime();
         Map<String, Object> resultMap = new HashMap<String, Object>();
         InsuranceRegisterService insuranceRegisterService = new InsuranceRegisterService();
         insuranceRegisterService.setId(ChangzhuoMessageUtil.createRandom(true, 10));
         insuranceRegisterService.setBabyId(params.get("babyId").toString());
         insuranceRegisterService.setIdCard(params.get("idCard").toString());
         insuranceRegisterService.setInsuranceType(params.get("insuranceType").toString());
+        insuranceRegisterService.setStartTime(startDate);
+        insuranceRegisterService.setEndTime(endDate);
         insuranceRegisterService.setParentName(params.get("parentName").toString());
         insuranceRegisterService.setParentType(params.get("parentType").toString());
         insuranceRegisterService.setParentPhone(params.get("parentPhone").toString());
