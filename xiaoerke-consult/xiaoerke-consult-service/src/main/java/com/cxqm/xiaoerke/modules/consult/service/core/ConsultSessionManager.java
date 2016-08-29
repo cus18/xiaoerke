@@ -643,7 +643,7 @@ public class ConsultSessionManager {
                                     List<String> list = new ArrayList<String>();
                                     list.add("useTimes");
                                     list.add("paySuccess");
-                                    if(ConstantUtil.WITHIN_24HOURS.equals(consultSessionStatusVo.getPayStatus())){
+                                    if(null != consultSessionStatusVo.getPayStatus()&&ConstantUtil.WITHIN_24HOURS.equals(consultSessionStatusVo.getPayStatus())){
                        //                 Query query2 = (new Query()).addCriteria(where("userId").is(userId).and("payStatus").in(list)).with(new Sort(Sort.Direction.DESC, "createDate"));
                        //                 ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query);
                                         /**
@@ -687,10 +687,20 @@ public class ConsultSessionManager {
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
                                         sendMsg = responseNews.toString();
                                         WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
-                                        jsonObject.put("notifyType", "1001");
+                                        if(ConstantUtil.USE_TIMES.equals(consultSessionStatusVo.getPayStatus())){
+                                            jsonObject.put("notifyType", "1003");
+                                        }else{
+                                            jsonObject.put("notifyType", "1001");
+                                        }
+
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }else{
+                                        if(ConstantUtil.NO_PAY.equals(consultSessionStatusVo.getPayStatus())){
+                                            jsonObject.put("notifyType", "1002");
+                                        }else{
+                                            jsonObject.put("notifyType", "1003");
+                                        }
                                         jsonObject.put("notifyType","1002");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
@@ -715,14 +725,18 @@ public class ConsultSessionManager {
                                 String userId = session.getUserId();
                                 Query query = (new Query()).addCriteria(where("userId").is(userId)).with(new Sort(Sort.Direction.DESC, "createDate"));
                                 ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
-                                String status = ConstantUtil.WITHIN_24HOURS +","+ConstantUtil.PAY_SUCCESS+","+ConstantUtil.USE_TIMES;
+                                String status = ConstantUtil.PAY_SUCCESS;
                                 if(consultSessionStatusVo != null){
                                     if(status.contains(consultSessionStatusVo.getPayStatus())){
                                         jsonObject.put("notifyType", "1001");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
-                                    }else{
+                                    }else if(ConstantUtil.NO_PAY.contains(consultSessionStatusVo.getPayStatus())){
                                         jsonObject.put("notifyType","1002");
+                                        TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
+                                        csChannel.writeAndFlush(csUserMsg.retain());
+                                    }else{
+                                        jsonObject.put("notifyType","1003");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }
