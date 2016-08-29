@@ -200,11 +200,12 @@ public class ConsultWechatController extends BaseController {
                     obj.put("senderId", userId);
                     obj.put("dateTime", DateUtils.DateToStr(new Date()));
                     obj.put("senderName", userName);
-                    boolean payFlage = (ConstantUtil.PAY_SUCCESS+ConstantUtil.USE_TIMES+ConstantUtil.WITHIN_24HOURS).indexOf(consultSession.getPayStatus())>-1;
-                    if (consultTimes > 0||payFlage) {
+                    if (ConstantUtil.PAY_SUCCESS.indexOf(consultSession.getPayStatus())>-1) {
                         obj.put("notifyType", "1001");
-                    } else {
+                    } else if(ConstantUtil.NO_PAY.indexOf(consultSession.getPayStatus())>-1){
                         obj.put("notifyType", "1002");
+                    }else {
+                        obj.put("notifyType", "1003");
                     }
 
                     obj.put("serverAddress", serverAddress);
