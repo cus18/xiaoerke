@@ -49,15 +49,16 @@
         <if test="csUserId != null">
             and sys_user_id_cs = #{csUserId,jdbcType=VARCHAR}
         </if>
-        <if test="userId != null">
-            and sys_user_id = #{userId,jdbcType=VARCHAR} ORDER BY create_time desc
-        </if>
         <if test="source != null">
             and source = #{source,jdbcType=VARCHAR}
         </if>
         <if test="flag != null">
             and flag = #{flag,jdbcType=VARCHAR}
         </if>
+        <if test="userId != null">
+            and sys_user_id = #{userId,jdbcType=VARCHAR} ORDER BY create_time desc
+        </if>
+
     </select>
 
     <select id="selectConsultSession" resultMap="BaseResultMap"
