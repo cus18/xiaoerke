@@ -1,10 +1,10 @@
 var babyList = [];
 var babySex = 1;//男孩
 var parentSex = 0;//妈妈
-var needPayMoney =0.01;//保险金额
+var needPayMoney =68;//保险金额
 var babyID;
-//var Ip = "s68.baodf.com";
-var Ip = "s120.xiaork.com";
+var Ip = "s68.baodf.com";
+//var Ip = "s120.xiaork.com";
 
 $(function(){
     var param = '{routePath:"/wxPay/patientPay.do?serviceType=pneumonia"}';
@@ -36,10 +36,6 @@ $(function(){
     recordLogs("FYB_XX");
 });
 
-/*锚链接跳转*/
-var skip=function(item){
-    myScroll.scrollToElement('#'+item, 100)
-}
 //获取宝宝基本信息
 var getBabyInfo = function(){
     $.ajax({
