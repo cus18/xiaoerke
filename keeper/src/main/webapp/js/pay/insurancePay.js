@@ -215,7 +215,6 @@ function saveBaby (name,sex,birthday) {
 //保存订单并进行支付
 function payLast(id,babySex,babyBirthday,card,phone,parentname,parentSex) {
     recordLogs("SZKB_DDTX_WXZF");
-    alert(needPayMoney);
     $.ajax({
         type: 'POST',
         async:false,
