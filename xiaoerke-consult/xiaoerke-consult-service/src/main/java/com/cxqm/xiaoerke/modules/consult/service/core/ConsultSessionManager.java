@@ -1021,19 +1021,43 @@ public class ConsultSessionManager {
             consultSession.setConsultNumber(sessionCount + 1);
             flag = consultSessionService.updateSessionInfo(consultSession);
         } else {
+            consultSession.setUserId(richConsultSession.getUserId());
+            consultSession.setSource("wxcxqm");
+            Integer lastConsultSessionId = null;
+            List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSession);
+            if(consultSessions != null && consultSessions.size() > 0){
+                lastConsultSessionId = consultSessions.get(0).getId();
+            }
             consultSession.setCsUserId(richConsultSession.getCsUserId());
             consultSession.setStatus("ongoing");
-            consultSession.setSource("wxcxqm");
-            consultSession.setUserId(richConsultSession.getUserId());
             consultSession.setCreateTime(new Date());
+            consultSession.setId(lastConsultSessionId);
+            consultSessionService.updateSessionInfo(consultSession);
+            /**
+             * Mongo 状态更改
+             */
+            Query query2 = new Query().addCriteria(where("sessionId").is(lastConsultSessionId));
+            ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query2);
+            if(consultSessionStatusVo != null ){
+                String csUserId = consultSessionStatusVo.getCsUserId();
+                if(csUserId.indexOf(richConsultSession.getCsUserId()) == -1){
+                    csUserId = csUserId + " " + consultSessionStatusVo.getCsUserId();
+                }
+                Query query = new Query().addCriteria(where("sessionId").is(lastConsultSessionId));
+                Update update = new Update().set("firstTransTime", new Date()).addToSet("lastMessageTime",new Date()).addToSet("status","ongoing").addToSet("csUserId",csUserId);
+                consultRecordService.updateConsultSessionFirstTransferDate(query,update,ConsultSessionStatusVo.class);
+            }
+            /*
             Map praiseParam = new HashMap();
             praiseParam.put("userId", consultSession.getUserId());
             Integer sessionCount = consultSessionService.getConsultSessionByUserId(praiseParam);
             consultSession.setConsultNumber(sessionCount + 1);
             flag = consultSessionService.saveConsultInfo(consultSession);
-            richConsultSession.setId(consultSession.getId());
-            richConsultSession.setSource(consultSession.getSource());
+            */
+            richConsultSession.setId(lastConsultSessionId);
             richConsultSession.setCreateTime(consultSession.getCreateTime());
+            richConsultSession.setPayStatus(consultSessionStatusVo.getPayStatus());
+            richConsultSession.setSource(consultSessionStatusVo.getSource());
         }
         System.out.println("flag====" + flag);
         if (flag > 0) {
