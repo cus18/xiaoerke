@@ -702,6 +702,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             if(marketsList.contains(marketer)){
                 Map<String,Object> doctorMap = consultConversationService.getConsultCountsByDoctorName(marketer);
                 StringBuffer consultRelateMsg = new StringBuffer();
+
+                if(StringUtils.isNull(doctorMap.get("doctorName").toString())){
+                    doctorMap = consultConversationService.getDoctorInfoByMarketer(marketer);
+                }
+
                 consultRelateMsg.append(doctorMap.get("doctorName").toString()).append(" | ");
                 consultRelateMsg.append(doctorMap.get("hospitalName").toString()).append(" | ");
                 consultRelateMsg.append(doctorMap.get("professional").toString()).append(":");

@@ -132,5 +132,9 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
         return consultSessionDao.getConsultCountsByDoctorName(marketer);
     }
 
+    @Override
+    public Map<String,Object> getDoctorInfoByMarketer(String marketer){
+        return consultSessionDao.getDoctorInfoByMarketer(marketer);
+    }
 
 }
