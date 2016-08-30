@@ -672,15 +672,24 @@ public class ConsultSessionManager {
                                             if(consultSessionPropertyVo != null){
                                                 int defaultTimes = consultSessionPropertyVo.getMonthTimes();
                                                 int additionalTimes = consultSessionPropertyVo.getPermTimes();
-                                                if(defaultTimes > 0){
-                                                    defaultTimes--;
-                                                    consultSessionPropertyVo.setMonthTimes(defaultTimes);
-                                                    consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
-                                                }else{
-                                                    if(additionalTimes > 0){
-                                                        additionalTimes--;
-                                                        consultSessionPropertyVo.setPermTimes(additionalTimes);
-                                                        consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
+                                                Query query2 = (new Query()).addCriteria(where("userId").is(userId).and("firstTransferTime").exists(true).and("firstTransTime").ne(null).and("payStatus").in(list)).with(new Sort(Sort.Direction.DESC, "createDate"));
+                                                ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query);
+                                                if(consultSessionStatusVo2.getFirstTransTime() != null ){
+                                                    long currentTime = new Date().getTime();
+                                                    if(currentTime - consultSessionStatusVo2.getFirstTransTime().getTime() <= 24*60*60*1000){
+                                                        System.out.println("24小时内，直接通过");
+                                                    }else{
+                                                        if (defaultTimes > 0) {
+                                                            defaultTimes--;
+                                                            consultSessionPropertyVo.setMonthTimes(defaultTimes);
+                                                            consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
+                                                        }else{
+                                                            if(additionalTimes > 0) {
+                                                                additionalTimes--;
+                                                                consultSessionPropertyVo.setPermTimes(additionalTimes);
+                                                                consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
