@@ -709,7 +709,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
                 consultRelateMsg.append(doctorMap.get("doctorName").toString()).append(" | ");
                 consultRelateMsg.append(doctorMap.get("hospitalName").toString()).append(" | ");
-                consultRelateMsg.append(doctorMap.get("professional").toString()).append(":");
+                consultRelateMsg.append(doctorMap.get("professional").toString()).append(": ");
                 consultRelateMsg.append(doctorMap.get("skill").toString());
                 consultRelateMsg.append("\n\n点击左下角“小键盘”输入文字或图片，即可咨询疾病或保健问题。\n");
                 WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), consultRelateMsg.toString());
