@@ -57,7 +57,7 @@ public class PhoneConsultaController {
             inStream.close();
             String result = new String(outSteam.toByteArray(), "utf-8");
             Map<String, Object> map = XMLUtil.doXMLParse(result);
-            LogUtils.saveLog(Servlets.getRequest(), "00000109", "电话咨询鉴权" + map);//用户发起微信支付
+            LogUtils.saveLog("00000109", "电话咨询鉴权" + map);//用户发起微信支付
             String action = (String)map.get("action");
             if (action.equals("CallAuth")) {
                 // 解析呼叫鉴权

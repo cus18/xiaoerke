@@ -18,7 +18,7 @@
 .m-left-top div.tab-content-chat {
     float: left;
     text-align: center;
-    padding: 8px 19px;
+    padding: 8px 25px;
 }
 
 .tab-content-chat h3 {
@@ -128,7 +128,7 @@ div#ddjr {
 
 .consultNowList div:nth-child(1) {
     padding: 12px 0 12px 3px;
-    width: 16px;
+    width: 26px;
 }
 
 .consultNowList div:nth-child(2) {
@@ -257,13 +257,12 @@ div#ddjr {
 }
 
 .jrhhpm th {
-    width: 80px;
-    display: inline-block;
+    width: 60px;
     overflow: hidden;
 }
 
 .jrhhpm-tb th:nth-child(2) {
-    width: 80px;
+    width: 100px;
 }
 .jrhhpm-tb th:nth-child(4) {
     width: 80px;
@@ -673,7 +672,7 @@ p.historymessage span {
 
 /*textarea输入框*/
 .inputcontent, .facebox, .chatlist, .nametop {
-    padding-left: 175px;
+    padding-left: 200px;
     padding-right: 405px;
 }
 

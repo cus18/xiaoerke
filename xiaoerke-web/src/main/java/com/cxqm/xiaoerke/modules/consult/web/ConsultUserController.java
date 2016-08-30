@@ -301,12 +301,13 @@ public class ConsultUserController extends BaseController {
                         searchMap.put("dateTime",richConsultSession.getCreateTime());
                         searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
 
-                        if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.PAY_SUCCESS+ConstantUtil.USE_TIMES+ConstantUtil.WITHIN_24HOURS).indexOf(consultSessionStatusVo.getPayStatus())>-1){
-                            searchMap.put("notifyType","1001");
-                        } else{
-                            searchMap.put("notifyType","1002");
+                        if (null !=consultSessionStatusVo && ConstantUtil.PAY_SUCCESS.indexOf(consultSessionStatusVo.getPayStatus())>-1) {
+                            searchMap.put("notifyType", "1001");
+                        } else if(null !=consultSessionStatusVo &&  ConstantUtil.NO_PAY.indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                            searchMap.put("notifyType", "1002");
+                        }else {
+                            searchMap.put("notifyType", "1003");
                         }
-
 
 //                            if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
 //
@@ -510,33 +511,56 @@ public class ConsultUserController extends BaseController {
 
         Map<String, Object> response = new HashMap<String, Object>();
         HashMap<String, Object> request = new HashMap<String, Object>();
-        String userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone")))?String.valueOf(params.get("patientPhone")):"";
-        String userName = StringUtils.isNotNull(String.valueOf(params.get("patientName")))?String.valueOf(params.get("patientName")):"";
+        String source = "" ;
+        String thirdId = "" ;
+        String userPhone ="" ;
+        String userName = "" ;
         Integer userSex = 0;
-        if(params.get("patientSex") != null && params.get("patientSex") != ""){
-            userSex = Integer.valueOf(String.valueOf(params.get("patientSex")));
-        }
-        String remoteUrl = String.valueOf(params.get("remoteUrl"));
-        String source = "";
-        String thirdId = "";
+        String remoteUrl = "";
         if (params.containsKey("source")) {
-            if (StringUtils.isNotNull(String.valueOf(params.get("source")))) {
-                source = String.valueOf(params.get("source"));
-                if (source.contains("wjy")) {
-                    thirdId = String.valueOf(params.get("thirdId"));
-                    source = "WJY";
-                }
-            }
+            source = String.valueOf(params.containsKey("source"));
         }
-        request.put("userPhone", userPhone);
-        request.put("userName", userName);
-        request.put("userSex", userSex);
-        request.put("source", source);
-        request.put("thirdId", thirdId);
-        request.put("token", String.valueOf(params.get("token")));
-        String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
-        request.put("sys_user_id", sys_user_id);
-        request.put("remoteUrl", remoteUrl);
+        if(StringUtils.isNotNull(source)){
+            if(source.contains("wjy")){
+                thirdId = String.valueOf(params.get("thirdId"));
+                source = "WJY";
+                userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone")))?String.valueOf(params.get("patientPhone")):"";
+                userName = StringUtils.isNotNull(String.valueOf(params.get("patientName")))?String.valueOf(params.get("patientName")):"";
+                if(params.get("patientSex") != null && params.get("patientSex") != ""){
+                    userSex = Integer.valueOf(String.valueOf(params.get("patientSex")));
+                }
+                remoteUrl = String.valueOf(params.get("remoteUrl"));
+                request.put("userPhone", userPhone);
+                request.put("userName", userName);
+                request.put("userSex", userSex);
+                request.put("source", source);
+                request.put("thirdId", thirdId);
+                request.put("token", String.valueOf(params.get("token")));
+                String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
+                request.put("sys_user_id", sys_user_id);
+                request.put("remoteUrl", remoteUrl);
+
+            }else if("COOP_BHQ".equalsIgnoreCase(source)){
+                userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone")))?String.valueOf(params.get("patientPhone")):"";
+                userName = StringUtils.isNotNull(String.valueOf(params.get("patientName")))?String.valueOf(params.get("patientName")):"";
+                thirdId = String.valueOf(params.get("thirdId"));
+                request.put("userPhone", userPhone);
+                request.put("userName", userName);
+                request.put("userSex", userSex);
+                request.put("source", source);
+                request.put("thirdId", thirdId);
+                String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
+                request.put("sys_user_id", sys_user_id);
+            }
+        }else{
+            userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone")))?String.valueOf(params.get("patientPhone")):"";
+            userName = StringUtils.isNotNull(String.valueOf(params.get("patientName")))?String.valueOf(params.get("patientName")):"";
+            request.put("source", source);
+            request.put("userPhone", userPhone);
+            request.put("userName", userName);
+            String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
+            request.put("sys_user_id", sys_user_id);
+        }
 //        System.out.println("========================userPhone="+userPhone+"=userName="+userName+"=userSex="+userSex+"=remoteUrl="+remoteUrl+"=source="+source+"=thirdId="+thirdId+"=sys_user_id="+sys_user_id);
         Map result = userInfoService.createOrUpdateThirdPartPatientInfo(request);
         System.out.println("========================patientId="+result.get("sys_user_id")+"==result=="+result.get("result"));

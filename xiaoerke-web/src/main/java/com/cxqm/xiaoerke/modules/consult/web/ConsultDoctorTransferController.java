@@ -250,10 +250,12 @@ public class ConsultDoctorTransferController extends BaseController {
 
                 Query sessionquery = (new Query()).addCriteria(where("sessionId").is(""+waitJoinListVo.getConversationId()+""));
                 ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(sessionquery);
-                if(null != consultSessionStatusVo&&(ConstantUtil.PAY_SUCCESS+ConstantUtil.USE_TIMES+ConstantUtil.WITHIN_24HOURS).indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.PAY_SUCCESS).indexOf(consultSessionStatusVo.getPayStatus())>-1){
                     dataValue.put("notifyType","1001");
-                } else{
+                }else if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.NO_PAY).indexOf(consultSessionStatusVo.getPayStatus())>-1){
                     dataValue.put("notifyType","1002");
+                }else{
+                    dataValue.put("notifyType","1003");
                 }
 
                 dataList.add(dataValue);

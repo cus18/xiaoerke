@@ -305,12 +305,11 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
       </profile>
-      <profile default="false" name="Annotation profile for xiaoerke-activity-api" enabled="true">
+      <profile default="false" name="Annotation profile for xiaoerke-alipay-service" enabled="true">
         <sourceOutputDir name="target\generated-sources\annotations" />
         <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="xiaoerke-activity-api" />
       </profile>
       <profile default="false" name="Annotation profile for xiaoerke-activity-service" enabled="true">
         <sourceOutputDir name="target\generated-sources\annotations" />
@@ -318,6 +317,19 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="xiaoerke-activity-service" />
+      </profile>
+      <profile default="false" name="Annotation profile for xiaoerke-activity-api" enabled="true">
+        <sourceOutputDir name="target\generated-sources\annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="xiaoerke-activity-api" />
+      </profile>
+      <profile default="false" name="Annotation profile for xiaoerke-alipay-api" enabled="true">
+        <sourceOutputDir name="target\generated-sources\annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -334,6 +346,9 @@
       <module name="xiaoerke-activity" target="1.6" />
       <module name="xiaoerke-activity-api" target="1.6" />
       <module name="xiaoerke-activity-service" target="1.6" />
+      <module name="xiaoerke-alipay" target="1.6" />
+      <module name="xiaoerke-alipay-api" target="1.6" />
+      <module name="xiaoerke-alipay-service" target="1.6" />
       <module name="xiaoerke-cms" target="1.6" />
       <module name="xiaoerke-cms-api" target="1.6" />
       <module name="xiaoerke-cms-service" target="1.6" />

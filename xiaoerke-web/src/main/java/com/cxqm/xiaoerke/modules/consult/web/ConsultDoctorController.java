@@ -368,7 +368,7 @@ public class ConsultDoctorController extends BaseController {
                                 for (Map<String, Object> evaluationMap : praiseList) {
                                     if (Integer.parseInt((String) evaluationMap.get("serviceAttitude")) == 0) {
                                         st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
-                                                "<a href='http://s120.xiaork.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
+                                                "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
                                                 evaluationMap.get("id") + "&sessionId=" + sessionId + "'>点击这里去评价</a>】";
                                     } else {
                                         st = "嗨，亲爱的,本次咨询已关闭。";
@@ -410,8 +410,8 @@ public class ConsultDoctorController extends BaseController {
                 Map parameter = systemService.getWechatParameter();
                 String token = (String)parameter.get("token");
                 int count = babyUmbrellaInfoService.getUmbrellaCount();
-                String title = "别让孩子的小问题变成大疾病";
-                String description = "已经有"+count+"位宝妈机智的行动，免费为宝宝领取了40万的大病治疗费。快来领吧！限时免费！手慢无！";
+                String title = "免费送您一份40万的保障！";
+                String description = "限时免费加入宝护伞爱心公益，小孩、大人得了重病都给钱！最高40万！包括75种疾病，还能安排专家治疗！";
                 //String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
                 String url = "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000003/a";
                 String picUrl = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella";

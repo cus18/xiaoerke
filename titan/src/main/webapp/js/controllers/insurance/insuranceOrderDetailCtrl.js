@@ -7,6 +7,11 @@ angular.module('controllers', ['ionic']).controller('insuranceOrderDetailCtrl', 
         $scope.insurance={};
         $scope.parRemindLock =false;
 
+        //日志
+        var setLog = function (item) {
+            var pData = {logContent:encodeURI(item)};
+            $http({method:'post',url:'util/recordLogs',params:pData});
+        }
 
         $scope.$on('$ionicView.enter', function(){
             var routePath = "/insuranceBBBBBB" + $location.path();
@@ -18,6 +23,9 @@ angular.module('controllers', ['ionic']).controller('insuranceOrderDetailCtrl', 
                 }else {
                     getInsuranceRegisterServiceById.save({"id":$stateParams.id}, function (data){
                         $scope.insurance=data.InsuranceRegisterService;
+                        if( $scope.insurance.insuranceType==3){
+                            setLog("FYB_DDXQ");
+                        }
 
                     });
                 }

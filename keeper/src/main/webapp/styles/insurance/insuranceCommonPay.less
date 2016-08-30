@@ -1,0 +1,287 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, p, blockquote, th, td{
+  margin:0;
+  padding:0;
+}
+input{
+  border:0;
+}
+
+body {
+  font-family: '微软雅黑';
+}
+.btn-bottom{
+  margin:0;
+  position: fixed;
+  bottom:0;
+  width:100%;
+  height:49px;
+  line-height:49px;
+  background-color:#fe717b;
+  color:#fff;
+  border:none;
+  text-align: center;
+  font-size:18px;
+  font-weight:500;
+  border-radius:0;
+}
+.c-shadow{
+  position: absolute;
+  width:100%;
+  height:100%;
+  z-index:2;
+  opacity: 0.5;
+  background-color: #000;
+  display: none;
+}
+.c-remind{
+  position: absolute;
+  z-index:5;
+  top:40%;
+  left:0;
+  width:100%;
+  display: none;
+}
+.c-remind .remind-main{
+  width:80%;
+  padding-bottom: 39px;
+  border-radius: 10px;
+  background-color: #fff;
+  margin:0 auto;
+  position: relative;
+}
+.c-remind .remind-main .close{
+  position: absolute;
+  right:-7px;
+  top:-9px;
+}
+.c-remind .remind-main p{
+  padding:40px 0 35px;
+  text-align: center;
+  color:#333;
+  font-size: 15px;
+  line-height: 30px;
+  margin-bottom: 0;
+}
+.c-remind .remind-bottom{
+  position: absolute;
+  bottom: 0;
+  left:0;
+  width: 100%;
+  height:39px;
+  overflow: hidden;
+  border-radius: 0 0 8px 8px;
+}
+.c-remind .remind-bottom a{
+  width:50%;
+  height:39px;
+  line-height:39px;
+  float: left;
+  background-color: #88d9dd;
+  color:#fff;
+  font-size: 16px;
+  text-align: center;
+}
+.c-remind .remind-bottom a:last-of-type{
+  float: right;
+}
+.c-remind .remind-bottom .line{
+  position: absolute;
+  left:50%;
+  top:0;
+  margin-left:-0.5px;
+  width:1px;
+  height:44px;
+  background-color: #fff;
+
+}
+/*选择宝宝列表*/
+.baby-list{
+  display: none;
+  position: fixed;
+  left:0;
+  bottom:0;
+  z-index:30;
+  width:100%;
+  background-color: #fff;
+  padding:10px 0 25px;
+  box-shadow: 0 -1px 3px #ccc;
+}
+.baby-list dl{
+  height:auto;
+  max-height:300px;
+  overflow-y: scroll;
+}
+.baby-list dt{
+  text-align: center;
+  position: relative;
+  font-weight: normal;
+  margin-bottom: 22.5px;
+  margin-top:15px;
+}
+.baby-list dt .line{
+  display: inline-block;
+  width:60%;
+  height:1px;
+  background-color: #ccc;
+}
+.baby-list dt span{
+  display: inline-block;
+  width:82px;
+  height:18px;
+  line-height:18px;
+  font-size:13px;
+  color:#666;
+  position: absolute;
+  left:50%;
+  top:-9px;
+  margin-left:-41px;
+  background-color: #fff;
+}
+.baby-list dd{
+  width:80%;
+  height:34px;
+  line-height:34px;
+  text-align: center;
+  border-radius: 5px;
+  border:1px solid #88d9dd;
+  margin:0 auto 15px;
+  color:#88d9dd;
+  font-size:16px;
+}
+
+.baby-list .select{
+  width:80%;
+  height:34px;
+  line-height:34px;
+  text-align: center;
+  border-radius: 5px;
+  border:1px solid #88d9dd;
+  margin:0 auto 15px;
+  color:#88d9dd;
+  font-size:16px;
+}
+.baby-list div.select{
+  background-color: #fe717b;
+  color:#fff;
+  border:none;
+}
+.InsuranceFillInfo{
+  background-color: #fff;
+  width:100%;
+  height:100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+
+.InsuranceFillInfo .info{
+  background-color: #fff;
+}
+.InsuranceFillInfo .info .hd{
+  font-weight: normal;
+  font-size: 14px;
+  color: #333;
+  padding: 17.5px 20px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 19px;
+}
+
+.InsuranceFillInfo .info label{
+  display: block ;
+}
+.InsuranceFillInfo .info .f-in{
+  position: relative;
+  margin: 0 20px 19px;
+  border: 1px solid #f0f0f0;
+  padding:15px 7.5px 15px 90px;
+  min-height:19px;
+  overflow: hidden;
+}
+.InsuranceFillInfo .f-in .selectBaby{
+  position: absolute;
+  right:7.5px;
+  top:12px;
+  width:62.5px;
+  height:25px;
+  line-height:25px;
+  text-align: center;
+  border-radius: 3px;
+  background-color: #88d9dd;
+  color:#fff;
+  font-size: 14px;
+}
+
+.InsuranceFillInfo  .f-in span{
+  position: absolute;
+  left:7px;
+  top:15px;
+  font-size: 14px;
+  color:#999;
+}
+.InsuranceFillInfo .f-in input{
+  padding:0;
+  display: inline-block;
+  width:100%;
+  height:19px;
+  line-height:19px;
+  font-weight: normal;
+  font-size: 14px;
+  color:#666;
+  background-color: transparent;
+}
+input:focus {
+  border:none;
+}
+.InsuranceFillInfo .info .selectItem{
+  position: absolute;
+  left:90px;
+  top:9.5px;
+  width:50%;
+  height:30px;
+  line-height:30px;
+  border-radius: 3px;
+  border:1px solid #88d9dd;
+  margin-top: -3px;
+}
+.InsuranceFillInfo .info .selectItem a{
+  width:50%;
+  float: left;
+  color:#88d9dd;
+  font-size: 14px;
+  text-align: center;
+}
+.InsuranceFillInfo .info .selectItem a.select{
+  background-color: #88d9dd;
+  color:#fff;
+}
+.InsuranceFillInfo .info .tips{
+  text-align: right;
+  color:#fe717b;
+  font-size: 12px;
+  margin-right:20px;
+  margin-bottom:10px;
+  display: none;
+}
+.InsuranceFillInfo .info .tips img{
+  vertical-align: middle;
+  margin-top: -3px;
+}
+
+.InsuranceFillInfo::-webkit-scrollbar {
+  width:3px;
+  height:3px;
+}
+
+
+input::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color: #666;
+}
+input::-webkit-input-placeholder, {
+  color: #666;
+}
+
+input:-ms-input-placeholder, {
+  color: #666;
+}

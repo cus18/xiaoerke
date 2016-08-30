@@ -14,5 +14,5 @@ angular.module('doctorConsultApp', ['angularFileUpload', 'ui.router','controller
                 controller: 'messageListCtrl',
                 title: '消息列表'
             })
-        $urlRouterProvider.otherwise('doctorConsultFirst');
+        $urlRouterProvider.otherwise('doctorConsultFirst/,');
     })
