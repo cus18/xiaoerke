@@ -325,7 +325,7 @@
     </insert>
     <!--根据医生姓名查询咨询医生次数-->
     <select id="getConsultCountsByDoctorName" parameterType="java.lang.String" resultType="java.util.Map">
-        SELECT cdi.name doctorName,cdi.hospital hospitalName,cdi.title professional,cdi.skill,COUNT(*) consultCounts from consult_session cs
+        SELECT cdi.name doctorName,cdi.hospital hospitalName,cdi.title professional,cdi.skill from consult_session cs
         LEFT JOIN consult_doctor_info cdi
         ON cs.sys_user_id_cs=cdi.sys_user_id
         where cdi.marketer = #{marketer}
@@ -333,7 +333,7 @@
     </select>
     <!--根据marketer查询医生信息-->
     <select id="getDoctorInfoByMarketer" parameterType="java.lang.String" resultType="java.util.Map">
-        SELECT cdi.name doctorName,cdi.hospital hospitalName,cdi.title professional,cdi.skill,0 consultCounts
+        SELECT cdi.name doctorName,cdi.hospital hospitalName,cdi.title professional,cdi.skill
         FROM consult_doctor_info cdi
         where cdi.marketer = #{marketer} limit 1
     </select>
