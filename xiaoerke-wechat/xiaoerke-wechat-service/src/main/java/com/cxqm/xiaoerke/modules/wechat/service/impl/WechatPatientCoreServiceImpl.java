@@ -2,17 +2,18 @@ package com.cxqm.xiaoerke.modules.wechat.service.impl;
 
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
-
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
-import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
 import com.cxqm.xiaoerke.modules.marketing.service.LoveMarketingService;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
 import com.cxqm.xiaoerke.modules.sys.entity.*;
-import com.cxqm.xiaoerke.modules.sys.service.*;
+import com.cxqm.xiaoerke.modules.sys.service.ActivityService;
+import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
@@ -26,7 +27,6 @@ import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatPatientCoreService;
 import com.cxqm.xiaoerke.modules.wechat.service.util.MessageUtil;
-import com.drew.metadata.exif.OlympusMakernoteDescriptor;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -38,7 +38,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -574,7 +577,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 						"<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37'>赶紧玩起来吧！</a>";
 				WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
 			}
-		}
+		}else if(EventKey.indexOf("qrscene_yufangjiezhong")>-1){//gzg
+        //有名片的医生扫码用户,推送文字消息.(扫码有名片医生二维码.)
+        Runnable thread = new sendHasCardDoctorWechatMessage(EventKey,xmlEntity);
+        threadExecutor.execute(thread);
+    }
 
 		String toOpenId = xmlEntity.getFromUserName();//扫码者openid
 		Map<String, Object> param1 = new HashMap<String, Object>();
@@ -669,6 +676,42 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 	}
 
+
+    /**
+     * 给有名片的医生扫码进来的用户推送文字消息
+     * @author guozengguang
+     */
+    public class sendHasCardDoctorWechatMessage extends Thread{
+        private String EventKey;
+        private ReceiveXmlEntity xmlEntity;
+
+        public sendHasCardDoctorWechatMessage(String EventKey,ReceiveXmlEntity xmlEntity) {
+            this.EventKey = EventKey;
+            this.xmlEntity = xmlEntity;
+        }
+
+        @Override
+        public void run() {
+
+            Map parameter = systemService.getWechatParameter();
+            String token = (String)parameter.get("token");
+            String marketer = EventKey.replace("qrscene_", "");
+            String[] marketsArr = Global.getConfig("consult.doctor.marketers").split(",");
+            List marketsList = Arrays.asList(marketsArr);
+            //如果医生名片里包含用户所扫的二维码,则推送相应的文字消息.
+            if(marketsList.contains(marketer)){
+                Map<String,Object> doctorMap = consultConversationService.getConsultCountsByDoctorName(marketer);
+                StringBuffer consultRelateMsg = new StringBuffer();
+                consultRelateMsg.append(doctorMap.get("doctorName").toString()).append(" | ");
+                consultRelateMsg.append(doctorMap.get("hospitalName").toString()).append(" | ");
+                consultRelateMsg.append(doctorMap.get("professional").toString()).append(":");
+                consultRelateMsg.append(doctorMap.get("skill").toString()).append(" | 咨询");
+                consultRelateMsg.append(doctorMap.get("consultCounts").toString()).append("次\n\n");
+                consultRelateMsg.append("点击左下角“小键盘”输入文字或图片，即可咨询疾病或保健问题。\n");
+                WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), consultRelateMsg.toString());
+            }
+        }
+    }
 
 	//为保护伞用户,更改用户标签,匹配个性化菜单。
 

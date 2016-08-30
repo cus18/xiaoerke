@@ -1,11 +1,8 @@
 package com.cxqm.xiaoerke.modules.consult.dao;
 
-import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
-import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,4 +47,7 @@ public interface ConsultSessionDao {
     List<ConsultSession> getConsultSessionListByInfo(Map map);
 
     int insertConsultSessionBatch(List<ConsultSession> consultSessionses);
+
+    //根据医生姓名查询咨询医生次数
+    Map<String,Object> getConsultCountsByDoctorName(String marketer);
 }

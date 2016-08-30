@@ -1,14 +1,8 @@
 package com.cxqm.xiaoerke.modules.consult.service;
 
 
-import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
-import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
-import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,4 +35,7 @@ public interface ConsultSessionService {
     List<ConsultSession> getConsultSessionListByInfo(Map map);
 
     ConsultSession selectByPrimaryKey(Integer id);
+
+    //根据医生姓名查询咨询医生次数
+    Map<String,Object> getConsultCountsByDoctorName(String marketer);
 }
