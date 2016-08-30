@@ -246,7 +246,7 @@ public class ConsultWechatController extends BaseController {
                     //保存聊天记录
                     consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
 
-
+                    consultRecordService.saveConsultSessionStatus(consultSession);
 
 
                 } catch (UnsupportedEncodingException e) {
