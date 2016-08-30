@@ -672,8 +672,8 @@ public class ConsultSessionManager {
                                             if(consultSessionPropertyVo != null){
                                                 int defaultTimes = consultSessionPropertyVo.getMonthTimes();
                                                 int additionalTimes = consultSessionPropertyVo.getPermTimes();
-                                                Query query2 = (new Query()).addCriteria(where("userId").is(userId).and("firstTransferTime").exists(true).and("firstTransTime").ne(null).and("payStatus").in(list)).with(new Sort(Sort.Direction.DESC, "createDate"));
-                                                ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query);
+                                                Query query2 = (new Query()).addCriteria(where("userId").is(userId).and("firstTransTime").exists(true).and("firstTransTime").ne(null).and("payStatus").in(list)).with(new Sort(Sort.Direction.DESC, "createDate"));
+                                                ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query2);
                                                 if(consultSessionStatusVo2.getFirstTransTime() != null ){
                                                     long currentTime = new Date().getTime();
                                                     if(currentTime - consultSessionStatusVo2.getFirstTransTime().getTime() <= 24*60*60*1000){
