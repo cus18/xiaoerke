@@ -577,7 +577,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 						"<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37'>赶紧玩起来吧！</a>";
 				WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
 			}
-		}else if(EventKey.indexOf("qrscene_yufangjiezhong")>-1){//gzg
+		}else if(EventKey.indexOf("yufangjiezhong")>-1){//gzg
         //有名片的医生扫码用户,推送文字消息.(扫码有名片医生二维码.)
         Runnable thread = new sendHasCardDoctorWechatMessage(EventKey,xmlEntity);
         threadExecutor.execute(thread);
