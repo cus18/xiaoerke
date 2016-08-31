@@ -665,30 +665,50 @@ public class ConsultSessionManager {
                                             /**
                                              *  更新第一次转医生的时间
                                              */
-                                            query = new Query().addCriteria(where("_id").is(consultSessionStatusVo.getId()));
-                                            Update update = new Update().set("firstTransTime", new Date());
-                                            consultRecordService.updateConsultSessionFirstTransferDate(query,update,ConsultSessionStatusVo.class);
-                                            ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(userId);
-                                            if(consultSessionPropertyVo != null){
-                                                int defaultTimes = consultSessionPropertyVo.getMonthTimes();
-                                                int additionalTimes = consultSessionPropertyVo.getPermTimes();
-                                                Query query2 = (new Query()).addCriteria(where("userId").is(userId).and("firstTransTime").exists(true).and("firstTransTime").ne(null).and("payStatus").in(list)).with(new Sort(Sort.Direction.DESC, "createDate"));
-                                                ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query2);
-                                                if(consultSessionStatusVo2.getFirstTransTime() != null ){
-                                                    long currentTime = new Date().getTime();
-                                                    if(currentTime - consultSessionStatusVo2.getFirstTransTime().getTime() <= 24*60*60*1000){
-                                                        System.out.println("24小时内，直接通过");
-                                                    }else{
+                                            Query query2 = (new Query()).addCriteria(where("userId").is(userId).and("firstTransTime").ne(null).and("payStatus").in(list)).with(new Sort(Sort.Direction.DESC, "createDate"));
+                                            ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query2);
+                                            long currentTime = new Date().getTime();
+                                            if(consultSessionStatusVo2 != null){
+                                                if(currentTime - consultSessionStatusVo2.getFirstTransTime().getTime() <= 24*60*60*1000){
+                                                    System.out.println("24小时内通过！");
+                                                }else{
+                                                    query = new Query().addCriteria(where("_id").is(consultSessionStatusVo.getId()));
+                                                    Update update = new Update().set("firstTransTime", new Date());
+                                                    consultRecordService.updateConsultSessionFirstTransferDate(query, update, ConsultSessionStatusVo.class);
+                                                    ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(userId);
+                                                    if (consultSessionPropertyVo != null) {
+                                                        int defaultTimes = consultSessionPropertyVo.getMonthTimes();
+                                                        int additionalTimes = consultSessionPropertyVo.getPermTimes();
                                                         if (defaultTimes > 0) {
                                                             defaultTimes--;
                                                             consultSessionPropertyVo.setMonthTimes(defaultTimes);
                                                             consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
-                                                        }else{
-                                                            if(additionalTimes > 0) {
+                                                        } else {
+                                                            if (additionalTimes > 0) {
                                                                 additionalTimes--;
                                                                 consultSessionPropertyVo.setPermTimes(additionalTimes);
                                                                 consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
                                                             }
+                                                        }
+                                                    }
+                                                }
+                                            }else{
+                                                query = new Query().addCriteria(where("_id").is(consultSessionStatusVo.getId()));
+                                                Update update = new Update().set("firstTransTime", new Date());
+                                                consultRecordService.updateConsultSessionFirstTransferDate(query, update, ConsultSessionStatusVo.class);
+                                                ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(userId);
+                                                if (consultSessionPropertyVo != null) {
+                                                    int defaultTimes = consultSessionPropertyVo.getMonthTimes();
+                                                    int additionalTimes = consultSessionPropertyVo.getPermTimes();
+                                                    if (defaultTimes > 0) {
+                                                        defaultTimes--;
+                                                        consultSessionPropertyVo.setMonthTimes(defaultTimes);
+                                                        consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
+                                                    } else {
+                                                        if (additionalTimes > 0) {
+                                                            additionalTimes--;
+                                                            consultSessionPropertyVo.setPermTimes(additionalTimes);
+                                                            consultSessionPropertyService.updateByPrimaryKey(consultSessionPropertyVo);
                                                         }
                                                     }
                                                 }
