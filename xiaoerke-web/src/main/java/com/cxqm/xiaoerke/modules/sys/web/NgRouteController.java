@@ -93,6 +93,14 @@ public class NgRouteController extends BaseController {
     public String olympicBabyIndex() {
         return "angular/olympicBabyIndex";
     }
+    /**
+     * consultDoctorHome 在线咨询医生主页
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/consultDoctorHome",method = {RequestMethod.POST, RequestMethod.GET})
+    public String doctorHomeIndex() {
+        return "angular/consultDoctorHomeIndex";
+    }
 
     /*
         wisdom 项目
