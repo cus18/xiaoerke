@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.ConsultDoctorTimeGiftDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorTimeGiftVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="receive_date" property="receiveDate" jdbcType="VARCHAR" />
+    <result column="open_id" property="openid" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, patient_register_service_id, yellow_cattle, first_order, scan_code, charge, create_date,
+    update_time,openid,order_source
+  </sql>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorTimeGiftVo" >
+    insert into consult_doctor_time_gift (open_id, receive_date,
+      nickname, fee_type,amount)
+    values (#{openid,jdbcType=VARCHAR}, #{receiveDate,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR},
+      #{feeType,jdbcType=VARCHAR},#{amount,jdbcType=VARCHAR})
+  </insert>
+  <select id="findConsultDoctorOrderListByInfo" resultMap="BaseResultMap" >
+    SELECT apr.order_id,apr.open_id,apr.receive_date,apr.amount,sa.nickname,apr.fee_type,apr.status,apr.reason
+    FROM account_pay_record apr
+    LEFT JOIN sys_attention sa ON sa.openid = apr.open_id
+    WHERE apr.status = 'success'
+    <choose>
+      <when test="feeType != null and feeType != ''">
+        and apr.fee_type = #{feeType}
+      </when>
+      <otherwise>
+        and apr.fee_type = 'doctorConsultPay'
+      </otherwise>
+    </choose>
+    <if test="openid != null and openid != ''" >
+      and apr.open_id = #{openid}
+    </if>
+    <if test="nickname != null and nickname != ''" >
+      and sa.nickname like CONCAT('%', #{nickname}, '%')
+    </if>
+    <if test="fromDate != null and fromDate != ''" >
+      and DATE_FORMAT(apr.receive_date,'%Y-%c-%d') >= DATE_FORMAT(#{fromDate},'%Y-%c-%d')
+    </if>
+    <if test="toDate != null and toDate != ''" >
+      and DATE_FORMAT(#{toDate},'%Y-%c-%d') >= DATE_FORMAT(apr.receive_date,'%Y-%c-%d')
+    </if>
+    GROUP BY apr.id
+    UNION ALL
+    SELECT cdtg.order_id,cdtg.open_id,cdtg.receive_date,cdtg.amount,cdtg.nickname,cdtg.fee_type,cdtg.status,cdtg.status as reason
+    FROM consult_doctor_time_gift cdtg
+    WHERE 1=1
+    <if test="feeType != null and feeType != ''" >
+      and cdtg.fee_type = #{feeType}
+    </if>
+    <if test="openid != null and openid != ''" >
+      and cdtg.open_id = #{openid}
+    </if>
+    <if test="nickname != null and nickname != ''" >
+      and cdtg.nickname like CONCAT('%', #{nickname}, '%')
+    </if>
+    <if test="fromDate != null and fromDate != ''" >
+      and DATE_FORMAT(cdtg.receive_date,'%Y-%c-%d') >= DATE_FORMAT(#{fromDate},'%Y-%c-%d')
+    </if>
+    <if test="toDate != null and toDate != ''" >
+      and DATE_FORMAT(#{toDate},'%Y-%c-%d') >= DATE_FORMAT(cdtg.receive_date,'%Y-%c-%d')
+    </if>
+  </select>
+</mapper>
