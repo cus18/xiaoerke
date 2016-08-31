@@ -33,6 +33,11 @@
     <result column="share_click_degree" property="shareClickDegree" jdbcType="VARCHAR" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
     <result column="displayDate" property="displayDate" jdbcType="VARCHAR"/>
+
+    <result column="charge_success_number" property="chargeSuccessNumber" jdbcType="INTEGER" />
+    <result column="charge_message_click_number" property="chargeMessageClickNumber" jdbcType="INTEGER" />
+    <result column="charge_send_message_number" property="chargeSendMessageNumber" jdbcType="INTEGER" />
+
   </resultMap>
   <sql id="Base_Column_List" >
     id, day_number, titile_number, evaluate_number, unevaluate_number, satisfied_number,
@@ -41,7 +46,8 @@
     more_consult_cancle_Attention_number, first_consult_number, first_consult_degree,
     second_consult_number, second_consult_degree, more_conuslt_number, more_consult_degree,
     max_money, min_money, sum_money, evaluate_click_number, evaluate_click_degree, share_click_number,
-    share_click_degree,create_date,DATE_FORMAT(create_date, '%Y-%m-%d') displayDate
+    share_click_degree,create_date,DATE_FORMAT(create_date, '%Y-%m-%d') displayDate,charge_success_number,
+    charge_message_click_number,charge_send_message_number
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
@@ -60,6 +66,7 @@
     delete from consult_statistic
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo" >
     insert into consult_statistic (id, day_number, titile_number, 
       evaluate_number, unevaluate_number, satisfied_number, 
@@ -72,7 +79,7 @@
     more_conuslt_number, more_consult_degree, max_money,
     min_money, sum_money, evaluate_click_number,
     evaluate_click_degree, share_click_number,
-    share_click_degree,create_date)
+    share_click_degree,create_date,charge_success_number,charge_message_click_number,charge_send_message_number)
     values (#{id,jdbcType=INTEGER}, #{dayNumber,jdbcType=INTEGER}, #{titileNumber,jdbcType=INTEGER}, 
       #{evaluateNumber,jdbcType=INTEGER}, #{unevaluateNumber,jdbcType=INTEGER}, #{satisfiedNumber,jdbcType=INTEGER}, 
       #{daySatisfiedDegree,jdbcType=VARCHAR}, #{weedSatisfiedDegree,jdbcType=VARCHAR}, 
@@ -84,7 +91,7 @@
     #{moreConusltNumber,jdbcType=INTEGER}, #{moreConsultDegree,jdbcType=VARCHAR}, #{maxMoney,jdbcType=VARCHAR},
     #{minMoney,jdbcType=VARCHAR}, #{sumMoney,jdbcType=VARCHAR}, #{evaluateClickNumber,jdbcType=INTEGER},
     #{evaluateClickDegree,jdbcType=VARCHAR}, #{shareClickNumber,jdbcType=INTEGER},
-    #{shareClickDegree,jdbcType=VARCHAR},#{createDate})
+    #{shareClickDegree,jdbcType=VARCHAR},#{createDate},#{chargeSuccessNumber},#{chargeMessageClickNumber},#{chargeSendMessageNumber})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo" >
     insert into consult_statistic
@@ -179,7 +186,18 @@
       <if test="createDate != null" >
         create_date,
       </if>
+
+      <if test="chargeSuccessNumber != null" >
+        charge_success_number,
+      </if>
+      <if test="chargeMessageClickNumber != null" >
+        charge_message_click_number,
+      </if>
+      <if test="chargeSendMessageNumber != null" >
+        charge_send_message_number,
+      </if>
     </trim>
+
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
@@ -271,6 +289,17 @@
       <if test="createDate != null" >
         #{createDate},
       </if>
+
+      <if test="chargeSuccessNumber != null" >
+        #{chargeSuccessNumber},
+      </if>
+      <if test="chargeMessageClickNumber != null" >
+        #{chargeMessageClickNumber},
+      </if>
+      <if test="chargeSendMessageNumber != null" >
+        #{chargeSendMessageNumber},
+      </if>
+
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo" >
@@ -360,9 +389,21 @@
       <if test="shareClickDegree != null" >
         share_click_degree = #{shareClickDegree,jdbcType=VARCHAR},
       </if>
+
+      <if test="chargeSuccessNumber != null" >
+        charge_success_number = #{chargeSuccessNumber,jdbcType=INTEGER},
+      </if>
+      <if test="shareClickNumber != null" >
+        charge_message_click_number = #{chargeMessageClickNumber,jdbcType=INTEGER},
+      </if>
+      <if test="shareClickDegree != null" >
+        charge_send_message_number = #{chargeSendMessageNumber,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
   <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo" >
     update consult_statistic
     set day_number = #{dayNumber,jdbcType=INTEGER},
@@ -392,9 +433,14 @@
       evaluate_click_number = #{evaluateClickNumber,jdbcType=INTEGER},
       evaluate_click_degree = #{evaluateClickDegree,jdbcType=VARCHAR},
       share_click_number = #{shareClickNumber,jdbcType=INTEGER},
-      share_click_degree = #{shareClickDegree,jdbcType=VARCHAR}
+      share_click_degree = #{shareClickDegree,jdbcType=VARCHAR},
+
+      charge_success_number = #{chargeSuccessNumber,jdbcType=INTEGER},
+      charge_message_click_number = #{chargeMessageClickNumber,jdbcType=INTEGER},
+      charge_send_message_number = #{chargeSendMessageNumber,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <!--咨询统计  deliang-->
   <select id="getConsultStatistic" resultType="java.lang.Float" parameterType="java.util.HashMap">
     select * from (
