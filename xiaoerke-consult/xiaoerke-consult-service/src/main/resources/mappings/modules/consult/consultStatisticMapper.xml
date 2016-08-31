@@ -485,7 +485,9 @@
     select ceil(Max(cast(redPacket as SIGNED))) countNumber  from customerEvaluation where createtime like '${createDate}%' and redPacket is not null and redPacket !=''
     union all
     select ceil(sum(redpacket)) countNumber from customerEvaluation where createtime like '${createDate}%' and redPacket is not null and redPacket !=''
-  </select>
+    union all
+    SELECT count(*) FROM account_pay_record WHERE fee_type = 'doctorconsultpay' AND STATUS = 'success' and pay_date like '${createDate}%'
+    </select>
   <!--有效咨询和差评人数-->
   <select id="getValidateConsultAndFeedBackCounts" parameterType="java.util.Map" resultType="java.util.Map">
     SELECT consult.date,consult.validateConsultCount,IFNULL(feedback.feedBackCount,0) feedBackCount FROM

@@ -134,7 +134,7 @@ public class ScheduleTaskController extends BaseController {
          */
         String daySatisfiedDegree = "";
         if (evaluateNumber != 0) {
-            daySatisfiedDegree = String.valueOf((float) satisfiedNumber / (float) evaluateNumber * 100) + "%";
+            daySatisfiedDegree = String.valueOf(satisfiedNumber / evaluateNumber * 100) + "%";
         }
 
         //打赏人数
@@ -149,7 +149,7 @@ public class ScheduleTaskController extends BaseController {
          */
         String rewardDegree = "";
         if (evaluateNumber != 0) {
-            rewardDegree = String.valueOf((float) rewardNumber / (float) evaluateNumber * 100) + "%";
+            rewardDegree = String.valueOf(rewardNumber / evaluateNumber * 100) + "%";
         }
         //首次咨询取消关注
         /**
@@ -176,7 +176,7 @@ public class ScheduleTaskController extends BaseController {
          */
         String firstConsultDegree = "";
         if (dayNumber != 0) {
-            firstConsultDegree = String.valueOf((float) firstConsultNumber / (float) dayNumber * 100) + "%";
+            firstConsultDegree = String.valueOf(firstConsultNumber / dayNumber * 100) + "%";
         }
         //多次咨询人数
         /**
@@ -189,7 +189,7 @@ public class ScheduleTaskController extends BaseController {
          */
         String moreConsultDegree = "";
         if (dayNumber != 0) {
-            moreConsultDegree = String.valueOf((float) moreConusltNumber / (float) dayNumber * 100) + "%";
+            moreConsultDegree = String.valueOf(moreConusltNumber / dayNumber * 100) + "%";
         }
 
         //查询每周评价人数
@@ -223,17 +223,25 @@ public class ScheduleTaskController extends BaseController {
         /**
          *select MIN(redpacket) countNumber from customerEvaluation where createtime like '2016-06-30%' and redPacket is not null and redPacket !=''
          */
-        float minMoney = resultList.get(16);
-        //最高金额
-        /**
-         * select MAX(redpacket) countNumber from customerEvaluation where createtime like '2016-06-30%' and redPacket is not null and redPacket !=''
-         */
-        float maxMoney = resultList.get(17);
-        //打赏总额
-        /**
-         *select sum(redpacket) countNumber from customerEvaluation where createtime like '2016-06-30%' and redPacket is not null and redPacket !=''
-         */
-        float sumMoney = resultList.get(18);
+        float minMoney = 0;
+        float maxMoney = 0;
+        float sumMoney = 0;
+        try {
+            minMoney = resultList.get(16);
+            //最高金额
+            /**
+             * select MAX(redpacket) countNumber from customerEvaluation where createtime like '2016-06-30%' and redPacket is not null and redPacket !=''
+             */
+            maxMoney = resultList.get(17);
+            //打赏总额
+            /**
+             *select sum(redpacket) countNumber from customerEvaluation where createtime like '2016-06-30%' and redPacket is not null and redPacket !=''
+             */
+            sumMoney = resultList.get(18);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         //评价点击量
         Query queryClick = new Query().addCriteria(Criteria.where("title").regex("ZXPJSXY_JE")).addCriteria(Criteria.where("create_date").gte(startDate).andOperator(Criteria.where("create_date").lte(endDate)));
 
@@ -259,27 +267,43 @@ public class ScheduleTaskController extends BaseController {
             shareClickDegree = String.valueOf((float) shareClickNumber / (float) dayNumber * 100) + "%";
         }
 
+        /**
+         * 付费推送推了多少人需要去重
+         */
+        Query query = new Query().addCriteria(Criteria.where("title").regex("consult_charge_twice_information")).addCriteria(Criteria.where("create_date").gte(startDate).andOperator(Criteria.where("create_date").lte(endDate)));
+        int chargeSendMessageNumber = (int) logMongoDBService.queryCount(query);
+
+        /**
+         * 付费推送多少人点击了   需要去重  时间改为当天
+         */
+        query = new Query().addCriteria(Criteria.where("title").regex("consult_charge_twice_information_payclick")).addCriteria(Criteria.where("create_date").gte(startDate).andOperator(Criteria.where("create_date").lte(endDate)));
+        int chargeMessageClickNumber = (int) logMongoDBService.queryCount(query);
+        /**
+         * 多少人付费    加当天的时间
+         */
+        float chargeSuccessNumber = resultList.get(19);
+
         ConsultStatisticVo consultStatisticVo = new ConsultStatisticVo();
-        consultStatisticVo.setDayNumber((int)dayNumber);
+        consultStatisticVo.setDayNumber((int) dayNumber);
         consultStatisticVo.setDaySatisfiedDegree(daySatisfiedDegree);
-        consultStatisticVo.setDayYawpNumber((int)dayYawpNumber);
-        consultStatisticVo.setEvaluateNumber((int)evaluateNumber);
-        consultStatisticVo.setSatisfiedNumber((int)satisfiedNumber);
-        consultStatisticVo.setFirstConsultCancleAttentionNumber((int)firstConsultCancleAttentionNumber);
+        consultStatisticVo.setDayYawpNumber((int) dayYawpNumber);
+        consultStatisticVo.setEvaluateNumber((int) evaluateNumber);
+        consultStatisticVo.setSatisfiedNumber((int) satisfiedNumber);
+        consultStatisticVo.setFirstConsultCancleAttentionNumber((int) firstConsultCancleAttentionNumber);
         consultStatisticVo.setFirstConsultDegree(firstConsultDegree);
         consultStatisticVo.setMonthSatisfiedDegree(monthDatisfiedDegree);
-        consultStatisticVo.setMonthYawpNumber((int)monthYawpNumber);
-        consultStatisticVo.setMoreConsultCancleAttentionNumber((int)moreConsultCancleAttentionNumber);
+        consultStatisticVo.setMonthYawpNumber((int) monthYawpNumber);
+        consultStatisticVo.setMoreConsultCancleAttentionNumber((int) moreConsultCancleAttentionNumber);
         consultStatisticVo.setMoreConsultDegree(moreConsultDegree);
         consultStatisticVo.setRewardDegree(rewardDegree);
-        consultStatisticVo.setFirstConsultNumber((int)firstConsultNumber);
-        consultStatisticVo.setFirstConsultCancleAttentionNumber((int)firstConsultCancleAttentionNumber);
-        consultStatisticVo.setWeekYawpNumber((int)weekYawpNumber);
+        consultStatisticVo.setFirstConsultNumber((int) firstConsultNumber);
+        consultStatisticVo.setFirstConsultCancleAttentionNumber((int) firstConsultCancleAttentionNumber);
+        consultStatisticVo.setWeekYawpNumber((int) weekYawpNumber);
         consultStatisticVo.setWeedSatisfiedDegree(weedSatisfiedDegree);
-        consultStatisticVo.setUnevaluateNumber((int)unevaluateNumber);
-        consultStatisticVo.setTitileNumber((int)titileNnumber);
-        consultStatisticVo.setMoreConusltNumber((int)moreConusltNumber);
-        consultStatisticVo.setRewardNumber((int)rewardNumber);
+        consultStatisticVo.setUnevaluateNumber((int) unevaluateNumber);
+        consultStatisticVo.setTitileNumber((int) titileNnumber);
+        consultStatisticVo.setMoreConusltNumber((int) moreConusltNumber);
+        consultStatisticVo.setRewardNumber((int) rewardNumber);
         consultStatisticVo.setMinMoney(String.valueOf(minMoney));
         consultStatisticVo.setMaxMoney(String.valueOf(maxMoney));
         consultStatisticVo.setSumMoney(String.valueOf(sumMoney));
@@ -288,6 +312,10 @@ public class ScheduleTaskController extends BaseController {
         consultStatisticVo.setShareClickNumber(shareClickNumber);
         consultStatisticVo.setShareClickDegree(shareClickDegree);
         consultStatisticVo.setCreateDate(createTime);
+
+        consultStatisticVo.setChargeMessageClickNumber(chargeMessageClickNumber);
+        consultStatisticVo.setChargeSendMessageNumber(chargeSendMessageNumber);
+        consultStatisticVo.setChargeSuccessNumber((int) chargeSuccessNumber);
         consultStatisticService.insertSelective(consultStatisticVo);
 
     }
@@ -298,7 +326,7 @@ public class ScheduleTaskController extends BaseController {
         calendar.set(Calendar.SECOND, 0);
     }
 
-    public void updateOlyGames(){
+    public void updateOlyGames() {
         olyGamesService.updateLevelCurrentTimes(new OlyBabyGamesVo());
     }
 
