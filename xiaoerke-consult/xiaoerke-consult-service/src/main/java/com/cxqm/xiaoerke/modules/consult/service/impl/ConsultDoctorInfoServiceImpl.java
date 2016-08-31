@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -211,6 +212,11 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
                 temp.put("headimgurl",wechatMap.get("headimgurl"));
             }
         }
+        Integer sing = Integer.parseInt(patientRegisterPraiseService.getCustomerStarSingById(csUserId).get("startNum").toString()) + 200;
+        Integer count = Integer.parseInt(patientRegisterPraiseService.getCustomerStarCountById(csUserId).get("startNum").toString()) + 200;
+        float rate = (float) sing / count;
+        DecimalFormat df = new DecimalFormat("0.00");//格式化小数
+        returnMap.put("rate",df.format(rate));
         returnMap.put("practitionerCertificateNo",vo.getPractitionerCertificateNo());
         returnMap.put("doctorName",vo.getName());
         returnMap.put("title",vo.getTitle());
