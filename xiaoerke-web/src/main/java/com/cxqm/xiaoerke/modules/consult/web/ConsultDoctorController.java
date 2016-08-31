@@ -447,9 +447,8 @@ public class ConsultDoctorController extends BaseController {
     @RequestMapping(value = "/getConsultDoctorHomepageInfo", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    HashMap<String, Object> getConsultDoctorHomepageInfo() {
+    HashMap<String, Object> getConsultDoctorHomepageInfo(@RequestParam(required = true) String userId) {
         HashMap<String, Object> response = new HashMap<String, Object>();
-        String userId = "";
         response = consultDoctorInfoService.getConsultDoctorHomepageInfo(userId);
         return response;
     }
@@ -460,13 +459,12 @@ public class ConsultDoctorController extends BaseController {
     @RequestMapping(value = "/findDoctorAllEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    HashMap<String, Object> findDoctorAllEvaluation() {
+    HashMap<String, Object> findDoctorAllEvaluation(@RequestParam(required = true) String userId,@RequestParam(required = true) int pageNo,@RequestParam(required = true) int pageSize) {
         HashMap<String, Object> response = new HashMap<String, Object>();
         Map<String, Object> param = new HashMap<String, Object>();
-        String userId = "";
         param.put("userId",userId);
-        param.put("pageNo","");
-        param.put("pageSize","");
+        param.put("pageNo",pageNo);
+        param.put("pageSize",pageSize);
         response = consultDoctorInfoService.findDoctorAllEvaluation(param);
         return response;
     }
