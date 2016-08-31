@@ -86,6 +86,14 @@ angular.module('controllers', ['ionic']).controller('playtourShareCtrl', [
                                     //记录用户分享文章
                                     var pData = {logContent:encodeURI("ZXFX")};
                                     $http({method:'post',url:'util/recordLogs',params:pData});
+
+                                    // var shareData = {logContent:encodeURI("consultfirstchargefree")};
+                                    // $http({method:'post',url:'util/recordLogs',params:shareData});
+
+                                    //增加一次机会
+                                    // addMePermTimes.save({"shareType":"consultfirstchargefree"},function (data) {
+                                    //
+                                    // });
                                 },
                                 fail: function (res) {
                                 }

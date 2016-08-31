@@ -368,8 +368,6 @@
 			<list>
  				<ref bean="updateWechatInfoQuarzCronTrigger"/>
  				<!--<ref bean="getWechatRecoderTrigger"/>-->
-				<!--<ref bean="sendMessageForCustomerReturnAMTrigger"/>-->
-				<!--<ref bean="sendMessageForCustomerReturnPMTrigger"/>-->
 				<!--<ref bean="letsGoReminderCronTrigger"/>-->
 				<!--<ref bean="updateSrSerStatusCronTrigger"/>-->
 				<!--<ref bean="repeatSettingRegisterCronTrigger"/>-->
