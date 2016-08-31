@@ -83,4 +83,8 @@ public interface PatientRegisterPraiseService {
     List<Map<String,Object>> findDissatisfiedList(Map map);
 
     public void sendRemindMsgToUser(String userId,String sessionId);
+
+    List<Map<String,Object>> findDoctorEvaluationById(Map<String,Object> map);
+
+    List<Map<String,Object>> findDoctorAllEvaluationByInfo(Map<String,Object> map);
 }

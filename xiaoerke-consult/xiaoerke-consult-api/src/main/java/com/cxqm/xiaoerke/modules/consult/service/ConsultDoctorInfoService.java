@@ -34,4 +34,12 @@ public interface ConsultDoctorInfoService {
     List<Map> getDoctorInfoMoreByUserId(String userId);
 
     List<ConsultDoctorInfoVo> findManagerDoctorInfoBySelective(ConsultDoctorInfoVo consultDoctorInfoVo);
+
+    void saveLecture(ConsultDoctorInfoVo consultDoctorInfoVo);
+
+    List<ConsultDoctorInfoVo> getConsultLecture(Map param);
+
+    HashMap<String, Object> getConsultDoctorHomepageInfo(String userId);
+
+    HashMap<String, Object> findDoctorAllEvaluation(Map<String, Object> param);
 }

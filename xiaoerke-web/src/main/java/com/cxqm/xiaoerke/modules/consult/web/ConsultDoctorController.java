@@ -15,6 +15,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
+import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultRecordMongoDBServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
@@ -437,6 +438,36 @@ public class ConsultDoctorController extends BaseController {
     HashMap<String, Object> getSystemTime() {
         HashMap<String, Object> response = new HashMap<String, Object>();
         response.put("dateTime", new Date());
+        return response;
+    }
+
+    /**
+     * 获取咨询医生主页信息
+     */
+    @RequestMapping(value = "/getConsultDoctorHomepageInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    HashMap<String, Object> getConsultDoctorHomepageInfo() {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        String userId = "";
+        response = consultDoctorInfoService.getConsultDoctorHomepageInfo(userId);
+        return response;
+    }
+
+    /**
+     * 获取咨询医生主页信息
+     */
+    @RequestMapping(value = "/findDoctorAllEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    HashMap<String, Object> findDoctorAllEvaluation() {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        Map<String, Object> param = new HashMap<String, Object>();
+        String userId = "";
+        param.put("userId",userId);
+        param.put("pageNo","");
+        param.put("pageSize","");
+        response = consultDoctorInfoService.findDoctorAllEvaluation(param);
         return response;
     }
 }
