@@ -39,4 +39,8 @@ public interface ConsultDoctorInfoDao {
 
     // jiangzg add 查询具有某种权限的医生信息 2016-8-12 10:55:20
     List<ConsultDoctorInfoVo> findManagerDoctorInfoBySelective(ConsultDoctorInfoVo consultDoctorInfoVo);
+
+    void saveLecture (ConsultDoctorInfoVo consultDoctorInfoVo);
+
+    List<ConsultDoctorInfoVo> getConsultLecture(Map param);
 }

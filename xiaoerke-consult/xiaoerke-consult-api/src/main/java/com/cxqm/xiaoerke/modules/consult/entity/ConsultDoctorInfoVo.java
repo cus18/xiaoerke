@@ -43,8 +43,48 @@ public class ConsultDoctorInfoVo {
 
     private String toDate;
 
+    private String practitionerCertificateNo;
+
+    private String topics;
+
+    private String link;
+
+    private String lectureTime;
+
     public String getFromDate() {
         return fromDate;
+    }
+
+    public String getTopics() {
+        return topics;
+    }
+
+    public void setTopics(String topics) {
+        this.topics = topics;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getLectureTime() {
+        return lectureTime;
+    }
+
+    public void setLectureTime(String lectureTime) {
+        this.lectureTime = lectureTime;
+    }
+
+    public String getPractitionerCertificateNo() {
+        return practitionerCertificateNo;
+    }
+
+    public void setPractitionerCertificateNo(String practitionerCertificateNo) {
+        this.practitionerCertificateNo = practitionerCertificateNo;
     }
 
     public String getType() {

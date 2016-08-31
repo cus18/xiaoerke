@@ -1,0 +1,66 @@
+<ion-view view-title="医生首页">
+    <ion-content class="consultDoctorHome" style="top:0;">
+        <div class="home_head">
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_ding.png" width="100%" height="66px"/>
+            <div class="home_doctor_img">
+                <img ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_docman.png"/>
+            </div>
+            <div class="com_ceter com_font18 com_color3 home_name">梁平</div>
+            <div class="com_ceter com_font14 com_color3 home_keshi">主治医生（儿内科）</div>
+            <div class="com_ceter com_font12 com_color9 home_zhucehao">执业医师注册号：110110110110110</div>
+        </div>
+        <div class="home_cznum">
+            <div class="cnum com_ceter">
+                <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_cnum.png" width="45" height="45"/>
+                <div class="cnum_num com_ceter com_font13 com_color3">问诊量<span class="com_bold com_font18">555</span></div>
+            </div>
+            <div class="znum com_ceter">
+                <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_znum.png" width="45" height="45"/>
+                <div class="znum_num com_ceter com_font13 com_color3"><span class="com_bold com_font18">100%</span>的用户觉得有用</div>
+            </div>
+        </div>
+        <div class="home_introduce">
+            <div class="introduce_title com_font15 com_color3"><span>医生介绍</span></div>
+            <div class="introduce_content">
+                <div class="com_color6 com_font14">地方豆腐干大锅饭</div>
+                <div class="com_color6 com_font14">地方豆</div>
+                <div class="com_color6 com_font14">地方豆腐干</div>
+                <div class="com_color6 com_font14">地方豆大锅饭</div>
+            </div>
+        </div>
+        <div class="home_comment">
+            <div class="comment_title com_font15 com_color3">
+                用户评价<span class="com_font13 com_color6">（555）</span>
+                <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_jintou.png" width="8" height="15"/>
+            </div>
+            <div class="comment_content">
+                <div class="content_title">
+                    <img ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_comimg.jpg" width="20" height="20"/>
+                    <span class="com_fontlength com_font13 com_color6">的吧德邦德邦的</span><span class="com_fontlength com_font12 com_color6 com_margin">2016-08-23</span>
+                    <span class="contentspan4 com_font13 com_bold">100元</span><span class="contentspan3 com_font13 com_bold">不满意</span>
+                </div>
+                <div class="com_font14 com_color3 com_margin11">的空间路上看到就流口水jfk了算了jfk老师就离开房间昆仑山解放立刻就深刻理解的反馈数据来看大家思考</div>
+            </div>
+            <div class="comment_content comment_content2" ng-repeat="item in [0,1,2]">
+                <div class="content_title">
+                    <img ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_comimg.jpg" width="20" height="20"/>
+                    <span class="com_fontlength com_font13 com_color6">的吧德邦德邦的</span><span class="com_fontlength com_font12 com_color6 com_margin">2016-08-23</span>
+                    <span class="contentspan4 com_font13 com_bold">100元</span><span class="contentspan3 com_font13 com_bold">不满意</span>
+                </div>
+                <div class="com_font14 com_color3 com_margin11">的空间路上看到就流口水jfk了算了jfk老师就离开房间昆仑山解放立刻就深刻理解的反馈数据来看大家思考</div>
+            </div>
+        </div>
+        <div class="home_chair">
+            <div class="chair_title com_font15 com_color3">
+                精彩讲座
+                <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_jintou.png" width="8" height="15"/>
+            </div>
+            <div class="chair_content com_font14 com_color3" ng-repeat="item in [0,1,2]">
+                《达尔文论》<span class="com_color6">2016-08-31</span>
+            </div>
+        </div>
+        <div class="home_friend">
+            <div>患友圈</div>
+        </div>
+    </ion-content>
+</ion-view>

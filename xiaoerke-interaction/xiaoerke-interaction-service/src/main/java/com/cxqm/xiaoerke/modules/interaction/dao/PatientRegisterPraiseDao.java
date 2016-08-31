@@ -95,4 +95,8 @@ public interface PatientRegisterPraiseDao {
      */
     List<Map<String,Object>> findDissatisfiedList(Map map);
 
+    List<Map<String, Object>> findDoctorEvaluationById(Map<String, Object> map);
+
+    List<Map<String, Object>> findDoctorAllEvaluationById(Map<String, Object> map);
+
 }

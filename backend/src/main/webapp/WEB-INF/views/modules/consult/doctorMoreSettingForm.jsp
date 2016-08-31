@@ -99,7 +99,7 @@
 			$.ajax({
 	             type: "post",
 	             url: "${ctx}/consult/doctorInfoOper",
-	             data: {userId:"${user.id}",name:"${user.name}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),skill:$("#skill").val(),description:$("#description").val()},
+	             data: {userId:"${user.id}",name:"${user.name}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),practitionerCertificateNo:$("#practitionerCertificateNo").val(),skill:$("#skill").val(),description:$("#description").val()},
 	             dataType: "json",
 	             success: function(data){
 	             	if("suc"==data.result){
@@ -132,6 +132,21 @@
 				$("#permissionSettings").show();
 			}
 		}
+		function saveLecture(){
+			$.ajax({
+				type: "post",
+				url: "${ctx}/consult/saveLecture",
+				data: {userId:"${user.id}",topics:$("#topics").val(),link:$("#link").val(),lectureTime:$("#lectureTime").val()},
+				dataType: "json",
+				success: function(data){
+					if("suc"==data.result){
+						alertx("操作成功！");
+					}else{
+						alertx("操作失败！");
+					}
+				}
+			});
+		}
 		function savePermissionSettings(){
 			$.ajax({
 				type: "post",
@@ -147,6 +162,7 @@
 				}
 			});
 		}
+
 		function deleteDoctor(){
 			confirmx("确认删除吗？",function(){
 				if("${user.phone}"==""){
@@ -296,6 +312,12 @@
 				</div>
 			</div>
 			<div class="control-group">
+				<label class="control-label">执业医师证号:</label>
+				<div class="controls">
+					<input id="practitionerCertificateNo" value="${doctor.practitionerCertificateNo}" htmlEscape="false" maxlength="50" class="input-medium"/>
+				</div>
+			</div>
+			<div class="control-group">
 				<label class="control-label">擅长:</label>
 				<div class="controls">
 					<textarea id="skill" rows="4" maxlength="250" class="required" style="width:200px;">${doctor.skill}</textarea>
@@ -306,6 +328,51 @@
 				<div class="controls">
 					<textarea id="description" rows="4" maxlength="250" class="required" style="width:400px;">${doctor.description}</textarea>
 				</div>
+			</div>
+
+			讲座：
+			<c:forEach items="${lectureList}" var="lecture">
+				<div class="control-group">
+					<label class="control-label">主题:</label>
+					<div class="controls">
+							${lecture.topics}
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">连接地址:</label>
+					<div class="controls">
+							${lecture.link}
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">讲座时间:</label>
+					<div class="controls">
+							${lecture.lectureTime}
+					</div>
+				</div>
+			</c:forEach>
+
+			<div class="control-group">
+				<label class="control-label">主题:</label>
+				<div class="controls">
+					<input id="topics" value="" htmlEscape="false" maxlength="50" class="input-medium"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">连接地址:</label>
+				<div class="controls">
+					<input id="link" value="" htmlEscape="false" maxlength="50" class="input-medium"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">讲座时间:</label>
+				<div class="controls">
+					<input id="lectureTime" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
+								onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+				</div>
+			</div>
+			<div class="form-actions" >
+				<input class="btn btn-primary" type="button" onclick="saveLecture()" value="增加课程"/>
 			</div>
 			<div class="form-actions" >
 				<input class="btn btn-primary" type="button" onclick="savePersonalData()" value="确认"/>

@@ -133,6 +133,7 @@ public class ConsultController extends BaseController {
 		model.addAttribute("unsatisfy", map.get("unsatisfy"));
 		model.addAttribute("sessionCount", map.get("sessionCount"));
 		model.addAttribute("sessionMap", map.get("sessionMap"));
+		model.addAttribute("lectureList", map.get("lectureList"));
 		return "modules/consult/doctorMoreSettingForm";
 	}
 
@@ -148,6 +149,26 @@ public class ConsultController extends BaseController {
 		JSONObject result = new JSONObject();
 		try {
 			consultDoctorInfoService.consultDoctorInfoOper(doctor);
+			result.put("result","suc");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.put("result","fail");
+		}
+		return result.toString();
+	}
+
+	/**
+	 * 添加修改医生信息
+	 * @param
+	 * @param
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "saveLecture")
+	public String saveLecture(ConsultDoctorInfoVo doctor,HttpServletRequest request,HttpServletResponse response, Model model) {
+		JSONObject result = new JSONObject();
+		try {
+			consultDoctorInfoService.saveLecture(doctor);
 			result.put("result","suc");
 		} catch (Exception e) {
 			e.printStackTrace();
