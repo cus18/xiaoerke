@@ -462,7 +462,7 @@ public class ConsultDoctorController extends BaseController {
     HashMap<String, Object> findDoctorAllEvaluation(@RequestParam(required = true) String userId,@RequestParam(required = true) int pageNo,@RequestParam(required = true) int pageSize) {
         HashMap<String, Object> response = new HashMap<String, Object>();
         Map<String, Object> param = new HashMap<String, Object>();
-        param.put("userId",userId);
+        param.put("doctorId",userId);
         param.put("startRowNo",pageNo*10);
         param.put("pageSize",pageSize);
         response = consultDoctorInfoService.findDoctorAllEvaluation(param);
