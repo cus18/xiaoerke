@@ -23,7 +23,7 @@ define(['appConsultDoctorHome'], function(app){
 
                 $stateProvider
                     .state('consultDoctorHome', {
-                        url: '/consultDoctorHome',
+                        url: '/consultDoctorHome/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'consultDoctorHomeCtrl',
                         resolve: {
@@ -40,7 +40,7 @@ define(['appConsultDoctorHome'], function(app){
                         }
                     })
                     .state('consultDoctorCommentDetails', {
-                        url: '/consultDoctorCommentDetails',
+                        url: '/consultDoctorCommentDetails/:id,:name,:gender',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'consultDoctorCommentDetailsCtrl',
                         resolve: {

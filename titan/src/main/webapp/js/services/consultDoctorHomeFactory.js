@@ -3,11 +3,16 @@
  * 调用方式：geoFactory.getGeo();
  */
 
+var doctor ='consult/doctor/';
+
 define(['appConsultDoctorHome'], function (app) {
     app
-        .factory('AccountInfo',['$resource',function ($resource){
-            return $resource(user_h5 + 'account/user/accountInfo');
+        .factory('GetConsultDoctorHomepageInfo',['$resource',function ($resource){
+            return $resource(doctor + 'getConsultDoctorHomepageInfo');
         }])
+        .factory('FindDoctorAllEvaluation',['$resource',function ($resource){
+            return $resource(doctor + 'findDoctorAllEvaluation');
+        }]);
     
 });
 

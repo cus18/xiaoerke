@@ -1,28 +1,32 @@
 <ion-view view-title="医生评价">
     <ion-content class="consultDoctorCommentDetails" style="top:0;">
         <div class="details_title">
-            <img ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_docwoman.png" width="40" height="40"/>
-            <div>梁平</div>
+            <img ng-src="{{doctorImg}}" width="40" height="40"/>
+            <div>{{doctorName}}</div>
         </div>
-        <div class="details_comment">
+        <div class="details_comment" >
             <div class="comment_content">
                 <div class="content_title">
-                    <img ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_comimg.jpg" width="20" height="20"/>
-                    <span class="com_fontlength com_font13 com_color6">的吧德邦德邦的</span><span class="com_fontlength com_font12 com_color6 com_margin">2016-08-23</span>
-                    <span class="contentspan4 com_font13 com_bold">100元</span><span class="contentspan3 com_font13 com_bold">不满意</span>
+                    <img ng-if="allEvaluationList.headimgurl==''||allEvaluationList.headimgurl==null" ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_comimg.jpg" width="20" height="20"/>
+                    <img ng-if="allEvaluationList.headimgurl!=''&&allEvaluationList.headimgurl!=null" ng-src="{{allEvaluationList.headimgurl}}" width="20" height="20"/>
+                    <span class="com_fontlength com_font13 com_color6">{{allEvaluationList.nickname}}</span><span class="com_fontlength com_font12 com_color6 com_margin">{{ allEvaluationList.createtime | date : 'yyyy-MM-dd'}}</span>
+                    <span ng-if="allEvaluationList.redPacket!=''&&allEvaluationList.redPacket!=null" class="contentspan4 com_font13 com_bold">{{allEvaluationList.redPacket}}元</span>
+                    <span class="contentspan3 com_font13 com_bold">{{allEvaluationList.serviceAttitude==1?'不满意':''}}{{allEvaluationList.serviceAttitude==3?'满意':''}}{{allEvaluationList.serviceAttitude==5?'非常满意':''}}</span>
                 </div>
-                <div class="com_font14 com_color3 com_margin11">的空间路上看到就流口水jfk了算了jfk老师就离开房间昆仑山解放立刻就深刻理解的反馈数据来看大家思考</div>
+                <div class="com_font14 com_color3 com_margin11">{{allEvaluationList.content}}</div>
             </div>
-            <div class="comment_content comment_content2" ng-repeat="item in [0,1,2]">
+            <div class="comment_content comment_content2" ng-repeat="item in commentList">
                 <div class="content_title">
-                    <img ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_comimg.jpg" width="20" height="20"/>
-                    <span class="com_fontlength com_font13 com_color6">的吧德邦德邦的</span><span class="com_fontlength com_font12 com_color6 com_margin">2016-08-23</span>
-                    <span class="contentspan4 com_font13 com_bold">100元</span><span class="contentspan3 com_font13 com_bold">不满意</span>
+                    <img ng-if="item.headimgurl==''||item.headimgurl==null" ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_comimg.jpg" width="20" height="20"/>
+                    <img ng-if="item.headimgurl!=''&&item.headimgurl!=null" ng-src="{{item.headimgurl}}" width="20" height="20"/>
+                    <span class="com_fontlength com_font13 com_color6">{{item.nickname}}</span><span class="com_fontlength com_font12 com_color6 com_margin">{{ item.createtime | date : 'yyyy-MM-dd'}}</span>
+                    <span ng-if="item.redPacket!=''&&item.redPacket!=null" class="contentspan4 com_font13 com_bold">{{item.redPacket}}元</span>
+                    <span class="contentspan3 com_font13 com_bold">{{item.serviceAttitude==1?'不满意':''}}{{item.serviceAttitude==3?'满意':''}}{{item.serviceAttitude==5?'非常满意':''}}</span>
                 </div>
-                <div class="com_font14 com_color3 com_margin11">的空间路上看到就流口水jfk了算了jfk老师就离开房间昆仑山解放立刻就深刻理解的反馈数据来看大家思考</div>
+                <div class="com_font14 com_color3 com_margin11">{{item.content}}</div>
             </div>
         </div>
-        <div class="details_more">
+        <div class="details_more" ng-click="goMore()" ng-if="showMore">
             <div>查看更多</div>
             <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/details_jiantou.png" width="12" height="6px"/>
         </div>
