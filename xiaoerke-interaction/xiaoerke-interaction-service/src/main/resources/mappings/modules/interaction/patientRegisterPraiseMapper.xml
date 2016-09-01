@@ -484,6 +484,6 @@
     </select>
     <!--  分页查询医生评价且有赏金的数据sunxiao -->
     <select id="findDoctorAllEvaluationById" resultType="java.util.Map" parameterType="java.util.Map">
-        SELECT * FROM customerEvaluation where doctorId = #{doctorId} and content is not null and content != '' ORDER BY createtime desc  limit #{pageNo}*10,#{pageSize}
+        SELECT * FROM customerEvaluation where doctorId = #{doctorId} and content is not null and content != '' ORDER BY createtime desc  limit #{pageNo},#{pageSize}
     </select>
 </mapper>
