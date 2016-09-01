@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.dao;
 
 
+import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo;
 import org.apache.ibatis.annotations.Param;
@@ -24,5 +25,9 @@ public interface ConsultSessionPropertyDao {
     int addPermTimes(@Param("userId") String userId);
 
     int updateMonthTime();
+
+    Page<ConsultSessionPropertyVo> findConsultUserInfoListByInfo(Page<ConsultSessionPropertyVo> page,ConsultSessionPropertyVo vo);
+
+    void consultTimeGift(ConsultSessionPropertyVo vo);
 
 }

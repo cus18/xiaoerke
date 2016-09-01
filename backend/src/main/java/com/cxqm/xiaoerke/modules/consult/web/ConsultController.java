@@ -6,7 +6,10 @@ import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
 import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorTimeGiftVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.entity.DissatisfiedVo;
 import com.cxqm.xiaoerke.modules.entity.ReceiveTheMindVo;
@@ -39,6 +42,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.*;
 
 /**
@@ -58,6 +63,9 @@ public class ConsultController extends BaseController {
 
 	@Autowired
 	private PatientRegisterPraiseService patientRegisterPraiseService;
+
+	@Autowired
+	private AccountService accountService;
 
 	/**
 	 * 咨询的医生 列表
@@ -288,4 +296,120 @@ public class ConsultController extends BaseController {
 		return null;
 	}
 
+	/**
+	 * 咨询订单列表
+	 * sunxiao
+	 * @param
+	 * @param model
+	 */
+	@RequestMapping(value = "consultOrderList")
+	public String consultOrderList(ConsultDoctorTimeGiftVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+		String temp = ((String)request.getParameter("pageNo"));
+		Page<ConsultDoctorTimeGiftVo> pagess = null;
+		if(temp==null){
+			pagess = new Page<ConsultDoctorTimeGiftVo>();
+		}else{
+			Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			Integer pageSize = Integer.parseInt(request.getParameter("pageSize"));
+			pagess = new Page<ConsultDoctorTimeGiftVo>(pageNo,pageSize);
+		}
+		Page<ConsultDoctorTimeGiftVo> page = consultDoctorInfoService.findConsultDoctorOrderListByInfo(pagess, vo);
+		Map<String,Object> tradeWayMap = new LinkedHashMap<String, Object>();
+		tradeWayMap.put("", "全部");
+		tradeWayMap.put("doctorConsultPay", "支付");
+		tradeWayMap.put("doctorConsultGift", "赠送");
+		model.addAttribute("vo", vo);
+		model.addAttribute("page", page);
+		model.addAttribute("tradeWayMap", tradeWayMap);
+		return "modules/consult/consultOrderList";
+	}
+
+	/**
+	 * 咨询订单列表
+	 * sunxiao
+	 * @param
+	 * @param model
+	 */
+	@RequestMapping(value = "consultUserInfoList")
+	public String consultUserInfoList(ConsultSessionPropertyVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+		String temp = ((String)request.getParameter("pageNo"));
+		Page<ConsultSessionPropertyVo> pagess = null;
+		if(temp==null){
+			pagess = new Page<ConsultSessionPropertyVo>();
+		}else{
+			Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			Integer pageSize = Integer.parseInt(request.getParameter("pageSize"));
+			pagess = new Page<ConsultSessionPropertyVo>(pageNo,pageSize);
+		}
+		Page<ConsultSessionPropertyVo> page = consultDoctorInfoService.findConsultUserInfoListByInfo(pagess, vo);
+		model.addAttribute("vo", new ConsultSessionPropertyVo());
+		model.addAttribute("page", page);
+		return "modules/consult/consultUserInfoList";
+	}
+
+	/**
+	 * 赠送咨询机会弹框
+	 * sunxiao
+	 * @param
+	 * @param model
+	 */
+	@RequestMapping(value = "consultTimeGiftForm")
+	public String consultTimeGiftForm(ConsultSessionPropertyVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+		try {
+			vo.setNickname(URLDecoder.decode(request.getParameter("nickname"), "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("vo", vo);
+		return "modules/consult/giftConsultTimeForm";
+	}
+
+	/**
+	 * 赠送咨询机会
+	 * @param
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "consultTimeGift")
+	public String consultTimeGift(ConsultSessionPropertyVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+		JSONObject result = new JSONObject();
+		consultDoctorInfoService.consultTimeGift(vo);
+		result.put("suc", "suc");
+		return result.toString();
+	}
+
+	/**
+	 * 退款页面
+	 * sunxiao
+	 * @param
+	 * @param model
+	 */
+	@RequestMapping(value = "refundFeeForm")
+	public String refundFeeForm(ConsultDoctorTimeGiftVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+		try {
+			vo.setNickname(URLDecoder.decode(vo.getNickname(), "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("vo", vo);
+		return "modules/consult/consultRefundForm";
+	}
+
+	/**
+	 * 退款
+	 * @param
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "refundFee")
+	public String refundFee(ConsultDoctorTimeGiftVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+		JSONObject result = new JSONObject();
+		String reason = request.getParameter("refundReason");
+		reason = StringUtils.isNull(reason)?"yunweituikuan":reason;
+		accountService.updateAccount(vo.getAmount() * 100, vo.getOrderId(), new HashMap<String, Object>(), false, vo.getOpenid(), reason);
+		result.put("suc", "suc");
+		return result.toString();
+	}
 }

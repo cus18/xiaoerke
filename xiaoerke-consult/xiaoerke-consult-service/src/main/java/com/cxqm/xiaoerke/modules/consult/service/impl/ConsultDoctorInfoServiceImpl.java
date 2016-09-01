@@ -1,11 +1,16 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
+import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultDoctorInfoDao;
+import com.cxqm.xiaoerke.modules.consult.dao.ConsultDoctorTimeGiftDao;
+import com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionPropertyDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorTimeGiftVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
@@ -18,7 +23,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -44,6 +48,12 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
 
     @Autowired
     private ConsultRecordMongoDBServiceImpl consultRecordMongoDBService;
+
+    @Autowired
+    private ConsultDoctorTimeGiftDao consultDoctorTimeGiftDao;
+
+    @Autowired
+    private ConsultSessionPropertyDao consultSessionPropertyDao;
 
     @Autowired
     SystemService systemService;
@@ -184,6 +194,29 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
     public List<ConsultDoctorInfoVo> findManagerDoctorInfoBySelective(ConsultDoctorInfoVo consultDoctorInfoVo) {
         List<ConsultDoctorInfoVo> result = consultDoctorInfoDao.findManagerDoctorInfoBySelective(consultDoctorInfoVo);
         return result;
+    }
+
+    @Override
+    public Page<ConsultDoctorTimeGiftVo> findConsultDoctorOrderListByInfo(Page<ConsultDoctorTimeGiftVo> page, ConsultDoctorTimeGiftVo vo) {
+        return consultDoctorTimeGiftDao.findConsultDoctorOrderListByInfo(page,vo);
+    }
+
+    @Override
+    public Page<ConsultSessionPropertyVo> findConsultUserInfoListByInfo(Page<ConsultSessionPropertyVo> page, ConsultSessionPropertyVo vo) {
+        return consultSessionPropertyDao.findConsultUserInfoListByInfo(page, vo);
+    }
+
+    @Override
+    public void consultTimeGift(ConsultSessionPropertyVo vo) {
+        consultSessionPropertyDao.consultTimeGift(vo);//修改consult_session_property表的永久次数
+        ConsultDoctorTimeGiftVo giftVo = new ConsultDoctorTimeGiftVo();
+        giftVo.setOpenid(vo.getSysUserId());
+        giftVo.setReceiveDate(DateUtils.DateToStr(new Date(), "datetime"));
+        giftVo.setNickname(vo.getNickname());
+        giftVo.setFeeType("doctorConsultGift");
+        giftVo.setStatus("doctorConsultGift");
+        giftVo.setAmount(vo.getPermTimes());
+        consultDoctorTimeGiftDao.insert(giftVo);//添加赠送记录
     }
 
     @Override

@@ -135,4 +135,23 @@
     update consult_session_property
     set month_times = 4
   </update>
+
+  <select id="findConsultUserInfoListByInfo" resultMap="BaseResultMap" >
+    SELECT csp.id,csp.sys_user_id,csp.month_times,csp.perm_times,sa.nickname
+      FROM consult_session_property csp
+      LEFT JOIN sys_attention sa on csp.sys_user_id = sa.openid
+    where 1=1
+    <if test="sysUserId != null and sysUserId != ''" >
+      and csp.sys_user_id = #{sysUserId}
+    </if>
+    <if test="nickname != null and nickname != ''" >
+      and sa.nickname like CONCAT('%', #{nickname}, '%')
+    </if>
+    group by csp.id
+  </select>
+  <update id="consultTimeGift">
+    update consult_session_property
+    set perm_times = perm_times + #{permTimes} where id = #{id}
+  </update>
+
 </mapper>
