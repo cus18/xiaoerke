@@ -253,6 +253,7 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         returnMap.put("rate",df.format(rate));
         returnMap.put("practitionerCertificateNo",vo.getPractitionerCertificateNo());
         returnMap.put("doctorName",vo.getName());
+        returnMap.put("gender",vo.getGender());
         returnMap.put("title",vo.getTitle());
         returnMap.put("department",vo.getDepartment());
         returnMap.put("description",vo.getDescription());
