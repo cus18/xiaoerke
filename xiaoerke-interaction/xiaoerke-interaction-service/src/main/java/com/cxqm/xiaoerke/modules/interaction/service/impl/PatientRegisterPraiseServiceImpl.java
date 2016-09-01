@@ -475,4 +475,14 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 		String token = (String)parameter.get("token");
 		WechatUtil.sendMsgToWechat(token,userId,msg);
 	}
+
+	@Override
+	public List<Map<String, Object>> findDoctorEvaluationById(Map<String, Object> map) {
+		return patientRegisterPraiseDao.findDoctorEvaluationById(map);
+	}
+
+	@Override
+	public List<Map<String, Object>> findDoctorAllEvaluationByInfo(Map<String, Object> map) {
+		return patientRegisterPraiseDao.findDoctorAllEvaluationById(map);
+	}
 }

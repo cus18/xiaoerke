@@ -15,6 +15,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
+import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultRecordMongoDBServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
@@ -437,6 +438,34 @@ public class ConsultDoctorController extends BaseController {
     HashMap<String, Object> getSystemTime() {
         HashMap<String, Object> response = new HashMap<String, Object>();
         response.put("dateTime", new Date());
+        return response;
+    }
+
+    /**
+     * 获取咨询医生主页信息
+     */
+    @RequestMapping(value = "/getConsultDoctorHomepageInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    HashMap<String, Object> getConsultDoctorHomepageInfo(@RequestParam(required = true) String userId) {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        response = consultDoctorInfoService.getConsultDoctorHomepageInfo(userId);
+        return response;
+    }
+
+    /**
+     * 获取咨询医生主页信息
+     */
+    @RequestMapping(value = "/findDoctorAllEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    HashMap<String, Object> findDoctorAllEvaluation(@RequestParam(required = true) String userId,@RequestParam(required = true) int pageNo,@RequestParam(required = true) int pageSize) {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("userId",userId);
+        param.put("pageNo",pageNo);
+        param.put("pageSize",pageSize);
+        response = consultDoctorInfoService.findDoctorAllEvaluation(param);
         return response;
     }
 }

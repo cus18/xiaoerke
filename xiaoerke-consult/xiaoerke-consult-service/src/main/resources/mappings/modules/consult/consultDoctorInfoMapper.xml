@@ -9,6 +9,7 @@
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="hospital" property="hospital" jdbcType="VARCHAR" />
     <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="practitionerCertificateNo" property="practitionerCertificateNo" jdbcType="VARCHAR" />
     <result column="skill" property="skill" jdbcType="VARCHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="grab_session" property="grabSession" jdbcType="VARCHAR" />
@@ -19,7 +20,7 @@
     <result column="type" property="type" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, sys_user_id, gender,name, title, hospital, department, skill, description, grab_session, send_message, receive_differential_notification,
+    id, sys_user_id, gender,name, title, hospital, department,practitionerCertificateNo, skill, description, grab_session, send_message, receive_differential_notification,
     create_date, update_date,type
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -55,17 +56,17 @@
     delete from consult_doctor_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo" >
-    insert into consult_doctor_info (id, sys_user_id, gender,name, title, hospital, department, skill,
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" >
+    insert into consult_doctor_info (id, sys_user_id, gender,name, title, hospital, department, practitionerCertificateNo,skill,
     description, grab_session, send_message, receive_differential_notification,
     create_date, update_date,type)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},
-      #{title,jdbcType=VARCHAR}, #{hospital,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR},
+      #{title,jdbcType=VARCHAR}, #{hospital,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR},#{practitionerCertificateNo,jdbcType=VARCHAR},
       #{skill,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{grabSession,jdbcType=VARCHAR},
       #{sendMessage,jdbcType=VARCHAR}, #{receiveDifferentialNotification,jdbcType=TIMESTAMP}, #{createDate,jdbcType=VARCHAR},
       #{updateDate,jdbcType=TIMESTAMP},#{type,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo" >
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" >
     insert into consult_doctor_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -88,6 +89,9 @@
       </if>
       <if test="department != null" >
         department,
+      </if>
+      <if test="practitionerCertificateNo != null" >
+        practitionerCertificateNo,
       </if>
       <if test="skill != null" >
         skill,
@@ -136,6 +140,9 @@
       <if test="department != null" >
         #{department,jdbcType=VARCHAR},
       </if>
+      <if test="practitionerCertificateNo != null" >
+        #{practitionerCertificateNo,jdbcType=VARCHAR},
+      </if>
       <if test="skill != null" >
         #{skill,jdbcType=VARCHAR},
       </if>
@@ -162,7 +169,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" >
     update consult_doctor_info
     <set >
       <if test="userId != null" >
@@ -182,6 +189,9 @@
       </if>
       <if test="department != null" >
         department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="practitionerCertificateNo != null" >
+        practitionerCertificateNo = #{practitionerCertificateNo,jdbcType=VARCHAR},
       </if>
       <if test="skill != null" >
         skill = #{skill,jdbcType=VARCHAR},
@@ -210,7 +220,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo" >
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" >
     update consult_doctor_info
     set sys_user_id = #{userId,jdbcType=VARCHAR},
       gender = #{gender,jdbcType=VARCHAR},
@@ -218,6 +228,7 @@
       title = #{title,jdbcType=VARCHAR},
       hospital = #{hospital,jdbcType=VARCHAR},
       department = #{department,jdbcType=VARCHAR},
+      practitionerCertificateNo = #{practitionerCertificateNo,jdbcType=VARCHAR},
       skill = #{skill,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
       grab_session = #{grabSession,jdbcType=VARCHAR},
@@ -282,5 +293,14 @@
     <if test="type != null and type != ''">
       and type = #{type,jdbcType=VARCHAR}
     </if>
+  </select>
+
+  <insert id="saveLecture" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" >
+    insert into consult_doctor_lecture (sys_doctor_id, topics,link, lectureTime)
+    values (#{userId}, #{topics},#{link},#{lectureTime})
+  </insert>
+
+  <select id="getConsultLecture" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT * from consult_doctor_lecture where sys_doctor_id = #{userId}
   </select>
 </mapper>

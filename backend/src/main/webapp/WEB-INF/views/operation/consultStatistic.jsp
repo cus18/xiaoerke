@@ -59,6 +59,10 @@
 				<th class="sort-column name"><font color="purple">评价占比</font></th>
 				<th class="sort-column name"><font color="purple">分享点击量</font></th>
 				<th class="sort-column name"><font color="purple">分享占比</font></th>
+
+				<th class="sort-column name"><font color="purple">收费消息推送数</font></th>
+				<th class="sort-column name"><font color="purple">收费消息链接点击数</font></th>
+				<th class="sort-column name"><font color="purple">付费人数</font></th>
                 </thead>
 				<tbody id="treeTableList">
                 <c:forEach items="${consultStatisticVos}" var="vo">
@@ -88,6 +92,10 @@
 					<td>${vo.evaluateClickDegree}</td>
 					<td>${vo.shareClickNumber}</td>
 					<td>${vo.shareClickDegree}</td>
+
+					<td>${vo.chargeSendMessageNumber}</td>
+					<td>${vo.chargeMessageClickNumber}</td>
+					<td>${vo.chargeSuccessNumber}</td>
 				</tr>
                 </c:forEach>
 				</tbody>

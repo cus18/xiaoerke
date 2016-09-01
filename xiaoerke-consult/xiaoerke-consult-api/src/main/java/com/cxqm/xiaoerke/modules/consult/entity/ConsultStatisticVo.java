@@ -69,6 +69,12 @@ public class ConsultStatisticVo {
 
     private String startDate;
 
+    private Integer chargeSuccessNumber;
+
+    private Integer chargeMessageClickNumber;
+
+    private Integer chargeSendMessageNumber;
+
     public String getEndDate() {
         return endDate;
     }
@@ -155,6 +161,30 @@ public class ConsultStatisticVo {
 
     public void setMonthSatisfiedDegree(String monthSatisfiedDegree) {
         this.monthSatisfiedDegree = monthSatisfiedDegree;
+    }
+
+    public Integer getChargeSuccessNumber() {
+        return chargeSuccessNumber;
+    }
+
+    public void setChargeSuccessNumber(Integer chargeSuccessNumber) {
+        this.chargeSuccessNumber = chargeSuccessNumber;
+    }
+
+    public Integer getChargeMessageClickNumber() {
+        return chargeMessageClickNumber;
+    }
+
+    public void setChargeMessageClickNumber(Integer chargeMessageClickNumber) {
+        this.chargeMessageClickNumber = chargeMessageClickNumber;
+    }
+
+    public Integer getChargeSendMessageNumber() {
+        return chargeSendMessageNumber;
+    }
+
+    public void setChargeSendMessageNumber(Integer chargeSendMessageNumber) {
+        this.chargeSendMessageNumber = chargeSendMessageNumber;
     }
 
     public Integer getDayYawpNumber() {

@@ -1,7 +1,11 @@
 package com.cxqm.xiaoerke.modules.consult.service;
 
+import com.cxqm.xiaoerke.common.persistence.Page;
+import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorTimeGiftVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 
 import java.util.HashMap;
@@ -34,4 +38,18 @@ public interface ConsultDoctorInfoService {
     List<Map> getDoctorInfoMoreByUserId(String userId);
 
     List<ConsultDoctorInfoVo> findManagerDoctorInfoBySelective(ConsultDoctorInfoVo consultDoctorInfoVo);
+
+    Page<ConsultDoctorTimeGiftVo> findConsultDoctorOrderListByInfo(Page<ConsultDoctorTimeGiftVo> page,ConsultDoctorTimeGiftVo vo);
+
+    Page<ConsultSessionPropertyVo> findConsultUserInfoListByInfo(Page<ConsultSessionPropertyVo> page,ConsultSessionPropertyVo vo);
+
+    void consultTimeGift(ConsultSessionPropertyVo vo);
+
+    void saveLecture(ConsultDoctorInfoVo consultDoctorInfoVo);
+
+    List<ConsultDoctorInfoVo> getConsultLecture(Map param);
+
+    HashMap<String, Object> getConsultDoctorHomepageInfo(String userId);
+
+    HashMap<String, Object> findDoctorAllEvaluation(Map<String, Object> param);
 }

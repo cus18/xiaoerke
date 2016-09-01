@@ -70,6 +70,8 @@ public class ConsultUserController extends BaseController {
 
     @Autowired
     private MongoDBService<MongoLog> mongoDBServiceLog;
+
+    @Autowired
     private UserInfoService userInfoService;
 
     @Autowired
@@ -518,7 +520,7 @@ public class ConsultUserController extends BaseController {
         Integer userSex = 0;
         String remoteUrl = "";
         if (params.containsKey("source")) {
-            source = String.valueOf(params.containsKey("source"));
+            source = String.valueOf(params.get("source"));
         }
         if(StringUtils.isNotNull(source)){
             if(source.contains("wjy")){
