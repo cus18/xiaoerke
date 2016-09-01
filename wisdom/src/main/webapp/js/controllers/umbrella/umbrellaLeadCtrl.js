@@ -168,7 +168,7 @@
                         wx.ready(function () {
                             // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                             wx.onMenuShareTimeline({
-                                title: '加入爱心公益，免费问医生，小孩大人得了重病还给钱！最高40万！', // 分享标题
+                                title: '我为孩子健康负责，免费领取了40万的大病治疗费，还有20万送给你！', // 分享标题
                                 link: "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status,
                                 imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
                                 success: function (res) {
@@ -190,7 +190,7 @@
                                 }
                             });
                             wx.onMenuShareAppMessage({
-                                title: '加入爱心公益，免费问医生，小孩大人得了重病还给钱！最高40万！', // 分享标题
+                                title: '我为孩子健康负责，免费领取了40万的大病治疗费，还有20万送给你！', // 分享标题
                                 desc: "由宝大夫和中国儿童少年基金会联合发起，绝对值得信赖！", // 分享描述
                                 link:"http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/"+$stateParams.id+"/"+$stateParams.status,
                                 imgUrl: 'http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/A8327D229FE265D234984EF57D37EC87.jpg', // 分享图标
