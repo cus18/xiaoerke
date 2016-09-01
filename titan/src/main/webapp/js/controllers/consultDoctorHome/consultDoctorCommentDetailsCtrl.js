@@ -43,7 +43,7 @@ angular.module('controllers', ['ionic']).controller('consultDoctorCommentDetails
                     $scope.allEvaluationList = data.allEvaluationList[0];
 
                     for(var i = 1;i<data.allEvaluationList.length;i++){
-                        $scope.commentList.push(data.allEvaluationList[i]);
+                        $scope.commentList.splice(0,0,data.allEvaluationList[i]);
                     }
                 }
             });

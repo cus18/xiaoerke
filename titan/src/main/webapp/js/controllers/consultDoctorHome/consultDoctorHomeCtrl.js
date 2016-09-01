@@ -9,7 +9,6 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
 
         $scope.$on('$ionicView.beforeEnter',function() {
             //"00034ads0d764sdsa66a2d6esd0e8ddf";
-
             GetConsultDoctorHomepageInfo.get({"userId":$stateParams.id},function (data) {
                 console.log("data",data);
                 $scope.doctorName = data.doctorName;//医生名字
