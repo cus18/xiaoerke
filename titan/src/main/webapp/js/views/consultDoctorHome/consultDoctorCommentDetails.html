@@ -9,7 +9,9 @@
                 <div class="content_title">
                     <img ng-if="allEvaluationList.headimgurl==''||allEvaluationList.headimgurl==null" ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_comimg.jpg" width="20" height="20"/>
                     <img ng-if="allEvaluationList.headimgurl!=''&&allEvaluationList.headimgurl!=null" ng-src="{{allEvaluationList.headimgurl}}" width="20" height="20"/>
-                    <span class="com_fontlength com_font13 com_color6">{{allEvaluationList.nickname}}</span><span class="com_fontlength com_font12 com_color6 com_margin">{{ allEvaluationList.createtime | date : 'yyyy-MM-dd'}}</span>
+                    <span ng-if="allEvaluationList.nickname!=''&&allEvaluationList.nickname!=null" class="com_fontlength com_font13 com_color6">{{allEvaluationList.nickname}}</span>
+                    <span ng-if="allEvaluationList.nickname==''||allEvaluationList.nickname==null" class="com_fontlength com_font13 com_color6">宝大夫用户</span>
+                    <span class="com_fontlength com_font12 com_color6 com_margin">{{ allEvaluationList.createtime | date : 'yyyy-MM-dd'}}</span>
                     <span ng-if="allEvaluationList.redPacket!=''&&allEvaluationList.redPacket!=null" class="contentspan4 com_font13 com_bold">{{allEvaluationList.redPacket}}元</span>
                     <span class="contentspan3 com_font13 com_bold">{{allEvaluationList.serviceAttitude==1?'不满意':''}}{{allEvaluationList.serviceAttitude==3?'满意':''}}{{allEvaluationList.serviceAttitude==5?'非常满意':''}}</span>
                 </div>
@@ -19,7 +21,9 @@
                 <div class="content_title">
                     <img ng-if="item.headimgurl==''||item.headimgurl==null" ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_comimg.jpg" width="20" height="20"/>
                     <img ng-if="item.headimgurl!=''&&item.headimgurl!=null" ng-src="{{item.headimgurl}}" width="20" height="20"/>
-                    <span class="com_fontlength com_font13 com_color6">{{item.nickname}}</span><span class="com_fontlength com_font12 com_color6 com_margin">{{ item.createtime | date : 'yyyy-MM-dd'}}</span>
+                    <span ng-if="item.nickname!=''&&item.nickname!=null" class="com_fontlength com_font13 com_color6">{{item.nickname}}</span>
+                    <span ng-if="item.nickname==''||item.nickname==null" class="com_fontlength com_font13 com_color6">宝大夫用户</span>
+                    <span class="com_fontlength com_font12 com_color6 com_margin">{{ item.createtime | date : 'yyyy-MM-dd'}}</span>
                     <span ng-if="item.redPacket!=''&&item.redPacket!=null" class="contentspan4 com_font13 com_bold">{{item.redPacket}}元</span>
                     <span class="contentspan3 com_font13 com_bold">{{item.serviceAttitude==1?'不满意':''}}{{item.serviceAttitude==3?'满意':''}}{{item.serviceAttitude==5?'非常满意':''}}</span>
                 </div>

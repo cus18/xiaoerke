@@ -12,7 +12,7 @@
         <div class="home_cznum">
             <div class="cnum com_ceter">
                 <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_cnum.png" width="45" height="45"/>
-                <div class="cnum_num com_ceter com_font13 com_color3">问诊量<span class="com_bold com_font18">{{personNum}}</span></div>
+                <div class="cnum_num com_ceter com_font13 com_color3">共接诊过<span class="com_bold com_font18">{{personNum}}</span>次</div>
             </div>
             <div class="znum com_ceter">
                 <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_znum.png" width="45" height="45"/>
@@ -34,7 +34,9 @@
                 <div class="content_title">
                     <img ng-if="evaluationList[0].headimgurl==null||evaluationList[0].headimgurl==''" ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_comimg.jpg" width="20" height="20"/>
                     <img ng-if="evaluationList[0].headimgurl!=null&&evaluationList[0].headimgurl!=''" ng-src="{{evaluationList[0].headimgurl}}" width="20" height="20"/>
-                    <span class="com_fontlength com_font13 com_color6">{{evaluationList[0].nickname}}</span><span class="com_fontlength com_font12 com_color6 com_margin">{{ evaluationList[0].createtime | date : 'yyyy-MM-dd'}}</span>
+                    <span ng-if="evaluationList[0].nickname!=''&&evaluationList[0].nickname!=null" class="com_fontlength com_font13 com_color6">{{evaluationList[0].nickname}}</span>
+                    <span ng-if="evaluationList[0].nickname==''||evaluationList[0].nickname==null" class="com_fontlength com_font13 com_color6">宝大夫用户</span>
+                    <span class="com_fontlength com_font12 com_color6 com_margin">{{ evaluationList[0].createtime | date : 'yyyy-MM-dd'}}</span>
                     <span class="contentspan4 com_font13 com_bold">{{evaluationList[0].redPacket}}元</span><span class="contentspan3 com_font13 com_bold">{{evaluationList[0].serviceAttitude =='3'? '满意':'非常满意'}}</span>
                 </div>
                 <div class="com_font14 com_color3 com_margin11">{{evaluationList[0].content}}</div>
@@ -43,7 +45,9 @@
                 <div class="content_title">
                     <img ng-if="item.headimgurl==null||item.headimgurl==''" ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_comimg.jpg" width="20" height="20"/>
                     <img ng-if="item.headimgurl!=null&&item.headimgurl!=''" ng-src="{{item.headimgurl}}" width="20" height="20"/>
-                    <span class="com_fontlength com_font13 com_color6">{{item.nickname}}</span><span class="com_fontlength com_font12 com_color6 com_margin">{{ item.createtime | date : 'yyyy-MM-dd'}}</span>
+                    <span ng-if="item.nickname!=''&&item.nickname!=null" class="com_fontlength com_font13 com_color6">{{item.nickname}}</span>
+                    <span ng-if="item.nickname==''||item.nickname==null" class="com_fontlength com_font13 com_color6">宝大夫用户</span>
+                    <span class="com_fontlength com_font12 com_color6 com_margin">{{ item.createtime | date : 'yyyy-MM-dd'}}</span>
                     <span class="contentspan4 com_font13 com_bold">{{item.redPacket}}元</span><span class="contentspan3 com_font13 com_bold">{{item.serviceAttitude =='3'? '满意':'非常满意'}}</span>
                 </div>
                 <div class="com_font14 com_color3 com_margin11">{{item.content}}</div>
