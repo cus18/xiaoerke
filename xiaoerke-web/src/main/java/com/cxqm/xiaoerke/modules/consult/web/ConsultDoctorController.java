@@ -369,7 +369,7 @@ public class ConsultDoctorController extends BaseController {
                                 for (Map<String, Object> evaluationMap : praiseList) {
                                     if (Integer.parseInt((String) evaluationMap.get("serviceAttitude")) == 0) {
                                         st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
-                                                "<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
+                                                "<a href='http://s123.xiaork.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
                                                 evaluationMap.get("id") + "&sessionId=" + sessionId + "'>点击这里去评价</a>】";
                                     } else {
                                         st = "嗨，亲爱的,本次咨询已关闭。";
