@@ -99,7 +99,7 @@
 			$.ajax({
 	             type: "post",
 	             url: "${ctx}/consult/doctorInfoOper",
-	             data: {userId:"${user.id}",name:"${user.name}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),practitionerCertificateNo:$("#practitionerCertificateNo").val(),skill:$("#skill").val(),description:$("#description").val()},
+	             data: {userId:"${user.id}",password:$("#password").val(),name:"${user.name}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),practitionerCertificateNo:$("#practitionerCertificateNo").val(),skill:$("#skill").val(),description:$("#description").val()},
 	             dataType: "json",
 	             success: function(data){
 	             	if("suc"==data.result){
@@ -272,6 +272,12 @@
 			<form:hidden path="email" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 			<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
 			<input type="hidden" value="${doctor.id}"/>
+			<div class="control-group">
+				<label class="control-label">密码:</label>
+				<div class="controls">
+					<input id="password" value="${doctor.password}" htmlEscape="false" maxlength="50" class="input-medium"/>
+				</div>
+			</div>
 			<div class="control-group">
 				<label class="control-label">性别:</label>
 				<div class="controls">
