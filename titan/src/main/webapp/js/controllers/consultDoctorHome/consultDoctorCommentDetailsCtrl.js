@@ -3,6 +3,7 @@ angular.module('controllers', ['ionic']).controller('consultDoctorCommentDetails
     function ($scope,$state,$stateParams,FindDoctorAllEvaluation) {
 
         $scope.showMore = true;
+        var addFlag = true;
         var num = 0;
         $scope.$on('$ionicView.beforeEnter',function() {
             $scope.doctorName = $stateParams.name;
@@ -14,14 +15,13 @@ angular.module('controllers', ['ionic']).controller('consultDoctorCommentDetails
                 if($stateParams.gender == "1"){
                     $scope.doctorImg = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_docman.png";
                 }else{
-                    $scope.doctorImg = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_dowocman.png";
+                    $scope.doctorImg = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_docwoman.png";
                 }
             }else{
                 $scope.doctorImg = doctorImg;
             }
 
             FindDoctorAllEvaluation.get({"userId":$stateParams.id,"pageNo":num,"pageSize":10},function (data) {
-                console.log("data",data);
                 $scope.allEvaluationList = data.allEvaluationList[0];
 
                 for(var i = 1;i<data.allEvaluationList.length;i++){
@@ -34,20 +34,23 @@ angular.module('controllers', ['ionic']).controller('consultDoctorCommentDetails
 
         //查看更多
         $scope.goMore = function () {
-            num++;
-            FindDoctorAllEvaluation.get({"userId":$stateParams.id,"pageNo":num,"pageSize":10},function (data) {
-                console.log("data",data);
-                if(data.allEvaluationList.length<10){
-                    $scope.showMore = false;
-                }else{
-                    $scope.allEvaluationList = data.allEvaluationList[0];
+            if(addFlag){
+                addFlag = false;
+                num++;
+                FindDoctorAllEvaluation.get({"userId":$stateParams.id,"pageNo":num,"pageSize":10},function (data) {
+                    if(data.allEvaluationList.length<10){
+                        $scope.showMore = false;
+                    }else{
+                        // $scope.allEvaluationList = data.allEvaluationList[0];
 
-                    for(var i = 1;i<data.allEvaluationList.length;i++){
-                        $scope.commentList.splice(0,0,data.allEvaluationList[i]);
+                        for(var i = 1;i<data.allEvaluationList.length;i++){
+                            // $scope.commentList.splice(0,0,data.allEvaluationList[i]);
+                            $scope.commentList.push(data.allEvaluationList[i]);
+                        }
+                        addFlag = true;
                     }
-                }
-            });
-
+                });
+            }
         }
 
 
