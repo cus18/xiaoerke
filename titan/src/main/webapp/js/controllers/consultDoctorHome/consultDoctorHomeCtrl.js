@@ -19,7 +19,7 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
                 $scope.practitionerCertificateNo = data.practitionerCertificateNo;//医生注册号
                 $scope.personNum = data.personNum;//医生问诊量
                 $scope.evaluationList = data.evaluationList;//医生评论
-                $scope.description = data.description.split(",");//医生介绍
+                $scope.description = data.description.split(" ");//医生介绍
                 $scope.rate = data.rate*100;//医生有用百分比
                 $scope.gender = data.gender;
                 //判断医生头像是否存在
