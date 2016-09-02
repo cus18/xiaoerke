@@ -65,6 +65,7 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
                     }
                 }
             });
+
         });
 
         //跳转评价详情页
