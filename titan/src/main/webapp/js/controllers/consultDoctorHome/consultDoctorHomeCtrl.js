@@ -28,7 +28,7 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
                     if(data.gender == "1"){
                         $scope.doctorImg = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_docman.png";
                     }else{
-                        $scope.doctorImg = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_dowocman.png";
+                        $scope.doctorImg = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/home_docwoman.png";
                     }
                 }else{
                     $scope.doctorImg = doctorImg;
