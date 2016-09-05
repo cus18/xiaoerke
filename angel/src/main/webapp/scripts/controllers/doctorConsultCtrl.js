@@ -5,13 +5,13 @@ angular.module('controllers', ['luegg.directives'])
         'TransferToOtherCsUser','SessionEnd','GetWaitJoinList','React2Transfer','CancelTransfer','$upload',
         'GetFindTransferSpecialist','GetRemoveTransferSpecialist','GetAddTransferSpecialist','GetFindAllTransferSpecialist',
         'CreateTransferSpecialist','$state','GetSystemTime','GetUserSessionTimesByUserId','GetCustomerLogByOpenID','SaveCustomerLog',
-        'SearchIllnessList','SearchBabyInfo',
+        'SearchIllnessList','SearchBabyInfo','SaveReturnService',
         function ($scope, $sce, $window,$stateParams,GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetUserLoginStatus, $location, GetCurrentUserHistoryRecord,GetMyAnswerModify,
                   GetCurrentUserConsultListInfo,TransferToOtherCsUser,SessionEnd,GetWaitJoinList,React2Transfer,CancelTransfer,$upload,
                   GetFindTransferSpecialist,GetRemoveTransferSpecialist,GetAddTransferSpecialist,GetFindAllTransferSpecialist,
                   CreateTransferSpecialist,$state,GetSystemTime,GetUserSessionTimesByUserId,GetCustomerLogByOpenID,SaveCustomerLog,
-                  SearchIllnessList,SearchBabyInfo) {
+                  SearchIllnessList,SearchBabyInfo,SaveReturnService) {
             //初始化info参数
             $scope.info = {
                 effect:"true",
@@ -95,8 +95,9 @@ angular.module('controllers', ['luegg.directives'])
                             $scope.initConsultSocketSecond();
                         }
 
-                        getIframeSrc();
-                        //getHistoryConsultContent();
+                        //getIframeSrc();
+                        getHistoryConsultContent();
+                        searchBabyInfo();
 
                         //获取通用回复列表
                         GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
@@ -871,7 +872,7 @@ angular.module('controllers', ['luegg.directives'])
                 GetUserSessionTimesByUserId.get({userId:patientId},function(data){
                     $scope.chooseAlreadyJoinConsultPatientSessionTimes ='是'+ data.userSessionTimes + '次接入';
                 });
-                getIframeSrc();
+                //getIframeSrc();
                 var updateFlag = false;
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == patientId) {
@@ -1338,28 +1339,32 @@ angular.module('controllers', ['luegg.directives'])
                 });
             };
             /***回复操作区**/
-           /* /!***咨询服务**!/
+            /***咨询服务**/
             //根据openid获取历史咨询
             var getHistoryConsultContent = function () {
                 $scope.historyConsult = '';
                 GetCustomerLogByOpenID.save({openid:$scope.currentUserConversation.patientId}, function (data) {
-                    console.log(data)
                     $scope.historyConsult = data.logList;
                 });
             };
             //初始化宝宝的信息$scope.currentUserConversation.patientId
             $scope.babyNameList=[];
-            SearchBabyInfo.save({openid:''}, function (data) {
-                if(data.babyList == ""){
-                    var addBabyName = {
-                        name:'添加',
-                        value:'addBabyInfo'
-                    };
-                    data.babyList.push(addBabyName);
-                }
-                $scope.babyNameList = data.babyList;
-                console.log("$scope.babyNameList",$scope.babyNameList);
-            });
+            var searchBabyInfo =function (){
+                SearchBabyInfo.save({openid:$scope.currentUserConversation.patientId}, function (data) {
+                    console.log(data)
+                    if(data.babyList == ""){
+                        var addBabyName = {
+                            name:'添加',
+                            value:'addBabyInfo'
+                        };
+                        //data.babyList.push(addBabyName);
+                    }
+                    $scope.babyNameList = data.babyList;
+                    console.log("$scope.babyNameList",$scope.babyNameList);
+                });
+            };
+            $scope.backgroundAdd = true;
+            $scope.backgroundAddTime = true;
             //添加诊断记录
             $scope.addDiagnosisRecords = function () {
                 //添加诊断记录
@@ -1374,9 +1379,22 @@ angular.module('controllers', ['luegg.directives'])
                     result:$scope.info.result
                     }, function (data) {
                     if(data.type == 1){
-                        $('#addCustomerLog').attr('disabled',"true");
-                        $("#addCustomerLog").css("background","gray");
+                        $scope.backgroundAdd = true;
                         getHistoryConsultContent();
+                    }
+                });
+                $scope.info.result='';
+                $scope.info.show='';
+                $scope.info.illness='';
+            };
+            //添加定时回访
+            $scope.addDiagnosisTiming = function () {
+                SaveReturnService.save({
+                    openid:$scope.currentUserConversation.patientId,
+                    customerID:$scope.doctorId
+                    }, function (data) {
+                    if(data.type == 1){
+                        $scope.backgroundAddTime = true;
                     }
                 });
                 $scope.info.result='';
@@ -1389,7 +1407,6 @@ angular.module('controllers', ['luegg.directives'])
             var newTime = function(){
                 var d = new Date();
                 var a = moment().format();
-                console.log('a',a);
                 $scope.todayTime = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
             };
 
@@ -1430,12 +1447,12 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.historyTableMore = "查看更多";
                 }
             };
-            /!***咨询服务**!/*/
-            var getIframeSrc = function(){
+            /***咨询服务**/
+            /*var getIframeSrc = function(){
                 var newSrc = $(".advisory-content").attr("src");
                 $(".advisory-content").attr("src","");
                 $(".advisory-content").attr("src",newSrc);
-            };
+            };*/
             //日期转换
             $scope.transformDate = function(dateTime){
                 var dateValue = new moment(dateTime).format("HH:mm:ss");
@@ -1491,7 +1508,7 @@ angular.module('controllers', ['luegg.directives'])
                 if(chooseFlag){
                     $scope.chooseAlreadyJoinConsultPatient(angular.copy(currentConsultValue.senderId),
                         angular.copy(currentConsultValue.senderName));
-                    getIframeSrc();
+                    //getIframeSrc();
                 }
             };
             /*//启动一个监控消息状态的定时器

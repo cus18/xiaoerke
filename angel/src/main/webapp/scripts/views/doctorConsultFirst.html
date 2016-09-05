@@ -219,14 +219,15 @@
                     </div>
                 </div>
             </div>
-            <iframe src="http://s132.baodf.com/angel/scripts/views/customerss.html" frameborder="0"
+            <!--<iframe src="http://s132.baodf.com/angel/scripts/views/customerss.html" frameborder="0"-->
+            <iframe src="http://s123.xiaork.com/angel/scripts/views/customerss.html" frameborder="0"
             class="advisory-content" ng-show='showFlag.advisoryContent'>
             </iframe>
             <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
             <textarea type="text" name="messageData" id="doctorIdData" class="textarea" style="display:none;">{{doctorId}}</textarea>
             <textarea type="text" name="messageData" id="sourceData" class="textarea" style="display:none;">{{currentUserConversation.source}}</textarea>
-            <!--<div class="advisory-content" ng-show='showFlag.advisoryContent'>
-                &lt;!&ndash;用户信息&ndash;&gt;
+            <div class="advisory-content" ng-show='showFlag.advisoryContent'>
+                <!--用户信息-->
                 <div class="module">
                     <div class="title">
                         <h3>用户信息<input type="submit" class="more" value="{{userTableMore}}" ng-click="tapUserTable('userTable')"/> <span>(VIP)</span>：</h3>
@@ -256,7 +257,7 @@
                         </tr>
                     </table>
                 </div>
-                &lt;!&ndash;近期就诊记录&ndash;&gt;
+                <!--近期就诊记录-->
                 <div class="module">
                     <div class="title">
                         <h3>近期就诊记录<input type="submit" class="more" value="{{recentTableMore}}" ng-click="tapRecentTable('recentTable')"/></h3>
@@ -301,7 +302,7 @@
                         </tr>
                     </table>
                 </div>
-                &lt;!&ndash;添加咨询记录&ndash;&gt;
+                <!--添加咨询记录-->
                 <div class="module" >
                     <div class="title">
                         <h3>添加咨询记录<input type="submit" class="more" value="{{addConsultTableMore}}" ng-click="tapAddConsultTable('addConsultTable')"/> </h3>
@@ -309,7 +310,7 @@
                     <table class="table3" ng-show="showFlag.addConsultTable">
                         <tr>
                             <td>
-                                <span>客服：</span><input type="text" value="{{currentUserConversation.patientId}}"/>
+                                <span>客服：大熊猫</span><!--{{doctorName}}-->
                             </td>
                             <td class="td-l">
                                 <span>归档日期：</span><span>{{todayTime}}</span>
@@ -337,19 +338,23 @@
                         </tr>
                         <tr class="save">
                             <td colspan="3">
-                                <input type="submit" value="添加记录" ng-click="addDiagnosisRecords()"/>
+                                <input type="submit" value="添加记录"
+                                       ng-style="backgroundAdd?{'background':'#88d9dd'}:{'background':'gray'}"
+                                       ng-click="addDiagnosisRecords()"/>
                                 <input type="submit" value="取消保存"/>
                                 <input type="submit" value="推荐医生"/>
                             </td>
                         </tr>
                         <tr class="save">
                             <td>
-                                <span>定时回访：<input type="submit" value="添加定时回访"/></span>
+                                <span>定时回访：<input type="submit" value="添加定时回访"
+                                                  ng-style="backgroundAddTime?{'background':'#88d9dd'}:{'background':'gray'}"
+                                                  ng-click="addDiagnosisTiming()"/></span>
                             </td>
                         </tr>
                     </table>
                 </div>
-                &lt;!&ndash;历史咨询档案&ndash;&gt;
+                <!--历史咨询档案-->
                 <div class="module">
                     <div class="title">
                         <h3 >历史咨询档案<input type="submit" class="more" value="{{historyTableMore}}" ng-click="tapHistoryTable('historyTable')"/></h3>
@@ -376,7 +381,7 @@
                         </tr>
                     </table>
                 </div>
-                &lt;!&ndash;<div>
+                <!--<div>
                        <span style="">科室/类别：</span><input type="text" id="addSections"/>
                        <br/>
                        <center>
@@ -391,8 +396,8 @@
                            <br/><br/><br/><br/>
                            <input type="submit" value="关闭"/>
                        </center>
-                   </div>&ndash;&gt;
-            </div>-->
+                   </div>-->
+            </div>
         </div>
         <div class="msg-m h30" ng-if="chooseAlreadyJoinConsultPatientId!=''">
             <div class="headportrait">
