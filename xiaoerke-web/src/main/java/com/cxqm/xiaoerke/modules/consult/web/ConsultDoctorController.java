@@ -4,15 +4,9 @@ package com.cxqm.xiaoerke.modules.consult.web;
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
-import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.BaseController;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
-import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultRecordMongoDBServiceImpl;
@@ -21,6 +15,7 @@ import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseServic
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaMongoDBVo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
@@ -74,6 +69,9 @@ public class ConsultDoctorController extends BaseController {
 
     @Autowired
     private BabyUmbrellaInfoService babyUmbrellaInfoService;
+
+    @Autowired
+    private ConsultSessionPropertyService consultSessionPropertyService;
 
     @RequestMapping(value = "/getCurrentUserHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -353,6 +351,10 @@ public class ConsultDoctorController extends BaseController {
                     }
                 } else if ("wxcxqm".equalsIgnoreCase(richConsultSession.getSource())) {
 
+                    ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(richConsultSession.getUserId());
+                    if(consultSessionPropertyVo.getMonthTimes() == 3){
+                        LogUtils.saveLog("ZXYQ_RK_TS_3",consultSessionPropertyVo.getSysUserId());
+                    }
                     //判断是否有权限推送消息
 
                     Map param = new HashMap();
@@ -379,6 +381,8 @@ public class ConsultDoctorController extends BaseController {
                             } else {
                                 st = "嗨，亲爱的,本次咨询已关闭。";
                             }
+                            st = st + "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n"+">>"+
+                                    "<a href='"+ ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/customerService'>邀请好友得积分</a>";
                             WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                         }
                         //分享的代码

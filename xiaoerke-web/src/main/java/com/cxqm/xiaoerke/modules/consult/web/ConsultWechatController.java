@@ -359,6 +359,8 @@ public class ConsultWechatController extends BaseController {
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                             if(consultSessionPropertyVo.getMonthTimes() == 1){
                                 LogUtils.saveLog("ZXYQ_RK_TS_1",openId);
+                            }else if(consultSessionPropertyVo.getMonthTimes() == 4){
+                                LogUtils.saveLog("ZXYQ_RK_TS_2", openId);
                             }
                         } else if (consultSessionPropertyVo.getPermTimes() > 0) {
                             content = "嗨，亲爱的，你还可享受" + consultSessionPropertyVo.getPermTimes() + "次24小时咨询服务哦^-^" +
