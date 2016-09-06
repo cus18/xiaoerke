@@ -14,7 +14,7 @@
     <result column="back_3" property="back3" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, balance, open_id, source,DATE_FORMAT(create_time, '%m/%d'), create_by, update_time, back_1, back_2,
+    id, balance, open_id, source,DATE_FORMAT(create_time, '%m/%d') create_time, create_by, update_time, back_1, back_2,
     back_3
   </sql>
   <select id="selectByBabyCoinRecordVo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo" >
