@@ -8,6 +8,8 @@ import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.interceptor.SystemControllerLog;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
+import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
+import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
 
@@ -34,6 +37,9 @@ public class FieldworkWechatController {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private WechatAttentionService wechatAttentionService;
 
     /**
      * 医生公众号菜单引导页
@@ -232,7 +238,23 @@ public class FieldworkWechatController {
             CookieUtils.setCookie(response, "openId", openid==null?"":openid,60*60*24*30,ConstantUtil.DOMAIN_VALUE);
             memberService.sendExtendOldMemberWechatMessage(openid);
         }
+        if("41".equalsIgnoreCase(url)){
+            url = getBabyCoinURL(request, openid);
+        }
         return "redirect:" + url;
+    }
+
+    private String getBabyCoinURL(HttpServletRequest request, String openid) throws UnsupportedEncodingException {
+        String url;//判断新老用户
+        WechatAttention attention = wechatAttentionService.getAttentionByOpenId(openid);
+        if(attention == null){//新用户
+            String oldOpenId = java.net.URLDecoder.decode(request.getParameter("oldOpenId"), "utf-8");
+            String marketer = java.net.URLDecoder.decode(request.getParameter("marketer"), "utf-8");
+            url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/patientConsultInviteNew?="+oldOpenId+"&marketer="+marketer;
+        }else {//老用户
+            url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/patientConsultInviteOld";
+        }
+        return url;
     }
 
 
