@@ -4,7 +4,9 @@ import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
+import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
 import com.cxqm.xiaoerke.modules.marketing.service.LoveMarketingService;
@@ -99,6 +101,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 	@Autowired
 	private OlyGamesService olyGamesService;
+
+	@Autowired
+	private BabyCoinService babyCoinService;
 
 	private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
@@ -812,6 +817,17 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			marketer = EventKey.replace("qrscene_", "");
 		}
 		this.insertAttentionInfo(xmlEntity, token, marketer);
+		//宝宝币
+		if(marketer.startsWith("110")){
+			synchronized (this){
+				String openId = xmlEntity.getFromUserName();
+				String cash = ConstantUtil.BABYCOIN;
+				BabyCoinVo babyCoin = new BabyCoinVo();
+				babyCoin.setOpenId(openId);
+				babyCoin.setCash(Long.valueOf(cash));
+				babyCoinService.updateCashByOpenId(babyCoin);
+			}
+		}
 		return sendSubScribeMessage(xmlEntity, request,response, marketer, token);
 	}
 
@@ -923,7 +939,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 					"更可加入妈妈社群，和千万宝宝一同快乐成长！☀点击：<a href='http://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236661&idx=3&sn=4c1fd3ee4eb99e6aca415f60dceb6834&scene=1&srcid=0616uPcrUKz7FVGgrmOcZqqq#rd'>加入社群</a>";
 			WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),welcomeMsg);
 		}
-
 		return processScanEvent(xmlEntity,"newUser",request,response);
 	}
 

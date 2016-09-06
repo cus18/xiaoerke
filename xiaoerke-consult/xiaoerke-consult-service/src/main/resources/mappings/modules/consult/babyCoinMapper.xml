@@ -138,6 +138,13 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="updateCashByOpenId" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
+    update baby_coin set cash = cash + #{cash}
+    where open_id = #{openId,jdbcType=VARCHAR}
+  </update>
+
+
   <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
     update baby_coin
     set cash = #{cash,jdbcType=DECIMAL},

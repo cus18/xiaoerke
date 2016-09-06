@@ -18,4 +18,6 @@ public interface BabyCoinDao {
     int updateByPrimaryKeySelective(BabyCoinVo record);
 
     int updateByPrimaryKey(BabyCoinVo record);
+
+    int updateCashByOpenId(BabyCoinVo record);
 }
