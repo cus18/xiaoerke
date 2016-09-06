@@ -94,7 +94,10 @@ public class BabyCoinController {
         } else {
             response.put("userStatus", "oldBabyCoinUser");
         }
-
+        BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
+        babyCoinRecordVo.setOpenId(openId);
+        List<BabyCoinRecordVo> babyCoinRecordVos = babyCoinService.selectByBabyCoinRecordVo(babyCoinRecordVo);
+        response.put("babyCoinRecordVos", babyCoinRecordVos);
         response.put("babyCoinVo", babyCoinVo);
 
         return response;
