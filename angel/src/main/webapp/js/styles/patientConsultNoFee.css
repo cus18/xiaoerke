@@ -1,0 +1,24 @@
+body,ol,ul,h1,h2,h3,h4,h5,h6,p,th,td,dl,dd,form,fieldset,legend,input,textarea,select{margin:0;padding:0}
+body{font:12px/12px 'Microsoft Yahei';background:#fff;-webkit-text-size-adjust:100%;}
+a{color:#2d374b;text-decoration:none}
+a:hover{color:#cd0200;text-decoration:underline}
+em{font-style:normal}
+li{list-style:none}
+img{border:0;vertical-align:middle}
+table{border-collapse:collapse;border-spacing:0}
+p{word-wrap:break-word}
+.h100{height: 100%;}
+a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modify:read-write-plaintext-only;}
+.patientConsultNoFee{
+    width:100%;
+    height:100%;
+    background: url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/consultNoFee/consultNoFee_bg.png") #fff;
+    background-size: 100% 100%;
+}
+.patientConsultNoFee .btn{
+    width:100%;
+    position: absolute;
+    z-index:3;
+    bottom:25px;
+    text-align: center;
+}
