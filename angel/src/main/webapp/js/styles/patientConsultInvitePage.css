@@ -1,0 +1,27 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.invitePageBox {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    height: 100%;
+    background: #36b7ce;
+}
+
+.invitePageBox .invitePageTop {
+    margin-top: 24px;
+    width: 90%;
+}
+
+.invitePageBox .invitePageContent {
+    margin-top: -20px;
+    width: 90%;
+}
+
+.invitePageBox .invitePageBottom {
+    margin-bottom: 25px;
+    width: 90%;
+}

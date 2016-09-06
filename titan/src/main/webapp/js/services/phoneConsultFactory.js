@@ -6,6 +6,7 @@ var user_h5 = 'consultPhone/'
 var user_appoint = ''
 var wxChat = 'wechatInfo/'
 var healthRecord='healthRecord/'
+var babyCoin = 'babyCoin/'
 
 define(['appPhoneConsult'], function (app) {
     app
@@ -352,6 +353,10 @@ define(['appPhoneConsult'], function (app) {
         }])
         .factory('addDoctorCase',['$resource',function ($resource){
             return $resource(healthRecord + 'addDoctorCase');
+        }])
+        //获取用户宝宝币
+        .factory('BabyCoinInit',['$resource',function ($resource){
+            return $resource(babyCoin + 'babyCoinInit');
         }])
         //根据用户的登陆状态，进行相应的操作
         .factory('resolveUserLoginStatus', ['GetUserLoginStatus','$state',

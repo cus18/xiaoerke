@@ -287,6 +287,21 @@ define(['appPhoneConsult'], function(app){
                             }
                         }
                     })
+                    .state('myBabyMoney', {
+                        url: '/myBabyMoney',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'myBabyMoneyCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.myBabyMoneyCtrl',
+                                    [
+                                        'js/libs/lodash.min.js',
+                                        'js/controllers/phoneConsult/myBabyMoneyCtrl.js',
+                                        'styles/phoneConsult/myBabyMoney.less?ver'+appointVersion],
+                                    'js/views/phoneConsult/myBabyMoney.html?ver='+appointVersion);
+                            }
+                        }
+                    })
 
 
 
