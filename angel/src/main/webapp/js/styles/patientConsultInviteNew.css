@@ -1,0 +1,42 @@
+
+.inviteNewBox {
+    position: relative;
+    width: 95%;
+    text-align: center;
+    margin: 10px auto;
+    height: 100%;
+}
+
+.inviteNewBox img {
+    width: 100%;
+}
+
+.inviteNewBox .inviteNewPortrait {
+    background: pink;
+    position: absolute;
+    top: 10%;
+    left: 37%;
+    width: 25%;
+    height: 15%;
+    z-index: -1;
+}
+
+.inviteNewBox .inviteNewName {
+    font: 600 21px/21px "Microsoft YaHei";
+    color: #ffe6d7;
+    width: 90%;
+    text-align: center;
+    position: absolute;
+    top: 25%;
+    left: 5%;
+}
+
+.inviteNewBox .inviteNewCode {
+    background: pink;
+    position: absolute;
+    top: 36%;
+    left: 25%;
+    width: 47%;
+    height: 28%;
+    z-index: -1;
+}
