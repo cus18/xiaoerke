@@ -15,6 +15,8 @@ public class BabyCoinRecordVo {
 
     private String createBy;
 
+    private String date;
+
     private Date updateTime;
 
     private String back1;
@@ -101,5 +103,13 @@ public class BabyCoinRecordVo {
 
     public void setBack3(String back3) {
         this.back3 = back3;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

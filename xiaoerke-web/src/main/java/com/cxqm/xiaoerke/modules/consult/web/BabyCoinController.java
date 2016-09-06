@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
@@ -66,7 +67,7 @@ public class BabyCoinController {
     @RequestMapping(value = "/babyCoinInit", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map<String, Object> babyCoinInit(HttpSession session, HttpServletRequest request) {
-        HashMap<String,Object> response = new HashMap<String, Object>();
+        HashMap<String, Object> response = new HashMap<String, Object>();
 
 //        String openId = WechatUtil.getOpenId(session, request);
         String openId = "oogbDwD_2BTQpftPu9QClr-mCs7U";
@@ -83,9 +84,9 @@ public class BabyCoinController {
                 BabyCoinVo lastBabyCoinUser = new BabyCoinVo();
                 lastBabyCoinUser.setCreateTime(new Date());
                 lastBabyCoinUser = babyCoinService.selectByBabyCoinVo(lastBabyCoinUser);
-                if(lastBabyCoinUser == null || lastBabyCoinUser.getMarketer() == null){
+                if (lastBabyCoinUser == null || lastBabyCoinUser.getMarketer() == null) {
                     babyCoinVo.setMarketer("110000000");//初始值
-                }else{
+                } else {
                     babyCoinVo.setMarketer(String.valueOf(Integer.valueOf(lastBabyCoinUser.getMarketer()) + 1));
                 }
                 babyCoinService.insertBabyCoinSelective(babyCoinVo);
@@ -97,6 +98,9 @@ public class BabyCoinController {
         BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
         babyCoinRecordVo.setOpenId(openId);
         List<BabyCoinRecordVo> babyCoinRecordVos = babyCoinService.selectByBabyCoinRecordVo(babyCoinRecordVo);
+        for (BabyCoinRecordVo vo : babyCoinRecordVos) {
+            vo.setDate(DateUtils.DateToStr(vo.getCreateTime(), "monthDate"));
+        }
         response.put("babyCoinRecordVos", babyCoinRecordVos);
         response.put("babyCoinVo", babyCoinVo);
 
