@@ -251,8 +251,10 @@ public class FieldworkWechatController {
             String oldOpenId = java.net.URLDecoder.decode(request.getParameter("oldOpenId"), "utf-8");
             String marketer = java.net.URLDecoder.decode(request.getParameter("marketer"), "utf-8");
             url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/patientConsultInviteNew?="+oldOpenId+"&marketer="+marketer;
+            LogUtils.saveLog("ZXYQ_YQK_NEW","oldOpenId="+oldOpenId+"openid="+openid+"marketer"+marketer);
         }else {//老用户
             url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/patientConsultInviteOld";
+            LogUtils.saveLog("ZXYQ_YQK_OLD","openid="+openid);
         }
         return url;
     }
