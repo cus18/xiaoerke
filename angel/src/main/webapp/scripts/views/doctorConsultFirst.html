@@ -18,11 +18,11 @@
                 <span ng-if="loseConnectionFirstFlag||loseConnectionSecondFlag">您已与平台断开了连接，请检查您的网络情况，谢谢！</span>
                 <span ng-if="!loseConnectionFirstFlag&&!loseConnectionSecondFlag">您目前与平台连接正常！</span>
                 <div class="bdf-dkf-content-right">
-                   <!-- <div class="cjgl">退出</div>
-                    <div class="xtsz" ng-click="tapShowButton('systemSetup')">
-                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>
-                        系统设置
-                    </div>-->
+                    <!-- <div class="cjgl">退出</div>
+                     <div class="xtsz" ng-click="tapShowButton('systemSetup')">
+                         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>
+                         系统设置
+                     </div>-->
                     <div ng-click="tapShowButton('specialistList')"
                          ng-style="userType=='distributor'?{'display':'block'}:{'display':'none'}"
                             >
@@ -30,15 +30,15 @@
                     </div>
                 </div>
                 <!--<span>自动回复-->
-                    <!--<select>-->
-                        <!--<option>无</option>-->
-                        <!--<option>外出就餐，请稍候</option>-->
-                        <!--<option>不在电脑旁边，请稍候</option>-->
-                        <!--<option>接听电话中</option>-->
-                        <!--<option>无自动回复</option>-->
-                        <!--<option>马上回来</option>-->
-                    <!--</select>-->
-                    <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>-->
+                <!--<select>-->
+                <!--<option>无</option>-->
+                <!--<option>外出就餐，请稍候</option>-->
+                <!--<option>不在电脑旁边，请稍候</option>-->
+                <!--<option>接听电话中</option>-->
+                <!--<option>无自动回复</option>-->
+                <!--<option>马上回来</option>-->
+                <!--</select>-->
+                <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>-->
                 <!--</span>-->
             </div>
         </div>
@@ -219,8 +219,8 @@
                     </div>
                 </div>
             </div>
-            <iframe src="http://s132.baodf.com/angel/scripts/views/customerss.html" frameborder="0"
-            class="advisory-content" ng-show='showFlag.advisoryContent'>
+            <iframe src="http://s123.xiaork.com/angel/scripts/views/customerss.html" frameborder="0"
+                    class="advisory-content" ng-show='showFlag.advisoryContent'>
             </iframe>
             <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
             <textarea type="text" name="messageData" id="doctorIdData" class="textarea" style="display:none;">{{doctorId}}</textarea>
@@ -407,7 +407,7 @@
                 </div>
                 <div class="chatlist">
                     <div scroll-glue-bottom="glued" class="chatlistin">
-                        <div class="moreInformation" ng-click="seeMoreConversationMessage(10)">
+                        <div class="moreInformation" ng-click="seeMoreConversationMessage()">
                             <a href="">查看更多消息</a>
                         </div>
                         <div class="moreInformation">

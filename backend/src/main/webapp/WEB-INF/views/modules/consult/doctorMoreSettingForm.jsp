@@ -99,7 +99,7 @@
 			$.ajax({
 	             type: "post",
 	             url: "${ctx}/consult/doctorInfoOper",
-	             data: {userId:"${user.id}",name:"${user.name}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),practitionerCertificateNo:$("#practitionerCertificateNo").val(),skill:$("#skill").val(),description:$("#description").val()},
+	             data: {userId:"${user.id}",password:$("#password").val(),name:"${user.name}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),practitionerCertificateNo:$("#practitionerCertificateNo").val(),skill:$("#skill").val(),description:$("#description").val()},
 	             dataType: "json",
 	             success: function(data){
 	             	if("suc"==data.result){
@@ -273,6 +273,12 @@
 			<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
 			<input type="hidden" value="${doctor.id}"/>
 			<div class="control-group">
+				<label class="control-label">密码:</label>
+				<div class="controls">
+					<input id="password" value="${doctor.password}" htmlEscape="false" maxlength="50" class="input-medium"/>
+				</div>
+			</div>
+			<div class="control-group">
 				<label class="control-label">性别:</label>
 				<div class="controls">
 					<select id="gender" class="txt required" style="width:100px;">
@@ -321,12 +327,14 @@
 				<label class="control-label">擅长:</label>
 				<div class="controls">
 					<textarea id="skill" rows="4" maxlength="250" class="required" style="width:200px;">${doctor.skill}</textarea>
+					<span class="help-inline">每个词尽量控制在8个字以内，以'空格'隔开，<br/><font color="red" size="4">例如：咳嗽 发烧 不吃饭</font></span>
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label">医生介绍:</label>
 				<div class="controls">
 					<textarea id="description" rows="4" maxlength="250" class="required" style="width:400px;">${doctor.description}</textarea>
+					<span class="help-inline">每个词尽量控制在8个字以内，以'空格'隔开，<br/><font color="red" size="4">例如：北京大学博士生导师 美国进修 朝阳医院</font></span>
 				</div>
 			</div>
 
