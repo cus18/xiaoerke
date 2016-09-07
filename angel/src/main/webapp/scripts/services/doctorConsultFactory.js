@@ -142,10 +142,9 @@ angular.module('services', ['ngResource'])
     .factory('SearchBabyInfo', ['$resource', function ($resource) {
         return $resource(public + 'customer/searchBabyInfo');
     }])
-
-    //查找宝宝的初始信息
-    .factory('GetneedPaylist', ['$resource', function ($resource) {
-        return $resource(public + 'consult/wechat/getneedPaylist');
+    //添加定时回访
+    .factory('SaveReturnService', ['$resource', function ($resource) {
+        return $resource(public + '/angel/customer/saveReturnService');
     }])
 
 
