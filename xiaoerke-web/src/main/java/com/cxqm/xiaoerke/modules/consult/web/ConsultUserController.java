@@ -301,9 +301,9 @@ public class ConsultUserController extends BaseController {
                         searchMap.put("dateTime",richConsultSession.getCreateTime());
                         searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
 
-                        if (ConstantUtil.PAY_SUCCESS.indexOf(consultSessionStatusVo.getPayStatus())>-1) {
+                        if (null !=consultSessionStatusVo && ConstantUtil.PAY_SUCCESS.indexOf(consultSessionStatusVo.getPayStatus())>-1) {
                             searchMap.put("notifyType", "1001");
-                        } else if(ConstantUtil.NO_PAY.indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                        } else if(null !=consultSessionStatusVo &&  ConstantUtil.NO_PAY.indexOf(consultSessionStatusVo.getPayStatus())>-1){
                             searchMap.put("notifyType", "1002");
                         }else {
                             searchMap.put("notifyType", "1003");
