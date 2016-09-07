@@ -297,15 +297,11 @@ define(['appPhoneConsult'], function(app){
                                     [
                                         'js/libs/lodash.min.js',
                                         'js/controllers/phoneConsult/myBabyMoneyCtrl.js',
-                                        'styles/phoneConsult/myBabyMoney.less?ver'+appointVersion],
-                                    'js/views/phoneConsult/myBabyMoney.html?ver='+appointVersion);
+                                        'styles/phoneConsult/myBabyMoney.less?ver='+phoneConsultVersion],
+                                    'js/views/phoneConsult/myBabyMoney.html?ver='+phoneConsultVersion);
                             }
                         }
                     })
-
-
-
-
                 $urlRouterProvider.otherwise('selfCenter');
             }])
         .run(function ($rootScope){

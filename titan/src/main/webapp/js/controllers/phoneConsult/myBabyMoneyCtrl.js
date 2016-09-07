@@ -1,8 +1,11 @@
-angular.module('controllers', ['ionic']).controller('myBabyMoney', [
-    '$scope','$state','$stateParams','$http','$ionicPopup',
-    '$location',
-    function ($scope,$state,$stateParams,$http,$ionicPopup,
-              $location) {
-        $scope.title = "我的资料";
-        $scope.title0 = "宝大夫（400-623-7120）";
+angular.module('controllers', ['ionic']).controller('myBabyMoneyCtrl', [
+    '$scope','$state','$stateParams','$http','$ionicPopup','$location','BabyCoinInit',
+    function ($scope,$state,$stateParams,$http,$ionicPopup,$location,BabyCoinInit) {
+        $scope.bobyMoneyInit = function(){
+            BabyCoinInit.save({},function(data){
+                $scope.babyMoney = data.babyCoinVo.cash;
+                $scope.babyCoinRecordVos = data.babyCoinRecordVos;
+                console.log('1')
+            })
+        }
     }])
