@@ -69,8 +69,8 @@ public class BabyCoinController {
     public Map<String, Object> babyCoinInit(HttpSession session, HttpServletRequest request) {
         HashMap<String, Object> response = new HashMap<String, Object>();
 
-//        String openId = WechatUtil.getOpenId(session, request);
-        String openId = "oogbDwD_2BTQpftPu9QClr-mCs7U";
+        String openId = WechatUtil.getOpenId(session, request);
+//        String openId = "oogbDwD_2BTQpftPu9QClr-mCs7U";
         BabyCoinVo babyCoinVo = new BabyCoinVo();
         babyCoinVo.setOpenId(openId);
         babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
@@ -119,7 +119,7 @@ public class BabyCoinController {
     @ResponseBody
     public Map<String, Object> getBabyCoinInfo(HttpSession session, HttpServletRequest request) {
         HashMap<String, Object> response = new HashMap<String, Object>();
-        String openId = "oogbDwD_2BTQpftPu9QClr-mCw7U";//WechatUtil.getOpenId(session,request);
+        String openId = WechatUtil.getOpenId(session,request);//"oogbDwD_2BTQpftPu9QClr-mCw7U";
         //宝宝币余额
         BabyCoinVo babyCoinVo = new BabyCoinVo();
         babyCoinVo.setOpenId(openId);
