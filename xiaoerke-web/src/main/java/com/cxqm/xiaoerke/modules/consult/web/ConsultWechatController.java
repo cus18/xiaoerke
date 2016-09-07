@@ -319,7 +319,7 @@ public class ConsultWechatController extends BaseController {
                 consultSessionPropertyService.insertUserConsultSessionProperty(consultSessionPropertyVo);
                 String content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^" +
                         "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n"+">>"+
-                        "<a href='"+ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/customerService'>邀请好友得积分</a>";
+                        "<a href='"+ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/patientConsultInvitePage'>邀请好友得积分</a>";
                 messageFlag = 1;
                 WechatUtil.sendMsgToWechat(token, openId, content);
                 onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
@@ -333,7 +333,7 @@ public class ConsultWechatController extends BaseController {
                 if (messageFlag == 0 && consultSessionPropertyVo.getMonthTimes() > 0) {
                     String content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^" +
                             "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n"+">>"+
-                            "<a href='"+ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/customerService'>邀请好友得积分</a>";
+                            "<a href='"+ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/patientConsultInvitePage'>邀请好友得积分</a>";
                     WechatUtil.sendMsgToWechat(token, openId, content);
                     if(consultSessionPropertyVo.getMonthTimes() == 1){
                         LogUtils.saveLog("ZXYQ_RK_TS_1",openId);
@@ -354,7 +354,7 @@ public class ConsultWechatController extends BaseController {
                         if (consultSessionPropertyVo.getMonthTimes() > 0) {
                             content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^" +
                                     "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n"+">>"+
-                                    "<a href='"+ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/customerService'>邀请好友得积分</a>";
+                                    "<a href='"+ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/patientConsultInvitePage'>邀请好友得积分</a>";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                             if(consultSessionPropertyVo.getMonthTimes() == 1){
@@ -365,7 +365,7 @@ public class ConsultWechatController extends BaseController {
                         } else if (consultSessionPropertyVo.getPermTimes() > 0) {
                             content = "嗨，亲爱的，你还可享受" + consultSessionPropertyVo.getPermTimes() + "次24小时咨询服务哦^-^" +
                                     "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n"+">>"+
-                                    "<a href='"+ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/customerService'>邀请好友得积分</a>";
+                                    "<a href='"+ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/patientConsultInvitePage'>邀请好友得积分</a>";
 
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
