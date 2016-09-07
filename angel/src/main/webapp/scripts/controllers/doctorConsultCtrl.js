@@ -289,7 +289,7 @@ angular.module('controllers', ['luegg.directives'])
                             $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
                                 $scope.alreadyJoinPatientConversation[0].patientName);
 
-                            seeMoreConversationMessage(5);
+                            $scope.seeMoreConversationMessage(5);
                         }
                     });
                 }
