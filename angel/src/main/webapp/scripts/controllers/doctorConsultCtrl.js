@@ -290,7 +290,6 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.alreadyJoinPatientConversation[0].patientName);
 
                             $scope.seeMoreConversationMessage(5);
-                            seeMoreConversationMessage(5);
                         }
                     });
                 }
