@@ -111,7 +111,7 @@ public class BabyCoinController {
 
 
     /**
-     * 个人中心，获取宝宝币
+     * 个人中心，获取宝宝币信息
      *
      * @param request
      * @param
