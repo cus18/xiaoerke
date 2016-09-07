@@ -2,12 +2,14 @@ package com.cxqm.xiaoerke.modules.operation.web;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.config.Global;
+import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo;
 import com.cxqm.xiaoerke.modules.operation.service.ChannelService;
 import com.cxqm.xiaoerke.modules.order.entity.RegisterServiceVo;
+import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -404,5 +406,35 @@ public class ChannelController extends BaseController {
         registerServiceVo.setEndDate(endDate);
         model.addAttribute("registerServiceVo", registerServiceVo);
         return "operation/newUserAttentionAndRemain";
+    }
+
+    /**
+     * 查询用户渠道
+     * @author sunxiao
+     * @return
+     */
+    @RequiresPermissions("user")
+    @RequestMapping(value = {"userChannelSearch"})
+    public String userChannelSearch(WechatAttention vo ,HttpServletRequest request,  Model model) throws Exception{
+        Page<WechatAttention> page = new Page<WechatAttention>();
+        if(StringUtils.isNotNull(vo.getOpenid()) || StringUtils.isNotNull(vo.getNickname())){
+            String todayAttention = request.getParameter("todayAttention");
+            String todayConsult = request.getParameter("todayConsult");
+            String temp = ((String)request.getParameter("pageNo"));
+            Page<WechatAttention> pagess = null;
+            if(temp==null){
+                pagess = new Page<WechatAttention>();
+            }else{
+                Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+                Integer pageSize = Integer.parseInt(request.getParameter("pageSize"));
+                pagess = new Page<WechatAttention>(pageNo,pageSize);
+            }
+            page = channelService.userChannelSearch(pagess,vo.getOpenid(),vo.getNickname(), todayAttention, todayConsult);
+            model.addAttribute("todayAttention", todayAttention);
+            model.addAttribute("todayConsult", todayConsult);
+        }
+        model.addAttribute("vo", vo);
+        model.addAttribute("page", page);
+        return "operation/userChannelSearch";
     }
 }

@@ -1,9 +1,13 @@
 package com.cxqm.xiaoerke.modules.operation.service.impl;
 
+import com.cxqm.xiaoerke.common.persistence.Page;
+import com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionDao;
 import com.cxqm.xiaoerke.modules.operation.dao.SysStatisticsDao;
 import com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo;
 import com.cxqm.xiaoerke.modules.operation.service.ChannelService;
 import com.cxqm.xiaoerke.modules.operation.service.OperationsComprehensiveService;
+import com.cxqm.xiaoerke.modules.wechat.dao.WechatAttentionDao;
+import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +31,9 @@ public class ChannelServiceImpl implements ChannelService {
     private OperationsComprehensiveService operationsComprehensiveService;
     @Autowired
     public SysStatisticsDao sysStatisticsDao;
+
+    @Autowired
+    private WechatAttentionDao wechatattentionDao;
 
     @Override
     public List<HashMap<String, Object>> getTuiStatisticData(HashMap hashMap) {
@@ -207,5 +214,11 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     public List<HashMap<String, Object>> getNewUserAttentionAndRemainStatistics(Map<String, Object> map){
         return sysStatisticsDao.getNewUserAttentionAndRemainStatistics(map);
+    }
+
+    @Override
+    public Page<WechatAttention> userChannelSearch(Page<WechatAttention> param, String openid,String nickname ,String todayAttention, String todayConsult) {
+        Page page = wechatattentionDao.findUserChannelList(param,openid,nickname,todayAttention,todayConsult);
+        return page;
     }
 }
