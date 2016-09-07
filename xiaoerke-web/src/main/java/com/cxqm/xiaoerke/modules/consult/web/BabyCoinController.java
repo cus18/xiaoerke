@@ -108,8 +108,10 @@ public class BabyCoinController {
     }
 
 
+
+
     /**
-     * 个人中心，获取宝宝币，以及详细记录
+     * 个人中心，获取宝宝币
      *
      * @param request
      * @param
@@ -125,11 +127,6 @@ public class BabyCoinController {
         babyCoinVo.setOpenId(openId);
         babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
         response.put("babyCoinCash", babyCoinVo.getCash());
-
-        BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
-        babyCoinRecordVo.setOpenId(openId);
-        List<BabyCoinRecordVo> babyCoinRecordVos = babyCoinService.selectByBabyCoinRecordVo(babyCoinRecordVo);
-        response.put("babyCoinRecordVos", babyCoinRecordVos);
         return response;
     }
 
