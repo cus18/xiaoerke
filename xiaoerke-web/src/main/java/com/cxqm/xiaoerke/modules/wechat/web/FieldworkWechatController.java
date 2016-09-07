@@ -241,6 +241,9 @@ public class FieldworkWechatController {
         if("41".equalsIgnoreCase(url)){
             url = getBabyCoinURL(request, openid);
         }
+        if("42".equalsIgnoreCase(url)){
+            url = ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/patientConsultInvitePage";
+        }
         return "redirect:" + url;
     }
 
