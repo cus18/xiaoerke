@@ -12,7 +12,6 @@
 }
 
 .inviteNewBox .inviteNewPortrait {
-    background: pink;
     position: absolute;
     top: 10%;
     left: 37%;
@@ -32,7 +31,6 @@
 }
 
 .inviteNewBox .inviteNewCode {
-    background: pink;
     position: absolute;
     top: 36%;
     left: 25%;

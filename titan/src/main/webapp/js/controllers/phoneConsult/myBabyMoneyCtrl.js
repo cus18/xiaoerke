@@ -5,7 +5,6 @@ angular.module('controllers', ['ionic']).controller('myBabyMoneyCtrl', [
             BabyCoinInit.save({},function(data){
                 $scope.babyMoney = data.babyCoinVo.cash;
                 $scope.babyCoinRecordVos = data.babyCoinRecordVos;
-                console.log('1')
             })
         }
     }])
