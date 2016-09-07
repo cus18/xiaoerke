@@ -71,7 +71,7 @@ public class WechatUserController extends BaseController {
   }
 
     /**
-     *用户校验是否是微信服务器发送的请求
+     *根据openid查询关注用户信息
      */
     @RequestMapping(value = "/patient/getAttentionInfo", method = {RequestMethod.POST, RequestMethod.GET})
     public
