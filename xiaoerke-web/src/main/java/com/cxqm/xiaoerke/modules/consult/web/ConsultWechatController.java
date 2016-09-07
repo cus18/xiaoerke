@@ -251,6 +251,8 @@ public class ConsultWechatController extends BaseController {
 
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
+                    e.getMessage();
+                    System.out.println("=====sdf====="+e.getMessage()+"==="+e.getCause());
                 }
             }
 

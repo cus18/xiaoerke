@@ -1,6 +1,8 @@
 package com.cxqm.xiaoerke.modules.operation.service;
 
+import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo;
+import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,4 +42,6 @@ public interface ChannelService  {
 
     int deleteChannelInfo(String channelId);
     List<HashMap<String, Object>> getNewUserAttentionAndRemainStatistics(Map<String, Object> map);
+
+    Page<WechatAttention> userChannelSearch(Page<WechatAttention> page,String openid,String nickname ,String todayAttention,String todayConsult);
 }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.wechat.entity.DoctorAttentionVo;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
@@ -53,4 +54,6 @@ public interface WechatAttentionDao {
 
     //jiangzhongge add 根据用户openid查询用户最后一次关注的状态
     Map findLastAttentionStatusByOpenId(@Param("userId") String userId);
+
+    Page<WechatAttention> findUserChannelList(Page<WechatAttention> page,@Param("openid") String openid,@Param("nickname") String nickname,@Param("todayAttention") String todayAttention,@Param("todayConsult") String todayConsult);
 }
