@@ -1,11 +1,10 @@
 <ion-spinner ng-show="pageLoading" class="loadPic"></ion-spinner>
-<div bdf-head="title"></div>
-<ion-view ng-init="">
+<ion-view ng-init="bobyMoneyInit()">
     <ion-content>
         <div class="bobyMoneyBox">
             <div class="bobyMoneyTop">
                 <span class="bodyMoneyTitle">宝宝币余额</span>
-                <span class="money">8888</span>
+                <span class="money">{{babyMoney}}</span>
             </div>
             <div class="bobyMoneyContent">
                 <span class="bodyMoneyTitle">宝宝币积分规则</span>
@@ -18,19 +17,13 @@
             <div class="bobyMoneyBottom">
                 <span class="bodyMoneyTitle">帐户记录</span>
                 <ul>
-                    <li class="clearfix">
+                    <li class="clearfix" ng-repeat="item in babyCoinRecordVos">
                         <div class="bobyMoneyBottomLeft">
-                            <span class="bobyMoneyBottomLeftTitle">邀请有礼</span>
-                            <span class="bobyMoneyBottomLeftTime">08/29</span>
+                            <span class="bobyMoneyBottomLeftTitle" ng-if="item.source=='invitePresent'">邀请有礼</span>
+                            <span class="bobyMoneyBottomLeftTitle" ng-if="item.source=='consultPay'">咨询消费</span>
+                            <span class="bobyMoneyBottomLeftTime">{{item.date}}</span>
                         </div>
-                        <span class="bobyMoneyBottomLeftValue add">+50</span>
-                    </li>
-                    <li class="clearfix">
-                        <div class="bobyMoneyBottomLeft">
-                            <span class="bobyMoneyBottomLeftTitle">邀请有礼</span>
-                            <span class="bobyMoneyBottomLeftTime">08/29</span>
-                        </div>
-                        <span class="bobyMoneyBottomLeftValue subtract">+50</span>
+                        <span class="bobyMoneyBottomLeftValue add" ng-style="item.balance>0?{color: '#2c9ee2'}:{color: '#fe717b'}">{{item.balance}}</span>
                     </li>
                 </ul>
             </div>

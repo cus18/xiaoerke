@@ -3,6 +3,9 @@ angular.module('controllers', [])
         function ($scope,ConsultCustomOnly) {
             $scope.invitePageInit = function(){
                 loadShare();
+                $('#invitePageContent').click(function(){
+                    $('#invitePageShade').show();
+                })
             }
             //分享到朋友圈或者微信
             var loadShare = function(){
