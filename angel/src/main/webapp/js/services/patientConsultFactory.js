@@ -28,5 +28,11 @@ define(['appPatientConsult'], function (app) {
         .factory('GetWJYHistoryRecord', ['$resource', function ($resource) {
             return $resource('consult/cooperate/getHistoryRecord');
         }])
+        .factory('CreateInviteCard', ['$resource', function ($resource) {
+            return $resource('babyCoin/createInviteCard');
+        }])
+        .factory('GetAttentionInfo', ['$resource', function ($resource) {
+            return $resource('patient/getAttentionInfo');
+        }])
 
 })

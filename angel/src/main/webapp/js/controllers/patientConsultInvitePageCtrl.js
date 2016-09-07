@@ -1,15 +1,18 @@
 angular.module('controllers', [])
-    .controller('patientConsultInvitePageCtrl',['$scope',
-        function ($scope,ConsultCustomOnly) {
+    .controller('patientConsultInvitePageCtrl',['$scope','GetAttentionInfo',
+        function ($scope,GetAttentionInfo) {
             $scope.invitePageInit = function(){
                 loadShare();
                 $('#invitePageContent').click(function(){
                     $('#invitePageShade').show();
-                })
+                });
+                GetAttentionInfo.save({},function(data){
+                    $scope.minename = data.wechat_name;
+                });
             }
             //分享到朋友圈或者微信
             var loadShare = function(){
-                var share = 'http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=32';
+                var share = "http://s120.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=41&oldOpenId='sdfsdfsd'&marketer='1100001231'";
                 // if(version=="a"){
                 version="a";
                 var timestamp;//时间戳
@@ -45,9 +48,9 @@ angular.module('controllers', [])
                             wx.ready(function () {
                                 // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                 wx.onMenuShareTimeline({
-                                    title: '我已为蛋蛋进行了公益捐赠，捐款和转发都是献爱心', // 分享标题
+                                    title: '在这里可以免费咨询三甲医院儿科专家', // 分享标题
                                     link: share, // 分享链接
-                                    imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
+                                    imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                     success: function (res) {
                                         recordLogs("AXJZ_HDSY_FXPYQ");
                                     },
@@ -55,10 +58,10 @@ angular.module('controllers', [])
                                     }
                                 });
                                 wx.onMenuShareAppMessage({
-                                    title: '我已为蛋蛋进行了公益捐赠，捐款和转发都是献爱心', // 分享标题
-                                    desc: '蛋蛋正在接受化疗，你的一个小小善举，就能挽救一个鲜活生命！', // 分享描述
+                                    title: $scope.minename + '向你推荐', // 分享标题
+                                    desc: '在这里可以免费咨询三甲医院儿科专家', // 分享描述
                                     link: share, // 分享链接
-                                    imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Faxjz.jpg', // 分享图标
+                                    imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                     success: function (res) {
                                         recordLogs("AXJZ_HDSY_FXPY");
                                     },
