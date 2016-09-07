@@ -382,7 +382,7 @@ public class ConsultDoctorController extends BaseController {
                                 st = "嗨，亲爱的,本次咨询已关闭。";
                             }
                             st = st + "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n"+">>"+
-                                    "<a href='"+ ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/customerService'>邀请好友得积分</a>";
+                                    "<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=42'>邀请好友得积分</a>";
                             WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                         }
                         //分享的代码
