@@ -1,7 +1,10 @@
 package com.cxqm.xiaoerke.modules.wechat.web;
 
 import com.cxqm.xiaoerke.common.utils.SignUtil;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
+import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatPatientCoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by wangbaowei on 15/11/4.
@@ -26,7 +32,11 @@ public class WechatUserController extends BaseController {
     @Autowired
     private WechatPatientCoreService wechatPatientCoreService;
 
-  /**
+    @Autowired
+    private WechatAttentionService wechatAttentionService;
+
+
+    /**
   *用户校验是否是微信服务器发送的请求
   */
   @RequestMapping(value = "/patient/wxChat", method = {RequestMethod.POST, RequestMethod.GET})
@@ -59,4 +69,21 @@ public class WechatUserController extends BaseController {
           return respMessage;
       }
   }
+
+    /**
+     *用户校验是否是微信服务器发送的请求
+     */
+    @RequestMapping(value = "/patient/getAttentionInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map getAttentionInfo(HttpSession session, HttpServletRequest request) {
+        Map map = new HashMap();
+        SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+        sysWechatAppintInfoVo.setOpen_id(WechatUtil.getOpenId(session,request));
+        SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+        map.put("attentionInfo",wechatAttentionVo);
+        return map;
+    }
+
+
 }
