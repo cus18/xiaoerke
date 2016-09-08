@@ -2,7 +2,9 @@ package com.cxqm.xiaoerke.common.utils;
 
 import com.cxqm.xiaoerke.common.config.Global;
 
-public class ConstantUtil {
+public enum ConstantUtil {
+
+	INSTANCE;
 
 	//小儿科用户端微信参数
 	public static final String DOCTORCORPID = Global.getConfig("DOCTORCORPID");
