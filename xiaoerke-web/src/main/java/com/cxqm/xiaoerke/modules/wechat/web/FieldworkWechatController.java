@@ -203,6 +203,9 @@ public class FieldworkWechatController {
         }else if("38".equals(url)){
             //肺炎保
             url = ConstantUtil.TITAN_WEB_URL + "titan/insurance#/pneumoniaIndex";
+        }else if("39".equals(url)){
+            //非及时咨询
+            url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/patientConsultNoFee";
         }
 
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
