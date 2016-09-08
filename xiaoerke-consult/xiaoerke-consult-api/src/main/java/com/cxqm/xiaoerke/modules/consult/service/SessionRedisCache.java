@@ -39,4 +39,10 @@ public interface SessionRedisCache {
 	List<Object> getConsultSessionsBySessionIds(Collection<Object> sessionIds);
 
 	void putUserIdIpAddressPair(InetSocketAddress inetSocketAddress, String csUserId);
+
+	void clearInstantConsultationList();
+
+	void addInstantConsultationList(String openid);
+
+	Long num4InstantConsultationList();
 }
