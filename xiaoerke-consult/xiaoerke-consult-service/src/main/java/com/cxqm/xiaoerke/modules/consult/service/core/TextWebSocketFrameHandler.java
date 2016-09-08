@@ -256,6 +256,15 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());*/
                             if (sendResult.equals("tokenIsInvalid")) {
                                 updateWechatParameter();
+                            }else if(!sendResult.equals("messageOk")){
+                                Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(csUserId);
+                                JSONObject jsonObj = new JSONObject();
+                                jsonObj.put("type", "4");
+                                jsonObj.put("notifyType", "0016");
+                                TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+                                if (csChannel != null && csChannel.isActive()) {
+                                    csChannel.writeAndFlush(frame.retain());
+                                }
                             }
                         }
                     } else if (msgType != 0) {
