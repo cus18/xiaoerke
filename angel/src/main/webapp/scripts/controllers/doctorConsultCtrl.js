@@ -229,6 +229,9 @@ angular.module('controllers', ['luegg.directives'])
                             }else if(type == "diagnosisReplyList"){
                                 $scope.diagnosisReplyIndex = -1;
                                 $scope.diagnosisReplySecondIndex = -1;
+                            }else if(type == "diagnosticImgReplyList"){
+                                $scope.diagnosticImgReplyIndex = -1;
+                                $scope.diagnosticImgReplySecondIndex = -1;
                             }
                         }else{
                             if(type=="rankList"){
@@ -784,8 +787,6 @@ angular.module('controllers', ['luegg.directives'])
                                 "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                                 "senderId": angular.copy($scope.doctorId),
                                 "senderName": angular.copy($scope.doctorName),
-                                /*"userType": angular.copy($scope.userType),
-                                 "department": angular.copy($scope.department),*/
                                 "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                             };
                         } else{
@@ -795,8 +796,6 @@ angular.module('controllers', ['luegg.directives'])
                                 "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                                 "senderId": angular.copy($scope.doctorId),
                                 "senderName": angular.copy($scope.doctorName),
-                                /* "userType": angular.copy($scope.userType),
-                                 "department": angular.copy($scope.department),*/
                                 "sessionId": angular.copy($scope.currentUserConversation.sessionId)
                             };
                         }
@@ -991,6 +990,7 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.showFlag.myReplyList = true;
                 $scope.showFlag.publicReplyList = false;
                 $scope.showFlag.diagnosisReplyList = false;
+                $scope.showFlag.diagnosticImgReplyList = false;
                 if($scope.myReplyIndex==parentIndex){
                     $scope.myReplyIndex = -1;
                     $scope.myReplySecondIndex = -1;
@@ -1031,6 +1031,7 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.showFlag.myReplyList = false;
                 $scope.showFlag.publicReplyList = true;
                 $scope.showFlag.diagnosisReplyList = false;
+                $scope.showFlag.diagnosticImgReplyList = false;
                 $scope.publicReplySecondIndex = childIndex;
                 $scope.info.editContent = $scope.commonAnswer[parentIndex].secondAnswer[childIndex].name;
             };
@@ -1055,8 +1056,34 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.showFlag.myReplyList = false;
                 $scope.showFlag.publicReplyList = false;
                 $scope.showFlag.diagnosisReplyList = true;
+                $scope.showFlag.diagnosticImgReplyList = false;
                 $scope.diagnosisReplySecondIndex = childIndex;
                 $scope.info.editContent = $scope.diagnosis[parentIndex].secondAnswer[childIndex].name;
+            };
+            //图片回复内容
+            $scope.chooseDiagnosticImgContent = function(parentIndex, childIndex){
+                $scope.info.consultMessage = angular.copy($scope.diagnosticImg[parentIndex].secondAnswer[childIndex].name);
+            };
+            $scope.tapDiagnosticImgReplyContent = function (parentIndex){
+                if($scope.diagnosticImgReplyIndex==parentIndex){
+                    $scope.diagnosticImgReplyIndex = -1;
+                    $scope.diagnosticImgReplySecondIndex = -1;
+                    $scope.info.editGroup = "";
+                    $scope.info.editContent = "";
+                }else{
+                    $scope.diagnosticImgReplyIndex = parentIndex;
+                    $scope.diagnosticImgReplySecondIndex = -1;
+                    $scope.info.editGroup = $scope.diagnosticImg[parentIndex].name;
+                    $scope.info.editContent = "";
+                }
+            };
+            $scope.tapEditDiagnosticImgContent = function(parentIndex, childIndex){
+                $scope.showFlag.myReplyList = false;
+                $scope.showFlag.publicReplyList = false;
+                $scope.showFlag.diagnosisReplyList = false;
+                $scope.showFlag.diagnosticImgReplyList = true;
+                $scope.diagnosticImgReplySecondIndex = childIndex;
+                $scope.info.editContent = $scope.diagnosticImg[parentIndex].secondAnswer[childIndex].name;
             };
             //添加分组
             $scope.add = function() {
@@ -1089,6 +1116,15 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.addContentFlag = true;
                     }
                 }
+                if($scope.showFlag.diagnosticImgReplyList){
+                    if($scope.diagnosticImgReplyIndex==-1||$scope.diagnosticImgReplyIndex==undefined){
+                        $scope.addGroupFlag = true;
+                        $scope.addContentFlag = false;
+                    }else{
+                        $scope.addGroupFlag = false;
+                        $scope.addContentFlag = true;
+                    }
+                }
             };
             $scope.closeAddGroup = function() {
                 $scope.info.addGroup = '';
@@ -1111,6 +1147,10 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.diagnosis.push(setGroupContent);
                     saveDiagnosis();
                 }
+                if($scope.showFlag.diagnosticImgReplyList){
+                    $scope.diagnosticImg.push(setGroupContent);
+                    saveDiagnosticImg();
+                }
                 $scope.addGroupFlag = false;
             };
             //添加内容
@@ -1129,6 +1169,10 @@ angular.module('controllers', ['luegg.directives'])
                 if($scope.showFlag.diagnosisReplyList){
                     $scope.diagnosis[$scope.diagnosisReplyIndex].secondAnswer.push(setContent);
                     saveDiagnosis();
+                }
+                if($scope.showFlag.diagnosticImgReplyList){
+                    $scope.diagnosticImg[$scope.diagnosticImgReplyIndex].secondAnswer.push(setContent);
+                    saveDiagnosticImg();
                 }
                 $scope.addContentFlag=false;
             };
@@ -1161,6 +1205,17 @@ angular.module('controllers', ['luegg.directives'])
                 if($scope.showFlag.diagnosisReplyList){
                     if($scope.diagnosisReplyIndex!=-1&&$scope.diagnosisReplyIndex!=undefined){
                         if($scope.diagnosisReplySecondIndex==-1||$scope.diagnosisReplyIndex==undefined){
+                            $scope.editGroupFlag = true;
+                            $scope.editContentFlag = false;
+                        }else{
+                            $scope.editGroupFlag = false;
+                            $scope.editContentFlag = true;
+                        }
+                    }
+                }
+                if($scope.showFlag.diagnosticImgReplyList){
+                    if($scope.diagnosticImgReplyIndex!=-1&&$scope.diagnosticImgReplyIndex!=undefined){
+                        if($scope.diagnosticImgReplySecondIndex==-1||$scope.diagnosticImgReplyIndex==undefined){
                             $scope.editGroupFlag = true;
                             $scope.editContentFlag = false;
                         }else{
@@ -1242,6 +1297,20 @@ angular.module('controllers', ['luegg.directives'])
                             }
                         }
                         saveDiagnosis();
+                    }
+                }
+                if($scope.showFlag.diagnosticImgReplyList){
+                    if($scope.diagnosticImgReplyIndex!=-1&&$scope.diagnosticImgReplyIndex!=undefined){
+                        if($scope.diagnosticImgReplySecondIndex==-1||$scope.diagnosticImgReplyIndex==undefined){
+                            if ($window.confirm("确定要删除该组回复?")) {
+                                $scope.diagnosticImg.splice($scope.diagnosticImgReplyIndex, 1);
+                            }
+                        }else{
+                            if($window.confirm("确定要删除该回复?")) {
+                                $scope.diagnosticImg[$scope.diagnosticImgReplyIndex].secondAnswer.splice($scope.diagnosticImgReplySecondIndex, 1);
+                            }
+                        }
+                        saveDiagnosticImg();
                     }
                 }
             };
@@ -1347,6 +1416,11 @@ angular.module('controllers', ['luegg.directives'])
             //保存诊断回复
             var saveDiagnosis = function() {
                 GetMyAnswerModify.save({answer: $scope.diagnosis, answerType: "diagnosis"}, function (data) {
+                });
+            };
+            //保存图片回复
+            var saveDiagnosticImg = function() {
+                GetMyAnswerModify.save({answer: $scope.diagnosticImg, answerType: "diagnosticImg"}, function (data) {
                 });
             };
             /***回复操作区**/
