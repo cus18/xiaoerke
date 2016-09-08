@@ -48,6 +48,7 @@ angular.module('controllers', ['luegg.directives'])
                 myReplyList: false,
                 publicReplyList: false,
                 diagnosisReplyList: false,
+                diagnosticImgReplyList: false,
                 replyContent: true,
                 advisoryContent: false,
                 magnifyImg:false,
@@ -126,6 +127,16 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.diagnosis = answerData.diagnosis;
                             }else{
                                 $scope.diagnosis = [];
+                            }
+                        });
+
+                        //获取我的诊断图片
+                        GetAnswerValueList.save({"type":"diagnosticImg"},function(data){
+                            if(data.result=="success"){
+                                var answerData = JSON.parse(data.answerValue);
+                                $scope.diagnosticImg = answerData.diagnosticImg;
+                            }else{
+                                $scope.diagnosticImg = [];
                             }
                         });
                         //查找所属科室
