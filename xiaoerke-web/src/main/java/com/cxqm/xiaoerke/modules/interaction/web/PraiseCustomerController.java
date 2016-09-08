@@ -3,6 +3,7 @@
  */
 package com.cxqm.xiaoerke.modules.interaction.web;
 
+import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
@@ -172,8 +173,10 @@ public class PraiseCustomerController extends BaseController {
                     "\"remark\":{\"value\":\"\",\"color\":\"#173177\"}";
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
             String tokenId = (String) userWechatParam.get("token");
-            String templateId = "xP7QzdilUu1RRTFzVv8krwwMOyv-1pg9l0ABsooub14"; //正式环境
-//            String templateId = "5sckiyeikVd1Y2nYso8Otl-hQlxW-g-VrtIxEgrYgfg"; //小儿科医生版
+            String templateId = Global.getConfig("bad_evaluate_templete_id");
+            if(StringUtils.isNull(templateId)){
+                templateId = "xP7QzdilUu1RRTFzVv8krwwMOyv-1pg9l0ABsooub14";    //正式
+            }
             String failureMessage = "";
             if (openIds != null && openIds.size() > 0) {
                 for (String openId : openIds) {
