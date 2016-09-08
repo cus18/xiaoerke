@@ -165,6 +165,57 @@ define(['appPatientConsult'], function(app){
                     })
                 ;
 
+                    })
+                    .state('patientConsultInviteOld', {
+                        url: '/patientConsultInviteOld',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'patientConsultInviteOldCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultInviteOldCtrl',
+                                    ['js/controllers/patientConsultInviteOldCtrl.js',
+                                        'js/styles/patientConsultInviteOld.css'],
+                                    'js/views/patientConsultInviteOld.html?ver='+patientConsultVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('patientConsultInvitePage', {
+                        url: '/patientConsultInvitePage',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'patientConsultInvitePageCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultInvitePageCtrl',
+                                    ['js/controllers/patientConsultInvitePageCtrl.js',
+                                        'js/styles/patientConsultInvitePage.css'],
+                                    'js/views/patientConsultInvitePage.html?ver='+patientConsultVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('patientConsultInviteNew', {
+                        url: '/patientConsultInviteNew',
+                        templateProvider: function() {
+                            return lazyDeferred.promise;
+                        },
+                        controller: 'patientConsultInviteNewCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http, 'patientConsultInviteNewCtrl', ['js/controllers/patientConsultInviteNewCtrl.js',
+                                        'js/styles/patientConsultInviteNew.css'
+                                    ],
+                                    'js/views/patientConsultInviteNew.html?ver=' + patientConsultVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    });
 
                 //$urlRouterProvider.otherwise('patientConsultFirst');
                 $urlRouterProvider.otherwise('patientConsultUmbrella');

@@ -195,7 +195,7 @@
   </select>
 
     <select id="getAttentionByOpenId" resultType="com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention">
-        select marketer, nickname,min(date) date from sys_attention where openid=#{open_id}
+        select marketer, nickname,min(date) date from sys_attention where openid=#{open_id} limit 1
     </select>
 
   <!--用户最近关注的marketer-->

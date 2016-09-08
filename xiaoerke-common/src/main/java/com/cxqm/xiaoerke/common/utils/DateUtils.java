@@ -393,7 +393,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     		format = new SimpleDateFormat("yyyy-MM-dd");
     	}else if("datetime".equals(flag)){
     		format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    	}
+    	}else if("monthDate".equals(flag)){
+			format = new SimpleDateFormat("MM/dd");
+		}
         String dateStr = null;
     	dateStr = format.format(date);
         return dateStr;
