@@ -76,7 +76,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             //来的是医生心跳消息，回心跳确认消息给医生
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("type", "5");
-            Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(csUserId);
+            Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
             TextWebSocketFrame heartBeatCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
             csChannel.writeAndFlush(heartBeatCsUser.retain());
             return;
@@ -84,12 +84,12 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
         if (msgType == 6) {
             String csUserId = (String) msgMap.get("csUserId");
-            Iterator<Map.Entry<String, Date>> it2 = ConsultSessionManager.getSessionManager().getCsUserConnectionTimeMapping().entrySet().iterator();
+            Iterator<Map.Entry<String, Date>> it2 = ConsultSessionManager.INSTANCE.getCsUserConnectionTimeMapping().entrySet().iterator();
             while (it2.hasNext()) {
                 Map.Entry<String, Date> entry = it2.next();
                 try{
                     if (csUserId.equals(entry.getKey())) {
-                        ConsultSessionManager.getSessionManager().getUserConnectionTimeMapping().put(entry.getKey(), new Date());
+                        ConsultSessionManager.INSTANCE.getUserConnectionTimeMapping().put(entry.getKey(), new Date());
                     }
                 }catch (Exception e){
                 }
@@ -102,7 +102,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             //来自用户H5的心跳，回心跳确认给用户
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("type", "7");
-            Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
+            Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(userId);
             TextWebSocketFrame heartBeatCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
             csChannel.writeAndFlush(heartBeatCsUser.retain());
             return;
@@ -110,12 +110,12 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
         if(msgType==8){
             String userId = (String) msgMap.get("userId");
-            Iterator<Map.Entry<String, Date>> it2 = ConsultSessionManager.getSessionManager().getCsUserConnectionTimeMapping().entrySet().iterator();
+            Iterator<Map.Entry<String, Date>> it2 = ConsultSessionManager.INSTANCE.getCsUserConnectionTimeMapping().entrySet().iterator();
             while (it2.hasNext()) {
                 Map.Entry<String, Date> entry = it2.next();
                 try{
                     if (userId.equals(entry.getKey())) {
-                        ConsultSessionManager.getSessionManager().getUserConnectionTimeMapping().put(entry.getKey(), new Date());
+                        ConsultSessionManager.INSTANCE.getUserConnectionTimeMapping().put(entry.getKey(), new Date());
                     }
                 }catch (Exception e){
                 }
@@ -133,7 +133,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             String senderId = (String) msgMap.get("senderId");
             if (senderId.equals(userId)) {
                 //如果是用户作为发送者，则发给医生接收
-                Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(csUserId);
+                Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
                 if (csChannel != null && csChannel.isActive()) {
                     csChannel.writeAndFlush(msg.retain());
                     //保存聊天记录
@@ -142,10 +142,10 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             } else if (senderId.equals(csUserId)) {
                 //如果是医生作为发送者，则用户接收
                 if (richConsultSession.getSource().equals("h5cxqm")||richConsultSession.getSource().equals("h5wjy") || richConsultSession.getSource().equals("h5bhq")) {
-                    Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
+                    Channel userChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(userId);
                     if (userChannel != null && userChannel.isActive()) {
                         if(richConsultSession.getSource().equals("h5bhq")){
-                            Map<String, Date> userConnectionTimeMapping = ConsultSessionManager.getSessionManager().getUserConnectionTimeMapping();
+                            Map<String, Date> userConnectionTimeMapping = ConsultSessionManager.INSTANCE.getUserConnectionTimeMapping();
                             Date oldDate = null;
                             if(userConnectionTimeMapping.containsKey(richConsultSession.getUserId())){
                                 oldDate = userConnectionTimeMapping.get(richConsultSession.getUserId());
@@ -257,7 +257,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             if (sendResult.equals("tokenIsInvalid")) {
                                 updateWechatParameter();
                             }else if(!sendResult.equals("messageOk")){
-                                Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(csUserId);
+                                Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
                                 JSONObject jsonObj = new JSONObject();
                                 jsonObj.put("type", "4");
                                 jsonObj.put("notifyType", "0016");
@@ -290,7 +290,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         } else if (sessionId == null) {
             //如果sessionId为空，首先看，消息，是不是从一个用户的H5channel过来的
             if (msgMap.get("source").equals("h5cxqmUser") && msgMap.get("senderId") != null) {
-                RichConsultSession consultSession = ConsultSessionManager.getSessionManager().
+                RichConsultSession consultSession = ConsultSessionManager.INSTANCE.
                         createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5cxqm");
 
                 //保存聊天记录
@@ -298,14 +298,14 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                     //将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
                     msgMap.put("sessionId", consultSession.getId());
                     msgMap.put("serverAddress", consultSession.getServerAddress());
-                    Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+                    Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
                     TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
                     csChannel.writeAndFlush(csUserMsg.retain());
                     consultRecordService.buildRecordMongoVo((String) msgMap.get("senderId"), String.valueOf(msgType),
                             (String) msgMap.get("content"), consultSession);
                 }
             }else if(msgMap.get("source").equals("h5wjyUser") && msgMap.get("senderId") != null){
-                RichConsultSession consultSession = ConsultSessionManager.getSessionManager().
+                RichConsultSession consultSession = ConsultSessionManager.INSTANCE.
                         createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5wjy");
 
                 //保存聊天记录
@@ -313,14 +313,14 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                     //将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
                     msgMap.put("sessionId", consultSession.getId());
                     msgMap.put("serverAddress", consultSession.getServerAddress());
-                    Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+                    Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
                     TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
                     csChannel.writeAndFlush(csUserMsg.retain());
                     consultRecordService.buildRecordMongoVo((String) msgMap.get("senderId"), String.valueOf(msgType),
                             (String) msgMap.get("content"), consultSession);
                 }
             }else if(msgMap.get("source").equals("h5bhqUser") && msgMap.get("senderId") != null){
-                RichConsultSession consultSession = ConsultSessionManager.getSessionManager().
+                RichConsultSession consultSession = ConsultSessionManager.INSTANCE.
                         createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5bhq");
 
                 //保存聊天记录
@@ -328,7 +328,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                     //将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
                     msgMap.put("sessionId", consultSession.getId());
                     msgMap.put("serverAddress", consultSession.getServerAddress());
-                    Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+                    Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
                     TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
                     csChannel.writeAndFlush(csUserMsg.retain());
                     consultRecordService.buildRecordMongoVo((String) msgMap.get("senderId"), String.valueOf(msgType),
@@ -347,11 +347,11 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         log.info("enter channelInactive()");
-        String userId = ConsultSessionManager.getSessionManager().getChannelUserMapping().get(ctx.channel());
-        ConsultSessionManager.getSessionManager().getChannelUserMapping().remove(ctx.channel());
+        String userId = ConsultSessionManager.INSTANCE.getChannelUserMapping().get(ctx.channel());
+        ConsultSessionManager.INSTANCE.getChannelUserMapping().remove(ctx.channel());
         if (userId != null) {
-            ConsultSessionManager.getSessionManager().getUserChannelMapping().remove(userId);
-            ConsultSessionManager.getSessionManager().getCsUserChannelMapping().remove(userId);
+            ConsultSessionManager.INSTANCE.getUserChannelMapping().remove(userId);
+            ConsultSessionManager.INSTANCE.getCsUserChannelMapping().remove(userId);
         }
         log.info("finish channelInactive()");
     }

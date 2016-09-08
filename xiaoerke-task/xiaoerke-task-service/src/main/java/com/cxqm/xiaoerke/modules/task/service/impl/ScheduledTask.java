@@ -1098,14 +1098,14 @@ public class ScheduledTask {
             }
         }
         //监控distributorList
-        List<String> distributorList = ConsultSessionManager.getSessionManager().distributorsList;
+        List<String> distributorList = ConsultSessionManager.INSTANCE.distributorsList;
         User user = new User();
         user.setUserType("distributor");
         List<User> users = systemService.findUserByUserType(user);
         if (null != distributorList && null != users && distributorList.size() > 0 && users.size() > 0 || users.size() != distributorList.size()) {
-            ConsultSessionManager.getSessionManager().distributorsList = new ArrayList<String>();
+            ConsultSessionManager.INSTANCE.distributorsList = new ArrayList<String>();
             for (User u : users) {
-                ConsultSessionManager.getSessionManager().distributorsList.add(u.getId());
+                ConsultSessionManager.INSTANCE.distributorsList.add(u.getId());
             }
         }
 
@@ -1202,11 +1202,11 @@ public class ScheduledTask {
 
     public void testMappingTask() {
         //删除会话排名中的临时数据
-        System.out.println("userChannelMapping的大小为：" + ConsultSessionManager.getSessionManager().userChannelMapping.size());
-        Iterator iterator = ConsultSessionManager.getSessionManager().userChannelMapping.keySet().iterator();
+        System.out.println("userChannelMapping的大小为：" + ConsultSessionManager.INSTANCE.userChannelMapping.size());
+        Iterator iterator = ConsultSessionManager.INSTANCE.userChannelMapping.keySet().iterator();
         while (iterator.hasNext()) {
             String key = (String) iterator.next();
-            System.out.println("key==" + key + "|||" + "value==" + ConsultSessionManager.getSessionManager().userChannelMapping.get(key));
+            System.out.println("key==" + key + "|||" + "value==" + ConsultSessionManager.INSTANCE.userChannelMapping.get(key));
         }
     }
 
@@ -1495,14 +1495,14 @@ public class ScheduledTask {
      * 每two minutes分钟检查一次医生的在线状态，如果医生出现异常断网的情况，则废除此channel
      ***/
     public void checkDoctorChannelStatusTask() {
-        ConsultSessionManager.getSessionManager().checkDoctorChannelStatus();
+        ConsultSessionManager.INSTANCE.checkDoctorChannelStatus();
     }
 
     /***
     * every two minutes to check the h5 user connection status
      ***/
     public void checkH5UserChannelStatusTask(){
-        ConsultSessionManager.getSessionManager().checkH5UserChannelStatus();
+        ConsultSessionManager.INSTANCE.checkH5UserChannelStatus();
     }
 
 

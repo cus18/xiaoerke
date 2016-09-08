@@ -285,7 +285,7 @@ public class ConsultDoctorController extends BaseController {
         String userName = (String) params.get("userName");
 
         //根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
-        HashMap<String, Object> response = ConsultSessionManager.getSessionManager().createConsultSession(userName, userId);
+        HashMap<String, Object> response = ConsultSessionManager.INSTANCE.createConsultSession(userName, userId);
         return response;
     }
 
@@ -335,7 +335,7 @@ public class ConsultDoctorController extends BaseController {
             if (richConsultSession != null) {
                 if ("h5cxqm".equalsIgnoreCase(richConsultSession.getSource())) {
                     String patientId = richConsultSession.getUserId();
-                    Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(patientId);
+                    Channel userChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(patientId);
                     JSONObject obj = new JSONObject();
                     if (userChannel != null && userChannel.isActive()) {
                         obj.put("type", "4");
@@ -344,7 +344,7 @@ public class ConsultDoctorController extends BaseController {
                         userChannel.writeAndFlush(csframe.retain());
                     } else {
                         String doctorId = richConsultSession.getCsUserId();
-                        Channel doctorChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(doctorId);
+                        Channel doctorChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(doctorId);
                         obj.put("type", "4");
                         obj.put("notifyType", "0015");
                         TextWebSocketFrame csframe = new TextWebSocketFrame(obj.toJSONString());
@@ -390,7 +390,7 @@ public class ConsultDoctorController extends BaseController {
 //                    patientRegisterPraiseService.sendRemindMsgToUser(userId,sessionId);
                     }
                 }else if("h5bhq".equalsIgnoreCase(richConsultSession.getSource())){
-                    Map<String, Date> userConnectionTimeMapping = ConsultSessionManager.getSessionManager().getUserConnectionTimeMapping();
+                    Map<String, Date> userConnectionTimeMapping = ConsultSessionManager.INSTANCE.getUserConnectionTimeMapping();
                     Date oldDate = null;
                     if(userConnectionTimeMapping.containsKey(richConsultSession.getUserId())){
                         oldDate = userConnectionTimeMapping.get(richConsultSession.getUserId());
@@ -398,7 +398,7 @@ public class ConsultDoctorController extends BaseController {
                         oldDate = new Date();
                         userConnectionTimeMapping.put(richConsultSession.getUserId(),oldDate);
                     }
-                    Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(richConsultSession.getUserId());
+                    Channel userChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(richConsultSession.getUserId());
                     Boolean flag = false ;
                     for(int i= 0 ; i<= 1;i++){
                         JSONObject jsonObj = new JSONObject();

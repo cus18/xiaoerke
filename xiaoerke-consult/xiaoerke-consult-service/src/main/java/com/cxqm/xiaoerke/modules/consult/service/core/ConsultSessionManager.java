@@ -31,7 +31,9 @@ import java.util.concurrent.Executors;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
-public class ConsultSessionManager {
+public enum ConsultSessionManager {
+
+    INSTANCE;//deliang
 
     private transient static final Logger log = LoggerFactory.getLogger(ConsultSessionManager.class);
 
@@ -81,8 +83,6 @@ public class ConsultSessionManager {
 
     private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
-    private static ConsultSessionManager sessionManager = new ConsultSessionManager();
-
     //jiangzg add 2016年6月17日16:26:01
     private ConsultDoctorInfoService consultDoctorInfoService = SpringContextHolder.getBean("consultDoctorInfoServiceImpl");
 
@@ -101,10 +101,6 @@ public class ConsultSessionManager {
         for (User u : users) {
             distributorsList.add(u.getId());
         }
-    }
-
-    public static ConsultSessionManager getSessionManager() {
-        return sessionManager;
     }
 
     void createSocket(ChannelHandlerContext ctx, String url) {
@@ -631,7 +627,7 @@ public class ConsultSessionManager {
                     List<Map> result = consultDoctorInfoService.getDoctorInfoMoreByUserId(toCsUserId);
                     if (result != null && result.size() > 0) {
                         String source = session.getSource();
-                        Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(toCsUserId);
+                        Channel csChannel = getUserChannelMapping().get(toCsUserId);
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.put("type", "4");
                         jsonObject.put("sessionId", sessionId);
@@ -1127,8 +1123,8 @@ public class ConsultSessionManager {
         } else {
             response.put("result", "failure");
         }
-        ConsultSessionManager.getSessionManager().putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
-        ConsultSessionManager.getSessionManager().putUserIdSessionIdPair(richConsultSession.getUserId(), richConsultSession.getId());
+        putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
+        putUserIdSessionIdPair(richConsultSession.getUserId(), richConsultSession.getId());
 
     }
 
@@ -1137,7 +1133,7 @@ public class ConsultSessionManager {
      * 通知所有在线接诊员刷新转诊列表
      */
     public void refreshConsultTransferList(String distributorId) {
-        Map<String, Channel> csUserChannelMap = ConsultSessionManager.getSessionManager().getCsUserChannelMapping();
+        Map<String, Channel> csUserChannelMap = getCsUserChannelMapping();
 //        String distributorsStr = Global.getConfig("distributors.list");
 //        List distributorsList = Arrays.asList(distributorsStr.split(";"));
         JSONObject csobj = new JSONObject();

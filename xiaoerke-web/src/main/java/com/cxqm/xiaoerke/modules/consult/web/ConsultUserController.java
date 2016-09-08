@@ -94,7 +94,7 @@ public class ConsultUserController extends BaseController {
             sessionIds.add(session.getId());
         }
 
-        List<Object> sessions = ConsultSessionManager.getSessionManager().getCurrentSessions(sessionIds);
+        List<Object> sessions = ConsultSessionManager.INSTANCE.getCurrentSessions(sessionIds);
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("status", 0);
         response.put("msg", "OK");

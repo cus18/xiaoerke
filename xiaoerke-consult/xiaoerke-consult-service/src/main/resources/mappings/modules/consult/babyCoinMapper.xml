@@ -26,6 +26,9 @@
     <if test="openId != null" >
       and open_id = #{openId,jdbcType=VARCHAR}
     </if>
+    <if test="marketer != null" >
+      and marketer = #{marketer,jdbcType=VARCHAR}
+    </if>
     <if test="createTime != null" >
       order by update_time desc limit 1
     </if>
@@ -141,7 +144,7 @@
 
   <update id="updateCashByOpenId" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
     update baby_coin set cash = cash + #{cash}
-    where open_id = #{openId,jdbcType=VARCHAR}
+    where marketer = #{marketer,jdbcType=VARCHAR}
   </update>
 
 

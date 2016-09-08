@@ -156,7 +156,7 @@ public class ConsultWechatController extends BaseController {
                     consultPayUserService.sendMessageToConsult(openId, 4);
                 }
                 consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
-                csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+                csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
                 System.out.println("csChannel------" + csChannel);
                 if (csChannel == null) {
                     //保存聊天记录
@@ -180,7 +180,7 @@ public class ConsultWechatController extends BaseController {
                 consultSession.setSource(source);
                 consultSession.setServerAddress(serverAddress);
                 //创建会话，发送消息给用户，给用户分配接诊员
-                createWechatConsultSessionMap = ConsultSessionManager.getSessionManager().createUserWXConsultSession(consultSession);
+                createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
                 if (createWechatConsultSessionMap != null) {
                     csChannel = (Channel) createWechatConsultSessionMap.get("csChannel");
                     consultSession = (RichConsultSession) createWechatConsultSessionMap.get("consultSession");
@@ -406,7 +406,7 @@ public class ConsultWechatController extends BaseController {
                 query = new Query().addCriteria(where("_id").is(consultSessionStatusVo.getId()));
                 Update update = new Update().set("firstTransTime", new Date());
                 consultRecordService.updateConsultSessionFirstTransferDate(query, update, ConsultSessionStatusVo.class);
-                ConsultSessionManager.getSessionManager().minusConsultTimes(consultSessionPropertyVo);
+                ConsultSessionManager.INSTANCE.minusConsultTimes(consultSessionPropertyVo);
             }
         }
     }
@@ -421,7 +421,7 @@ public class ConsultWechatController extends BaseController {
         System.out.println("sessionId------" + sessionId);
 
         RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
-        csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+        csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
         System.out.println("csChannel------" + csChannel);
 
         consultSession.setPayStatus(ConstantUtil.PAY_SUCCESS);
@@ -469,7 +469,7 @@ public class ConsultWechatController extends BaseController {
 
             consultPayUserService.saveChargeUser(sessionId, openId);
 
-            csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+            csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
             System.out.println("csChannel------" + csChannel);
             if (csChannel != null && csChannel.isActive()) {
                 try {
@@ -514,7 +514,7 @@ public class ConsultWechatController extends BaseController {
         System.out.println("sessionId------" + sessionId);
         if(null ==sessionId) return null;
         RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
-        csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+        csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
         System.out.println("csChannel------" + csChannel);
 
         consultSession.setPayStatus(ConstantUtil.NOT_INSTANT_CONSULTATION);

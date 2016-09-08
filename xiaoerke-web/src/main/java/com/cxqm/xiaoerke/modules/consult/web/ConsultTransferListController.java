@@ -93,7 +93,7 @@ public class ConsultTransferListController {
 
         HashMap<String,Object> responseResult = new HashMap<String, Object>();
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
-        ConsultSessionManager consultSessionManager = ConsultSessionManager.getSessionManager();
+        ConsultSessionManager consultSessionManager = ConsultSessionManager.INSTANCE;
         Date date = new Date();
         User user = UserUtils.getUser();
         consultTransferListVo.setCreateBy(user.getId());
@@ -179,7 +179,7 @@ public class ConsultTransferListController {
         HashMap<String,Object> response = new HashMap<String,Object>();
         response.put("status","failure");
         List<HashMap<String,Object>> reqeustData =  (List<HashMap<String,Object>>)params.get("content");
-        ConsultSessionManager consultSessionManager=ConsultSessionManager.getSessionManager();
+        ConsultSessionManager consultSessionManager=ConsultSessionManager.INSTANCE;
         ConsultTransferListVo consultTransferListVo = new ConsultTransferListVo();
         List allId = new ArrayList();
         HashMap<String,Object> data ;
