@@ -519,7 +519,7 @@ public class ConsultUserController extends BaseController {
         String thirdId = "" ;
         String userPhone ="" ;
         String userName = "" ;
-        Integer userSex = 0;
+        Integer userSex = 3;            //代表没有传性别信息
         String remoteUrl = "";
         if (params.containsKey("source")) {
             source = String.valueOf(params.get("source"));
@@ -553,8 +553,8 @@ public class ConsultUserController extends BaseController {
                 request.put("userSex", userSex);
                 request.put("source", source);
                 request.put("thirdId", thirdId);
-                String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
-                request.put("sys_user_id", sys_user_id);
+       //         String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
+       //         request.put("sys_user_id", sys_user_id);
             }
         }else{
             userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone")))?String.valueOf(params.get("patientPhone")):"";
