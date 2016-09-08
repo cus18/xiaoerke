@@ -652,7 +652,7 @@ public class ConsultSessionManager {
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
                                         sendMsg = responseNews.toString();
                                         WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
-                                        jsonObject.put("notifyType", "1001");
+                                        jsonObject.put("notifyType", "1004");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }else if(ConstantUtil.USE_TIMES.equals(consultSessionStatusVo.getPayStatus()) || ConstantUtil.PAY_SUCCESS.equals(consultSessionStatusVo.getPayStatus())){
@@ -728,8 +728,10 @@ public class ConsultSessionManager {
                                     }else{
                                         if(ConstantUtil.NO_PAY.equals(consultSessionStatusVo.getPayStatus())){
                                             jsonObject.put("notifyType", "1002");
-                                        }else{
+                                        }else if(ConstantUtil.NOT_INSTANT_CONSULTATION.equals(consultSessionStatusVo.getPayStatus())){
                                             jsonObject.put("notifyType", "1003");
+                                        }else{
+                                            jsonObject.put("notifyType", "1004");
                                         }
                                         jsonObject.put("notifyType","1002");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
@@ -765,8 +767,12 @@ public class ConsultSessionManager {
                                         jsonObject.put("notifyType","1002");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
-                                    }else{
+                                    } else if(ConstantUtil.NOT_INSTANT_CONSULTATION.indexOf(consultSessionStatusVo.getPayStatus()) > -1) {
                                         jsonObject.put("notifyType","1003");
+                                        TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
+                                        csChannel.writeAndFlush(csUserMsg.retain());
+                                    }else {
+                                        jsonObject.put("notifyType","1004");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }

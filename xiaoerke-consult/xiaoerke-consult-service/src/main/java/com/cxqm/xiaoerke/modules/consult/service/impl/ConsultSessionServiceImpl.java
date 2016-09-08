@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
@@ -12,9 +13,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = false)
@@ -28,6 +27,10 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
 
     @Autowired
     private ConsultSessionDao consultSessionDao;
+
+    private static String dataStr =  DateUtils.DateToStr(new Date(),"date");
+
+    private static Set<String> instantSet= Collections.synchronizedSet(new HashSet<String>());
 
     @Override
     public List<Map<String, Object>> getConsultInfo(String openId) {
@@ -135,6 +138,20 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
     @Override
     public Map<String,Object> getDoctorInfoByMarketer(String marketer){
         return consultSessionDao.getDoctorInfoByMarketer(marketer);
+    }
+
+    @Override
+    public boolean cheakInstantConsultation(String openid) {
+        String nowDate = DateUtils.DateToStr(new Date(),"date");
+        if(!nowDate.equals(dataStr)){
+            instantSet.clear();
+            this.dataStr = nowDate;
+        }
+        if(instantSet.size()>=20){
+            return false;
+        }
+        instantSet.add(openid);
+        return true;
     }
 
 }

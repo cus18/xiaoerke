@@ -621,16 +621,16 @@ public class ScheduledTask {
             map.put("id", "1");
             scheduleTaskService.updateWechatParameter(map);
             sessionRedisCache.putWeChatParamToRedis(map);
-
-            System.out.print("医生端微信参数更新");
-            token = WechatUtil.getToken(ConstantUtil.DOCTORCORPID, ConstantUtil.DOCTORSECTET);
-            ticket = WechatUtil.getJsapiTicket(token);
-            map = new HashMap<String, Object>();
-            map.put("token", token);
-            map.put("ticket", ticket);
-            map.put("id", "2");
-            scheduleTaskService.updateWechatParameter(map);
-            sessionRedisCache.putWeChatParamToRedis(map);
+//
+//            System.out.print("医生端微信参数更新");
+//            token = WechatUtil.getToken(ConstantUtil.DOCTORCORPID, ConstantUtil.DOCTORSECTET);
+//            ticket = WechatUtil.getJsapiTicket(token);
+//            map = new HashMap<String, Object>();
+//            map.put("token", token);
+//            map.put("ticket", ticket);
+//            map.put("id", "2");
+//            scheduleTaskService.updateWechatParameter(map);
+//            sessionRedisCache.putWeChatParamToRedis(map);
 
         } catch (Exception e) {
             e.printStackTrace();

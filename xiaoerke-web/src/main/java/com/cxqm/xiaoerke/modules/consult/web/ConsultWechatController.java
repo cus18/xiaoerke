@@ -204,8 +204,10 @@ public class ConsultWechatController extends BaseController {
                         obj.put("notifyType", "1001");
                     } else if (ConstantUtil.NO_PAY.indexOf(consultSession.getPayStatus()) > -1) {
                         obj.put("notifyType", "1002");
-                    } else {
+                    } else if(ConstantUtil.NOT_INSTANT_CONSULTATION.indexOf(consultSession.getPayStatus()) > -1) {
                         obj.put("notifyType", "1003");
+                    }else {
+                        obj.put("notifyType", "1004");
                     }
 
                     obj.put("serverAddress", serverAddress);
@@ -251,6 +253,8 @@ public class ConsultWechatController extends BaseController {
 
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
+                    e.getMessage();
+                    System.out.println("=====sdf====="+e.getMessage()+"==="+e.getCause());
                 }
             }
 
@@ -320,7 +324,7 @@ public class ConsultWechatController extends BaseController {
 //                String  content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^"+
 //                        "\n-----------\n"+"<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>";
                 String content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^" +
-                        "\n-----------\n" + "<a href='http://s123.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s123.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>";
+                        "\n-----------\n" + "<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>";
                 messageFlag = 1;
                 WechatUtil.sendMsgToWechat(token, openId, content);
                 onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
@@ -328,7 +332,7 @@ public class ConsultWechatController extends BaseController {
             if (null == consultSessionStatusVos || consultSessionStatusVos.size() == 0 || consultSessionStatusVos.get(0).getFirstTransTime() == null) {
                 if (messageFlag == 0 && consultSessionPropertyVo.getMonthTimes() > 0) {
                     String content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^" +
-                            "\n-----------\n" + "<a href='http://s123.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s123.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>";
+                            "\n-----------\n" + "<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>";
                     WechatUtil.sendMsgToWechat(token, openId, content);
                     onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                 }
@@ -343,20 +347,27 @@ public class ConsultWechatController extends BaseController {
                         String content;
                         if (consultSessionPropertyVo.getMonthTimes() > 0) {
                             content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^" +
-                                    "\n-----------\n" + "<a href='http://s123.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s123.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>";
+                                    "\n-----------\n" + "<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                         } else if (consultSessionPropertyVo.getPermTimes() > 0) {
                             content = "嗨，亲爱的，你还可享受" + consultSessionPropertyVo.getPermTimes() + "次24小时咨询服务哦^-^" +
-                                    "\n-----------\n" + "<a href='http://s123.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s123.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>";
+                                    "\n-----------\n" + "<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                         } else if (messageFlag == 0) {
+
+                            boolean flag = consultSessionService.cheakInstantConsultation(sysUserId);
+
                             richConsultSession.setPayStatus(ConstantUtil.NO_PAY);
                             content = "嗨，亲爱的，你本月咨询次数已用完，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
-                                    ">>" + "<a href='http://s123.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s123.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>" + "\n" +
+                                    ">>" + "<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>" + "\n" +
                                     "-----------\n" +
                                     "求助客服请直接向分诊说明，不需付费";
+                            if(flag){
+//                                richConsultSession.setPayStatus(ConstantUtil.NOT_INSTANT_CONSULTATION);
+                                content +="\n-----------\n问题不急？欢迎体验<a href='"+ConstantUtil.KEEPER_WEB_URL+"/keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"/keeper/wechatInfo/getUserWechatMenId?url=39"+"'>24h免费咨询</a>>>";
+                            }
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             LogUtils.saveLog("consult_charge_twice_information", sysUserId);
                         }
@@ -462,12 +473,54 @@ public class ConsultWechatController extends BaseController {
 
     ;
 
+    //测试接口,以废弃
     @RequestMapping(value = "/getneedPaylist", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     Map<String, Object> getList(@RequestParam(required = true) String csuserId) {
         return consultPayUserService.getneepPayConsultSession(csuserId);
     }
+
+    @RequestMapping(value = "/confirmInstantConsultation", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> confirmInstantConsultation(HttpServletRequest request,HttpSession session) {
+        Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+        String token = (String) userWechatParam.get("token");
+        String openId = WechatUtil.getOpenId(session,request);
+        if(null ==openId) return null;
+        Channel csChannel = null;
+        //根据用户的openId，判断redis中，是否有用户正在进行的session
+        Integer sessionId = sessionRedisCache.getSessionIdByUserId(openId);
+        System.out.println("sessionId------" + sessionId);
+        if(null ==sessionId) return null;
+        RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+        csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(consultSession.getCsUserId());
+        System.out.println("csChannel------" + csChannel);
+
+        consultSession.setPayStatus(ConstantUtil.NOT_INSTANT_CONSULTATION);
+        //更新会话操作时间
+        consultRecordService.saveConsultSessionStatus(consultSession);
+
+        if (csChannel != null && csChannel.isActive()) {
+            try {
+                JSONObject obj = new JSONObject();
+                obj.put("sessionId", sessionId);
+                obj.put("senderId", openId);
+                obj.put("dateTime", DateUtils.DateToStr(new Date()));
+                obj.put("notifyType", "1003");
+                obj.put("type", "4");
+                obj.put("source", consultSession.getSource());
+                TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
+                csChannel.writeAndFlush(frame.retain());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        WechatUtil.sendMsgToWechat(token,openId," 可以开始啦，请尽可能详细的描述您的问题，\n医生会按照先后顺序自动接诊！\n点击左下角先键盘，输入文字、图片即可。\n");
+        return null;
+    }
+
 
     @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
     public

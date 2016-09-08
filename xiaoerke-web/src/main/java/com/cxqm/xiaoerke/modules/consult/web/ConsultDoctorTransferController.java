@@ -254,8 +254,10 @@ public class ConsultDoctorTransferController extends BaseController {
                     dataValue.put("notifyType","1001");
                 }else if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.NO_PAY).indexOf(consultSessionStatusVo.getPayStatus())>-1){
                     dataValue.put("notifyType","1002");
-                }else{
+                }else if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.NOT_INSTANT_CONSULTATION).indexOf(consultSessionStatusVo.getPayStatus())>-1){
                     dataValue.put("notifyType","1003");
+                }else {
+                    dataValue.put("notifyType","1004");
                 }
 
                 dataList.add(dataValue);

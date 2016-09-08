@@ -112,14 +112,14 @@
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<!--<ref bean="consultManagementCronTrigger"/>
+				<ref bean="consultManagementCronTrigger"/>
 				<ref bean="modifyConsultConversationForwardRecordsTrigger"/>
 				<ref bean="deleteTempRecordTrigger"/>
-				<ref bean="consultRecordMongoTransMySqlCronTrigger"/>-->
+				<ref bean="consultRecordMongoTransMySqlCronTrigger"/>
 				<ref bean="checkDoctorChannelStatus"/>
 				<ref bean="checkH5UserChannelStatus"/>
-				<!--<ref bean="testMappingTrigger"/>-->
-				<!--<ref bean="updateMonthTimeTrigger"/>-->
+				<ref bean="testMappingTrigger"/>
+				<ref bean="updateMonthTimeTrigger"/>
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

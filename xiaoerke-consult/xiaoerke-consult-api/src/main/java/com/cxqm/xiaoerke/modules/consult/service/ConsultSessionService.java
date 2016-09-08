@@ -40,4 +40,6 @@ public interface ConsultSessionService {
     Map<String,Object> getConsultCountsByDoctorName(String marketer);
     //根据marketer查询医生信息
     Map<String,Object> getDoctorInfoByMarketer(String marketer);
+
+    boolean cheakInstantConsultation(String openid);
 }

@@ -80,7 +80,7 @@
         LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
         LEFT JOIN sys_baby_baseInfo sbb ON sbb.id = hid.babyinfo_Id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
-        LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = sd.id
+        LEFT JOIN consultPhone_doctor_relation cdr ON cdr.doctor_id = sd.id
 		LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
 		LEFT JOIN sys_hospital sh on dhr.sys_hospital_id = sh.id
         LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
@@ -112,7 +112,7 @@
         LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
         LEFT JOIN sys_baby_baseInfo sbb ON sbb.id = hid.babyinfo_Id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
-        LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = sd.id
+        LEFT JOIN consultPhone_doctor_relation cdr ON cdr.doctor_id = sd.id
         LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
         LEFT JOIN sys_hospital sh on dhr.sys_hospital_id = sh.id
         LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
@@ -237,7 +237,7 @@
         FROM sys_consultphone_service scs
         INNER JOIN consultPhone_register_service crs ON crs.sys_phoneConsult_service_id = scs.id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
-        LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = sd.id
+        LEFT JOIN consultPhone_doctor_relation cdr ON cdr.doctor_id = sd.id
 		LEFT JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
         LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id
         LEFT JOIN sys_user su ON su.id = sd.sys_user_id
@@ -267,7 +267,7 @@
         LEFT JOIN healthrecord_illness_describe hid ON hid.id = crs.illness_describe_id
         LEFT JOIN sys_baby_baseInfo sbb ON sbb.id = hid.babyinfo_Id
         LEFT JOIN sys_doctor sd ON sd.id = scs.sys_doctor_id
-        LEFT JOIN consultphone_doctor_relation cdr ON cdr.doctor_id = sd.id
+        LEFT JOIN consultPhone_doctor_relation cdr ON cdr.doctor_id = sd.id
 		LEFT  JOIN doctor_hospital_relation dhr on sd.id = dhr.sys_doctor_id
 		LEFT JOIN sys_hospital sh on dhr.sys_hospital_id = sh.id
         LEFT  JOIN sys_hospital_contact shc on shc.sys_hospital_id = dhr.sys_hospital_id

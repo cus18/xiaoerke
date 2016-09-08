@@ -146,7 +146,25 @@ define(['appPatientConsult'], function(app){
                         data: {
                             public: true
                         }
-                    });
+                    })
+                    .state('patientConsultNoFee', {
+                        url: '/patientConsultNoFee',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'patientConsultNoFeeCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultNoFeeCtrl',
+                                    ['js/controllers/patientConsultNoFeeCtrl.js?ver='+patientConsultVersion,
+                                        'js/styles/patientConsultNoFee.css'],
+                                    'js/views/patientConsultNoFee.html?ver='+patientConsultVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                ;
+
 
                 //$urlRouterProvider.otherwise('patientConsultFirst');
                 $urlRouterProvider.otherwise('patientConsultUmbrella');

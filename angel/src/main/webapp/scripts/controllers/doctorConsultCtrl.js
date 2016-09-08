@@ -33,7 +33,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
             $scope.firstAddress = "101.201.154.75";
-            $scope.secondAddress = "120.25.161.33";
+            $scope.secondAddress = "123.57.45.33";
             $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中 乱码
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
@@ -289,7 +289,7 @@ angular.module('controllers', ['luegg.directives'])
                             $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
                                 $scope.alreadyJoinPatientConversation[0].patientName);
 
-                            seeMoreConversationMessage(5);
+                            $scope.seeMoreConversationMessage(5);
                         }
                     });
                 }
@@ -1646,6 +1646,15 @@ angular.module('controllers', ['luegg.directives'])
                         if (value.sessionId == notifyData.sessionId) {
                             value.consultValue.notifyType = 1001;
                             value.notifyType = 1001;
+                        }
+                    });
+                }
+                // 只咨询客服
+                else if(notifyData.notifyType=="1003"){
+                    $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                        if (value.sessionId == notifyData.sessionId) {
+                            value.consultValue.notifyType = 1003;
+                            value.notifyType = 1003;
                         }
                     });
                 }
