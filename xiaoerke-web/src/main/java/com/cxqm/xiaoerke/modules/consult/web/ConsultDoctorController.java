@@ -394,16 +394,19 @@ public class ConsultDoctorController extends BaseController {
                     Date oldDate = null;
                     if(userConnectionTimeMapping.containsKey(richConsultSession.getUserId())){
                         oldDate = userConnectionTimeMapping.get(richConsultSession.getUserId());
+                    }else{
+                        oldDate = new Date();
+                        userConnectionTimeMapping.put(richConsultSession.getUserId(),oldDate);
                     }
                     Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(richConsultSession.getUserId());
                     Boolean flag = false ;
-                    for(int i= 0 ; i<=2 ;i++){
+                    for(int i= 0 ; i<= 1;i++){
                         JSONObject jsonObj = new JSONObject();
                         jsonObj.put("type", "4");
                         jsonObj.put("notifyType", "0100");
                         TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
                         userChannel.writeAndFlush(frame.retain());
-                        if(i == 2){
+                        if(i == 1){
                             Date nowDate =  userConnectionTimeMapping.get(richConsultSession.getUserId());
                             if(nowDate != null && nowDate != oldDate){
                                 flag = true;
