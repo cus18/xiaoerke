@@ -307,8 +307,10 @@ public class ConsultUserController extends BaseController {
                             searchMap.put("notifyType", "1001");
                         } else if(null !=consultSessionStatusVo &&  ConstantUtil.NO_PAY.indexOf(consultSessionStatusVo.getPayStatus())>-1){
                             searchMap.put("notifyType", "1002");
-                        }else {
+                        } else if(ConstantUtil.NOT_INSTANT_CONSULTATION.indexOf(consultSessionStatusVo.getPayStatus()) > -1) {
                             searchMap.put("notifyType", "1003");
+                        } else {
+                            searchMap.put("notifyType", "1004");
                         }
 
 //                            if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
