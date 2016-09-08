@@ -4,10 +4,8 @@ import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.cxqm.xiaoerke.common.utils.ConstantUtil;
-import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.config.Global;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
@@ -146,9 +144,58 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                 if (richConsultSession.getSource().equals("h5cxqm")||richConsultSession.getSource().equals("h5wjy") || richConsultSession.getSource().equals("h5bhq")) {
                     Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(userId);
                     if (userChannel != null && userChannel.isActive()) {
-                        userChannel.writeAndFlush(msg.retain());
+                        if(richConsultSession.getSource().equals("h5bhq")){
+                            Map<String, Date> userConnectionTimeMapping = ConsultSessionManager.getSessionManager().getUserConnectionTimeMapping();
+                            Date oldDate = null;
+                            if(userConnectionTimeMapping.containsKey(richConsultSession.getUserId())){
+                                oldDate = userConnectionTimeMapping.get(richConsultSession.getUserId());
+                            }
+                            Boolean flag = false ;
+                            for(int i= 0 ; i<=2 ;i++){
+                                JSONObject jsonObj = new JSONObject();
+                                jsonObj.put("type", "4");
+                                jsonObj.put("notifyType", "0100");
+                                TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+                                userChannel.writeAndFlush(frame.retain());
+                                if(i == 2){
+                                   Date nowDate =  userConnectionTimeMapping.get(richConsultSession.getUserId());
+                                   if(nowDate != null && nowDate != oldDate){
+                                       flag = true;
+                                   }
+                                }else{
+                                    userConnectionTimeMapping.put(richConsultSession.getUserId(), new Date());
+                                }
+                            }
+                            if(flag){
+                                userChannel.writeAndFlush(msg.retain());
+                            }else{
+                                net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
+                                String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
+                                int nameIndex = content.indexOf("：");
+                                String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
+                                noReadMsg.put("action","doctorMessage");
+                                noReadMsg.put("uid",userId);
+                                noReadMsg.put("messageType",msgType);
+                                noReadMsg.put("messageContent",newContent);
+                                noReadMsg.put("doctorId",csUserId);
+                                String currentUrl = Global.getConfig("COOP_BHQ_URL");
+                                if(StringUtils.isNull(currentUrl)){
+                                    currentUrl = "http://coapi.baohuquan.com/baodaifu";
+                                }
+                                String method = "POST";
+                                String dataType="json";
+                                String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
+                                net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
+                                if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
+                                    CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
+                                }
+                            }
+                        }else{
+                            userChannel.writeAndFlush(msg.retain());
+                        }
                     }
-                } if (richConsultSession.getSource().equals("wxcxqm")) {
+                }
+                if (richConsultSession.getSource().equals("wxcxqm")) {
                     String sendResult = "";
                     if (msgType == 0) {
                         String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);

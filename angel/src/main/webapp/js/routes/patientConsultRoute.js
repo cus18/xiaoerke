@@ -163,9 +163,6 @@ define(['appPatientConsult'], function(app){
                             public: true
                         }
                     })
-                ;
-
-                    })
                     .state('patientConsultInviteOld', {
                         url: '/patientConsultInviteOld',
                         templateProvider: function() { return lazyDeferred.promise; },
