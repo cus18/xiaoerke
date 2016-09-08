@@ -1,9 +1,11 @@
 angular.module('controllers', ['ionic'])
-    .controller('patientConsultNoFeeCtrl', ['$scope','$location','$http',
-        function ($scope,$location,$http) {
+    .controller('patientConsultNoFeeCtrl', ['$scope','$location','$http','ConfirmInstantConsultation',
+        function ($scope,$location,$http,ConfirmInstantConsultation) {
 
             $scope.sure = function () {
-                WeixinJSBridge.call('closeWindow');
+                ConfirmInstantConsultation.save({},function (data) {
+                    WeixinJSBridge.call('closeWindow');
+                });
             };
             //初始化
             $scope.patientConsultNoFeeInit = function(){

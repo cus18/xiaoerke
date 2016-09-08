@@ -29,4 +29,9 @@ define(['appPatientConsult'], function (app) {
             return $resource('consult/cooperate/getHistoryRecord');
         }])
 
+        //非实时咨询确认
+        .factory('ConfirmInstantConsultation', ['$resource', function ($resource) {
+            return $resource('consult/wechat/confirmInstantConsultation');
+        }])
+
 })

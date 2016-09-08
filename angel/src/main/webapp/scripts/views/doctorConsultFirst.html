@@ -17,7 +17,6 @@
                 </span>-->
                 <span ng-if="loseConnectionFirstFlag||loseConnectionSecondFlag">您已与平台断开了连接，请检查您的网络情况，谢谢！</span>
                 <span ng-if="!loseConnectionFirstFlag&&!loseConnectionSecondFlag">您目前与平台连接正常！</span>
-
                 <div class="bdf-dkf-content-right">
                     <!-- <div class="cjgl">退出</div>
                      <div class="xtsz" ng-click="tapShowButton('systemSetup')">
@@ -54,12 +53,10 @@
                 <div class="m-left-top">
                     <div class="tab-content-chat" id="ddjr" ng-click="tapShowButton('waitProcess')">
                         <h3>{{waitJoinNum}}</h3>
-
                         <p>等待接入</p>
                     </div>
                     <div class="tab-content-chat" ng-click="tapShowButton('rankList')">
                         <h3>{{alreadyJoinPatientConversation.length}}</h3>
-
                         <p>已接会话</p>
                     </div>
                 </div>
@@ -76,19 +73,12 @@
                      ng-click="chooseAlreadyJoinConsultPatient(item.patientId,item.patientName,item.sessionId)"
                      alt="">
                     <div>
-                        <img ng-style="item.notifyType=='1001'?{'display':'block'}:{'display':'none'}"
-                             src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fbiaoqian_03.png"
-                             alt=""/>
-                        <img ng-style="item.notifyType=='1002'?{'display':'block'}:{'display':'none'}"
-                             src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fbiaoqian_06.png"
-                             alt=""/>
+                        <img ng-style="item.notifyType=='1001'?{'display':'block'}:{'display':'none'}" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fbiaoqian_03.png" alt=""/>
+                        <img ng-style="item.notifyType=='1002'?{'display':'block'}:{'display':'none'}" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fbiaoqian_06.png" alt=""/>
+                        <img ng-style="item.notifyType=='1003'?{'display':'block'}:{'display':'none'}" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf/consult/mianfei_03.png" alt=""/>
                     </div>
-                    <div>
-                        <nobr>{{item.patientName|limitTo:6}}</nobr>
-                    </div>
-                    <div>
-                        <nobr>{{transformDate(item.dateTime)}}</nobr>
-                    </div>
+                    <div><nobr>{{item.patientName|limitTo:6}}</nobr></div>
+                    <div><nobr>{{transformDate(item.dateTime)}}</nobr></div>
                     <div ng-style="item.messageNotSee?{'display':'block'}:{'display':'none'}">
                         <span>{{item.number}}</span>
                     </div>
@@ -125,17 +115,14 @@
                                 <div class="group-title"
                                      ng-style="myReplyIndex==$index?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
                                      ng-click="tapMyReplyContent($index)">
-                                    <nobr>{{item.name}}</nobr>
-                                    （{{item.secondAnswer.length}}）
+                                    <nobr>{{item.name}}</nobr>（{{item.secondAnswer.length}}）
                                 </div>
                                 <ul ng-show="myReplyIndex==$index">
                                     <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
                                         <div class="rcontentContent">
-                                            <nobr><a title="{{item2.name}}"
-                                                     ng-click="tapEditMyContent($parent.$index,$index)"
+                                            <nobr><a title="{{item2.name}}" ng-click="tapEditMyContent($parent.$index,$index)"
                                                      ng-dblclick="chooseMyContent($parent.$index,$index)"
-                                                     ng-style="myReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a>
-                                            </nobr>
+                                                     ng-style="myReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a></nobr>
                                         </div>
                                     </li>
                                 </ul>
@@ -146,15 +133,13 @@
                         <div ng-click="tapShowButton('publicReplyList')"
                              ng-style="showFlag.publicReplyList?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
                              class="rtitle">
-                            公共回复（{{commonAnswer.length}}）
-                        </div>
+                            公共回复（{{commonAnswer.length}}）</div>
                         <ul ng-show='showFlag.publicReplyList'>
                             <li ng-repeat="item in commonAnswer">
                                 <div class="group-title"
                                      ng-style="publicReplyIndex==$index?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
                                      ng-click="tapPublicReplyContent($index)">
-                                    <nobr>{{item.name}}</nobr>
-                                    （{{item.secondAnswer.length}}）
+                                    <nobr>{{item.name}}</nobr>（{{item.secondAnswer.length}}）
                                 </div>
                                 <ul ng-show='publicReplyIndex==$index'>
                                     <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
@@ -162,8 +147,7 @@
                                             <nobr><a title="{{item2.name}}"
                                                      ng-click="tapEditCommonContent($parent.$index,$index)"
                                                      ng-dblclick="chooseCommonContent($parent.$index,$index)"
-                                                     ng-style="publicReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a>
-                                            </nobr>
+                                                     ng-style="publicReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a></nobr>
                                         </div>
                                     </li>
                                 </ul>
@@ -174,24 +158,20 @@
                         <div ng-click="tapShowButton('diagnosisReplyList')"
                              ng-style="showFlag.diagnosisReplyList?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
                              class="rtitle">
-                            诊断回复（{{diagnosis.length}}）
-                        </div>
+                            诊断回复（{{diagnosis.length}}）</div>
                         <ul ng-show='showFlag.diagnosisReplyList'>
                             <li ng-repeat="item in diagnosis">
                                 <div class="group-title"
                                      ng-style="diagnosisReplyIndex==$index?{'backgroundPosition':'0 -42px', color: '#08b7c2'}:{'backgroundPosition':'0 0', color: '#333'}"
                                      ng-click="tapDiagnosisReplyContent($index)">
-                                    <nobr>{{item.name}}</nobr>
-                                    （{{item.secondAnswer.length}}）
+                                    <nobr>{{item.name}}</nobr>（{{item.secondAnswer.length}}）
                                 </div>
                                 <ul ng-show='diagnosisReplyIndex==$index'>
                                     <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
                                         <div class="rcontentContent">
-                                            <nobr><a title="{{item2.name}}"
-                                                     ng-click="tapEditDiagnosisContent($parent.$index,$index)"
+                                            <nobr><a title="{{item2.name}}" ng-click="tapEditDiagnosisContent($parent.$index,$index)"
                                                      ng-dblclick="chooseDiagnosisContent($parent.$index,$index)"
-                                                     ng-style="diagnosisReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a>
-                                            </nobr>
+                                                     ng-style="diagnosisReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a></nobr>
                                         </div>
                                     </li>
                                 </ul>
@@ -222,8 +202,7 @@
                 <!--编辑分组-->
                 <div class="editgroup" ng-show='editGroupFlag'>
                     <div class="addtop"><span>编辑分组</span><span ng-click="closeEditGroup()">关闭</span></div>
-                    <div class="addgroupname"><span>编辑分组</span><input type="text" required ng-model="info.editGroup"/>
-                    </div>
+                    <div class="addgroupname"><span>编辑分组</span><input type="text" required ng-model="info.editGroup"/></div>
                     <div class="addbtn">
                         <input class="btn" type="submit" value="确定" ng-click="editGroupSubmit()">
                         <input class="btn" type="submit" value="取消" ng-click="closeEditGroup()">
@@ -241,7 +220,7 @@
                     </div>
                 </div>
             </div>
-            <iframe src="http://s132.baodf.com/angel/scripts/views/customerss.html" frameborder="0"
+            <iframe src="http://s123.xiaork.com/angel/scripts/views/customerss.html" frameborder="0"
                     class="advisory-content" ng-show='showFlag.advisoryContent'>
             </iframe>
             <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
@@ -251,27 +230,20 @@
                 &lt;!&ndash;用户信息&ndash;&gt;
                 <div class="module">
                     <div class="title">
-                        <h3>用户信息<input type="submit" class="more" value="{{userTableMore}}"
-                                       ng-click="tapUserTable('userTable')"/> <span>(VIP)</span>：</h3>
+                        <h3>用户信息<input type="submit" class="more" value="{{userTableMore}}" ng-click="tapUserTable('userTable')"/> <span>(VIP)</span>：</h3>
                     </div>
                     <table class="table1" ng-show="showFlag.userTable">
                         <tr>
                             <td>姓名：<span><select></select></span></td>
-                            <td>微信名：&nbsp;&nbsp;&nbsp;<span><input type="text"
-                                                                   value="{{currentUserConversation.patientName}}"/></span>
-                            </td>
+                            <td>微信名：&nbsp;&nbsp;&nbsp;<span><input type="text" value="{{currentUserConversation.patientName}}"/></span></td>
                         </tr>
                         <tr>
-                            <td>生日：<span><input type="text" class="Wdate" onFocus="WdatePicker({lang:'zh-cn'})"/></span>
-                            </td>
+                            <td>生日：<span><input type="text" class="Wdate" onFocus="WdatePicker({lang:'zh-cn'})"/></span></td>
                             <td>联系电话：&nbsp;&nbsp;<span><input type="text"/></span></td>
                         </tr>
                         <tr>
-                            <td>性别：<select>
-                                <option value="1">男</option>
-                                <option value="0">女</option>
-                            </select></td>
-                            <td>会员有效期：&nbsp;<span><input type="text"/></span></td>
+                            <td>性别：<select><option value="1">男</option><option value="0">女</option></select></td>
+                            <td >会员有效期：&nbsp;<span><input type="text"/></span></td>
                         </tr>
                         <tr>
                             <td>备注：<input type="text"/></td>
@@ -279,8 +251,8 @@
                         </tr>
                         <tr class="save">
                             <td colspan="3">
-                                <input type="submit" value="保存档案"/>
-                                <input type="submit" value="取消保存"/>
+                                <input  type="submit" value="保存档案"/>
+                                <input  type="submit" value="取消保存"/>
                             </td>
                         </tr>
                     </table>
@@ -288,15 +260,12 @@
                 &lt;!&ndash;近期就诊记录&ndash;&gt;
                 <div class="module">
                     <div class="title">
-                        <h3>近期就诊记录<input type="submit" class="more" value="{{recentTableMore}}"
-                                         ng-click="tapRecentTable('recentTable')"/></h3>
+                        <h3>近期就诊记录<input type="submit" class="more" value="{{recentTableMore}}" ng-click="tapRecentTable('recentTable')"/></h3>
                     </div>
                     <table class="table2" ng-show="showFlag.recentTable">
                         <tr>
                             <td>
-                                <span>姓名：</span><select>
-                                <option>小雪</option>
-                            </select>
+                                <span>姓名：</span><select><option>小雪</option></select>
                             </td>
                             <td>
                                 <span>医院：</span><input type="text"/>
@@ -334,10 +303,9 @@
                     </table>
                 </div>
                 &lt;!&ndash;添加咨询记录&ndash;&gt;
-                <div class="module">
+                <div class="module" >
                     <div class="title">
-                        <h3>添加咨询记录<input type="submit" class="more" value="{{addConsultTableMore}}"
-                                         ng-click="tapAddConsultTable('addConsultTable')"/></h3>
+                        <h3>添加咨询记录<input type="submit" class="more" value="{{addConsultTableMore}}" ng-click="tapAddConsultTable('addConsultTable')"/> </h3>
                     </div>
                     <table class="table3" ng-show="showFlag.addConsultTable">
                         <tr>
@@ -367,21 +335,14 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                处理：<input type="text" maxlength="30" ng-model="info.result" class="big-input"
-                                          placeholder="可编辑（可选）30个字以内"/>
+                                处理：<input type="text" maxlength="30" ng-model="info.result" class="big-input" placeholder="可编辑（可选）30个字以内"/>
                             </td>
                         </tr>
                         <tr class="save">
                             <td colspan="3">
-                                <input type="submit" value="添加记录"
-                                       ng-style="backgroundAdd?{'background':'gray'}:{'background':'#88d9dd'}"
-                                       ng-click="addDiagnosisRecords()"/>
-                                <input type="submit" value="取消保存"
-                                       ng-style="backgroundAdd?{'background':'gray'}:{'background':'#88d9dd'}"
-                                       ng-click="cancelSave()"/>
-                                <input type="submit" value="推荐医生"
-                                       ng-style="recommendDoctorFlag?{'background':'gray'}:{'background':'#88d9dd'}"
-                                       ng-click="recommendDoctor()"/>
+                                <input type="submit" value="添加记录" ng-click="addDiagnosisRecords()"/>
+                                <input type="submit" value="取消保存"/>
+                                <input type="submit" value="推荐医生"/>
                             </td>
                         </tr>
                         <tr class="save">
@@ -450,8 +411,7 @@
                                         <span>{{item.dateTime}}</span>
                                     </div>
                                     <div ng-if="item.type=='0'" class="message" ng-bind-html="item.content"></div>
-                                    <div ng-if="item.type=='1'" class="message"
-                                         ng-click="tapImgButton('magnifyImg',item.content)">
+                                    <div ng-if="item.type=='1'" class="message" ng-click="tapImgButton('magnifyImg',item.content)">
                                         <img width="100px" ng-src="{{item.content}}">
                                     </div>
                                 </div>
@@ -463,8 +423,7 @@
                                         <span>{{item.dateTime}}</span>
                                     </div>
                                     <div ng-if="item.type=='0'" class="message" ng-bind-html="item.content"></div>
-                                    <div ng-if="item.type=='1'" class="message"
-                                         ng-click="tapImgButton('magnifyImg',item.content)">
+                                    <div ng-if="item.type=='1'" class="message" ng-click="tapImgButton('magnifyImg',item.content)">
                                         <img width="100px" ng-src="{{item.content}}">
                                     </div>
                                     <div ng-if="item.type=='2'">
@@ -476,44 +435,37 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="moreInformation" ng-if="item.type=='4'&&item.notifyType=='0011'">
+                            <div class="moreInformation" ng-if="item.type=='4'&&item.notifyType=='0011'" >
                                 <a href="">
                                     正在将用户{{item.patientName}}转接给{{item.toCsUserName}}，如需取消请点击
-                                    <h ng-click="cancelTransfer(item.session.id,item.toCsUserId,item.remark)" alt="">
-                                        【取消转接】
-                                    </h>
+                                    <h ng-click="cancelTransfer(item.session.id,item.toCsUserId,item.remark)" alt="">【取消转接】</h>
                                 </a>
                             </div>
-                            <div class="moreInformation" ng-if="item.type=='4'&&item.notifyType=='0013'">
+                            <div class="moreInformation" ng-if="item.type=='4'&&item.notifyType=='0013'" >
                                 <a href="">
                                     正在将用户{{item.patientName}}转接给{{item.toCsUserName}}中.......
                                 </a>
                             </div>
-                            <div class="moreInformation"
-                                 ng-if="item.type=='4'&&item.notifyType=='0010'&&item.operation=='rejected'">
+                            <div class="moreInformation" ng-if="item.type=='4'&&item.notifyType=='0010'&&item.operation=='rejected'">
                                 <a>
                                     <h>转接用户{{item.session.userName}}给{{item.csUserName}}提供服务的请求被拒绝，请转接给其他医生，谢谢！</h>
                                 </a>
                             </div>
                             <div class="moreInformation" ng-if="item.type=='4'&&item.notifyType=='0014'">
                                 <a>
-                                    <h>转接用户{{item.session.userName}}给{{item.csUserName}}提供服务长时间未被受理，已被退会，请重新转接其他医生，谢谢！
-                                    </h>
+                                    <h>转接用户{{item.session.userName}}给{{item.csUserName}}提供服务长时间未被受理，已被退会，请重新转接其他医生，谢谢！</h>
                                 </a>
                             </div>
                         </div>
-                        <div class="magnifyImg" onMouseOver="drag=1;" onMouseOut="" drag="0"
-                             ng-show='showFlag.magnifyImg'>
+                        <div class="magnifyImg" onMouseOver="drag=1;" onMouseOut="" drag="0" ng-show='showFlag.magnifyImg'>
                             <div class="box">
                                 <button ng-click="tapShowButton('magnifyImg')">关闭</button>
                                 <button onClick="bigit();">放大</button>
                                 <button onClick="smallit();">缩小</button>
                                 <button onclick="rotateDIV()">旋转</button>
                             </div>
-                            <div class="dragAble" id="rotate1"
-                                 style="z-index: 10;left: 0px;position: absolute; top: 0px;float:left;">
-                                <img onmousewheel="return onWheelZoom(this)" style="zoom: 0.7" ng-src="{{imageSrc}}"
-                                     name="images1">
+                            <div class="dragAble" id="rotate1" style="z-index: 10;left: 0px;position: absolute; top: 0px;float:left;">
+                                <img onmousewheel="return onWheelZoom(this)" style="zoom: 0.7" ng-src="{{imageSrc}}" name="images1">
                             </div>
                         </div>
                     </div>
@@ -522,9 +474,7 @@
             <div class="facebox">
                 <div class="facein">
                     <p class="fl"><span id="face" ng-click="getQQExpression()">表情</span></p>
-
-                    <p class="fl"><span type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*"
-                                        ng-file-max-height="2000" ng-file-max-size="2MB"
+                    <p class="fl"><span type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000" ng-file-max-size="2MB"
                             >图片</span></p>
                     <!--<p class="historymessage">-->
                     <!--<span>-->
@@ -540,13 +490,10 @@
             <div class="sendbtn">
                 <div class="sub_btn" ng-click="sendConsultMessage()">发送(Enter)</div>
                 <div ng-click="closeConsult()">
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(9).png"
-                         alt=""/>
-                    关闭
-                </div>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(9).png" alt=""/>
+                    关闭</div>
                 <div ng-click="tapShowButton('specialistTransfer')"
-                     ng-style="userType=='distributor'?{'display':'block'}:{'display':'none'}">专科转移
-                </div>
+                     ng-style="userType=='distributor'?{'display':'block'}:{'display':'none'}">专科转移</div>
             </div>
         </div>
     </div>
@@ -579,7 +526,6 @@
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fxtsz%20(2).png"
                          alt=""/>
                     业务设置</h3>
-
                 <div>
                     <a href="#"><span class="current">主号自动回复</span></a>
                     <a href="#"><span>工号自动回复</span></a>
@@ -596,7 +542,6 @@
                             </div>
                             <div class="zhhfcontent">
                                 <p>主号自动回复针对工号已经接入客户。对未接客户请设置<a href="#">主号自动回复</a></p>
-
                                 <p><input type="checkbox">工号自动回复设置</p>
                                 <textarea placeholder="请在此处进行编辑"></textarea>
                             </div>
@@ -609,7 +554,6 @@
                             </div>
                             <div class="zhhfcontent">
                                 <p>工号自动回复针对工号已经接入客户。对未接客户请设置<a href="#">主号自动回复</a></p>
-
                                 <p><input type="checkbox">工号自动回复设置</p>
                                 <textarea placeholder="请在此处进行编辑"></textarea>
                             </div>
@@ -622,11 +566,8 @@
                             </div>
                             <div class="zhhfcontent">
                                 <p>接入语是指在接入客户时自动发送的信息</p>
-
                                 <p><input type="checkbox">启动接入语（150个汉字、300个英文字符以内）</p>
-
                                 <p>注意：[昵称]会被动态替换成该工号的昵称</p>
-
                                 <p>注意：[账号]会被动态替换成该工号的账号</p>
                                 <textarea placeholder="请在此处进行编辑"></textarea>
                             </div>
@@ -639,11 +580,8 @@
                             </div>
                             <div class="zhhfcontent">
                                 <p>会话自动关闭设置指的是在人工接入的状态下，当客户超过一定时间没有回复时，会话自动关闭。（当前正在聊天的会话不会被自动关闭）</p>
-
                                 <p><input type="checkbox">启动会话自动关闭</p>
-
-                                <p>设置会话自动关闭事件<input type="number" name="points" min="0" max="10"/>分钟</p>
-
+                                <p>设置会话自动关闭事件<input type="number" name="points" min="0" max="10" />分钟</p>
                                 <p><input type="checkbox">会话自动关闭前发送一条信息给客户（100个汉字、200个英文字符以内）</p>
                                 <textarea placeholder="请在此处进行编辑"></textarea>
                             </div>
@@ -678,8 +616,7 @@
                     <li>{{item.currentDoctor}}</li>
                     <li>{{item.createDate}}</li>
                     <li>{{item.department}}</li>
-                    <li ng-click="createOneSpecialistPatient($index,item.department)"><input type="button"
-                                                                                             value="发起会话"/></li>
+                    <li ng-click="createOneSpecialistPatient($index,item.department)"><input type="button" value="发起会话"/></li>
                     <li ng-click="disposeTransferSpecialist($index)"><input type="button" value="删除"/></li>
                 </ul>
             </div>
@@ -706,23 +643,20 @@
         <div class="ddjr-content">
             <div class="checktop">
                 <span ng-click="acceptTransfer()">
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(2).png"
-                         style="cursor:pointer;"/>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(2).png" style="cursor:pointer;"/>
                     接入
                 </span>
                 <span ng-click="rejectTransfer()">
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(3).png"
-                         style="cursor:pointer;"/>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(3).png" style="cursor:pointer;"/>
                     删除
                 </span>
                 <span ng-click="refreshWaitJoinUserList()">
-                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(4).png"
-                         style="cursor:pointer;"/>
+                    <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Ftc%20(4).png" style="cursor:pointer;"/>
                     刷新
                 </span>
             </div>
             <table border="0">
-                <tr class="light">
+                <tr  class="light">
                     <th></th>
                     <th>昵称</th>
                     <th>消息</th>
@@ -753,15 +687,12 @@
     </div>
     <!--转接-->
     <div class="xtsz-up  ddjr-up" ng-show='showFlag.switchOver'>
-        <div class="hd">
-            <转接客户></转接客户>
+        <div class="hd"><转接客户></转接客户>
             <span class="close" ng-click="tapShowButton('switchOver')">【关闭】</span>
         </div>
         <div class="switchcontent">
             <div class="switchbox">
-                <input type="text" placeholder="按员工、昵称查找工号" ng-model="info.searchCsUserValue"
-                       ng-change="searchCsUser()">
-
+                <input type="text" placeholder="按员工、昵称查找工号" ng-model="info.searchCsUserValue" ng-change="searchCsUser()">
                 <div class="refresh">
                     <div class="refreshbox">
                         <div class="refreshboxtop">
