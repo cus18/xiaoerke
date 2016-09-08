@@ -1,10 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import java.net.InetSocketAddress;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
@@ -32,6 +29,8 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	private static final String WECHAT_DOCTOR_PARAM = "wechat.doctor.param";
 
 	private static final String USER_ADDRESS = "user.address";
+
+	private static final String INSTANTCONSULT_LIST = "InstantConsult.ationList";
 	
 	@Override
 	public RichConsultSession getConsultSessionBySessionId(Integer sessionId) {
@@ -139,6 +138,22 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	@Override
 	public void removeUserIdSessionIdPair(String userId) {
 		redisTemplate.opsForHash().delete(USER_SESSIONID_KEY, userId);
+	}
+
+
+	@Override
+	public void clearInstantConsultationList() {
+		redisTemplate.opsForSet().pop(INSTANTCONSULT_LIST);
+	}
+
+	@Override
+	public void addInstantConsultationList(String openid) {
+		redisTemplate.opsForSet().add(INSTANTCONSULT_LIST, openid);
+	}
+
+	@Override
+	public Long num4InstantConsultationList() {
+		return	redisTemplate.opsForSet().size(INSTANTCONSULT_LIST);
 	}
 
 }
