@@ -536,7 +536,7 @@ public class ConsultWechatController extends BaseController {
                 e.printStackTrace();
             }
         }
-        WechatUtil.sendMsgToWechat(token,openId," 可以开始啦，请尽可能详细的描述您的问题，\n医生会按照先后顺序自动接诊！\n点击左下角小键盘，输入文字、图片即可。\n");
+        WechatUtil.sendMsgToWechat(token,openId," 可以开始啦，请尽可能详细的描述您的问题，\n医生会按照先后顺序自动接诊！\n点击左下角小键盘，输入文字、图片即可。");
         return null;
     }
 

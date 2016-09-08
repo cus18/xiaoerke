@@ -149,15 +149,18 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             Date oldDate = null;
                             if(userConnectionTimeMapping.containsKey(richConsultSession.getUserId())){
                                 oldDate = userConnectionTimeMapping.get(richConsultSession.getUserId());
+                            }else{
+                                oldDate = new Date();
+                                userConnectionTimeMapping.put(richConsultSession.getUserId(),oldDate);
                             }
                             Boolean flag = false ;
-                            for(int i= 0 ; i<=2 ;i++){
+                            for(int i= 0 ; i<= 1;i++){
                                 JSONObject jsonObj = new JSONObject();
                                 jsonObj.put("type", "4");
                                 jsonObj.put("notifyType", "0100");
                                 TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
                                 userChannel.writeAndFlush(frame.retain());
-                                if(i == 2){
+                                if(i == 1){
                                    Date nowDate =  userConnectionTimeMapping.get(richConsultSession.getUserId());
                                    if(nowDate != null && nowDate != oldDate){
                                        flag = true;
@@ -169,6 +172,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             if(flag){
                                 userChannel.writeAndFlush(msg.retain());
                             }else{
+                                userChannel.writeAndFlush(msg.retain());
                                 net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
                                 String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
                                 int nameIndex = content.indexOf("：");
@@ -252,6 +256,15 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());*/
                             if (sendResult.equals("tokenIsInvalid")) {
                                 updateWechatParameter();
+                            }else if(!sendResult.equals("messageOk")){
+                                Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(csUserId);
+                                JSONObject jsonObj = new JSONObject();
+                                jsonObj.put("type", "4");
+                                jsonObj.put("notifyType", "0016");
+                                TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+                                if (csChannel != null && csChannel.isActive()) {
+                                    csChannel.writeAndFlush(frame.retain());
+                                }
                             }
                         }
                     } else if (msgType != 0) {
