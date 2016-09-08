@@ -1649,6 +1649,15 @@ angular.module('controllers', ['luegg.directives'])
                         }
                     });
                 }
+                // 只咨询客服
+                else if(notifyData.notifyType=="1003"){
+                    $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+                        if (value.sessionId == notifyData.sessionId) {
+                            value.consultValue.notifyType = 1003;
+                            value.notifyType = 1003;
+                        }
+                    });
+                }
                 else if(notifyData.notifyType=="0015"){
                     //收到服务器发送过来的心跳消息
                     var heartBeatServerMessage = {
