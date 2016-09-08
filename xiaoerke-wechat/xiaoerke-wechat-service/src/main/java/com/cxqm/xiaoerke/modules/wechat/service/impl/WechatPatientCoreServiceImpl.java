@@ -285,8 +285,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 			textMessage.setContent("尊敬的诺安康VIP客户，您好！欢迎加入宝大夫，让您从此育儿不用愁！\n\n【咨询大夫】直接咨询北京三甲医院儿科专家，一分钟内极速回复！\n\n【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝爸宝妈一起交流分享，参与更多好玩的活动！\n\n如需人工协助，请您拨打：400-623-7120。\n");
 			return MessageUtil.textMessageToXml(textMessage);
 
-		}else if(EventKey.indexOf("MKBJQD001")>-1&&xmlEntity.getEvent().equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)){
-
+		}else if(EventKey.indexOf("YY0016")>-1){
+			Map parameter = systemService.getWechatParameter();
+			String token = (String)parameter.get("token");
+			String msg = "欢迎来到宝大夫，请按照下方操作领走12本超值电子书籍 \n\n1·将海报图片（见下方）发送到朋友圈，集齐10个赞\n\n2·截图发给宝大夫客服（客服二维码见下方图片）\n\n以上操作完成后请静待客服把12本亲子书籍送到您手里。关注宝大夫后期会有更多福利送不停。";
+			WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),msg);
+			WechatUtil.sendNoTextMsgToWechat(token,xmlEntity.getFromUserName(),"XdHp8YKja_ft7lQr3o6fe8844t0Ewt49JlUhW7ukzDQ",1);
+			WechatUtil.sendNoTextMsgToWechat(token,xmlEntity.getFromUserName(),"XdHp8YKja_ft7lQr3o6fe-amTDnt4DhnNviDaW7kTNc",1);
 		}else
 		if(EventKey.indexOf("doc")>-1)
 		{
@@ -883,36 +888,36 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 		session.setAttribute("openId", xmlEntity.getFromUserName());
 		LogUtils.saveLog(request, "00000001");//注：参数含义请参照sys_log_mapping表，如00000001表示“微信宝大夫用户版公众平台关注”
 		String EventKey = xmlEntity.getEventKey();
-		if(EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma")<=-1&&EventKey.indexOf("baoxian_000001")<=-1)
+		if(EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma")<=-1&&EventKey.indexOf("baoxian_000001")<=-1&&EventKey.indexOf("YY0016")<=-1)
 		{
-			List<Article> articleList = new ArrayList<Article>();
-			Article article = new Article();
-			article.setTitle("对孩子健康负责的家长必看！万人推荐！");
-			article.setDescription("");
-			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%AE%9D%E6%8A%A4%E4%BC%9Ebanner2%20-%20%E5%89%AF%E6%9C%AC%20%E6%8B%B7%E8%B4%9D.png");
-			article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a");
-			articleList.add(article);
-
-			article = new Article();
-			article.setTitle("咨询大夫\n秒回不等待，7X24全年无休");
-			article.setDescription("三甲医院医生7X24全年无休   一分钟极速回复");
-			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%92%A8%E8%AF%A2%E5%A4%A7%E5%A4%AB.png");
-			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR&key=f5c31ae61525f82ed83c573369e70b8f9b853c238066190fb5eb7b8640946e0a090bbdb47e79b6d2e57b615c44bd82c5&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=dG5W6eOP3JU1%2Fo3JXw19SFBAh1DgpSlQrAXTyirZuj970HMU7TYojM4D%2B2LdJI9n");
-			articleList.add(article);
-
-			article = new Article();
-			article.setTitle("名医面诊\n轻松预约专家，到点就诊不排队");
-			article.setDescription("三甲医院儿科专家，线上准时预约，线下准时就诊");
-			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%90%8D%E5%8C%BB%E9%9D%A2%E8%AF%8A.png");
-			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=2");
-			articleList.add(article);
-
-			article = new Article();
-			article.setTitle("妈妈社群\n育儿交流名医讲座，福利发不停");
-			article.setDescription("添加宝大夫客服微信：bdfdsb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动");
-			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%A6%88%E5%A6%88%E6%B4%BB%E5%8A%A8.png");
-			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236661&idx=3&sn=4c1fd3ee4eb99e6aca415f60dceb6834&scene=1&srcid=0616uPcrUKz7FVGgrmOcZqqq&from=singlemessage&isappinstalled=0&key=18e81ac7415f67c44d3973b3eb8e53f264f47c1109eceefa8d6be994349fa7f152bb8cfdfab15b36bd16a4400cd1bd87&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=ZgGIH5%2B8%2FkhHiHeeRG9v6qbPZmK5qPlBL02k0Qo%2FHCK7eLMOZexAypBy0dzPjzaZ");
-			articleList.add(article);
+//			List<Article> articleList = new ArrayList<Article>();
+//			Article article = new Article();
+//			article.setTitle("对孩子健康负责的家长必看！万人推荐！");
+//			article.setDescription("");
+//			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%AE%9D%E6%8A%A4%E4%BC%9Ebanner2%20-%20%E5%89%AF%E6%9C%AC%20%E6%8B%B7%E8%B4%9D.png");
+//			article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a");
+//			articleList.add(article);
+//
+//			article = new Article();
+//			article.setTitle("咨询大夫\n秒回不等待，7X24全年无休");
+//			article.setDescription("三甲医院医生7X24全年无休   一分钟极速回复");
+//			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%92%A8%E8%AF%A2%E5%A4%A7%E5%A4%AB.png");
+//			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR&key=f5c31ae61525f82ed83c573369e70b8f9b853c238066190fb5eb7b8640946e0a090bbdb47e79b6d2e57b615c44bd82c5&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=dG5W6eOP3JU1%2Fo3JXw19SFBAh1DgpSlQrAXTyirZuj970HMU7TYojM4D%2B2LdJI9n");
+//			articleList.add(article);
+//
+//			article = new Article();
+//			article.setTitle("名医面诊\n轻松预约专家，到点就诊不排队");
+//			article.setDescription("三甲医院儿科专家，线上准时预约，线下准时就诊");
+//			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%90%8D%E5%8C%BB%E9%9D%A2%E8%AF%8A.png");
+//			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=2");
+//			articleList.add(article);
+//
+//			article = new Article();
+//			article.setTitle("妈妈社群\n育儿交流名医讲座，福利发不停");
+//			article.setDescription("添加宝大夫客服微信：bdfdsb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动");
+//			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%A6%88%E5%A6%88%E6%B4%BB%E5%8A%A8.png");
+//			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236661&idx=3&sn=4c1fd3ee4eb99e6aca415f60dceb6834&scene=1&srcid=0616uPcrUKz7FVGgrmOcZqqq&from=singlemessage&isappinstalled=0&key=18e81ac7415f67c44d3973b3eb8e53f264f47c1109eceefa8d6be994349fa7f152bb8cfdfab15b36bd16a4400cd1bd87&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=ZgGIH5%2B8%2FkhHiHeeRG9v6qbPZmK5qPlBL02k0Qo%2FHCK7eLMOZexAypBy0dzPjzaZ");
+//			articleList.add(article);
 
 //			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
 
