@@ -156,11 +156,11 @@ public class UserInfoServiceImpl implements UserInfoService {
                 response.put("sys_user_id", sys_user_id);
                 response.put("result", 0);
             }
-        } else if(StringUtils.isNotNull(source) && "COOP_BUQ".equalsIgnoreCase(source)){
-            System.out.println("======================= COOP_BUQ");
+        } else if(StringUtils.isNotNull(source) && "COOP_BHQ".equalsIgnoreCase(source)){
+            System.out.println("======================= COOP_BHQ");
             userNew.setLoginName(String.valueOf(params.get("thirdId")));
-            if (userdao.getUserByLoginName(new User(null, (String) params.get("userPhone"))) == null) {
-                String sys_user_id = (String) params.get("sys_user_id");
+            if (userdao.getUserByLoginName(new User(null, String.valueOf(params.get("thirdId")))) == null) {
+                String sys_user_id = String.valueOf(params.get("thirdId"));
                 userNew.setId(sys_user_id);
                 userNew.setLoginName(String.valueOf(params.get("thirdId")));
                 userNew.setCreateDate(new Date());
@@ -171,7 +171,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 userNew.setUserType(User.USER_TYPE_USER);
                 userNew.setMarketer(source);
                 userNew.setName((String) params.get("userName"));
-                userNew.setOpenid(String.valueOf(params.get("thirdId")));
+//                userNew.setOpenid(String.valueOf(params.get("thirdId")));
                 int result = userdao.insert(userNew);
                 System.out.println("======================= not WJY RESULT==="+result);
                 if (result == 1) {
