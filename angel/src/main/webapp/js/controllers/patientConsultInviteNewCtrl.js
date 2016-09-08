@@ -4,10 +4,12 @@ angular.module('controllers', [])
             $scope.inviteNewInit = function(){
                 CreateInviteCard.save({},function(data){
                     $scope.headImgUrl = {
-                        'background' : 'url('+data.headImgUrl+')'
+                        'background' : 'url('+data.headImgUrl+')',
+                        'background-size' : '100% 100%'
                     };
                     $scope.userQRCode = {
-                        'background' : 'url('+data.userQRCode+')'
+                        'background' : 'url('+data.userQRCode+')',
+                        'background-size' : '100% 100%'
                     };
                 });
             }

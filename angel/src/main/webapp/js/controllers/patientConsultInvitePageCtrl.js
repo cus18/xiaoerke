@@ -1,19 +1,27 @@
 angular.module('controllers', [])
-    .controller('patientConsultInvitePageCtrl',['$scope','GetAttentionInfo',
-        function ($scope,GetAttentionInfo) {
+    .controller('patientConsultInvitePageCtrl',['$scope','GetAttentionInfo','GetUserOpenId','GetBabyCoinInfo',
+        function ($scope,GetAttentionInfo,GetUserOpenId,GetBabyCoinInfo) {
             $scope.minename = '您的朋友';
+            $scope.openid = '';
+            $scope.marketer = '';
             $scope.invitePageInit = function(){
                 $('#invitePageContent').click(function(){
                     $('#invitePageShade').show();
                 });
                 GetAttentionInfo.save({},function(data){
                     $scope.minename = data.attentionInfo.wechat_name;
-                    loadShare();
+                    GetUserOpenId.save({},function(data){
+                        $scope.openid = data.openid;
+                        GetBabyCoinInfo.save({},function(data){
+                            $scope.marketer = data.babyCoinCash ;
+                            loadShare();
+                        });
+                    });
                 });
             }
             //分享到朋友圈或者微信
             var loadShare = function(){
-                var share = "http://s120.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s120.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=41,'12','1100001231',";//最后url=41，openid,marketer
+                var share = "http://s120.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s120.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=41,'"+$scope.openid+"','"+$scope.marketer+"',";//最后url=41，openid,marketer
                 // if(version=="a"){
                 version="a";
                 var timestamp;//时间戳

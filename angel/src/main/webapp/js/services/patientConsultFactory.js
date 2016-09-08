@@ -34,5 +34,8 @@ define(['appPatientConsult'], function (app) {
         .factory('GetAttentionInfo', ['$resource', function ($resource) {
             return $resource('patient/getAttentionInfo');
         }])
+        .factory('GetBabyCoinInfo', ['$resource', function ($resource) {
+            return $resource('babyCoin/getBabyCoinInfo');
+        }])
 
 })
