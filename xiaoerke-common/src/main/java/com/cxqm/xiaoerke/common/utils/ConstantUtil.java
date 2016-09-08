@@ -56,4 +56,8 @@ public class ConstantUtil {
 
 	public static String DISTRIBUTOR = "distributor";
 	public static String CONSULTDOCTOR = "consultDoctor";
+
+	//扫码送宝宝币初始值
+	public static String BABYCOIN = Global.getConfig("BABY_COIN");
+
 }

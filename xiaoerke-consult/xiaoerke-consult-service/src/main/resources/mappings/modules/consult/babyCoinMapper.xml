@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.BabyCoinDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cash" property="cash" jdbcType="DECIMAL" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="marketer" property="marketer" jdbcType="VARCHAR" />
+    <result column="back_2" property="back2" jdbcType="VARCHAR" />
+    <result column="back_3" property="back3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cash, open_id, create_time, create_by, update_time, marketer, back_2, back_3
+  </sql>
+  <select id="selectByBabyCoinVo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
+    select 
+    <include refid="Base_Column_List" />
+    from baby_coin
+    where 1=1
+    <if test="id != null" >
+      and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="openId != null" >
+      and open_id = #{openId,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime != null" >
+      order by update_time desc limit 1
+    </if>
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from baby_coin
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
+    insert into baby_coin (id, cash, open_id, 
+      create_time, create_by, update_time, 
+      marketer, back_2, back_3
+      )
+    values (#{id,jdbcType=INTEGER}, #{cash,jdbcType=DECIMAL}, #{openId,jdbcType=VARCHAR}, 
+      #{ttt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+      #{marketer,jdbcType=VARCHAR}, #{back2,jdbcType=VARCHAR}, #{back3,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" useGeneratedKeys="true"
+          keyProperty="id">
+    insert into baby_coin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cash != null" >
+        cash,
+      </if>
+      <if test="openId != null" >
+        open_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="marketer != null" >
+        marketer,
+      </if>
+      <if test="back2 != null" >
+        back_2,
+      </if>
+      <if test="back3 != null" >
+        back_3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cash != null" >
+        #{cash,jdbcType=DECIMAL},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="marketer != null" >
+        #{marketer,jdbcType=VARCHAR},
+      </if>
+      <if test="back2 != null" >
+        #{back2,jdbcType=VARCHAR},
+      </if>
+      <if test="back3 != null" >
+        #{back3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
+    update baby_coin
+    <set >
+      <if test="cash != null" >
+        cash = #{cash,jdbcType=DECIMAL},
+      </if>
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="marketer != null" >
+        marketer = #{marketer,jdbcType=VARCHAR},
+      </if>
+      <if test="back2 != null" >
+        back_2 = #{back2,jdbcType=VARCHAR},
+      </if>
+      <if test="back3 != null" >
+        back_3 = #{back3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateCashByOpenId" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
+    update baby_coin set cash = cash + #{cash}
+    where open_id = #{openId,jdbcType=VARCHAR}
+  </update>
+
+
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
+    update baby_coin
+    set cash = #{cash,jdbcType=DECIMAL},
+      open_id = #{openId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      marketer = #{marketer,jdbcType=VARCHAR},
+      back_2 = #{back2,jdbcType=VARCHAR},
+      back_3 = #{back3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

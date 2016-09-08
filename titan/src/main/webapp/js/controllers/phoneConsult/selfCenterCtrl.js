@@ -1,7 +1,7 @@
 ﻿angular.module('controllers', ['ionic']).controller('selfCenterCtrl', [
         '$scope','$state','MyselfInfo','$ionicPopup','GetUserLoginStatus',
-    '$rootScope','$location','resolveUserLoginStatus','$stateParams','RecordLogs',
-        function ($scope,$state,MyselfInfo,$ionicPopup,GetUserLoginStatus,$rootScope,$location,resolveUserLoginStatus,$stateParams,RecordLogs) {
+    '$rootScope','$location','resolveUserLoginStatus','$stateParams','RecordLogs','BabyCoinInit',
+        function ($scope,$state,MyselfInfo,$ionicPopup,GetUserLoginStatus,$rootScope,$location,resolveUserLoginStatus,$stateParams,RecordLogs,BabyCoinInit) {
             $scope.title = "我的";
             $scope.pageLoading =false;
             $scope.myselfBindStatus=false;
@@ -80,7 +80,9 @@
                     $scope.accountFund = "0元";
                 }
             })
-
+            BabyCoinInit.save({},function(data){
+                $scope.babyMoney = data.babyCoinVo.cash;
+            })
 
             $scope.$on('$ionicView.enter', function(){
 
