@@ -30,7 +30,7 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
 
     private static String dataStr =  DateUtils.DateToStr(new Date(),"date");
 
-    private static Set<String> instantSet= Collections.synchronizedSet(new HashSet<String>());
+//    private static Set<String> instantSet= Collections.synchronizedSet(new HashSet<String>());
 
     @Override
     public List<Map<String, Object>> getConsultInfo(String openId) {
@@ -143,14 +143,19 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
     @Override
     public boolean cheakInstantConsultation(String openid) {
         String nowDate = DateUtils.DateToStr(new Date(),"date");
+
         if(!nowDate.equals(dataStr)){
-            instantSet.clear();
+            sessionRedisCache.clearInstantConsultationList();
+//            instantSet.clear();
             this.dataStr = nowDate;
         }
-        if(instantSet.size()>=20){
+        Long listNum = sessionRedisCache.num4InstantConsultationList();
+//        instantSet.size()>=20||
+        if(listNum>=20){
             return false;
         }
-        instantSet.add(openid);
+        sessionRedisCache.addInstantConsultationList(openid);
+//        instantSet.add(openid);
         return true;
     }
 
