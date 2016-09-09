@@ -24,14 +24,13 @@ import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoThirdPartyService;
 import com.cxqm.xiaoerke.modules.wechat.dao.WechatAttentionDao;
 import com.cxqm.xiaoerke.modules.wechat.dao.WechatInfoDao;
-import com.cxqm.xiaoerke.modules.wechat.entity.HealthRecordMsgVo;
-import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
-import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
+import com.cxqm.xiaoerke.modules.wechat.entity.*;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatPatientCoreService;
 import com.cxqm.xiaoerke.modules.wechat.service.util.MessageUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -45,7 +44,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -106,6 +107,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     @Autowired
     private BabyCoinService babyCoinService;
 
+    @Autowired
+    private MongoDBService<SpecificChannelRuleVo> specificChannelRuleMongoDBService;
+
+    @Autowired
+    private MongoDBService<SpecificChannelInfoVo> specificChannelInfoMongoDBService;
+
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
     /**
@@ -130,7 +137,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             if (eventType.equals(MessageUtil.SCAN)) {
                 //已关注公众号的情况下扫描
                 this.updateAttentionInfo(xmlEntity);
+                //特定渠道优惠
+                Map parameter = systemService.getWechatParameter();
+                String token = (String) parameter.get("token");
+                specificChanneldeal(xmlEntity,token);
                 respMessage = processScanEvent(xmlEntity, "oldUser", request, response);
+
             } else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
                 //扫描关注公众号或者搜索关注公众号都在其中
                 respMessage = processSubscribeEvent(xmlEntity, request, response);
@@ -800,8 +812,75 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         //宝宝币
         babyCoinHandler(xmlEntity, token, marketer);
 
+        //特定渠道优惠
+        specificChanneldeal(xmlEntity,token);
+
         return sendSubScribeMessage(xmlEntity, request, response, marketer, token);
     }
+
+    private synchronized void specificChanneldeal(ReceiveXmlEntity xmlEntity,String token){
+        String EventKey = xmlEntity.getEventKey();
+        String eventType = xmlEntity.getEvent();
+        String openid = xmlEntity.getFromUserName();
+        //查找出当前的特定渠道遍历
+        Query queryDate = new Query();
+//        SpecificChannelRuleVo v = new SpecificChannelRuleVo();
+//        v.setId("123");
+//        v.setQrcode("abv");
+//        v.setBabyCoin(1000l);
+//        v.setDocuments("doc");
+//        v.setRepeatdocuments("rdoc");
+//        v.setEndTime(new Date());
+
+//        specificChannelRuleMongoDBService.insert(v);
+        List<SpecificChannelRuleVo>  ruleList = specificChannelRuleMongoDBService.queryList(queryDate);
+        for(SpecificChannelRuleVo vo:ruleList){
+            if(EventKey.contains(vo.getQrcode())){
+                queryDate = new Query();
+                Criteria criteria = Criteria.where("openid").is(openid);
+                queryDate.addCriteria(criteria);
+                queryDate.with(new Sort(new Sort.Order(Sort.Direction.ASC, "date"))).limit(1);
+                List<SpecificChannelInfoVo>  infoList = specificChannelInfoMongoDBService.queryList(queryDate);
+                if(infoList.size() == 0) {
+                    WechatUtil.sendMsgToWechat(token,openid,vo.getDocuments());
+                    BabyCoinVo babyCoin = new BabyCoinVo();
+                    babyCoin.setOpenId(openid);
+
+                    babyCoin = babyCoinService.selectByBabyCoinVo(babyCoin);//推荐人的babyCoin
+                    babyCoin.setCash(vo.getBabyCoin());
+                    if (null == babyCoin || null == babyCoin.getCash()) {//新用户，初始化宝宝币
+                        babyCoin = new BabyCoinVo();
+                        babyCoin.setCash(vo.getBabyCoin());
+                        babyCoin.setCreateBy(openid);
+                        babyCoin.setCreateTime(new Date());
+                        babyCoin.setOpenId(openid);
+                        BabyCoinVo lastBabyCoinUser = new BabyCoinVo();
+                        lastBabyCoinUser.setCreateTime(new Date());
+                        lastBabyCoinUser = babyCoinService.selectByBabyCoinVo(lastBabyCoinUser);
+                        if (lastBabyCoinUser == null || lastBabyCoinUser.getMarketer() == null) {
+                            babyCoin.setMarketer("110000000");//初始值
+                        } else {
+                            babyCoin.setMarketer(String.valueOf(Integer.valueOf(lastBabyCoinUser.getMarketer()) + 1));
+                        }
+                        babyCoinService.insertBabyCoinSelective(babyCoin);
+                    }else{
+                        babyCoinService.updateCashByOpenId(babyCoin);
+                    }
+                    SpecificChannelInfoVo channelVo = new SpecificChannelInfoVo();
+                    channelVo.setId(IdGen.uuid());
+                    channelVo.setBabyCoin(vo.getBabyCoin());
+                    channelVo.setCreateTime(new Date());
+                    channelVo.setOpenid(openid);
+                    channelVo.setQrcode(vo.getQrcode());
+                    specificChannelInfoMongoDBService.insert(channelVo);
+                }else{
+                    WechatUtil.sendMsgToWechat(token,openid,vo.getRepeatdocuments());
+                }
+            }
+        }
+
+
+    };
 
     private void babyCoinHandler(ReceiveXmlEntity xmlEntity, String token, String marketer) {
         if (marketer.startsWith("110")) {
@@ -1020,7 +1099,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             List<Article> articleList = new ArrayList<Article>();
             Article article = new Article();
             article.setTitle("三甲医院儿科专家    咨询秒回不等待");
-            article.setDescription("小儿内科:       24小时全天 \n\n小儿皮肤科/保健科:   8:00 ~ 23:00\n\n妇产科:   12:00-14:00，19:00-22:00\n" +
+            article.setDescription("小儿内科:       24小时全天 \n\n小儿皮肤科/保健科:   8:00 ~ 23:00\n\n妇产科:   8:00 ~ 23:00\n" +
                     "\n小儿其他专科:   19:00 ~ 21:00\n\n" +
                     "(外科、眼科、耳鼻喉科、口腔科、预防接种科、中医科、心理科)\n\n好消息！可在线咨询北京儿童医院皮肤科专家啦！");
             article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E6%8E%A8%E9%80%81%E6%B6%88%E6%81%AF2.png");

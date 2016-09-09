@@ -118,6 +118,11 @@ angular.module('services', ['ngResource'])
     .factory('GetFindAllTransferSpecialist', ['$resource', function ($resource) {
         return $resource(public + 'consult/transfer/findDoctorDepartment');
     }])
+
+    //添加定时回访
+    .factory('ModifyUserConsultNum', ['$resource', function ($resource) {
+        return $resource(public + 'consult/user/modifyUserConsultNum');
+    }])
     //发起专科的会话
     .factory('CreateTransferSpecialist', ['$resource', function ($resource) {
         return $resource(public + 'consultSession/transfer/createMoreUserConsultSession');
