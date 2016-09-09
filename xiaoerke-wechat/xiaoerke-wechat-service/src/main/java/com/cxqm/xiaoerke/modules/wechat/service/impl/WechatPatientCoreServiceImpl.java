@@ -821,6 +821,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         String EventKey = xmlEntity.getEventKey();
         String eventType = xmlEntity.getEvent();
         String openid = xmlEntity.getFromUserName();
+
+        SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+        sysWechatAppintInfoVo.setOpen_id(openid);
+        SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
         //查找出当前的特定渠道遍历
         Query queryDate = new Query();
         List<SpecificChannelRuleVo>  ruleList = specificChannelRuleMongoDBService.queryList(queryDate);
