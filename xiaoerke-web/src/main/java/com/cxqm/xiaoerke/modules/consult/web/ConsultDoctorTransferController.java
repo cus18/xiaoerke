@@ -247,6 +247,14 @@ public class ConsultDoctorTransferController extends BaseController {
                 dataValue.put("fromCsUserName",user.getName());
                 dataValue.put("fromCsUserId",waitJoinListVo.getFromUserId());
                 dataValue.put("chooseFlag",true);
+                /**
+                 * 增加未读消息数量
+                 */
+                if(richConsultSession.getConsultNum() != 0){
+                    dataValue.put("consultNum",richConsultSession.getConsultNum());
+                }else{
+                    dataValue.put("consultNum",richConsultSession.getConsultNum()+1);
+                }
 
                 Query sessionquery = (new Query()).addCriteria(where("sessionId").is(""+waitJoinListVo.getConversationId()+""));
                 ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(sessionquery);

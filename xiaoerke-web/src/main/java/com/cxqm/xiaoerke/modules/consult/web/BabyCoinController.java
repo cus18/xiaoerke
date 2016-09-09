@@ -49,7 +49,7 @@ public class BabyCoinController {
     @ResponseBody
     public Map<String, Object> createInviteCard(HttpSession session, HttpServletRequest request) {
         HashMap<String, Object> response = new HashMap<String, Object>();
-        String openId = WechatUtil.getOpenId(session, request);
+        String openId = WechatUtil.getOpenId(session, request);//"oogbDwD_2BTQpftPu9QClr-mCw7U"
 
         BabyCoinVo babyCoinVo = getBabyCoin(response, openId);
 
