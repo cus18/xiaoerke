@@ -9,11 +9,11 @@
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="marketer" property="marketer" jdbcType="VARCHAR" />
-    <result column="back_2" property="back2" jdbcType="VARCHAR" />
+    <result column="nickName" property="nickName" jdbcType="VARCHAR" />
     <result column="back_3" property="back3" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, cash, open_id, create_time, create_by, update_time, marketer, back_2, back_3
+    id, cash, open_id, create_time, create_by, update_time, marketer, nickName, back_3
   </sql>
   <select id="selectByBabyCoinVo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
     select 
@@ -42,11 +42,11 @@
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
     insert into baby_coin (id, cash, open_id, 
       create_time, create_by, update_time, 
-      marketer, back_2, back_3
+      marketer, nickName, back_3
       )
     values (#{id,jdbcType=INTEGER}, #{cash,jdbcType=DECIMAL}, #{openId,jdbcType=VARCHAR}, 
       #{ttt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
-      #{marketer,jdbcType=VARCHAR}, #{back2,jdbcType=VARCHAR}, #{back3,jdbcType=VARCHAR}
+      #{marketer,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{back3,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" useGeneratedKeys="true"
@@ -74,8 +74,8 @@
       <if test="marketer != null" >
         marketer,
       </if>
-      <if test="back2 != null" >
-        back_2,
+      <if test="nickName != null" >
+        nickName,
       </if>
       <if test="back3 != null" >
         back_3,
@@ -103,8 +103,8 @@
       <if test="marketer != null" >
         #{marketer,jdbcType=VARCHAR},
       </if>
-      <if test="back2 != null" >
-        #{back2,jdbcType=VARCHAR},
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
       </if>
       <if test="back3 != null" >
         #{back3,jdbcType=VARCHAR},
@@ -132,8 +132,8 @@
       <if test="marketer != null" >
         marketer = #{marketer,jdbcType=VARCHAR},
       </if>
-      <if test="back2 != null" >
-        back_2 = #{back2,jdbcType=VARCHAR},
+      <if test="nickName != null" >
+        nickName = #{nickName,jdbcType=VARCHAR},
       </if>
       <if test="back3 != null" >
         back_3 = #{back3,jdbcType=VARCHAR},
@@ -156,7 +156,7 @@
       create_by = #{createBy,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       marketer = #{marketer,jdbcType=VARCHAR},
-      back_2 = #{back2,jdbcType=VARCHAR},
+      nickName = #{nickName,jdbcType=VARCHAR},
       back_3 = #{back3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

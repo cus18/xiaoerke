@@ -17,7 +17,7 @@ public class BabyCoinVo {
 
     private String marketer;
 
-    private String back2;
+    private String nickName;
 
     private String back3;
 
@@ -77,12 +77,12 @@ public class BabyCoinVo {
         this.marketer = marketer;
     }
 
-    public String getBack2() {
-        return back2;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setBack2(String back2) {
-        this.back2 = back2;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getBack3() {

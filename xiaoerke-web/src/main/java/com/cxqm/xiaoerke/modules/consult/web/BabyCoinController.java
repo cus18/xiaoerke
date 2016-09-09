@@ -1,11 +1,14 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
+import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
+import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +34,9 @@ public class BabyCoinController {
 
     @Autowired
     private BabyCoinService babyCoinService;
+
+    @Autowired
+    private WechatAttentionService wechatAttentionService;
 
     /**
      * 邀请卡生成页面
@@ -86,6 +92,9 @@ public class BabyCoinController {
         BabyCoinVo babyCoinVo = new BabyCoinVo();
         babyCoinVo.setOpenId(openId);
         babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
+        SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+        sysWechatAppintInfoVo.setOpen_id(openId);
+        SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
         if (babyCoinVo == null || babyCoinVo.getCash() == null) {//新用户，初始化宝宝币
             synchronized (this) {
                 babyCoinVo = new BabyCoinVo();
@@ -93,6 +102,9 @@ public class BabyCoinController {
                 babyCoinVo.setCreateBy(openId);
                 babyCoinVo.setCreateTime(new Date());
                 babyCoinVo.setOpenId(openId);
+                if(wechatAttentionVo != null && wechatAttentionVo.getWechat_name()!=null){
+                    babyCoinVo.setNickName(wechatAttentionVo.getWechat_name());
+                }
                 BabyCoinVo lastBabyCoinUser = new BabyCoinVo();
                 lastBabyCoinUser.setCreateTime(new Date());
                 lastBabyCoinUser = babyCoinService.selectByBabyCoinVo(lastBabyCoinUser);
