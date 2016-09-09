@@ -144,7 +144,7 @@
   </update>
 
   <update id="updateCashByOpenId" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
-    update baby_coin set cash = cash + #{cash}
+    update baby_coin set cash = cash + #{cash},,invite_number_month = invite_number_month + #{cash}
     where marketer = #{marketer,jdbcType=VARCHAR}
   </update>
 

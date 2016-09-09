@@ -900,6 +900,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     olderUser = babyCoinService.selectByBabyCoinVo(olderUser);//推荐人的babyCoin
                     if (olderUser.getInviteNumberMonth() <= 20) {
                         olderUser.setCash(Long.valueOf(cash));
+                        olderUser.setInviteNumberMonth(1);
                         //推荐人宝宝币加ConstantUtil.BABYCOIN个
                         babyCoinService.updateCashByOpenId(olderUser);
                         //给当前用户推送消息
