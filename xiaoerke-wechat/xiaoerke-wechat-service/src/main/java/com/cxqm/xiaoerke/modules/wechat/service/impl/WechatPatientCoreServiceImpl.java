@@ -1094,7 +1094,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             List<Article> articleList = new ArrayList<Article>();
             Article article = new Article();
             article.setTitle("三甲医院儿科专家    咨询秒回不等待");
-            article.setDescription("小儿内科:       24小时全天 \n\n小儿皮肤科/保健科:   8:00 ~ 23:00\n\n妇产科:   12:00-14:00，19:00-22:00\n" +
+            article.setDescription("小儿内科:       24小时全天 \n\n小儿皮肤科/保健科:   8:00 ~ 23:00\n\n妇产科:   8:00 ~ 23:00\n" +
                     "\n小儿其他专科:   19:00 ~ 21:00\n\n" +
                     "(外科、眼科、耳鼻喉科、口腔科、预防接种科、中医科、心理科)\n\n好消息！可在线咨询北京儿童医院皮肤科专家啦！");
             article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E6%8E%A8%E9%80%81%E6%B6%88%E6%81%AF2.png");
