@@ -248,39 +248,37 @@
         order by date desc limit 1;
     </select>
 
+    <select id="getOpenIdListByNickName" parameterType="java.lang.String" resultType="java.lang.String">
+        select DISTINCT openid from sys_attention where nickname like CONCAT('%', #{nickname}, '%')
+    </select>
+
     <select id="findUserChannelList" resultType="com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention">
         <if test="todayAttention == null and todayConsult == null" >
             select sa.nickname,sa.openid,sa.marketer,sa.status,sa.date from sys_attention sa where not exists(select 1 from sys_attention where openid= sa.openid
             and date>sa.date )
-            <if test="openid != null and openid != ''" >
-                and sa.openid=#{openid}
-            </if>
-            <if test="nickname != null and nickname != ''" >
-                and sa.nickname like  CONCAT('%', #{nickname}, '%')
-            </if>
+            and sa.openid in
+            <foreach item="item" index="index" collection="openidlist" open="(" separator="," close=")">
+                #{item}
+            </foreach>
         </if>
         <if test="todayAttention != null and todayAttention != ''" >
             select sa.nickname,sa.openid,sa.marketer,sa.status,sa.date from sys_attention sa where not exists(select 1 from sys_attention where openid= sa.openid
             and date>sa.date ) and date(sa.date) = curdate()
-            <if test="openid != null and openid != ''" >
-                and sa.openid=#{openid}
-            </if>
-            <if test="nickname != null and nickname != ''" >
-                and sa.nickname like  CONCAT('%', #{nickname}, '%')
-            </if>
+            and sa.openid in
+            <foreach item="item" index="index" collection="openidlist" open="(" separator="," close=")">
+                #{item}
+            </foreach>
         </if>
         <if test="todayConsult != null and todayConsult != ''" >
             <if test="todayAttention != null" >
-                UNION all
+                UNION
             </if>
             SELECT sa.nickname,sa.openid,sa.marketer,sa.status,sa.date FROM consult_session cs LEFT JOIN sys_attention sa ON cs.sys_user_id = sa.openid WHERE not exists(select 1 from sys_attention where openid= sa.openid
             and date>sa.date ) and	date(cs.create_time) = curdate()
-            <if test="openid != null and openid !=''" >
-                and sa.openid=#{openid}
-            </if>
-            <if test="nickname != null and nickname !=''" >
-                and sa.nickname like  CONCAT('%', #{nickname}, '%')
-            </if>
+            and sa.openid in
+            <foreach item="item" index="index" collection="openidlist" open="(" separator="," close=")">
+                #{item}
+            </foreach>
             GROUP BY	cs.sys_user_id
         </if>
     </select>
