@@ -1,7 +1,6 @@
 package com.cxqm.xiaoerke.modules.wechat.service.impl;
 
 
-import com.cxqm.xiaoerke.modules.sys.entity.Log;
 import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.cxqm.xiaoerke.modules.wechat.entity.SpecificChannelInfoVo;
 import com.mongodb.WriteResult;
@@ -53,7 +52,7 @@ public class SpecificChannelInfoMongoDBServiceImpl extends MongoDBService<Specif
 	
 	@Override
 	public long queryCount(Query query) {
-		long count = mongoTemplate.count(query, Log.class, "SpecificChannelInfoVo");
+		long count = mongoTemplate.count(query, SpecificChannelInfoVo.class, "SpecificChannelInfoVo");
 		return count;
 	}
 
@@ -75,7 +74,7 @@ public class SpecificChannelInfoMongoDBServiceImpl extends MongoDBService<Specif
 
 	@Override
 	public long mapReduce(String map, String reduce) {
-		MapReduceResults<Log> results = mongoTemplate.mapReduce("SpecificChannelInfoVo", map, reduce, Log.class);
+		MapReduceResults<SpecificChannelInfoVo> results = mongoTemplate.mapReduce("SpecificChannelInfoVo", map, reduce, SpecificChannelInfoVo.class);
 		return 0;
 	}
 
