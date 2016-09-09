@@ -372,9 +372,7 @@ public class ConsultWechatController extends BaseController {
                                 LogUtils.saveLog("ZXYQ_RK_TS_2", openId);
                             }
                         } else if (consultSessionPropertyVo.getPermTimes() > 0) {
-                            content = "嗨，亲爱的，你还可享受" + consultSessionPropertyVo.getPermTimes() + "次24小时咨询服务哦^-^" +
-                                    "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n"+">>"+
-                                    "<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=42'>邀请好友得积分</a>";
+                            content = "嗨，亲爱的，你还可享受" + consultSessionPropertyVo.getPermTimes() + "次24小时咨询服务哦^-^" ;
                             richConsultSession.setPayStatus(ConstantUtil.PAY_SUCCESS);
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
