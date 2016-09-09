@@ -7,6 +7,7 @@
     <result column="open_id" property="openId" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="marketer" property="marketer" jdbcType="VARCHAR" />
     <result column="nickName" property="nickName" jdbcType="VARCHAR" />
@@ -31,7 +32,7 @@
     </if>
     GROUP by marketer
     <if test="createTime != null" >
-      order by update_time desc limit 1
+      order by create_time desc limit 1
     </if>
   </select>
 
