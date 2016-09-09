@@ -843,6 +843,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         babyCoin.setCreateBy(openid);
                         babyCoin.setCreateTime(new Date());
                         babyCoin.setOpenId(openid);
+                        babyCoin.setNickName(wechatAttentionVo.getWechat_name());
                         BabyCoinVo lastBabyCoinUser = new BabyCoinVo();
                         lastBabyCoinUser.setCreateTime(new Date());
                         lastBabyCoinUser = babyCoinService.selectByBabyCoinVo(lastBabyCoinUser);
@@ -891,6 +892,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     olderUser = babyCoinService.selectByBabyCoinVo(olderUser);//推荐人的babyCoin
                     if (olderUser.getInviteNumberMonth() <= 20) {
                         olderUser.setCash(Long.valueOf(cash));
+                        olderUser.setInviteNumberMonth(1);
                         //推荐人宝宝币加ConstantUtil.BABYCOIN个
                         babyCoinService.updateCashByOpenId(olderUser);
                         //给当前用户推送消息

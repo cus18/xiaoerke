@@ -1,10 +1,12 @@
 angular.module('controllers', [])
-    .controller('patientConsultInvitePageCtrl',['$scope','GetAttentionInfo','GetUserOpenId','GetBabyCoinInfo',
-        function ($scope,GetAttentionInfo,GetUserOpenId,GetBabyCoinInfo) {
+    .controller('patientConsultInvitePageCtrl',['$scope','GetAttentionInfo','GetUserOpenId','GetBabyCoinInfo','BabyCoinInit',
+        function ($scope,GetAttentionInfo,GetUserOpenId,GetBabyCoinInfo,BabyCoinInit) {
             $scope.minename = '您的朋友';
             $scope.openid = '';
             $scope.marketer = '';
             $scope.invitePageInit = function(){
+                BabyCoinInit.save({},function(data){
+                })
                 $('#invitePageContent').click(function(){
                     $('#invitePageShade').show();
                 });
