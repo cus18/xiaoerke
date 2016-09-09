@@ -91,7 +91,7 @@ public class ConsultDoctorTransferController extends BaseController {
     public
     @ResponseBody HashMap<String, Object> doctorOnLineList(@RequestBody Map<String, Object> params) {
         HashMap<String,Object> response = new HashMap<String, Object>();
-        List<String> userList = ConsultSessionManager.getSessionManager().getOnlineCsList();
+        List<String> userList = ConsultSessionManager.INSTANCE.getOnlineCsList();
         System.out.println("userList");
         if(userList!=null && userList.size()>0){
             response.put("onLineCsUserList",consultSessionService.getOnlineCsListInfo(userList));

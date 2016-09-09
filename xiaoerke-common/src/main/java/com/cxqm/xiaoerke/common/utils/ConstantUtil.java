@@ -2,7 +2,9 @@ package com.cxqm.xiaoerke.common.utils;
 
 import com.cxqm.xiaoerke.common.config.Global;
 
-public class ConstantUtil {
+public enum ConstantUtil {
+
+	INSTANCE;
 
 	//小儿科用户端微信参数
 	public static final String DOCTORCORPID = Global.getConfig("DOCTORCORPID");
@@ -46,11 +48,8 @@ public class ConstantUtil {
 	public static String TITAN_WEB_URL = Global.getConfig("TITAN_WEB_URL");
 	//咨询支付
 	public static String NO_PAY = "noPay";
-
 	public static String NOT_INSTANT_CONSULTATION = "notInstantConsultation";
-
 	public static String PAY_SUCCESS = "paySuccess";
-
 	public static String USE_TIMES = "useTimes";
 	public static String WITHIN_24HOURS = "within24Hours";
 

@@ -44,7 +44,7 @@ public class ConsultSessionTransferController {
         HashMap<String, Object> response = new HashMap<String, Object>();
         Map<String, Object> specialistPatientContent = (Map<String, Object>) params.get("specialistPatientContent");
         Integer sessionId = sessionRedisCache.getSessionIdByUserId((String) specialistPatientContent.get("userId"));
-        List<String> distributorsList = ConsultSessionManager.getSessionManager().distributorsList;
+        List<String> distributorsList = ConsultSessionManager.INSTANCE.distributorsList;
         if (sessionId != null) {
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
             if (richConsultSession != null) {
@@ -69,7 +69,7 @@ public class ConsultSessionTransferController {
                         response.put("status", "complete");
                         return response;
                     } else {
-                        HashMap<String, Object> resultMap = ConsultSessionManager.getSessionManager().createConsultSession((String) specialistPatientContent.get("userName"), (String) specialistPatientContent.get("userId"));
+                        HashMap<String, Object> resultMap = ConsultSessionManager.INSTANCE.createConsultSession((String) specialistPatientContent.get("userName"), (String) specialistPatientContent.get("userId"));
                         if (resultMap != null && "success".equalsIgnoreCase((String) resultMap.get("result"))) {
                             ConsultTransferListVo consultTransferListVo;
                             String status = "complete";
@@ -80,7 +80,7 @@ public class ConsultSessionTransferController {
                             consultTransferListVo.setId((Integer) specialistPatientContent.get("id"));
                             int count = consultTransferListVoService.updateConsultTransferByPrimaryKey(consultTransferListVo);
                             if (count > 0) {
-                                ConsultSessionManager.getSessionManager().refreshConsultTransferList(UserUtils.getUser().getId());
+                                ConsultSessionManager.INSTANCE.refreshConsultTransferList(UserUtils.getUser().getId());
                             }
                             response.put("userId", specialistPatientContent.get("userId"));
                             response.put("userName", specialistPatientContent.get("userName"));

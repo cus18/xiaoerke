@@ -2,6 +2,7 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.*;
@@ -284,7 +285,7 @@ public class ConsultDoctorController extends BaseController {
         String userName = (String) params.get("userName");
 
         //根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
-        HashMap<String, Object> response = ConsultSessionManager.getSessionManager().createConsultSession(userName, userId);
+        HashMap<String, Object> response = ConsultSessionManager.INSTANCE.createConsultSession(userName, userId);
         return response;
     }
 
@@ -334,7 +335,7 @@ public class ConsultDoctorController extends BaseController {
             if (richConsultSession != null) {
                 if ("h5cxqm".equalsIgnoreCase(richConsultSession.getSource())) {
                     String patientId = richConsultSession.getUserId();
-                    Channel userChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(patientId);
+                    Channel userChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(patientId);
                     JSONObject obj = new JSONObject();
                     if (userChannel != null && userChannel.isActive()) {
                         obj.put("type", "4");
@@ -343,7 +344,7 @@ public class ConsultDoctorController extends BaseController {
                         userChannel.writeAndFlush(csframe.retain());
                     } else {
                         String doctorId = richConsultSession.getCsUserId();
-                        Channel doctorChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(doctorId);
+                        Channel doctorChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(doctorId);
                         obj.put("type", "4");
                         obj.put("notifyType", "0015");
                         TextWebSocketFrame csframe = new TextWebSocketFrame(obj.toJSONString());
@@ -387,6 +388,49 @@ public class ConsultDoctorController extends BaseController {
                         }
                         //分享的代码
 //                    patientRegisterPraiseService.sendRemindMsgToUser(userId,sessionId);
+                    }
+                }else if("h5bhq".equalsIgnoreCase(richConsultSession.getSource())){
+                    Map<String, Date> userConnectionTimeMapping = ConsultSessionManager.INSTANCE.getUserConnectionTimeMapping();
+                    Date oldDate = null;
+                    if(userConnectionTimeMapping.containsKey(richConsultSession.getUserId())){
+                        oldDate = userConnectionTimeMapping.get(richConsultSession.getUserId());
+                    }else{
+                        oldDate = new Date();
+                        userConnectionTimeMapping.put(richConsultSession.getUserId(),oldDate);
+                    }
+                    Channel userChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(richConsultSession.getUserId());
+                    Boolean flag = false ;
+                    for(int i= 0 ; i<= 1;i++){
+                        JSONObject jsonObj = new JSONObject();
+                        jsonObj.put("type", "4");
+                        jsonObj.put("notifyType", "0100");
+                        TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+                        userChannel.writeAndFlush(frame.retain());
+                        if(i == 1){
+                            Date nowDate =  userConnectionTimeMapping.get(richConsultSession.getUserId());
+                            if(nowDate != null && nowDate != oldDate){
+                                flag = true;
+                            }
+                        }else{
+                            userConnectionTimeMapping.put(richConsultSession.getUserId(), new Date());
+                        }
+                    }
+                    if(flag){
+                        net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
+                        noReadMsg.put("action","doctorCloseSession");
+                        noReadMsg.put("sessionId",sessionId);
+                        noReadMsg.put("uid",richConsultSession.getUserId());
+                        String currentUrl = Global.getConfig("COOP_BHQ_URL");
+                        if(StringUtils.isNull(currentUrl)){
+                            currentUrl = "http://coapi.baohuquan.com/baodaifu";
+                        }
+                        String method = "POST";
+                        String dataType="json";
+                        String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
+                        net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
+                        if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
+                            CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
+                        }
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
+import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.CoopConsultUtil;
@@ -75,11 +76,14 @@ public class ConsultH5CoopController {
                 String userId = (String) params.get("userId");
                 String dateTime = (String) params.get("dateTime");
                 Integer pageSize = (Integer) params.get("pageSize");
-                String currentUrl = "http://rest.tx2010.com/user/current";   //获取当前登录人信息
+                String currentUrl = Global.getConfig("COOP_WJY_URL");
+                if(StringUtils.isNull(currentUrl)){
+                        currentUrl = "http://rest.tx2010.com/user/current";   //微家园获取当前登录人信息
+                }
                 String imgUrl = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
                 String docHeaderImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png";
 //                String token = "f09b10f3-a582-4164-987f-6663c1a7e82a";
-                if(StringUtils.isNotNull(String.valueOf(params.get("token")))){
+                if(params.containsKey("token") && StringUtils.isNotNull(String.valueOf(params.get("token")))){
                         String token =  (String)params.get("token");
                         String access_token = "{'X-Access-Token':'" + token + "'}";
                         String method = "GET";
@@ -132,6 +136,20 @@ public class ConsultH5CoopController {
                         response.put("consultDataList", "");
                 }
                 return response ;
+        }
+
+        @RequestMapping(value = "/baohuquan",method = {RequestMethod.GET,RequestMethod.POST},produces = "application/json")
+        public @ResponseBody JSONObject theInterfaceOfBHQ(@RequestBody Map params){
+                JSONObject jsonObject = new JSONObject();
+                if(params != null){
+                        if(params.containsKey("action") && "evaluteDocker".equalsIgnoreCase(String.valueOf(params.get("action")))){
+                              jsonObject =  this.consultEvaluateUserByCoop(params);
+                        }else if(params.containsKey("action") && "getConsultDataByCoop".equalsIgnoreCase(String.valueOf(params.get("action")))){
+                              jsonObject = this.getConsultDataByCoop(params);
+                        }
+                }
+
+                return jsonObject ;
         }
 
         /**
@@ -245,10 +263,13 @@ public class ConsultH5CoopController {
         @RequestMapping(value="/consultEvaluateUserByCoop",method = {RequestMethod.POST,RequestMethod.GET},produces = "application/json")
         public @ResponseBody JSONObject consultEvaluateUserByCoop(@RequestBody Map params){
                 JSONObject jsonObject = new JSONObject();
-                int sessionId = StringUtils.isNotNull(String.valueOf(params.get("id")))?Integer.valueOf(String.valueOf(params.get("id"))):0;
+                int sessionId = StringUtils.isNotNull(String.valueOf(params.get("sessionId")))?Integer.valueOf(String.valueOf(params.get("sessionId"))):0;
                 String userId = String.valueOf(params.get("userId"));
-                String csUserId = String.valueOf(params.get("csUserId"));
-                int evaLevel = StringUtils.isNotNull(String.valueOf(params.get("evaLevel")))?Integer.valueOf(String.valueOf(params.get("evaLevel"))):0;
+                String csUserId = "";
+                if(params.containsKey("csUserId")){
+                       csUserId = String.valueOf(params.get("csUserId"));
+                }
+                int evaLevel = StringUtils.isNotNull(String.valueOf(params.get("socre")))?Integer.valueOf(String.valueOf(params.get("socre"))):0;
                 //0：代表非常满意  1：代表一般 2：代表不满意
                 String suggestMsg = String.valueOf(params.get("suggestMsg"));
                 String evaDate = String.valueOf(params.get("evaDate"));
@@ -280,12 +301,12 @@ public class ConsultH5CoopController {
                 result = consultEvaluateCoopService.addConsultEvaluateCoops(consultEvaluateCoopVo);
                 if(result > 0){
                         jsonObject.put("status","success");
-                        jsonObject.put("code",0);
+                        jsonObject.put("error_code",0);
                         jsonObject.put("info","数据接收成功！");
                 }else{
                         jsonObject.put("status","failure");
-                        jsonObject.put("code",1);
-                        jsonObject.put("info","数据发送失败！");
+                        jsonObject.put("error_code","1");
+                        jsonObject.put("error_message","数据发送失败！");
                 }
                 return jsonObject;
         }

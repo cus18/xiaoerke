@@ -92,11 +92,11 @@ public class TextWebSocketFrameHandler_App extends SimpleChannelInboundHandler<T
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         log.info("enter channelInactive()");
-        String userId = ConsultSessionManager.getSessionManager().getChannelUserMapping().get(ctx.channel());
-        ConsultSessionManager.getSessionManager().getChannelUserMapping().remove(ctx.channel());
+        String userId = ConsultSessionManager.INSTANCE.getChannelUserMapping().get(ctx.channel());
+        ConsultSessionManager.INSTANCE.getChannelUserMapping().remove(ctx.channel());
         if (userId != null) {
-            ConsultSessionManager.getSessionManager().getUserChannelMapping().remove(userId);
-            //ConsultSessionManager.getSessionManager().getCsUserChannelMapping().remove(userId);
+            ConsultSessionManager.INSTANCE.getUserChannelMapping().remove(userId);
+            //ConsultSessionManager.INSTANCE.getCsUserChannelMapping().remove(userId);
         }
         log.info("finish channelInactive()");
     }

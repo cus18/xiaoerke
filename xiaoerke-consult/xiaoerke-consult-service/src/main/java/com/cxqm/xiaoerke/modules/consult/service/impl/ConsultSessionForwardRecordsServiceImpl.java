@@ -83,12 +83,12 @@ public class ConsultSessionForwardRecordsServiceImpl implements ConsultSessionFo
 
     @Override
     public int transferSession(Integer sessionId, String transferer, String remark){
-        return ConsultSessionManager.getSessionManager().transferSession(sessionId, transferer, remark);
+        return ConsultSessionManager.INSTANCE.transferSession(sessionId, transferer, remark);
     }
 
     @Override
     public void cancelTransferringSession(Integer sessionId, String transferer, String remark) {
-        ConsultSessionManager.getSessionManager().cancelTransferringSession(sessionId, transferer, remark);
+        ConsultSessionManager.INSTANCE.cancelTransferringSession(sessionId, transferer, remark);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class ConsultSessionForwardRecordsServiceImpl implements ConsultSessionFo
         String toCsUserId = (String)map.get("toCsUserId");
         String toCsUserName = (String)map.get("toCsUserName");
         String operation = (String)map.get("operation");
-        ConsultSessionManager.getSessionManager().react2Transfer(sessionId, forwardRecordId, toCsUserId,
+        ConsultSessionManager.INSTANCE.react2Transfer(sessionId, forwardRecordId, toCsUserId,
                 toCsUserName, operation);
     }
 

@@ -59,10 +59,12 @@
             <form:input name="openid" path="openid" htmlEscape="false" maxlength="50" class="input-medium"/>
         </li>
         <li>
-            <input id="todayAttention" name="todayAttention" type="checkbox" value="1">
-            <label for="todayAttention">当天关注</label>
-            <input id="todayConsult" name="todayConsult" type="checkbox" value="1">
-            <label for="todayConsult">当天咨询</label>
+            <span>
+                <input id="todayAttention" name="todayAttention" type="checkbox" value="1">
+                <label for="todayAttention">当天关注</label>
+                <input id="todayConsult" name="todayConsult" type="checkbox" value="1">
+                <label for="todayConsult">当天咨询</label>
+            </span>
         </li>
         <li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"
                                 onclick="return page();"/>
@@ -84,7 +86,10 @@
             <td>${attention.nickname}</td>
             <td>${attention.openid}</td>
             <td>${attention.marketer}</td>
-            <td>${attention.status}</td>
+            <td>
+                <c:if test="${attention.status eq '0'}">已关注</c:if>
+                <c:if test="${attention.status eq '1'}">未关注</c:if>
+            </td>
             <td><fmt:formatDate value="${attention.date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
         </tr>
     </c:forEach>

@@ -31,7 +31,9 @@ import java.util.concurrent.Executors;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
-public class ConsultSessionManager {
+public enum ConsultSessionManager {
+
+    INSTANCE;//deliang
 
     private transient static final Logger log = LoggerFactory.getLogger(ConsultSessionManager.class);
 
@@ -81,8 +83,6 @@ public class ConsultSessionManager {
 
     private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
-    private static ConsultSessionManager sessionManager = new ConsultSessionManager();
-
     //jiangzg add 2016年6月17日16:26:01
     private ConsultDoctorInfoService consultDoctorInfoService = SpringContextHolder.getBean("consultDoctorInfoServiceImpl");
 
@@ -101,10 +101,6 @@ public class ConsultSessionManager {
         for (User u : users) {
             distributorsList.add(u.getId());
         }
-    }
-
-    public static ConsultSessionManager getSessionManager() {
-        return sessionManager;
     }
 
     void createSocket(ChannelHandlerContext ctx, String url) {
@@ -256,6 +252,23 @@ public class ConsultSessionManager {
             sessionId = consultSession.getId();
             sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
             sessionRedisCache.putUserIdSessionIdPair(userId, sessionId);
+            /**
+             * 当用户来自宝护圈时，给宝护圈发送接入成功提示
+             */
+            if(source != null && "h5bhq".equalsIgnoreCase(source)){
+                String currentUrl = Global.getConfig("COOP_BHQ_URL");
+                if(StringUtils.isNull(currentUrl)){
+                    currentUrl = "http://coapi.baohuquan.com/baodaifu";
+                }
+                String method = "POST";
+                String dataType="json";
+                String contentJson = "{\"action\":\"sessionOpen\",\"uid\":'"+consultSession.getUserId()+"',\"sessionId\":'"+sessionId+"'}";
+                String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, contentJson, 4);
+                net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
+                if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
+                    CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, contentJson, 4);    //一次推送失败后，再推一次
+                }
+            }
             JSONObject csobj = new JSONObject();
             //通知用户，告诉会有哪个医生或者接诊员提供服务
             csobj.put("type", 4);
@@ -614,7 +627,7 @@ public class ConsultSessionManager {
                     List<Map> result = consultDoctorInfoService.getDoctorInfoMoreByUserId(toCsUserId);
                     if (result != null && result.size() > 0) {
                         String source = session.getSource();
-                        Channel csChannel = ConsultSessionManager.getSessionManager().getUserChannelMapping().get(toCsUserId);
+                        Channel csChannel = getUserChannelMapping().get(toCsUserId);
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.put("type", "4");
                         jsonObject.put("sessionId", sessionId);
@@ -738,7 +751,7 @@ public class ConsultSessionManager {
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }
                                 }
-                            } else if (StringUtils.isNotNull(source) && "h5cxqm".equalsIgnoreCase(source)) {
+                            } else if (StringUtils.isNotNull(source) && source.contains("h5")) {
                                 //暂时注掉H5
                                 /*Channel userChannel = userChannelMapping.get(session.getUserId());
                                 if(userChannel != null && userChannel.isActive()){
@@ -752,7 +765,7 @@ public class ConsultSessionManager {
                                     userChannel.writeAndFlush(resToUserFrame.retain());
                                 }*/
                             }
-                        }else{
+                        }else{    //转接给分诊
                             if (StringUtils.isNotNull(source) && "wxcxqm".equalsIgnoreCase(source)) {
                                 String userId = session.getUserId();
                                 Query query = (new Query()).addCriteria(where("userId").is(userId)).with(new Sort(Sort.Direction.DESC, "createDate"));
@@ -777,7 +790,7 @@ public class ConsultSessionManager {
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }
                                 }
-                            } else if (StringUtils.isNotNull(source) && "h5cxqm".equalsIgnoreCase(source)) {
+                            } else if (StringUtils.isNotNull(source) && source.contains("h5")) {
                                 //暂时注掉H5
                                 /*Channel userChannel = userChannelMapping.get(session.getUserId());
                                 if(userChannel != null && userChannel.isActive()){
@@ -1110,8 +1123,8 @@ public class ConsultSessionManager {
         } else {
             response.put("result", "failure");
         }
-        ConsultSessionManager.getSessionManager().putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
-        ConsultSessionManager.getSessionManager().putUserIdSessionIdPair(richConsultSession.getUserId(), richConsultSession.getId());
+        putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
+        putUserIdSessionIdPair(richConsultSession.getUserId(), richConsultSession.getId());
 
     }
 
@@ -1120,7 +1133,7 @@ public class ConsultSessionManager {
      * 通知所有在线接诊员刷新转诊列表
      */
     public void refreshConsultTransferList(String distributorId) {
-        Map<String, Channel> csUserChannelMap = ConsultSessionManager.getSessionManager().getCsUserChannelMapping();
+        Map<String, Channel> csUserChannelMap = getCsUserChannelMapping();
 //        String distributorsStr = Global.getConfig("distributors.list");
 //        List distributorsList = Arrays.asList(distributorsStr.split(";"));
         JSONObject csobj = new JSONObject();
