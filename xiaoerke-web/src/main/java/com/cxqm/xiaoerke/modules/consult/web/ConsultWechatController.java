@@ -325,8 +325,7 @@ public class ConsultWechatController extends BaseController {
                 consultSessionPropertyVo.setSysUserId(openId);
                 consultSessionPropertyVo.setCreateBy(openId);
                 consultSessionPropertyService.insertUserConsultSessionProperty(consultSessionPropertyVo);
-                String content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^" +
-                        "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！";
+                String content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^";
                 messageFlag = 1;
                 WechatUtil.sendMsgToWechat(token, openId, content);
                 onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
