@@ -464,8 +464,12 @@ angular.module('controllers', ['luegg.directives'])
                             if (data.alreadyJoinPatientConversation != "" && data.alreadyJoinPatientConversation != undefined) {
                                 $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
-                                    value.messageNotSee = false;
-                                    value.number = 0;
+                                    if(value.consultNum == 0){
+                                        value.messageNotSee = false;
+                                    }else if(value.consultNum != 0){
+                                        value.messageNotSee = true;
+                                    }
+                                    value.number = value.consultNum;
                                     if (value.patientId == patientId) {
                                         patientName = value.patientName;
                                         value.transferDepartment = '需要转给' + department;
@@ -1597,8 +1601,12 @@ angular.module('controllers', ['luegg.directives'])
                     if (data.alreadyJoinPatientConversation != "" && data.alreadyJoinPatientConversation != undefined) {
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                         $.each($scope.alreadyJoinPatientConversation, function (index, value) {
-                            value.messageNotSee = false;
-                            value.number = 0;
+                            if(value.consultNum == 0){
+                                value.messageNotSee = false;
+                            }else if(value.consultNum != 0){
+                                value.messageNotSee = true;
+                            }
+                            value.number = value.consultNum;
                             $.each(value.consultValue, function (index1, value1) {
                                 filterMediaData(value1);
                             });
