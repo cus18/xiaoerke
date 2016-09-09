@@ -140,7 +140,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 //特定渠道优惠
                 Map parameter = systemService.getWechatParameter();
                 String token = (String) parameter.get("token");
-                specificChanneldeal(xmlEntity,token);
+                specificChanneldeal(xmlEntity, token);
                 respMessage = processScanEvent(xmlEntity, "oldUser", request, response);
 
             } else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
@@ -813,7 +813,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         babyCoinHandler(xmlEntity, token, marketer);
 
         //特定渠道优惠
-        specificChanneldeal(xmlEntity,token);
+        specificChanneldeal(xmlEntity, token);
 
         return sendSubScribeMessage(xmlEntity, request, response, marketer, token);
     }
@@ -893,11 +893,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             if (wechatAttentionVo == null) {
 
                 BabyCoinVo olderUser = new BabyCoinVo();
-                olderUser.setMarketer(marketer);
-                olderUser = babyCoinService.selectByBabyCoinVo(olderUser);//推荐人的babyCoin
                 String cash = ConstantUtil.BABYCOIN;
-                olderUser.setCash(Long.valueOf(cash));
                 synchronized (this) {
+                    olderUser.setMarketer(marketer);
+                    olderUser = babyCoinService.selectByBabyCoinVo(olderUser);//推荐人的babyCoin
+                    olderUser.setCash(Long.valueOf(cash));
                     //推荐人宝宝币加ConstantUtil.BABYCOIN个
                     babyCoinService.updateCashByOpenId(olderUser);
                 }
