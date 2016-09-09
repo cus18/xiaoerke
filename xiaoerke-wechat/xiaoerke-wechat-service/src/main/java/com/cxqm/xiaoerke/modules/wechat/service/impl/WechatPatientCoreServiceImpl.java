@@ -847,7 +847,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     babyCoin.setOpenId(openid);
 
                     babyCoin = babyCoinService.selectByBabyCoinVo(babyCoin);//推荐人的babyCoin
-                    babyCoin.setCash(vo.getBabyCoin());
                     if (null == babyCoin || null == babyCoin.getCash()) {//新用户，初始化宝宝币
                         babyCoin = new BabyCoinVo();
                         babyCoin.setCash(vo.getBabyCoin());
@@ -864,6 +863,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         }
                         babyCoinService.insertBabyCoinSelective(babyCoin);
                     }else{
+                        babyCoin.setCash(vo.getBabyCoin());
                         babyCoinService.updateCashByOpenId(babyCoin);
                     }
                     SpecificChannelInfoVo channelVo = new SpecificChannelInfoVo();
