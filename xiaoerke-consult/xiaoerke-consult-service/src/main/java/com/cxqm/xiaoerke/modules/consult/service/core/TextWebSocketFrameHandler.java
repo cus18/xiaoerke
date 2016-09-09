@@ -134,8 +134,17 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             if (senderId.equals(userId)) {
                 //如果是用户作为发送者，则发给医生接收
                 Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
+                /**
+                 * jiangzg 新增消息数量 2016-9-8 18:28:29
+                 */
+                int currentNum = richConsultSession.getConsultNum() + 1;
+                richConsultSession.setConsultNum(currentNum);
+                sessionRedisCache.putSessionIdConsultSessionPair(sessionId , richConsultSession);
                 if (csChannel != null && csChannel.isActive()) {
-                    csChannel.writeAndFlush(msg.retain());
+                    Map newConsultMap = msgMap ;
+                    newConsultMap.put("consultNum", richConsultSession.getConsultNum());
+                    TextWebSocketFrame frame =  new TextWebSocketFrame(JSONUtils.toJSONString(newConsultMap));
+                    csChannel.writeAndFlush(frame.retain());
                     //保存聊天记录
                     consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), richConsultSession);
                 }
@@ -298,6 +307,10 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                     //将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
                     msgMap.put("sessionId", consultSession.getId());
                     msgMap.put("serverAddress", consultSession.getServerAddress());
+                    /**
+                     * jiangzg 2016-9-8 18:23:58 增加新消息数量
+                     */
+                    msgMap.put("consultNum", consultSession.getConsultNum());
                     Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
                     TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
                     csChannel.writeAndFlush(csUserMsg.retain());
@@ -313,6 +326,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                     //将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
                     msgMap.put("sessionId", consultSession.getId());
                     msgMap.put("serverAddress", consultSession.getServerAddress());
+                    msgMap.put("consultNum", consultSession.getConsultNum());
                     Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
                     TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
                     csChannel.writeAndFlush(csUserMsg.retain());
@@ -328,6 +342,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                     //将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
                     msgMap.put("sessionId", consultSession.getId());
                     msgMap.put("serverAddress", consultSession.getServerAddress());
+                    msgMap.put("consultNum", consultSession.getConsultNum());
                     Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
                     TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
                     csChannel.writeAndFlush(csUserMsg.retain());
