@@ -805,37 +805,41 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
     private void babyCoinHandler(ReceiveXmlEntity xmlEntity, String token, String marketer) {
         if (marketer.startsWith("110")) {
-            synchronized (this) {
-                //推荐人宝宝币加ConstantUtil.BABYCOIN个
-                String openId = xmlEntity.getFromUserName();
-                String cash = ConstantUtil.BABYCOIN;
-                BabyCoinVo babyCoin = new BabyCoinVo();
-                babyCoin.setMarketer(marketer);
-                babyCoin.setCash(Long.valueOf(cash));
-                babyCoinService.updateCashByOpenId(babyCoin);
 
+            String openId = xmlEntity.getFromUserName();
+            SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+            sysWechatAppintInfoVo.setOpen_id(openId);
+            SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+            //新用户从来没有关注过的
+            if (wechatAttentionVo == null) {
+
+                BabyCoinVo olderUser = new BabyCoinVo();
+                olderUser.setMarketer(marketer);
+                olderUser = babyCoinService.selectByBabyCoinVo(olderUser);//推荐人的babyCoin
+                String cash = ConstantUtil.BABYCOIN;
+                olderUser.setCash(Long.valueOf(cash));
+                synchronized (this) {
+                    //推荐人宝宝币加ConstantUtil.BABYCOIN个
+                    babyCoinService.updateCashByOpenId(olderUser);
+                }
                 //给当前用户推送消息
-                SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
-                sysWechatAppintInfoVo.setOpen_id(openId);
-                SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
                 String content = "恭喜您获得4次免费咨询儿科专家的机会。\n" +
                         "点击左下角小键盘，即可咨询医生。";
                 WechatUtil.sendMsgToWechat(token, openId, content);
 
                 //给推荐人推送消息
-                babyCoin = babyCoinService.selectByBabyCoinVo(babyCoin);//推荐人的babyCoin
                 String nickName = wechatAttentionVo.getWechat_name();
                 if (StringUtils.isNull(nickName)) {
                     nickName = "了一位朋友";
                 }
-                String timeContent = "业务状态：您有" + babyCoin.getCash() / 99 + "次免费咨询专家的机会，本月还可邀请好友*次\n";
-                if (babyCoin.getCash() / 99 == 0) {
+                String timeContent = "业务状态：您有" + olderUser.getCash() / 99 + "次免费咨询专家的机会，本月还可邀请好友*次\n";
+                if (olderUser.getCash() / 99 == 0) {
                     timeContent = "业务状态：你暂时还没有免费咨询转接的机会\n";
                 }
                 content = "恭喜您成功邀请 " + nickName + " 加入宝大夫，您的您的宝宝币将增加" + cash + "枚！\n" +
-                        "业务进度：您的宝宝币余额为 " + babyCoin.getCash() + "枚（余额）\n" +
+                        "业务进度：您的宝宝币余额为 " + olderUser.getCash() + "枚（余额）\n" +
                         timeContent + "邀请更多好友加入，获得更多机会！";
-                WechatUtil.sendMsgToWechat(token, babyCoin.getOpenId(), content);
+                WechatUtil.sendMsgToWechat(token, olderUser.getOpenId(), content);
             }
         }
     }
