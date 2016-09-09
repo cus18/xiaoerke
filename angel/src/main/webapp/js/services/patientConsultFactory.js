@@ -42,5 +42,9 @@ define(['appPatientConsult'], function (app) {
         .factory('ConfirmInstantConsultation', ['$resource', function ($resource) {
             return $resource('consult/wechat/confirmInstantConsultation');
         }])
+        //获取用户宝宝币
+        .factory('BabyCoinInit',['$resource',function ($resource){
+            return $resource(babyCoin + 'babyCoinInit');
+        }])
 
 })
