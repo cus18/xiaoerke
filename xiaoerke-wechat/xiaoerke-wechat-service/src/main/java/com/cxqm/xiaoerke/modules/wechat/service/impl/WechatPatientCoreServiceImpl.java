@@ -845,8 +845,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     WechatUtil.sendMsgToWechat(token,openid,vo.getDocuments());
                     BabyCoinVo babyCoin = new BabyCoinVo();
                     babyCoin.setOpenId(openid);
-                    babyCoin.setCash(vo.getBabyCoin());
+
                     babyCoin = babyCoinService.selectByBabyCoinVo(babyCoin);//推荐人的babyCoin
+                    babyCoin.setCash(vo.getBabyCoin());
                     if (null == babyCoin || null == babyCoin.getCash()) {//新用户，初始化宝宝币
                         babyCoin = new BabyCoinVo();
                         babyCoin.setCash(vo.getBabyCoin());
