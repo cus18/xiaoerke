@@ -25,7 +25,9 @@
             <div class="w5 fr h5 tac bg-m"><a ng-click="messageList()"><span class="cl">消息列表</span></a></div>
         </div>
     </header>
+    <!--内容部分-->
     <div class="msg">
+        <!--左边的会话列表-->
         <div class="msg-l h30 fl">
             <div class="m-left-header">
                 <div class="m-left-top">
@@ -63,6 +65,7 @@
                 </div>
             </div>
         </div>
+        <!--右边的咨询服务，回复-->
         <div class="msg-r h30 fr">
             <div class="bdf-dkf-sever">
                 <a class="reply" ng-click="tapShowButton('replyContent')"
@@ -171,13 +174,10 @@
                                 <ul ng-show='diagnosticImgReplyIndex==$index'>
                                     <li ng-repeat="item2 in item.secondAnswer" class="rcontent">
                                         <div class="rcontentContent rcontentContentImg">
-                                            <div class="img">
-                                                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png"
-                                                     alt=""/>
+                                            <div class="img" ng-click="tapEditDiagnosticImgContent($parent.$index,$index)"
+                                                 ng-dblclick="tapImgButton('magnifyImg',item.src)">
+                                                <img width="44px" height="44px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_04.png" alt=""/>
                                             </div>
-                                            <!--<nobr><a title="{{item2.name}}" ng-click="tapEditDiagnosisContent($parent.$index,$index)"
-                                                     ng-dblclick="chooseDiagnosisContent($parent.$index,$index)"
-                                                     ng-style="diagnosisReplySecondIndex==$index?{color: '#08b7c2'}:{color: '#333'}">{{item2.name}}</a></nobr>-->
                                         </div>
                                     </li>
                                 </ul>
@@ -390,6 +390,7 @@
                 </div>
             </div>-->
         </div>
+        <!--中间的绘画内容区-->
         <div class="msg-m h30" ng-if="chooseAlreadyJoinConsultPatientId!=''">
             <div class="headportrait">
                 <div class="nametop">
