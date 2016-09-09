@@ -307,19 +307,7 @@ public class ConsultWechatController extends BaseController {
         }
 
         private Integer consultCharge(String openId, Integer sessionId, RichConsultSession richConsultSession) {
-            //检测用户是否是收费用户,1001 为正常用户(无标签) ,1002 需要付款用户(等待),1003 已付款用户;
-//                try {
-//                    if (consultPayUserService.angelChargeCheck(openId)) {
-//                        ConcurrentHashMap<String, Object> payInfo = new ConcurrentHashMap<String, Object>();
-//                        payInfo.put(openId, new Date());
-//                        consultPayUserService.putneepPayConsultSession(consultSession.getCsUserId(), payInfo);
-//                        notifyType = 1002;
-//                        int type = Integer.parseInt(Global.getConfig("consultPayMsgType"));
-//                        consultPayUserService.sendMessageToConsult(openId, type);
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
+
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
             String token = (String) userWechatParam.get("token");
             //判断上次收费咨询是不是在24个小时以内 zdl
@@ -386,7 +374,7 @@ public class ConsultWechatController extends BaseController {
                             content = "嗨，亲爱的，你还可享受" + consultSessionPropertyVo.getPermTimes() + "次24小时咨询服务哦^-^" +
                                     "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n"+">>"+
                                     "<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=42'>邀请好友得积分</a>";
-
+                            richConsultSession.setPayStatus(ConstantUtil.PAY_SUCCESS);
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                         } else if (messageFlag == 0) {
