@@ -57,6 +57,7 @@ public class BabyCoinController {
         String headImgUrl = olyGamesService.getWechatMessage(openId);//头像
         response.put("userQRCode", userQRCode);
         response.put("headImgUrl", headImgUrl);
+        response.put("babyCoinVo", babyCoinVo);
 
         return response;
     }
