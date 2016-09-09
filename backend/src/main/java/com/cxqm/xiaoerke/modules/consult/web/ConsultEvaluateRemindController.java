@@ -35,11 +35,7 @@ public class ConsultEvaluateRemindController {
         @RequestMapping(value="addRemindUser" , method = {RequestMethod.POST, RequestMethod.GET})
         public @ResponseBody
         HashMap<String, Object> addRemindUser(HttpServletRequest request, HttpServletResponse response){
-                try {
-                        request.setCharacterEncoding("utf-8");
-                } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                }
+
                 HashMap<String,Object> responseResult = new HashMap<String, Object>();
                 ConsultBadEvaluateRemindUserVo consultBadEvaluateRemindUserVo = new ConsultBadEvaluateRemindUserVo();
                 consultBadEvaluateRemindUserVo.setOpenId(request.getParameter("openId"));
