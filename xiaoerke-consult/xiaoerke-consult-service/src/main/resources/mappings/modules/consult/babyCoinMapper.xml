@@ -10,10 +10,10 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="marketer" property="marketer" jdbcType="VARCHAR" />
     <result column="nickName" property="nickName" jdbcType="VARCHAR" />
-    <result column="back_3" property="back3" jdbcType="VARCHAR" />
+    <result column="invite_number_month" property="inviteNumberMonth" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, cash, open_id, create_time, create_by, update_time, marketer, nickName, back_3
+    id, cash, open_id, create_time, create_by, update_time, marketer, nickName, invite_number_month
   </sql>
   <select id="selectByBabyCoinVo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
     select 
@@ -29,6 +29,7 @@
     <if test="marketer != null" >
       and marketer = #{marketer,jdbcType=VARCHAR}
     </if>
+    GROUP by marketer
     <if test="createTime != null" >
       order by update_time desc limit 1
     </if>
@@ -42,11 +43,11 @@
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
     insert into baby_coin (id, cash, open_id, 
       create_time, create_by, update_time, 
-      marketer, nickName, back_3
+      marketer, nickName, invite_number_month
       )
     values (#{id,jdbcType=INTEGER}, #{cash,jdbcType=DECIMAL}, #{openId,jdbcType=VARCHAR}, 
       #{ttt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
-      #{marketer,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{back3,jdbcType=VARCHAR}
+      #{marketer,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{inviteNumberMonth,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" useGeneratedKeys="true"
@@ -77,8 +78,8 @@
       <if test="nickName != null" >
         nickName,
       </if>
-      <if test="back3 != null" >
-        back_3,
+      <if test="inviteNumberMonth != null" >
+        invite_number_month,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -106,8 +107,8 @@
       <if test="nickName != null" >
         #{nickName,jdbcType=VARCHAR},
       </if>
-      <if test="back3 != null" >
-        #{back3,jdbcType=VARCHAR},
+      <if test="inviteNumberMonth != null" >
+        #{inviteNumberMonth,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -135,8 +136,8 @@
       <if test="nickName != null" >
         nickName = #{nickName,jdbcType=VARCHAR},
       </if>
-      <if test="back3 != null" >
-        back_3 = #{back3,jdbcType=VARCHAR},
+      <if test="inviteNumberMonth != null" >
+        invite_number_month = #{inviteNumberMonth,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -157,7 +158,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       marketer = #{marketer,jdbcType=VARCHAR},
       nickName = #{nickName,jdbcType=VARCHAR},
-      back_3 = #{back3,jdbcType=VARCHAR}
+      invite_number_month = #{inviteNumberMonth,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

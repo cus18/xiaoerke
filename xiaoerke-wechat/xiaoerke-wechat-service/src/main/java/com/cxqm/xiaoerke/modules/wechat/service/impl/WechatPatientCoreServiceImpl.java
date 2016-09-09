@@ -818,7 +818,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         return sendSubScribeMessage(xmlEntity, request, response, marketer, token);
     }
 
-    private synchronized void specificChanneldeal(ReceiveXmlEntity xmlEntity,String token){
+    private synchronized void specificChanneldeal(ReceiveXmlEntity xmlEntity, String token) {
         String EventKey = xmlEntity.getEventKey();
         String eventType = xmlEntity.getEvent();
         String openid = xmlEntity.getFromUserName();
@@ -833,16 +833,16 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //        v.setEndTime(new Date());
 
 //        specificChannelRuleMongoDBService.insert(v);
-        List<SpecificChannelRuleVo>  ruleList = specificChannelRuleMongoDBService.queryList(queryDate);
-        for(SpecificChannelRuleVo vo:ruleList){
-            if(EventKey.contains(vo.getQrcode())){
+        List<SpecificChannelRuleVo> ruleList = specificChannelRuleMongoDBService.queryList(queryDate);
+        for (SpecificChannelRuleVo vo : ruleList) {
+            if (EventKey.contains(vo.getQrcode())) {
                 queryDate = new Query();
                 Criteria criteria = Criteria.where("openid").is(openid);
                 queryDate.addCriteria(criteria);
                 queryDate.with(new Sort(new Sort.Order(Sort.Direction.ASC, "date"))).limit(1);
-                List<SpecificChannelInfoVo>  infoList = specificChannelInfoMongoDBService.queryList(queryDate);
-                if(infoList.size() == 0) {
-                    WechatUtil.sendMsgToWechat(token,openid,vo.getDocuments());
+                List<SpecificChannelInfoVo> infoList = specificChannelInfoMongoDBService.queryList(queryDate);
+                if (infoList.size() == 0) {
+                    WechatUtil.sendMsgToWechat(token, openid, vo.getDocuments());
                     BabyCoinVo babyCoin = new BabyCoinVo();
                     babyCoin.setOpenId(openid);
 
@@ -862,7 +862,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                             babyCoin.setMarketer(String.valueOf(Integer.valueOf(lastBabyCoinUser.getMarketer()) + 1));
                         }
                         babyCoinService.insertBabyCoinSelective(babyCoin);
-                    }else{
+                    } else {
                         babyCoin.setCash(vo.getBabyCoin());
                         babyCoinService.updateCashByOpenId(babyCoin);
                     }
@@ -873,14 +873,16 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     channelVo.setOpenid(openid);
                     channelVo.setQrcode(vo.getQrcode());
                     specificChannelInfoMongoDBService.insert(channelVo);
-                }else{
-                    WechatUtil.sendMsgToWechat(token,openid,vo.getRepeatdocuments());
+                } else {
+                    WechatUtil.sendMsgToWechat(token, openid, vo.getRepeatdocuments());
                 }
             }
         }
 
 
-    };
+    }
+
+    ;
 
     private void babyCoinHandler(ReceiveXmlEntity xmlEntity, String token, String marketer) {
         if (marketer.startsWith("110")) {
@@ -897,28 +899,32 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 synchronized (this) {
                     olderUser.setMarketer(marketer);
                     olderUser = babyCoinService.selectByBabyCoinVo(olderUser);//推荐人的babyCoin
-                    olderUser.setCash(Long.valueOf(cash));
-                    //推荐人宝宝币加ConstantUtil.BABYCOIN个
-                    babyCoinService.updateCashByOpenId(olderUser);
-                }
-                //给当前用户推送消息
-                String content = "恭喜您获得4次免费咨询儿科专家的机会。\n" +
-                        "点击左下角小键盘，即可咨询医生。";
-                WechatUtil.sendMsgToWechat(token, openId, content);
+                    if (olderUser.getInviteNumberMonth() <= 20) {
+                        olderUser.setCash(Long.valueOf(cash));
+                        //推荐人宝宝币加ConstantUtil.BABYCOIN个
+                        babyCoinService.updateCashByOpenId(olderUser);
+                        //给当前用户推送消息
+                        String content = "恭喜您获得4次免费咨询儿科专家的机会。\n" +
+                                "点击左下角小键盘，即可咨询医生。";
+                        WechatUtil.sendMsgToWechat(token, openId, content);
 
-                //给推荐人推送消息
-                String nickName = wechatAttentionVo.getWechat_name();
-                if (StringUtils.isNull(nickName)) {
-                    nickName = "了一位朋友";
+                        //给推荐人推送消息
+                        String nickName = wechatAttentionVo.getWechat_name();
+                        if (StringUtils.isNull(nickName)) {
+                            nickName = "了一位朋友";
+                        }
+                        String timeContent = "业务状态：您有" + olderUser.getCash() / 99 + "次免费咨询专家的机会，本月还可邀请好友*次\n";
+                        if (olderUser.getCash() / 99 == 0) {
+                            timeContent = "业务状态：你暂时还没有免费咨询转接的机会\n";
+                        }
+                        content = "恭喜您成功邀请 " + nickName + " 加入宝大夫，您的您的宝宝币将增加" + cash + "枚！\n" +
+                                "业务进度：您的宝宝币余额为 " + olderUser.getCash() + "枚（余额）\n" +
+                                timeContent + "邀请更多好友加入，获得更多机会！";
+                        WechatUtil.sendMsgToWechat(token, olderUser.getOpenId(), content);
+                    }
+
                 }
-                String timeContent = "业务状态：您有" + olderUser.getCash() / 99 + "次免费咨询专家的机会，本月还可邀请好友*次\n";
-                if (olderUser.getCash() / 99 == 0) {
-                    timeContent = "业务状态：你暂时还没有免费咨询转接的机会\n";
-                }
-                content = "恭喜您成功邀请 " + nickName + " 加入宝大夫，您的您的宝宝币将增加" + cash + "枚！\n" +
-                        "业务进度：您的宝宝币余额为 " + olderUser.getCash() + "枚（余额）\n" +
-                        timeContent + "邀请更多好友加入，获得更多机会！";
-                WechatUtil.sendMsgToWechat(token, olderUser.getOpenId(), content);
+
             }
         }
     }

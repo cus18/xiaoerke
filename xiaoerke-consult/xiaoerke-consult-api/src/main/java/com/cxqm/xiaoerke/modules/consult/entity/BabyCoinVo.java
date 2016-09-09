@@ -19,7 +19,7 @@ public class BabyCoinVo {
 
     private String nickName;
 
-    private String back3;
+    private Integer inviteNumberMonth;
 
     public Integer getId() {
         return id;
@@ -85,11 +85,11 @@ public class BabyCoinVo {
         this.nickName = nickName;
     }
 
-    public String getBack3() {
-        return back3;
+    public Integer getInviteNumberMonth() {
+        return inviteNumberMonth;
     }
 
-    public void setBack3(String back3) {
-        this.back3 = back3;
+    public void setInviteNumberMonth(Integer inviteNumberMonth) {
+        this.inviteNumberMonth = inviteNumberMonth;
     }
 }
