@@ -24,6 +24,7 @@ public class ConsultUtil {
 		consultSession.setId((Integer) consultSessionMap.get("id"));
 		consultSession.setPayStatus((String) consultSessionMap.get("payStatus"));
 		consultSession.setNickName((String) consultSessionMap.get("nickName"));
+		consultSession.setConsultNum((Integer)consultSessionMap.get("consultNum"));
 		return consultSession;
 	}
 
@@ -41,6 +42,7 @@ public class ConsultUtil {
 		consultSessionMap.put("payStatus", consultSession.getPayStatus());
 		consultSessionMap.put("nickName", consultSession.getNickName());
 		consultSessionMap.put("id", consultSession.getId());
+		consultSessionMap.put("consultNum", consultSession.getConsultNum());
 		return consultSessionMap;
 	}
 

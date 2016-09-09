@@ -12,8 +12,18 @@ public class RichConsultSession extends ConsultSession {
 
 	private String payStatus = "";
 
-
 	private String userType;
+
+	//jiangzzg add 2016-9-8 17:26:03 ，当前会话数
+	private Integer consultNum ;
+
+	public Integer getConsultNum() {
+		return consultNum;
+	}
+
+	public void setConsultNum(Integer consultNum) {
+		this.consultNum = consultNum;
+	}
 
 	public String getUserType() {
 		return userType;

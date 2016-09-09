@@ -302,6 +302,8 @@ public class ConsultUserController extends BaseController {
                         searchMap.put("messageNotSee",true);
                         searchMap.put("dateTime",richConsultSession.getCreateTime());
                         searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
+                        //新增咨询聊天数量 2016-9-8 18:43:49 jiangzg
+                        searchMap.put("consultNum",richConsultSession.getConsultNum());
 
                         if (null !=consultSessionStatusVo && ConstantUtil.PAY_SUCCESS.indexOf(consultSessionStatusVo.getPayStatus())>-1) {
                             searchMap.put("notifyType", "1001");
@@ -639,5 +641,28 @@ public class ConsultUserController extends BaseController {
                 }
             }
         }
+    }
+
+    /**
+     * jiangzg add 2016-9-8 18:47:33  将redis中consultSession，consultNum重置
+     *
+     */
+    @RequestMapping(value = "/modifyUserConsultNum", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> modifyUserConsultNum(@RequestBody Map<String, Object> params){
+        String conSessionId = String.valueOf(params.get("sessionId"));
+        if(StringUtils.isNotNull(conSessionId)){
+            Integer sessionId = Integer.valueOf(conSessionId);
+            RichConsultSession richConsultSession =  sessionRedisCache.getConsultSessionBySessionId(sessionId);
+            if(richConsultSession != null){
+                int currentNum = richConsultSession.getConsultNum();
+                if(currentNum != 0){
+                    richConsultSession.setConsultNum(0);
+                    sessionRedisCache.putSessionIdConsultSessionPair(sessionId,richConsultSession);
+                }
+            }
+        }
+        return null;
     }
 }
