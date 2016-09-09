@@ -42,19 +42,17 @@ public class BabyCoinController {
     @RequestMapping(value = "/createInviteCard", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map<String, Object> createInviteCard(HttpSession session, HttpServletRequest request) {
-        HashMap<String, Object> result = new HashMap<String, Object>();
+        HashMap<String, Object> response = new HashMap<String, Object>();
         String openId = WechatUtil.getOpenId(session, request);
 
-        BabyCoinVo babyCoinVo = new BabyCoinVo();
-        babyCoinVo.setCreateTime(new Date());
-        babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
+        BabyCoinVo babyCoinVo = getBabyCoin(response, openId);
 
         String userQRCode = olyGamesService.getUserQRCode(babyCoinVo.getMarketer());//二维码
         String headImgUrl = olyGamesService.getWechatMessage(openId);//头像
-        result.put("userQRCode", userQRCode);
-        result.put("headImgUrl", headImgUrl);
+        response.put("userQRCode", userQRCode);
+        response.put("headImgUrl", headImgUrl);
 
-        return result;
+        return response;
     }
 
     /**
@@ -71,6 +69,20 @@ public class BabyCoinController {
 
         String openId = WechatUtil.getOpenId(session, request);
 //        String openId = "oogbDwD_2BTQpftPu9QClr-mCs7U";
+        BabyCoinVo babyCoinVo = getBabyCoin(response, openId);
+        BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
+        babyCoinRecordVo.setOpenId(openId);
+        List<BabyCoinRecordVo> babyCoinRecordVos = babyCoinService.selectByBabyCoinRecordVo(babyCoinRecordVo);
+        for (BabyCoinRecordVo vo : babyCoinRecordVos) {
+            vo.setDate(DateUtils.DateToStr(vo.getCreateTime(), "monthDate"));
+        }
+        response.put("babyCoinRecordVos", babyCoinRecordVos);
+        response.put("babyCoinVo", babyCoinVo);
+
+        return response;
+    }
+
+    private BabyCoinVo getBabyCoin(HashMap<String, Object> response, String openId) {
         BabyCoinVo babyCoinVo = new BabyCoinVo();
         babyCoinVo.setOpenId(openId);
         babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
@@ -95,19 +107,8 @@ public class BabyCoinController {
         } else {
             response.put("userStatus", "oldBabyCoinUser");
         }
-        BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
-        babyCoinRecordVo.setOpenId(openId);
-        List<BabyCoinRecordVo> babyCoinRecordVos = babyCoinService.selectByBabyCoinRecordVo(babyCoinRecordVo);
-        for (BabyCoinRecordVo vo : babyCoinRecordVos) {
-            vo.setDate(DateUtils.DateToStr(vo.getCreateTime(), "monthDate"));
-        }
-        response.put("babyCoinRecordVos", babyCoinRecordVos);
-        response.put("babyCoinVo", babyCoinVo);
-
-        return response;
+        return babyCoinVo;
     }
-
-
 
 
     /**
