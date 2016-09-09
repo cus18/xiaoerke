@@ -823,25 +823,16 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         String openid = xmlEntity.getFromUserName();
         //查找出当前的特定渠道遍历
         Query queryDate = new Query();
-//        SpecificChannelRuleVo v = new SpecificChannelRuleVo();
-//        v.setId("123");
-//        v.setQrcode("abv");
-//        v.setBabyCoin(1000l);
-//        v.setDocuments("doc");
-//        v.setRepeatdocuments("rdoc");
-//        v.setEndTime(new Date());
-
-//        specificChannelRuleMongoDBService.insert(v);
-        List<SpecificChannelRuleVo> ruleList = specificChannelRuleMongoDBService.queryList(queryDate);
-        for (SpecificChannelRuleVo vo : ruleList) {
-            if (EventKey.contains(vo.getQrcode())) {
+        List<SpecificChannelRuleVo>  ruleList = specificChannelRuleMongoDBService.queryList(queryDate);
+        for(SpecificChannelRuleVo vo:ruleList){
+            if(EventKey.contains(vo.getQrcode())){
                 queryDate = new Query();
                 Criteria criteria = Criteria.where("openid").is(openid);
                 queryDate.addCriteria(criteria);
                 queryDate.with(new Sort(new Sort.Order(Sort.Direction.ASC, "date"))).limit(1);
-                List<SpecificChannelInfoVo> infoList = specificChannelInfoMongoDBService.queryList(queryDate);
-                if (infoList.size() == 0) {
-                    WechatUtil.sendMsgToWechat(token, openid, vo.getDocuments());
+                List<SpecificChannelInfoVo>  infoList = specificChannelInfoMongoDBService.queryList(queryDate);
+                if(infoList.size() == 0) {
+                    WechatUtil.sendMsgToWechat(token,openid,vo.getDocuments());
                     BabyCoinVo babyCoin = new BabyCoinVo();
                     babyCoin.setOpenId(openid);
 
