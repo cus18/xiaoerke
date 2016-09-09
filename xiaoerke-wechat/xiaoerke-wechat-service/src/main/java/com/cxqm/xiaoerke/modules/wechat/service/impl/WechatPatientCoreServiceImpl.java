@@ -832,6 +832,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //        v.setEndTime(new Date());
 
 //        specificChannelRuleMongoDBService.insert(v);
+        SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+        sysWechatAppintInfoVo.setOpen_id(openid);
+        SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+
         List<SpecificChannelRuleVo> ruleList = specificChannelRuleMongoDBService.queryList(queryDate);
         for (SpecificChannelRuleVo vo : ruleList) {
             if (EventKey.contains(vo.getQrcode())) {
@@ -852,6 +856,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         babyCoin.setCreateBy(openid);
                         babyCoin.setCreateTime(new Date());
                         babyCoin.setOpenId(openid);
+                        babyCoin.setNickName(wechatAttentionVo.getWechat_name());
                         BabyCoinVo lastBabyCoinUser = new BabyCoinVo();
                         lastBabyCoinUser.setCreateTime(new Date());
                         lastBabyCoinUser = babyCoinService.selectByBabyCoinVo(lastBabyCoinUser);
