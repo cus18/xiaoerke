@@ -63,7 +63,7 @@ function wechatPay() {
                 url: "account/user/doctorConsultPay",
                 async: true,
                 type: 'get',
-                data: {payType:"doctorConsultPay",leaveNotes: leaveNotes, payPrice: moneys * 100},
+                data: {payType:"doctorConsultPay",leaveNotes: leaveNotes, payPrice: moneys * 100,useBabyCoinPay:useBabyCoin},
                 cache: false,
                 success: function (data) {
                     $('#payButton').removeAttr("disabled");
