@@ -45,7 +45,6 @@ var doRefresh = function(){
      $('#money').html(moneys);
     recordLogs("consult_charge_twice_information_payclick");
 };
-
 function wechatPay() {
     recordLogs("consult_charge_twice_paypage_paybutton");
     var u = navigator.userAgent, app = navigator.appVersion;
@@ -113,3 +112,34 @@ var recordLogs = function(val){
         }
     });
 };
+(function(){
+    var useBabyCoin = true,
+        time1,
+        bar = 'Choose';
+    time1 = setInterval(flag,100);
+    function flag(){
+        if($('#useBabyCoinRight')){
+            $('#useBabyCoinRight').click(function(){
+                if(useBabyCoin){
+                    bar = 'Unchoose';
+                    useBabyCoin = false;
+                }else{
+                    bar = 'Choose';
+                    useBabyCoin = true;
+                };
+                $('#useBabyCoinRightImg').css('background','url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight'+bar+'.png") 100% 100%/100% 100%')
+            });
+            clearTimeout(time1);
+        }
+    }
+    $.ajax({
+        type: "get",
+        url: 'http://'+window.location.host + "/titan/babyCoin/babyCoinInit",
+        dataType: "json",
+        success: function(data) {
+        },
+        error: function(jqXHR){
+            console.log("发生错误：" + jqXHR.status);
+        },
+    });
+}());
