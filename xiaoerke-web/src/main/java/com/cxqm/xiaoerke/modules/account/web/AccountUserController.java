@@ -269,7 +269,7 @@ public class AccountUserController {
 				if(coinFlag<=0)
 					throw new ServiceException("baby coin update failure!!!");
 				BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
-				babyCoinRecordVo.setBalance(Long.valueOf(payPrice) / 100);
+				babyCoinRecordVo.setBalance(-Double.valueOf(payPrice) / 100);
 				babyCoinRecordVo.setCreateTime(new Date());
 				babyCoinRecordVo.setCreateBy(openId);
 				babyCoinRecordVo.setOpenId(openId);
