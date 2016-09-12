@@ -52,6 +52,12 @@ public class BabyCoinServiceImpl implements BabyCoinService {
     public List<BabyCoinRecordVo> selectByBabyCoinRecordVo(BabyCoinRecordVo babyCoinRecordVo){
         return babyCoinRecordDao.selectByBabyCoinRecordVo(babyCoinRecordVo);
     }
+
+    @Override
+    public int insertBabyCoinRecord(BabyCoinRecordVo record){
+        return babyCoinRecordDao.insertSelective(record);
+    }
+
     @Override
     public int updateCashByOpenId(BabyCoinVo record){
         return babyCoinDao.updateCashByOpenId(record);

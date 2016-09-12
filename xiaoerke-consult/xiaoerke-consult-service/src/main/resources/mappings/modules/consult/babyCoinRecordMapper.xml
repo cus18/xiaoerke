@@ -9,12 +9,12 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="back_1" property="back1" jdbcType="VARCHAR" />
+    <result column="session_id" property="sessionId" jdbcType="INTEGER" />
     <result column="back_2" property="back2" jdbcType="VARCHAR" />
     <result column="back_3" property="back3" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, balance, open_id, source,create_time, create_by, update_time, back_1, back_2,
+    id, balance, open_id, source,create_time, create_by, update_time, session_id, back_2,
     back_3
   </sql>
   <select id="selectByBabyCoinRecordVo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo" >
@@ -36,11 +36,11 @@
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo" >
     insert into baby_coin_record (id, balance, open_id, 
       source, create_time, create_by, 
-      update_time, back_1, back_2, 
+      update_time, session_id, back_2, 
       back_3)
     values (#{id,jdbcType=INTEGER}, #{balance,jdbcType=DECIMAL}, #{openId,jdbcType=VARCHAR}, 
       #{source,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{back1,jdbcType=VARCHAR}, #{back2,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{sessionId,jdbcType=INTEGER}, #{back2,jdbcType=VARCHAR},
       #{back3,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo" >
@@ -67,8 +67,8 @@
       <if test="updateTime != null" >
         update_time,
       </if>
-      <if test="back1 != null" >
-        back_1,
+      <if test="sessionId != null" >
+        session_id,
       </if>
       <if test="back2 != null" >
         back_2,
@@ -99,8 +99,8 @@
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="back1 != null" >
-        #{back1,jdbcType=VARCHAR},
+      <if test="sessionId != null" >
+        #{sessionId,jdbcType=INTEGER},
       </if>
       <if test="back2 != null" >
         #{back2,jdbcType=VARCHAR},
@@ -131,8 +131,8 @@
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="back1 != null" >
-        back_1 = #{back1,jdbcType=VARCHAR},
+      <if test="sessionId != null" >
+        session_id = #{sessionId,jdbcType=INTEGER},
       </if>
       <if test="back2 != null" >
         back_2 = #{back2,jdbcType=VARCHAR},
@@ -151,7 +151,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_by = #{createBy,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      back_1 = #{back1,jdbcType=VARCHAR},
+      session_id = #{sessionId,jdbcType=INTEGER},
       back_2 = #{back2,jdbcType=VARCHAR},
       back_3 = #{back3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}

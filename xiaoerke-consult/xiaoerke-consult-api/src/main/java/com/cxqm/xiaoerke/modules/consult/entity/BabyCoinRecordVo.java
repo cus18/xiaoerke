@@ -19,7 +19,7 @@ public class BabyCoinRecordVo {
 
     private Date updateTime;
 
-    private String back1;
+    private Integer sessionId;
 
     private String back2;
 
@@ -81,12 +81,12 @@ public class BabyCoinRecordVo {
         this.updateTime = updateTime;
     }
 
-    public String getBack1() {
-        return back1;
+    public Integer getSessionId() {
+        return sessionId;
     }
 
-    public void setBack1(String back1) {
-        this.back1 = back1;
+    public void setSessionId(Integer sessionId) {
+        this.sessionId = sessionId;
     }
 
     public String getBack2() {

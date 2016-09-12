@@ -2,8 +2,14 @@ package com.cxqm.xiaoerke.modules.account.web;
 
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
+import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
+import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
+import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.sys.entity.PerAppDetInfoVo;
@@ -18,10 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -41,6 +44,12 @@ public class AccountUserController {
 
 	@Autowired
 	private ConsultPhonePatientService consultPhonePatientService;
+
+	@Autowired
+	private BabyCoinService babyCoinService;
+
+	@Autowired
+	private SessionRedisCache sessionRedisCache;
 
 	private static Lock lock = new ReentrantLock();
 
@@ -240,6 +249,39 @@ public class AccountUserController {
 	@ResponseBody
 	String doctorConsultPay(HttpServletRequest request,HttpSession session) throws Exception {
 		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
+		//是否用宝宝币抵扣金额数
+		String openId = WechatUtil.getOpenId(session, request);
+		String useBabyCoin = request.getParameter("useBabyCoin");
+		BabyCoinVo babyCoinVo = new BabyCoinVo();
+		babyCoinVo.setOpenId(openId);
+		babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
+		if(babyCoinVo != null && babyCoinVo.getCash()>0 && useBabyCoin.equals("true")){//用宝宝币抵钱
+			//当前用户所拥有的宝宝币<9.9直接扣光宝宝币，并计算实际金额
+			String orderPrice = "";
+			String payPrice = "";
+			if(babyCoinVo.getCash() <= Long.valueOf(ConstantUtil.CONSUL_AMOUNT)){
+				orderPrice =request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).
+						intValue()*100):request.getParameter("payPrice");
+				payPrice = String.valueOf(Long.valueOf(orderPrice) - babyCoinVo.getCash() * 10);
+				request.setAttribute("payPrice",payPrice);
+
+			}else {//当前用户所拥有的宝宝币>9.9直接扣宝宝币
+
+			}
+			babyCoinVo.setCash(0l);
+			int coinFlag = babyCoinService.updateCashByOpenId(babyCoinVo);
+			BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
+			babyCoinRecordVo.setBalance(Long.valueOf(payPrice) / 100);
+			babyCoinRecordVo.setCreateTime(new Date());
+			babyCoinRecordVo.setCreateBy(openId);
+			babyCoinRecordVo.setOpenId(openId);
+			babyCoinRecordVo.setSessionId(sessionRedisCache.getSessionIdByUserId(openId));
+			babyCoinRecordVo.setSource("weixin");
+			int recordflag = babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
+		}
+
+
 		//获取统一支付接口参数
 		String payType ="doctorConsultPay";// (String)request.getAttribute("payType");
 		request.setAttribute("feeType", payType);
@@ -249,6 +291,7 @@ public class AccountUserController {
 		//拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
 		String userId = UserUtils.getUser().getId();
 		String payParameter = accountService.assemblyPayParameter(request,prepayInfo,session,userId, null);
+
 		return payParameter;
 	}
 

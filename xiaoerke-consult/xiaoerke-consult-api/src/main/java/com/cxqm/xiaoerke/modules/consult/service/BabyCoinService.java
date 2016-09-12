@@ -15,6 +15,8 @@ public interface BabyCoinService {
 
     List<BabyCoinRecordVo> selectByBabyCoinRecordVo(BabyCoinRecordVo babyCoinRecordVo);
 
+    int insertBabyCoinRecord(BabyCoinRecordVo record);
+
     int updateCashByOpenId(BabyCoinVo record);
 
     int insertBabyCoinSelective(BabyCoinVo record);

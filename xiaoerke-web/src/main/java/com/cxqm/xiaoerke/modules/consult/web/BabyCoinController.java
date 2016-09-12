@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
@@ -161,8 +162,8 @@ public class BabyCoinController {
         BabyCoinVo babyCoinVo = new BabyCoinVo();
         babyCoinVo.setOpenId(openId);
         babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
-        if(babyCoinVo.getCash() > 99){
-            babyCoinVo.setCash(babyCoinVo.getCash() - 99);
+        if(babyCoinVo.getCash() > Long.valueOf(ConstantUtil.ONCE_CONSULT_NEED_BABY_COIN)){
+            babyCoinVo.setCash(babyCoinVo.getCash() - Long.valueOf(ConstantUtil.ONCE_CONSULT_NEED_BABY_COIN));
             flag = babyCoinService.updateCashByOpenId(babyCoinVo);
         }
         if(flag > 0){

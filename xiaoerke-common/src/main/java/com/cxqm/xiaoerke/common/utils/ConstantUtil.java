@@ -56,7 +56,10 @@ public enum ConstantUtil {
 	public static String DISTRIBUTOR = "distributor";
 	public static String CONSULTDOCTOR = "consultDoctor";
 
-	//扫码送宝宝币初始值
-	public static String BABYCOIN = Global.getConfig("BABY_COIN");
+
+	public static String BABYCOIN = Global.getConfig("BABY_COIN");//扫码送宝宝币初始值
+	public static String CONSUL_AMOUNT = Global.getConfig("CONSUL_AMOUNT");//购买一次咨询所需付款金额
+	public static String ONCE_CONSULT_NEED_BABY_COIN = Global.getConfig("ONCE_CONSULT_NEED_BABY_COIN");//购买一次咨询所需宝宝币数
+
 
 }
