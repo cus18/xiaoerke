@@ -267,7 +267,7 @@ public class AccountUserController {
 				babyCoinVo.setCash(0l);
 				int coinFlag = babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
 				if(coinFlag<=0)
-					throw new ServiceException("baby coin update failure");
+					throw new ServiceException("baby coin update failure!!!");
 				BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
 				babyCoinRecordVo.setBalance(Long.valueOf(payPrice) / 100);
 				babyCoinRecordVo.setCreateTime(new Date());
@@ -277,7 +277,7 @@ public class AccountUserController {
 				babyCoinRecordVo.setSource("weixin");
 				int recordflag = babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
 				if(recordflag <= 0)
-					throw new ServiceException("baby coin record update failure");
+					throw new ServiceException("baby coin record update failure!!!");
 			}
 		}
 		//获取统一支付接口参数
