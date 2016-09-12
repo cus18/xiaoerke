@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.account.web;
 
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
+import com.cxqm.xiaoerke.common.service.ServiceException;
 import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
@@ -258,30 +259,27 @@ public class AccountUserController {
 		babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
 		if(babyCoinVo != null && babyCoinVo.getCash()>0 && useBabyCoin.equals("true")){//用宝宝币抵钱
 			//当前用户所拥有的宝宝币<9.9直接扣光宝宝币，并计算实际金额
-			String orderPrice = "";
-			String payPrice = "";
 			if(babyCoinVo.getCash() <= Long.valueOf(ConstantUtil.CONSUL_AMOUNT)){
-				orderPrice =request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).
+				String orderPrice =request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).
 						intValue()*100):request.getParameter("payPrice");
-				payPrice = String.valueOf(Long.valueOf(orderPrice) - babyCoinVo.getCash() * 10);
+				String payPrice = String.valueOf(Long.valueOf(orderPrice) - babyCoinVo.getCash() * 10);
 				request.setAttribute("payPrice",payPrice);
-
-			}else {//当前用户所拥有的宝宝币>9.9直接扣宝宝币
-
+				babyCoinVo.setCash(0l);
+				int coinFlag = babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
+				if(coinFlag<=0)
+					throw new ServiceException("baby coin update failure");
+				BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
+				babyCoinRecordVo.setBalance(Long.valueOf(payPrice) / 100);
+				babyCoinRecordVo.setCreateTime(new Date());
+				babyCoinRecordVo.setCreateBy(openId);
+				babyCoinRecordVo.setOpenId(openId);
+				babyCoinRecordVo.setSessionId(sessionRedisCache.getSessionIdByUserId(openId));
+				babyCoinRecordVo.setSource("weixin");
+				int recordflag = babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
+				if(recordflag <= 0)
+					throw new ServiceException("baby coin record update failure");
 			}
-			babyCoinVo.setCash(0l);
-			int coinFlag = babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
-			BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
-			babyCoinRecordVo.setBalance(Long.valueOf(payPrice) / 100);
-			babyCoinRecordVo.setCreateTime(new Date());
-			babyCoinRecordVo.setCreateBy(openId);
-			babyCoinRecordVo.setOpenId(openId);
-			babyCoinRecordVo.setSessionId(sessionRedisCache.getSessionIdByUserId(openId));
-			babyCoinRecordVo.setSource("weixin");
-			int recordflag = babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
 		}
-
-
 		//获取统一支付接口参数
 		String payType ="doctorConsultPay";// (String)request.getAttribute("payType");
 		request.setAttribute("feeType", payType);
