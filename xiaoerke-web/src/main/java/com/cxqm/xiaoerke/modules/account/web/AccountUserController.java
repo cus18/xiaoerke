@@ -258,7 +258,7 @@ public class AccountUserController {
 		babyCoinVo.setOpenId(openId);
 		babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
 		if(babyCoinVo != null && babyCoinVo.getCash()>0 && useBabyCoin.equals("true")){//用宝宝币抵钱
-			//当前用户所拥有的宝宝币<9.9直接扣光宝宝币，并计算实际金额
+			//当前用户所拥有的宝宝币<99直接扣光宝宝币，并计算实际金额
 			if(babyCoinVo.getCash() <= Long.valueOf(ConstantUtil.CONSUL_AMOUNT)){
 				String orderPrice =request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).
 						intValue()*100):request.getParameter("payPrice");
@@ -278,6 +278,8 @@ public class AccountUserController {
 				int recordflag = babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
 				if(recordflag <= 0)
 					throw new ServiceException("baby coin record update failure!!!");
+			}else {
+				throw new ServiceException("baby coin greater than 99");
 			}
 		}
 		//获取统一支付接口参数

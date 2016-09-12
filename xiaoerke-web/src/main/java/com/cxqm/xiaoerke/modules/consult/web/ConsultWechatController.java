@@ -381,7 +381,7 @@ public class ConsultWechatController extends BaseController {
 
                             richConsultSession.setPayStatus(ConstantUtil.NO_PAY);
                             content = "嗨，亲爱的，你本月咨询次数已用完，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
-                                    ">>" + "<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询机会</a>" + "\n" +
+                                    "<a href='"+ConstantUtil.KEEPER_WEB_URL+"/keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>点击这里购买更多咨询机会</a>" + "\n" +
                                     "-----------\n" +
                                     "求助客服请直接向分诊说明，不需付费"+
                                     "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n"+">>" + "<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=42'>邀请好友得积分</a>";

@@ -373,7 +373,7 @@ public class ConsultDoctorController extends BaseController {
                                 for (Map<String, Object> evaluationMap : praiseList) {
                                     if (Integer.parseInt((String) evaluationMap.get("serviceAttitude")) == 0) {
                                         st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
-                                                "<a href='http://s123.xiaork.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
+                                                "<a href='"+ConstantUtil.KEEPER_WEB_URL+"/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
                                                 evaluationMap.get("id") + "&sessionId=" + sessionId + "'>点击这里去评价</a>】";
                                     } else {
                                         st = "嗨，亲爱的,本次咨询已关闭。";
@@ -463,7 +463,7 @@ public class ConsultDoctorController extends BaseController {
                 String title = "免费送您一份40万的保障！";
                 String description = "限时免费加入宝护伞爱心公益，小孩、大人得了重病都给钱！最高40万！包括75种疾病，还能安排专家治疗！";
                 //String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
-                String url = "http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000003/a";
+                String url = ConstantUtil.WISDOM_WEB_URL + "wisdom/umbrella#/umbrellaLead/130000003/a";
                 String picUrl = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella";
                 String message = "{\"touser\":\""+ openId+"\",\"msgtype\":\"news\",\"news\":{\"articles\": [{\"title\":\""+ title +"\",\"description\":\""+description+"\",\"url\":\""+ url +"\",\"picurl\":\""+picUrl+"\"}]}}";
 
