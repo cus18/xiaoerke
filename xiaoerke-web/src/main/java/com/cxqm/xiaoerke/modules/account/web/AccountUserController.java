@@ -270,7 +270,7 @@ public class AccountUserController {
 
 			}
 			babyCoinVo.setCash(0l);
-			int coinFlag = babyCoinService.updateCashByOpenId(babyCoinVo);
+			int coinFlag = babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
 			BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
 			babyCoinRecordVo.setBalance(Long.valueOf(payPrice) / 100);
 			babyCoinRecordVo.setCreateTime(new Date());

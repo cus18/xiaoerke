@@ -153,16 +153,9 @@
   </update>
 
 
-  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
+  <update id="updateByOpenId" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
     update baby_coin
-    set cash = #{cash,jdbcType=DECIMAL},
-      open_id = #{openId,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_by = #{createBy,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      marketer = #{marketer,jdbcType=VARCHAR},
-      nickName = #{nickName,jdbcType=VARCHAR},
-      invite_number_month = #{inviteNumberMonth,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+    set cash = #{cash,jdbcType=DECIMAL}
+    where open_id = #{openId,jdbcType=VARCHAR}
   </update>
 </mapper>
