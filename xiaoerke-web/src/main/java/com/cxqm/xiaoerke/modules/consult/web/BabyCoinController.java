@@ -145,6 +145,37 @@ public class BabyCoinController {
     }
 
     /**
+     * 扣除宝宝币操作
+     *
+     * @param request
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/minusOrAddBabyCoin", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map<String, Object> minusOrAddBabyCoin(HttpSession session, HttpServletRequest request) {
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        String openId = WechatUtil.getOpenId(session,request);//"oogbDwD_2BTQpftPu9QClr-mCw7U";
+        //宝宝币余额
+        int flag = 0;
+        BabyCoinVo babyCoinVo = new BabyCoinVo();
+        babyCoinVo.setOpenId(openId);
+        babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
+        if(babyCoinVo.getCash() > 99){
+            babyCoinVo.setCash(babyCoinVo.getCash() - 99);
+            flag = babyCoinService.updateCashByOpenId(babyCoinVo);
+        }
+        if(flag > 0){
+            response.put("status", "success");
+        }else{
+            response.put("status", "failure");
+        }
+
+        return response;
+    }
+
+
+    /**
      * 获取宝宝币，以及详细记录
      *
      * @param request
