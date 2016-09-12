@@ -265,7 +265,7 @@ public class AccountUserController {
 				String payPrice = String.valueOf(Long.valueOf(orderPrice) - babyCoinVo.getCash() * 10);
 				request.setAttribute("payPrice",payPrice);
 				babyCoinVo.setCash(0l);
-				int coinFlag = babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
+				int coinFlag = babyCoinService.updateByOpenId(babyCoinVo);
 				if(coinFlag<=0)
 					throw new ServiceException("baby coin update failure!!!");
 				BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();

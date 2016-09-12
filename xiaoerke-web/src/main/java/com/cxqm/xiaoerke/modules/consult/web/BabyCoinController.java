@@ -164,7 +164,7 @@ public class BabyCoinController {
         babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
         if(babyCoinVo.getCash() > Long.valueOf(ConstantUtil.ONCE_CONSULT_NEED_BABY_COIN)){
             babyCoinVo.setCash(babyCoinVo.getCash() - Long.valueOf(ConstantUtil.ONCE_CONSULT_NEED_BABY_COIN));
-            flag = babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
+            flag = babyCoinService.updateByOpenId(babyCoinVo);
         }
         if(flag > 0){
             response.put("status", "success");
