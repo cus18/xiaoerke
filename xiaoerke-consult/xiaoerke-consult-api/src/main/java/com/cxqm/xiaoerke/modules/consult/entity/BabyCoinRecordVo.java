@@ -21,7 +21,7 @@ public class BabyCoinRecordVo {
 
     private Integer sessionId;
 
-    private String back2;
+    private String payStatus;
 
     private String back3;
 
@@ -89,12 +89,12 @@ public class BabyCoinRecordVo {
         this.sessionId = sessionId;
     }
 
-    public String getBack2() {
-        return back2;
+    public String getPayStatus() {
+        return payStatus;
     }
 
-    public void setBack2(String back2) {
-        this.back2 = back2;
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
     }
 
     public String getBack3() {
