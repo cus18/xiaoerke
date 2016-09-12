@@ -63,9 +63,10 @@ public class BabyCoinServiceImpl implements BabyCoinService {
         return babyCoinDao.updateCashByOpenId(record);
     }
 
+
     @Override
     public int updateBabyCoinByOpenId(BabyCoinVo record){
-        return babyCoinDao.updateCashByOpenId(record);
+        return babyCoinDao.updateByOpenId(record);
     }
 
     @Override
