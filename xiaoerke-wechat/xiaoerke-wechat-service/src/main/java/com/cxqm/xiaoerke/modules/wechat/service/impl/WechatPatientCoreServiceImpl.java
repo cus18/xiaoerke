@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
+import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
@@ -899,6 +900,15 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         olderUser.setInviteNumberMonth(1);
                         //推荐人宝宝币加ConstantUtil.BABYCOIN个
                         babyCoinService.updateCashByOpenId(olderUser);
+
+                        BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
+                        babyCoinRecordVo.setBalance(Double.valueOf(ConstantUtil.BABYCOIN));
+                        babyCoinRecordVo.setCreateTime(new Date());
+                        babyCoinRecordVo.setCreateBy(openId);
+                        babyCoinRecordVo.setOpenId(openId);
+                        babyCoinRecordVo.setSource("weixin");
+                        int recordflag = babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
+
                         //给当前用户推送消息
                         String content = "恭喜您获得4次免费咨询儿科专家的机会。\n" +
                                 "点击左下角小键盘，即可咨询医生。";
