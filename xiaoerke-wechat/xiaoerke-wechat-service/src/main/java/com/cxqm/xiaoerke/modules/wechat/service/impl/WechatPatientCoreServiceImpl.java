@@ -165,6 +165,22 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 processGetLocationEvent(xmlEntity, request);
             }
         } else {
+            if("领取资源".equals(xmlEntity.getContent())){
+                Map parameter = systemService.getWechatParameter();
+                String token = (String) parameter.get("token");
+                WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),"欢迎来到宝大夫，请按照下方操作领走精品食谱，儿歌，绘本，动画片等资源。\n" +
+                        "\n" +
+                        "1·将海报图片（见下方）发送到朋友圈，集齐10个赞。\n" +
+                        " 或  随机分享到母婴相关的5个微信群即可；\n" +
+                        "\n" +
+                        "2·截图发给宝大夫客服（客服二维码见下方图片）\n" +
+                        "\n" +
+                        "以上操作完成后请静待客服把众多资源送到您手里。关注宝大夫后期会有更多福利送不停哦。");
+
+                WechatUtil.sendNoTextMsgToWechat(token,xmlEntity.getFromUserName(),"XdHp8YKja_ft7lQr3o6feyoI5F7e9v8waWTGfb56bcg",1);
+                WechatUtil.sendNoTextMsgToWechat(token,xmlEntity.getFromUserName(),"XdHp8YKja_ft7lQr3o6fe41AjIlPrqLyUz5-S99mCls",1);
+                return "success";
+            }
             String customerService = Global.getConfig("wechat.customservice");
             if ("false".equals(customerService)) {
                 Runnable thread = new processConsultMessageThread(xmlEntity);
