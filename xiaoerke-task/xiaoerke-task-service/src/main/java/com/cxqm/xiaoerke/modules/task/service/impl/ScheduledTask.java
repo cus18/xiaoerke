@@ -1067,14 +1067,16 @@ public class ScheduledTask {
             for (ConsultSessionStatusVo consultSessionStatusVo : consultSessionStatusVos) {
                 if (consultSessionStatusVo != null && consultSessionStatusVo.getLastMessageTime() != null) {
                     if (DateUtils.pastMinutes(consultSessionStatusVo.getLastMessageTime()) > 120L) {
-                        //根据sessionId查询consult_conversation_forward_records表，状态为waiting不执行
-                        ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
-                        consultSessionForwardRecordsVo.setConversationId(Long.parseLong(consultSessionStatusVo.getSessionId()));
-                        consultSessionForwardRecordsVo.setStatus("waiting");
-                        List<ConsultSessionForwardRecordsVo> consultSessionForwardRecordsVos = consultSessionForwardRecordsService.selectConsultForwardList(consultSessionForwardRecordsVo);
-                        if (consultSessionForwardRecordsVos.size() == 0) {
-                            consultSessionService.clearSession(consultSessionStatusVo.getSessionId(),
-                                    consultSessionStatusVo.getUserId());
+                        if (consultSessionStatusVo != null && consultSessionStatusVo.getSessionId() != null) {
+                            //根据sessionId查询consult_conversation_forward_records表，状态为waiting不执行
+                            ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = new ConsultSessionForwardRecordsVo();
+                            consultSessionForwardRecordsVo.setConversationId(Long.parseLong(consultSessionStatusVo.getSessionId()));
+                            consultSessionForwardRecordsVo.setStatus("waiting");
+                            List<ConsultSessionForwardRecordsVo> consultSessionForwardRecordsVos = consultSessionForwardRecordsService.selectConsultForwardList(consultSessionForwardRecordsVo);
+                            if (consultSessionForwardRecordsVos.size() == 0) {
+                                consultSessionService.clearSession(consultSessionStatusVo.getSessionId(),
+                                        consultSessionStatusVo.getUserId());
+                            }
                         }
                     }
                 }
@@ -1186,13 +1188,13 @@ public class ScheduledTask {
     void test() {
         List<Object> objectList = sessionRedisCache.getSessionIdByKey();
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,0);
-        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
-        for (Object o : objectList){
-            Integer sessionId = (Integer)o;
+        for (Object o : objectList) {
+            Integer sessionId = (Integer) o;
             ConsultSession consultSession = consultSessionService.selectByPrimaryKey(sessionId);
-            if(consultSession!=null && consultSession.getCreateTime().getTime() < (calendar.getTimeInMillis())){
+            if (consultSession != null && consultSession.getCreateTime().getTime() < (calendar.getTimeInMillis())) {
                 sessionRedisCache.removeConsultSessionBySessionId(consultSession.getId());
                 sessionRedisCache.removeUserIdSessionIdPair(consultSession.getUserId());
             }
@@ -1499,26 +1501,26 @@ public class ScheduledTask {
     }
 
     /***
-    * every two minutes to check the h5 user connection status
+     * every two minutes to check the h5 user connection status
      ***/
-    public void checkH5UserChannelStatusTask(){
+    public void checkH5UserChannelStatusTask() {
         ConsultSessionManager.INSTANCE.checkH5UserChannelStatus();
     }
 
 
     //每天的两点提醒只玩了一关的用户
-    public void olympicShareRemind(){
+    public void olympicShareRemind() {
         //微信推送
         Map tokenMap = systemService.getWechatParameter();
         String token = (String) tokenMap.get("token");
         List<String> remindUser = scheduleTaskService.getOrderInfoByDate();
-        for(String openid:remindUser){
+        for (String openid : remindUser) {
             WechatMessageUtil.templateModel("邀请卡", " 电烤箱、面包机、儿童被……众多大奖还在等你，赶紧邀请好友一起闯关赢豪礼吧！", "待办事项: 邀请好友玩游戏赢大奖\n优先级：很高哦", "", "", "马上去赚大奖", token, "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37", openid, "tCQGoqfVSv_bCYVGUPbXzsJ2sxKzyoiDbKAKB1KO_Qg");
         }
     }
 
     //每个月赠送给用户四次咨询机会
-    public void updateMonthTime(){
+    public void updateMonthTime() {
         consultSessionPropertyService.updateMonthTime();
     }
 
