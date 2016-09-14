@@ -2,12 +2,16 @@ package com.cxqm.xiaoerke.modules.account.web;
 
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
+import com.cxqm.xiaoerke.common.service.ServiceException;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
+import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
+import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService;
@@ -63,6 +67,9 @@ public class PayNotificationController {
 
 	@Autowired
 	private PatientRegisterService patientRegisterService;
+
+	@Autowired
+	private BabyCoinService babyCoinService;
 
 	@Autowired
 	private ConsultPhonePatientService consultPhonePatientService;
@@ -502,9 +509,26 @@ public class PayNotificationController {
 						consultSessionPropertyService.addPermTimes(openid);
 //						consultPayUserService.saveChargeUser(sessionId, openid);
 //					}
-					LogUtils.saveLog("咨询收费充值",openid);
-					HttpRequestUtil.wechatpost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/notifyPayInfo2Distributor?openId="+openid,
+					LogUtils.saveLog("咨询收费充值", openid);
+					HttpRequestUtil.wechatpost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/notifyPayInfo2Distributor?openId=" + openid,
 							"openId=" + openid);
+
+					BabyCoinVo babyCoinVo = new BabyCoinVo();
+					babyCoinVo.setOpenId(openid);
+					babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
+					Float babyCash = (Float.valueOf(ConstantUtil.CONSUL_AMOUNT) * 100 - payRecord.getAmount())/10;//使用宝宝币数
+					babyCoinVo.setCash(babyCoinVo.getCash() - Long.valueOf(babyCash.toString()));
+					babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
+
+					BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
+					babyCoinRecordVo.setBalance(babyCash);
+					babyCoinRecordVo.setCreateTime(new Date());
+					babyCoinRecordVo.setCreateBy(openid);
+					babyCoinRecordVo.setOpenId(openid);
+					babyCoinRecordVo.setSessionId(sessionRedisCache.getSessionIdByUserId(openid));
+					babyCoinRecordVo.setSource("weixin");
+					babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
+
 				}
 			}
 			return  XMLUtil.setXML("SUCCESS", "");
