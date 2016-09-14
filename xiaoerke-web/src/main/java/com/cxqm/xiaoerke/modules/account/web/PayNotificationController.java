@@ -533,12 +533,12 @@ public class PayNotificationController {
                         HttpRequestUtil.wechatpost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/notifyPayInfo2Distributor?openId=" + openid,
                                 "openId=" + openid);
                         babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
-                        babyCoinRecordVo.setBalance(babyCash);
+                        babyCoinRecordVo.setBalance(-babyCash);
                         babyCoinRecordVo.setCreateTime(new Date());
                         babyCoinRecordVo.setCreateBy(openid);
                         babyCoinRecordVo.setOpenId(openid);
                         babyCoinRecordVo.setSessionId(sessionRedisCache.getSessionIdByUserId(openid));
-                        babyCoinRecordVo.setSource("weixin");
+                        babyCoinRecordVo.setSource("consultPay");
                         babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
                     }
                 }

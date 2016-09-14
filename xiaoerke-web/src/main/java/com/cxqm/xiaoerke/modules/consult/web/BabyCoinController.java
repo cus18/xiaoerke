@@ -83,6 +83,11 @@ public class BabyCoinController {
         List<BabyCoinRecordVo> babyCoinRecordVos = babyCoinService.selectByBabyCoinRecordVo(babyCoinRecordVo);
         for (BabyCoinRecordVo vo : babyCoinRecordVos) {
             vo.setDate(DateUtils.DateToStr(vo.getCreateTime(), "monthDate"));
+            if(vo.getBalance() > 0){
+                vo.setStrBalance("+"+vo.getBalance());
+            }else{
+                vo.setStrBalance(String.valueOf(vo.getBalance()));
+            }
         }
         response.put("babyCoinRecordVos", babyCoinRecordVos);
         response.put("babyCoinVo", babyCoinVo);
