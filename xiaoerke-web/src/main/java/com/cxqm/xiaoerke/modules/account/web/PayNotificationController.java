@@ -519,7 +519,9 @@ public class PayNotificationController {
 
 					double babyCash = ( Double.valueOf(ConstantUtil.CONSUL_AMOUNT) * 100 - Double.valueOf(insuranceMap.get("amount").toString()))/10;//使用宝宝币数
 					babyCoinVo.setCash(babyCoinVo.getCash() - (long) babyCash);
-					babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
+					if(babyCoinVo.getCash()>0){
+						babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
+					}
 
 					BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
 					babyCoinRecordVo.setBalance(babyCash);
