@@ -15,6 +15,21 @@ angular.module('controllers', [])
                     $('#invitePageShade').show();
                 });
             }
+
+            var recordLogs = function(val){
+                $.ajax({
+                    url:"util/recordLogs",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{logContent:encodeURI(val)},
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                    },
+                    error : function() {
+                    }
+                });
+            };
             //分享到朋友圈或者微信
             var loadShare = function(){
                 var share = "http://s120.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s120.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=41,'"+$scope.openid+"','"+$scope.marketer+"',";//最后url=41，openid,marketer
