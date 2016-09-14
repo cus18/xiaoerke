@@ -387,6 +387,7 @@ public class ConsultWechatController extends BaseController {
                                     "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n" + "<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=42'>>>邀请好友得积分</a>";
                             if(flag){
 //                                richConsultSession.setPayStatus(ConstantUtil.NOT_INSTANT_CONSULTATION);
+                                LogUtils.saveLog("feishishizixunfasong", openId);
                                 content +="\n-----------\n问题不急？欢迎体验<a href='"+ConstantUtil.KEEPER_WEB_URL+"/keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"/keeper/wechatInfo/getUserWechatMenId?url=39"+"'>24h免费咨询</a>>>";
                             }
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
@@ -510,6 +511,7 @@ public class ConsultWechatController extends BaseController {
         Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         String token = (String) userWechatParam.get("token");
         String openId = WechatUtil.getOpenId(session,request);
+        LogUtils.saveLog("feishishizixundianji", openId);
         if(null ==openId) return null;
         Channel csChannel = null;
         //根据用户的openId，判断redis中，是否有用户正在进行的session
