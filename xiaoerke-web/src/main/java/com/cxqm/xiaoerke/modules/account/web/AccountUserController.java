@@ -6,6 +6,7 @@ import com.cxqm.xiaoerke.common.service.ServiceException;
 import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
@@ -14,6 +15,7 @@ import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.sys.entity.PerAppDetInfoVo;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -254,24 +256,10 @@ public class AccountUserController {
         if (babyCoinVo != null && useBabyCoin != null && useBabyCoin.equals("true")) {//用宝宝币抵钱
             //当前用户所拥有的宝宝币<99直接扣光宝宝币，并计算实际金额
             if (babyCoinVo.getCash() <= Float.valueOf(ConstantUtil.CONSUL_AMOUNT) * 10) {
-                String orderPrice = request.getAttribute("payPrice") != null ? String.valueOf(((Float) request.getAttribute("payPrice")).
-                        intValue() * 100) : request.getParameter("payPrice");
-                String payPrice = String.valueOf(Long.valueOf(orderPrice) - babyCoinVo.getCash() * 10);
-                request.setAttribute("payPrice", payPrice);
-                babyCoinVo.setCash(0l);
-                int coinFlag = babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
-                if (coinFlag <= 0)
-                    throw new ServiceException("baby coin update failure!!!");
-                BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
-                babyCoinRecordVo.setBalance(-Double.valueOf(payPrice) / 100);
-                babyCoinRecordVo.setCreateTime(new Date());
-                babyCoinRecordVo.setCreateBy(openId);
-                babyCoinRecordVo.setOpenId(openId);
-                babyCoinRecordVo.setSessionId(sessionRedisCache.getSessionIdByUserId(openId));
-                babyCoinRecordVo.setSource("weixin");
-                int recordflag = babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
-                if (recordflag <= 0)
-                    throw new ServiceException("baby coin record update failure!!!");
+                Float payPrice = Float.valueOf(request.getParameter("payPrice"));
+                payPrice = payPrice - Float.valueOf(String.valueOf(babyCoinVo.getCash()))*10;
+                request.setAttribute("payPrice", payPrice/100.0);
+                LogUtils.saveLog(Servlets.getRequest(), "发起扣除宝宝币支付", "宝宝币个数为"+ babyCoinVo.getCash());
             } else {
                 throw new ServiceException("baby coin greater than 99");
             }
