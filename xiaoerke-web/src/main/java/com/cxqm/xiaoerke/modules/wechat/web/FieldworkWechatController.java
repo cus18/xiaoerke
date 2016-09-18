@@ -253,14 +253,14 @@ public class FieldworkWechatController {
     private String getBabyCoinURL(HttpServletRequest request, String openid) throws UnsupportedEncodingException {
         String url;//判断新老用户
         WechatAttention attention = wechatAttentionService.getAttentionByOpenId(openid);
+        String[] parameters = request.getQueryString().split(",");
+        String oldOpenId = java.net.URLDecoder.decode(parameters[1], "utf-8");
+        String marketer = java.net.URLDecoder.decode(parameters[2], "utf-8");
         if(attention == null || attention.getDate() == null){//新用户
-            String[] parameters = request.getQueryString().split(",");
-            String oldOpenId = java.net.URLDecoder.decode(parameters[1], "utf-8");
-            String marketer = java.net.URLDecoder.decode(parameters[2], "utf-8");
             url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/patientConsultInviteNew/"+oldOpenId+","+marketer;
             LogUtils.saveLog("ZXYQ_YQK_NEW","oldOpenId="+oldOpenId+"openid="+openid+"marketer"+marketer);
         }else {//老用户
-            url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/patientConsultInviteOld";
+            url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/patientConsultInviteOld/"+oldOpenId+","+marketer;
             LogUtils.saveLog("ZXYQ_YQK_OLD","openid="+openid);
         }
         return url;
