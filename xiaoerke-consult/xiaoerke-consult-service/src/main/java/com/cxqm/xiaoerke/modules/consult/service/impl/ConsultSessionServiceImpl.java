@@ -145,6 +145,12 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
     public boolean cheakInstantConsultation(String openid) {
         String nowDate = DateUtils.DateToStr(new Date(),"date");
 
+        Date d = new Date();
+        int hours = d.getHours();
+        if(hours>=Integer.parseInt(ConstantUtil.MAX_INSTANT_CONSULT_END_TIME)||hours<Integer.parseInt(ConstantUtil.MAX_INSTANT_CONSULT_START_TIME)){
+            return  false;
+        }
+
         if(!nowDate.equals(dataStr)){
             sessionRedisCache.clearInstantConsultationList();
 //            instantSet.clear();
