@@ -6,7 +6,6 @@ angular.module('controllers', [])
             $scope.oldOpenId = $stateParams.oldOpenId;
             $scope.minename = '您的朋友';
             $scope.openid = $stateParams.oldOpenId;
-            $scope.marketer = '';
 
             CreateInviteCard.save({"marketer":$scope.marketer,"oldOpenId":$scope.oldOpenId}, function (data) {
                 $scope.headImgUrl = {
