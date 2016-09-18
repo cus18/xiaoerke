@@ -58,7 +58,11 @@ public class BabyCoinController {
         String userQRCode = olyGamesService.getUserQRCode(marketer);//二维码
         String headImgUrl = olyGamesService.getWechatMessage(oldOpenId);//头像
         response.put("userQRCode", userQRCode);
-        response.put("headImgUrl", headImgUrl);
+        if(StringUtils.isNotNull(headImgUrl)){
+            response.put("headImgUrl", headImgUrl);
+        }else {
+            response.put("headImgUrl", "http://img5.imgtn.bdimg.com/it/u=1846948884,880298315&fm=21&gp=0.jpg");
+        }
         response.put("babyCoinVo", babyCoinVo);
 
         return response;
