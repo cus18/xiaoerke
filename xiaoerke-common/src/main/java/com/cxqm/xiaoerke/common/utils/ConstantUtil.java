@@ -64,5 +64,8 @@ public enum ConstantUtil {
 
 	public static String MAX_INSTANT_CONSULT_NUM = Global.getConfig("MAX_INSTANT_CONSULT_NUM");
 
+	public static String MAX_INSTANT_CONSULT_START_TIME = Global.getConfig("MAX_INSTANT_CONSULT_START_TIME");
+	public static String MAX_INSTANT_CONSULT_END_TIME = Global.getConfig("MAX_INSTANT_CONSULT_END_TIME");
+
 
 }

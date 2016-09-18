@@ -26,7 +26,7 @@
       and id = #{id,jdbcType=INTEGER}
     </if>
     <if test="openId != null" >
-      and open_id = #{openId,jdbcType=VARCHAR} order by create_time desc
+      and open_id = #{openId,jdbcType=VARCHAR} order by create_time asc
     </if>
     <if test="sessionId != null" >
       and session_id = #{sessionId,jdbcType=INTEGER}

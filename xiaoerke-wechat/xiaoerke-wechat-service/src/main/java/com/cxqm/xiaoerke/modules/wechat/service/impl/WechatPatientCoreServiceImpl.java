@@ -921,7 +921,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
                 BabyCoinVo olderUser = new BabyCoinVo();
                 String cash = ConstantUtil.BABYCOIN;
-                synchronized (this) {
+//                synchronized (this) {
                     olderUser.setMarketer(marketer);
                     olderUser = babyCoinService.selectByBabyCoinVo(olderUser);//推荐人的babyCoin
                     if (olderUser.getInviteNumberMonth() <= 20) {
@@ -964,7 +964,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         WechatUtil.sendMsgToWechat(token, olderUser.getOpenId(), content);
                     }
 
-                }
+//                }
 
             }
         }
