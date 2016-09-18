@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
@@ -150,8 +151,8 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
             this.dataStr = nowDate;
         }
         Long listNum = sessionRedisCache.num4InstantConsultationList();
-//        instantSet.size()>=20||
-        if(listNum>=1){
+        Integer maxNum =  Integer.parseInt(ConstantUtil.MAX_INSTANT_CONSULT_NUM);
+        if(listNum>=maxNum){
             return false;
         }
         sessionRedisCache.addInstantConsultationList(openid);
