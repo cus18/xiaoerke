@@ -933,8 +933,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
                         babyCoinRecordVo.setBalance(Double.valueOf(ConstantUtil.BABYCOIN));
                         babyCoinRecordVo.setCreateTime(new Date());
-                        babyCoinRecordVo.setCreateBy(openId);
-                        babyCoinRecordVo.setOpenId(openId);
+                        babyCoinRecordVo.setCreateBy(olderUser.getOpenId());
+                        babyCoinRecordVo.setOpenId(olderUser.getOpenId());
                         babyCoinRecordVo.setSource("invitePresent");
                         int recordflag = babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
 
