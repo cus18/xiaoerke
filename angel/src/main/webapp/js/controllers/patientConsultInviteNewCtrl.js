@@ -5,7 +5,7 @@ angular.module('controllers', [])
             $scope.marketer = $stateParams.marketer;
             $scope.oldOpenId = $stateParams.oldOpenId;
             $scope.minename = '您的朋友';
-            $scope.openid = '';
+            $scope.openid = $stateParams.oldOpenId;
             $scope.marketer = '';
 
             CreateInviteCard.save({"marketer":$scope.marketer,"oldOpenId":$scope.oldOpenId}, function (data) {
@@ -18,20 +18,13 @@ angular.module('controllers', [])
                     'background': 'url(' + data.userQRCode + ')',
                     'background-size': '100% 100%'
                 };*/
-                $scope.userQRCode = data.userQRCode;
-            });
-
-            BabyCoinInit.save({},function(data){
-                $scope.openid = data.babyCoinVo.openId;
-                $scope.marketer = data.babyCoinVo.marketer ;
-                $scope.minename = data.babyCoinVo.nickName;
+                $scope.minename = $scope.headImgNickName;
                 if($scope.minename == undefined || $scope.minename==''){
                     $scope.minename = '您的朋友';
                 }
+                $scope.userQRCode = data.userQRCode;
                 loadShare();
-            })
-
-
+            });
 
             //分享到朋友圈或者微信
             var loadShare = function(){
