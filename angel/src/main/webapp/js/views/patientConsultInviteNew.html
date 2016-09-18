@@ -4,7 +4,9 @@
             <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite%2FinviteNew.png" alt="">
             <div class="inviteNewName">{{headImgNickName}}</div>
             <div ng-style="headImgUrl" class="inviteNewPortrait"></div>
-            <div ng-style="userQRCode" class="inviteNewCode"></div>
+            <div class="inviteNewCode">
+                <img ng-src="{{userQRCode}}" alt="" data-tap-disabled="true"/>
+            </div>
         </div>
     </ion-content>
 </ion-view>
