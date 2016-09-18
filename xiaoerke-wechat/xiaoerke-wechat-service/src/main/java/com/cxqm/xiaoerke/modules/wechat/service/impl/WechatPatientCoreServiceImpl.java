@@ -925,6 +925,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     olderUser.setMarketer(marketer);
                     olderUser = babyCoinService.selectByBabyCoinVo(olderUser);//推荐人的babyCoin
                     if (olderUser.getInviteNumberMonth() <= 20) {
+                        Long preCash = olderUser.getCash();
                         olderUser.setCash(Long.valueOf(cash));
                         olderUser.setInviteNumberMonth(1);
                         //推荐人宝宝币加ConstantUtil.BABYCOIN个
@@ -948,12 +949,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         if (StringUtils.isNull(nickName)) {
                             nickName = "了一位朋友";
                         }
-                        String timeContent = "业务状态：您有" + olderUser.getCash() / 99 + "次免费咨询专家的机会，本月还可邀请好友*次\n";
+                        String timeContent = "业务状态：您有" + (preCash + olderUser.getCash()) / 99 + "次免费咨询专家的机会，本月还可邀请好友*次\n";
                         if (olderUser.getCash() / 99 == 0) {
                             timeContent = "业务状态：你暂时还没有免费咨询转接的机会\n";
                         }
                         content = "恭喜您成功邀请 " + nickName + " 加入宝大夫，您的您的宝宝币将增加" + cash + "枚！\n" +
-                                "业务进度：您的宝宝币余额为 " + olderUser.getCash() + "枚（余额）\n" +
+                                "业务进度：您的宝宝币余额为 " + (preCash + olderUser.getCash()) + "枚\n" +
                                 timeContent + "邀请更多好友加入，获得更多机会！";
                         WechatUtil.sendMsgToWechat(token, olderUser.getOpenId(), content);
                     }
