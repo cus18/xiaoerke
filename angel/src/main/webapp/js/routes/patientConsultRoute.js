@@ -164,7 +164,7 @@ define(['appPatientConsult'], function(app){
                         }
                     })
                     .state('patientConsultInviteOld', {
-                        url: '/patientConsultInviteOld',
+                        url: '/patientConsultInviteOld/:oldOpenId,:marketer',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'patientConsultInviteOldCtrl',
                         resolve: {
