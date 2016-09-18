@@ -62,4 +62,7 @@ public enum ConstantUtil {
 	public static String ONCE_CONSULT_NEED_BABY_COIN = Global.getConfig("ONCE_CONSULT_NEED_BABY_COIN");//购买一次咨询所需宝宝币数
 
 
+	public static String MAX_INSTANT_CONSULT_NUM = Global.getConfig("MAX_INSTANT_CONSULT_NUM");
+
+
 }
