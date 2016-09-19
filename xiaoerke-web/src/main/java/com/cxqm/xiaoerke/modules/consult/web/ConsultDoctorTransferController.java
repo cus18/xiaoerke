@@ -250,10 +250,15 @@ public class ConsultDoctorTransferController extends BaseController {
                 /**
                  * 增加未读消息数量
                  */
-                if(richConsultSession.getConsultNum() != 0){
-                    dataValue.put("consultNum",richConsultSession.getConsultNum());
+                if(richConsultSession.getConsultNum() != null ){
+                    if(richConsultSession.getConsultNum() != 0){
+                        dataValue.put("consultNum",richConsultSession.getConsultNum());
+                    }else{
+                        dataValue.put("consultNum",richConsultSession.getConsultNum()+1);
+                    }
                 }else{
-                    dataValue.put("consultNum",richConsultSession.getConsultNum()+1);
+                    richConsultSession.setConsultNum(1);
+                    sessionRedisCache.putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
                 }
 
                 Query sessionquery = (new Query()).addCriteria(where("sessionId").is(""+waitJoinListVo.getConversationId()+""));
