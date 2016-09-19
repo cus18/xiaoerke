@@ -29,6 +29,16 @@
 				}
 			});
 		}
+		function doctorVerificationForm(href,title){
+			href=encodeURI(encodeURI(href));
+			top.$.jBox.open('iframe:'+href,title,430,370,{
+				buttons:{"关闭":true},
+				closed: function () {
+					$("#searchForm").attr("action","${ctx}/consult/consultDoctorList");
+					$("#searchForm").submit();
+				}
+			});
+		}
 
 		function dataExport(type){
 			href="${ctx}/consult/exportForm?type="+type;
@@ -95,6 +105,7 @@
 					<td>
 						<a href="${ctx}/consult/doctorMoreSettingForm?id=${u.id}">更多设置</a>
 						<a href="#" onclick="doctorOperForm('${ctx}/consult/consultOperForm?id=${u.id}','账号修改')">账号修改</a>
+						<a href="#" onclick="doctorVerificationForm('${ctx}/consult/searchVerificationCode?id=${u.id}','验证码修改')">验证码修改</a>
 					</td>
 				</tr>
 			</c:forEach>
