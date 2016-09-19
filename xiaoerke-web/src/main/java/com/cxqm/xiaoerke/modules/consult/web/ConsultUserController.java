@@ -303,7 +303,18 @@ public class ConsultUserController extends BaseController {
                         searchMap.put("dateTime",richConsultSession.getCreateTime());
                         searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
                         //新增咨询聊天数量 2016-9-8 18:43:49 jiangzg
-                        searchMap.put("consultNum",richConsultSession.getConsultNum());
+                        if(richConsultSession.getConsultNum() != null){
+                            if(richConsultSession.getConsultNum() < 0){
+                                searchMap.put("consultNum",richConsultSession.getConsultNum());
+                            }else{
+                                searchMap.put("consultNum",0);
+                                richConsultSession.setConsultNum(0);
+                                sessionRedisCache.putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
+                            }
+                        }else{
+                            richConsultSession.setConsultNum(0);
+                            sessionRedisCache.putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
+                        }
 
                         if (null !=consultSessionStatusVo && ConstantUtil.PAY_SUCCESS.indexOf(consultSessionStatusVo.getPayStatus())>-1) {
                             searchMap.put("notifyType", "1001");
@@ -546,7 +557,8 @@ public class ConsultUserController extends BaseController {
                 request.put("sys_user_id", sys_user_id);
                 request.put("remoteUrl", remoteUrl);
 
-            }else if("COOP_BHQ".equalsIgnoreCase(source)){
+            }else if(source.contains("bhq")||source.contains("BHQ")){
+                source = "COOP_BHQ";
                 userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone")))?String.valueOf(params.get("patientPhone")):"";
                 userName = StringUtils.isNotNull(String.valueOf(params.get("patientName")))?String.valueOf(params.get("patientName")):"";
                 thirdId = String.valueOf(params.get("thirdId"));
@@ -555,8 +567,8 @@ public class ConsultUserController extends BaseController {
                 request.put("userSex", userSex);
                 request.put("source", source);
                 request.put("thirdId", thirdId);
-       //         String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
-       //         request.put("sys_user_id", sys_user_id);
+                //         String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
+                //         request.put("sys_user_id", sys_user_id);
             }
         }else{
             userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone")))?String.valueOf(params.get("patientPhone")):"";
