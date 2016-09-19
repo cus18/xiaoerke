@@ -1,6 +1,6 @@
 angular.module('controllers', [])
-    .controller('patientConsultInvitePageCtrl',['$scope','GetAttentionInfo','GetUserOpenId','GetBabyCoinInfo','BabyCoinInit',
-        function ($scope,GetAttentionInfo,GetUserOpenId,GetBabyCoinInfo,BabyCoinInit) {
+    .controller('patientConsultInvitePageCtrl',['$scope','GetAttentionInfo','GetUserOpenId','GetBabyCoinInfo','BabyCoinInit','inviteUrlData',
+        function ($scope,GetAttentionInfo,GetUserOpenId,GetBabyCoinInfo,BabyCoinInit,inviteUrlData) {
             $scope.minename = '您的朋友';
             $scope.openid = '';
             $scope.marketer = '';
@@ -35,7 +35,7 @@ angular.module('controllers', [])
             };
             //分享到朋友圈或者微信
             var loadShare = function(){
-                var share = "http://s120.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s120.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=41,"+$scope.openid+","+$scope.marketer+",";//最后url=41，openid,marketer
+                var share = inviteUrlData + $scope.openid+","+$scope.marketer+",";//最后url=41，openid,marketer
                 // if(version=="a"){
                 version="a";
                 var timestamp;//时间戳

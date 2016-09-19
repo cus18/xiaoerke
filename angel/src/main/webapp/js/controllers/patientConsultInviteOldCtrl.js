@@ -1,6 +1,6 @@
 angular.module('controllers', [])
-    .controller('patientConsultInviteOldCtrl',['$scope','CreateInviteCard','$stateParams',
-        function ($scope,CreateInviteCard,$stateParams) {
+    .controller('patientConsultInviteOldCtrl',['$scope','CreateInviteCard','$stateParams','inviteUrlData',
+        function ($scope,CreateInviteCard,$stateParams,inviteUrlData) {
 
             $scope.marketer = $stateParams.marketer;
             $scope.oldOpenId = $stateParams.oldOpenId;
@@ -27,7 +27,7 @@ angular.module('controllers', [])
 
             //分享到朋友圈或者微信
             var loadShare = function(){
-                var share = "http://s120.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s120.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=41,"+$scope.openid+","+$scope.marketer+",";//最后url=41，openid,marketer
+                var share = inviteUrlData + $scope.openid+","+$scope.marketer+",";//最后url=41，openid,marketer
                 // if(version=="a"){
                 version="a";
                 var timestamp;//时间戳

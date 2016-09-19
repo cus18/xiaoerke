@@ -1,4 +1,5 @@
 define(['appPatientConsult'], function (app) {
+
     app
         .factory('GetSessionId',['$resource',function ($resource){
             return $resource('consult/user/getSessionId');
@@ -46,5 +47,13 @@ define(['appPatientConsult'], function (app) {
         .factory('BabyCoinInit',['$resource',function ($resource){
             return $resource('babyCoin/babyCoinInit');
         }])
+
+
+
+        //公用数据邀请分享地址
+        .factory('inviteUrlData', function() {
+            var inviteUrl = "http://s120.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s120.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=41,";
+            return inviteUrl;
+        });
 
 })
