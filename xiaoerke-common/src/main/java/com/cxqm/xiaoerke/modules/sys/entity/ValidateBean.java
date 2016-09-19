@@ -10,6 +10,7 @@ public class ValidateBean {
 	private String code;
 	private Date createTime;
 	private String status;// 1 成功  2 失效
+	private String name;
 	private int count;
 
 	public String getId() {
@@ -30,7 +31,15 @@ public class ValidateBean {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public Date getCreateTime() {
 		return createTime;
 	}

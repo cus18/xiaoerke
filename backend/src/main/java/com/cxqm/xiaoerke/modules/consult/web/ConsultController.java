@@ -15,9 +15,12 @@ import com.cxqm.xiaoerke.modules.entity.DissatisfiedVo;
 import com.cxqm.xiaoerke.modules.entity.ReceiveTheMindVo;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.member.entity.MemberservicerelItemservicerelRelationVo;
+import com.cxqm.xiaoerke.modules.sys.dao.UtilDao;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.entity.ValidateBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
+import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaMongoDBVo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
@@ -67,6 +70,12 @@ public class ConsultController extends BaseController {
 	@Autowired
 	private AccountService accountService;
 
+	@Autowired
+	private UtilDao utilDao;
+
+	@Autowired
+	private UtilService utilService;
+
 	/**
 	 * 咨询的医生 列表
 	 * sunxiao
@@ -101,6 +110,44 @@ public class ConsultController extends BaseController {
 		List<User> list = userInfoService.getUserListByInfo(user);
 		model.addAttribute("user", list.get(0));
 		return "modules/consult/doctorOperForm";
+	}
+
+	/**
+	 * 验证码查询界面
+	 * sunxiao
+	 * @param
+	 * @param model
+	 */
+	@RequestMapping(value = "searchVerificationCode")
+	public String searchVerificationCode(User user, Model model) {
+		user = userInfoService.getUserListByInfo(user).get(0);
+		ValidateBean validateBean = utilDao.getIdentifying(user.getPhone());
+		if(StringUtils.isNotBlank(validateBean.getName())){
+			validateBean.setName(user.getName());
+		}else{
+			validateBean.setName(user.getEmail());
+		}
+		model.addAttribute("validateBean", validateBean);
+		return "modules/consult/editUserVerificationCode";
+	}
+
+
+	/**
+	 * 验证码更新界面
+	 * sunxiao
+	 * @param
+	 */
+	@RequestMapping(value = "updateVerificationCode")
+	public String updateVerificationCode(ValidateBean validateBean) {
+		JSONObject result = new JSONObject();
+		try {
+			utilService.updateValidateCode(validateBean);
+			result.put("result","suc");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.put("result","fail");
+		}
+		return result.toString();
 	}
 
 	/**

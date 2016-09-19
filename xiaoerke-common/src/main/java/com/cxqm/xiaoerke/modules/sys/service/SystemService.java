@@ -206,6 +206,10 @@ public class SystemService extends BaseService {
 		user.setLoginDate(new Date());
 		userDao.updateLoginInfo(user);
 	}
+
+	public static void main(String[] args) {
+		System.out.println(entryptPassword("chenxingkeji00"));
+	}
 	
 	/**
 	 * 生成安全的密码，生成随机的16位salt并经过1024次 sha-1 hash

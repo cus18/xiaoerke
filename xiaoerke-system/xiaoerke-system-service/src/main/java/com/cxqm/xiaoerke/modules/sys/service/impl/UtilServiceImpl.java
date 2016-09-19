@@ -48,6 +48,11 @@ public class UtilServiceImpl implements UtilService {
         utilDao.getIdentifying("18510525441");
     }
 
+    @Override
+    public int updateValidateCode(ValidateBean validateBean){
+        return utilDao.updateValidateCode(validateBean);
+    }
+
     /**
      * 短信验证码
      *

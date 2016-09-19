@@ -21,4 +21,6 @@ public interface UtilDao {
 	 * */
 	ValidateBean getIdentifying(String phoneNum);
 
+	int updateValidateCode(ValidateBean validateBean);
+
 }

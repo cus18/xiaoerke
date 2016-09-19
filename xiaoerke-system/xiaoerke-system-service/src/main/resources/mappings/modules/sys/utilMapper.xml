@@ -35,6 +35,11 @@
         code,
         create_time
         FROM sys_validate_code a
-        WHERE a.user_phone = #{phoneNum}
+        WHERE a.user_phone = #{phoneNum} GROUP by a.user_phone
     </select>
+
+    <update id="updateValidateCode" parameterType="com.cxqm.xiaoerke.modules.sys.entity.ValidateBean">
+       update sys_validate_code set code=#{code},create_time=#{createTime} where user_phone=#{userPhone}
+    </update>
+
 </mapper>
