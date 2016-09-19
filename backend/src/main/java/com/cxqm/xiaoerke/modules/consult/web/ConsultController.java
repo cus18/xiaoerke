@@ -137,6 +137,7 @@ public class ConsultController extends BaseController {
 	 * sunxiao
 	 * @param
 	 */
+	@ResponseBody
 	@RequestMapping(value = "updateVerificationCode")
 	public String updateVerificationCode(ValidateBean validateBean) {
 		JSONObject result = new JSONObject();

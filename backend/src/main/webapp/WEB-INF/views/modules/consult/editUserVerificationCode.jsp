@@ -25,6 +25,7 @@
 		});
 
 		function doctorOper(){
+			debugger;
 			if($("#name").val()==""){
 				alertx("请填写姓名！");
 				return;
@@ -87,9 +88,8 @@
 						onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
 		</div>
 
-
 		<div class="form-actions" >
-			<input id="btnSubmit" class="btn btn-primary" type="button" value="确认"/>
+			<input id="btnSubmit" class="btn btn-primary" type="button" onclick="doctorOper()" value="确认"/>
 		</div>
 	</form:form>
 </body>
