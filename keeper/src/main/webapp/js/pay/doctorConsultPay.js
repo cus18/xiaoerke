@@ -124,7 +124,7 @@ var recordLogs = function(val){
         if($('#useBabyCoinRight')){
             $.ajax({
                 type: "get",
-                url: 'http://'+window.location.host + "/titan/babyCoin/babyCoinInit",
+                url: 'http://'+window.location.host + "/keeper/babyCoin/babyCoinInit",
                 dataType: "json",
                 success: function(data) {
                     var canUse = 90;
