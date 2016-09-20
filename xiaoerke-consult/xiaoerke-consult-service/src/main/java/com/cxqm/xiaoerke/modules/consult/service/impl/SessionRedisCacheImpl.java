@@ -65,6 +65,11 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	}
 
 	@Override
+	public void deleteUserSessionID() {
+		redisTemplate.delete(USER_SESSIONID_KEY);
+	}
+
+	@Override
 	public void putUserIdIpAddressPair(InetSocketAddress inetSocketAddress, String userId) {
 		if(StringUtils.isNotNull(userId)||inetSocketAddress!=null){
 			redisTemplate.opsForHash().put(USER_ADDRESS, userId, inetSocketAddress);
