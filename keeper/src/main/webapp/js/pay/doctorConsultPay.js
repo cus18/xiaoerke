@@ -46,9 +46,24 @@ var doRefresh = function(){
      $('#money').html(moneys);
     recordLogs("consult_charge_twice_information_payclick");
 };
+var recordLogs = function(val){
+    $.ajax({
+        url:"util/recordLogs",// 跳转到 action
+        async:true,
+        type:'get',
+        data:{logContent:encodeURI(val)},
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+        },
+        error : function() {
+        }
+    });
+};
 function wechatPay() {
     if(useBabyCoin){
         UseBobyCoinPay();
+        recordLogs("ZXYQ_ZFY_SHIYONG")
     }
     recordLogs("consult_charge_twice_paypage_paybutton");
     var u = navigator.userAgent, app = navigator.appVersion;

@@ -25,6 +25,20 @@ angular.module('controllers', [])
                 loadShare();
             });
 
+            var recordLogs = function(val){
+                $.ajax({
+                    url:"util/recordLogs",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{logContent:encodeURI(val)},
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                    },
+                    error : function() {
+                    }
+                });
+            };
             //分享到朋友圈或者微信
             var loadShare = function(){
                 var share = inviteUrlData + $scope.openid+","+$scope.marketer+",";//最后url=41，openid,marketer
@@ -67,7 +81,7 @@ angular.module('controllers', [])
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                     success: function (res) {
-                                        recordLogs("AXJZ_HDSY_FXPYQ");
+                                        recordLogs("ZXYQ_YQK_OLD_SHARE");
                                     },
                                     fail: function (res) {
                                     }
@@ -78,7 +92,7 @@ angular.module('controllers', [])
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                     success: function (res) {
-                                        recordLogs("AXJZ_HDSY_FXPY");
+                                        recordLogs("ZXYQ_YQK_OLD_SHARE");
                                     },
                                     fail: function (res) {
                                     }

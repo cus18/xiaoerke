@@ -17,6 +17,7 @@ angular.module('controllers', [])
                 $('#invitePageContent').click(function(){
                     $('#invitePageShade').show();
                 });
+                recordLogs("ZXYQ_YQY");
             }
 
             var recordLogs = function(val){
@@ -75,7 +76,7 @@ angular.module('controllers', [])
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                     success: function (res) {
-                                        recordLogs("AXJZ_HDSY_FXPYQ");
+                                        recordLogs("ZXYQ_YQY_SHARE");
                                     },
                                     fail: function (res) {
                                     }
@@ -86,7 +87,7 @@ angular.module('controllers', [])
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                     success: function (res) {
-                                        recordLogs("AXJZ_HDSY_FXPY");
+                                        recordLogs("ZXYQ_YQY_SHARE");
                                     },
                                     fail: function (res) {
                                     }
