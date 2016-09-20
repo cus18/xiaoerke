@@ -46,4 +46,14 @@ public class OperationPromotionServiceImpl implements OperationPromotionService 
     public void saveKeywordRole(OperationPromotionVo vo) {
         operationPromotionDao.saveKeywordRole(vo);
     }
+
+    @Override
+    public Map getAllRoleListByKeyword() {
+        Map<String,OperationPromotionVo> resultMap = new HashMap<String, OperationPromotionVo>();
+        List<OperationPromotionVo> mapList = operationPromotionDao.getAllRoleListByKeyword();
+        for (OperationPromotionVo vo : mapList) {
+            resultMap.put(vo.getKeyword(),vo);
+        }
+        return resultMap;
+    }
 }
