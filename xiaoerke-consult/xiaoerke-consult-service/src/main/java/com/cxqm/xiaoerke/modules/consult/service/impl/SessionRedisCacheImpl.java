@@ -148,7 +148,7 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 
 	@Override
 	public void clearInstantConsultationList() {
-		redisTemplate.opsForSet().pop(INSTANTCONSULT_LIST);
+		redisTemplate.delete(INSTANTCONSULT_LIST);
 	}
 
 	@Override
