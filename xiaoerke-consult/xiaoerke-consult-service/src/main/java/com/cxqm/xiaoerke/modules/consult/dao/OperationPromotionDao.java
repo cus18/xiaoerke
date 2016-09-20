@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultEvaluateCoopVo;
 import com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 运营推广dao
@@ -17,4 +18,6 @@ public interface OperationPromotionDao {
     List<OperationPromotionVo> findKeywordRoleList(OperationPromotionVo vo);
 
     void saveKeywordRole(OperationPromotionVo vo);
+
+    List<OperationPromotionVo> getAllRoleListByKeyword();
 }
