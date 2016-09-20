@@ -197,8 +197,12 @@
                 <!--添加内容-->
                 <div class="addcontent" ng-show='addContentFlag'>
                     <div class="addtop"><span>添加回复</span><span ng-click="closeAddContent()">关闭</span></div>
-                    <div class="addgroupname"><span class="addkjhf">快捷回复内容：</span>
+                    <div class="addgroupname"  ng-show="addWordFlag"><span class="addkjhf">快捷回复内容：</span>
                         <textarea placeholder="请在此处进行编辑" ng-model="info.addContent"></textarea>
+                    </div>
+                    <div class="addgroupname" ng-show="addImgFlag"><span class="addkjhf">添加回复图片：</span>
+                       <span style="background-color: buttonface;padding: 40px;float: left;margin-top: 24px;" type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000" ng-file-max-size="2MB"
+                                >选择图片</span>
                     </div>
                     <div class="addbtn">
                         <input class="btn" type="submit" value="确定" ng-click="addContentSubmit()">
@@ -494,7 +498,9 @@
                     <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fkjhf%20(9).png" alt=""/>
                     关闭</div>
                 <div ng-click="tapShowButton('specialistTransfer')"
-                     ng-style="userType=='distributor'?{'display':'block'}:{'display':'none'}">专科转移</div>
+                     ng-style="userType=='distributor'?{'display':'block'}:{'display':'none'}"
+                        >专科转移</div>
+
             </div>
         </div>
     </div>
