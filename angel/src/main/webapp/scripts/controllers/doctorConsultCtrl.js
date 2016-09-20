@@ -66,6 +66,8 @@ angular.module('controllers', ['luegg.directives'])
             };
             $scope.loseConnectionFirstFlag = false;
             $scope.loseConnectionSecondFlag = false;
+            $scope.addWordFlag = true;
+            $scope.addImgFlag = false;
             var acceptOperationFlag = false;
             var waitProcessLock = false;
             var heartBeatFirstNum = 3;
@@ -1126,6 +1128,8 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.addGroupFlag = true;
                         $scope.addContentFlag = false;
                     } else {
+                        $scope.addWordFlag = true;
+                        $scope.addImgFlag = false;
                         $scope.addGroupFlag = false;
                         $scope.addContentFlag = true;
                     }
@@ -1135,6 +1139,8 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.addGroupFlag = true;
                         $scope.addContentFlag = false;
                     } else {
+                        $scope.addWordFlag = true;
+                        $scope.addImgFlag = false;
                         $scope.addGroupFlag = false;
                         $scope.addContentFlag = true;
                     }
@@ -1144,6 +1150,8 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.addGroupFlag = true;
                         $scope.addContentFlag = false;
                     } else {
+                        $scope.addWordFlag = true;
+                        $scope.addImgFlag = false;
                         $scope.addGroupFlag = false;
                         $scope.addContentFlag = true;
                     }
@@ -1153,11 +1161,61 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.addGroupFlag = true;
                         $scope.addContentFlag = false;
                     } else {
+                        $scope.addWordFlag = false;
+                        $scope.addImgFlag = true;
                         $scope.addGroupFlag = false;
                         $scope.addContentFlag = true;
                     }
                 }
             };
+            /*$scope.add = function (showflag,replayIndex) {
+                $scope.info.addGroup = '';
+                $scope.info.addContent = '';
+                if ($scope.showFlag) {
+                    if ($scope.myReplyIndex == -1 || $scope.myReplyIndex == undefined) {
+                        $scope.addGroupFlag = true;
+                        $scope.addContentFlag = false;
+                    } else {
+                        $scope.addWordFlag = true;
+                        $scope.addImgFlag = false;
+                        $scope.addGroupFlag = false;
+                        $scope.addContentFlag = true;
+                    }
+                }
+                if ($scope.showFlag.publicReplyList) {
+                    if ($scope.publicReplyIndex == -1 || $scope.publicReplyIndex == undefined) {
+                        $scope.addGroupFlag = true;
+                        $scope.addContentFlag = false;
+                    } else {
+                        $scope.addWordFlag = true;
+                        $scope.addImgFlag = false;
+                        $scope.addGroupFlag = false;
+                        $scope.addContentFlag = true;
+                    }
+                }
+                if ($scope.showFlag.diagnosisReplyList) {
+                    if ($scope.diagnosisReplyIndex == -1 || $scope.diagnosisReplyIndex == undefined) {
+                        $scope.addGroupFlag = true;
+                        $scope.addContentFlag = false;
+                    } else {
+                        $scope.addWordFlag = true;
+                        $scope.addImgFlag = false;
+                        $scope.addGroupFlag = false;
+                        $scope.addContentFlag = true;
+                    }
+                }
+                if ($scope.showFlag.diagnosticImgReplyList) {
+                    if ($scope.diagnosticImgReplyIndex == -1 || $scope.diagnosticImgReplyIndex == undefined) {
+                        $scope.addGroupFlag = true;
+                        $scope.addContentFlag = false;
+                    } else {
+                        $scope.addWordFlag = false;
+                        $scope.addImgFlag = true;
+                        $scope.addGroupFlag = false;
+                        $scope.addContentFlag = true;
+                    }
+                }
+            };*/
             $scope.closeAddGroup = function () {
                 $scope.info.addGroup = '';
                 $scope.info.addContent = '';
@@ -1184,6 +1242,27 @@ angular.module('controllers', ['luegg.directives'])
                     saveDiagnosticImg();
                 }
                 $scope.addGroupFlag = false;
+            };
+            //添加图片
+            //向用户发送咨询图片
+            $scope.uploadFiles = function ($files, fileType) {
+                var dataValue = {
+                    "fileType": fileType,
+                    "senderId": $scope.doctorId,
+                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
+                };
+                var dataJsonValue = JSON.stringify(dataValue);
+                for (var i = 0; i < $files.length; i++) {
+                    var file = $files[i];
+                    $scope.upload = $upload.upload({
+                        url: 'consult/h5/uploadMediaFile',
+                        data: encodeURI(dataJsonValue),
+                        file: file
+                    }).progress(function (evt) {
+                    }).success(function (data, status, headers, config) {
+
+                    });
+                }
             };
             //添加内容
             $scope.closeAddContent = function () {
@@ -1783,6 +1862,9 @@ angular.module('controllers', ['luegg.directives'])
                             }
                         }
                     });
+                }
+                else if(notifyData.notifyType == "0016"){
+                    $window.confirm("您的消息没有发送成功！")
                 }
                 else if (notifyData.notifyType == "0010") {
                     //通知接诊员，转接的处理情况，rejected为拒绝，accept为转接受理了

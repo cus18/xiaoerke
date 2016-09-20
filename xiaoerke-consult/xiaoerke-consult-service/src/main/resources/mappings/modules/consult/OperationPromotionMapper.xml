@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.OperationPromotionDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="roleid" property="roleId" jdbcType="VARCHAR" />
+    <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+    <result column="rolename" property="roleName" jdbcType="VARCHAR" />
+    <result column="messagetype" property="messageType" jdbcType="VARCHAR" />
+    <result column="replytext" property="replyText" jdbcType="VARCHAR" />
+    <result column="replypicid" property="replyPicId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, roleid,rolename,keyword, messagetype,replytext,replypicid
+  </sql>
+  <select id="findKeywordRoleList" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from operation_promotion
+  </select>
+
+  <insert id="saveRole" parameterType="com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo" useGeneratedKeys="true"
+          keyProperty="id">
+    insert into operation_promotion(roleid,rolename,keyword, messagetype,replytext,replypicid)
+    values (#{roleid,jdbcType=VARCHAR},#{roleName,jdbcType=VARCHAR},#{keyword,jdbcType=VARCHAR},#{messagetype,jdbcType=VARCHAR},#{replytext,jdbcType=VARCHAR},#{replypicid,jdbcType=VARCHAR})
+  </insert>
+
+</mapper>
