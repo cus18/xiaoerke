@@ -21,4 +21,6 @@ public interface OperationPromotionService {
     List<OperationPromotionVo> findKeywordRoleList(OperationPromotionVo vo);
 
     void saveKeywordRole(OperationPromotionVo vo);
+
+    Map getAllRoleListByKeyword();
 }
