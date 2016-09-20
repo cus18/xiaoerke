@@ -14,10 +14,18 @@
   <sql id="Base_Column_List" >
     id, roleid,rolename,keyword, messagetype,replytext,replypicid
   </sql>
+
   <select id="findKeywordRoleList" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from operation_promotion
+  </select>
+
+  <select id="getAllRoleListByKeyword" parameterType="Map" resultMap="BaseResultMap">
+    select
+    keyword,messagetype,replytext,replypicid
+    from operation_promotion
+    GROUP  BY keyword
   </select>
 
   <insert id="saveRole" parameterType="com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo" useGeneratedKeys="true"
