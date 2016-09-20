@@ -153,7 +153,6 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
 
         if(!nowDate.equals(dataStr)){
             sessionRedisCache.clearInstantConsultationList();
-//            instantSet.clear();
             this.dataStr = nowDate;
         }
         Long listNum = sessionRedisCache.num4InstantConsultationList();
@@ -162,7 +161,6 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
             return false;
         }
         sessionRedisCache.addInstantConsultationList(openid);
-//        instantSet.add(openid);
         return true;
     }
 
