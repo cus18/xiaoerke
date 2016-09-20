@@ -38,6 +38,8 @@ public interface SessionRedisCache {
 
 	List<Object> getConsultSessionsBySessionIds(Collection<Object> sessionIds);
 
+	void deleteUserSessionID();
+
 	void putUserIdIpAddressPair(InetSocketAddress inetSocketAddress, String csUserId);
 
 	void clearInstantConsultationList();
