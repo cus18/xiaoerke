@@ -1352,11 +1352,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         }
 
         if(StringUtils.isNotNull(roleInfo.getReplyText())){
-            WechatUtil.sendMsgToWechat(token,xmlEntity.getFromKfAccount(),roleInfo.getReplyText());
+            WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),roleInfo.getReplyText());
         }
         if(StringUtils.isNotNull(roleInfo.getReplyPicId())){
             for(String mediaId:roleInfo.getReplyPicId().split(",")){
-                WechatUtil.sendNoTextMsgToWechat(token,xmlEntity.getFromKfAccount(),mediaId,1);
+                WechatUtil.sendNoTextMsgToWechat(token,xmlEntity.getFromUserName(),mediaId,1);
             }
         }
         return true;
