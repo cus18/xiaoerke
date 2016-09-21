@@ -1,0 +1,1017 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.sys.dao.SysPropertyDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_corpid" property="userCorpid" jdbcType="VARCHAR" />
+    <result column="user_sectet" property="userSectet" jdbcType="VARCHAR" />
+    <result column="amr_tomp3_func_windows" property="amrTomp3FuncWindows" jdbcType="VARCHAR" />
+    <result column="amr_tomp3_func_linux" property="amrTomp3FuncLinux" jdbcType="VARCHAR" />
+    <result column="baodf_domain_value" property="baodfDomainValue" jdbcType="VARCHAR" />
+    <result column="amr_tomp3_windowspath" property="amrTomp3Windowspath" jdbcType="VARCHAR" />
+    <result column="amr_tomp3_windowspathtemp" property="amrTomp3Windowspathtemp" jdbcType="VARCHAR" />
+    <result column="amr_tomp3_linuxpath" property="amrTomp3Linuxpath" jdbcType="VARCHAR" />
+    <result column="authentication_basepath" property="authenticationBasepath" jdbcType="VARCHAR" />
+    <result column="baby_coin" property="babyCoin" jdbcType="VARCHAR" />
+    <result column="consul_amount" property="consulAmount" jdbcType="VARCHAR" />
+    <result column="once_consult_need_baby_coin" property="onceConsultNeedBabyCoin" jdbcType="VARCHAR" />
+    <result column="aliyun_accesskey" property="aliyunAccesskey" jdbcType="VARCHAR" />
+    <result column="aliyun_secret" property="aliyunSecret" jdbcType="VARCHAR" />
+    <result column="opensearch_host" property="opensearchHost" jdbcType="VARCHAR" />
+    <result column="opensearch_hospital" property="opensearchHospital" jdbcType="VARCHAR" />
+    <result column="opensearch_illness" property="opensearchIllness" jdbcType="VARCHAR" />
+    <result column="opensearch_doctor" property="opensearchDoctor" jdbcType="VARCHAR" />
+    <result column="oss_host" property="ossHost" jdbcType="VARCHAR" />
+    <result column="oss_bucket_doctor_pic" property="ossBucketDoctorPic" jdbcType="VARCHAR" />
+    <result column="oss_bucket_article_pic" property="ossBucketArticlePic" jdbcType="VARCHAR" />
+    <result column="oss_bucket_consult_pic" property="ossBucketConsultPic" jdbcType="VARCHAR" />
+    <result column="app_id" property="appId" jdbcType="VARCHAR" />
+    <result column="partner" property="partner" jdbcType="VARCHAR" />
+    <result column="partner_key" property="partnerKey" jdbcType="VARCHAR" />
+    <result column="gateurl" property="gateurl" jdbcType="VARCHAR" />
+    <result column="transfers" property="transfers" jdbcType="VARCHAR" />
+    <result column="payresult" property="payresult" jdbcType="VARCHAR" />
+    <result column="sign_method" property="signMethod" jdbcType="VARCHAR" />
+    <result column="notify_appoint_url" property="notifyAppointUrl" jdbcType="VARCHAR" />
+    <result column="notify_insurance_url" property="notifyInsuranceUrl" jdbcType="VARCHAR" />
+    <result column="notify_customer_url" property="notifyCustomerUrl" jdbcType="VARCHAR" />
+    <result column="notify_consultphone_url" property="notifyConsultphoneUrl" jdbcType="VARCHAR" />
+    <result column="notify_umbrella_url" property="notifyUmbrellaUrl" jdbcType="VARCHAR" />
+    <result column="notify_doctorconsultpay_url" property="notifyDoctorconsultpayUrl" jdbcType="VARCHAR" />
+    <result column="notify_loveplan_url" property="notifyLoveplanUrl" jdbcType="VARCHAR" />
+    <result column="day_quarter_number" property="dayQuarterNumber" jdbcType="VARCHAR" />
+    <result column="visit_interval" property="visitInterval" jdbcType="VARCHAR" />
+    <result column="market_web_url" property="marketWebUrl" jdbcType="VARCHAR" />
+    <result column="wisdom_web_url" property="wisdomWebUrl" jdbcType="VARCHAR" />
+    <result column="angel_web_url" property="angelWebUrl" jdbcType="VARCHAR" />
+    <result column="keeper_web_url" property="keeperWebUrl" jdbcType="VARCHAR" />
+    <result column="doctor_web_url" property="doctorWebUrl" jdbcType="VARCHAR" />
+    <result column="titan_web_url" property="titanWebUrl" jdbcType="VARCHAR" />
+    <result column="max_instant_consult_num" property="maxInstantConsultNum" jdbcType="VARCHAR" />
+    <result column="max_instant_consult_start_time" property="maxInstantConsultStartTime" jdbcType="VARCHAR" />
+    <result column="max_instant_consult_end_time" property="maxInstantConsultEndTime" jdbcType="VARCHAR" />
+    <result column="createconsult_list" property="createconsultList" jdbcType="VARCHAR" />
+    <result column="bad_evaluate_templete_id" property="badEvaluateTempleteId" jdbcType="VARCHAR" />
+    <result column="web_app_name" property="webAppName" jdbcType="VARCHAR" />
+    <result column="shortmessageswitch_receivertype_doctor" property="shortmessageswitchReceivertypeDoctor" jdbcType="VARCHAR" />
+    <result column="bak_1" property="bak1" jdbcType="VARCHAR" />
+    <result column="bak_2" property="bak2" jdbcType="VARCHAR" />
+    <result column="bak_3" property="bak3" jdbcType="VARCHAR" />
+    <result column="bak_4" property="bak4" jdbcType="VARCHAR" />
+    <result column="bak_5" property="bak5" jdbcType="VARCHAR" />
+    <result column="bak_6" property="bak6" jdbcType="VARCHAR" />
+    <result column="bak_7" property="bak7" jdbcType="VARCHAR" />
+    <result column="bak_8" property="bak8" jdbcType="VARCHAR" />
+    <result column="bak_9" property="bak9" jdbcType="VARCHAR" />
+    <result column="bak_10" property="bak10" jdbcType="VARCHAR" />
+    <result column="bak_11" property="bak11" jdbcType="VARCHAR" />
+    <result column="bak_12" property="bak12" jdbcType="VARCHAR" />
+    <result column="bak_13" property="bak13" jdbcType="VARCHAR" />
+    <result column="bak_14" property="bak14" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo" extends="BaseResultMap" >
+    <result column="doctormanager_list" property="doctormanagerList" jdbcType="LONGVARCHAR" />
+    <result column="consult_doctor_marketers" property="consultDoctorMarketers" jdbcType="LONGVARCHAR" />
+    <result column="coop_bhq_url" property="coopBhqUrl" jdbcType="LONGVARCHAR" />
+    <result column="coop_wjy_url" property="coopWjyUrl" jdbcType="LONGVARCHAR" />
+    <result column="bak_15" property="bak15" jdbcType="LONGVARCHAR" />
+    <result column="bak_16" property="bak16" jdbcType="LONGVARCHAR" />
+    <result column="bak_17" property="bak17" jdbcType="LONGVARCHAR" />
+    <result column="bak_18" property="bak18" jdbcType="LONGVARCHAR" />
+    <result column="bak_19" property="bak19" jdbcType="LONGVARCHAR" />
+    <result column="bak_20" property="bak20" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_corpid, user_sectet, amr_tomp3_func_windows, amr_tomp3_func_linux, baodf_domain_value, 
+    amr_tomp3_windowspath, amr_tomp3_windowspathtemp, amr_tomp3_linuxpath, authentication_basepath, 
+    baby_coin, consul_amount, once_consult_need_baby_coin, aliyun_accesskey, aliyun_secret, 
+    opensearch_host, opensearch_hospital, opensearch_illness, opensearch_doctor, oss_host, 
+    oss_bucket_doctor_pic, oss_bucket_article_pic, oss_bucket_consult_pic, app_id, partner, 
+    partner_key, gateurl, transfers, payresult, sign_method, notify_appoint_url, notify_insurance_url, 
+    notify_customer_url, notify_consultphone_url, notify_umbrella_url, notify_doctorconsultpay_url, 
+    notify_loveplan_url, day_quarter_number, visit_interval, market_web_url, wisdom_web_url, 
+    angel_web_url, keeper_web_url, doctor_web_url, titan_web_url, max_instant_consult_num, 
+    max_instant_consult_start_time, max_instant_consult_end_time, createconsult_list, 
+    bad_evaluate_templete_id, web_app_name, shortmessageswitch_receivertype_doctor, bak_1, 
+    bak_2, bak_3, bak_4, bak_5, bak_6, bak_7, bak_8, bak_9, bak_10, bak_11, bak_12, bak_13, 
+    bak_14
+  </sql>
+  <sql id="Blob_Column_List" >
+    doctormanager_list, consult_doctor_marketers, coop_bhq_url, coop_wjy_url, bak_15, 
+    bak_16, bak_17, bak_18, bak_19, bak_20
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sys_property
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_property
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo" >
+    insert into sys_property (id, user_corpid, user_sectet, 
+      amr_tomp3_func_windows, amr_tomp3_func_linux, 
+      baodf_domain_value, amr_tomp3_windowspath, 
+      amr_tomp3_windowspathtemp, amr_tomp3_linuxpath, 
+      authentication_basepath, baby_coin, consul_amount, 
+      once_consult_need_baby_coin, aliyun_accesskey, 
+      aliyun_secret, opensearch_host, opensearch_hospital, 
+      opensearch_illness, opensearch_doctor, oss_host, 
+      oss_bucket_doctor_pic, oss_bucket_article_pic, 
+      oss_bucket_consult_pic, app_id, partner, 
+      partner_key, gateurl, transfers, 
+      payresult, sign_method, notify_appoint_url, 
+      notify_insurance_url, notify_customer_url, 
+      notify_consultphone_url, notify_umbrella_url, 
+      notify_doctorconsultpay_url, notify_loveplan_url, 
+      day_quarter_number, visit_interval, market_web_url, 
+      wisdom_web_url, angel_web_url, keeper_web_url, 
+      doctor_web_url, titan_web_url, max_instant_consult_num, 
+      max_instant_consult_start_time, max_instant_consult_end_time, 
+      createconsult_list, bad_evaluate_templete_id, 
+      web_app_name, shortmessageswitch_receivertype_doctor, 
+      bak_1, bak_2, bak_3, bak_4, 
+      bak_5, bak_6, bak_7, bak_8, 
+      bak_9, bak_10, bak_11, 
+      bak_12, bak_13, bak_14, 
+      doctormanager_list, consult_doctor_marketers, 
+      coop_bhq_url, coop_wjy_url, bak_15, 
+      bak_16, bak_17, bak_18, 
+      bak_19, bak_20)
+    values (#{id,jdbcType=INTEGER}, #{userCorpid,jdbcType=VARCHAR}, #{userSectet,jdbcType=VARCHAR}, 
+      #{amrTomp3FuncWindows,jdbcType=VARCHAR}, #{amrTomp3FuncLinux,jdbcType=VARCHAR}, 
+      #{baodfDomainValue,jdbcType=VARCHAR}, #{amrTomp3Windowspath,jdbcType=VARCHAR}, 
+      #{amrTomp3Windowspathtemp,jdbcType=VARCHAR}, #{amrTomp3Linuxpath,jdbcType=VARCHAR}, 
+      #{authenticationBasepath,jdbcType=VARCHAR}, #{babyCoin,jdbcType=VARCHAR}, #{consulAmount,jdbcType=VARCHAR}, 
+      #{onceConsultNeedBabyCoin,jdbcType=VARCHAR}, #{aliyunAccesskey,jdbcType=VARCHAR}, 
+      #{aliyunSecret,jdbcType=VARCHAR}, #{opensearchHost,jdbcType=VARCHAR}, #{opensearchHospital,jdbcType=VARCHAR}, 
+      #{opensearchIllness,jdbcType=VARCHAR}, #{opensearchDoctor,jdbcType=VARCHAR}, #{ossHost,jdbcType=VARCHAR}, 
+      #{ossBucketDoctorPic,jdbcType=VARCHAR}, #{ossBucketArticlePic,jdbcType=VARCHAR}, 
+      #{ossBucketConsultPic,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{partner,jdbcType=VARCHAR}, 
+      #{partnerKey,jdbcType=VARCHAR}, #{gateurl,jdbcType=VARCHAR}, #{transfers,jdbcType=VARCHAR}, 
+      #{payresult,jdbcType=VARCHAR}, #{signMethod,jdbcType=VARCHAR}, #{notifyAppointUrl,jdbcType=VARCHAR}, 
+      #{notifyInsuranceUrl,jdbcType=VARCHAR}, #{notifyCustomerUrl,jdbcType=VARCHAR}, 
+      #{notifyConsultphoneUrl,jdbcType=VARCHAR}, #{notifyUmbrellaUrl,jdbcType=VARCHAR}, 
+      #{notifyDoctorconsultpayUrl,jdbcType=VARCHAR}, #{notifyLoveplanUrl,jdbcType=VARCHAR}, 
+      #{dayQuarterNumber,jdbcType=VARCHAR}, #{visitInterval,jdbcType=VARCHAR}, #{marketWebUrl,jdbcType=VARCHAR}, 
+      #{wisdomWebUrl,jdbcType=VARCHAR}, #{angelWebUrl,jdbcType=VARCHAR}, #{keeperWebUrl,jdbcType=VARCHAR}, 
+      #{doctorWebUrl,jdbcType=VARCHAR}, #{titanWebUrl,jdbcType=VARCHAR}, #{maxInstantConsultNum,jdbcType=VARCHAR}, 
+      #{maxInstantConsultStartTime,jdbcType=VARCHAR}, #{maxInstantConsultEndTime,jdbcType=VARCHAR}, 
+      #{createconsultList,jdbcType=VARCHAR}, #{badEvaluateTempleteId,jdbcType=VARCHAR}, 
+      #{webAppName,jdbcType=VARCHAR}, #{shortmessageswitchReceivertypeDoctor,jdbcType=VARCHAR}, 
+      #{bak1,jdbcType=VARCHAR}, #{bak2,jdbcType=VARCHAR}, #{bak3,jdbcType=VARCHAR}, #{bak4,jdbcType=VARCHAR}, 
+      #{bak5,jdbcType=VARCHAR}, #{bak6,jdbcType=VARCHAR}, #{bak7,jdbcType=VARCHAR}, #{bak8,jdbcType=VARCHAR}, 
+      #{bak9,jdbcType=VARCHAR}, #{bak10,jdbcType=VARCHAR}, #{bak11,jdbcType=VARCHAR}, 
+      #{bak12,jdbcType=VARCHAR}, #{bak13,jdbcType=VARCHAR}, #{bak14,jdbcType=VARCHAR}, 
+      #{doctormanagerList,jdbcType=LONGVARCHAR}, #{consultDoctorMarketers,jdbcType=LONGVARCHAR}, 
+      #{coopBhqUrl,jdbcType=LONGVARCHAR}, #{coopWjyUrl,jdbcType=LONGVARCHAR}, #{bak15,jdbcType=LONGVARCHAR}, 
+      #{bak16,jdbcType=LONGVARCHAR}, #{bak17,jdbcType=LONGVARCHAR}, #{bak18,jdbcType=LONGVARCHAR}, 
+      #{bak19,jdbcType=LONGVARCHAR}, #{bak20,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo" >
+    insert into sys_property
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userCorpid != null" >
+        user_corpid,
+      </if>
+      <if test="userSectet != null" >
+        user_sectet,
+      </if>
+      <if test="amrTomp3FuncWindows != null" >
+        amr_tomp3_func_windows,
+      </if>
+      <if test="amrTomp3FuncLinux != null" >
+        amr_tomp3_func_linux,
+      </if>
+      <if test="baodfDomainValue != null" >
+        baodf_domain_value,
+      </if>
+      <if test="amrTomp3Windowspath != null" >
+        amr_tomp3_windowspath,
+      </if>
+      <if test="amrTomp3Windowspathtemp != null" >
+        amr_tomp3_windowspathtemp,
+      </if>
+      <if test="amrTomp3Linuxpath != null" >
+        amr_tomp3_linuxpath,
+      </if>
+      <if test="authenticationBasepath != null" >
+        authentication_basepath,
+      </if>
+      <if test="babyCoin != null" >
+        baby_coin,
+      </if>
+      <if test="consulAmount != null" >
+        consul_amount,
+      </if>
+      <if test="onceConsultNeedBabyCoin != null" >
+        once_consult_need_baby_coin,
+      </if>
+      <if test="aliyunAccesskey != null" >
+        aliyun_accesskey,
+      </if>
+      <if test="aliyunSecret != null" >
+        aliyun_secret,
+      </if>
+      <if test="opensearchHost != null" >
+        opensearch_host,
+      </if>
+      <if test="opensearchHospital != null" >
+        opensearch_hospital,
+      </if>
+      <if test="opensearchIllness != null" >
+        opensearch_illness,
+      </if>
+      <if test="opensearchDoctor != null" >
+        opensearch_doctor,
+      </if>
+      <if test="ossHost != null" >
+        oss_host,
+      </if>
+      <if test="ossBucketDoctorPic != null" >
+        oss_bucket_doctor_pic,
+      </if>
+      <if test="ossBucketArticlePic != null" >
+        oss_bucket_article_pic,
+      </if>
+      <if test="ossBucketConsultPic != null" >
+        oss_bucket_consult_pic,
+      </if>
+      <if test="appId != null" >
+        app_id,
+      </if>
+      <if test="partner != null" >
+        partner,
+      </if>
+      <if test="partnerKey != null" >
+        partner_key,
+      </if>
+      <if test="gateurl != null" >
+        gateurl,
+      </if>
+      <if test="transfers != null" >
+        transfers,
+      </if>
+      <if test="payresult != null" >
+        payresult,
+      </if>
+      <if test="signMethod != null" >
+        sign_method,
+      </if>
+      <if test="notifyAppointUrl != null" >
+        notify_appoint_url,
+      </if>
+      <if test="notifyInsuranceUrl != null" >
+        notify_insurance_url,
+      </if>
+      <if test="notifyCustomerUrl != null" >
+        notify_customer_url,
+      </if>
+      <if test="notifyConsultphoneUrl != null" >
+        notify_consultphone_url,
+      </if>
+      <if test="notifyUmbrellaUrl != null" >
+        notify_umbrella_url,
+      </if>
+      <if test="notifyDoctorconsultpayUrl != null" >
+        notify_doctorconsultpay_url,
+      </if>
+      <if test="notifyLoveplanUrl != null" >
+        notify_loveplan_url,
+      </if>
+      <if test="dayQuarterNumber != null" >
+        day_quarter_number,
+      </if>
+      <if test="visitInterval != null" >
+        visit_interval,
+      </if>
+      <if test="marketWebUrl != null" >
+        market_web_url,
+      </if>
+      <if test="wisdomWebUrl != null" >
+        wisdom_web_url,
+      </if>
+      <if test="angelWebUrl != null" >
+        angel_web_url,
+      </if>
+      <if test="keeperWebUrl != null" >
+        keeper_web_url,
+      </if>
+      <if test="doctorWebUrl != null" >
+        doctor_web_url,
+      </if>
+      <if test="titanWebUrl != null" >
+        titan_web_url,
+      </if>
+      <if test="maxInstantConsultNum != null" >
+        max_instant_consult_num,
+      </if>
+      <if test="maxInstantConsultStartTime != null" >
+        max_instant_consult_start_time,
+      </if>
+      <if test="maxInstantConsultEndTime != null" >
+        max_instant_consult_end_time,
+      </if>
+      <if test="createconsultList != null" >
+        createconsult_list,
+      </if>
+      <if test="badEvaluateTempleteId != null" >
+        bad_evaluate_templete_id,
+      </if>
+      <if test="webAppName != null" >
+        web_app_name,
+      </if>
+      <if test="shortmessageswitchReceivertypeDoctor != null" >
+        shortmessageswitch_receivertype_doctor,
+      </if>
+      <if test="bak1 != null" >
+        bak_1,
+      </if>
+      <if test="bak2 != null" >
+        bak_2,
+      </if>
+      <if test="bak3 != null" >
+        bak_3,
+      </if>
+      <if test="bak4 != null" >
+        bak_4,
+      </if>
+      <if test="bak5 != null" >
+        bak_5,
+      </if>
+      <if test="bak6 != null" >
+        bak_6,
+      </if>
+      <if test="bak7 != null" >
+        bak_7,
+      </if>
+      <if test="bak8 != null" >
+        bak_8,
+      </if>
+      <if test="bak9 != null" >
+        bak_9,
+      </if>
+      <if test="bak10 != null" >
+        bak_10,
+      </if>
+      <if test="bak11 != null" >
+        bak_11,
+      </if>
+      <if test="bak12 != null" >
+        bak_12,
+      </if>
+      <if test="bak13 != null" >
+        bak_13,
+      </if>
+      <if test="bak14 != null" >
+        bak_14,
+      </if>
+      <if test="doctormanagerList != null" >
+        doctormanager_list,
+      </if>
+      <if test="consultDoctorMarketers != null" >
+        consult_doctor_marketers,
+      </if>
+      <if test="coopBhqUrl != null" >
+        coop_bhq_url,
+      </if>
+      <if test="coopWjyUrl != null" >
+        coop_wjy_url,
+      </if>
+      <if test="bak15 != null" >
+        bak_15,
+      </if>
+      <if test="bak16 != null" >
+        bak_16,
+      </if>
+      <if test="bak17 != null" >
+        bak_17,
+      </if>
+      <if test="bak18 != null" >
+        bak_18,
+      </if>
+      <if test="bak19 != null" >
+        bak_19,
+      </if>
+      <if test="bak20 != null" >
+        bak_20,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userCorpid != null" >
+        #{userCorpid,jdbcType=VARCHAR},
+      </if>
+      <if test="userSectet != null" >
+        #{userSectet,jdbcType=VARCHAR},
+      </if>
+      <if test="amrTomp3FuncWindows != null" >
+        #{amrTomp3FuncWindows,jdbcType=VARCHAR},
+      </if>
+      <if test="amrTomp3FuncLinux != null" >
+        #{amrTomp3FuncLinux,jdbcType=VARCHAR},
+      </if>
+      <if test="baodfDomainValue != null" >
+        #{baodfDomainValue,jdbcType=VARCHAR},
+      </if>
+      <if test="amrTomp3Windowspath != null" >
+        #{amrTomp3Windowspath,jdbcType=VARCHAR},
+      </if>
+      <if test="amrTomp3Windowspathtemp != null" >
+        #{amrTomp3Windowspathtemp,jdbcType=VARCHAR},
+      </if>
+      <if test="amrTomp3Linuxpath != null" >
+        #{amrTomp3Linuxpath,jdbcType=VARCHAR},
+      </if>
+      <if test="authenticationBasepath != null" >
+        #{authenticationBasepath,jdbcType=VARCHAR},
+      </if>
+      <if test="babyCoin != null" >
+        #{babyCoin,jdbcType=VARCHAR},
+      </if>
+      <if test="consulAmount != null" >
+        #{consulAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="onceConsultNeedBabyCoin != null" >
+        #{onceConsultNeedBabyCoin,jdbcType=VARCHAR},
+      </if>
+      <if test="aliyunAccesskey != null" >
+        #{aliyunAccesskey,jdbcType=VARCHAR},
+      </if>
+      <if test="aliyunSecret != null" >
+        #{aliyunSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="opensearchHost != null" >
+        #{opensearchHost,jdbcType=VARCHAR},
+      </if>
+      <if test="opensearchHospital != null" >
+        #{opensearchHospital,jdbcType=VARCHAR},
+      </if>
+      <if test="opensearchIllness != null" >
+        #{opensearchIllness,jdbcType=VARCHAR},
+      </if>
+      <if test="opensearchDoctor != null" >
+        #{opensearchDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="ossHost != null" >
+        #{ossHost,jdbcType=VARCHAR},
+      </if>
+      <if test="ossBucketDoctorPic != null" >
+        #{ossBucketDoctorPic,jdbcType=VARCHAR},
+      </if>
+      <if test="ossBucketArticlePic != null" >
+        #{ossBucketArticlePic,jdbcType=VARCHAR},
+      </if>
+      <if test="ossBucketConsultPic != null" >
+        #{ossBucketConsultPic,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="partner != null" >
+        #{partner,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerKey != null" >
+        #{partnerKey,jdbcType=VARCHAR},
+      </if>
+      <if test="gateurl != null" >
+        #{gateurl,jdbcType=VARCHAR},
+      </if>
+      <if test="transfers != null" >
+        #{transfers,jdbcType=VARCHAR},
+      </if>
+      <if test="payresult != null" >
+        #{payresult,jdbcType=VARCHAR},
+      </if>
+      <if test="signMethod != null" >
+        #{signMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyAppointUrl != null" >
+        #{notifyAppointUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyInsuranceUrl != null" >
+        #{notifyInsuranceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyCustomerUrl != null" >
+        #{notifyCustomerUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyConsultphoneUrl != null" >
+        #{notifyConsultphoneUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyUmbrellaUrl != null" >
+        #{notifyUmbrellaUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyDoctorconsultpayUrl != null" >
+        #{notifyDoctorconsultpayUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyLoveplanUrl != null" >
+        #{notifyLoveplanUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="dayQuarterNumber != null" >
+        #{dayQuarterNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="visitInterval != null" >
+        #{visitInterval,jdbcType=VARCHAR},
+      </if>
+      <if test="marketWebUrl != null" >
+        #{marketWebUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="wisdomWebUrl != null" >
+        #{wisdomWebUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="angelWebUrl != null" >
+        #{angelWebUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="keeperWebUrl != null" >
+        #{keeperWebUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorWebUrl != null" >
+        #{doctorWebUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="titanWebUrl != null" >
+        #{titanWebUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="maxInstantConsultNum != null" >
+        #{maxInstantConsultNum,jdbcType=VARCHAR},
+      </if>
+      <if test="maxInstantConsultStartTime != null" >
+        #{maxInstantConsultStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="maxInstantConsultEndTime != null" >
+        #{maxInstantConsultEndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createconsultList != null" >
+        #{createconsultList,jdbcType=VARCHAR},
+      </if>
+      <if test="badEvaluateTempleteId != null" >
+        #{badEvaluateTempleteId,jdbcType=VARCHAR},
+      </if>
+      <if test="webAppName != null" >
+        #{webAppName,jdbcType=VARCHAR},
+      </if>
+      <if test="shortmessageswitchReceivertypeDoctor != null" >
+        #{shortmessageswitchReceivertypeDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="bak1 != null" >
+        #{bak1,jdbcType=VARCHAR},
+      </if>
+      <if test="bak2 != null" >
+        #{bak2,jdbcType=VARCHAR},
+      </if>
+      <if test="bak3 != null" >
+        #{bak3,jdbcType=VARCHAR},
+      </if>
+      <if test="bak4 != null" >
+        #{bak4,jdbcType=VARCHAR},
+      </if>
+      <if test="bak5 != null" >
+        #{bak5,jdbcType=VARCHAR},
+      </if>
+      <if test="bak6 != null" >
+        #{bak6,jdbcType=VARCHAR},
+      </if>
+      <if test="bak7 != null" >
+        #{bak7,jdbcType=VARCHAR},
+      </if>
+      <if test="bak8 != null" >
+        #{bak8,jdbcType=VARCHAR},
+      </if>
+      <if test="bak9 != null" >
+        #{bak9,jdbcType=VARCHAR},
+      </if>
+      <if test="bak10 != null" >
+        #{bak10,jdbcType=VARCHAR},
+      </if>
+      <if test="bak11 != null" >
+        #{bak11,jdbcType=VARCHAR},
+      </if>
+      <if test="bak12 != null" >
+        #{bak12,jdbcType=VARCHAR},
+      </if>
+      <if test="bak13 != null" >
+        #{bak13,jdbcType=VARCHAR},
+      </if>
+      <if test="bak14 != null" >
+        #{bak14,jdbcType=VARCHAR},
+      </if>
+      <if test="doctormanagerList != null" >
+        #{doctormanagerList,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="consultDoctorMarketers != null" >
+        #{consultDoctorMarketers,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="coopBhqUrl != null" >
+        #{coopBhqUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="coopWjyUrl != null" >
+        #{coopWjyUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bak15 != null" >
+        #{bak15,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bak16 != null" >
+        #{bak16,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bak17 != null" >
+        #{bak17,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bak18 != null" >
+        #{bak18,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bak19 != null" >
+        #{bak19,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bak20 != null" >
+        #{bak20,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo" >
+    update sys_property
+    <set >
+      <if test="userCorpid != null" >
+        user_corpid = #{userCorpid,jdbcType=VARCHAR},
+      </if>
+      <if test="userSectet != null" >
+        user_sectet = #{userSectet,jdbcType=VARCHAR},
+      </if>
+      <if test="amrTomp3FuncWindows != null" >
+        amr_tomp3_func_windows = #{amrTomp3FuncWindows,jdbcType=VARCHAR},
+      </if>
+      <if test="amrTomp3FuncLinux != null" >
+        amr_tomp3_func_linux = #{amrTomp3FuncLinux,jdbcType=VARCHAR},
+      </if>
+      <if test="baodfDomainValue != null" >
+        baodf_domain_value = #{baodfDomainValue,jdbcType=VARCHAR},
+      </if>
+      <if test="amrTomp3Windowspath != null" >
+        amr_tomp3_windowspath = #{amrTomp3Windowspath,jdbcType=VARCHAR},
+      </if>
+      <if test="amrTomp3Windowspathtemp != null" >
+        amr_tomp3_windowspathtemp = #{amrTomp3Windowspathtemp,jdbcType=VARCHAR},
+      </if>
+      <if test="amrTomp3Linuxpath != null" >
+        amr_tomp3_linuxpath = #{amrTomp3Linuxpath,jdbcType=VARCHAR},
+      </if>
+      <if test="authenticationBasepath != null" >
+        authentication_basepath = #{authenticationBasepath,jdbcType=VARCHAR},
+      </if>
+      <if test="babyCoin != null" >
+        baby_coin = #{babyCoin,jdbcType=VARCHAR},
+      </if>
+      <if test="consulAmount != null" >
+        consul_amount = #{consulAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="onceConsultNeedBabyCoin != null" >
+        once_consult_need_baby_coin = #{onceConsultNeedBabyCoin,jdbcType=VARCHAR},
+      </if>
+      <if test="aliyunAccesskey != null" >
+        aliyun_accesskey = #{aliyunAccesskey,jdbcType=VARCHAR},
+      </if>
+      <if test="aliyunSecret != null" >
+        aliyun_secret = #{aliyunSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="opensearchHost != null" >
+        opensearch_host = #{opensearchHost,jdbcType=VARCHAR},
+      </if>
+      <if test="opensearchHospital != null" >
+        opensearch_hospital = #{opensearchHospital,jdbcType=VARCHAR},
+      </if>
+      <if test="opensearchIllness != null" >
+        opensearch_illness = #{opensearchIllness,jdbcType=VARCHAR},
+      </if>
+      <if test="opensearchDoctor != null" >
+        opensearch_doctor = #{opensearchDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="ossHost != null" >
+        oss_host = #{ossHost,jdbcType=VARCHAR},
+      </if>
+      <if test="ossBucketDoctorPic != null" >
+        oss_bucket_doctor_pic = #{ossBucketDoctorPic,jdbcType=VARCHAR},
+      </if>
+      <if test="ossBucketArticlePic != null" >
+        oss_bucket_article_pic = #{ossBucketArticlePic,jdbcType=VARCHAR},
+      </if>
+      <if test="ossBucketConsultPic != null" >
+        oss_bucket_consult_pic = #{ossBucketConsultPic,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        app_id = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="partner != null" >
+        partner = #{partner,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerKey != null" >
+        partner_key = #{partnerKey,jdbcType=VARCHAR},
+      </if>
+      <if test="gateurl != null" >
+        gateurl = #{gateurl,jdbcType=VARCHAR},
+      </if>
+      <if test="transfers != null" >
+        transfers = #{transfers,jdbcType=VARCHAR},
+      </if>
+      <if test="payresult != null" >
+        payresult = #{payresult,jdbcType=VARCHAR},
+      </if>
+      <if test="signMethod != null" >
+        sign_method = #{signMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyAppointUrl != null" >
+        notify_appoint_url = #{notifyAppointUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyInsuranceUrl != null" >
+        notify_insurance_url = #{notifyInsuranceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyCustomerUrl != null" >
+        notify_customer_url = #{notifyCustomerUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyConsultphoneUrl != null" >
+        notify_consultphone_url = #{notifyConsultphoneUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyUmbrellaUrl != null" >
+        notify_umbrella_url = #{notifyUmbrellaUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyDoctorconsultpayUrl != null" >
+        notify_doctorconsultpay_url = #{notifyDoctorconsultpayUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="notifyLoveplanUrl != null" >
+        notify_loveplan_url = #{notifyLoveplanUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="dayQuarterNumber != null" >
+        day_quarter_number = #{dayQuarterNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="visitInterval != null" >
+        visit_interval = #{visitInterval,jdbcType=VARCHAR},
+      </if>
+      <if test="marketWebUrl != null" >
+        market_web_url = #{marketWebUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="wisdomWebUrl != null" >
+        wisdom_web_url = #{wisdomWebUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="angelWebUrl != null" >
+        angel_web_url = #{angelWebUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="keeperWebUrl != null" >
+        keeper_web_url = #{keeperWebUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorWebUrl != null" >
+        doctor_web_url = #{doctorWebUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="titanWebUrl != null" >
+        titan_web_url = #{titanWebUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="maxInstantConsultNum != null" >
+        max_instant_consult_num = #{maxInstantConsultNum,jdbcType=VARCHAR},
+      </if>
+      <if test="maxInstantConsultStartTime != null" >
+        max_instant_consult_start_time = #{maxInstantConsultStartTime,jdbcType=VARCHAR},
+      </if>
+      <if test="maxInstantConsultEndTime != null" >
+        max_instant_consult_end_time = #{maxInstantConsultEndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createconsultList != null" >
+        createconsult_list = #{createconsultList,jdbcType=VARCHAR},
+      </if>
+      <if test="badEvaluateTempleteId != null" >
+        bad_evaluate_templete_id = #{badEvaluateTempleteId,jdbcType=VARCHAR},
+      </if>
+      <if test="webAppName != null" >
+        web_app_name = #{webAppName,jdbcType=VARCHAR},
+      </if>
+      <if test="shortmessageswitchReceivertypeDoctor != null" >
+        shortmessageswitch_receivertype_doctor = #{shortmessageswitchReceivertypeDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="bak1 != null" >
+        bak_1 = #{bak1,jdbcType=VARCHAR},
+      </if>
+      <if test="bak2 != null" >
+        bak_2 = #{bak2,jdbcType=VARCHAR},
+      </if>
+      <if test="bak3 != null" >
+        bak_3 = #{bak3,jdbcType=VARCHAR},
+      </if>
+      <if test="bak4 != null" >
+        bak_4 = #{bak4,jdbcType=VARCHAR},
+      </if>
+      <if test="bak5 != null" >
+        bak_5 = #{bak5,jdbcType=VARCHAR},
+      </if>
+      <if test="bak6 != null" >
+        bak_6 = #{bak6,jdbcType=VARCHAR},
+      </if>
+      <if test="bak7 != null" >
+        bak_7 = #{bak7,jdbcType=VARCHAR},
+      </if>
+      <if test="bak8 != null" >
+        bak_8 = #{bak8,jdbcType=VARCHAR},
+      </if>
+      <if test="bak9 != null" >
+        bak_9 = #{bak9,jdbcType=VARCHAR},
+      </if>
+      <if test="bak10 != null" >
+        bak_10 = #{bak10,jdbcType=VARCHAR},
+      </if>
+      <if test="bak11 != null" >
+        bak_11 = #{bak11,jdbcType=VARCHAR},
+      </if>
+      <if test="bak12 != null" >
+        bak_12 = #{bak12,jdbcType=VARCHAR},
+      </if>
+      <if test="bak13 != null" >
+        bak_13 = #{bak13,jdbcType=VARCHAR},
+      </if>
+      <if test="bak14 != null" >
+        bak_14 = #{bak14,jdbcType=VARCHAR},
+      </if>
+      <if test="doctormanagerList != null" >
+        doctormanager_list = #{doctormanagerList,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="consultDoctorMarketers != null" >
+        consult_doctor_marketers = #{consultDoctorMarketers,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="coopBhqUrl != null" >
+        coop_bhq_url = #{coopBhqUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="coopWjyUrl != null" >
+        coop_wjy_url = #{coopWjyUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bak15 != null" >
+        bak_15 = #{bak15,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bak16 != null" >
+        bak_16 = #{bak16,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bak17 != null" >
+        bak_17 = #{bak17,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bak18 != null" >
+        bak_18 = #{bak18,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bak19 != null" >
+        bak_19 = #{bak19,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bak20 != null" >
+        bak_20 = #{bak20,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo" >
+    update sys_property
+    set user_corpid = #{userCorpid,jdbcType=VARCHAR},
+      user_sectet = #{userSectet,jdbcType=VARCHAR},
+      amr_tomp3_func_windows = #{amrTomp3FuncWindows,jdbcType=VARCHAR},
+      amr_tomp3_func_linux = #{amrTomp3FuncLinux,jdbcType=VARCHAR},
+      baodf_domain_value = #{baodfDomainValue,jdbcType=VARCHAR},
+      amr_tomp3_windowspath = #{amrTomp3Windowspath,jdbcType=VARCHAR},
+      amr_tomp3_windowspathtemp = #{amrTomp3Windowspathtemp,jdbcType=VARCHAR},
+      amr_tomp3_linuxpath = #{amrTomp3Linuxpath,jdbcType=VARCHAR},
+      authentication_basepath = #{authenticationBasepath,jdbcType=VARCHAR},
+      baby_coin = #{babyCoin,jdbcType=VARCHAR},
+      consul_amount = #{consulAmount,jdbcType=VARCHAR},
+      once_consult_need_baby_coin = #{onceConsultNeedBabyCoin,jdbcType=VARCHAR},
+      aliyun_accesskey = #{aliyunAccesskey,jdbcType=VARCHAR},
+      aliyun_secret = #{aliyunSecret,jdbcType=VARCHAR},
+      opensearch_host = #{opensearchHost,jdbcType=VARCHAR},
+      opensearch_hospital = #{opensearchHospital,jdbcType=VARCHAR},
+      opensearch_illness = #{opensearchIllness,jdbcType=VARCHAR},
+      opensearch_doctor = #{opensearchDoctor,jdbcType=VARCHAR},
+      oss_host = #{ossHost,jdbcType=VARCHAR},
+      oss_bucket_doctor_pic = #{ossBucketDoctorPic,jdbcType=VARCHAR},
+      oss_bucket_article_pic = #{ossBucketArticlePic,jdbcType=VARCHAR},
+      oss_bucket_consult_pic = #{ossBucketConsultPic,jdbcType=VARCHAR},
+      app_id = #{appId,jdbcType=VARCHAR},
+      partner = #{partner,jdbcType=VARCHAR},
+      partner_key = #{partnerKey,jdbcType=VARCHAR},
+      gateurl = #{gateurl,jdbcType=VARCHAR},
+      transfers = #{transfers,jdbcType=VARCHAR},
+      payresult = #{payresult,jdbcType=VARCHAR},
+      sign_method = #{signMethod,jdbcType=VARCHAR},
+      notify_appoint_url = #{notifyAppointUrl,jdbcType=VARCHAR},
+      notify_insurance_url = #{notifyInsuranceUrl,jdbcType=VARCHAR},
+      notify_customer_url = #{notifyCustomerUrl,jdbcType=VARCHAR},
+      notify_consultphone_url = #{notifyConsultphoneUrl,jdbcType=VARCHAR},
+      notify_umbrella_url = #{notifyUmbrellaUrl,jdbcType=VARCHAR},
+      notify_doctorconsultpay_url = #{notifyDoctorconsultpayUrl,jdbcType=VARCHAR},
+      notify_loveplan_url = #{notifyLoveplanUrl,jdbcType=VARCHAR},
+      day_quarter_number = #{dayQuarterNumber,jdbcType=VARCHAR},
+      visit_interval = #{visitInterval,jdbcType=VARCHAR},
+      market_web_url = #{marketWebUrl,jdbcType=VARCHAR},
+      wisdom_web_url = #{wisdomWebUrl,jdbcType=VARCHAR},
+      angel_web_url = #{angelWebUrl,jdbcType=VARCHAR},
+      keeper_web_url = #{keeperWebUrl,jdbcType=VARCHAR},
+      doctor_web_url = #{doctorWebUrl,jdbcType=VARCHAR},
+      titan_web_url = #{titanWebUrl,jdbcType=VARCHAR},
+      max_instant_consult_num = #{maxInstantConsultNum,jdbcType=VARCHAR},
+      max_instant_consult_start_time = #{maxInstantConsultStartTime,jdbcType=VARCHAR},
+      max_instant_consult_end_time = #{maxInstantConsultEndTime,jdbcType=VARCHAR},
+      createconsult_list = #{createconsultList,jdbcType=VARCHAR},
+      bad_evaluate_templete_id = #{badEvaluateTempleteId,jdbcType=VARCHAR},
+      web_app_name = #{webAppName,jdbcType=VARCHAR},
+      shortmessageswitch_receivertype_doctor = #{shortmessageswitchReceivertypeDoctor,jdbcType=VARCHAR},
+      bak_1 = #{bak1,jdbcType=VARCHAR},
+      bak_2 = #{bak2,jdbcType=VARCHAR},
+      bak_3 = #{bak3,jdbcType=VARCHAR},
+      bak_4 = #{bak4,jdbcType=VARCHAR},
+      bak_5 = #{bak5,jdbcType=VARCHAR},
+      bak_6 = #{bak6,jdbcType=VARCHAR},
+      bak_7 = #{bak7,jdbcType=VARCHAR},
+      bak_8 = #{bak8,jdbcType=VARCHAR},
+      bak_9 = #{bak9,jdbcType=VARCHAR},
+      bak_10 = #{bak10,jdbcType=VARCHAR},
+      bak_11 = #{bak11,jdbcType=VARCHAR},
+      bak_12 = #{bak12,jdbcType=VARCHAR},
+      bak_13 = #{bak13,jdbcType=VARCHAR},
+      bak_14 = #{bak14,jdbcType=VARCHAR},
+      doctormanager_list = #{doctormanagerList,jdbcType=LONGVARCHAR},
+      consult_doctor_marketers = #{consultDoctorMarketers,jdbcType=LONGVARCHAR},
+      coop_bhq_url = #{coopBhqUrl,jdbcType=LONGVARCHAR},
+      coop_wjy_url = #{coopWjyUrl,jdbcType=LONGVARCHAR},
+      bak_15 = #{bak15,jdbcType=LONGVARCHAR},
+      bak_16 = #{bak16,jdbcType=LONGVARCHAR},
+      bak_17 = #{bak17,jdbcType=LONGVARCHAR},
+      bak_18 = #{bak18,jdbcType=LONGVARCHAR},
+      bak_19 = #{bak19,jdbcType=LONGVARCHAR},
+      bak_20 = #{bak20,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVo" >
+    update sys_property
+    set user_corpid = #{userCorpid,jdbcType=VARCHAR},
+      user_sectet = #{userSectet,jdbcType=VARCHAR},
+      amr_tomp3_func_windows = #{amrTomp3FuncWindows,jdbcType=VARCHAR},
+      amr_tomp3_func_linux = #{amrTomp3FuncLinux,jdbcType=VARCHAR},
+      baodf_domain_value = #{baodfDomainValue,jdbcType=VARCHAR},
+      amr_tomp3_windowspath = #{amrTomp3Windowspath,jdbcType=VARCHAR},
+      amr_tomp3_windowspathtemp = #{amrTomp3Windowspathtemp,jdbcType=VARCHAR},
+      amr_tomp3_linuxpath = #{amrTomp3Linuxpath,jdbcType=VARCHAR},
+      authentication_basepath = #{authenticationBasepath,jdbcType=VARCHAR},
+      baby_coin = #{babyCoin,jdbcType=VARCHAR},
+      consul_amount = #{consulAmount,jdbcType=VARCHAR},
+      once_consult_need_baby_coin = #{onceConsultNeedBabyCoin,jdbcType=VARCHAR},
+      aliyun_accesskey = #{aliyunAccesskey,jdbcType=VARCHAR},
+      aliyun_secret = #{aliyunSecret,jdbcType=VARCHAR},
+      opensearch_host = #{opensearchHost,jdbcType=VARCHAR},
+      opensearch_hospital = #{opensearchHospital,jdbcType=VARCHAR},
+      opensearch_illness = #{opensearchIllness,jdbcType=VARCHAR},
+      opensearch_doctor = #{opensearchDoctor,jdbcType=VARCHAR},
+      oss_host = #{ossHost,jdbcType=VARCHAR},
+      oss_bucket_doctor_pic = #{ossBucketDoctorPic,jdbcType=VARCHAR},
+      oss_bucket_article_pic = #{ossBucketArticlePic,jdbcType=VARCHAR},
+      oss_bucket_consult_pic = #{ossBucketConsultPic,jdbcType=VARCHAR},
+      app_id = #{appId,jdbcType=VARCHAR},
+      partner = #{partner,jdbcType=VARCHAR},
+      partner_key = #{partnerKey,jdbcType=VARCHAR},
+      gateurl = #{gateurl,jdbcType=VARCHAR},
+      transfers = #{transfers,jdbcType=VARCHAR},
+      payresult = #{payresult,jdbcType=VARCHAR},
+      sign_method = #{signMethod,jdbcType=VARCHAR},
+      notify_appoint_url = #{notifyAppointUrl,jdbcType=VARCHAR},
+      notify_insurance_url = #{notifyInsuranceUrl,jdbcType=VARCHAR},
+      notify_customer_url = #{notifyCustomerUrl,jdbcType=VARCHAR},
+      notify_consultphone_url = #{notifyConsultphoneUrl,jdbcType=VARCHAR},
+      notify_umbrella_url = #{notifyUmbrellaUrl,jdbcType=VARCHAR},
+      notify_doctorconsultpay_url = #{notifyDoctorconsultpayUrl,jdbcType=VARCHAR},
+      notify_loveplan_url = #{notifyLoveplanUrl,jdbcType=VARCHAR},
+      day_quarter_number = #{dayQuarterNumber,jdbcType=VARCHAR},
+      visit_interval = #{visitInterval,jdbcType=VARCHAR},
+      market_web_url = #{marketWebUrl,jdbcType=VARCHAR},
+      wisdom_web_url = #{wisdomWebUrl,jdbcType=VARCHAR},
+      angel_web_url = #{angelWebUrl,jdbcType=VARCHAR},
+      keeper_web_url = #{keeperWebUrl,jdbcType=VARCHAR},
+      doctor_web_url = #{doctorWebUrl,jdbcType=VARCHAR},
+      titan_web_url = #{titanWebUrl,jdbcType=VARCHAR},
+      max_instant_consult_num = #{maxInstantConsultNum,jdbcType=VARCHAR},
+      max_instant_consult_start_time = #{maxInstantConsultStartTime,jdbcType=VARCHAR},
+      max_instant_consult_end_time = #{maxInstantConsultEndTime,jdbcType=VARCHAR},
+      createconsult_list = #{createconsultList,jdbcType=VARCHAR},
+      bad_evaluate_templete_id = #{badEvaluateTempleteId,jdbcType=VARCHAR},
+      web_app_name = #{webAppName,jdbcType=VARCHAR},
+      shortmessageswitch_receivertype_doctor = #{shortmessageswitchReceivertypeDoctor,jdbcType=VARCHAR},
+      bak_1 = #{bak1,jdbcType=VARCHAR},
+      bak_2 = #{bak2,jdbcType=VARCHAR},
+      bak_3 = #{bak3,jdbcType=VARCHAR},
+      bak_4 = #{bak4,jdbcType=VARCHAR},
+      bak_5 = #{bak5,jdbcType=VARCHAR},
+      bak_6 = #{bak6,jdbcType=VARCHAR},
+      bak_7 = #{bak7,jdbcType=VARCHAR},
+      bak_8 = #{bak8,jdbcType=VARCHAR},
+      bak_9 = #{bak9,jdbcType=VARCHAR},
+      bak_10 = #{bak10,jdbcType=VARCHAR},
+      bak_11 = #{bak11,jdbcType=VARCHAR},
+      bak_12 = #{bak12,jdbcType=VARCHAR},
+      bak_13 = #{bak13,jdbcType=VARCHAR},
+      bak_14 = #{bak14,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
