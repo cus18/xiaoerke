@@ -147,7 +147,7 @@ define(['appPatientConsult'], function(app){
                             public: true
                         }
                     })
-                   /* .state('patientConsultNoFee', {
+                    .state('patientConsultNoFee', {
                         url: '/patientConsultNoFee',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'patientConsultNoFeeCtrl',
@@ -162,7 +162,7 @@ define(['appPatientConsult'], function(app){
                         data: {
                             public: true
                         }
-                    })*/
+                    })
                     .state('patientConsultInviteOld', {
                         url: '/patientConsultInviteOld/:oldOpenId,:marketer',
                         templateProvider: function() { return lazyDeferred.promise; },
