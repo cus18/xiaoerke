@@ -50,6 +50,19 @@ define(['appPlayTour'], function(app){
                             }
                         }
                     })
+                    .state('patientConsultNoFee', {
+                        url: '/patientConsultNoFee',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'patientConsultNoFeeCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.patientConsultNoFee',
+                                    ['js/controllers/playtour/patientConsultNoFeeCtrl.js?ver='+wxVersion,
+                                        'styles/playtour/patientConsultNoFee.css?ver='+wxVersion],
+                                    'js/views/playtour/patientConsultNoFee.html?ver='+wxVersion);
+                            }
+                        }
+                    })
 
 
                 $urlRouterProvider.otherwise('playtourShare');
