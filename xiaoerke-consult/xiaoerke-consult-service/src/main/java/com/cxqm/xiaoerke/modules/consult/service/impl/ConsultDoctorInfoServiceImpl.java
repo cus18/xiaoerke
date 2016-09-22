@@ -14,6 +14,8 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.sys.dao.SysPropertyDao;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
@@ -58,6 +60,9 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
 
     @Autowired
     SystemService systemService;
+
+    @Autowired
+    SysPropertyDao sysPropertyDao;
 
     @Override
     public int saveConsultDoctorInfo(ConsultDoctorInfoVo vo) {
@@ -173,6 +178,12 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
     public List<User> findUserOrderByDepartment(User user) {
         List<User>	users = consultDoctorInfoDao.findUserOrderByDepartment(user);
         return users;
+    }
+
+    @Override
+    public SysPropertyVoWithBLOBsVo getSysProperty() {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyDao.selectByPrimaryKey(1);
+        return sysPropertyVoWithBLOBsVo;
     }
 
     @Override

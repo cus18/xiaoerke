@@ -14,7 +14,10 @@ import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultRecordMongoDBServic
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
@@ -73,6 +76,9 @@ public class ConsultDoctorController extends BaseController {
 
     @Autowired
     private ConsultSessionPropertyService consultSessionPropertyService;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
     @RequestMapping(value = "/getCurrentUserHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -265,7 +271,7 @@ public class ConsultDoctorController extends BaseController {
     public
     @ResponseBody//@RequestBody
     Map<String, Object> test( Map<String, Object> params) {
-
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("userName","李军");
         GetCSDoctorList(response);

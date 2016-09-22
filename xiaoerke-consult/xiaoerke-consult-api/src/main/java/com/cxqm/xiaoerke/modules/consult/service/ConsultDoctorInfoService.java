@@ -6,6 +6,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorTimeGiftVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 
 import java.util.HashMap;
@@ -32,6 +33,8 @@ public interface ConsultDoctorInfoService {
     ConsultDoctorInfoVo getConsultDoctorInfoByUserId(String userId);
 
     List<User> findUserOrderByDepartment(User user);
+
+    SysPropertyVoWithBLOBsVo getSysProperty();
 
     List<User> findUserByUserName(User user);
 
