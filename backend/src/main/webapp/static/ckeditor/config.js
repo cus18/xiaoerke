@@ -18,21 +18,28 @@ CKEDITOR.editorConfig = function( config ) {
 	config.shiftEnterMode = CKEDITOR.ENTER_BR;
 	config.font_names='宋体/宋体;黑体/黑体;仿宋/仿宋_GB2312;楷体/楷体_GB2312;隶书/隶书;幼圆/幼圆;微软雅黑/微软雅黑;'+ config.font_names;
 	config.image_previewText='&nbsp;';
-	config.toolbar_default = [
-		['Source','-','Templates','Preview'],
-	    ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print'],
-	    ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],['ShowBlocks'],['Image','Capture','Flash'],['Maximize'],
-	    '/',
-	    ['Bold','Italic','Underline','Strike','-'],
-	    ['Subscript','Superscript','-'],
-	    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
-	    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-	    ['Link','Unlink','Anchor'],
-	    ['Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
-	    '/',
-	    ['Styles','Format','Font','FontSize'],
-	    ['TextColor','BGColor']
-	];
+	if(config.toolbar_default == 'replyText'){
+		config.toolbar_default = [
+			['Image']
+		];
+	}else{
+		config.toolbar_default = [
+			['Source','-','Templates','Preview'],
+			['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print'],
+			['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],['ShowBlocks'],['Image','Capture','Flash'],['Maximize'],
+			'/',
+			['Bold','Italic','Underline','Strike','-'],
+			['Subscript','Superscript','-'],
+			['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+			['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+			['Link','Unlink','Anchor'],
+			['Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
+			'/',
+			['Styles','Format','Font','FontSize'],
+			['TextColor','BGColor']
+		];
+	}
+
 	config.toolbar = 'default';
 	if(config.ckfinderPath){
 		config.filebrowserBrowseUrl = config.ckfinderPath+'/ckfinder.html?type=files&start=files:'+config.ckfinderUploadPath;

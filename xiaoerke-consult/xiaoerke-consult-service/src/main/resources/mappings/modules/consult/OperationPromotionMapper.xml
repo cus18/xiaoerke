@@ -9,16 +9,20 @@
     <result column="messagetype" property="messageType" jdbcType="VARCHAR" />
     <result column="replytext" property="replyText" jdbcType="VARCHAR" />
     <result column="replypicid" property="replyPicId" jdbcType="VARCHAR" />
+    <result column="imgpath" property="imgPath" jdbcType="VARCHAR" />
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, roleid,rolename,keyword, messagetype,replytext,replypicid
+    id, roleid,rolename,keyword, messagetype,replytext,replypicid,imgpath
   </sql>
 
-  <select id="findKeywordRoleList" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from operation_promotion
+  <select id="findKeywordRoleList" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo">
+    select roleid,rolename,group_concat(keyword) as keyword,replytext,imgPath
+      from operation_promotion
+    <if test="roleId != null and roleId != ''">
+      where roleid=#{roleId}
+    </if>
+    group by roleid
   </select>
 
   <select id="getAllRoleListByKeyword" parameterType="Map" resultMap="BaseResultMap">
@@ -28,10 +32,13 @@
     GROUP  BY keyword
   </select>
 
-  <insert id="saveRole" parameterType="com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo" useGeneratedKeys="true"
+  <insert id="saveKeywordRole" parameterType="com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo" useGeneratedKeys="true"
           keyProperty="id">
-    insert into operation_promotion(roleid,rolename,keyword, messagetype,replytext,replypicid)
-    values (#{roleid,jdbcType=VARCHAR},#{roleName,jdbcType=VARCHAR},#{keyword,jdbcType=VARCHAR},#{messagetype,jdbcType=VARCHAR},#{replytext,jdbcType=VARCHAR},#{replypicid,jdbcType=VARCHAR})
+    insert into operation_promotion(roleid,rolename,keyword, messagetype,replytext,replypicid,imgpath)
+    values (#{roleId,jdbcType=VARCHAR},#{roleName,jdbcType=VARCHAR},#{keyword,jdbcType=VARCHAR},#{messageType,jdbcType=VARCHAR},#{replyText,jdbcType=VARCHAR},#{replyPicId,jdbcType=VARCHAR},#{imgPath,jdbcType=VARCHAR})
   </insert>
 
+  <delete id="deleteKeywordRole" parameterType="com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo">
+    delete from operation_promotion where roleid=#{roleId}
+  </delete>
 </mapper>

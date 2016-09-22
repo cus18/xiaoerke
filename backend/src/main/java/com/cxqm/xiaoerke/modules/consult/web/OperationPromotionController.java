@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -43,9 +45,28 @@ public class OperationPromotionController extends BaseController {
      */
     @RequestMapping(value = "operationPromotionKeywordList")
     public String operationPromotionKeywordList(OperationPromotionVo vo,HttpServletRequest request, Model model) {
-        operationPromotionService.findKeywordRoleList(vo);
+        List<OperationPromotionVo> list = operationPromotionService.findKeywordRoleList(vo);
         model.addAttribute("vo", new OperationPromotionVo());
+        model.addAttribute("list", list);
         return "modules/consult/operationPromotionKeywordList";
+    }
+
+    /**
+     * 添加修改规则页面
+     * sunxiao
+     * @param
+     * @param model
+     */
+    @RequestMapping(value = "saveUpdateRoleForm")
+    public String saveUpdateRoleForm(OperationPromotionVo vo,HttpServletRequest request, Model model) {
+        OperationPromotionVo returnVo = new OperationPromotionVo();
+        if(StringUtils.isNotNull(vo.getRoleId())){
+            List<OperationPromotionVo> list = operationPromotionService.findKeywordRoleList(vo);
+            returnVo = list.get(0);
+            returnVo.setKeyword(returnVo.getKeyword().replace(","," "));
+        }
+        model.addAttribute("vo", returnVo);
+        return "modules/consult/saveUpdateRoleForm";
     }
 
     /**
@@ -58,6 +79,19 @@ public class OperationPromotionController extends BaseController {
     public String saveKeywordRole(OperationPromotionVo vo,HttpServletRequest request, Model model) {
         operationPromotionService.saveKeywordRole(vo);
         model.addAttribute("vo", new OperationPromotionVo());
-        return "modules/consult/operationPromotionKeywordList";
+        return "redirect:" + adminPath + "/operationPromotion/operationPromotionKeywordList";
     }
+
+    /**
+     * 删除关键字规则
+     * sunxiao
+     * @param
+     * @param model
+     */
+    @RequestMapping(value = "deleteKeywordRole")
+    public String deleteKeywordRole(OperationPromotionVo vo,HttpServletRequest request, Model model) {
+        operationPromotionService.deleteKeywordRole(vo);
+        return "redirect:" + adminPath + "/operationPromotion/operationPromotionKeywordList";
+    }
+
 }

@@ -6,6 +6,7 @@
 <script type="text/javascript">include('ckeditor_lib','${ctxStatic}/ckeditor/',['ckeditor.js']);</script>
 <script type="text/javascript">
 	var ${replace}Ckeditor = CKEDITOR.replace("${replace}");
+	<c:if test="${'replyText' eq replace}">${replace}Ckeditor.config.toolbar_default = "replyText";</c:if>
 	${replace}Ckeditor.config.height = "${height}";//<c:if test="${not empty uploadPath}">
 	${replace}Ckeditor.config.ckfinderPath="${ctxStatic}/ckfinder";
 	var date = new Date(), year = date.getFullYear(), month = (date.getMonth()+1)>9?date.getMonth()+1:"0"+(date.getMonth()+1);
