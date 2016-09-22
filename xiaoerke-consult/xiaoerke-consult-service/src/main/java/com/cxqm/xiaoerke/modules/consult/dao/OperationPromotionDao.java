@@ -17,7 +17,11 @@ public interface OperationPromotionDao {
 
     List<OperationPromotionVo> findKeywordRoleList(OperationPromotionVo vo);
 
+    List<OperationPromotionVo> findKeywordRoleByInfo(OperationPromotionVo vo);
+
     void saveKeywordRole(OperationPromotionVo vo);
 
     List<OperationPromotionVo> getAllRoleListByKeyword();
+
+    void deleteKeywordRole(OperationPromotionVo vo);
 }

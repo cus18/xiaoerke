@@ -20,7 +20,11 @@ public interface OperationPromotionService {
 
     List<OperationPromotionVo> findKeywordRoleList(OperationPromotionVo vo);
 
+    List<OperationPromotionVo> findKeywordRoleByInfo(OperationPromotionVo vo);
+
     void saveKeywordRole(OperationPromotionVo vo);
+
+    void deleteKeywordRole(OperationPromotionVo vo);
 
     Map getAllRoleListByKeyword();
 }
