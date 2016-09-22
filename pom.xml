@@ -1116,6 +1116,8 @@
 		<module>xiaoerke-activity</module>
         <module>bdfApp</module>
         <module>xiaoerke-alipay</module>
+		<module>xiaoerke-vaccine</module>
+
     </modules>
 
     <distributionManagement>
