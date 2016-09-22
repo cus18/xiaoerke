@@ -175,6 +175,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             Map parameter = systemService.getWechatParameter();
             String token = (String) parameter.get("token");
           try{
+              //关键字回复功能
               if(keywordRecovery(xmlEntity,token)){
                   return "success";
               };
@@ -1356,6 +1357,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         }
         if(StringUtils.isNotNull(roleInfo.getReplyPicId())){
             for(String mediaId:roleInfo.getReplyPicId().split(",")){
+                if(StringUtils.isNotNull(mediaId))
                 WechatUtil.sendNoTextMsgToWechat(token,xmlEntity.getFromUserName(),mediaId,1);
             }
         }
