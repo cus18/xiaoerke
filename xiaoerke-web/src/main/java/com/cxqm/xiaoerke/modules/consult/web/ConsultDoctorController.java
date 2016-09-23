@@ -289,9 +289,10 @@ public class ConsultDoctorController extends BaseController {
 
         String userId = (String) params.get("userId");
         String userName = (String) params.get("userName");
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
 
         //根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
-        HashMap<String, Object> response = ConsultSessionManager.INSTANCE.createConsultSession(userName, userId);
+        HashMap<String, Object> response = ConsultSessionManager.INSTANCE.createConsultSession(userName, userId,sysPropertyVoWithBLOBsVo);
         return response;
     }
 

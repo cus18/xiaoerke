@@ -242,9 +242,9 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             stringBuilder.append("------------------\n");
 
 //                            http://localhost/titan/consultDoctorHome#/consultDoctorHome/00034ads0d764sdsa66a2d6esd0e8ddf
-//                            stringBuilder.append("<a href='http://s123.xiaork.com/titan/consultDoctorHome#/consultDoctorHome/"+richConsultSession.getCsUserId()+"'>");
+                            stringBuilder.append("<a href='http://s120.xiaork.com/titan/consultDoctorHome#/consultDoctorHome/"+richConsultSession.getCsUserId()+"'>");
                             stringBuilder.append(content.substring(0, nameIndex));
-//                            stringBuilder.append("</a>|");
+                            stringBuilder.append("</a>|");
                             stringBuilder.append("|");
 
 //                            stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
@@ -269,9 +269,10 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                                 return ;
                             }
                             sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());*/
-                            if (sendResult.equals("tokenIsInvalid")) {
-                                updateWechatParameter();
-                            }else if(!sendResult.equals("messageOk")){
+                            if(!sendResult.equals("messageOk")){
+                                if (sendResult.equals("tokenIsInvalid")) {
+                                    updateWechatParameter();
+                                }
                                 Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
                                 JSONObject jsonObj = new JSONObject();
                                 jsonObj.put("type", "4");
