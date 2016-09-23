@@ -15,10 +15,7 @@ import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
 import com.cxqm.xiaoerke.modules.marketing.service.LoveMarketingService;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
 import com.cxqm.xiaoerke.modules.sys.entity.*;
-import com.cxqm.xiaoerke.modules.sys.service.ActivityService;
-import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
-import com.cxqm.xiaoerke.modules.sys.service.SystemService;
-import com.cxqm.xiaoerke.modules.sys.service.UtilService;
+import com.cxqm.xiaoerke.modules.sys.service.*;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
@@ -119,6 +116,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     @Autowired
     private OperationPromotionService operationPromotionService;
 
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
+
     private  Map<String,OperationPromotionVo> keywordMap;
 
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -133,7 +133,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     public String processPatientRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("processPatientRequest===================================");
         String respMessage = null;
-
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         /** 解析xml数据 */
         ReceiveXmlEntity xmlEntity = new ReceiveXmlProcess().getMsgEntity(getXmlDataFromWechat(request));
         String msgType = xmlEntity.getMsgType();
@@ -149,11 +149,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 Map parameter = systemService.getWechatParameter();
                 String token = (String) parameter.get("token");
                 specificChanneldeal(xmlEntity, token);
-                respMessage = processScanEvent(xmlEntity, "oldUser", request, response);
+                respMessage = processScanEvent(xmlEntity, "oldUser", request, response,sysPropertyVoWithBLOBsVo);
 
             } else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
                 //扫描关注公众号或者搜索关注公众号都在其中
-                respMessage = processSubscribeEvent(xmlEntity, request, response);
+                respMessage = processSubscribeEvent(xmlEntity, request, response,sysPropertyVoWithBLOBsVo);
             }
             // 取消订阅
             else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
@@ -205,13 +205,14 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         public void run() {
             try {
                 System.out.println(xmlEntity.getContent());
+                SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
                 if (xmlEntity.getMsgType().equals("text")) {
-                    this.sendPost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/conversation",
+                    this.sendPost(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/conversation",
                             "openId=" + xmlEntity.getFromUserName() +
                                     "&messageType=" + xmlEntity.getMsgType() +
                                     "&messageContent=" + URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
                 } else {
-                    this.sendPost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/conversation",
+                    this.sendPost(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/conversation",
                             "openId=" + xmlEntity.getFromUserName() +
                                     "&messageType=" + xmlEntity.getMsgType() +
                                     "&mediaId=" + xmlEntity.getMediaId());
@@ -295,7 +296,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         return sb.toString();
     }
 
-    private String processScanEvent(ReceiveXmlEntity xmlEntity, String userType, HttpServletRequest request, HttpServletResponse response) {
+    private String processScanEvent(ReceiveXmlEntity xmlEntity, String userType, HttpServletRequest request, HttpServletResponse response,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
         String EventKey = xmlEntity.getEventKey();
         System.out.println(EventKey + "EventKey=========================================");
         Article article = new Article();
@@ -340,8 +341,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             Map<String, Object> map = wechatInfoDao.getDoctorInfo(EventKey.replace("doc", ""));
             article.setTitle("您已经成功关注" + map.get("hospitalName") + map.get("name") + "医生，点击即可预约");
             article.setDescription("");
-            article.setPicUrl(ConstantUtil.TITAN_WEB_URL + "/titan/images/attentionDoc.jpg");
-            article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/doctorAppointment/" + map.get("id") + ",,,,,doctorShare,,");
+            article.setPicUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/images/attentionDoc.jpg");
+            article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/doctorAppointment/" + map.get("id") + ",,,,,doctorShare,,");
             articleList.add(article);
         } else if (EventKey.indexOf("267") > -1) {
             article.setTitle("恭喜您,通过‘糖盒儿(tanghe2)’关注宝大夫,不仅可以随时免费咨询儿科专家,还可获赠一次预约名医的机会。");
@@ -350,14 +351,14 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         } else if (EventKey.indexOf("263") > -1) {
             article.setTitle("【郑玉巧育儿经】--宝大夫");
             article.setDescription("智能匹配月龄，获取针对一对一育儿指导，建立宝宝专属健康档案，一路呵护，茁壮成长！");
-            article.setPicUrl(ConstantUtil.TITAN_WEB_URL + "/titan/images/Follow.jpg");
-            article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/knowledgeIndex");
+            article.setPicUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/images/Follow.jpg");
+            article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/knowledgeIndex");
             articleList.add(article);
         } else if (EventKey.indexOf("521") > -1) {
             article.setTitle("宝大夫关爱儿童公益活动");
             article.setDescription("赶快去邀请更多的人传递爱吧！");
             article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/MessageImage/10.pic_hd.jpg");
-            article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/knowledgeIndex");
+            article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/knowledgeIndex");
             articleList.add(article);
             //更新二维码拥有者善款
             loveMarketingService.updateInviteMan(EventKey, xmlEntity.getFromUserName());
@@ -368,17 +369,17 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     //推送赠送月会员URL消息
                     article.setTitle("月卡");
                     article.setDescription("感谢您关注宝大夫综合育儿服务平台，宝大夫现对新用户推出月卡服务。");
-                    article.setPicUrl(ConstantUtil.TITAN_WEB_URL + "/titan/images/Follow.jpg");
-                    article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/wechatInfo/fieldwork/wechat/author?url=" +
-                            ConstantUtil.TITAN_WEB_URL + "/titan/wechatInfo/getUserWechatMenId?url=21");
+                    article.setPicUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/images/Follow.jpg");
+                    article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/wechatInfo/fieldwork/wechat/author?url=" +
+                            sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/wechatInfo/getUserWechatMenId?url=21");
                     articleList.add(article);
                     memberService.insertMemberSendMessage(xmlEntity.getFromUserName(), "1");
                 } else if (value == true) {
                     article.setTitle("活动已过期，赠送周会员");
                     article.setDescription("您好，此活动已过期，不过别担心，您仍可参加免费体验宝大夫短期会员服务");
-                    article.setPicUrl(ConstantUtil.TITAN_WEB_URL + "/titan/images/Follow.jpg");
-                    article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/wechatInfo/fieldwork/wechat/author?url=" +
-                            ConstantUtil.TITAN_WEB_URL + "/titan/wechatInfo/getUserWechatMenId?url=20");
+                    article.setPicUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/images/Follow.jpg");
+                    article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/wechatInfo/fieldwork/wechat/author?url=" +
+                            sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/wechatInfo/getUserWechatMenId?url=20");
                     articleList.add(article);
                 }
             } else if (userType.equals("oldUser")) {
@@ -395,17 +396,17 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     //推送赠送季会员URL消息
                     article.setTitle("季卡");
                     article.setDescription("感谢您关注宝大夫综合育儿服务平台，宝大夫现对新用户推出季卡服务。");
-                    article.setPicUrl(ConstantUtil.TITAN_WEB_URL + "/titan/images/Follow.jpg");
-                    article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/wechatInfo/fieldwork/wechat/author?url=" +
-                            ConstantUtil.TITAN_WEB_URL + "/titan/wechatInfo/getUserWechatMenId?url=22");
+                    article.setPicUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/images/Follow.jpg");
+                    article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/wechatInfo/fieldwork/wechat/author?url=" +
+                            sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/wechatInfo/getUserWechatMenId?url=22");
                     articleList.add(article);
                     memberService.insertMemberSendMessage(xmlEntity.getFromUserName(), "1");
                 } else if (value == true) {
                     article.setTitle("活动已过期，赠送周会员");
                     article.setDescription("您好，此活动已过期，不过别担心，您仍可参加免费体验宝大夫短期会员服务");
-                    article.setPicUrl(ConstantUtil.TITAN_WEB_URL + "/titan/images/Follow.jpg");
-                    article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/wechatInfo/fieldwork/wechat/author?url=" +
-                            ConstantUtil.TITAN_WEB_URL + "/titan/wechatInfo/getUserWechatMenId?url=20");
+                    article.setPicUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/images/Follow.jpg");
+                    article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/wechatInfo/fieldwork/wechat/author?url=" +
+                            sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/wechatInfo/getUserWechatMenId?url=20");
                     articleList.add(article);
                 }
             } else if (userType.equals("oldUser")) {
@@ -426,7 +427,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             article.setTitle("防犬宝,一份温馨的安全保障");
             article.setDescription("只要19.8元，打狂犬疫苗最高可获得互助补贴1000元。不幸患狂犬病可获得互助补贴5万元！");
             article.setPicUrl("http://oss-cn-beijing.aliyuncs.com/xiaoerke-article-pic/FQBTGXX.png");
-            article.setUrl(ConstantUtil.KEEPER_WEB_URL + "/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=26");
+            article.setUrl(sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=26");
             articleList.add(article);
         } else if (EventKey.indexOf("homepage_qualityservices_kuaizixun") > -1) {//官网快咨询
             TextMessage textMessage = new TextMessage();
@@ -441,13 +442,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             article.setTitle("名医面诊");
             article.setDescription("三甲医院儿科专家，线上准时预约，线下准时就诊。");
             article.setPicUrl("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/gw%2Fmingyimianzhen");
-            article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/appoint");
+            article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/firstPage/appoint");
             articleList.add(article);
         } else if (EventKey.indexOf("homepage_qualityservices_mingyidianhua") > -1) {//官网名医电话
             article.setTitle("名医电话");
             article.setDescription("权威儿科专家，10分钟通话，个性化就诊和康复指导。");
             article.setPicUrl("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/gw%2Fmingyidianhua");
-            article.setUrl(ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/phoneConsult");
+            article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/firstPage/phoneConsult");
             articleList.add(article);
         } else if (EventKey.indexOf("qrscene_12") > -1 || EventKey.indexOf("qrscene_13") > -1) {//扫码分享
             String toOpenId = xmlEntity.getFromUserName();//扫码者openid
@@ -832,7 +833,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         return null; // 自定义错误信息
     }
 
-    private String processSubscribeEvent(ReceiveXmlEntity xmlEntity, HttpServletRequest request, HttpServletResponse response) {
+    private String processSubscribeEvent(ReceiveXmlEntity xmlEntity, HttpServletRequest request, HttpServletResponse response,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
         Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
         String EventKey = xmlEntity.getEventKey();
@@ -846,7 +847,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         //特定渠道优惠
         specificChanneldeal(xmlEntity, token);
 
-        return sendSubScribeMessage(xmlEntity, request, response, marketer, token);
+        return sendSubScribeMessage(xmlEntity, request, response, marketer, token ,sysPropertyVoWithBLOBsVo);
     }
 
     private synchronized void specificChanneldeal(ReceiveXmlEntity xmlEntity, String token) {
@@ -913,7 +914,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
     private void babyCoinHandler(ReceiveXmlEntity xmlEntity, String token, String marketer) {
         if (marketer.startsWith("110")) {
-
+            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
             String openId = xmlEntity.getFromUserName();
             SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
             sysWechatAppintInfoVo.setOpen_id(openId);
@@ -922,7 +923,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             if (wechatAttentionVo == null) {
 
                 BabyCoinVo olderUser = new BabyCoinVo();
-                String cash = ConstantUtil.BABYCOIN;
+                String cash = sysPropertyVoWithBLOBsVo.getBabyCoin();
 //                synchronized (this) {
                     olderUser.setMarketer(marketer);
                     olderUser = babyCoinService.selectByBabyCoinVo(olderUser);//推荐人的babyCoin
@@ -930,11 +931,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         Long preCash = olderUser.getCash();
                         olderUser.setCash(Long.valueOf(cash));
                         olderUser.setInviteNumberMonth(1);
-                        //推荐人宝宝币加ConstantUtil.BABYCOIN个
+                        //推荐人宝宝币加sysPropertyVoWithBLOBsVo.getBabyCoin()个
                         babyCoinService.updateCashByOpenId(olderUser);
 
                         BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
-                        babyCoinRecordVo.setBalance(Double.valueOf(ConstantUtil.BABYCOIN));
+                        babyCoinRecordVo.setBalance(Double.valueOf(sysPropertyVoWithBLOBsVo.getBabyCoin()));
                         babyCoinRecordVo.setCreateTime(new Date());
                         babyCoinRecordVo.setCreateBy(olderUser.getOpenId());
                         babyCoinRecordVo.setOpenId(olderUser.getOpenId());
@@ -1030,7 +1031,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         wechatInfoDao.updateAttentionInfo(updateTimeMap);
     }
 
-    private String sendSubScribeMessage(ReceiveXmlEntity xmlEntity, HttpServletRequest request, HttpServletResponse response, String marketer, String token) {
+    private String sendSubScribeMessage(ReceiveXmlEntity xmlEntity, HttpServletRequest request, HttpServletResponse response, String marketer, String token,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
         HttpSession session = request.getSession();
         session.setAttribute("openId", xmlEntity.getFromUserName());
         LogUtils.saveLog(request, "00000001");//注：参数含义请参照sys_log_mapping表，如00000001表示“微信宝大夫用户版公众平台关注”
@@ -1074,7 +1075,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     "更可加入妈妈社群，和千万宝宝一同快乐成长！☀点击：<a href='http://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236661&idx=3&sn=4c1fd3ee4eb99e6aca415f60dceb6834&scene=1&srcid=0616uPcrUKz7FVGgrmOcZqqq#rd'>加入社群</a>";
             WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), welcomeMsg);
         }
-        return processScanEvent(xmlEntity, "newUser", request, response);
+        return processScanEvent(xmlEntity, "newUser", request, response,sysPropertyVoWithBLOBsVo);
     }
 
     private void processUnSubscribeEvent(ReceiveXmlEntity xmlEntity, HttpServletRequest request) {

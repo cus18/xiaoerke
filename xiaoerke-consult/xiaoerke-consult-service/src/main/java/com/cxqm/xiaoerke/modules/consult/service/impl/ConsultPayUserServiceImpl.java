@@ -1,7 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import com.cxqm.xiaoerke.common.config.Global;
-import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
@@ -14,13 +13,17 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultPayUserService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
-import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -41,6 +44,9 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
 
     @Autowired
     private ConsultSessionPropertyDao consultSessionPropertyDao;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
     @Autowired
     private SessionRedisCache sessionRedisCache;
@@ -150,21 +156,22 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
 
     @Override
     public void sendMessageToConsult(String openid,int type) {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         String token = (String) userWechatParam.get("token");
         String st = "";
         switch (type){
             case 1:
                 st = "咨询高峰期，医生姐姐忙前忙后帮了好多妈妈和宝宝。请她喝杯茶吧，她们也需要您关心。" +
-                        "\n》<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=35'>你请喝茶，医生秒答</a>" +
+                        "\n》<a href='"+ sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=35'>你请喝茶，医生秒答</a>" +
                         "\n------------------------"+
-                        "\n》<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=34'>咨询客服</a>";
+                        "\n》<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=34'>咨询客服</a>";
                 break;
             case 2:
                 st = "哎呀，遇到咨询高峰期，加个急诊费，即可让医生秒回。" +
-                        "\n》<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=35'>支付急诊费100%秒达</a>" +
+                        "\n》<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=35'>支付急诊费100%秒达</a>" +
                         "\n------------------------"+
-                        "\n》<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=34'>咨询客服</a>";
+                        "\n》<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=34'>咨询客服</a>";
                 break;
             case 3:
                 st = "哎呀，遇到咨询高峰期，加个急诊费，即可让医生秒回。" +

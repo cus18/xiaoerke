@@ -2,11 +2,14 @@ package com.cxqm.xiaoerke.common.utils;
 
 import com.cxqm.xiaoerke.common.bean.*;
 import com.cxqm.xiaoerke.modules.sys.entity.Article;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import net.sf.json.JSONException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,6 +27,10 @@ import java.util.UUID;
  * Created by baoweiw on 2015/7/27.
  */
 public class WechatUtil {
+
+    @Autowired
+    private static SysPropertyServiceImpl sysPropertyService;
+
 
     public static String getToken(String corpid, String sectet) throws IOException {
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + corpid + "&secret=" + sectet + "";
@@ -54,9 +61,10 @@ public class WechatUtil {
      * @throws IOException
      */
     public static String getOauth2Url(String backUrl) {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         backUrl = urlEncodeUTF8(backUrl);
         return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
-                ConstantUtil.CORPID + "&redirect_uri=" + backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
+                sysPropertyVoWithBLOBsVo.getUserCorpid() + "&redirect_uri=" + backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
     }
 
 
@@ -267,7 +275,7 @@ public class WechatUtil {
      * @author deliang
      */
     public String downloadMediaFromWx(String accessToken, String mediaId, String messageType) throws IOException {
-
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         if (StringUtils.isEmpty(accessToken) || StringUtils.isEmpty(mediaId)) return "";
         Long picLen = 0L;
         InputStream inputStream = null;
@@ -300,28 +308,28 @@ public class WechatUtil {
             String mediaNameAmr = mediaName+".amr";
             String mediaNameMp3 = mediaName+".mp3";
             BufferedInputStream bis = new BufferedInputStream(inputStream);
-            if(ConstantUtil.AMR_TOMP3_FUNC.equals("windows")){
-                FileOutputStream fos = new FileOutputStream(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP+mediaNameAmr);
+            if(sysPropertyVoWithBLOBsVo.getAmrTomp3Func().equals("windows")){
+                FileOutputStream fos = new FileOutputStream(sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspathtemp()+mediaNameAmr);
                 byte[] buf = new byte[8096];
                 int size = 0;
                 while ((size = bis.read(buf)) != -1)
                     fos.write(buf, 0, size);
                 fos.close();
                 bis.close();
-                ToMp3(ConstantUtil.AMR_TOMP3_WINDOWSPATH, ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP + mediaName);
-                inputStream = new FileInputStream(new File(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP+mediaNameMp3));
-                StringUtils.deleteFile(new File(ConstantUtil.AMR_TOMP3_WINDOWSPATHTEMP));
-            }else if(ConstantUtil.AMR_TOMP3_FUNC.equals("linux")){
-                FileOutputStream fos = new FileOutputStream(ConstantUtil.AMR_TOMP3_LINUXPATH+mediaNameAmr);
+                ToMp3(sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspath(), sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspathtemp() + mediaName,sysPropertyVoWithBLOBsVo);
+                inputStream = new FileInputStream(new File(sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspathtemp()+mediaNameMp3));
+                StringUtils.deleteFile(new File(sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspathtemp()));
+            }else if(sysPropertyVoWithBLOBsVo.getAmrTomp3Func().equals("linux")){
+                FileOutputStream fos = new FileOutputStream(sysPropertyVoWithBLOBsVo.getAmrTomp3Linuxpath()+mediaNameAmr);
                 byte[] buf = new byte[8096];
                 int size = 0;
                 while ((size = bis.read(buf)) != -1)
                     fos.write(buf, 0, size);
                 fos.close();
                 bis.close();
-                ToMp3(ConstantUtil.AMR_TOMP3_WINDOWSPATH, ConstantUtil.AMR_TOMP3_LINUXPATH + mediaName);
-                inputStream = new FileInputStream(new File(ConstantUtil.AMR_TOMP3_LINUXPATH+mediaNameMp3));
-                StringUtils.deleteFile(new File(ConstantUtil.AMR_TOMP3_LINUXPATH));
+                ToMp3(sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspath(), sysPropertyVoWithBLOBsVo.getAmrTomp3Linuxpath() + mediaName,sysPropertyVoWithBLOBsVo);
+                inputStream = new FileInputStream(new File(sysPropertyVoWithBLOBsVo.getAmrTomp3Linuxpath()+mediaNameMp3));
+                StringUtils.deleteFile(new File(sysPropertyVoWithBLOBsVo.getAmrTomp3Linuxpath()));
             }
             mediaName = mediaNameMp3;
         }else if(messageType.contains("video")){
@@ -335,16 +343,17 @@ public class WechatUtil {
         return mediaURL;
     }
 
-    public void ToMp3(String webroot, String sourcePath){
+    public void ToMp3(String webroot, String sourcePath,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo){
+
         String targetPath = sourcePath+".mp3";//转换后文件的存储地址，直接将原来的文件名后加mp3后缀名
         Runtime run = null;
         try {
             run = Runtime.getRuntime();
             long start=System.currentTimeMillis();
             String path = "";
-            if(ConstantUtil.AMR_TOMP3_FUNC.equals("windows")){
+            if(sysPropertyVoWithBLOBsVo.getAmrTomp3Func().equals("windows")){
                 path = webroot + "ffmpeg -i "+sourcePath+".amr"+" -acodec libmp3lame "+targetPath;
-            }else if(ConstantUtil.AMR_TOMP3_FUNC.equals("linux")){
+            }else if(sysPropertyVoWithBLOBsVo.getAmrTomp3Func().equals("linux")){
                 path = "ffmpeg -i "+sourcePath+".amr"+" -acodec libmp3lame "+targetPath;
             }
             Process p = run.exec(path);

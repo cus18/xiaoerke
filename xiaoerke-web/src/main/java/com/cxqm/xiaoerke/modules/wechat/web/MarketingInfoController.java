@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.cxqm.xiaoerke.common.utils.*;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import net.sf.json.JSONObject;
 
@@ -39,7 +41,11 @@ public class MarketingInfoController {
 
 	@Autowired
 	private SystemService systemService;
-	    /**
+
+	@Autowired
+	private SysPropertyServiceImpl sysPropertyService;
+
+	/**
 	     * 验证主入口
 	     * @param request
 	     * @return
@@ -56,13 +62,14 @@ public class MarketingInfoController {
 	     * */
 	    @RequestMapping(value = "/getWechatOpenid", method = {RequestMethod.POST, RequestMethod.GET})
 	    public String getWechatName(HttpServletRequest request, HttpServletResponse response, HttpSession session)throws  Exception{
-	        String code=request.getParameter("code");
+			SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+			String code=request.getParameter("code");
 	        String get_access_token_url="https://api.weixin.qq.com/sns/oauth2/access_token?" +
 	                "appid=APPID" +
 	                "&secret=SECRET&" +
 	                "code=CODE&grant_type=authorization_code";
-	        get_access_token_url=get_access_token_url.replace("APPID", ConstantUtil.CORPID);
-	        get_access_token_url=get_access_token_url.replace("SECRET", ConstantUtil.SECTET);
+	        get_access_token_url=get_access_token_url.replace("APPID", sysPropertyVoWithBLOBsVo.getUserCorpid());
+	        get_access_token_url=get_access_token_url.replace("SECRET", sysPropertyVoWithBLOBsVo.getUserSectet());
 	        get_access_token_url=get_access_token_url.replace("CODE", code);
 	        String access_token = "";
 	        String openid = "";

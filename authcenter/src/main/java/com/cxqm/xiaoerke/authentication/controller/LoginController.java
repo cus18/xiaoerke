@@ -1,22 +1,19 @@
 package com.cxqm.xiaoerke.authentication.controller;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.cxqm.xiaoerke.common.utils.ConstantUtil;
-import com.cxqm.xiaoerke.modules.sys.dao.SysActivityDao;
+import com.cxqm.xiaoerke.authentication.common.BaseController;
+import com.cxqm.xiaoerke.authentication.common.CookieUtils;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.cxqm.xiaoerke.authentication.common.BaseController;
-import com.cxqm.xiaoerke.authentication.common.CookieUtils;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
-
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
 
@@ -26,7 +23,12 @@ public class LoginController extends BaseController{
 
 	@Autowired
 	private UtilService utilService;
-	
+
+
+	@Autowired
+	private SysPropertyServiceImpl sysPropertyService;
+
+
 	/** 认证中心登陆页 */
 	@RequestMapping(value = "${ssoPath}/login", method = RequestMethod.GET)
 	public String login(@RequestParam String toUrl, HttpServletRequest request,
@@ -87,12 +89,13 @@ public class LoginController extends BaseController{
 	
 	@RequestMapping(value="${ssoPath}/logout")
 	public String logout(String toUrl,HttpServletResponse response,HttpServletRequest request){
+		SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
 		Cookie[] cookies = request.getCookies();
 		String[] pathArray=new String[]{"/titan/","/keeper/","/authcenter/","/angel/","/doctor/","/market/","/wisdom/","/"};
 		for(int i = 0,len = cookies.length; i < len; i++) {
 			for(int j = 0;j < pathArray.length;  j++){
 				Cookie cookie = new Cookie(cookies[i].getName(), null);
-				cookie.setDomain(ConstantUtil.DOMAIN_VALUE);
+				cookie.setDomain(sysPropertyVoWithBLOBsVo.getBaodfDomainValue());
 				cookie.setMaxAge(0);
 				cookie.setPath(pathArray[j]);
 				response.addCookie(cookie);

@@ -309,7 +309,7 @@ public class ConsultDoctorController extends BaseController {
     Map<String, Object> sessionEnd(@RequestParam(required = true) String sessionId,
                                    @RequestParam(required = true) String userId) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         System.out.println("close session========" + sessionId + "==========userId========" + userId);
         Map<String, Object> params = new HashMap<String, Object>();
         Map<String, Object> response = new HashMap<String, Object>();
@@ -379,7 +379,7 @@ public class ConsultDoctorController extends BaseController {
                                 for (Map<String, Object> evaluationMap : praiseList) {
                                     if (Integer.parseInt((String) evaluationMap.get("serviceAttitude")) == 0) {
                                         st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
-                                                "<a href='"+ConstantUtil.KEEPER_WEB_URL+"/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
+                                                "<a href='"+ sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
                                                 evaluationMap.get("id") + "&sessionId=" + sessionId + "'>点击这里去评价</a>】";
                                     } else {
                                         st = "嗨，亲爱的,本次咨询已关闭。";
@@ -390,7 +390,7 @@ public class ConsultDoctorController extends BaseController {
                                 st = "嗨，亲爱的,本次咨询已关闭。";
                             }
                             st = st + "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n"+">>"+
-                                    "<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=42'>邀请好友得积分</a>";
+                                    "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42'>邀请好友得积分</a>";
                             WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                         }
                         //分享的代码
@@ -444,7 +444,7 @@ public class ConsultDoctorController extends BaseController {
             String result = consultSessionService.clearSession(sessionId, userId);
             response.put("result", result);
             try{
-                sendUmbrellaWechatMessage(userId);//咨询完毕发送保护伞消息，每个用户只发一次
+                sendUmbrellaWechatMessage(userId,sysPropertyVoWithBLOBsVo);//咨询完毕发送保护伞消息，每个用户只发一次
             }catch (Exception e){
                 System.out.println("咨询关闭发送保护伞消息"+e);
             }
@@ -454,7 +454,7 @@ public class ConsultDoctorController extends BaseController {
         }
     }
 
-    private void sendUmbrellaWechatMessage(String openId){
+    private void sendUmbrellaWechatMessage(String openId,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo){
         Query queryDate = new Query();
         queryDate.addCriteria(Criteria.where("openid").is(openId));
         List<UmbrellaMongoDBVo> openidlist = babyUmbrellaInfoService.getUmbrellaMongoDBVoList(queryDate);
@@ -469,7 +469,7 @@ public class ConsultDoctorController extends BaseController {
                 String title = "免费送您一份40万的保障！";
                 String description = "限时免费加入宝护伞爱心公益，小孩、大人得了重病都给钱！最高40万！包括75种疾病，还能安排专家治疗！";
                 //String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellab";
-                String url = ConstantUtil.WISDOM_WEB_URL + "wisdom/umbrella#/umbrellaLead/130000003/a";
+                String url = sysPropertyVoWithBLOBsVo.getWisdomWebUrl() + "wisdom/umbrella#/umbrellaLead/130000003/a";
                 String picUrl = "http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/protectumbrella%2Fprotectumbrella";
                 String message = "{\"touser\":\""+ openId+"\",\"msgtype\":\"news\",\"news\":{\"articles\": [{\"title\":\""+ title +"\",\"description\":\""+description+"\",\"url\":\""+ url +"\",\"picurl\":\""+picUrl+"\"}]}}";
 

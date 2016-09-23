@@ -22,8 +22,10 @@ import com.cxqm.xiaoerke.modules.mutualHelp.service.MutualHelpDonationService;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
@@ -98,6 +100,9 @@ public class PayNotificationController {
 
     @Autowired
     private SessionRedisCache sessionRedisCache;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
     private static Lock lock = new ReentrantLock();
 
@@ -271,7 +276,7 @@ public class PayNotificationController {
     @ResponseBody
     String getConsultPhonePayNotifyInfo(HttpServletRequest request) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         lock.lock();
         InputStream inStream = null;
         try {
@@ -320,7 +325,7 @@ public class PayNotificationController {
                         PatientMsgTemplate.consultPhoneSuccess2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (String) consultOrder.get("date"), week, (String) consultOrder.get("beginTime"), (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"));
                         Map<String, Object> parameter = systemService.getWechatParameter();
                         String token = (String) parameter.get("token");
-                        String url = ConstantUtil.TITAN_WEB_URL + "/titan/phoneConsult#/orderDetail" + (String) consultOrder.get("doctorId") + "," + (Integer) consultOrder.get("orderId") + ",phone";
+                        String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/phoneConsult#/orderDetail" + (String) consultOrder.get("doctorId") + "," + (Integer) consultOrder.get("orderId") + ",phone";
                         PatientMsgTemplate.consultPhoneSuccess2Wechat((String) consultOrder.get("doctorName"), (String) consultOrder.get("date"), week, (String) consultOrder.get("beginTime"), (String) consultOrder.get("endTime"), (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"), userInfo.getOpenid(), token, url);
                     }
                 }
@@ -472,6 +477,7 @@ public class PayNotificationController {
     @ResponseBody
     String getDoctorConsultPayNotifyInfo(HttpServletRequest request, HttpSession session) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         lock.lock();
         InputStream inStream = null;
         try {
@@ -521,14 +527,14 @@ public class PayNotificationController {
                     babyCoinVo.setOpenId(openid);
                     babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
 
-                    double babyCash = (Double.valueOf(ConstantUtil.CONSUL_AMOUNT) * 100 - Double.valueOf(insuranceMap.get("amount").toString())) / 10;//使用宝宝币数
+                    double babyCash = (Double.valueOf(sysPropertyVoWithBLOBsVo.getConsulAmount()) * 100 - Double.valueOf(insuranceMap.get("amount").toString())) / 10;//使用宝宝币数
                     babyCoinVo.setCash(babyCoinVo.getCash() - (long) babyCash);
 
                     BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
                     babyCoinRecordVo.setSessionId(sessionId);
                     List<BabyCoinRecordVo> babyCoinRecordVos = babyCoinService.selectByBabyCoinRecordVo(babyCoinRecordVo);
                     LogUtils.saveLog("咨询收费充值", openid);
-                    HttpRequestUtil.wechatpost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/notifyPayInfo2Distributor?openId=" + openid,
+                    HttpRequestUtil.wechatpost(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/notifyPayInfo2Distributor?openId=" + openid,
                             "openId=" + openid);
                     //扣过了不再扣
                     if (babyCoinRecordVos == null || babyCoinRecordVos.size() == 0) {

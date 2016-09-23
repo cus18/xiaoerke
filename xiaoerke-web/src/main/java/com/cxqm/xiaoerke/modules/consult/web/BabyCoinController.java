@@ -8,6 +8,8 @@ import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,9 @@ public class BabyCoinController {
 
     @Autowired
     private WechatAttentionService wechatAttentionService;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
     /**
      * 邀请卡生成页面
@@ -165,6 +170,7 @@ public class BabyCoinController {
     @RequestMapping(value = "/minusOrAddBabyCoin", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map<String, Object> minusOrAddBabyCoin(HttpSession session, HttpServletRequest request) {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         HashMap<String, Object> response = new HashMap<String, Object>();
         String openId = WechatUtil.getOpenId(session,request);//"oogbDwD_2BTQpftPu9QClr-mCw7U";
         //宝宝币余额
@@ -172,8 +178,8 @@ public class BabyCoinController {
         BabyCoinVo babyCoinVo = new BabyCoinVo();
         babyCoinVo.setOpenId(openId);
         babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
-        if(babyCoinVo.getCash() > Long.valueOf(ConstantUtil.ONCE_CONSULT_NEED_BABY_COIN)){
-            babyCoinVo.setCash(babyCoinVo.getCash() - Long.valueOf(ConstantUtil.ONCE_CONSULT_NEED_BABY_COIN));
+        if(babyCoinVo.getCash() > Long.valueOf(sysPropertyVoWithBLOBsVo.getOnceConsultNeedBabyCoin())){
+            babyCoinVo.setCash(babyCoinVo.getCash() - Long.valueOf(sysPropertyVoWithBLOBsVo.getOnceConsultNeedBabyCoin()));
             flag = babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
         }
         if(flag > 0){

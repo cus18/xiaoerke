@@ -14,7 +14,9 @@ import com.cxqm.xiaoerke.modules.account.exception.AccountNotExistException;
 import com.cxqm.xiaoerke.modules.account.exception.BalanceNotEnoughException;
 import com.cxqm.xiaoerke.modules.account.exception.BusinessPaymentExceeption;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
@@ -52,6 +54,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private SystemService systemService;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
+
 
     /**
      * 账户详情列表接口
@@ -217,7 +223,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public String returnPay(Float returnMoney, String openid, String ip) throws BusinessPaymentExceeption, BalanceNotEnoughException {
-
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         //向withDraw表添加提现记录
         String userId = UserUtils.getUser().getId();
         //更改账户表account_info数据
@@ -237,8 +243,8 @@ public class AccountServiceImpl implements AccountService {
             //调用企业统一支付接口对用户进行退款
 
             SortedMap<Object, Object> parameters = new TreeMap<Object, Object>();
-            parameters.put("mch_appid", ConstantUtil.APP_ID);//APPid
-            parameters.put("mchid", ConstantUtil.PARTNER);
+            parameters.put("mch_appid", sysPropertyVoWithBLOBsVo.getAppId());//APPid
+            parameters.put("mchid",sysPropertyVoWithBLOBsVo.getPartner());
             String nonce_str = IdGen.uuid(); //Sha1Util.getNonceStr();//商户订单号
             parameters.put("nonce_str", nonce_str);
             parameters.put("partner_trade_no", partner_trade_no);
@@ -251,7 +257,7 @@ public class AccountServiceImpl implements AccountService {
             parameters.put("sign", sign);
             String requestXML = JsApiTicketUtil.getRequestXml(parameters);
             try {
-                String result = HttpRequestUtil.clientCustomSSLS(ConstantUtil.TRANSFERS, requestXML);
+                String result = HttpRequestUtil.clientCustomSSLS(sysPropertyVoWithBLOBsVo.getTransfers(), requestXML,sysPropertyVoWithBLOBsVo);
                 Map<String, String> returnMap = XMLUtil.doXMLParse(result);//解析微信返回的信息，以Map形式存储便于取值
                 if (!"SUCCESS".equals(returnMap.get("result_code"))) {
                     LogUtils.saveLog(Servlets.getRequest(), "00000040", "用户微信提现失败:" + result);//用户微信提现失败
@@ -372,6 +378,7 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public Map<String, String> getPrepayInfo(HttpServletRequest request, HttpSession session, String serviceType) {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map<String, String> resultMap = new HashMap<String, String>();
         String openId = WechatUtil.getOpenId(session, request);
         //获取需要支付的金额  单位(分)
@@ -386,8 +393,8 @@ public class AccountServiceImpl implements AccountService {
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
         String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串\
         SortedMap<Object, Object> parameters = new TreeMap<Object, Object>();
-        parameters.put("appid", ConstantUtil.APP_ID);//微信服务号的appid
-        parameters.put("mch_id", ConstantUtil.PARTNER);//商户号
+        parameters.put("appid", sysPropertyVoWithBLOBsVo.getAppId());//微信服务号的appid
+        parameters.put("mch_id", sysPropertyVoWithBLOBsVo.getPartner());//商户号
         parameters.put("nonce_str", noncestr);//随机字符串
         if (serviceType.equals("lovePlanService")) {
             parameters.put("body", "爱心捐款");//描述
@@ -400,20 +407,20 @@ public class AccountServiceImpl implements AccountService {
         parameters.put("spbill_create_ip", request.getRemoteAddr());//终端ip
 
         if (serviceType.equals("appointService")) {
-            parameters.put("notify_url", ConstantUtil.NOTIFY_APPOINT_URL);//通知地址
+            parameters.put("notify_url", sysPropertyVoWithBLOBsVo.getNotifyAppointUrl());//通知地址
         } else if (serviceType.equals("insuranceService")) {
-            parameters.put("notify_url", ConstantUtil.NOTIFY_INSURANCE_URL);//通知地址
+            parameters.put("notify_url", sysPropertyVoWithBLOBsVo.getNotifyInsuranceUrl());//通知地址
         } else if (serviceType.equals("customerService")) {
-            parameters.put("notify_url", ConstantUtil.NOTIFY_CUSTOMER_URL);//通知地址
+            parameters.put("notify_url", sysPropertyVoWithBLOBsVo.getNotifyCustomerUrl());//通知地址
         } else if (serviceType.equals("consultPhone")) {
-            parameters.put("notify_url", ConstantUtil.NOTIFY_CONSULTPHONE_URL);//通知地址
+            parameters.put("notify_url", sysPropertyVoWithBLOBsVo.getNotifyConsultphoneUrl());//通知地址
         } else if (serviceType.equals("umbrellaService")) {
-            parameters.put("notify_url", ConstantUtil.NOTIFY_UMBRELLA_URL);//通知地址
+            parameters.put("notify_url", sysPropertyVoWithBLOBsVo.getNotifyUmbrellaUrl());//通知地址
         } else if (serviceType.equals("lovePlanService")) {
-            parameters.put("notify_url", ConstantUtil.NOTIFY_LOVEPLAN_URL);//通知地址
+            parameters.put("notify_url", sysPropertyVoWithBLOBsVo.getNotifyLoveplanUrl());//通知地址
         }
         if (serviceType.equals("doctorConsultPay")) {
-            parameters.put("notify_url", ConstantUtil.NOTIFY_DOCTORCONSULTPAY_URL);//通知地址
+            parameters.put("notify_url", sysPropertyVoWithBLOBsVo.getNotifyDoctorconsultpayUrl());//通知地址
         }
         parameters.put("trade_type", "JSAPI");//交易类型
         parameters.put("openid", openId);//用户标示
@@ -421,7 +428,7 @@ public class AccountServiceImpl implements AccountService {
         String sign = JsApiTicketUtil.createSign("UTF-8", parameters);
         parameters.put("sign", sign);
         String requestXML = JsApiTicketUtil.getRequestXml(parameters);
-        String result = HttpRequestUtil.httpsRequest(ConstantUtil.GATEURL, "POST", requestXML);
+        String result = HttpRequestUtil.httpsRequest(sysPropertyVoWithBLOBsVo.getGateurl(), "POST", requestXML);
         resultMap.put("result", result);
         resultMap.put("out_trade_no", out_trade_no);
         return resultMap;
@@ -429,6 +436,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public String assemblyPayParameter(HttpServletRequest request, Map<String, String> PrepayInfo, HttpSession session, String userId, String doctorId) {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
         SortedMap<Object, Object> params = new TreeMap<Object, Object>();
         String patientRegisterId = request.getParameter("patientRegisterId");
         if (StringUtils.isNull(patientRegisterId) || "undefined".equals(patientRegisterId)) {
@@ -442,11 +451,11 @@ public class AccountServiceImpl implements AccountService {
             if (!"FAIL".equals(map.get("return_code"))) {
                 String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串
                 String timestamp = Sha1Util.getTimeStamp();//生成1970年到现在的秒数
-                params.put("appId", ConstantUtil.APP_ID);
+                params.put("appId", sysPropertyVoWithBLOBsVo.getAppId());
                 params.put("timeStamp", timestamp);
                 params.put("nonceStr", noncestr);
                 params.put("package", "prepay_id=" + map.get("prepay_id"));
-                params.put("signType", ConstantUtil.SIGN_METHOD);
+                params.put("signType", sysPropertyVoWithBLOBsVo.getSignMethod());
                 String paySign = JsApiTicketUtil.createSign("UTF-8", params);
                 params.put("paySign", paySign); //paySign的生成规则和Sign的生成规则一致
                 String userAgent = request.getHeader("user-agent");
@@ -539,9 +548,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean checkAppointmentPayState(String out_trade_no) {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
         SortedMap<Object, Object> params = new TreeMap<Object, Object>();
-        params.put("appid", ConstantUtil.APP_ID);
-        params.put("mch_id", ConstantUtil.PARTNER);
+        params.put("appid", sysPropertyVoWithBLOBsVo.getAppId());
+        params.put("mch_id", sysPropertyVoWithBLOBsVo.getPartner());
         params.put("out_trade_no", out_trade_no);
         String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串
         params.put("nonce_str", noncestr);
@@ -549,7 +560,7 @@ public class AccountServiceImpl implements AccountService {
         params.put("sign", sign);
         //将上述参数进行签名
         String requestXML = JsApiTicketUtil.getRequestXml(params);
-        String result = HttpRequestUtil.httpsRequest(ConstantUtil.PAYRESULT, "POST", requestXML);
+        String result = HttpRequestUtil.httpsRequest(sysPropertyVoWithBLOBsVo.getPayresult(), "POST", requestXML);
         try {
             Map<String, String> returnMap = XMLUtil.doXMLParse(result);//解析微信返回的信息，以Map形式存储便于取值
             String payState = returnMap.get("trade_state");

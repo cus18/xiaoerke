@@ -12,6 +12,8 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -20,6 +22,7 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
@@ -36,6 +39,9 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
     private PatientRegisterPraiseService patientRegisterPraiseService = SpringContextHolder.getBean("patientRegisterPraiseServiceImpl");
 
     private ScheduleTaskService scheduleTaskService = SpringContextHolder.getBean("scheduleTaskServiceImpl");
+
+    private SysPropertyServiceImpl sysPropertyService = SpringContextHolder.getBean("sysPropertyServiceImpl");
+
 
     public TextWebSocketFrameHandler() {
         super();
@@ -58,7 +64,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         String msgText = msg.text();
         Channel channel = ctx.channel();
         Map<String, Object> msgMap = null;
-
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         try {
             msgMap = (Map<String, Object>) JSON.parse(msgText);
         } catch (JSONException ex) {
@@ -242,12 +248,12 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             stringBuilder.append("|");
 
 //                            stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
-                            stringBuilder.append("<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
+                            stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl() +"keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
                             stringBuilder.append(praiseList.get(0).get("id"));
                             stringBuilder.append("&sessionId=");
                             stringBuilder.append(sessionId);
                             stringBuilder.append("'>评价医生</a>|");
-                            stringBuilder.append("<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/playtour#/playtourShare/6");
+                            stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/playtour#/playtourShare/6");
                             stringBuilder.append("'>分享</a>");
                             sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
                             //发送消息
@@ -380,8 +386,10 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
     public void updateWechatParameter() {
         try {
+
+            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
             System.out.print("用户端微信参数更新");
-            String token = WechatUtil.getToken(ConstantUtil.CORPID, ConstantUtil.SECTET);
+            String token = WechatUtil.getToken(sysPropertyVoWithBLOBsVo.getUserCorpid(), sysPropertyVoWithBLOBsVo.getUserSectet());
             String ticket = WechatUtil.getJsapiTicket(token);
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("token", token);
@@ -391,7 +399,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             sessionRedisCache.putWeChatParamToRedis(map);
 
             System.out.print("医生端微信参数更新");
-            token = WechatUtil.getToken(ConstantUtil.DOCTORCORPID, ConstantUtil.DOCTORSECTET);
+            token = WechatUtil.getToken(sysPropertyVoWithBLOBsVo.getDoctorCorpid(), sysPropertyVoWithBLOBsVo.getDoctorSectet());
             ticket = WechatUtil.getJsapiTicket(token);
             map = new HashMap<String, Object>();
             map.put("token", token);

@@ -3,18 +3,18 @@ package com.cxqm.xiaoerke.modules.account.web;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.service.ServiceException;
-import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
-import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.sys.entity.PerAppDetInfoVo;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import net.sf.json.JSONObject;
@@ -27,7 +27,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -54,6 +57,9 @@ public class AccountUserController {
 
     @Autowired
     private SessionRedisCache sessionRedisCache;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
     private static Lock lock = new ReentrantLock();
 
@@ -246,7 +252,7 @@ public class AccountUserController {
     @ResponseBody
     String doctorConsultPay(HttpServletRequest request, HttpSession session) throws Exception {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         //是否用宝宝币抵扣金额数
         String openId = WechatUtil.getOpenId(session, request);
         String useBabyCoin = (String) request.getParameter("useBabyCoinPay");
@@ -255,7 +261,7 @@ public class AccountUserController {
         babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
         if (babyCoinVo != null && useBabyCoin != null && useBabyCoin.equals("true")) {//用宝宝币抵钱
             //当前用户所拥有的宝宝币<99直接扣光宝宝币，并计算实际金额
-            if (babyCoinVo.getCash() <= Float.valueOf(ConstantUtil.CONSUL_AMOUNT) * 10) {
+            if (babyCoinVo.getCash() <= Float.valueOf(sysPropertyVoWithBLOBsVo.getConsulAmount()) * 10) {
                 Float payPrice = Float.valueOf(request.getParameter("payPrice"));
                 payPrice = payPrice - Float.valueOf(String.valueOf(babyCoinVo.getCash()))*10;
                 request.setAttribute("payPrice", payPrice/100.0);

@@ -9,6 +9,8 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -40,6 +42,8 @@ public class TextWebSocketFrameHandler_App extends SimpleChannelInboundHandler<T
     private PatientRegisterPraiseService patientRegisterPraiseService = SpringContextHolder.getBean("patientRegisterPraiseServiceImpl");
 
     private ScheduleTaskService scheduleTaskService = SpringContextHolder.getBean("scheduleTaskServiceImpl");
+
+    private SysPropertyServiceImpl sysPropertyService = SpringContextHolder.getBean("sysPropertyServiceImpl");
 
 
 
@@ -80,8 +84,8 @@ public class TextWebSocketFrameHandler_App extends SimpleChannelInboundHandler<T
         userChannel.writeAndFlush(csUserMsg.retain());
 
         //发送post请求到angel(误删)
-        //Runnable thread = new processConsultMessageThread(msgMap);
-        //threadExecutor.execute(thread);
+//        Runnable thread = new processConsultMessageThread(msgMap);
+//        threadExecutor.execute(thread);
     }
 
     @Override
@@ -119,14 +123,15 @@ public class TextWebSocketFrameHandler_App extends SimpleChannelInboundHandler<T
         public void run() {
 
             try {
+                SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
                 System.out.println(msg.get("content").toString());
                 if(msg.get("messageType").toString().equals("text")){
-                    this.sendPost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/conversation",
+                    this.sendPost(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/conversation",
                         "openId=" + msg.get("userId").toString() +
                             "&messageType=" + msg.get("messageType").toString() +
                             "&messageContent=" + URLEncoder.encode(msg.get("content").toString(), "UTF-8"));
                 }else{
-                    this.sendPost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/conversation",
+                    this.sendPost(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/conversation",
                         "openId=" + msg.get("userId").toString() +
                             "&messageType=" + msg.get("messageType").toString() +
                             "&mediaId=" + msg.get("mediaId").toString());

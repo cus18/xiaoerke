@@ -1,6 +1,5 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
-import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.Servlets;
@@ -10,8 +9,10 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultPhoneService;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
@@ -43,6 +44,9 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
 
     @Autowired
     private DoctorInfoService doctorInfoService;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
     @Override
     public String parseCallAuth(Map<String, Object> map) {
@@ -120,6 +124,8 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
 
     @Override
     public String parseHangup(Map<String, Object> map) {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
         ConsultPhoneRecordVo vo = new ConsultPhoneRecordVo();
         vo.setByetype((String) map.get("byetype"));
         vo.setNoAnswerEndtime((String) map.get("noAnswerEndtime"));
@@ -165,8 +171,8 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
             //发消息
             if ("0".equals(type)){
                 User userInfo = systemService.getUserById((String)consultOrder.get("sys_user_id"));
-                String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorName")+","+userData+",phone";
-                String connectUrl = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/phoneConReconnection/"+userData;
+                String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl()+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorName")+","+userData+",phone";
+                String connectUrl = sysPropertyVoWithBLOBsVo.getTitanWebUrl()+"/titan/phoneConsult#/phoneConReconnection/"+userData;
                 Map<String,Object> parameter = systemService.getWechatParameter();
                 String token = (String)parameter.get("token");
                 PatientMsgTemplate.consultPhoneEvaluateWaring2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"),(String) consultOrder.get("phone"), url,connectUrl,token);
@@ -183,7 +189,7 @@ public class ConsultPhoneServiceImpl implements ConsultPhoneService {
                 registerServiceVo.setState("4");
                 consultPhonePatientService.updateOrderInfoBySelect(registerServiceVo);
                 //并发送消息
-                String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorId")+","+(Integer) consultOrder.get("id")+",phone";
+                String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl()+"/titan/phoneConsult#/orderDetail"+(String) consultOrder.get("doctorId")+","+(Integer) consultOrder.get("id")+",phone";
                 PatientMsgTemplate.unConnectPhone2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"));
                 Map tokenMap = systemService.getWechatParameter();
                 String token = (String)tokenMap.get("token");

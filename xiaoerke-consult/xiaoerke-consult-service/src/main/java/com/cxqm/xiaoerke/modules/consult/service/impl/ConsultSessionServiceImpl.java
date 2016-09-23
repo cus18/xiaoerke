@@ -8,6 +8,8 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -28,6 +30,10 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
 
     @Autowired
     private ConsultSessionDao consultSessionDao;
+
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
     private static String dataStr =  DateUtils.DateToStr(new Date(),"date");
 
@@ -143,11 +149,13 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
 
     @Override
     public boolean cheakInstantConsultation(String openid) {
+
         String nowDate = DateUtils.DateToStr(new Date(),"date");
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
 
         Date d = new Date();
         int hours = d.getHours();
-        if(hours>=Integer.parseInt(ConstantUtil.MAX_INSTANT_CONSULT_END_TIME)||hours<Integer.parseInt(ConstantUtil.MAX_INSTANT_CONSULT_START_TIME)){
+        if(hours>=Integer.parseInt(sysPropertyVoWithBLOBsVo.getMaxInstantConsultEndTime())||hours<Integer.parseInt(sysPropertyVoWithBLOBsVo.getMaxInstantConsultStartTime())){
             return  false;
         }
 
@@ -156,7 +164,7 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
             this.dataStr = nowDate;
         }
         Long listNum = sessionRedisCache.num4InstantConsultationList();
-        Integer maxNum =  Integer.parseInt(ConstantUtil.MAX_INSTANT_CONSULT_NUM);
+        Integer maxNum =  Integer.parseInt(sysPropertyVoWithBLOBsVo.getMaxInstantConsultNum());
         if(listNum>=maxNum){
             return false;
         }

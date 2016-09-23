@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.cxqm.xiaoerke.common.utils.ConstantUtil;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +32,16 @@ class OrderMessageService {
 	
 	@Autowired
 	private PatientRegisterServiceDao patientRegisterServiceDao;
+
+
+	@Autowired
+	private SysPropertyServiceImpl sysPropertyService;
 	
 	@Autowired
 	private SystemService systemService;
 	
 	public void sendMessage(Map<String, Object> params, Boolean flag) {
-
+		SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
 		Map<String, Object> parameter = systemService.getWechatParameter();
 		String shot_message = "";
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
@@ -69,11 +75,11 @@ class OrderMessageService {
 					(String)resultMap.get("date"),dayWeek,(String)resultMap.get("begin_time"),
 					(String)resultMap.get("end_time"),(String)resultMap.get("position"),
 					(String)resultMap.get("contactHospitalName"),(String)resultMap.get("location"),
-					ConstantUtil.TITAN_WEB_URL+"titan/appoint#/toBeTreatedDetail/" + params.get("patient_register_service_id") + ",1");
+					sysPropertyVoWithBLOBsVo.getTitanWebUrl() +"titan/appoint#/toBeTreatedDetail/" + params.get("patient_register_service_id") + ",1");
 
 			if(params.containsKey("openId")&&params.get("openId")!=null)
 			{
-				PatientMsgTemplate.appointmentSuccess2Wechat((String)resultMap.get("babyName"),(String)resultMap.get("doctorName"),(String)resultMap.get("date"),(String)dayWeek,(String)resultMap.get("begin_time"),(String)resultMap.get("end_time"),(String)resultMap.get("position"),(String)resultMap.get("contactHospitalName"),(String)resultMap.get("location"),(String)resultMap.get("register_no"),(String) params.get("openId"),(String) parameter.get("token"),ConstantUtil.TITAN_WEB_URL+"titan/appoint#/toBeTreatedDetail/" + params.get("patient_register_service_id") + ",1");
+				PatientMsgTemplate.appointmentSuccess2Wechat((String)resultMap.get("babyName"),(String)resultMap.get("doctorName"),(String)resultMap.get("date"),(String)dayWeek,(String)resultMap.get("begin_time"),(String)resultMap.get("end_time"),(String)resultMap.get("position"),(String)resultMap.get("contactHospitalName"),(String)resultMap.get("location"),(String)resultMap.get("register_no"),(String) params.get("openId"),(String) parameter.get("token"),sysPropertyVoWithBLOBsVo.getTitanWebUrl()+"titan/appoint#/toBeTreatedDetail/" + params.get("patient_register_service_id") + ",1");
 			}
 			/**
 			 * 【交通信息】
@@ -115,7 +121,7 @@ class OrderMessageService {
 				String contetn = "医生:"+resultMap.get("doctorName")+"\n时间:"+resultMap.get("date")+" "+
 						dayWeek+" "+resultMap.get("begin_time")+"\n地点:"+resultMap.get("contactHospitalName")+" "+(String)resultMap.get("location")+"\n订单号:"+(String)resultMap.get("register_no")+"(已取消)";
 				PatientMsgTemplate.cancelNotice2Wechat((String)params.get("openId"), (String) parameter.get("token"),
-						contetn, ConstantUtil.TITAN_WEB_URL+"titan/appoint#/toBeTreatedDetail/" +
+						contetn, sysPropertyVoWithBLOBsVo.getTitanWebUrl()+"titan/appoint#/toBeTreatedDetail/" +
 								params.get("patient_register_service_id") + ",3");
 			}
 

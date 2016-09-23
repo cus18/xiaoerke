@@ -4,8 +4,10 @@ import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
 import com.cxqm.xiaoerke.modules.sys.entity.Article;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.interceptor.SystemControllerLog;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
@@ -41,19 +43,25 @@ public class FieldworkWechatController {
     @Autowired
     private WechatAttentionService wechatAttentionService;
 
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
+
+
     /**
      * 医生公众号菜单引导页
      */
     @RequestMapping(value = "/getDoctorWechatMenId", method = {RequestMethod.POST, RequestMethod.GET})
     public String getDoctorWechatMenu(HttpServletRequest request,HttpServletResponse response, HttpSession session) throws Exception {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
         String code = request.getParameter("code");
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +
                 "&secret=SECRET&" +
                 "code=CODE&grant_type=authorization_code";
-        get_access_token_url = get_access_token_url.replace("APPID", ConstantUtil.DOCTORCORPID);
-        get_access_token_url = get_access_token_url.replace("SECRET", ConstantUtil.DOCTORSECTET);
+        get_access_token_url = get_access_token_url.replace("APPID", sysPropertyVoWithBLOBsVo.getDoctorCorpid());
+        get_access_token_url = get_access_token_url.replace("SECRET", sysPropertyVoWithBLOBsVo.getDoctorSectet());
         get_access_token_url = get_access_token_url.replace("CODE", code);
         String access_token = "";
         String openid = "";
@@ -80,10 +88,10 @@ public class FieldworkWechatController {
             //电话咨询
             url = "#/phoneConsultFirst/";
 
-            return "redirect:" + ConstantUtil.DOCTOR_WEB_URL + "/doctor/phoneConsultDoctor" + url;
+            return "redirect:" + sysPropertyVoWithBLOBsVo.getDoctorWebUrl() + "/doctor/phoneConsultDoctor" + url;
         }
 
-        return "redirect:" + ConstantUtil.DOCTOR_WEB_URL + "/doctor/doctor" + url;
+        return "redirect:" + sysPropertyVoWithBLOBsVo.getDoctorWebUrl() + "/doctor/doctor" + url;
     }
 
     /**
@@ -91,65 +99,67 @@ public class FieldworkWechatController {
      */
     @RequestMapping(value = "/getUserWechatMenId", method = {RequestMethod.POST, RequestMethod.GET})
     public String getUserWechatMenu(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        
         String code = request.getParameter("code");
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
         System.out.println("yuanxing"+url);
         if ("1".equals(url)) {
             //引导页
-            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/guide";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/guide";
             LogUtils.saveLog("引导页");
         } else if ("2".equals(url)) {
             //预约首页
-            url = ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/appoint";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/firstPage/appoint";
             LogUtils.saveLog("预约首页");
         } else if ("3".equals(url)) {
             String state = request.getParameter("state");
             //接诊提醒
-            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/userEvaluate/" + state;
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/userEvaluate/" + state;
             LogUtils.saveLog("接诊提醒");
 
         } else if ("4".equals(url)) {
             //郑玉巧育儿经
-            url = ConstantUtil.WISDOM_WEB_URL + "/wisdom/firstPage/knowledge";
+            url = sysPropertyVoWithBLOBsVo.getWisdomWebUrl() + "/wisdom/firstPage/knowledge";
             LogUtils.saveLog("郑玉巧育儿经");
         } else if ("5".equals(url)) {
             //郑玉巧在线
-            url = ConstantUtil.WISDOM_WEB_URL + "/wisdom/knowledge#/sheOnlineIndex";
+            url = sysPropertyVoWithBLOBsVo.getWisdomWebUrl() + "/wisdom/knowledge#/sheOnlineIndex";
             LogUtils.saveLog("郑玉巧在线");
 
         } else if ("6".equals(url)) {
             //我的预约
-            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/myAppointment";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/myAppointment";
             LogUtils.saveLog("我的预约");
 
         } else if ("7".equals(url)) {
-            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/operateIndex";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/operateIndex";
         } else if ("8".equals(url)) {
-            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/operateIndex";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/operateIndex";
         } else if ("9".equals(url)) {
-            url = ConstantUtil.TITAN_WEB_URL + "/titan/phoneConsult#/selfCenter";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/phoneConsult#/selfCenter";
         } else if ("20".equals(url)) {
             //扫码送周会员
-            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/memberService/week,extend,";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/memberService/week,extend,";
         } else if ("23".equals(url)) {
             //赠送周会员
-            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/memberService/week,extend,";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/memberService/week,extend,";
         } else if ("21".equals(url)) {
             //赠送月会员
-            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/memberService/month,extend,";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/memberService/month,extend,";
         } else if ("22".equals(url)) {
             //赠送季会员
-            url = ConstantUtil.TITAN_WEB_URL + "/titan/appoint#/memberService/quarter,extend,";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/memberService/quarter,extend,";
         }else if("10".equals(url)){
             //健康管理
-            url = ConstantUtil.WISDOM_WEB_URL +"/wisdom/firstPage/healthPlan";
+            url = sysPropertyVoWithBLOBsVo.getWisdomWebUrl() +"/wisdom/firstPage/healthPlan";
             LogUtils.saveLog("BMGL_36");
         }else if("23".equals(url)){
-            url = ConstantUtil.WISDOM_WEB_URL + "/titan/appoint#/healthRecordIndex/0";
+            url = sysPropertyVoWithBLOBsVo.getWisdomWebUrl() + "/titan/appoint#/healthRecordIndex/0";
         }else if("24".equals(url)){
-            url = ConstantUtil.KEEPER_WEB_URL + "/keeper/health#/consultBabyList";
+            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/health#/consultBabyList";
         }else if("25".equals(url)){
-            url = ConstantUtil.MARKET_WEB_URL + "/market/market#/consultBabyList";
+            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/market/market#/consultBabyList";
         }else if("11".equals(url)){
             //运营活动
             String state = request.getParameter("state");
@@ -166,60 +176,60 @@ public class FieldworkWechatController {
             }else if("FXJG_PYXX".equals(state)){
                 LogUtils.saveLog("FXJG_PYXX");//从结果页朋友圈打开活动首页
             }
-            url = ConstantUtil.MARKET_WEB_URL +"market/firstPage/momNutritionTest";
+            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() +"market/firstPage/momNutritionTest";
         }else if("26".equals(url)){
-            url = ConstantUtil.TITAN_WEB_URL + "titan/firstPage/antiDogFirst";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/firstPage/antiDogFirst";
         }else if ("28".equals(url)){
-            url = ConstantUtil.TITAN_WEB_URL + "/titan/firstPage/phoneConsult";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/firstPage/phoneConsult";
         }else if (url.indexOf("consultPhone")>-1){
             System.out.println("begin"+url);
             String departmentName  = URLEncoder.encode(url.replace("consultPhone",""), "UTF-8");
-            url =ConstantUtil.TITAN_WEB_URL +"titan/phoneConsult#/phoneConDoctorList/"+departmentName+",searchDoctorByDepartment,";
+            url =sysPropertyVoWithBLOBsVo.getTitanWebUrl() +"titan/phoneConsult#/phoneConDoctorList/"+departmentName+",searchDoctorByDepartment,";
             System.out.println("end"+url);
         }else if("29".equals(url)){
             //保险
-            url = ConstantUtil.TITAN_WEB_URL + "titan/firstPage/insurance";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/firstPage/insurance";
         }else if("30".equals(url)){
             //保险
-            url = ConstantUtil.TITAN_WEB_URL + "titan/insurance#/handfootmouthIndex";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/insurance#/handfootmouthIndex";
         }else if(url.indexOf("umbrella")>-1){
             String[] state = url.replace("umbrella","").split("_");
             if(state.length>1) {
                 String id = state[1];
                 String status = state[0];
-                url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?status="+status+"&id="+id+"&time="+new Date().getTime();
+                url = sysPropertyVoWithBLOBsVo.getWisdomWebUrl() + "wisdom/firstPage/umbrella?status="+status+"&id="+id+"&time="+new Date().getTime();
             }else{
                 String status = state[0];
-                url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/umbrella?time="+new Date().getTime()+"&status="+status;
+                url = sysPropertyVoWithBLOBsVo.getWisdomWebUrl() + "wisdom/firstPage/umbrella?time="+new Date().getTime()+"&status="+status;
             }
         }else if("31".equals(url)){
-            url = ConstantUtil.WISDOM_WEB_URL + "wisdom/umbrella#/umbrellaJoin/"+new Date().getTime()+"/120000000";
+            url = sysPropertyVoWithBLOBsVo.getWisdomWebUrl() + "wisdom/umbrella#/umbrellaJoin/"+new Date().getTime()+"/120000000";
         }else if("32".equals(url)){
-            url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/lovePlan";
+            url = sysPropertyVoWithBLOBsVo.getWisdomWebUrl() + "wisdom/firstPage/lovePlan";
         }else if("33".equals(url)){
-            url = ConstantUtil.WISDOM_WEB_URL + "wisdom/umbrella#/umbrellaInvite";
+            url = sysPropertyVoWithBLOBsVo.getWisdomWebUrl() + "wisdom/umbrella#/umbrellaInvite";
         }else if("34".equals(url)){
-            url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/customerService";
+            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "angel/patient/consult#/customerService";
         } else if("35".equals(url)){
-            url = ConstantUtil.KEEPER_WEB_URL + "keeper/wxPay/patientPay.do?serviceType=doctorConsultPay";
+            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wxPay/patientPay.do?serviceType=doctorConsultPay";
         }else if("36".equals(url)){
-            url = ConstantUtil.WISDOM_WEB_URL + "wisdom/firstPage/heightForecast";
+            url = sysPropertyVoWithBLOBsVo.getWisdomWebUrl() + "wisdom/firstPage/heightForecast";
         }else if("37".equals(url)){
-            url = ConstantUtil.TITAN_WEB_URL + "titan/olympicBaby#/olympicBabyFirst";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/olympicBaby#/olympicBabyFirst";
         }else if("38".equals(url)){
             //肺炎保
-            url = ConstantUtil.TITAN_WEB_URL + "titan/insurance#/pneumoniaIndex";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/insurance#/pneumoniaIndex";
         }else if("39".equals(url)){
             //非及时咨询
-            url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/patientConsultNoFee";
+            url = sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/patient/consult#/patientConsultNoFee";
         }
 
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +
                 "&secret=SECRET&" +
                 "code=CODE&grant_type=authorization_code";
-        get_access_token_url = get_access_token_url.replace("APPID", ConstantUtil.CORPID);
-        get_access_token_url = get_access_token_url.replace("SECRET", ConstantUtil.SECTET);
+        get_access_token_url = get_access_token_url.replace("APPID", sysPropertyVoWithBLOBsVo.getUserCorpid());
+        get_access_token_url = get_access_token_url.replace("SECRET", sysPropertyVoWithBLOBsVo.getUserSectet());
         get_access_token_url = get_access_token_url.replace("CODE", code);
         String access_token = "";
         String openid = "";
@@ -238,19 +248,19 @@ public class FieldworkWechatController {
 
             openid = wechat.getOpenid();
             session.setAttribute("openId", openid);
-            CookieUtils.setCookie(response, "openId", openid==null?"":openid,60*60*24*30,ConstantUtil.DOMAIN_VALUE);
+            CookieUtils.setCookie(response, "openId", openid==null?"":openid,60*60*24*30,sysPropertyVoWithBLOBsVo.getBaodfDomainValue());
             memberService.sendExtendOldMemberWechatMessage(openid);
         }
         if(url.startsWith("41")){
-            url = getBabyCoinURL(request, openid);
+            url = getBabyCoinURL(request, openid,sysPropertyVoWithBLOBsVo);
         }
         if("42".equalsIgnoreCase(url)){
-            url = ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/patientConsultInvitePage";
+            url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#/patientConsultInvitePage";
         }
         return "redirect:" + url;
     }
 
-    private String getBabyCoinURL(HttpServletRequest request, String openid) throws UnsupportedEncodingException {
+    private String getBabyCoinURL(HttpServletRequest request, String openid,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) throws UnsupportedEncodingException {
         String url;//判断新老用户
         WechatAttention attention = wechatAttentionService.getAttentionByOpenId(openid);
         String[] parameters = request.getQueryString().split(",");
@@ -260,10 +270,10 @@ public class FieldworkWechatController {
             marketer = marketer.split("&")[0];
         }
         if(attention == null || attention.getDate() == null){//新用户
-            url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/patientConsultInviteNew/"+oldOpenId+","+marketer;
+            url = sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/patient/consult#/patientConsultInviteNew/"+oldOpenId+","+marketer;
             LogUtils.saveLog("ZXYQ_YQK_NEW","oldOpenId="+oldOpenId+"openid="+openid+"marketer"+marketer);
         }else {//老用户
-            url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/patientConsultInviteOld/"+oldOpenId+","+marketer;
+            url = sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/patient/consult#/patientConsultInviteOld/"+oldOpenId+","+marketer;
             LogUtils.saveLog("ZXYQ_YQK_OLD","openid="+openid);
         }
         return url;
@@ -394,13 +404,15 @@ public class FieldworkWechatController {
      */
     @RequestMapping(value = "/getZhengArticle", method = {RequestMethod.POST, RequestMethod.GET})
     public String getZhengArticle(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
         String code = request.getParameter("code");
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +
                 "&secret=SECRET&" +
                 "code=CODE&grant_type=authorization_code";
-        get_access_token_url = get_access_token_url.replace("APPID", ConstantUtil.CORPID);
-        get_access_token_url = get_access_token_url.replace("SECRET", ConstantUtil.SECTET);
+        get_access_token_url = get_access_token_url.replace("APPID", sysPropertyVoWithBLOBsVo.getUserCorpid());
+        get_access_token_url = get_access_token_url.replace("SECRET", sysPropertyVoWithBLOBsVo.getUserSectet());
         get_access_token_url = get_access_token_url.replace("CODE", code);
         String access_token = "";
         String openid = "";
@@ -422,13 +434,15 @@ public class FieldworkWechatController {
     @SystemControllerLog(description = "00000083")
     @RequestMapping(value = "/getZhengIndex", method = {RequestMethod.POST, RequestMethod.GET})
     public String getZhengIndex(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
         String code = request.getParameter("code");
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +
                 "&secret=SECRET&" +
                 "code=CODE&grant_type=authorization_code";
-        get_access_token_url = get_access_token_url.replace("APPID", ConstantUtil.CORPID);
-        get_access_token_url = get_access_token_url.replace("SECRET", ConstantUtil.SECTET);
+        get_access_token_url = get_access_token_url.replace("APPID", sysPropertyVoWithBLOBsVo.getUserCorpid());
+        get_access_token_url = get_access_token_url.replace("SECRET", sysPropertyVoWithBLOBsVo.getUserSectet());
         get_access_token_url = get_access_token_url.replace("CODE", code);
         String access_token = "";
         String openid = "";

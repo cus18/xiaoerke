@@ -7,9 +7,11 @@ public class SysPropertyVo {
 
     private String userSectet;
 
-    private String amrTomp3FuncWindows;
+    private String doctorCorpid;
 
-    private String amrTomp3FuncLinux;
+    private String doctorSectet;
+
+    private String amrTomp3Func;
 
     private String baodfDomainValue;
 
@@ -105,10 +107,6 @@ public class SysPropertyVo {
 
     private String shortmessageswitchReceivertypeDoctor;
 
-    private String bak1;
-
-    private String bak2;
-
     private String bak3;
 
     private String bak4;
@@ -157,20 +155,12 @@ public class SysPropertyVo {
         this.userSectet = userSectet;
     }
 
-    public String getAmrTomp3FuncWindows() {
-        return amrTomp3FuncWindows;
+    public String getAmrTomp3Func() {
+        return amrTomp3Func;
     }
 
-    public void setAmrTomp3FuncWindows(String amrTomp3FuncWindows) {
-        this.amrTomp3FuncWindows = amrTomp3FuncWindows;
-    }
-
-    public String getAmrTomp3FuncLinux() {
-        return amrTomp3FuncLinux;
-    }
-
-    public void setAmrTomp3FuncLinux(String amrTomp3FuncLinux) {
-        this.amrTomp3FuncLinux = amrTomp3FuncLinux;
+    public void setAmrTomp3Func(String amrTomp3Func) {
+        this.amrTomp3Func = amrTomp3Func;
     }
 
     public String getBaodfDomainValue() {
@@ -549,20 +539,20 @@ public class SysPropertyVo {
         this.shortmessageswitchReceivertypeDoctor = shortmessageswitchReceivertypeDoctor;
     }
 
-    public String getBak1() {
-        return bak1;
+    public String getDoctorCorpid() {
+        return doctorCorpid;
     }
 
-    public void setBak1(String bak1) {
-        this.bak1 = bak1;
+    public void setDoctorCorpid(String doctorCorpid) {
+        this.doctorCorpid = doctorCorpid;
     }
 
-    public String getBak2() {
-        return bak2;
+    public String getDoctorSectet() {
+        return doctorSectet;
     }
 
-    public void setBak2(String bak2) {
-        this.bak2 = bak2;
+    public void setDoctorSectet(String doctorSectet) {
+        this.doctorSectet = doctorSectet;
     }
 
     public String getBak3() {

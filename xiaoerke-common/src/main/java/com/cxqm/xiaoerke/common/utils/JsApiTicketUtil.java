@@ -5,7 +5,10 @@ package com.cxqm.xiaoerke.common.utils;
  */
 
 
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -16,6 +19,9 @@ import java.util.*;
 public class JsApiTicketUtil {
     static Logger logger = Logger.getLogger(JsApiTicketUtil.class);
 
+    @Autowired
+    private static SysPropertyServiceImpl sysPropertyService;
+
     /**
      * 用于给定的jsticket和url按照SHA-1签名
      * @param jsapi_ticket
@@ -23,6 +29,7 @@ public class JsApiTicketUtil {
      * @return
      */
     public static Map<String, String> sign(String jsapi_ticket, String url) {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map<String, String> ret = new HashMap<String, String>();
         String nonce_str = create_nonce_str();
         String timestamp = create_timestamp();
@@ -53,7 +60,7 @@ public class JsApiTicketUtil {
         ret.put("nonceStr", nonce_str);
         ret.put("timestamp", timestamp);
         ret.put("signature", signature);
-        ret.put("appid", ConstantUtil.CORPID);
+        ret.put("appid",sysPropertyVoWithBLOBsVo.getUserCorpid());
         return ret;
     }
 
@@ -85,6 +92,8 @@ public class JsApiTicketUtil {
      * 对参数进行签名
      * */
     public static String createSign(String characterEncoding,SortedMap<Object,Object> parameters){
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
         StringBuffer sb = new StringBuffer();
         Set es = parameters.entrySet();
         Iterator it = es.iterator();
@@ -97,7 +106,7 @@ public class JsApiTicketUtil {
                 sb.append(k + "=" + v + "&");
             }
         }
-        sb.append("key=" + ConstantUtil.PARTNER_KEY);
+        sb.append("key=" + sysPropertyVoWithBLOBsVo.getPartnerKey());
         String sign = MD5Util.MD5Encode(sb.toString(), characterEncoding).toUpperCase();
         return sign;
     }

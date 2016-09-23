@@ -1,7 +1,6 @@
 package com.cxqm.xiaoerke.modules.order.service.impl;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
-import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
@@ -18,7 +17,9 @@ import com.cxqm.xiaoerke.modules.order.exception.CreateOrderException;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PatientVo;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
@@ -30,7 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -72,6 +72,9 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
 
     @Autowired
     private ConsultPhoneTimingDialDao consultPhoneTimingDialDao;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
             
     @Autowired
     private ConsultPhoneManuallyConnectRecordDao consultPhoneManuallyConnectRecordDao;
@@ -165,6 +168,8 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     public Float cancelOrder(Integer phoneConsultaServiceId,String cancelReason,String cancelState) throws CancelOrderException {
         int sysOrderState = 0;
 //        Float price = 0f;
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
         //取消订单
         Map<String,Object> map = consultPhoneRegisterServiceDao.getPhoneConsultaServiceIndo(phoneConsultaServiceId);
 
@@ -190,7 +195,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
             //发消息
             Map<String,Object> parameter = systemService.getWechatParameter();
             String token = (String)parameter.get("token");
-            String url = ConstantUtil.TITAN_WEB_URL+"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("orderId")+",phone";
+            String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() +"/titan/phoneConsult#/orderDetail"+(String) map.get("doctorId")+","+(Integer) map.get("orderId")+",phone";
             PatientMsgTemplate.consultPhoneCancel2Wechat(doctorName,date, week, beginTime,(String) map.get("endTime"), (String) map.get("phone"),(String) map.get("orderNo"),(Float) map.get("price")+"",(String) map.get("openid"),token,url);
             PatientMsgTemplate.consultPhoneRefund2Msg(doctorName, (Float) map.get("price")+"", (String) map.get("phone"),(String) map.get("date"), week, (String) map.get("beginTime"),(String) map.get("orderNo"));
 

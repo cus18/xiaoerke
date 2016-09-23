@@ -11,6 +11,8 @@ import java.util.Map;
 
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.order.entity.RegisterServiceVo;
@@ -42,6 +42,9 @@ public class RegisterDoctorController extends BaseController {
 	@Autowired
 	private PatientRegisterService patientRegisterService;
 
+	@Autowired
+	private SysPropertyServiceImpl sysPropertyService;
+
     @RequestMapping(value = "/date", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -59,6 +62,7 @@ public class RegisterDoctorController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> arrangeRegister(@RequestBody Map<String, Object> params) throws Exception {
+		SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
 		DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
     	String doctorId = (String) params.get("doctorId");
     	String hospitalId = (String) params.get("hospitalId");
@@ -75,8 +79,8 @@ public class RegisterDoctorController extends BaseController {
 		if(from.getTime() < to.getTime()){
 			if(!fromTime.equals(toTime)){
 				Date temp = new Date();
-				for(int i=0;i < Integer.parseInt(ConstantUtil.DAY_QUARTER_NUMBER);i++){
-					temp.setTime(from.getTime() + Integer.parseInt(ConstantUtil.VISIT_INTERVAL)*60*1000*i);
+				for(int i=0;i < Integer.parseInt(sysPropertyVoWithBLOBsVo.getDayQuarterNumber());i++){
+					temp.setTime(from.getTime() + Integer.parseInt(sysPropertyVoWithBLOBsVo.getVisitInterval())*60*1000*i);
 					String toTimeStr =DateUtils.DateToStr(temp,"time");
 					if(!toTime.equals(toTimeStr)){
 						timeList.add(toTimeStr);

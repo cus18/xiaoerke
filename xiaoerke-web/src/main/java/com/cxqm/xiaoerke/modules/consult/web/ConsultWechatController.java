@@ -13,6 +13,8 @@ import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultVoiceRecordMongoServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
@@ -69,6 +71,9 @@ public class ConsultWechatController extends BaseController {
     @Autowired
     private ConsultSessionPropertyService consultSessionPropertyService;
 
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
+
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
     @Autowired
@@ -109,7 +114,7 @@ public class ConsultWechatController extends BaseController {
         }
 
         public void run() {
-
+            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
             //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
             String openId = (String) this.param.get("openId");
             String messageType = (String) this.param.get("messageType");
@@ -199,7 +204,7 @@ public class ConsultWechatController extends BaseController {
                     sessionId = consultSession.getId();
                 }
                 //咨询收费处理
-                consultTimes = consultCharge(openId, sessionId, consultSession);
+                consultTimes = consultCharge(openId, sessionId, consultSession,sysPropertyVoWithBLOBsVo);
                 sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
                 sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
             }
@@ -306,7 +311,7 @@ public class ConsultWechatController extends BaseController {
             return messageContent;
         }
 
-        private Integer consultCharge(String openId, Integer sessionId, RichConsultSession richConsultSession) {
+        private Integer consultCharge(String openId, Integer sessionId, RichConsultSession richConsultSession,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
 
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
             String token = (String) userWechatParam.get("token");
@@ -339,7 +344,7 @@ public class ConsultWechatController extends BaseController {
                 if (messageFlag == 0 && consultSessionPropertyVo.getMonthTimes() > 0) {
                     String content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^" ;
                     if(consultSessionPropertyVo.getMonthTimes() == 1){
-                        content += "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n"+ "<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=42'>>>邀请好友得积分</a>";
+                        content += "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n"+ "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42'>>>邀请好友得积分</a>";
                     }
                     WechatUtil.sendMsgToWechat(token, openId, content);
                     if(consultSessionPropertyVo.getMonthTimes() == 1){
@@ -361,7 +366,7 @@ public class ConsultWechatController extends BaseController {
                         if (consultSessionPropertyVo.getMonthTimes() > 0) {
                             content = "嗨，亲爱的，你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^";
                             if(consultSessionPropertyVo.getMonthTimes() == 1){
-                                content += "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n"+ "<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=42'>>>邀请好友得积分</a>";
+                                content += "\n-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n"+ "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42'>>>邀请好友得积分</a>";
                             }
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
@@ -381,12 +386,12 @@ public class ConsultWechatController extends BaseController {
 
                             richConsultSession.setPayStatus(ConstantUtil.NO_PAY);
                             content = "嗨，亲爱的，你本月咨询次数已用完，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
-                                    "<a href='"+ConstantUtil.KEEPER_WEB_URL+"/keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>点击这里购买更多咨询机会</a>" + "\n" +
-                                    "-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n" + "<a href='"+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"keeper/wechatInfo/getUserWechatMenId?url=42'>>>邀请好友得积分</a>";
+                                    "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>点击这里购买更多咨询机会</a>" + "\n" +
+                                    "-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n" + "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42'>>>邀请好友得积分</a>";
                             if(flag){
 //                                richConsultSession.setPayStatus(ConstantUtil.NOT_INSTANT_CONSULTATION);
                                 LogUtils.saveLog("feishishizixunfasong", openId);
-                                content +="\n-----------\n问题不急？欢迎体验<a href='"+ConstantUtil.KEEPER_WEB_URL+"/keeper/wechatInfo/fieldwork/wechat/author?url="+ConstantUtil.KEEPER_WEB_URL+"/keeper/wechatInfo/getUserWechatMenId?url=39"+"'>24h免费咨询</a>>>";
+                                content +="\n-----------\n问题不急？欢迎体验<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=39"+"'>24h免费咨询</a>>>";
                             }
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             LogUtils.saveLog("consult_charge_twice_information", sysUserId);

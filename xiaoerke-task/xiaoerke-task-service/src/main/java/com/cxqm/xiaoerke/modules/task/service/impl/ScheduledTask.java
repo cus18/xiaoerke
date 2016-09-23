@@ -18,10 +18,12 @@ import com.cxqm.xiaoerke.modules.order.service.ConsultPhoneOrderService;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.plan.service.PlanMessageService;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.CustomerService;
 import com.cxqm.xiaoerke.modules.sys.service.MessageService;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.ChangzhuoMessageUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
@@ -108,6 +110,10 @@ public class ScheduledTask {
 
     @Autowired
     private ConsultSessionPropertyService consultSessionPropertyService;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
+
 
     //将所有任务放到一个定时器里，减少并发
     //@Scheduled(cron = "0 */1 * * * ?")
@@ -612,8 +618,9 @@ public class ScheduledTask {
      */
     public void persistRecord() {
         try {
+            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
             System.out.print("用户端微信参数更新");
-            String token = WechatUtil.getToken(ConstantUtil.CORPID, ConstantUtil.SECTET);
+            String token = WechatUtil.getToken(sysPropertyVoWithBLOBsVo.getUserCorpid(), sysPropertyVoWithBLOBsVo.getUserSectet());
             String ticket = WechatUtil.getJsapiTicket(token);
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("token", token);
@@ -985,7 +992,7 @@ public class ScheduledTask {
 
     //建立患者与医生之间的通讯
     public synchronized void getConnection4doctorAndPatient() {
-
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         //再建立通讯的五分钟前发消息给用户
         Map<String, Object> parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
@@ -998,7 +1005,7 @@ public class ScheduledTask {
             List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
             if (null == messageMap || messageMap.size() == 0) {
                 String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) map.get("date"), "yyyy/MM/dd"));
-                String url = ConstantUtil.TITAN_WEB_URL + "/titan/phoneConsult#/orderDetail" + (String) map.get("doctorId") + "," + (Integer) map.get("id") + ",phone";
+                String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl()  + "/titan/phoneConsult#/orderDetail" + (String) map.get("doctorId") + "," + (Integer) map.get("id") + ",phone";
                 PatientMsgTemplate.consultPhoneWaring2Wechat((String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("endTime"), (String) map.get("userPhone"), (String) map.get("orderNo"), (String) map.get("openid"), token, url);
                 PatientMsgTemplate.consultPhoneWaring2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("userPhone"), (String) map.get("orderNo"));
                 insertMonitor((Integer) map.get("id") + "", "2", "7");
@@ -1044,7 +1051,7 @@ public class ScheduledTask {
         for (HashMap<String, Object> map : returnPayList) {
             accountService.updateAccount(0F, (Integer) map.get("id") + "", response, false, (String) map.get("userId"), "电话咨询超时取消退款");
             Map<String, Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo((Integer) map.get("id"));
-            String url = ConstantUtil.TITAN_WEB_URL + "/titan/phoneConsult#/orderDetail" + (String) consultOrder.get("doctorId") + "," + (Integer) consultOrder.get("orderId") + ",phone";
+            String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/phoneConsult#/orderDetail" + (String) consultOrder.get("doctorId") + "," + (Integer) consultOrder.get("orderId") + ",phone";
             PatientMsgTemplate.returnPayPhoneRefund2Msg((String) consultOrder.get("babyName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("phone"));
             String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) consultOrder.get("date"), "yyyy/MM/dd"));
             String dateTime = (String) consultOrder.get("date") + " " + week + " " + (String) consultOrder.get("beginTime");
@@ -1272,7 +1279,7 @@ public class ScheduledTask {
      */
     public void sendMsgToDocAtNightPhoneConsult() {
         System.out.println("package.controller scheduled test -->sendMsgToDocAtNight_PhoneConsult");
-
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map tokenMap = systemService.getDoctorWechatParameter();
         String token = (String) tokenMap.get("token");
 
@@ -1301,7 +1308,7 @@ public class ScheduledTask {
             String openid = (String) orderMap.get("openid");
             if (StringUtils.isNotNull(openid)) {
                 SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy年mm月dd日");
-                String url = ConstantUtil.DOCTOR_WEB_URL + "/doctor/phoneConsultDoctor#/phoneConsultFirst/" + date;
+                String url = sysPropertyVoWithBLOBsVo.getDoctorWebUrl() + "/doctor/phoneConsultDoctor#/phoneConsultFirst/" + date;
                 DoctorMsgTemplate.doctorPhoneConsultRemindAtNight2Wechat(simpleDateFormat1.format(tomorrow), String.valueOf(num), nameList, token,
                         url, openid);
             }
@@ -1319,7 +1326,7 @@ public class ScheduledTask {
      */
     public void sendMsgToDocAtMorningPhoneConsult() {
         System.out.println("package.controller scheduled test -->sendMsgToDocAtMorning_PhoneConsult");
-
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map tokenMap = systemService.getDoctorWechatParameter();
         String token = (String) tokenMap.get("token");
 
@@ -1347,7 +1354,7 @@ public class ScheduledTask {
             String openid = (String) orderMap.get("openid");
             if (StringUtils.isNotNull(openid)) {
                 SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy年mm月dd日");
-                String url = ConstantUtil.DOCTOR_WEB_URL + "/doctor/phoneConsultDoctor#/phoneConsultFirst/" + date;
+                String url = sysPropertyVoWithBLOBsVo.getDoctorWebUrl() + "/doctor/phoneConsultDoctor#/phoneConsultFirst/" + date;
                 DoctorMsgTemplate.doctorPhoneConsultRemindAtMoning2Wechat(simpleDateFormat1.format(new Date()), String.valueOf(num), nameList,
                         token, url, openid);
             }
@@ -1420,7 +1427,7 @@ public class ScheduledTask {
     //预约咨询成功5min后
     public void sendMsgToDoc5minAfterSuccess() {
         System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc5minAfterSuccess_PhoneConsult");
-
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Date date = new Date();
         DateFormat format = new SimpleDateFormat("HH");
         int time = Integer.parseInt(format.format(date));
@@ -1443,7 +1450,7 @@ public class ScheduledTask {
                     String token = (String) tokenMap.get("token");
                     Integer sysPhoneConsultId = (Integer) map.get("sys_phoneConsult_service_id");
                     String doctorId = (String) map.get("doctorId");
-                    String url = ConstantUtil.DOCTOR_WEB_URL + "/doctor/phoneConsultDoctor#/phoneConsultDetails/" + sysPhoneConsultId + "," + doctorId;
+                    String url = sysPropertyVoWithBLOBsVo.getDoctorWebUrl() + "/doctor/phoneConsultDoctor#/phoneConsultDetails/" + sysPhoneConsultId + "," + doctorId;
                     DoctorMsgTemplate.doctorPhoneConsultRemindAt5minLater2Wechat(babyName, visitDate, week,
                             beginTime, token, url, (String) map.get("openid"));
                 }
@@ -1456,7 +1463,7 @@ public class ScheduledTask {
     //接听前5min
     public void sendMsgToDoc5minBeforeConnect() {
         System.out.println(new Date() + " package.controller scheduled test --> sendMsgToDoc5minBeforeConnect_PhoneConsult");
-
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         List<HashMap<String, Object>> doctorMsg = scheduleTaskService.getOrderInfoToDocConnect5minAfter();
         for (HashMap<String, Object> map : doctorMsg) {
             String doctorName = (String) map.get("doctorName");
@@ -1465,7 +1472,7 @@ public class ScheduledTask {
             String userPhone = (String) map.get("userPhone");
             Integer sysPhoneConsultId = (Integer) map.get("sys_phoneConsult_service_id");
             String doctorId = (String) map.get("doctorId");
-            String url = ConstantUtil.DOCTOR_WEB_URL + "/doctor/phoneConsultDoctor#/phoneConsultDetails/" + sysPhoneConsultId + "," + doctorId;
+            String url = sysPropertyVoWithBLOBsVo.getDoctorWebUrl() + "/doctor/phoneConsultDoctor#/phoneConsultDetails/" + sysPhoneConsultId + "," + doctorId;
             Map tokenMap = systemService.getDoctorWechatParameter();
             String token = (String) tokenMap.get("token");
             //短信
