@@ -8,6 +8,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +29,9 @@ public class WebSSOController {
 	private static String codeCallbackUrl = "/sso/dealCode";//客户端处理认证中心CODE地址
 	private static String loginCallbackUrl = "/sso/loginBack";//客户端处理认证中心登录成功地址
 	private static String tokenCallbackurl = "/sso/checkToken";//客户端处理认证中心token地址
-	
+
+	@Autowired
+	private SysPropertyServiceImpl sysPropertyService;
 	@RequestMapping(value = "checkLogin")
 	public @ResponseBody String checkLogin(String targeturl, HttpServletRequest request) throws Exception{
 
@@ -34,8 +39,9 @@ public class WebSSOController {
 		if(targeturl == null) {
 			sb = new StringBuilder("{\"status\":\"8\", \"redirectURL\": \"");
 		}
-		
-		sb.append(Global.getConfig("authentication.basePath"))
+		SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
+		sb.append(sysPropertyVoWithBLOBsVo.getAuthenticationBasepath())
 		.append("/sso/checklogin?");
 		
 		String from = request.getParameter("from");
@@ -87,11 +93,14 @@ public class WebSSOController {
 				} else
 					return "redirect:/auth/auth_center/form?token="+token;
 			}else{//token验证失败，走认证中心登录流程
-				String authLoginUrl = Global.getConfig("authentication.basePath") + "/sso/login?toUrl="+WebUtil.getWebPath(request) + loginCallbackUrl;//认证中心登录地址
+				SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+				String authLoginUrl = sysPropertyVoWithBLOBsVo.getAuthenticationBasepath() + "/sso/login?toUrl="+WebUtil.getWebPath(request) + loginCallbackUrl;//认证中心登录地址
 				return "redirect:"+authLoginUrl;
 			}
 		}else{//认证中心重新登陆成功，客户端发起授权请求
-			String url = "redirect:" + Global.getConfig("authentication.basePath") + "/oauth/authorize?response_type=code&scope=test&client_id=web&client_secret=xiaoerke123456&redirect_uri="+WebUtil.getWebPath(request)+codeCallbackUrl;
+			SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
+			String url = "redirect:" + sysPropertyVoWithBLOBsVo.getAuthenticationBasepath() + "/oauth/authorize?response_type=code&scope=test&client_id=web&client_secret=xiaoerke123456&redirect_uri="+WebUtil.getWebPath(request)+codeCallbackUrl;
 			if(targeturl != null) {
 				targeturl = URLEncoder.encode(targeturl, "utf-8");
 				Cookie cookie = new Cookie("targeturl",targeturl);
@@ -121,7 +130,9 @@ public class WebSSOController {
 		}
 		
 		//将认证中心获取的token上送认证中心，认证中心保存至cookie（该步骤待定！！！）
-		String url = "redirect:" + Global.getConfig("authentication.basePath") + "/sso/token/sendToken?token=" + token  + "&toUrl=" + WebUtil.getWebPath(request) + tokenCallbackurl;
+		SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
+		String url = "redirect:" + sysPropertyVoWithBLOBsVo.getAuthenticationBasepath() + "/sso/token/sendToken?token=" + token  + "&toUrl=" + WebUtil.getWebPath(request) + tokenCallbackurl;
 		return url;
 	}
 	
@@ -161,7 +172,8 @@ public class WebSSOController {
 			} else
 				return "redirect:/auth/auth_center/form?token="+token;
 		}else{//走认证中心登录流程
-			String authLoginUrl = Global.getConfig("authentication.basePath") + "/sso/login?toUrl="+WebUtil.getWebPath(request)+loginCallbackUrl;//认证中心登录地址
+			SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+			String authLoginUrl = sysPropertyVoWithBLOBsVo.getAuthenticationBasepath() + "/sso/login?toUrl="+WebUtil.getWebPath(request)+loginCallbackUrl;//认证中心登录地址
 			return "redirect:"+authLoginUrl;
 		}
 	}
@@ -175,7 +187,9 @@ public class WebSSOController {
 			cookie.setPath(pathArray[j]);
 			response.addCookie(cookie);
 		}
-		return "redirect:" + Global.getConfig("authentication.basePath") + "/sso/logout?toUrl=" + WebUtil.getWebPath(request) + "/firstPage/appoint";
+		SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
+		return "redirect:" + sysPropertyVoWithBLOBsVo.getAuthenticationBasepath() + "/sso/logout?toUrl=" + WebUtil.getWebPath(request) + "/firstPage/appoint";
 	}
 
 }

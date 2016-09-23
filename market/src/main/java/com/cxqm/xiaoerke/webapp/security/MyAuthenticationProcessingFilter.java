@@ -10,6 +10,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,9 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
 	
 	@Autowired
 	private SystemService systemService;
+
+	@Autowired
+	private SysPropertyServiceImpl sysPropertyService;
 	
 	public MyAuthenticationProcessingFilter() {
 		super("/test");
@@ -51,13 +56,13 @@ public class MyAuthenticationProcessingFilter extends AbstractAuthenticationProc
 	
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request,HttpServletResponse response) throws AuthenticationException {
-		
+		SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
 		String token = request.getParameter("token");
 		if(token == null){//用户不存在
 			throw new AuthenticationServiceException("Token cannot be null。");
 		}
 		
-		String authCheckTokenUrl = Global.getConfig("authentication.basePath") + "/oauth/check_token?token="+token;
+		String authCheckTokenUrl = sysPropertyVoWithBLOBsVo.getAuthenticationBasepath() + "/oauth/check_token?token="+token;
 		String tokenInfo = HttpUtils.doGet(authCheckTokenUrl);
 
 		JsonMapper json = JsonMapper.getInstance();
