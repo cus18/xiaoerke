@@ -7,7 +7,7 @@
   </parent>
   <artifactId>xiaoerke-vaccine</artifactId>
   <packaging>pom</packaging>
-  <name>xiaoerke-activity</name>
+  <name>xiaoerke-vaccine</name>
   <description>activity module</description>
   <modules>
   	<module>xiaoerke-vaccine-api</module>
