@@ -253,7 +253,7 @@ public class AccountServiceImpl implements AccountService {
             parameters.put("desc", "退款");
             parameters.put("spbill_create_ip", ip);
             parameters.put("openid", openid);
-            String sign = JsApiTicketUtil.createSign("UTF-8", parameters);
+            String sign = JsApiTicketUtil.createSign("UTF-8", parameters,sysPropertyVoWithBLOBsVo);
             parameters.put("sign", sign);
             String requestXML = JsApiTicketUtil.getRequestXml(parameters);
             try {
@@ -425,7 +425,7 @@ public class AccountServiceImpl implements AccountService {
         parameters.put("trade_type", "JSAPI");//交易类型
         parameters.put("openid", openId);//用户标示
         //将上述参数进行签名
-        String sign = JsApiTicketUtil.createSign("UTF-8", parameters);
+        String sign = JsApiTicketUtil.createSign("UTF-8", parameters,sysPropertyVoWithBLOBsVo);
         parameters.put("sign", sign);
         String requestXML = JsApiTicketUtil.getRequestXml(parameters);
         String result = HttpRequestUtil.httpsRequest(sysPropertyVoWithBLOBsVo.getGateurl(), "POST", requestXML);
@@ -456,7 +456,7 @@ public class AccountServiceImpl implements AccountService {
                 params.put("nonceStr", noncestr);
                 params.put("package", "prepay_id=" + map.get("prepay_id"));
                 params.put("signType", sysPropertyVoWithBLOBsVo.getSignMethod());
-                String paySign = JsApiTicketUtil.createSign("UTF-8", params);
+                String paySign = JsApiTicketUtil.createSign("UTF-8", params,sysPropertyVoWithBLOBsVo);
                 params.put("paySign", paySign); //paySign的生成规则和Sign的生成规则一致
                 String userAgent = request.getHeader("user-agent");
                 char agent = userAgent.charAt(userAgent.indexOf("MicroMessenger") + 15);
@@ -556,7 +556,7 @@ public class AccountServiceImpl implements AccountService {
         params.put("out_trade_no", out_trade_no);
         String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串
         params.put("nonce_str", noncestr);
-        String sign = JsApiTicketUtil.createSign("UTF-8", params);
+        String sign = JsApiTicketUtil.createSign("UTF-8", params,sysPropertyVoWithBLOBsVo);
         params.put("sign", sign);
         //将上述参数进行签名
         String requestXML = JsApiTicketUtil.getRequestXml(params);

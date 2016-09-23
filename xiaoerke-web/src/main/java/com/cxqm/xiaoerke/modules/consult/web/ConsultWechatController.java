@@ -255,7 +255,7 @@ public class ConsultWechatController extends BaseController {
                         //收到语音，发送通知给用户，提示为了更好地咨询，最好文字聊天
                         //根据mediaId，从微信服务器上，获取到媒体文件，再将媒体文件，放置阿里云服务器，获取URL
                         if (messageType.contains("voice") || messageType.contains("video") || messageType.contains("image")) {
-                            messageContent = voiceHandle(messageType, messageContent, sessionId, consultSession, obj);
+                            messageContent = voiceHandle(messageType, messageContent, sessionId, consultSession, obj,sysPropertyVoWithBLOBsVo);
                         }
                     }
                     /**
@@ -281,12 +281,12 @@ public class ConsultWechatController extends BaseController {
 
         }
 
-        private String voiceHandle(String messageType, String messageContent, Integer sessionId, RichConsultSession consultSession, JSONObject obj) {
+        private String voiceHandle(String messageType, String messageContent, Integer sessionId, RichConsultSession consultSession, JSONObject obj,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
             try {
                 WechatUtil wechatUtil = new WechatUtil();
                 Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
                 String mediaURL = wechatUtil.downloadMediaFromWx((String) userWechatParam.get("token"),
-                        (String) this.param.get("mediaId"), messageType);
+                        (String) this.param.get("mediaId"), messageType,sysPropertyVoWithBLOBsVo);
                 obj.put("content", mediaURL);
                 messageContent = mediaURL;
                 if (messageType.contains("voice")) {

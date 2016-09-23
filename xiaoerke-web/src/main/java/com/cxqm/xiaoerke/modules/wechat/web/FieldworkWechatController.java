@@ -292,9 +292,10 @@ public class FieldworkWechatController {
     @ResponseBody
     Map<String, String> getConfig(HttpServletRequest request) throws Exception {
         String u = request.getParameter("url");
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map<String, Object> parameter = systemService.getWechatParameter();
         String ticket = (String) parameter.get("ticket");
-        Map<String, String> config = JsApiTicketUtil.sign(ticket, u);
+        Map<String, String> config = JsApiTicketUtil.sign(ticket, u,sysPropertyVoWithBLOBsVo);
         return config;
     }
 
@@ -306,8 +307,9 @@ public class FieldworkWechatController {
      */
     @RequestMapping(value = "/fieldwork/wechat/author", method = RequestMethod.GET)
     public String Oauth2API(HttpServletRequest request) {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         String backUrl = request.getParameter("url");
-        String oauth2Url = WechatUtil.getOauth2Url(backUrl);
+        String oauth2Url = WechatUtil.getOauth2Url(backUrl,sysPropertyVoWithBLOBsVo);
         return "redirect:" + oauth2Url;
     }
 

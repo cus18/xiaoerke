@@ -18,18 +18,13 @@ import java.util.*;
 
 public class JsApiTicketUtil {
     static Logger logger = Logger.getLogger(JsApiTicketUtil.class);
-
-    @Autowired
-    private static SysPropertyServiceImpl sysPropertyService;
-
     /**
      * 用于给定的jsticket和url按照SHA-1签名
      * @param jsapi_ticket
      * @param url
      * @return
      */
-    public static Map<String, String> sign(String jsapi_ticket, String url) {
-        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+    public static Map<String, String> sign(String jsapi_ticket, String url,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
         Map<String, String> ret = new HashMap<String, String>();
         String nonce_str = create_nonce_str();
         String timestamp = create_timestamp();
@@ -91,9 +86,7 @@ public class JsApiTicketUtil {
     /**
      * 对参数进行签名
      * */
-    public static String createSign(String characterEncoding,SortedMap<Object,Object> parameters){
-        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-
+    public static String createSign(String characterEncoding,SortedMap<Object,Object> parameters,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo){
         StringBuffer sb = new StringBuffer();
         Set es = parameters.entrySet();
         Iterator it = es.iterator();

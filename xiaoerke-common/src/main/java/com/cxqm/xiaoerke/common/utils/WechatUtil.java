@@ -28,10 +28,6 @@ import java.util.UUID;
  */
 public class WechatUtil {
 
-    @Autowired
-    private static SysPropertyServiceImpl sysPropertyService;
-
-
     public static String getToken(String corpid, String sectet) throws IOException {
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + corpid + "&secret=" + sectet + "";
         String content = HttpRequestUtil.get(url);
@@ -60,8 +56,7 @@ public class WechatUtil {
      * @return
      * @throws IOException
      */
-    public static String getOauth2Url(String backUrl) {
-        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+    public static String getOauth2Url(String backUrl,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
         backUrl = urlEncodeUTF8(backUrl);
         return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
                 sysPropertyVoWithBLOBsVo.getUserCorpid() + "&redirect_uri=" + backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
@@ -274,8 +269,7 @@ public class WechatUtil {
      *
      * @author deliang
      */
-    public String downloadMediaFromWx(String accessToken, String mediaId, String messageType) throws IOException {
-        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+    public String downloadMediaFromWx(String accessToken, String mediaId, String messageType ,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) throws IOException {
         if (StringUtils.isEmpty(accessToken) || StringUtils.isEmpty(mediaId)) return "";
         Long picLen = 0L;
         InputStream inputStream = null;

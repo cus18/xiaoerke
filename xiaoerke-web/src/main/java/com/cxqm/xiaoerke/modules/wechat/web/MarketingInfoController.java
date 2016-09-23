@@ -52,8 +52,9 @@ public class MarketingInfoController {
 	     */
 	    @RequestMapping( value = "/MarketingInfo/wechat/author", method = RequestMethod.GET )
 	    public String WechatAuthor(HttpServletRequest request){
+			SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
 	        String backUrl = request.getParameter("url");
-	        String oauth2Url = WechatUtil.getOauth2Url(backUrl);
+	        String oauth2Url = WechatUtil.getOauth2Url(backUrl,sysPropertyVoWithBLOBsVo);
 	        return "redirect:" + oauth2Url;
 	    }
 
