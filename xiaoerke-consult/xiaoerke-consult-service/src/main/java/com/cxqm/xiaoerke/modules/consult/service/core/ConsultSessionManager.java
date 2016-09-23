@@ -9,6 +9,7 @@ import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultSessionPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultVoiceRecordMongoServiceImpl;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
@@ -93,8 +94,6 @@ public enum ConsultSessionManager {
     private ConsultSessionPropertyServiceImpl consultSessionPropertyService = SpringContextHolder.getBean("consultSessionPropertyServiceImpl");
 
     private ConsultSessionManager() {
-//        String distributorsStr = Global.getConfig("distributors.list");
-//        distributorsList = Arrays.asList(distributorsStr.split(";"));
         User user = new User();
         user.setUserType("distributor");
         List<User> users = systemService.findUserByUserType(user);
@@ -986,7 +985,7 @@ public enum ConsultSessionManager {
      * Created by jiangzhongge on 2016-5-18.
      * 医生选择一个用户，主动跟用户发起咨询会话
      */
-    public HashMap<String, Object> createConsultSession(String userName, String userId) {
+    public HashMap<String, Object> createConsultSession(String userName, String userId,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
         System.out.println("userId createConsultSession =====" + userId);
         //根据用户ID去查询，从历史会话记录中，获取用户最近的一条聊天记录，根据source判断会话来源
         HashMap<String, Object> response = new HashMap<String, Object>();
@@ -1021,7 +1020,7 @@ public enum ConsultSessionManager {
                         }
                         doctorManagerStr = sb.toString()+"67b66b5bac5d41c1ab2274d09362f13b";
                     }else{
-                        doctorManagerStr = Global.getConfig("doctorManager.list")+"67b66b5bac5d41c1ab2274d09362f13b";  //增加抢断会话功能doctorManager.list；createConsult.list
+                        doctorManagerStr = sysPropertyVoWithBLOBsVo.getDoctormanagerList();  //增加抢断会话功能doctorManager.list；createConsult.list
                     }
                     String csUserId = UserUtils.getUser().getId();
                     if (doctorManagerStr.indexOf(csUserId) != -1) {
