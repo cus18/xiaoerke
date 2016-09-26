@@ -12,19 +12,19 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="bak_1" property="bak1" jdbcType="VARCHAR" />
+    <result column="will_vaccine_name" property="willVaccineName" jdbcType="VARCHAR" />
     <result column="bak_2" property="bak2" jdbcType="VARCHAR" />
   </resultMap>
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationRelVo" >
     insert into vaccine_station_rel (id, vaccine_id, vaccine_station_id, 
       next_vaccine_id, vaccine_name, minium_age, 
       last_time_interval, create_time, create_by, 
-      update_time, bak_1, bak_2
+      update_time, will_vaccine_name, bak_2
       )
     values (#{id,jdbcType=INTEGER}, #{vaccineId,jdbcType=INTEGER}, #{vaccineStationId,jdbcType=INTEGER}, 
       #{nextVaccineId,jdbcType=INTEGER}, #{vaccineName,jdbcType=VARCHAR}, #{miniumAge,jdbcType=INTEGER}, 
       #{lastTimeInterval,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{bak1,jdbcType=VARCHAR}, #{bak2,jdbcType=VARCHAR}
+      #{updateTime,jdbcType=TIMESTAMP}, #{willVaccineName,jdbcType=VARCHAR}, #{bak2,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationRelVo" >
@@ -60,8 +60,8 @@
       <if test="updateTime != null" >
         update_time,
       </if>
-      <if test="bak1 != null" >
-        bak_1,
+      <if test="willVaccineName != null" >
+        will_vaccine_name,
       </if>
       <if test="bak2 != null" >
         bak_2,
@@ -98,12 +98,26 @@
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="bak1 != null" >
-        #{bak1,jdbcType=VARCHAR},
+      <if test="willVaccineName != null" >
+        #{willVaccineName,jdbcType=VARCHAR},
       </if>
       <if test="bak2 != null" >
         #{bak2,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
+
+
+  <select id="getUserWillVaccination" resultType="java.util.HashMap">
+    SELECT vsr.next_vaccine_id nextVaccineId,vbi.birthday,vi.last_time_vaccine lastTimeVaccine,vi.last_time_vaccine lastTimeVaccine,
+    vs.work_date workDate,vs.name vaccineStationName,vi.minium_age miniumAge,vsr.will_vaccine_name willVaccineName
+    from vaccine_station_rel vsr
+    INNER JOIN vaccine_baby_info vbi on vsr.vaccine_station_id = vbi.vaccine_station_id
+    INNER JOIN vaccine_info vi on vi.id = vsr.vaccine_id
+    INNER JOIN vaccine_station vs on vs.id = vsr.vaccine_station_id
+    where vi.QR_code = #{QRCode} and vbi.sys_user_id = #{openId}
+    GROUP BY vbi.sys_user_id
+  </select>
+
+
 </mapper>

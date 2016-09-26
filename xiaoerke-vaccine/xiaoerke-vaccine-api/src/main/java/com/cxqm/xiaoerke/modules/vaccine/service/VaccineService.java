@@ -4,6 +4,7 @@ package com.cxqm.xiaoerke.modules.vaccine.service;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -16,4 +17,6 @@ public interface VaccineService {
     int insertSelective(VaccineBabyInfoVo record);
 
     List<VaccineStationVo> selectByVaccineStationVo(VaccineStationVo record);
+
+    List<HashMap<String,Object>> getUserWillVaccination(HashMap<String, Object> searchMap);
 }

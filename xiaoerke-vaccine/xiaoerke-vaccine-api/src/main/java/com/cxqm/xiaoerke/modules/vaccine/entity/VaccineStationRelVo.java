@@ -17,6 +17,8 @@ public class VaccineStationRelVo {
 
     private Integer lastTimeInterval;
 
+    private String willVaccineName;
+
     private Date createTime;
 
     private String createBy;
@@ -85,6 +87,14 @@ public class VaccineStationRelVo {
 
     public Date getCreateTime() {
         return createTime;
+    }
+
+    public String getWillVaccineName() {
+        return willVaccineName;
+    }
+
+    public void setWillVaccineName(String willVaccineName) {
+        this.willVaccineName = willVaccineName;
     }
 
     public void setCreateTime(Date createTime) {
