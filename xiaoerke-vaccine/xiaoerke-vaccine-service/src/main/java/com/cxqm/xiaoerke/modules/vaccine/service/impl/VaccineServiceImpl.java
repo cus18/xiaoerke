@@ -18,4 +18,11 @@ public class VaccineServiceImpl implements VaccineService {
         return vaccineBabyInfoDao.selectByVaccineBabyInfoVo(vaccineBabyInfoVo);
     }
 
+    @Override
+    public int insertSelective(VaccineBabyInfoVo record){
+        return vaccineBabyInfoDao.insertSelective(record);
+    }
+
+
+
 }

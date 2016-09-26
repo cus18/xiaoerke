@@ -15,11 +15,11 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="bak1" property="bak1" jdbcType="VARCHAR" />
     <result column="bak2" property="bak2" jdbcType="VARCHAR" />
-    <result column="QR_code_url" property="QRCodeUrl" jdbcType="VARCHAR" />
+    <result column="bak3" property="bak3" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, sys_user_id, baby_name, baby_sex, birthday, baby_seed_number, vaccine_station_id, 
-    vaccine_station_name, create_by, create_time, update_time, bak1, bak2, QR_code_url
+    vaccine_station_name, create_by, create_time, update_time, bak1, bak2, bak3
   </sql>
   <select id="selectByVaccineBabyInfoVo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo" >
     select 
@@ -43,12 +43,12 @@
       baby_sex, birthday, baby_seed_number, 
       vaccine_station_id, vaccine_station_name, create_by, 
       create_time, update_time, bak1, 
-      bak2, QR_code_url)
+      bak2, bak3)
     values (#{id,jdbcType=INTEGER}, #{sysUserId,jdbcType=VARCHAR}, #{babyName,jdbcType=VARCHAR}, 
       #{babySex,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, #{babySeedNumber,jdbcType=VARCHAR}, 
       #{vaccineStationId,jdbcType=INTEGER}, #{vaccineStationName,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{bak1,jdbcType=VARCHAR}, 
-      #{bak2,jdbcType=VARCHAR}, #{QRCodeUrl,jdbcType=VARCHAR})
+      #{bak2,jdbcType=VARCHAR}, #{bak3,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo" >
     insert into vaccine_baby_info
@@ -92,8 +92,8 @@
       <if test="bak2 != null" >
         bak2,
       </if>
-      <if test="QRCodeUrl != null" >
-        QR_code_url,
+      <if test="bak3 != null" >
+        bak3,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -136,8 +136,8 @@
       <if test="bak2 != null" >
         #{bak2,jdbcType=VARCHAR},
       </if>
-      <if test="QRCodeUrl != null" >
-        #{QRCodeUrl,jdbcType=VARCHAR},
+      <if test="bak3 != null" >
+        #{bak3,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -180,8 +180,8 @@
       <if test="bak2 != null" >
         bak2 = #{bak2,jdbcType=VARCHAR},
       </if>
-      <if test="QRCodeUrl != null" >
-        QR_code_url = #{QRCodeUrl,jdbcType=VARCHAR},
+      <if test="bak3 != null" >
+        bak3 = #{bak3,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -200,7 +200,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       bak1 = #{bak1,jdbcType=VARCHAR},
       bak2 = #{bak2,jdbcType=VARCHAR},
-      QR_code_url = #{QRCodeUrl,jdbcType=VARCHAR}
+      bak3 = #{bak3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
