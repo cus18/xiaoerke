@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.vaccine.dao.VaccineInfoDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineInfoVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="QR_code" property="qrCode" jdbcType="VARCHAR" />
+    <result column="minium_age" property="miniumAge" jdbcType="INTEGER" />
+    <result column="last_time_vaccine" property="lastTimeVaccine" jdbcType="INTEGER" />
+    <result column="last_time_interval" property="lastTimeInterval" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="bak1" property="bak1" jdbcType="VARCHAR" />
+    <result column="bak2" property="bak2" jdbcType="VARCHAR" />
+    <result column="bak3" property="bak3" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.cxqm.xiaoerke.modules.activity.entity.VaccineInfoWithBLOBsVo" extends="BaseResultMap" >
+    <result column="introduce" property="introduce" jdbcType="LONGVARCHAR" />
+    <result column="attention" property="attention" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, number, QR_code, minium_age, last_time_vaccine, last_time_interval, create_by, 
+    create_time, update_time, bak1, bak2, bak3
+  </sql>
+  <sql id="Blob_Column_List" >
+    introduce, attention
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from vaccine_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from vaccine_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.activity.entity.VaccineInfoWithBLOBsVo" >
+    insert into vaccine_info (id, name, number, 
+      QR_code, minium_age, last_time_vaccine, 
+      last_time_interval, create_by, create_time, 
+      update_time, bak1, bak2, 
+      bak3, introduce, attention
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, 
+      #{qrCode,jdbcType=VARCHAR}, #{miniumAge,jdbcType=INTEGER}, #{lastTimeVaccine,jdbcType=INTEGER}, 
+      #{lastTimeInterval,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{bak1,jdbcType=VARCHAR}, #{bak2,jdbcType=VARCHAR}, 
+      #{bak3,jdbcType=VARCHAR}, #{introduce,jdbcType=LONGVARCHAR}, #{attention,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.VaccineInfoWithBLOBsVo" >
+    insert into vaccine_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="qrCode != null" >
+        QR_code,
+      </if>
+      <if test="miniumAge != null" >
+        minium_age,
+      </if>
+      <if test="lastTimeVaccine != null" >
+        last_time_vaccine,
+      </if>
+      <if test="lastTimeInterval != null" >
+        last_time_interval,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="bak1 != null" >
+        bak1,
+      </if>
+      <if test="bak2 != null" >
+        bak2,
+      </if>
+      <if test="bak3 != null" >
+        bak3,
+      </if>
+      <if test="introduce != null" >
+        introduce,
+      </if>
+      <if test="attention != null" >
+        attention,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="qrCode != null" >
+        #{qrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="miniumAge != null" >
+        #{miniumAge,jdbcType=INTEGER},
+      </if>
+      <if test="lastTimeVaccine != null" >
+        #{lastTimeVaccine,jdbcType=INTEGER},
+      </if>
+      <if test="lastTimeInterval != null" >
+        #{lastTimeInterval,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bak1 != null" >
+        #{bak1,jdbcType=VARCHAR},
+      </if>
+      <if test="bak2 != null" >
+        #{bak2,jdbcType=VARCHAR},
+      </if>
+      <if test="bak3 != null" >
+        #{bak3,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null" >
+        #{introduce,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="attention != null" >
+        #{attention,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.VaccineInfoWithBLOBsVo" >
+    update vaccine_info
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="qrCode != null" >
+        QR_code = #{qrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="miniumAge != null" >
+        minium_age = #{miniumAge,jdbcType=INTEGER},
+      </if>
+      <if test="lastTimeVaccine != null" >
+        last_time_vaccine = #{lastTimeVaccine,jdbcType=INTEGER},
+      </if>
+      <if test="lastTimeInterval != null" >
+        last_time_interval = #{lastTimeInterval,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bak1 != null" >
+        bak1 = #{bak1,jdbcType=VARCHAR},
+      </if>
+      <if test="bak2 != null" >
+        bak2 = #{bak2,jdbcType=VARCHAR},
+      </if>
+      <if test="bak3 != null" >
+        bak3 = #{bak3,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null" >
+        introduce = #{introduce,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="attention != null" >
+        attention = #{attention,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cxqm.xiaoerke.modules.activity.entity.VaccineInfoWithBLOBsVo" >
+    update vaccine_info
+    set name = #{name,jdbcType=VARCHAR},
+      number = #{number,jdbcType=VARCHAR},
+      QR_code = #{qrCode,jdbcType=VARCHAR},
+      minium_age = #{miniumAge,jdbcType=INTEGER},
+      last_time_vaccine = #{lastTimeVaccine,jdbcType=INTEGER},
+      last_time_interval = #{lastTimeInterval,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      bak1 = #{bak1,jdbcType=VARCHAR},
+      bak2 = #{bak2,jdbcType=VARCHAR},
+      bak3 = #{bak3,jdbcType=VARCHAR},
+      introduce = #{introduce,jdbcType=LONGVARCHAR},
+      attention = #{attention,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineInfoVo" >
+    update vaccine_info
+    set name = #{name,jdbcType=VARCHAR},
+      number = #{number,jdbcType=VARCHAR},
+      QR_code = #{qrCode,jdbcType=VARCHAR},
+      minium_age = #{miniumAge,jdbcType=INTEGER},
+      last_time_vaccine = #{lastTimeVaccine,jdbcType=INTEGER},
+      last_time_interval = #{lastTimeInterval,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      bak1 = #{bak1,jdbcType=VARCHAR},
+      bak2 = #{bak2,jdbcType=VARCHAR},
+      bak3 = #{bak3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
