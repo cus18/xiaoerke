@@ -9,6 +9,8 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultPayUserService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultTransferListVoService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,12 +38,16 @@ public class ConsultSessionTransferController {
     @Autowired
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
+
     @RequestMapping(value = "/createMoreUserConsultSession", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     HashMap<String, Object> createMoreWXUserConsultSession(@RequestBody Map<String, Object> params) {
 
         HashMap<String, Object> response = new HashMap<String, Object>();
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map<String, Object> specialistPatientContent = (Map<String, Object>) params.get("specialistPatientContent");
         Integer sessionId = sessionRedisCache.getSessionIdByUserId((String) specialistPatientContent.get("userId"));
         List<String> distributorsList = ConsultSessionManager.INSTANCE.distributorsList;
@@ -69,7 +75,7 @@ public class ConsultSessionTransferController {
                         response.put("status", "complete");
                         return response;
                     } else {
-                        HashMap<String, Object> resultMap = ConsultSessionManager.INSTANCE.createConsultSession((String) specialistPatientContent.get("userName"), (String) specialistPatientContent.get("userId"));
+                        HashMap<String, Object> resultMap = ConsultSessionManager.INSTANCE.createConsultSession((String) specialistPatientContent.get("userName"), (String) specialistPatientContent.get("userId"), sysPropertyVoWithBLOBsVo);
                         if (resultMap != null && "success".equalsIgnoreCase((String) resultMap.get("result"))) {
                             ConsultTransferListVo consultTransferListVo;
                             String status = "complete";

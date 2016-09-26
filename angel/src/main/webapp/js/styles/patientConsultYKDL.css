@@ -1,0 +1,258 @@
+body,ol,ul,h1,h2,h3,h4,h5,h6,p,th,td,dl,dd,form,fieldset,legend,input,textarea,select{margin:0;padding:0}
+body{font:12px/12px 'Microsoft Yahei';background:#fff;-webkit-text-size-adjust:100%;}
+a{color:#2d374b;text-decoration:none}
+a:hover{color:#cd0200;text-decoration:underline}
+em{font-style:normal}
+li{list-style:none}
+img{border:0;vertical-align:middle}
+table{border-collapse:collapse;border-spacing:0}
+p{word-wrap:break-word}
+.h100{height: 93%;}
+a:focus,input:focus{-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-user-modify:read-write-plaintext-only;}
+
+.patientConsultBHQ{
+    padding: 0 0 107px 0;
+    background-color: #f9f9f9;
+}
+.consultDisplay::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+input {
+    overflow:auto;
+    word-break:break-all;
+    width: 90%;
+    height: 25px;
+    line-height: 25px;
+    box-sizing: border-box;
+    border: none;
+    vertical-align: top;
+    resize: none;
+}
+/*会话内容*/
+.doctorReplyContent,.patientConsultContent{
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    padding-top: 35px;
+}
+.doctorHeaderImg {
+    margin-left: 10px;
+}
+.patientHeaderImg {
+    margin-right: 10px;
+}
+.doctorReplyContent div{
+    float: left;
+}
+.patientConsultContent  div{
+    float: right;
+}
+.message{
+    border-radius: 2px;
+    padding: 7px 5px;
+    /*font: 12px/12px 'Microsoft Yahei';*/
+    font-size: 17px;
+    position: relative;
+    margin: 5px 10px;
+    /*max-width: 75%;*/
+    word-wrap:break-word;
+    word-break:break-all;
+}
+.doctorReplyContent .wjy_doctor{
+    position: relative;
+    margin-left: 10px;
+    max-width: 80%;
+}
+.doctorReplyContent .wjy_doctor div{
+    background-color: #fff;
+    color:#666666;
+    border: 1px solid #cccccc;
+    line-height: 20px;
+}
+.doctorReplyContent .wjy_doctor .wjy_docsanjiao{
+    position: absolute;
+    left: 0;
+    z-index: 4;
+    top: 13px;
+}
+.patientConsultContent .wjy_patient{
+    position: relative;
+    margin-right: 10px;
+    max-width: 80%;
+}
+.patientConsultContent .wjy_patient div{
+    background-color: #b7e9e9;
+    color:#666666;
+    border: 1px solid #16caca;
+    line-height: 20px;
+}
+.patientConsultContent .wjy_patient .wjy_patsanjiao{
+    position: absolute;
+    right: 0;
+    z-index: 4;
+    top: 13px;
+}
+/*小三角*/
+/*.patientConsultContent .message::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-width: 4px;
+    border-style: solid;
+    border-color: transparent;
+    border-left-color: #b7e9e9;
+    position: absolute;
+    top: 13px;
+    right: -8px;
+}*/
+/*.doctorReplyContent .message::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-width: 4px;
+    border-style: solid;
+    border-color: transparent;
+    border-right-color: #fff;
+    position: absolute;
+    top: 13px;
+    left: -8px;
+}*/
+/*qq表情*/
+.comment{
+    width:680px;
+    margin:20px auto;
+    position:relative;
+    background:#fff;
+    padding:20px 50px 50px;
+    border:1px solid #DDD;
+    border-radius:5px;
+}
+.comment h3{
+    height:28px;
+    line-height:28px
+}
+.com_form{
+    width:100%;
+    position:relative
+}
+.input{
+    width:99%;
+    height:60px;
+    border:1px solid #ccc
+}
+.com_form p{
+    height:28px;
+    line-height:28px;
+    position:relative;
+    margin-top:10px;
+}
+.qqFace{
+    margin-top:4px;
+    background:#fff;
+    padding:2px;
+    border:1px #dfe6f6 solid;
+}
+.qqFace table td{
+    padding:0;
+}
+.qqFace table td img{
+    cursor:pointer;
+    border:1px #fff solid;
+}
+.qqFace table td img:hover{
+    border:1px #0066cc solid;
+}
+.consulChatList {
+    overflow-y: scroll;
+}
+.consulChatList::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+[scroll-glue-bottom]{
+    overflow-y: scroll;
+}
+.wjy_com{
+    max-width: 80%;
+}
+.wjy_c{
+    position: fixed;
+    bottom:0;
+    width: 100%;
+    background-color: #f9f9f9;
+    z-index: 555;
+}
+.wjy_input{
+    width: 95%;
+    left: 2%;
+    margin: 0 auto 10px;
+    padding: 14px 0 15px 0;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    box-shadow:0px 0px 3px  rgba(204,204,204,.4);
+    -webkit-box-shadow:0px 0px 3px rgba(204,204,204,.4);
+}
+.wjy_input input{
+    width: 97%;
+    padding-left: 8px;
+    margin-left: 8px;
+    font-size: 17px;
+}
+.wjy_input .wjy_icon{
+    margin: 15px 15px 0 15px;
+}
+.wjy_input .wjy_icon .wjy_icon_1{
+    margin-right: 28px;
+}
+.wjy_input .wjy_icon .wjy_set{
+    float: right;
+}
+.wjy_input .wjy_icon .qqFace table td img{
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    float: right;
+}
+.wjy_lookmore{
+    text-align: center;
+    margin-top: 25px;
+    font-size: 17px;
+    color: #08b7c2;
+}
+.wjy_fuceng{
+    position: absolute;
+    z-index: 33;
+    top: 0;
+    padding: 47px 25px 0;
+    background-color: #f9f9f9;
+}
+.wjy_fuceng img:nth-child(2){
+    margin-top: 15px;
+    float: right;
+}
+.wjy_alert{
+    position: absolute;
+    bottom: 120px;
+    text-align: center;
+    z-index: 33;
+    width: 100%;
+}
+.imgBar{
+    position: absolute;
+    z-index: 99999;
+    width: 100%;
+    height: 100%;
+    background-color:#000000;
+    text-align: center;
+    display: table;
+}
+.imgBar span{
+    display: table-cell;
+    vertical-align: middle;
+}
+.imgBar img{
+    width: 100%;
+    height: auto;
+}

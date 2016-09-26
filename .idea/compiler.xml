@@ -332,6 +332,20 @@
         <processorPath useClasspath="true" />
         <module name="xiaoerke-alipay-api" />
       </profile>
+      <profile default="false" name="Annotation profile for xiaoerke-vaccine-service" enabled="true">
+        <sourceOutputDir name="target\generated-sources\annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="xiaoerke-vaccine-service" />
+      </profile>
+      <profile default="false" name="Annotation profile for xiaoerke-vaccine-api" enabled="true">
+        <sourceOutputDir name="target\generated-sources\annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="xiaoerke-vaccine-api" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="angel" target="1.6" />
@@ -404,6 +418,9 @@
       <module name="xiaoerke-user" target="1.6" />
       <module name="xiaoerke-user-api" target="1.6" />
       <module name="xiaoerke-user-service" target="1.6" />
+      <module name="xiaoerke-vaccine" target="1.6" />
+      <module name="xiaoerke-vaccine-api" target="1.6" />
+      <module name="xiaoerke-vaccine-service" target="1.6" />
       <module name="xiaoerke-web" target="1.6" />
       <module name="xiaoerke-wechat" target="1.6" />
       <module name="xiaoerke-wechat-api" target="1.6" />
