@@ -222,7 +222,7 @@ public class ConsultDoctorTransferController extends BaseController {
             dataValue.put("sessionId", waitJoinListVo.getConversationId());
             dataValue.put("forwardSessionId", waitJoinListVo.getId());
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(Integer.parseInt(String.valueOf(waitJoinListVo.getConversationId())));
-            if(richConsultSession!=null){
+            if(richConsultSession  != null){
                 Query query = new Query().addCriteria(Criteria.where("userId").is(richConsultSession.getUserId()).and("createDate").lt(new Date())).
                         with(new Sort(Sort.Direction.DESC, "createDate")).limit(100);
                 List<ConsultRecordMongoVo> consultRecordMongoVo = consultRecordService.getCurrentUserHistoryRecord(query);

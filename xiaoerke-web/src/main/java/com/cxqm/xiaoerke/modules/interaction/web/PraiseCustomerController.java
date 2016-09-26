@@ -15,6 +15,8 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +60,9 @@ public class PraiseCustomerController extends BaseController {
 
     @Autowired
     private ConsultSessionService consultSessionService ;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
@@ -173,7 +178,8 @@ public class PraiseCustomerController extends BaseController {
                     "\"remark\":{\"value\":\"\",\"color\":\"#173177\"}";
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
             String tokenId = (String) userWechatParam.get("token");
-            String templateId = Global.getConfig("bad_evaluate_templete_id");
+            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+            String templateId =  sysPropertyVoWithBLOBsVo.getBadEvaluateTempleteId();
             if(StringUtils.isNull(templateId)){
                 templateId = "xP7QzdilUu1RRTFzVv8krwwMOyv-1pg9l0ABsooub14";    //正式
             }

@@ -1,118 +1,118 @@
-angular.module('controllers', ['luegg.directives','ngFileUpload'])
-    .controller('patientConsultFirstCtrl', ['$scope','$location','$anchorScroll',
-        'GetSessionId','GetUserLoginStatus','$upload','$sce','$rootScope',
-        function ($scope,$location,$anchorScroll,GetSessionId,GetUserLoginStatus,$upload,$sce,$rootScope) {
+angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
+    .controller('patientConsultYKDLCtrl', ['$scope','$location','$anchorScroll',
+        'GetSessionId','GetUserLoginStatus','$upload','$sce','$stateParams',
+        'CreateOrUpdateWJYPatientInfo','GetUserCurrentConsultContent','$http','GetWJYHistoryRecord','$ionicScrollDelegate',
+        function ($scope,$location,$anchorScroll,GetSessionId,GetUserLoginStatus,$upload,$sce,$stateParams,
+                  CreateOrUpdateWJYPatientInfo,GetUserCurrentConsultContent,$http,GetWJYHistoryRecord,$ionicScrollDelegate) {
 
-            $scope.consultContent = [
-                {
-                    'type':0,
-                    'content':'你好吗？',
-                    'dateTime':20161111111111,
-                    'senderId':'',
-                    'senderName':"病人",
-                    'sessionId':'',
-                    "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
-                },{
-                    'type':0,
-                    'content':'你好吗？',
-                    'dateTime':20161111111111,
-                    'senderId':'',
-                    'senderName':"病人",
-                    'sessionId':'',
-                    "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
-                },{
-                    'type':0,
-                    'content':'你好吗？',
-                    'dateTime':20161111111111,
-                    'senderId':'',
-                    'senderName':"病人",
-                    'sessionId':'',
-                    "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
-                },{
-                    'type':0,
-                    'content':'你好吗？',
-                    'dateTime':20161111111111,
-                    'senderId':'',
-                    'senderName':"病人",
-                    'sessionId':'',
-                    "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
-                }
-            ];
+            $scope.consultContent = [];
             $scope.info={};
             $scope.upFile = {};
             $scope.sessionId = "";
             $scope.socketServer = "";
             $scope.glued = true;
-            $scope.source = "h5cxqmUser";
-            $scope.openFileListFlag = false;
-            $location.hash("fileInput");
-            $anchorScroll();
-            $scope.openFileList = function(){
-                if($scope.openFileListFlag == true){
-                    $scope.openFileListFlag = false;
-                    $location.hash("fileInput");
-                    $anchorScroll();
-                }else{
-                    $scope.openFileListFlag = true;
-                    $location.hash("fileInputList");
-                    $anchorScroll();
+            $scope.source = "h5bhqUser";
+            $scope.loseConnectionFlag = false;
+            var heartBeatNum = 0;
+            $scope.lookMore = false;//查看更多
+            var patientImg ;
+            $scope.fucengLock = true;//第一次进入页面的浮层
+            $scope.alertFlag = false;
+            $scope.remoteBabyUrl = "http://rest.ihiss.com:9000/user/children";
+            $scope.imgBarFlag = false;
+
+
+            function randomString(len) {
+                len = len || 32;
+                var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';/****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+                var maxPos = $chars.length;
+                var pwd = '';
+                for (i = 0; i < len; i++) {
+                    pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
                 }
-            };
-            $scope.cancelFile = function () {
-                $scope.openFileListFlag = false;
-            };
-            //病人第一次咨询
+                return pwd;
+            }
+
+            //初始化
             $scope.patientConsultFirst = function(){
-                /*var routePath = "/patient/consultBBBBBB" + $location.path();
-                GetUserLoginStatus.save({routePath:routePath},function(data){
-                    $scope.pageLoading = false;
-                    if(data.status=="9") {
-                        window.location.href = data.redirectURL;
-                    }else if(data.status=="8"){
-                        window.location.href = data.redirectURL+"?targeturl="+routePath;
-                    }else if(data.status=="20"){
-                        $scope.patientId = data.userId;
-                        $scope.patientName = data.userName;
-                        $scope.patientPhone = data.userPhone;
-                        $scope.initConsultSocket();
+                $scope.getQQExpression();
+                $scope.getQQExpression();
+
+                //
+                var id = $stateParams.id;
+
+                    if($stateParams.image == null){
+                        patientImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
+                    }else{
+                        patientImg = $stateParams.image;
                     }
-                })*/
+                    $scope.patientName = $stateParams.name==null?$stateParams.id:$stateParams.name;
+                    CreateOrUpdateWJYPatientInfo.save({
+                        patientName:$scope.patientName,source:$scope.source,thirdId:id},function(data){
+                        $scope.patientId = data.patientId;
+                        GetSessionId.get({"userId":$scope.patientId},function(data){
+                            console.log("data",data);
+                            if(data.status=="0"){
+                                $scope.sessionId = data.sessionId;
+                                $scope.lookMore = true;
+                                $scope.fucengLock = false;
+                            }else if(data.status=="1"){
+                                $scope.sessionId = "";
+                                /*var val = {
+                                 "type": 4,
+                                 "notifyType": "0000"
+                                 }
+                                 $scope.consultContent.push(val);*/
+                                var now = moment().format("YYYY-MM-DD HH:mm:ss");
+                                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,
+                                    "pageSize":10,"token":""},function (data) {
+                                    if(data.consultDataList.length!=0){
+                                        $scope.lookMore = true;
+                                        $scope.fucengLock = false;
+                                    }else{
+                                        $scope.lookMore = false;
+                                    }
+                                });
+                            }
+                        });
+                        $scope.initConsultSocket();
+                    });
             };
+
             //初始化接口
             $scope.initConsultSocket = function(){
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
                 }
                 if (window.WebSocket) {
-                    $scope.socketServer = new ReconnectingWebSocket("ws://101.201.154.75:2048/ws&user&"
-                        + $scope.patientId +"&h5cxqm");//cs,user,distributor
-                    console.log($scope.socketServer);
-                        $scope.socketServer.onmessage = function(event) {
+
+                    //$scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
+                    //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
+                    //ws://s201.xiaork.com:2048;
+                    $scope.socketServer = new WebSocket("ws://s132.baodf.com/wsbackend/ws&user&"
+                        + $scope.patientId +"&h5bhq");//cs,user,distributor*/
+
+                    $scope.socketServer.onmessage = function(event) {
                         var consultData = JSON.parse(event.data);
-                        console.log("onmessage",consultData);
                         if(consultData.type==4){
                             processNotifyMessage(consultData);
+                        }else if(consultData.type==7){
+                            heartBeatNum = 3;
                         }else{
+                            $ionicScrollDelegate.scrollBottom();
                             filterMediaData(consultData);
                             processDoctorSendMessage(consultData);
                         }
                         $scope.$apply();
                     };
+
                     $scope.socketServer.onopen = function(event) {
                         console.log("onopen"+event.data);
-                        GetSessionId.get({"userId":$scope.patientId},function(data){
-                            if(data.status=="0"){
-                                $scope.sessionId = data.sessionId;
-                            }else if(data.status=="1"){
-                                $scope.sessionId = "";
-                                var val = {
-                                    "type": 4,
-                                    "notifyType": "0000"
-                                };
-                                $scope.consultContent.push(val);
-                            }
-                        });
+                        //start heartBeat check
+                        heartBeatNum = 3;
+                        startUserHeartCheck();
                     };
+
                     $scope.socketServer.onclose = function(event) {
                         console.log("onclose",event.data);
                     };
@@ -120,6 +120,52 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     alert("你的浏览器不支持！");
                 }
             };
+
+            //查看更多消息
+            $scope.goLookMore = function () {
+                /*if($scope.sessionId==""){
+                 var now = moment().format("YYYY-MM-DD HH:mm:ss");
+                 if($scope.consultContent[1]!=undefined){
+                 now = $scope.consultContent[0].dateTime;
+                 }
+                 GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":10,"token":$stateParams.token},function (data) {
+                 console.log("dataxiaox",data);
+                 $.each(data.consultDataList,function (index,value) {
+                 console.log("value",value);
+                 filterMediaData(value);
+                 $scope.consultContent.splice(0,0,value);
+                 });
+                 });
+                 }else{
+                 //如果用户有sessionId的话，将用户在此session中的当前会话记录给找回来
+                 GetUserCurrentConsultContent.save({userId:$scope.patientId,
+                 sessionId:$scope.sessionId},function(data){
+                 console.log("historyContent",data);
+                 $.each(data.consultDataList,function (index,value) {
+                 console.log("value",value);
+                 filterMediaData(value);
+                 if(value.senderId!=$scope.patientId){
+                 value.avatar = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png";
+                 }else{
+                 value.avatar = patientImg;
+                 }
+                 });
+                 $scope.consultContent = data.consultDataList;
+                 $scope.lookMore = false;
+                 });
+                 }*/
+                var now = moment().format("YYYY-MM-DD HH:mm:ss");
+                if($scope.consultContent[0]!=undefined){
+                    now = $scope.consultContent[0].dateTime;
+                }
+                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":10,"token":""},function (data) {
+                    $.each(data.consultDataList,function (index,value) {
+                        filterMediaData(value);
+                        $scope.consultContent.splice(0,0,value);
+                    });
+                });
+            }
+
             //处理用户发送过来的消息
             var processDoctorSendMessage = function (conversationData) {
                 var doctorValMessage = {
@@ -130,11 +176,11 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     'senderName':conversationData.senderName,
                     'sessionId':conversationData.sessionId,
                     "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
-                    };
+                };
                 $scope.consultContent.push(doctorValMessage);
             };
-            //处理通知类的消息
             var processNotifyMessage = function(notifyData){
+                console.log("notifyDate",notifyData);
                 if(notifyData.notifyType=="1001"){
                     //有医生或者接诊员在线1001
                     $scope.sessionId = notifyData.sessionId;
@@ -145,33 +191,43 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 }else if(notifyData.notifyType=="1003"){
                     //没有医生或者接诊员在线1003
                     console.log("没有医生或者接诊员在线");
+                }else if(notifyData.notifyType=="0100"){
+                    //收到服务器发送过来的心跳消息
+                    var heartBeatServerMessage = {
+                        "type": 8,
+                        "userId": angular.copy($scope.patientId)
+                    };
+                    if($scope.socketServer!=""&&$scope.socketServer.readyState==1){
+                        $scope.socketServer.send(JSON.stringify(heartBeatServerMessage));
+                    }
                 }
             };
-            //发送消息
-            $scope.sendConsultContent = function(){
-                console.log($scope.info.consultInputValue);
-                var patientValMessage = {
-                    "type": 0,
-                    "content": $scope.consultInputValue,
-                    "dateTime": moment().format("YYYY-MM-DD HH:mm:ss"),
-                    "senderId":$scope.patientId,
-                    "senderName":$scope.patientName,
-                    "sessionId":parseInt($scope.sessionId),
-                    "source":$scope.source,
-                    "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
+
+            //开始启动心跳监测
+            var startUserHeartCheck = function(){
+                //启动定时器，周期性的发送心跳信息
+                $scope.heartBeatUserId = setInterval(sendUserHeartBeat,4000);
+            }
+            var sendUserHeartBeat = function(){
+                var heartBeatMessage = {
+                    "type": 7,
+                    "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                    "userId": angular.copy($scope.patientId)
                 };
-                if (!window.WebSocket) {
-                    return;
+                heartBeatNum--;
+                if(heartBeatNum < 0){
+                    heartBeatNum = 3;
+                    $scope.loseConnectionFlag = true;
+                    $scope.initConsultSocket();
+                }else{
+                    $scope.loseConnectionFlag = false;
+                    if($scope.socketServer!=""&&$scope.socketServer.readyState==1){
+                        $scope.socketServer.send(JSON.stringify(heartBeatMessage));
+                    }
                 }
-                if ($scope.socketServer.readyState == WebSocket.OPEN) {
-                    $scope.consultContent.push(patientValMessage);
-                    $scope.socketServer.send(emotionSendFilter(JSON.stringify(patientValMessage)));
-                    patientValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($scope.info.consultInputValue)));
-                    $scope.info.consultInputValue = "";
-                } else {
-                    alert("连接没有开启.");
-                }
+                $scope.$apply();
             };
+
             //提交图片
             $scope.uploadFiles = function($files,fileType) {
                 var dataValue = {
@@ -190,16 +246,17 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     }).progress(function(evt) {
                         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                     }).success(function(data, status, headers, config){
+                        $ionicScrollDelegate.scrollBottom();
+                        $scope.fucengLock = false;
                         var patientValMessage = {
                             "type": 1,
                             "content": data.showFile,
                             "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                             "senderId": $scope.patientId,
-                            "senderName": $scope.senderName,
-                            "sessionId":$scope.sessionId,
-                            "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
+                            "senderName": "保护圈"+$scope.patientName,
+                            "sessionId": parseInt($scope.sessionId),
+                            "avatar":patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                         };
-                        console.log(patientValMessage.content);
                         if (!window.WebSocket) {
                             return;
                         }
@@ -209,26 +266,64 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                             $scope.info.consultInputValue = "";
                         } else {
                             alert("连接没有开启.");
+                            $scope.initConsultSocket();
                         }
                     });
                 }
             };
-            //qq表情的获取
-            $scope.getQQExpression = function () {
-                console.log("aaaa");
-                $('#face').qqFace({
-                    id: 'facebox', //表情盒子的ID
-                    assign: 'saytext', //给那个控件赋值
-                    path: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F'
-                    //表情存放的路径
-                });
 
+            //发送消息
+            $scope.sendConsultContent = function(){
+                $ionicScrollDelegate.scrollBottom();
+                $(".wjy_set").attr("src","http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_go2.png");
+                if($("#saytext").val()==""||$("#saytext").val()==undefined){
+                    $scope.alertFlag = true;
+                    setTimeout(function () {
+                        $scope.alertFlag = false;
+                    },1000);
+                    $(".wjy_set").attr("src","http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_go.png");
+                }else if($("#saytext").val().replace(/\s+/g,"")!=""){
+                    var patientValMessage = {
+                        "type": 0,
+                        "content": $("#saytext").val(),
+                        "dateTime": moment().format("YYYY-MM-DD HH:mm:ss"),
+                        "senderId":$scope.patientId,
+                        "senderName":"保护圈"+$scope.patientName,
+                        "sessionId":parseInt($scope.sessionId),
+                        "source":$scope.source,
+                        "avatar":patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
+                    };
+                    if (!window.WebSocket) {
+                        return;
+                    }
+                    if ($scope.socketServer.readyState == WebSocket.OPEN) {
+                        $scope.fucengLock = false;
+                        $scope.consultContent.push(patientValMessage);
+                        $scope.socketServer.send(emotionSendFilter(JSON.stringify(patientValMessage)));
+                        patientValMessage.content =  $sce.trustAsHtml(replace_em(angular.copy($("#saytext").val())));
+                        $("#saytext").val('');
+                        $(".wjy_set").attr("src","http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_go.png");
+                    } else {
+                        alert("连接没有开启.");
+                        $scope.initConsultSocket();
+                        $(".wjy_set").attr("src","http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_go.png");
+                    }
+                }
             };
+
+            $scope.getQQExpression = function () {
+                $('#face').qqFace({
+                    id: 'facebox',
+                    assign: 'saytext',
+                    path: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F'
+                });
+            };
+
             //过滤媒体数据
             var filterMediaData = function (val) {
                 if(val.senderId==$scope.patientId){
                     if (val.type == "0") {
-                        val.content = $sce.trustAsHtml(replace_em(angular.copy(val.content)));
+                        val.content = $sce.trustAsHtml(replace_em(emotionReceiveFilter(angular.copy(val.content))));
                     }
                 }else{
                     if (val.type == "2"||val.type == "3") {
@@ -238,6 +333,34 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     }
                 }
             };
+
+            //点击放大图片
+            $scope.showImageBar = function (src) {
+                $scope.imgBarFlag = true;
+                $scope.imgSrc = src;
+            }
+
+            //取消放大图片
+            $scope.hideImageBar = function () {
+                $scope.imgBarFlag = false;
+            }
+
+
+            //各个子窗口的开关变量
+            $scope.showFlag = {
+                magnifyImg:false
+            };
+
+            $scope.tapImgButton = function (key,value) {
+                $scope.showFlag[key] = !$scope.showFlag[key];
+                $scope.imageSrc = value;
+            };
+
+            //公共点击按钮，用来触发弹出对应的子窗口
+            $scope.tapShowButton = function(key){
+                $scope.showFlag[key] = !$scope.showFlag[key];
+            };
+
             //查看结果
             var replace_em = function (str) {
                 str = str.replace(/\</g,'&lt;');
@@ -246,6 +369,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 str = str.replace(/\[em_([0-9]*)\]/g,'<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F$1.gif" border="0" />');
                 return str;
             };
+
             var emotionReceiveFilter = function(val){
                 val = val.replace(/\/::\)/g, '[em_1]');val = val.replace(/\/::~/g, '[em_2]');val = val.replace(/\/::B/g, '[em_3]');val = val.replace(/\/::\|/g, '[em_4]');
                 val = val.replace(/\/:8-\)/g, '[em_5]');val = val.replace(/\/::</g, '[em_6]');val = val.replace(/\/::X/g, '[em_7]');val = val.replace(/\/::Z/g, '[em_8]');
@@ -268,6 +392,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 val = val.replace(/\/:showlove/g, '[em_73]');val = val.replace(/\/:love/g, '[em_74]');val = val.replace(/\/:<L>/g, '[em_75]');
                 return val;
             };
+
             var emotionSendFilter = function(val){
                 val = val.replace(/\[em_1\]/g, '/::)');val = val.replace(/\[em_2\]/g, '/::~');val = val.replace(/\[em_3\]/g, '/::B');val = val.replace(/\[em_4\]/g, '/::|');
                 val = val.replace(/\[em_5\]/g, '/:8-)');val = val.replace(/\[em_6\]/g, '/::<');val = val.replace(/\[em_7\]/g, '/::X');val = val.replace(/\[em_8\]/g, '/::Z');
@@ -290,25 +415,11 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 val = val.replace(/\[em_73\]/g, '/:showlove');val = val.replace(/\[em_74\]/g, '/:love');val = val.replace(/\[em_75\]/g, '/<L>');
                 return val;
             };
-            //各个子窗口的开关变量
-            $scope.showFlag = {
-                magnifyImg:false
-            };
-            $scope.tapImgButton = function (key,value) {
-                $scope.showFlag[key] = !$scope.showFlag[key];
-                $scope.imageSrc = value;
-            };
-            //公共点击按钮，用来触发弹出对应的子窗口
-            $scope.tapShowButton = function(key){
-                $scope.showFlag[key] = !$scope.showFlag[key];
-            };
-            $rootScope.add = function () {
-                console.log(this.name);
-                //$scope.consultInputValue = this.name;
-            };
-            $scope.addScope = function () {
-                console.log('aaa');
-                var scope= $('#textBox').scope();
-                scope.name = "Hello World";
-            };
-        }])
+
+            //让输入框在失去焦点的时候，重新获取焦点，输入键盘就会一直存在
+            $scope.getautoFocus = function () {
+                $("#saytext").focus();
+            }
+
+        }]);
+
