@@ -13,7 +13,7 @@ public interface VaccineBabyInfoDao {
 
     int insertSelective(VaccineBabyInfoVo record);
 
-    VaccineBabyInfoVo selectByPrimaryKey(Integer id);
+    VaccineBabyInfoVo selectByVaccineBabyInfoVo(VaccineBabyInfoVo vaccineBabyInfoVo);
 
     int updateByPrimaryKeySelective(VaccineBabyInfoVo record);
 

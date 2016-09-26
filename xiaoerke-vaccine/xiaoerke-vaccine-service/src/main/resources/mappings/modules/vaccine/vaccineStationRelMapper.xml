@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.vaccine.dao.VaccineStationRelDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationRelVo" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="vaccine_id" property="vaccineId" jdbcType="INTEGER" />
+    <result column="vaccine_station_id" property="vaccineStationId" jdbcType="INTEGER" />
+    <result column="next_vaccine_id" property="nextVaccineId" jdbcType="INTEGER" />
+    <result column="vaccine_name" property="vaccineName" jdbcType="VARCHAR" />
+    <result column="minium_age" property="miniumAge" jdbcType="INTEGER" />
+    <result column="last_time_interval" property="lastTimeInterval" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="bak_1" property="bak1" jdbcType="VARCHAR" />
+    <result column="bak_2" property="bak2" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationRelVo" >
+    insert into vaccine_station_rel (id, vaccine_id, vaccine_station_id, 
+      next_vaccine_id, vaccine_name, minium_age, 
+      last_time_interval, create_time, create_by, 
+      update_time, bak_1, bak_2
+      )
+    values (#{id,jdbcType=INTEGER}, #{vaccineId,jdbcType=INTEGER}, #{vaccineStationId,jdbcType=INTEGER}, 
+      #{nextVaccineId,jdbcType=INTEGER}, #{vaccineName,jdbcType=VARCHAR}, #{miniumAge,jdbcType=INTEGER}, 
+      #{lastTimeInterval,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{bak1,jdbcType=VARCHAR}, #{bak2,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationRelVo" >
+    insert into vaccine_station_rel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="vaccineId != null" >
+        vaccine_id,
+      </if>
+      <if test="vaccineStationId != null" >
+        vaccine_station_id,
+      </if>
+      <if test="nextVaccineId != null" >
+        next_vaccine_id,
+      </if>
+      <if test="vaccineName != null" >
+        vaccine_name,
+      </if>
+      <if test="miniumAge != null" >
+        minium_age,
+      </if>
+      <if test="lastTimeInterval != null" >
+        last_time_interval,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="bak1 != null" >
+        bak_1,
+      </if>
+      <if test="bak2 != null" >
+        bak_2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="vaccineId != null" >
+        #{vaccineId,jdbcType=INTEGER},
+      </if>
+      <if test="vaccineStationId != null" >
+        #{vaccineStationId,jdbcType=INTEGER},
+      </if>
+      <if test="nextVaccineId != null" >
+        #{nextVaccineId,jdbcType=INTEGER},
+      </if>
+      <if test="vaccineName != null" >
+        #{vaccineName,jdbcType=VARCHAR},
+      </if>
+      <if test="miniumAge != null" >
+        #{miniumAge,jdbcType=INTEGER},
+      </if>
+      <if test="lastTimeInterval != null" >
+        #{lastTimeInterval,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bak1 != null" >
+        #{bak1,jdbcType=VARCHAR},
+      </if>
+      <if test="bak2 != null" >
+        #{bak2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

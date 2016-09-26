@@ -21,11 +21,18 @@
     id, sys_user_id, baby_name, baby_sex, birthday, baby_seed_number, vaccine_station_id, 
     vaccine_station_name, create_by, create_time, update_time, bak1, bak2, QR_code_url
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByVaccineBabyInfoVo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo" >
     select 
     <include refid="Base_Column_List" />
     from vaccine_baby_info
-    where id = #{id,jdbcType=INTEGER}
+    where 1=1
+    <if test="id != null" >
+      id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="sysUserId != null" >
+      sys_user_id = #{sysUserId,jdbcType=VARCHAR}
+    </if>
+
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from vaccine_baby_info
