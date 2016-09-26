@@ -346,7 +346,7 @@ public class ConsultDoctorController extends BaseController {
                     JSONObject obj = new JSONObject();
                     if (userChannel != null && userChannel.isActive()) {
                         obj.put("type", "4");
-                        obj.put("notifyType", "1003");
+//                        obj.put("notifyType", "1003");
                         TextWebSocketFrame csframe = new TextWebSocketFrame(obj.toJSONString());
                         userChannel.writeAndFlush(csframe.retain());
                     } else {
