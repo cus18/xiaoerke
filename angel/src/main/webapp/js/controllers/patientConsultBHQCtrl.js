@@ -21,7 +21,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.remoteBabyUrl = "http://rest.ihiss.com:9000/user/children";
             $scope.imgBarFlag = false;
 
-
             function randomString(len) {
                 len = len || 32;
                 var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';/****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
@@ -44,7 +43,10 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     if($stateParams.image == null){
                         patientImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
                     }else{
-                        patientImg = $stateParams.image;
+//                        patientImg = $stateParams.image;
+                        patientImg = $.base64.decode($stateParams.image);
+                        console.log($.base64.decode($stateParams.image));
+
                     }
                     $scope.patientName = $stateParams.name==null?$stateParams.id:$stateParams.name;
                     CreateOrUpdateWJYPatientInfo.save({
@@ -89,7 +91,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     //$scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     //ws://s201.xiaork.com:2048;
-                    $scope.socketServer = new WebSocket("ws://s132.baodf.com/wsbackend/ws&user&"
+                    $scope.socketServer = new WebSocket("ws://localhost:2048/ws&user&"
                         + $scope.patientId +"&h5bhq");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {
