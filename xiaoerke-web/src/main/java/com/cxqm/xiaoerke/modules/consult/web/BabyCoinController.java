@@ -172,6 +172,7 @@ public class BabyCoinController {
     @RequestMapping(value = "/minusOrAddBabyCoin", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map<String, Object> minusOrAddBabyCoin(HttpSession session, HttpServletRequest request) {
+        LogUtils.saveLog("minusOrAddBabyCoin"+WechatUtil.getOpenId(session,request));
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         HashMap<String, Object> response = new HashMap<String, Object>();
         String openId = WechatUtil.getOpenId(session,request);//"oogbDwD_2BTQpftPu9QClr-mCw7U";
@@ -189,6 +190,7 @@ public class BabyCoinController {
         }else{
             response.put("status", "failure");
         }
+        LogUtils.saveLog("insertBabyCoinRecord");
         //支付记录
         Integer sessionId = sessionRedisCache.getSessionIdByUserId(WechatUtil.getOpenId(session, request));
         BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
@@ -199,11 +201,11 @@ public class BabyCoinController {
         babyCoinRecordVo.setSessionId(sessionId);
         babyCoinRecordVo.setOpenId(openId);
         babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
+        LogUtils.saveLog("insertBabyCoinRecord sessionId=" + sessionId);
         //更改支付状态
-        LogUtils.saveLog("宝宝币支付 sessionId = "+sessionId,openId);
+        LogUtils.saveLog("宝宝币支付 sessionId = " + sessionId, openId);
         HttpRequestUtil.wechatpost("http://s132.baodf.com/angel/consult/wechat/notifyPayInfo2Distributor?openId=" + openId,
                 "openId=" + openId);
-
         return response;
     }
 
