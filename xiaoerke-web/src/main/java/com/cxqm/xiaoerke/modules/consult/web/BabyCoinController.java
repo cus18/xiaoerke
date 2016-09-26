@@ -1,15 +1,14 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
-import com.cxqm.xiaoerke.common.utils.ConstantUtil;
-import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +43,9 @@ public class BabyCoinController {
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
+
+    @Autowired
+    private SessionRedisCache sessionRedisCache;
 
     /**
      * 邀请卡生成页面
@@ -187,6 +189,20 @@ public class BabyCoinController {
         }else{
             response.put("status", "failure");
         }
+        //支付记录
+        Integer sessionId = sessionRedisCache.getSessionIdByUserId(WechatUtil.getOpenId(session, request));
+        BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
+        babyCoinRecordVo.setBalance(-99);
+        babyCoinRecordVo.setCreateBy(openId);
+        babyCoinRecordVo.setCreateTime(new Date());
+        babyCoinRecordVo.setSource("consultPay");
+        babyCoinRecordVo.setSessionId(sessionId);
+        babyCoinRecordVo.setOpenId(openId);
+        babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
+        //更改支付状态
+        LogUtils.saveLog("宝宝币支付 sessionId = "+sessionId,openId);
+        HttpRequestUtil.wechatpost("http://s132.baodf.com/angel/consult/wechat/notifyPayInfo2Distributor?openId=" + openId,
+                "openId=" + openId);
 
         return response;
     }
