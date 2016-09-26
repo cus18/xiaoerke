@@ -11,6 +11,8 @@ public class VaccineInfoVo {
 
     private String qrCode;
 
+    private String QRCodeUrl;
+
     private Integer miniumAge;
 
     private Integer lastTimeVaccine;
@@ -131,5 +133,13 @@ public class VaccineInfoVo {
 
     public void setBak3(String bak3) {
         this.bak3 = bak3;
+    }
+
+    public String getQRCodeUrl() {
+        return QRCodeUrl;
+    }
+
+    public void setQRCodeUrl(String QRCodeUrl) {
+        this.QRCodeUrl = QRCodeUrl;
     }
 }

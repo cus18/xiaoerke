@@ -26,13 +26,16 @@
   <sql id="Blob_Column_List" >
     address
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+  <select id="selectByVaccineStationVo" resultMap="ResultMapWithBLOBs" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo" >
     select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from vaccine_station
-    where id = #{id,jdbcType=INTEGER}
+    where 1=1
+    <if test="id != null" >
+      and #{id,jdbcType=INTEGER},
+    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from vaccine_station

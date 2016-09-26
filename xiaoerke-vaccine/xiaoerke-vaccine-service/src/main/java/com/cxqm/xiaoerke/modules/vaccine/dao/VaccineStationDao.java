@@ -5,6 +5,8 @@ import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @MyBatisDao
 @Repository
 public interface VaccineStationDao {
@@ -14,7 +16,7 @@ public interface VaccineStationDao {
 
     int insertSelective(VaccineStationVo record);
 
-    VaccineStationVo selectByPrimaryKey(Integer id);
+    List<VaccineStationVo> selectByVaccineStationVo(VaccineStationVo record);
 
     int updateByPrimaryKeySelective(VaccineStationVo record);
 

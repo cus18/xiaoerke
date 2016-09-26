@@ -28,8 +28,6 @@ public class VaccineBabyInfoVo {
 
     private String bak2;
 
-    private String QRCodeUrl;
-
     public Integer getId() {
         return id;
     }
@@ -134,11 +132,4 @@ public class VaccineBabyInfoVo {
         this.bak2 = bak2;
     }
 
-    public String getQRCodeUrl() {
-        return QRCodeUrl;
-    }
-
-    public void setQRCodeUrl(String QRCodeUrl) {
-        this.QRCodeUrl = QRCodeUrl;
-    }
 }
