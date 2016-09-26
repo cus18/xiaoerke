@@ -11,6 +11,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.OperationPromotionService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
 import com.cxqm.xiaoerke.modules.marketing.service.LoveMarketingService;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
@@ -119,6 +120,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
 
+    @Autowired
+    private SessionRedisCache sessionRedisCache;
+
     private  Map<String,OperationPromotionVo> keywordMap;
 
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -146,8 +150,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 //已关注公众号的情况下扫描
                 this.updateAttentionInfo(xmlEntity);
                 //特定渠道优惠
-                Map parameter = systemService.getWechatParameter();
-                String token = (String) parameter.get("token");
+                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                String token = (String) userWechatParam.get("token");
                 specificChanneldeal(xmlEntity, token);
                 respMessage = processScanEvent(xmlEntity, "oldUser", request, response,sysPropertyVoWithBLOBsVo);
 
@@ -172,15 +176,15 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 processGetLocationEvent(xmlEntity, request);
             }
         } else {
-            Map parameter = systemService.getWechatParameter();
-            String token = (String) parameter.get("token");
+            Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+            String token = (String) userWechatParam.get("token");
           try{
               //关键字回复功能
               if(keywordRecovery(xmlEntity,token)){
                   return "success";
               };
-          }catch (
-               Exception e){e.printStackTrace();
+          }catch (Exception e){
+              e.printStackTrace();
           }
 
             String customerService = Global.getConfig("wechat.customservice");

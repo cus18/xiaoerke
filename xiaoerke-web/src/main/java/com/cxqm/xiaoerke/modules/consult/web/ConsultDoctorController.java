@@ -408,22 +408,40 @@ public class ConsultDoctorController extends BaseController {
                     }
                     Channel userChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(richConsultSession.getUserId());
                     Boolean flag = false ;
-                    for(int i= 0 ; i<= 1;i++){
-                        JSONObject jsonObj = new JSONObject();
-                        jsonObj.put("type", "4");
-                        jsonObj.put("notifyType", "0100");
-                        TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
-                        userChannel.writeAndFlush(frame.retain());
-                        if(i == 1){
-                            Date nowDate =  userConnectionTimeMapping.get(richConsultSession.getUserId());
-                            if(nowDate != null && nowDate != oldDate){
-                                flag = true;
+                    if(userChannel !=null && userChannel.isActive()){
+                        for(int i= 0 ; i<= 1;i++){
+                            JSONObject jsonObj = new JSONObject();
+                            jsonObj.put("type", "4");
+                            jsonObj.put("notifyType", "0100");
+                            TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+                            userChannel.writeAndFlush(frame.retain());
+                            if(i == 1){
+                                Date nowDate =  userConnectionTimeMapping.get(richConsultSession.getUserId());
+                                if(nowDate != null && nowDate != oldDate){
+                                    flag = true;
+                                }
+                            }else{
+                                userConnectionTimeMapping.put(richConsultSession.getUserId(), new Date());
                             }
-                        }else{
-                            userConnectionTimeMapping.put(richConsultSession.getUserId(), new Date());
                         }
-                    }
-                    if(flag){
+                        if(flag){
+                            net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
+                            noReadMsg.put("action","doctorCloseSession");
+                            noReadMsg.put("sessionId",sessionId);
+                            noReadMsg.put("uid",richConsultSession.getUserId());
+                            String currentUrl = Global.getConfig("COOP_BHQ_URL");
+                            if(StringUtils.isNull(currentUrl)){
+                                currentUrl = "http://coapi.baohuquan.com/baodaifu";
+                            }
+                            String method = "POST";
+                            String dataType="json";
+                            String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
+                            net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
+                            if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
+                                CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
+                            }
+                        }
+                    }else{
                         net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
                         noReadMsg.put("action","doctorCloseSession");
                         noReadMsg.put("sessionId",sessionId);
