@@ -359,19 +359,23 @@ function updateCustomerInfo(){
                                         window.location.href = "playtour#/playtourShare/"+2;
                                     }
                                 },
-                                error : function() {
+                                error : function(res) {
+                                    recordLogs("PAY_ERROR1:"+res.errMsg);
                                 }
                             }, 'json');
                         }else{
+                            recordLogs("PAY_ERROR2:"+res.errMsg);
                             alert("支付失败,请重新支付")
                         }
                     },
                     fail: function (res) {
                         alert(res.errMsg)
+                        recordLogs("PAY_ERROR3:"+res.errMsg);
                     }
                 });
             },
-            error : function() {
+            error : function(res) {
+                recordLogs("PAY_ERROR4:"+res.errMsg);
             }
         });
     }else{
