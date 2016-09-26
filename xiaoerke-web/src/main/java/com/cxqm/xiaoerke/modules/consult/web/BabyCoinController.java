@@ -5,9 +5,11 @@ import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
@@ -46,6 +48,12 @@ public class BabyCoinController {
 
     @Autowired
     private SessionRedisCache sessionRedisCache;
+
+    @Autowired
+    private ConsultSessionPropertyService consultSessionPropertyService;
+
+    @Autowired
+    private SystemService systemService;
 
     /**
      * 邀请卡生成页面
@@ -202,6 +210,12 @@ public class BabyCoinController {
         babyCoinRecordVo.setOpenId(openId);
         babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
         LogUtils.saveLog("insertBabyCoinRecord sessionId=" + sessionId);
+
+        consultSessionPropertyService.addPermTimes(openId);
+        Map parameter = systemService.getWechatParameter();
+        String token = (String) parameter.get("token");
+        WechatUtil.sendMsgToWechat(token, openId, "【支付成功通知】你已在宝大夫成功支付24小时咨询服务费，感谢你的信任和支持！\n----------------\n把您的问题发送给医生，立即开始咨询吧");
+
         //更改支付状态
         LogUtils.saveLog("宝宝币支付 sessionId = " + sessionId, openId);
         HttpRequestUtil.wechatpost("http://s132.baodf.com/angel/consult/wechat/notifyPayInfo2Distributor?openId=" + openId,
