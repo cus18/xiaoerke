@@ -9,6 +9,7 @@ import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo;
 import com.cxqm.xiaoerke.modules.vaccine.service.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
  * Created by zhaodeliang on 16/09/26.
  */
 @Service
+@Transactional(readOnly = false)
 public class VaccineServiceImpl implements VaccineService {
     @Autowired
     private VaccineBabyInfoDao vaccineBabyInfoDao;
