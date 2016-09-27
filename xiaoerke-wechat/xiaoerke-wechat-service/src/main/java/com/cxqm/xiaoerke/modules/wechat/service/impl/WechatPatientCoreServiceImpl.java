@@ -24,6 +24,7 @@ import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoThirdPartyService;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
+import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
 import com.cxqm.xiaoerke.modules.vaccine.service.VaccineService;
 import com.cxqm.xiaoerke.modules.wechat.dao.WechatAttentionDao;
@@ -177,18 +178,49 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     searchMap.put("QR_code", QRCode);
                     searchMap.put("openId", openId);
                     List<HashMap<String, Object>> resultList = vaccineService.getUserWillVaccination(searchMap);
-                    String sendContent = "";
-                    Date sendTime = null;
+                    //查询疫苗接种记录最近一次
+
                     if (resultList != null && resultList.size() > 0) {
+                        //保存疫苗接种记录
+                        saveVaccineBabyRecord(openId, resultList);
+                        StringBuffer stringBuffer = new StringBuffer();
                         String vaccination = "";
                         int count = 0;
                         for (Map map : resultList) {
-                            if (map != null && StringUtils.isNotBlank(String.valueOf(map.get("willVaccineName"))) ) {
+                            if (map != null && StringUtils.isNotBlank(String.valueOf(map.get("willVaccineName")))) {
                                 count++;
-                                StringBuffer stringBuffer = new StringBuffer();
                                 stringBuffer.append(map.get("willVaccineName"));
                                 stringBuffer.append("、");
                                 vaccination = stringBuffer.toString();
+
+                                String sendContent = "";
+                                Calendar sendTime = Calendar.getInstance();
+                                Date birthday = (Date) map.get("birthday");
+
+                                Integer nextLastTimeInterval = Integer.valueOf(String.valueOf(map.get("nextLastTimeInterval")));
+                                Integer allVaccineInterval = Integer.valueOf(ConstantUtil.ALL_VACCINE_INTERVAL.getVariable());
+                                //下次接种间隔>=30
+                                if (nextLastTimeInterval > allVaccineInterval)
+                                    sendTime.add(Calendar.HOUR_OF_DAY, nextLastTimeInterval);
+                                else
+                                    sendTime.add(Calendar.HOUR_OF_DAY, allVaccineInterval);
+
+                                //下一次接种三十天之后
+//                                sendTime.add(Calendar.HOUR_OF_DAY, );//下一次疫苗与上一次疫苗最小接种间隔
+
+
+                                if (DateUtils.pastDays(birthday) > Integer.valueOf(String.valueOf(map.get("nextVaccineMiniumAge")))) {
+
+                                } else {
+
+                                }
+                                //保存提前七天提醒消息
+//                                saveVaccineMessage(openId, sendContent, sendTime, "7");
+
+                                //保存提前一天提醒消息
+//                                saveVaccineMessage(openId, sendContent, sendTime, "1");
+
+
                             }
                         }
                         if (count > 2 && count != 0) {
@@ -196,14 +228,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         }
                         //保存提醒消息
                         WechatUtil.sendMsgToWechat(token, openId, "你的宝宝即将接种" + vaccination.toString().substring(0, vaccination.length() - 1));
-                        VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
-                        vaccineSendMessageVo.setContent(sendContent);
-                        vaccineSendMessageVo.setCreateBy(openId);
-                        vaccineSendMessageVo.setSendTime(sendTime);
-                        vaccineSendMessageVo.setSysUserId(openId);
-                        vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
-                        vaccineSendMessageVo.setCreateTime(new Date());
-                        vaccineService.insertVaccineSendMessage(vaccineSendMessageVo);
+
                     }
 
                 }
@@ -254,6 +279,31 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             }
         }
         return respMessage;
+    }
+
+    private void saveVaccineBabyRecord(String openId, List<HashMap<String, Object>> resultList) {
+        HashMap<String, Object> recordMap = resultList.get(0);
+        VaccineBabyRecordVo vaccineBabyRecordVo = new VaccineBabyRecordVo();
+        vaccineBabyRecordVo.setBabyName(String.valueOf(recordMap.get("babyName")));
+        vaccineBabyRecordVo.setBabySeedNumber(String.valueOf(recordMap.get("babySeedNumber")));
+        vaccineBabyRecordVo.setCreateBy(openId);
+        vaccineBabyRecordVo.setCreateTime(new Date());
+        vaccineBabyRecordVo.setSysUserId(openId);
+        vaccineBabyRecordVo.setVaccineInfoId(Integer.valueOf(String.valueOf(recordMap.get("vaccineInfoId"))));
+        vaccineBabyRecordVo.setVaccineInfoName(String.valueOf(recordMap.get("vaccineInfoName")));
+        vaccineService.insertVaccineBabyRecord(vaccineBabyRecordVo);
+    }
+
+    private void saveVaccineMessage(String openId, String sendContent, Date sendTime, String msgType) {
+        VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
+        vaccineSendMessageVo.setContent(sendContent);
+        vaccineSendMessageVo.setCreateBy(openId);
+        vaccineSendMessageVo.setSendTime(sendTime);
+        vaccineSendMessageVo.setSysUserId(openId);
+        vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
+        vaccineSendMessageVo.setCreateTime(new Date());
+        vaccineSendMessageVo.setMsgType(msgType);
+        vaccineService.insertVaccineSendMessage(vaccineSendMessageVo);
     }
 
     public class processConsultMessageThread extends Thread {

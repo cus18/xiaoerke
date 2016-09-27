@@ -19,7 +19,7 @@
     id, sys_user_id, baby_seed_number, baby_name, vaccine_info_id, vaccine_info_name, create_by, 
     create_time, update_time, bak1, bak2, bak3
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByVaccineBabyRecordVo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo" >
     select 
     <include refid="Base_Column_List" />
     from vaccine_baby_record
@@ -28,7 +28,7 @@
      and id = #{id,jdbcType=INTEGER}
     </if>
     <if test="sysUserId != null" >
-      and sys_user_id = #{sysUserId,jdbcType=VARCHAR}
+      and sys_user_id = #{sysUserId,jdbcType=VARCHAR} ORDER by create_time desc
     </if>
 
   </select>

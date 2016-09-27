@@ -16,7 +16,8 @@ public enum ConstantUtil {
     DISTRIBUTOR("distributor"),
     CONSULTDOCTOR("consultDoctor"),
     VACCINEVALID("valid"),
-    VACCINEINVALID("inValid");
+    VACCINEINVALID("inValid"),
+    ALL_VACCINE_INTERVAL("30");//所有疫苗接种>=30天
 
     private final String variable;
 
