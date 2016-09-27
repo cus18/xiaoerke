@@ -195,25 +195,31 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
                                 String sendContent = "";
                                 Calendar sendTime = Calendar.getInstance();
+                                Calendar tempTime = Calendar.getInstance();
                                 Date birthday = (Date) map.get("birthday");
 
                                 Integer nextLastTimeInterval = Integer.valueOf(String.valueOf(map.get("nextLastTimeInterval")));
                                 Integer allVaccineInterval = Integer.valueOf(ConstantUtil.ALL_VACCINE_INTERVAL.getVariable());
+                                Integer nextVaccineMiniumAge = Integer.valueOf(String.valueOf(map.get("nextVaccineMiniumAge")));
                                 //下次接种间隔>=30
-                                if (nextLastTimeInterval > allVaccineInterval)
-                                    sendTime.add(Calendar.HOUR_OF_DAY, nextLastTimeInterval);
+                                if (nextLastTimeInterval >= allVaccineInterval)
+                                    tempTime.add(Calendar.HOUR_OF_DAY, nextLastTimeInterval);
                                 else
-                                    sendTime.add(Calendar.HOUR_OF_DAY, allVaccineInterval);
+                                    tempTime.add(Calendar.HOUR_OF_DAY, allVaccineInterval);
 
-                                //下一次接种三十天之后
-//                                sendTime.add(Calendar.HOUR_OF_DAY, );//下一次疫苗与上一次疫苗最小接种间隔
+                                double passDay = DateUtils.getDistanceOfTwoDate(birthday,new Date(tempTime.getTimeInMillis()));
 
+                                //下次接种疫苗的最小接种月龄>=宝宝到了下次接种间隔时的月龄,按最小接种月龄计算
+                                if(nextVaccineMiniumAge > passDay)
+                                    sendTime.setTimeInMillis(birthday.getTime() + nextVaccineMiniumAge * 24 * 3600 *1000);
+                                else
+                                    sendTime.setTimeInMillis(Math.round(passDay * 24 * 3600 *1000));
 
-                                if (DateUtils.pastDays(birthday) > Integer.valueOf(String.valueOf(map.get("nextVaccineMiniumAge")))) {
-
-                                } else {
-
-                                }
+//                                if (DateUtils.pastDays(birthday) > Integer.valueOf(String.valueOf(map.get("nextVaccineMiniumAge")))) {
+//
+//                                } else {
+//
+//                                }
                                 //保存提前七天提醒消息
 //                                saveVaccineMessage(openId, sendContent, sendTime, "7");
 
