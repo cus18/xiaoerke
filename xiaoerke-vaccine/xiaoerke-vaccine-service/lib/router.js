@@ -76,4 +76,8 @@ module.exports = function(app) {
     //邮件模块，只有管理员使用
     app.post('/email/findPassword', email.findPassword);
 
+
+    //做测试用
+    app.post('/vaccine/demo',vaccine.demo);
+
 };
