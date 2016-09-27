@@ -122,11 +122,23 @@ public class ConsultController extends BaseController {
 	public String searchVerificationCode(User user, Model model) {
 		user = userInfoService.getUserListByInfo(user).get(0);
 		ValidateBean validateBean = utilDao.getIdentifying(user.getPhone());
-		if(StringUtils.isNotBlank(validateBean.getName())){
-			validateBean.setName(user.getName());
-		}else{
-			validateBean.setName(user.getEmail());
-		}
+
+//		if(validateBean == null || StringUtils.isBlank(validateBean.getName())){
+//			ValidateBean bean = new ValidateBean();
+//			bean.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+//			bean.setUserPhone(num);
+//			bean.setCreateTime(new Date());
+//			bean.setCode(identify);
+//			bean.setStatus("1");
+//			int status = utilDao.saveOrUpdateIdentify(bean);
+//		}else{
+			if(StringUtils.isNotBlank(validateBean.getName())){
+				validateBean.setName(user.getName());
+			}else{
+				validateBean.setName(user.getEmail());
+			}
+//		}
+
 		model.addAttribute("validateBean", validateBean);
 		return "modules/consult/editUserVerificationCode";
 	}

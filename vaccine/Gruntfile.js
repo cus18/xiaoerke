@@ -17,6 +17,7 @@ module.exports = function(grunt){
 					'./lib/user.js',
 					'./lib/weibo.js',
 					'./lib/email.js',
+					'./lib/vaccineIndex.js',
         		],
         		dest:'./build/main.js'
         	}

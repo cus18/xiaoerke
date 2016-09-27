@@ -152,93 +152,23 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         // xml请求解析
         if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)) {
             // 事件类型
+            Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+            String token = (String) userWechatParam.get("token");
             String eventType = xmlEntity.getEvent();
             if (eventType.equals(MessageUtil.SCAN)) {
                 //已关注公众号的情况下扫描
                 this.updateAttentionInfo(xmlEntity);
                 //特定渠道优惠
-                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                String token = (String) userWechatParam.get("token");
                 specificChanneldeal(xmlEntity, token);
                 respMessage = processScanEvent(xmlEntity, "oldUser", request, response, sysPropertyVoWithBLOBsVo);
-
                 //疫苗提醒
-                String openId = xmlEntity.getFromUserName();
-                VaccineBabyInfoVo vaccineBabyInfoVo = new VaccineBabyInfoVo();
-                vaccineBabyInfoVo.setSysUserId(xmlEntity.getFromUserName());
-                vaccineBabyInfoVo = vaccineService.selectByVaccineBabyInfoVo(vaccineBabyInfoVo);
-
-                if (vaccineBabyInfoVo == null || StringUtils.isBlank(vaccineBabyInfoVo.getBabySeedNumber())) {
-                    String content = "欢迎加入宝大夫疫苗提醒功能";
-                    WechatUtil.sendMsgToWechat(token, openId, content);
-                } else {
-                    String EventKey = xmlEntity.getEventKey();
-                    String QRCode = EventKey.replace("qrscene_", "");
-                    HashMap<String, Object> searchMap = new HashMap<String, Object>();
-                    searchMap.put("QR_code", QRCode);
-                    searchMap.put("openId", openId);
-                    List<HashMap<String, Object>> resultList = vaccineService.getUserWillVaccination(searchMap);
-                    //查询疫苗接种记录最近一次
-
-                    if (resultList != null && resultList.size() > 0) {
-                        //保存疫苗接种记录
-                        saveVaccineBabyRecord(openId, resultList);
-                        StringBuffer stringBuffer = new StringBuffer();
-                        String vaccination = "";
-                        int count = 0;
-                        for (Map map : resultList) {
-                            if (map != null && StringUtils.isNotBlank(String.valueOf(map.get("willVaccineName")))) {
-                                count++;
-                                stringBuffer.append(map.get("willVaccineName"));
-                                stringBuffer.append("、");
-                                vaccination = stringBuffer.toString();
-
-                                String sendContent = "";
-                                Calendar sendTime = Calendar.getInstance();
-                                Date birthday = (Date) map.get("birthday");
-
-                                Integer nextLastTimeInterval = Integer.valueOf(String.valueOf(map.get("nextLastTimeInterval")));
-                                Integer allVaccineInterval = Integer.valueOf(ConstantUtil.ALL_VACCINE_INTERVAL.getVariable());
-                                //下次接种间隔>=30
-                                if (nextLastTimeInterval > allVaccineInterval)
-                                    sendTime.add(Calendar.HOUR_OF_DAY, nextLastTimeInterval);
-                                else
-                                    sendTime.add(Calendar.HOUR_OF_DAY, allVaccineInterval);
-
-                                //下一次接种三十天之后
-//                                sendTime.add(Calendar.HOUR_OF_DAY, );//下一次疫苗与上一次疫苗最小接种间隔
-
-
-                                if (DateUtils.pastDays(birthday) > Integer.valueOf(String.valueOf(map.get("nextVaccineMiniumAge")))) {
-
-                                } else {
-
-                                }
-                                //保存提前七天提醒消息
-//                                saveVaccineMessage(openId, sendContent, sendTime, "7");
-
-                                //保存提前一天提醒消息
-//                                saveVaccineMessage(openId, sendContent, sendTime, "1");
-
-
-                            }
-                        }
-                        if (count > 2 && count != 0) {
-                            vaccination = vaccination.substring(0, vaccination.lastIndexOf("、")) + "和" + vaccination.substring(vaccination.lastIndexOf("、") + 1, vaccination.length());
-                        }
-                        //保存提醒消息
-                        WechatUtil.sendMsgToWechat(token, openId, "你的宝宝即将接种" + vaccination.toString().substring(0, vaccination.length() - 1));
-
-                    }
-
-                }
+                babyVaccineRemind(xmlEntity, token);
 
             } else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
                 //扫描关注公众号或者搜索关注公众号都在其中
                 respMessage = processSubscribeEvent(xmlEntity, request, response, sysPropertyVoWithBLOBsVo);
                 //疫苗提醒
-
-
+                babyVaccineRemind(xmlEntity,token);
             }
             // 取消订阅
             else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
@@ -279,6 +209,80 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             }
         }
         return respMessage;
+    }
+
+    private void babyVaccineRemind(ReceiveXmlEntity xmlEntity, String token) {
+
+        String openId = xmlEntity.getFromUserName();
+        VaccineBabyInfoVo vaccineBabyInfoVo = new VaccineBabyInfoVo();
+        vaccineBabyInfoVo.setSysUserId(xmlEntity.getFromUserName());
+        vaccineBabyInfoVo = vaccineService.selectByVaccineBabyInfoVo(vaccineBabyInfoVo);
+        String EventKey = xmlEntity.getEventKey();
+        String QRCode = EventKey.replace("qrscene_", "");
+
+        if (vaccineBabyInfoVo == null || StringUtils.isBlank(vaccineBabyInfoVo.getBabySeedNumber())) {
+            String content = "欢迎加入宝大夫疫苗提醒功能";
+            WechatUtil.sendMsgToWechat(token, openId, content);
+        } else {
+            HashMap<String, Object> searchMap = new HashMap<String, Object>();
+            searchMap.put("QR_code", QRCode);
+            searchMap.put("openId", openId);
+            List<HashMap<String, Object>> resultList = vaccineService.getUserWillVaccination(searchMap);
+            if (resultList != null && resultList.size() > 0) {
+                //保存疫苗接种记录
+                saveVaccineBabyRecord(openId, resultList);
+                StringBuffer stringBuffer = new StringBuffer();
+                String vaccination = "";
+                int count = 0;
+                for (Map map : resultList) {
+                    if (map != null && StringUtils.isNotBlank(String.valueOf(map.get("willVaccineName")))) {
+                        count++;
+                        stringBuffer.append(map.get("willVaccineName"));
+                        stringBuffer.append("、");
+                        vaccination = stringBuffer.toString();
+
+                        String sendContent;
+                        Calendar sendTime = Calendar.getInstance();
+                        Calendar tempTime = Calendar.getInstance();
+                        Date birthday = (Date) map.get("birthday");
+
+                        Integer nextLastTimeInterval = Integer.valueOf(String.valueOf(map.get("nextLastTimeInterval")));
+                        Integer allVaccineInterval = Integer.valueOf(ConstantUtil.ALL_VACCINE_INTERVAL.getVariable());
+                        Integer nextVaccineMiniumAge = Integer.valueOf(String.valueOf(map.get("nextVaccineMiniumAge")));
+                        //下次接种间隔>=30
+                        if (nextLastTimeInterval >= allVaccineInterval)
+                            tempTime.add(Calendar.HOUR_OF_DAY, nextLastTimeInterval);
+                        else
+                            tempTime.add(Calendar.HOUR_OF_DAY, allVaccineInterval);
+
+                        double passDayByBirthday = DateUtils.getDistanceOfTwoDate(birthday, new Date(tempTime.getTimeInMillis()));
+
+                        //下次接种疫苗的最小接种月龄>=宝宝到了下次接种间隔时的月龄,按最小接种月龄计算
+                        if (nextVaccineMiniumAge > passDayByBirthday)
+                            sendTime.setTimeInMillis(birthday.getTime() + nextVaccineMiniumAge * 24 * 3600 * 1000);
+                        else
+                            sendTime.setTimeInMillis(birthday.getTime() + Math.round(passDayByBirthday * 24 * 3600 * 1000));
+
+                        //保存提前七天提醒消息
+                        sendTime.add(Calendar.HOUR_OF_DAY, -7);
+                        sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n  待办事项:宝宝在" + DateUtils.formatDate(new Date(sendTime.getTimeInMillis())) +
+                                "后需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
+                        saveVaccineMessage(openId, sendContent, new Date(sendTime.getTimeInMillis()), "7");
+
+                        //保存提前一天提醒消息
+                        sendTime.add(Calendar.HOUR_OF_DAY, 6);
+                        sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n" +
+                                "  待办事项:明天宝宝需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
+                        saveVaccineMessage(openId, sendContent, new Date(sendTime.getTimeInMillis()), "1");
+
+                    }
+                }
+                if (count > 2 && count != 0) {
+                    vaccination = vaccination.substring(0, vaccination.lastIndexOf("、")) + "和" + vaccination.substring(vaccination.lastIndexOf("、") + 1, vaccination.length());
+                }
+                WechatUtil.sendMsgToWechat(token, openId, "你的宝宝即将接种" + vaccination.toString().substring(0, vaccination.length() - 1));
+            }
+        }
     }
 
     private void saveVaccineBabyRecord(String openId, List<HashMap<String, Object>> resultList) {
