@@ -1,0 +1,28 @@
+<div class="message_div" ng-controller="VaccineIndexController">
+    <div class="title">
+        请输入宝宝信息
+    </div>
+    <div class="message">
+        <ul>
+            <li>宝宝姓名
+                <input type="text">
+            </li>
+            <li>宝宝性别<span class="nan checked">男宝</span><span class="nv">女宝</span></li>
+            <li>出生日期
+                <input type="text" readonly="readonly" id="babyBirthday" placeholder="选择宝宝的出生日期" ng-click="showInput()">
+            </li>
+            <li>接种编号
+                <input type="text">
+            </li>
+            <li>
+                疫苗站
+                <select>
+                    <option value=""></option>
+                </select>
+                <select ng-model="selectedMessage" ng-change="setSearchMessageType(selectedMessage.searchType)" ng-options="date.searchContent for date in searchMessageType">
+                    <!--<option value="">-请选择-</option>-->
+                </select>
+            </li>
+        </ul>
+    </div>
+</div>

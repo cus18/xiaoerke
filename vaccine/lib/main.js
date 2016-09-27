@@ -62,6 +62,15 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             }
         }
     })
+    .state('vaccineIndex', {
+        url: '/vaccineIndex',
+        views: {
+            '': {
+                templateUrl: 'views/vaccineIndex.html',
+                controller: 'VaccineIndexController'
+            }
+        }
+    })
 
     .state('index.article', {
         url: '/article',
