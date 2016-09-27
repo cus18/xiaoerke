@@ -25,10 +25,10 @@
     from vaccine_baby_record
     where 1=1
     <if test="id != null" >
-     and #{id,jdbcType=INTEGER}
+     and id = #{id,jdbcType=INTEGER}
     </if>
-    <if test="id != null" >
-      and #{id,jdbcType=INTEGER}
+    <if test="sysUserId != null" >
+      and sys_user_id = #{sysUserId,jdbcType=VARCHAR}
     </if>
 
   </select>
