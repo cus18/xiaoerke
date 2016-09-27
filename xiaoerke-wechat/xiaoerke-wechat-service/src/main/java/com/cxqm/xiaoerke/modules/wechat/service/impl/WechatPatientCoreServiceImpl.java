@@ -201,8 +201,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         vaccineSendMessageVo.setCreateBy(openId);
                         vaccineSendMessageVo.setSendTime(sendTime);
                         vaccineSendMessageVo.setSysUserId(openId);
-                        vaccineSendMessageVo.setValidFlag("");
-
+                        vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
+                        vaccineSendMessageVo.setCreateTime(new Date());
+                        vaccineService.insertVaccineSendMessage(vaccineSendMessageVo);
                     }
 
                 }

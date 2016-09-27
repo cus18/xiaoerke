@@ -14,7 +14,9 @@ public enum ConstantUtil {
     USE_TIMES("useTimes"),
     WITHIN_24HOURS("within24Hours"),
     DISTRIBUTOR("distributor"),
-    CONSULTDOCTOR("consultDoctor");
+    CONSULTDOCTOR("consultDoctor"),
+    VACCINEVALID("valid"),
+    VACCINEINVALID("inValid");
 
     private final String variable;
 

@@ -6,6 +6,7 @@ import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineSendMessageDao;
 import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineStationDao;
 import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineStationRelDao;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
+import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo;
 import com.cxqm.xiaoerke.modules.vaccine.service.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by wangbaowei on 15/12/16.
+ * Created by zhaodeliang on 16/09/26.
  */
 public class VaccineServiceImpl implements VaccineService {
     @Autowired
@@ -48,6 +49,12 @@ public class VaccineServiceImpl implements VaccineService {
     public List<HashMap<String,Object>> getUserWillVaccination(HashMap<String, Object> searchMap){
         return vaccineStationRelDao.getUserWillVaccination(searchMap);
     }
+
+    @Override
+    public int insertVaccineSendMessage(VaccineSendMessageVo record){
+        return vaccineSendMessageDao.insertSelective(record);
+    }
+
 
 
 
