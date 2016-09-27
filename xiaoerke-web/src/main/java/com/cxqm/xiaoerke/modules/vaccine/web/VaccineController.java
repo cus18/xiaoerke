@@ -1,4 +1,4 @@
-package com.cxqm.xiaoerke.modules.consult.web;
+package com.cxqm.xiaoerke.modules.vaccine.web;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
