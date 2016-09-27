@@ -212,21 +212,22 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     }
 
     private void babyVaccineRemind(ReceiveXmlEntity xmlEntity, String token) {
+
         String openId = xmlEntity.getFromUserName();
         VaccineBabyInfoVo vaccineBabyInfoVo = new VaccineBabyInfoVo();
         vaccineBabyInfoVo.setSysUserId(xmlEntity.getFromUserName());
         vaccineBabyInfoVo = vaccineService.selectByVaccineBabyInfoVo(vaccineBabyInfoVo);
         String EventKey = xmlEntity.getEventKey();
         String QRCode = EventKey.replace("qrscene_", "");
-        HashMap<String, Object> searchMap = new HashMap<String, Object>();
-        searchMap.put("QR_code", QRCode);
-        searchMap.put("openId", openId);
-        List<HashMap<String, Object>> resultList = vaccineService.getUserWillVaccination(searchMap);
 
         if (vaccineBabyInfoVo == null || StringUtils.isBlank(vaccineBabyInfoVo.getBabySeedNumber())) {
             String content = "欢迎加入宝大夫疫苗提醒功能";
             WechatUtil.sendMsgToWechat(token, openId, content);
         } else {
+            HashMap<String, Object> searchMap = new HashMap<String, Object>();
+            searchMap.put("QR_code", QRCode);
+            searchMap.put("openId", openId);
+            List<HashMap<String, Object>> resultList = vaccineService.getUserWillVaccination(searchMap);
             if (resultList != null && resultList.size() > 0) {
                 //保存疫苗接种记录
                 saveVaccineBabyRecord(openId, resultList);
