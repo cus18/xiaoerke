@@ -6,7 +6,8 @@ var user = require('./user'),
     weibo = require('./weibo'),
     upload = require('./upload'),
     email = require('./email'),
-    article = require('./article');
+    article = require('./article'),
+    vaccine = require('./vaccine')
 
 /*
 + 服务路由
