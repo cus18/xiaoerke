@@ -280,7 +280,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 if (count > 2 && count != 0) {
                     vaccination = vaccination.substring(0, vaccination.lastIndexOf("、")) + "和" + vaccination.substring(vaccination.lastIndexOf("、") + 1, vaccination.length());
                 }
-                //保存提醒消息
                 WechatUtil.sendMsgToWechat(token, openId, "你的宝宝即将接种" + vaccination.toString().substring(0, vaccination.length() - 1));
             }
         }
