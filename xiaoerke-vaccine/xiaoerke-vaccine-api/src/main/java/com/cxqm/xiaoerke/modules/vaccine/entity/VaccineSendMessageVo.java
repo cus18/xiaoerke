@@ -15,6 +15,8 @@ public class VaccineSendMessageVo {
 
     private Date createTime;
 
+    private String msgType;
+
     private Date updateTime;
 
     private String bak1;
@@ -83,6 +85,14 @@ public class VaccineSendMessageVo {
 
     public String getBak1() {
         return bak1;
+    }
+
+    public String getMsgType() {
+        return msgType;
+    }
+
+    public void setMsgType(String msgType) {
+        this.msgType = msgType;
     }
 
     public void setBak1(String bak1) {

@@ -11,14 +11,14 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="bak_1" property="bak1" jdbcType="VARCHAR" />
     <result column="bak_2" property="bak2" jdbcType="VARCHAR" />
-    <result column="bak_3" property="bak3" jdbcType="VARCHAR" />
+    <result column="msg_type" property="msgType" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo" extends="BaseResultMap" >
     <result column="content" property="content" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, sys_user_id, send_time, valid_flag, create_by, create_time, update_time, bak_1, 
-    bak_2, bak_3
+    bak_2, msg_type
   </sql>
   <sql id="Blob_Column_List" >
     content
@@ -39,11 +39,11 @@
     insert into vaccine_send_message (id, sys_user_id, send_time, 
       valid_flag, create_by, create_time, 
       update_time, bak_1, bak_2, 
-      bak_3, content)
+      msg_type, content)
     values (#{id,jdbcType=INTEGER}, #{sysUserId,jdbcType=VARCHAR}, #{sendTime,jdbcType=TIMESTAMP}, 
       #{validFlag,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{bak1,jdbcType=VARCHAR}, #{bak2,jdbcType=VARCHAR}, 
-      #{bak3,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR})
+      #{msgType,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo" >
     insert into vaccine_send_message
@@ -75,8 +75,8 @@
       <if test="bak2 != null" >
         bak_2,
       </if>
-      <if test="bak3 != null" >
-        bak_3,
+      <if test="msgType != null" >
+        msg_type,
       </if>
       <if test="content != null" >
         content,
@@ -110,8 +110,8 @@
       <if test="bak2 != null" >
         #{bak2,jdbcType=VARCHAR},
       </if>
-      <if test="bak3 != null" >
-        #{bak3,jdbcType=VARCHAR},
+      <if test="msgType != null" >
+        #{msgType,jdbcType=VARCHAR},
       </if>
       <if test="content != null" >
         #{content,jdbcType=LONGVARCHAR},
@@ -145,8 +145,8 @@
       <if test="bak2 != null" >
         bak_2 = #{bak2,jdbcType=VARCHAR},
       </if>
-      <if test="bak3 != null" >
-        bak_3 = #{bak3,jdbcType=VARCHAR},
+      <if test="msgType != null" >
+        msg_type = #{msgType,jdbcType=VARCHAR},
       </if>
       <if test="content != null" >
         content = #{content,jdbcType=LONGVARCHAR},
@@ -164,7 +164,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       bak_1 = #{bak1,jdbcType=VARCHAR},
       bak_2 = #{bak2,jdbcType=VARCHAR},
-      bak_3 = #{bak3,jdbcType=VARCHAR},
+      msg_type = #{msgType,jdbcType=VARCHAR},
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -178,7 +178,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       bak_1 = #{bak1,jdbcType=VARCHAR},
       bak_2 = #{bak2,jdbcType=VARCHAR},
-      bak_3 = #{bak3,jdbcType=VARCHAR}
+      msg_type = #{msgType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

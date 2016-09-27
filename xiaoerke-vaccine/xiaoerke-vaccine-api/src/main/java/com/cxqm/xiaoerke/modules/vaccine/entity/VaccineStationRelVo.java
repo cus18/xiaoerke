@@ -19,15 +19,21 @@ public class VaccineStationRelVo {
 
     private String willVaccineName;
 
+    private String nextVaccineMiniumAge;
+
     private Date createTime;
 
     private String createBy;
 
     private Date updateTime;
 
-    private String bak1;
+    public String getNextVaccineMiniumAge() {
+        return nextVaccineMiniumAge;
+    }
 
-    private String bak2;
+    public void setNextVaccineMiniumAge(String nextVaccineMiniumAge) {
+        this.nextVaccineMiniumAge = nextVaccineMiniumAge;
+    }
 
     public Integer getId() {
         return id;
@@ -117,19 +123,4 @@ public class VaccineStationRelVo {
         this.updateTime = updateTime;
     }
 
-    public String getBak1() {
-        return bak1;
-    }
-
-    public void setBak1(String bak1) {
-        this.bak1 = bak1;
-    }
-
-    public String getBak2() {
-        return bak2;
-    }
-
-    public void setBak2(String bak2) {
-        this.bak2 = bak2;
-    }
 }
