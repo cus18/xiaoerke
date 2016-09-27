@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.vaccine.service.impl;
 
 
 import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineBabyInfoDao;
+import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineSendMessageDao;
 import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineStationDao;
 import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineStationRelDao;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
@@ -24,6 +25,9 @@ public class VaccineServiceImpl implements VaccineService {
 
     @Autowired
     private VaccineStationRelDao vaccineStationRelDao;
+
+    @Autowired
+    private VaccineSendMessageDao vaccineSendMessageDao;
 
     @Override
     public VaccineBabyInfoVo selectByVaccineBabyInfoVo(VaccineBabyInfoVo vaccineBabyInfoVo){
