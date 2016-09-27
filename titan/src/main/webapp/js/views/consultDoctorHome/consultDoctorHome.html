@@ -22,7 +22,7 @@
         <div class="home_introduce" ng-if="description">
             <div class="introduce_title com_font15 com_color3"><span>医生介绍</span></div>
             <div class="introduce_content">
-                <div class="com_color6 com_font18" ng-repeat="item in description" ng-if="(description.length-1)!=$index">{{item}}</div>
+                <div class="com_color6 com_font18" ng-repeat="item in description" ng-if="(description.length)!=$index">{{item}}</div>
             </div>
         </div>
         <div class="home_comment" ng-click="goCommentDetails()">
