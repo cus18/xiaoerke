@@ -5,7 +5,7 @@ import java.util.Date;
 public class VaccineBabyRecordVo {
     private Integer id;
 
-    private String openId;
+    private String sysUserId;
 
     private String babySeedNumber;
 
@@ -35,12 +35,12 @@ public class VaccineBabyRecordVo {
         this.id = id;
     }
 
-    public String getOpenId() {
-        return openId;
+    public String getSysUserId() {
+        return sysUserId;
     }
 
-    public void setOpenId(String openId) {
-        this.openId = openId;
+    public void setSysUserId(String sysUserId) {
+        this.sysUserId = sysUserId;
     }
 
     public String getBabySeedNumber() {

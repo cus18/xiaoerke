@@ -3,7 +3,7 @@
 <mapper namespace="com.cxqm.xiaoerke.modules.vaccine.dao.VaccineBabyRecordDao" >
   <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
     <result column="baby_seed_number" property="babySeedNumber" jdbcType="VARCHAR" />
     <result column="baby_name" property="babyName" jdbcType="VARCHAR" />
     <result column="vaccine_info_id" property="vaccineInfoId" jdbcType="INTEGER" />
@@ -16,25 +16,32 @@
     <result column="bak3" property="bak3" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, open_id, baby_seed_number, baby_name, vaccine_info_id, vaccine_info_name, create_by, 
+    id, sys_user_id, baby_seed_number, baby_name, vaccine_info_id, vaccine_info_name, create_by, 
     create_time, update_time, bak1, bak2, bak3
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from vaccine_baby_record
-    where id = #{id,jdbcType=INTEGER}
+    where 1=1
+    <if test="id != null" >
+     and #{id,jdbcType=INTEGER}
+    </if>
+    <if test="id != null" >
+      and #{id,jdbcType=INTEGER}
+    </if>
+
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from vaccine_baby_record
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo" >
-    insert into vaccine_baby_record (id, open_id, baby_seed_number, 
+    insert into vaccine_baby_record (id, sys_user_id, baby_seed_number, 
       baby_name, vaccine_info_id, vaccine_info_name, 
       create_by, create_time, update_time, 
       bak1, bak2, bak3)
-    values (#{id,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{babySeedNumber,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{sysUserId,jdbcType=VARCHAR}, #{babySeedNumber,jdbcType=VARCHAR}, 
       #{babyName,jdbcType=VARCHAR}, #{vaccineInfoId,jdbcType=INTEGER}, #{vaccineInfoName,jdbcType=VARCHAR}, 
       #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=VARCHAR}, 
       #{bak1,jdbcType=VARCHAR}, #{bak2,jdbcType=VARCHAR}, #{bak3,jdbcType=VARCHAR})
@@ -45,8 +52,8 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="openId != null" >
-        open_id,
+      <if test="sysUserId != null" >
+        sys_user_id,
       </if>
       <if test="babySeedNumber != null" >
         baby_seed_number,
@@ -83,8 +90,8 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="openId != null" >
-        #{openId,jdbcType=VARCHAR},
+      <if test="sysUserId != null" >
+        #{sysUserId,jdbcType=VARCHAR},
       </if>
       <if test="babySeedNumber != null" >
         #{babySeedNumber,jdbcType=VARCHAR},
@@ -121,8 +128,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo" >
     update vaccine_baby_record
     <set >
-      <if test="openId != null" >
-        open_id = #{openId,jdbcType=VARCHAR},
+      <if test="sysUserId != null" >
+        sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       </if>
       <if test="babySeedNumber != null" >
         baby_seed_number = #{babySeedNumber,jdbcType=VARCHAR},
@@ -159,7 +166,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo" >
     update vaccine_baby_record
-    set open_id = #{openId,jdbcType=VARCHAR},
+    set sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       baby_seed_number = #{babySeedNumber,jdbcType=VARCHAR},
       baby_name = #{babyName,jdbcType=VARCHAR},
       vaccine_info_id = #{vaccineInfoId,jdbcType=INTEGER},
