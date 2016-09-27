@@ -8,6 +8,7 @@ import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo;
 import com.cxqm.xiaoerke.modules.vaccine.service.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  * Created by zhaodeliang on 16/09/26.
  */
+@Service
 public class VaccineServiceImpl implements VaccineService {
     @Autowired
     private VaccineBabyInfoDao vaccineBabyInfoDao;
@@ -60,6 +62,13 @@ public class VaccineServiceImpl implements VaccineService {
     public int insertVaccineBabyRecord(VaccineBabyRecordVo record){
         return vaccineBabyRecordDao.insertSelective(record);
     }
+
+    @Override
+    public List<VaccineBabyRecordVo> selectByVaccineBabyRecord(VaccineBabyRecordVo record){
+        return vaccineBabyRecordDao.selectByVaccineBabyRecordVo(record);
+    }
+
+
 
 
 
