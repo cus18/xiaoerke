@@ -28,6 +28,8 @@ public class VaccineBabyInfoVo {
 
     private String bak2;
 
+    private String bak3;
+
     public Integer getId() {
         return id;
     }
@@ -132,4 +134,11 @@ public class VaccineBabyInfoVo {
         this.bak2 = bak2;
     }
 
+    public String getBak3() {
+        return bak3;
+    }
+
+    public void setBak3(String bak3) {
+        this.bak3 = bak3;
+    }
 }
