@@ -4,6 +4,7 @@
  *
  * Based upon: https://gist.github.com/Yaffle/1284012
  *
+ *
  * Copyright (c) 2012 Yannick Albert (http://yckart.com)
  * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php).
  * 2013/02/10

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.vaccine.dao.VaccineStationRelDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationRelVo" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="vaccine_id" property="vaccineId" jdbcType="INTEGER" />
+    <result column="vaccine_station_id" property="vaccineStationId" jdbcType="INTEGER" />
+    <result column="next_vaccine_id" property="nextVaccineId" jdbcType="INTEGER" />
+    <result column="vaccine_name" property="vaccineName" jdbcType="VARCHAR" />
+    <result column="minium_age" property="miniumAge" jdbcType="INTEGER" />
+    <result column="last_time_interval" property="lastTimeInterval" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="will_vaccine_name" property="willVaccineName" jdbcType="VARCHAR" />
+    <result column="next_vaccine_minium_age" property="nextVaccineMiniumAge" jdbcType="INTEGER" />
+    <result column="next_last_time_interval" property="nextLastTimeInterval" jdbcType="INTEGER" />
+
+  </resultMap>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationRelVo" >
+    insert into vaccine_station_rel (id, vaccine_id, vaccine_station_id, 
+      next_vaccine_id, vaccine_name, minium_age, 
+      last_time_interval, create_time, create_by, 
+      update_time, will_vaccine_name, next_vaccine_minium_age,next_last_time_interval
+      )
+    values (#{id,jdbcType=INTEGER}, #{vaccineId,jdbcType=INTEGER}, #{vaccineStationId,jdbcType=INTEGER}, 
+      #{nextVaccineId,jdbcType=INTEGER}, #{vaccineName,jdbcType=VARCHAR}, #{miniumAge,jdbcType=INTEGER}, 
+      #{lastTimeInterval,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{willVaccineName,jdbcType=VARCHAR}, #{nextVaccineMiniumAge,jdbcType=INTEGER}, #{nextLastTimeInterval,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationRelVo" >
+    insert into vaccine_station_rel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="vaccineId != null" >
+        vaccine_id,
+      </if>
+      <if test="vaccineStationId != null" >
+        vaccine_station_id,
+      </if>
+      <if test="nextVaccineId != null" >
+        next_vaccine_id,
+      </if>
+      <if test="vaccineName != null" >
+        vaccine_name,
+      </if>
+      <if test="miniumAge != null" >
+        minium_age,
+      </if>
+      <if test="lastTimeInterval != null" >
+        last_time_interval,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="willVaccineName != null" >
+        will_vaccine_name,
+      </if>
+      <if test="nextVaccineMiniumAge != null" >
+        next_vaccine_minium_age,
+      </if>
+      <if test="nextLastTimeInterval != null" >
+        next_last_time_interval,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="vaccineId != null" >
+        #{vaccineId,jdbcType=INTEGER},
+      </if>
+      <if test="vaccineStationId != null" >
+        #{vaccineStationId,jdbcType=INTEGER},
+      </if>
+      <if test="nextVaccineId != null" >
+        #{nextVaccineId,jdbcType=INTEGER},
+      </if>
+      <if test="vaccineName != null" >
+        #{vaccineName,jdbcType=VARCHAR},
+      </if>
+      <if test="miniumAge != null" >
+        #{miniumAge,jdbcType=INTEGER},
+      </if>
+      <if test="lastTimeInterval != null" >
+        #{lastTimeInterval,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="willVaccineName != null" >
+        #{willVaccineName,jdbcType=VARCHAR},
+      </if>
+      <if test="nextVaccineMiniumAge != null" >
+        #{nextVaccineMiniumAge,jdbcType=INTEGER},
+      </if>
+      <if test="nextLastTimeInterval != null" >
+        #{next_last_time_interval,jdbcType=INTEGER},
+      </if>
+
+    </trim>
+  </insert>
+
+
+  <select id="getUserWillVaccination" resultType="java.util.HashMap">
+    SELECT vsr.next_vaccine_id nextVaccineId,vbi.birthday,vi.last_time_vaccine lastTimeVaccine,vi.last_time_vaccine lastTimeVaccine,
+    vs.work_date workDate,vs.name vaccineStationName,vi.minium_age miniumAge,vsr.will_vaccine_name willVaccineName,
+    vsr.next_vaccine_minium_age nextVaccineMiniumAge,vbi.baby_name babyName,vbi.baby_seed_number babySeedNumber,vi.id vaccineInfoId,
+    vi.name vaccineInfoName,vsr.next_last_time_interval nextLastTimeInterval
+    from vaccine_station_rel vsr
+    INNER JOIN vaccine_baby_info vbi on vsr.vaccine_station_id = vbi.vaccine_station_id
+    INNER JOIN vaccine_info vi on vi.id = vsr.vaccine_id
+    INNER JOIN vaccine_station vs on vs.id = vsr.vaccine_station_id
+    where vi.QR_code = #{QRCode} and vbi.sys_user_id = #{openId}
+    GROUP BY vbi.sys_user_id
+  </select>
+
+</mapper>

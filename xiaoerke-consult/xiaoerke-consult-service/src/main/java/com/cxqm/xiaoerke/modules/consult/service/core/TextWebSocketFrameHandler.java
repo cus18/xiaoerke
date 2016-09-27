@@ -212,6 +212,27 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                         }else{
                             userChannel.writeAndFlush(msg.retain());
                         }
+                    }else{
+                        net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
+                        String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
+                        int nameIndex = content.indexOf("：");
+                        String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
+                        noReadMsg.put("action","doctorMessage");
+                        noReadMsg.put("uid",userId);
+                        noReadMsg.put("messageType",msgType);
+                        noReadMsg.put("messageContent",newContent);
+                        noReadMsg.put("doctorId",csUserId);
+                        String currentUrl = Global.getConfig("COOP_BHQ_URL");
+                        if(StringUtils.isNull(currentUrl)){
+                            currentUrl = "http://coapi.baohuquan.com/baodaifu";
+                        }
+                        String method = "POST";
+                        String dataType="json";
+                        String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
+                        net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
+                        if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
+                            CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
+                        }
                     }
                 }
                 if (richConsultSession.getSource().equals("wxcxqm")) {

@@ -98,7 +98,7 @@ public class ConsultWechatController extends BaseController {
         if (messageType.contains("voice") || messageType.contains("video") || messageType.contains("image")) {
             paramMap.put("mediaId", mediaId);
         }
-        paramMap.put("serverAddress", ConstantUtil.SERVER_ADDRESS);
+        paramMap.put("serverAddress", ConstantUtil.SERVER_ADDRESS.getVariable());
         Runnable thread = new processUserMessageThread(paramMap);
         threadExecutor.execute(thread);
 
@@ -217,11 +217,11 @@ public class ConsultWechatController extends BaseController {
                     obj.put("senderId", userId);
                     obj.put("dateTime", DateUtils.DateToStr(new Date()));
                     obj.put("senderName", userName);
-                    if (ConstantUtil.PAY_SUCCESS.indexOf(consultSession.getPayStatus()) > -1) {
+                    if (ConstantUtil.PAY_SUCCESS.getVariable().indexOf(consultSession.getPayStatus()) > -1) {
                         obj.put("notifyType", "1001");
-                    } else if (ConstantUtil.NO_PAY.indexOf(consultSession.getPayStatus()) > -1) {
+                    } else if (ConstantUtil.NO_PAY.getVariable().indexOf(consultSession.getPayStatus()) > -1) {
                         obj.put("notifyType", "1002");
-                    } else if(ConstantUtil.NOT_INSTANT_CONSULTATION.indexOf(consultSession.getPayStatus()) > -1) {
+                    } else if(ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable().indexOf(consultSession.getPayStatus()) > -1) {
                         obj.put("notifyType", "1003");
                     }else {
                         obj.put("notifyType", "1004");
@@ -319,7 +319,7 @@ public class ConsultWechatController extends BaseController {
             Query query = new Query(new Criteria().where("userId").is(openId))
                     .with(new Sort(Sort.Direction.DESC, "firstTransTime")).limit(1);
             List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.queryUserMessageList(query);
-            richConsultSession.setPayStatus(ConstantUtil.USE_TIMES);
+            richConsultSession.setPayStatus(ConstantUtil.USE_TIMES.getVariable());
             int messageFlag = 0;
             ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(richConsultSession.getUserId());
             if (consultSessionPropertyVo == null) {
@@ -357,7 +357,7 @@ public class ConsultWechatController extends BaseController {
             } else {
                 long pastMillisSecond = DateUtils.pastMillisSecond(consultSessionStatusVos.get(0).getFirstTransTime());
                 if (pastMillisSecond < 24 * 60 * 60 * 1000) {
-                    richConsultSession.setPayStatus(ConstantUtil.WITHIN_24HOURS);
+                    richConsultSession.setPayStatus(ConstantUtil.WITHIN_24HOURS.getVariable());
                 } else {
                     String sysUserId = richConsultSession.getUserId();
                     //判断剩余次数,consultSessionStatusVo打标记
@@ -377,14 +377,14 @@ public class ConsultWechatController extends BaseController {
                             }
                         } else if (consultSessionPropertyVo.getPermTimes() > 0) {
                             content = "嗨，亲爱的，你还可享受" + consultSessionPropertyVo.getPermTimes() + "次24小时咨询服务哦^-^" ;
-                            richConsultSession.setPayStatus(ConstantUtil.PAY_SUCCESS);
+                            richConsultSession.setPayStatus(ConstantUtil.PAY_SUCCESS.getVariable());
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                         } else if (messageFlag == 0) {
 
                             boolean flag = consultSessionService.cheakInstantConsultation(sysUserId);
 
-                            richConsultSession.setPayStatus(ConstantUtil.NO_PAY);
+                            richConsultSession.setPayStatus(ConstantUtil.NO_PAY.getVariable());
                             content = "嗨，亲爱的，你本月咨询次数已用完，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
                                     "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>点击这里购买更多咨询机会</a>" + "\n" +
                                     "-----------\n" + "轻轻动动手指，邀请好友加入宝大夫，即可获得更多机会哦！\n" + "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42'>>>邀请好友得积分</a>";
@@ -407,7 +407,7 @@ public class ConsultWechatController extends BaseController {
             //更新会话操作时间
             consultRecordService.saveConsultSessionStatus(richConsultSession);
             Query query;
-            if (richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR)) {
+            if (richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR.getVariable())) {
                 Query qry = (new Query()).addCriteria(where("userId").is(richConsultSession.getUserId())).with(new Sort(Sort.Direction.DESC, "createDate"));
                 ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(qry);
                 query = new Query().addCriteria(where("_id").is(consultSessionStatusVo.getId()));
@@ -431,7 +431,7 @@ public class ConsultWechatController extends BaseController {
         csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
         System.out.println("csChannel------" + csChannel);
 
-        consultSession.setPayStatus(ConstantUtil.PAY_SUCCESS);
+        consultSession.setPayStatus(ConstantUtil.PAY_SUCCESS.getVariable());
         //更新会话操作时间
         consultRecordService.saveConsultSessionStatus(consultSession);
 
@@ -525,7 +525,7 @@ public class ConsultWechatController extends BaseController {
         csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
         System.out.println("csChannel------" + csChannel);
 
-        consultSession.setPayStatus(ConstantUtil.NOT_INSTANT_CONSULTATION);
+        consultSession.setPayStatus(ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable());
         //更新会话操作时间
         consultRecordService.saveConsultSessionStatus(consultSession);
 

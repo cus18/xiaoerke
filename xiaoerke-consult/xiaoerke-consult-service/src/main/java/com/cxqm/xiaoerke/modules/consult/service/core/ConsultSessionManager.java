@@ -315,7 +315,7 @@ public enum ConsultSessionManager {
                 HashMap<String, Channel> hashMap = (HashMap) currentDistributorChannel.get(number);
                 for (Map.Entry<String, Channel> entry : hashMap.entrySet()) {
                     consultSession.setCsUserId(entry.getKey());
-                    consultSession.setUserType(ConstantUtil.DISTRIBUTOR);
+                    consultSession.setUserType(ConstantUtil.DISTRIBUTOR.getVariable());
                     consultCountTotal.setCsUserId(entry.getKey());
                     User csUser = systemService.getUserById(entry.getKey());
                     consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
@@ -343,7 +343,7 @@ public enum ConsultSessionManager {
                     if (nowChannel != null && nowChannel.isActive()) {
                         User csUser = systemService.getUserById(csUserId);
                         consultSession.setCsUserId(csUserId);
-                        consultSession.setUserType(ConstantUtil.CONSULTDOCTOR);
+                        consultSession.setUserType(ConstantUtil.CONSULTDOCTOR.getVariable());
                         consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
                         csChannel = nowChannel;
                         break;
@@ -663,7 +663,7 @@ public enum ConsultSessionManager {
                                     List<String> list = new ArrayList<String>();
                                     list.add("useTimes");
                                     list.add("paySuccess");
-                                    if(null != consultSessionStatusVo.getPayStatus()&&ConstantUtil.WITHIN_24HOURS.equals(consultSessionStatusVo.getPayStatus())){
+                                    if(null != consultSessionStatusVo.getPayStatus()&&ConstantUtil.WITHIN_24HOURS.getVariable().equals(consultSessionStatusVo.getPayStatus())){
                        //                 Query query2 = (new Query()).addCriteria(where("userId").is(userId).and("payStatus").in(list)).with(new Sort(Sort.Direction.DESC, "createDate"));
                        //                 ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query);
                                         /**
@@ -675,7 +675,7 @@ public enum ConsultSessionManager {
                                         jsonObject.put("notifyType", "1004");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
-                                    }else if(ConstantUtil.USE_TIMES.equals(consultSessionStatusVo.getPayStatus()) || ConstantUtil.PAY_SUCCESS.equals(consultSessionStatusVo.getPayStatus())){
+                                    }else if(ConstantUtil.USE_TIMES.getVariable().equals(consultSessionStatusVo.getPayStatus()) || ConstantUtil.PAY_SUCCESS.getVariable().equals(consultSessionStatusVo.getPayStatus())){
                        //                 Query query2 = (new Query()).addCriteria(where("userId").is(userId).and("payStatus").in(list)).with(new Sort(Sort.Direction.DESC, "createDate")).limit(2);
                        //                 List<ConsultSessionStatusVo> consultSessionStatusVoList = consultRecordService.queryUserMessageList(query2);
                                         /**
@@ -737,23 +737,27 @@ public enum ConsultSessionManager {
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
                                         sendMsg = responseNews.toString();
                                         WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
-                                        if(ConstantUtil.USE_TIMES.equals(consultSessionStatusVo.getPayStatus())){
+                                        if(ConstantUtil.PAY_SUCCESS.getVariable().equals(consultSessionStatusVo.getPayStatus())){
+                                            jsonObject.put("notifyType", "1001");
+                                        }else if(ConstantUtil.NO_PAY.getVariable().equals(consultSessionStatusVo.getPayStatus())){
+                                            jsonObject.put("notifyType", "1002");
+                                        }else if(ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable().equals(consultSessionStatusVo.getPayStatus())){
                                             jsonObject.put("notifyType", "1003");
                                         }else{
-                                            jsonObject.put("notifyType", "1001");
+                                            jsonObject.put("notifyType", "1004");
                                         }
 
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }else{
-                                        if(ConstantUtil.NO_PAY.equals(consultSessionStatusVo.getPayStatus())){
+                                      if(ConstantUtil.NO_PAY.getVariable().equals(consultSessionStatusVo.getPayStatus())){
                                             jsonObject.put("notifyType", "1002");
-                                        }else if(ConstantUtil.NOT_INSTANT_CONSULTATION.equals(consultSessionStatusVo.getPayStatus())){
+                                      }else if(ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable().equals(consultSessionStatusVo.getPayStatus())){
                                             jsonObject.put("notifyType", "1003");
-                                        }else{
-                                            jsonObject.put("notifyType", "1004");
-                                        }
-                                        jsonObject.put("notifyType","1002");
+                                      }else{
+                                         jsonObject.put("notifyType", "1004");
+                                      }
+//                                        jsonObject.put("notifyType","1002");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
                                     }
@@ -777,17 +781,17 @@ public enum ConsultSessionManager {
                                 String userId = session.getUserId();
                                 Query query = (new Query()).addCriteria(where("userId").is(userId)).with(new Sort(Sort.Direction.DESC, "createDate"));
                                 ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
-                                String status = ConstantUtil.PAY_SUCCESS;
+                                String status = ConstantUtil.PAY_SUCCESS.getVariable();
                                 if(consultSessionStatusVo != null){
                                     if(status.contains(consultSessionStatusVo.getPayStatus())){
                                         jsonObject.put("notifyType", "1001");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
-                                    }else if(ConstantUtil.NO_PAY.contains(consultSessionStatusVo.getPayStatus())){
+                                    }else if(ConstantUtil.NO_PAY.getVariable().contains(consultSessionStatusVo.getPayStatus())){
                                         jsonObject.put("notifyType","1002");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
-                                    } else if(ConstantUtil.NOT_INSTANT_CONSULTATION.indexOf(consultSessionStatusVo.getPayStatus()) > -1) {
+                                    } else if(ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable().indexOf(consultSessionStatusVo.getPayStatus()) > -1) {
                                         jsonObject.put("notifyType","1003");
                                         TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(jsonObject));
                                         csChannel.writeAndFlush(csUserMsg.retain());
@@ -904,7 +908,7 @@ public enum ConsultSessionManager {
                 JSONObject jsonObj = new JSONObject();
                 jsonObj.put("type", "4");
                 jsonObj.put("notifyType", "0015");
-                jsonObj.put("notifyAddress", ConstantUtil.SERVER_ADDRESS);
+                jsonObj.put("notifyAddress", ConstantUtil.SERVER_ADDRESS.getVariable());
                 TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
                 entry.getValue().writeAndFlush(frame.retain());
                 csUserConnectionTimeMapping.put(entry.getKey(), new Date());

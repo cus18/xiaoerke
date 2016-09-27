@@ -46,7 +46,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
 //                        patientImg = $stateParams.image;
                         patientImg = $.base64.decode($stateParams.image);
                         console.log($.base64.decode($stateParams.image));
-
                     }
                     $scope.patientName = $stateParams.name==null?$stateParams.id:$stateParams.name;
                     CreateOrUpdateWJYPatientInfo.save({

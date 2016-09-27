@@ -2,30 +2,30 @@ package com.cxqm.xiaoerke.modules.vaccine.entity;
 
 import java.util.Date;
 
-public class VaccineBabyRecordVo {
+public class VaccineSendMessageVo {
     private Integer id;
 
     private String sysUserId;
 
-    private String babySeedNumber;
+    private Date sendTime;
 
-    private String babyName;
-
-    private Integer vaccineInfoId;
-
-    private String vaccineInfoName;
+    private String validFlag;
 
     private String createBy;
 
     private Date createTime;
 
-    private String updateTime;
+    private String msgType;
+
+    private Date updateTime;
 
     private String bak1;
 
     private String bak2;
 
     private String bak3;
+
+    private String content;
 
     public Integer getId() {
         return id;
@@ -43,36 +43,20 @@ public class VaccineBabyRecordVo {
         this.sysUserId = sysUserId;
     }
 
-    public String getBabySeedNumber() {
-        return babySeedNumber;
+    public Date getSendTime() {
+        return sendTime;
     }
 
-    public void setBabySeedNumber(String babySeedNumber) {
-        this.babySeedNumber = babySeedNumber;
+    public void setSendTime(Date sendTime) {
+        this.sendTime = sendTime;
     }
 
-    public String getBabyName() {
-        return babyName;
+    public String getValidFlag() {
+        return validFlag;
     }
 
-    public void setBabyName(String babyName) {
-        this.babyName = babyName;
-    }
-
-    public Integer getVaccineInfoId() {
-        return vaccineInfoId;
-    }
-
-    public void setVaccineInfoId(Integer vaccineInfoId) {
-        this.vaccineInfoId = vaccineInfoId;
-    }
-
-    public String getVaccineInfoName() {
-        return vaccineInfoName;
-    }
-
-    public void setVaccineInfoName(String vaccineInfoName) {
-        this.vaccineInfoName = vaccineInfoName;
+    public void setValidFlag(String validFlag) {
+        this.validFlag = validFlag;
     }
 
     public String getCreateBy() {
@@ -91,16 +75,24 @@ public class VaccineBabyRecordVo {
         this.createTime = createTime;
     }
 
-    public String getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(String updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 
     public String getBak1() {
         return bak1;
+    }
+
+    public String getMsgType() {
+        return msgType;
+    }
+
+    public void setMsgType(String msgType) {
+        this.msgType = msgType;
     }
 
     public void setBak1(String bak1) {
@@ -121,5 +113,13 @@ public class VaccineBabyRecordVo {
 
     public void setBak3(String bak3) {
         this.bak3 = bak3;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

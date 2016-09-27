@@ -1,15 +1,16 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
-import com.cxqm.xiaoerke.common.utils.ConstantUtil;
-import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,15 @@ public class BabyCoinController {
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
+
+    @Autowired
+    private SessionRedisCache sessionRedisCache;
+
+    @Autowired
+    private ConsultSessionPropertyService consultSessionPropertyService;
+
+    @Autowired
+    private SystemService systemService;
 
     /**
      * 邀请卡生成页面
@@ -170,6 +180,7 @@ public class BabyCoinController {
     @RequestMapping(value = "/minusOrAddBabyCoin", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map<String, Object> minusOrAddBabyCoin(HttpSession session, HttpServletRequest request) {
+        LogUtils.saveLog("minusOrAddBabyCoin"+WechatUtil.getOpenId(session,request));
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         HashMap<String, Object> response = new HashMap<String, Object>();
         String openId = WechatUtil.getOpenId(session,request);//"oogbDwD_2BTQpftPu9QClr-mCw7U";
@@ -187,7 +198,28 @@ public class BabyCoinController {
         }else{
             response.put("status", "failure");
         }
+        LogUtils.saveLog("insertBabyCoinRecord");
+        //支付记录
+        Integer sessionId = sessionRedisCache.getSessionIdByUserId(WechatUtil.getOpenId(session, request));
+        BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
+        babyCoinRecordVo.setBalance(-99);
+        babyCoinRecordVo.setCreateBy(openId);
+        babyCoinRecordVo.setCreateTime(new Date());
+        babyCoinRecordVo.setSource("consultPay");
+        babyCoinRecordVo.setSessionId(sessionId);
+        babyCoinRecordVo.setOpenId(openId);
+        babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
+        LogUtils.saveLog("insertBabyCoinRecord sessionId=" + sessionId);
 
+        consultSessionPropertyService.addPermTimes(openId);
+        Map parameter = systemService.getWechatParameter();
+        String token = (String) parameter.get("token");
+        WechatUtil.sendMsgToWechat(token, openId, "【支付成功通知】你已在宝大夫成功支付24小时咨询服务费，感谢你的信任和支持！\n----------------\n把您的问题发送给医生，立即开始咨询吧");
+
+        //更改支付状态
+        LogUtils.saveLog("宝宝币支付 sessionId = " + sessionId, openId);
+        HttpRequestUtil.wechatpost("http://s132.baodf.com/angel/consult/wechat/notifyPayInfo2Distributor?openId=" + openId,
+                "openId=" + openId);
         return response;
     }
 
