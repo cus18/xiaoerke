@@ -32,7 +32,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.text.DecimalFormat;
 import java.util.*;
+
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
 
 /**
  * Created by wangbaowei on 15/11/5.
@@ -389,6 +392,8 @@ public class AccountServiceImpl implements AccountService {
         }else{
             order_price = request.getParameter("payPrice");
         }
+
+        order_price=(int)Double.parseDouble(order_price)+"";//format 返回的是字符串
         //生成的商户订单号
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
         String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串\
