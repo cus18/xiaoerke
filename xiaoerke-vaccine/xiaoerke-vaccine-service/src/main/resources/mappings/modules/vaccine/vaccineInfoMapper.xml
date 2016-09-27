@@ -17,7 +17,7 @@
     <result column="QR_code_url" property="QRCodeUrl" jdbcType="VARCHAR" />
 
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.cxqm.xiaoerke.modules.activity.entity.VaccineInfoWithBLOBsVo" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineInfoWithBLOBsVo" extends="BaseResultMap" >
     <result column="introduce" property="introduce" jdbcType="LONGVARCHAR" />
     <result column="attention" property="attention" jdbcType="LONGVARCHAR" />
   </resultMap>
@@ -40,7 +40,7 @@
     delete from vaccine_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.activity.entity.VaccineInfoWithBLOBsVo" >
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineInfoWithBLOBsVo" >
     insert into vaccine_info (id, name, number, 
       QR_code, minium_age, last_time_vaccine, 
       last_time_interval, create_by, create_time, 
@@ -54,7 +54,7 @@
       #{QRCodeUrl,jdbcType=VARCHAR}, #{introduce,jdbcType=LONGVARCHAR}, #{attention,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.VaccineInfoWithBLOBsVo" >
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineInfoWithBLOBsVo" >
     insert into vaccine_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -151,7 +151,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.VaccineInfoWithBLOBsVo" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineInfoWithBLOBsVo" >
     update vaccine_info
     <set >
       <if test="name != null" >
@@ -199,7 +199,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cxqm.xiaoerke.modules.activity.entity.VaccineInfoWithBLOBsVo" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineInfoWithBLOBsVo" >
     update vaccine_info
     set name = #{name,jdbcType=VARCHAR},
       number = #{number,jdbcType=VARCHAR},
