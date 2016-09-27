@@ -13,18 +13,20 @@
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="will_vaccine_name" property="willVaccineName" jdbcType="VARCHAR" />
-    <result column="next_vaccine_minium_age" property="nextVaccineMiniumAge" jdbcType="VARCHAR" />
+    <result column="next_vaccine_minium_age" property="nextVaccineMiniumAge" jdbcType="INTEGER" />
+    <result column="next_last_time_interval" property="nextLastTimeInterval" jdbcType="INTEGER" />
+
   </resultMap>
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationRelVo" >
     insert into vaccine_station_rel (id, vaccine_id, vaccine_station_id, 
       next_vaccine_id, vaccine_name, minium_age, 
       last_time_interval, create_time, create_by, 
-      update_time, will_vaccine_name, next_vaccine_minium_age
+      update_time, will_vaccine_name, next_vaccine_minium_age,next_last_time_interval
       )
     values (#{id,jdbcType=INTEGER}, #{vaccineId,jdbcType=INTEGER}, #{vaccineStationId,jdbcType=INTEGER}, 
       #{nextVaccineId,jdbcType=INTEGER}, #{vaccineName,jdbcType=VARCHAR}, #{miniumAge,jdbcType=INTEGER}, 
       #{lastTimeInterval,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{willVaccineName,jdbcType=VARCHAR}, #{nextVaccineMiniumAge,jdbcType=VARCHAR}
+      #{updateTime,jdbcType=TIMESTAMP}, #{willVaccineName,jdbcType=VARCHAR}, #{nextVaccineMiniumAge,jdbcType=INTEGER}, #{nextLastTimeInterval,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationRelVo" >
@@ -66,6 +68,9 @@
       <if test="nextVaccineMiniumAge != null" >
         next_vaccine_minium_age,
       </if>
+      <if test="nextLastTimeInterval != null" >
+        next_last_time_interval,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -102,15 +107,21 @@
         #{willVaccineName,jdbcType=VARCHAR},
       </if>
       <if test="nextVaccineMiniumAge != null" >
-        #{nextVaccineMiniumAge,jdbcType=VARCHAR},
+        #{nextVaccineMiniumAge,jdbcType=INTEGER},
       </if>
+      <if test="nextLastTimeInterval != null" >
+        #{next_last_time_interval,jdbcType=INTEGER},
+      </if>
+
     </trim>
   </insert>
 
 
   <select id="getUserWillVaccination" resultType="java.util.HashMap">
     SELECT vsr.next_vaccine_id nextVaccineId,vbi.birthday,vi.last_time_vaccine lastTimeVaccine,vi.last_time_vaccine lastTimeVaccine,
-    vs.work_date workDate,vs.name vaccineStationName,vi.minium_age miniumAge,vsr.will_vaccine_name willVaccineName
+    vs.work_date workDate,vs.name vaccineStationName,vi.minium_age miniumAge,vsr.will_vaccine_name willVaccineName,
+    vsr.next_vaccine_minium_age nextVaccineMiniumAge,vbi.baby_name babyName,vbi.baby_seed_number babySeedNumber,vi.id vaccineInfoId,
+    vi.name vaccineInfoName,vsr.next_last_time_interval nextLastTimeInterval
     from vaccine_station_rel vsr
     INNER JOIN vaccine_baby_info vbi on vsr.vaccine_station_id = vbi.vaccine_station_id
     INNER JOIN vaccine_info vi on vi.id = vsr.vaccine_id
@@ -118,6 +129,5 @@
     where vi.QR_code = #{QRCode} and vbi.sys_user_id = #{openId}
     GROUP BY vbi.sys_user_id
   </select>
-
 
 </mapper>

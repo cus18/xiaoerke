@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.vaccine.service;
 
 
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
+import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo;
 
@@ -22,4 +23,6 @@ public interface VaccineService {
     List<HashMap<String,Object>> getUserWillVaccination(HashMap<String, Object> searchMap);
 
     int insertVaccineSendMessage(VaccineSendMessageVo record);
+
+    int insertVaccineBabyRecord(VaccineBabyRecordVo record);
 }

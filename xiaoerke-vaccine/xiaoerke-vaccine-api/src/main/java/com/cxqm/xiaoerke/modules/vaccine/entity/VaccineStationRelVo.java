@@ -19,7 +19,9 @@ public class VaccineStationRelVo {
 
     private String willVaccineName;
 
-    private String nextVaccineMiniumAge;
+    private Integer nextVaccineMiniumAge;
+
+    private Integer nextLastTimeInterval;
 
     private Date createTime;
 
@@ -27,12 +29,20 @@ public class VaccineStationRelVo {
 
     private Date updateTime;
 
-    public String getNextVaccineMiniumAge() {
+    public Integer getNextVaccineMiniumAge() {
         return nextVaccineMiniumAge;
     }
 
-    public void setNextVaccineMiniumAge(String nextVaccineMiniumAge) {
+    public void setNextVaccineMiniumAge(Integer nextVaccineMiniumAge) {
         this.nextVaccineMiniumAge = nextVaccineMiniumAge;
+    }
+
+    public Integer getNextLastTimeInterval() {
+        return nextLastTimeInterval;
+    }
+
+    public void setNextLastTimeInterval(Integer nextLastTimeInterval) {
+        this.nextLastTimeInterval = nextLastTimeInterval;
     }
 
     public Integer getId() {

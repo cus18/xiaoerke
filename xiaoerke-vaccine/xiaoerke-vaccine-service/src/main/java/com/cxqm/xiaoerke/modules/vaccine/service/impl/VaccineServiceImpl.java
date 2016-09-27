@@ -1,11 +1,9 @@
 package com.cxqm.xiaoerke.modules.vaccine.service.impl;
 
 
-import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineBabyInfoDao;
-import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineSendMessageDao;
-import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineStationDao;
-import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineStationRelDao;
+import com.cxqm.xiaoerke.modules.vaccine.dao.*;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
+import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo;
 import com.cxqm.xiaoerke.modules.vaccine.service.VaccineService;
@@ -29,6 +27,9 @@ public class VaccineServiceImpl implements VaccineService {
 
     @Autowired
     private VaccineSendMessageDao vaccineSendMessageDao;
+
+    @Autowired
+    private VaccineBabyRecordDao vaccineBabyRecordDao;
 
     @Override
     public VaccineBabyInfoVo selectByVaccineBabyInfoVo(VaccineBabyInfoVo vaccineBabyInfoVo){
@@ -54,6 +55,12 @@ public class VaccineServiceImpl implements VaccineService {
     public int insertVaccineSendMessage(VaccineSendMessageVo record){
         return vaccineSendMessageDao.insertSelective(record);
     }
+
+    @Override
+    public int insertVaccineBabyRecord(VaccineBabyRecordVo record){
+        return vaccineBabyRecordDao.insertSelective(record);
+    }
+
 
 
 
