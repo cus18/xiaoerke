@@ -24,6 +24,7 @@ import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoThirdPartyService;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
+import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
 import com.cxqm.xiaoerke.modules.vaccine.service.VaccineService;
 import com.cxqm.xiaoerke.modules.wechat.dao.WechatAttentionDao;
 import com.cxqm.xiaoerke.modules.wechat.dao.WechatInfoDao;
@@ -176,6 +177,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     searchMap.put("QR_code", QRCode);
                     searchMap.put("openId", openId);
                     List<HashMap<String, Object>> resultList = vaccineService.getUserWillVaccination(searchMap);
+                    String sendContent = "";
+                    Date sendTime = null;
                     if (resultList != null && resultList.size() > 0) {
                         String vaccination = "";
                         int count = 0;
@@ -193,6 +196,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         }
                         //保存提醒消息
                         WechatUtil.sendMsgToWechat(token, openId, "你的宝宝即将接种" + vaccination.toString().substring(0, vaccination.length() - 1));
+                        VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
+                        vaccineSendMessageVo.setContent(sendContent);
+                        vaccineSendMessageVo.setCreateBy(openId);
+                        vaccineSendMessageVo.setSendTime(sendTime);
+                        vaccineSendMessageVo.setSysUserId(openId);
+                        vaccineSendMessageVo.setValidFlag("");
+
                     }
 
                 }

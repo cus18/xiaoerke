@@ -263,11 +263,11 @@ public class ConsultDoctorTransferController extends BaseController {
 
                 Query sessionquery = (new Query()).addCriteria(where("sessionId").is(""+waitJoinListVo.getConversationId()+""));
                 ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(sessionquery);
-                if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.PAY_SUCCESS).indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.PAY_SUCCESS.getVariable()).indexOf(consultSessionStatusVo.getPayStatus())>-1){
                     dataValue.put("notifyType","1001");
-                }else if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.NO_PAY).indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                }else if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.NO_PAY.getVariable()).indexOf(consultSessionStatusVo.getPayStatus())>-1){
                     dataValue.put("notifyType","1002");
-                }else if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.NOT_INSTANT_CONSULTATION).indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                }else if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable()).indexOf(consultSessionStatusVo.getPayStatus())>-1){
                     dataValue.put("notifyType","1003");
                 }else {
                     dataValue.put("notifyType","1004");

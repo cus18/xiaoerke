@@ -316,11 +316,11 @@ public class ConsultUserController extends BaseController {
                             sessionRedisCache.putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
                         }
 
-                        if (null !=consultSessionStatusVo && ConstantUtil.PAY_SUCCESS.indexOf(consultSessionStatusVo.getPayStatus())>-1) {
+                        if (null !=consultSessionStatusVo && ConstantUtil.PAY_SUCCESS.getVariable().indexOf(consultSessionStatusVo.getPayStatus())>-1) {
                             searchMap.put("notifyType", "1001");
-                        } else if(null !=consultSessionStatusVo &&  ConstantUtil.NO_PAY.indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                        } else if(null !=consultSessionStatusVo &&  ConstantUtil.NO_PAY.getVariable().indexOf(consultSessionStatusVo.getPayStatus())>-1){
                             searchMap.put("notifyType", "1002");
-                        } else if(ConstantUtil.NOT_INSTANT_CONSULTATION.indexOf(consultSessionStatusVo.getPayStatus()) > -1) {
+                        } else if(ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable().indexOf(consultSessionStatusVo.getPayStatus()) > -1) {
                             searchMap.put("notifyType", "1003");
                         } else {
                             searchMap.put("notifyType", "1004");
