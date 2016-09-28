@@ -1,20 +1,21 @@
 package com.cxqm.xiaoerke.modules.schedule.web;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
 import com.cxqm.xiaoerke.modules.operation.service.ConsultStatisticService;
 import com.cxqm.xiaoerke.modules.sys.service.LogMongoDBServiceImpl;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
+import com.cxqm.xiaoerke.modules.vaccine.service.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * backend定时器
@@ -29,11 +30,18 @@ public class ScheduleTaskController extends BaseController {
     @Autowired
     private ConsultStatisticService consultStatisticService;
 
+
+    @Autowired
+    private VaccineService vaccineService;
+
     @Autowired
     private LogMongoDBServiceImpl logMongoDBService;
 
     @Autowired
     private OlyGamesService olyGamesService;
+
+    @Autowired
+    private SystemService systemService;
 
     /**
      * 咨询统计信息
@@ -238,7 +246,7 @@ public class ScheduleTaskController extends BaseController {
              *select sum(redpacket) countNumber from customerEvaluation where createtime like '2016-06-30%' and redPacket is not null and redPacket !=''
              */
             sumMoney = resultList.get(18);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -324,6 +332,17 @@ public class ScheduleTaskController extends BaseController {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
+    }
+
+    public void babyVaccineRemind() {
+        Map parameter = systemService.getWechatParameter();
+        String token = (String) parameter.get("token");
+        VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
+        vaccineSendMessageVo.setSendTime(new Date());
+        List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
+        for (VaccineSendMessageVo vo :vaccineSendMessageVos){
+            WechatUtil.sendMsgToWechat(token,vo.getSysUserId(),vo.getContent());
+        }
     }
 
     public void updateOlyGames() {
