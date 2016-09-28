@@ -273,7 +273,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             stringBuilder.append(praiseList.get(0).get("id"));
                             stringBuilder.append("&sessionId=");
                             stringBuilder.append(sessionId);
-                            stringBuilder.append("'>评价医生</a>|");
+                            stringBuilder.append("'>送心意</a>|");
                             stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/playtour#/playtourShare/6");
                             stringBuilder.append("'>分享</a>");
                             sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
