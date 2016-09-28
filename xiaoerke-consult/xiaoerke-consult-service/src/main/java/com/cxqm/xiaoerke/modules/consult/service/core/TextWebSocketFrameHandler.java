@@ -263,7 +263,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             stringBuilder.append("------------------\n");
 
 //                            http://localhost/titan/consultDoctorHome#/consultDoctorHome/00034ads0d764sdsa66a2d6esd0e8ddf
-                            stringBuilder.append("<a href='http://s120.xiaork.com/titan/consultDoctorHome#/consultDoctorHome/"+richConsultSession.getCsUserId()+"'>");
+                            stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getTitanWebUrl() +"titan/consultDoctorHome#/consultDoctorHome/"+richConsultSession.getCsUserId()+"'>");
                             stringBuilder.append(content.substring(0, nameIndex));
                             stringBuilder.append("</a>|");
                             stringBuilder.append("|");
