@@ -1,3 +1,4 @@
+/*
 package com.cxqm.xiaoerke.modules.vaccine.web;
 
 import com.cxqm.xiaoerke.common.utils.ConstantUtil;
@@ -22,9 +23,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
+*/
 /**
  * Created by Administrator on 2016/09/05 0024.
- */
+ *//*
+
 @Controller
 @RequestMapping(value = "vaccine")
 public class VaccineController {
@@ -35,10 +38,15 @@ public class VaccineController {
     @Autowired
     private SystemService systemService;
 
+<<<<<<< Updated upstream
     @Autowired
     private SessionRedisCache sessionRedisCache;
 
     /**
+=======
+    */
+/**
+>>>>>>> Stashed changes
      * 插入疫苗提醒用户信息
      * <p/>
      * params:{"openId":"12312312","birthday":"yyyy-MM-dd","name":"某女子","sex":"0","QRCode":"YM_01",
@@ -49,7 +57,8 @@ public class VaccineController {
      * "status":"success"
      * }
      * //success 成功  failure 失败
-     */
+     *//*
+
     @RequestMapping(value = "/saveBabyVaccine", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map<String, Object> saveBabyVaccine(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
@@ -140,6 +149,7 @@ public class VaccineController {
         return response;
     }
 
+<<<<<<< Updated upstream
 
     private void saveVaccineMessage(String openId, String sendContent, Date sendTime, String msgType) {
         VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
@@ -167,6 +177,10 @@ public class VaccineController {
     }
 
     /**
+=======
+    */
+/**
+>>>>>>> Stashed changes
      * 获取疫苗站信息
      * <p/>
      * params:{}
@@ -175,7 +189,8 @@ public class VaccineController {
      * {
      * "vaccineStationInfo":{[]}
      * }
-     */
+     *//*
+
     @RequestMapping(value = "/getVaccineStation", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map<String, Object> getVaccineStation(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
@@ -186,13 +201,15 @@ public class VaccineController {
     }
 
 
-    /**
+    */
+/**
      * 获取宝宝币，以及详细记录
      *
      * @param request
      * @param
      * @return
-     */
+     *//*
+
     @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public void test(HttpSession session, HttpServletRequest request) {
@@ -201,3 +218,4 @@ public class VaccineController {
     }
 
 }
+*/

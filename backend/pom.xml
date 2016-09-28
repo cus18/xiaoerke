@@ -93,6 +93,17 @@
           <artifactId>xiaoerke-activity-service</artifactId>
           <version>0.0.1-SNAPSHOT</version>
       </dependency>
+      <dependency>
+          <groupId>com.cxqm</groupId>
+          <artifactId>xiaoerke-vaccine-api</artifactId>
+          <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+          <groupId>com.cxqm</groupId>
+          <artifactId>xiaoerke-vaccine-service</artifactId>
+          <version>0.0.1-SNAPSHOT</version>
+      </dependency>
 
     </dependencies>
 

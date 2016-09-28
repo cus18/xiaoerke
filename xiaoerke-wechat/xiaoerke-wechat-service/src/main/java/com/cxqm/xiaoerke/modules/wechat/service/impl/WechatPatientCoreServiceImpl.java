@@ -219,68 +219,69 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         vaccineBabyInfoVo = vaccineService.selectByVaccineBabyInfoVo(vaccineBabyInfoVo);
         String EventKey = xmlEntity.getEventKey();
         String QRCode = EventKey.replace("qrscene_", "");
+        if(QRCode.contains("YM")){
+            if (vaccineBabyInfoVo == null || StringUtils.isBlank(vaccineBabyInfoVo.getBabySeedNumber())) {
+                String content = "欢迎加入宝大夫疫苗提醒功能";
+                WechatUtil.sendMsgToWechat(token, openId, content);
+            } else {
+                HashMap<String, Object> searchMap = new HashMap<String, Object>();
+                searchMap.put("QR_code", QRCode);
+                searchMap.put("openId", openId);
+                List<HashMap<String, Object>> resultList = vaccineService.getUserWillVaccination(searchMap);
+                if (resultList != null && resultList.size() > 0) {
+                    //保存疫苗接种记录
+                    saveVaccineBabyRecord(openId, resultList);
+                    StringBuffer stringBuffer = new StringBuffer();
+                    String vaccination = "";
+                    int count = 0;
+                    for (Map map : resultList) {
+                        if (map != null && StringUtils.isNotBlank(String.valueOf(map.get("willVaccineName")))) {
+                            count++;
+                            stringBuffer.append(map.get("willVaccineName"));
+                            stringBuffer.append("、");
+                            vaccination = stringBuffer.toString();
 
-        if (vaccineBabyInfoVo == null || StringUtils.isBlank(vaccineBabyInfoVo.getBabySeedNumber())) {
-            String content = "欢迎加入宝大夫疫苗提醒功能";
-            WechatUtil.sendMsgToWechat(token, openId, content);
-        } else {
-            HashMap<String, Object> searchMap = new HashMap<String, Object>();
-            searchMap.put("QR_code", QRCode);
-            searchMap.put("openId", openId);
-            List<HashMap<String, Object>> resultList = vaccineService.getUserWillVaccination(searchMap);
-            if (resultList != null && resultList.size() > 0) {
-                //保存疫苗接种记录
-                saveVaccineBabyRecord(openId, resultList);
-                StringBuffer stringBuffer = new StringBuffer();
-                String vaccination = "";
-                int count = 0;
-                for (Map map : resultList) {
-                    if (map != null && StringUtils.isNotBlank(String.valueOf(map.get("willVaccineName")))) {
-                        count++;
-                        stringBuffer.append(map.get("willVaccineName"));
-                        stringBuffer.append("、");
-                        vaccination = stringBuffer.toString();
+                            String sendContent;
+                            Calendar sendTime = Calendar.getInstance();
+                            Calendar tempTime = Calendar.getInstance();
+                            Date birthday = (Date) map.get("birthday");
 
-                        String sendContent;
-                        Calendar sendTime = Calendar.getInstance();
-                        Calendar tempTime = Calendar.getInstance();
-                        Date birthday = (Date) map.get("birthday");
+                            Integer nextLastTimeInterval = Integer.valueOf(String.valueOf(map.get("nextLastTimeInterval")));
+                            Integer allVaccineInterval = Integer.valueOf(ConstantUtil.ALL_VACCINE_INTERVAL.getVariable());
+                            Integer nextVaccineMiniumAge = Integer.valueOf(String.valueOf(map.get("nextVaccineMiniumAge")));
+                            //下次接种间隔>=30
+                            if (nextLastTimeInterval >= allVaccineInterval)
+                                tempTime.add(Calendar.HOUR_OF_DAY, nextLastTimeInterval);
+                            else
+                                tempTime.add(Calendar.HOUR_OF_DAY, allVaccineInterval);
 
-                        Integer nextLastTimeInterval = Integer.valueOf(String.valueOf(map.get("nextLastTimeInterval")));
-                        Integer allVaccineInterval = Integer.valueOf(ConstantUtil.ALL_VACCINE_INTERVAL.getVariable());
-                        Integer nextVaccineMiniumAge = Integer.valueOf(String.valueOf(map.get("nextVaccineMiniumAge")));
-                        //下次接种间隔>=30
-                        if (nextLastTimeInterval >= allVaccineInterval)
-                            tempTime.add(Calendar.HOUR_OF_DAY, nextLastTimeInterval);
-                        else
-                            tempTime.add(Calendar.HOUR_OF_DAY, allVaccineInterval);
+                            double passDayByBirthday = DateUtils.getDistanceOfTwoDate(birthday, new Date(tempTime.getTimeInMillis()));
 
-                        double passDayByBirthday = DateUtils.getDistanceOfTwoDate(birthday, new Date(tempTime.getTimeInMillis()));
+                            //下次接种疫苗的最小接种月龄>=宝宝到了下次接种间隔时的月龄,按最小接种月龄计算
+                            if (nextVaccineMiniumAge > passDayByBirthday)
+                                sendTime.setTimeInMillis(birthday.getTime() + nextVaccineMiniumAge * 24 * 3600 * 1000);
+                            else
+                                sendTime.setTimeInMillis(birthday.getTime() + Math.round(passDayByBirthday * 24 * 3600 * 1000));
 
-                        //下次接种疫苗的最小接种月龄>=宝宝到了下次接种间隔时的月龄,按最小接种月龄计算
-                        if (nextVaccineMiniumAge > passDayByBirthday)
-                            sendTime.setTimeInMillis(birthday.getTime() + nextVaccineMiniumAge * 24 * 3600 * 1000);
-                        else
-                            sendTime.setTimeInMillis(birthday.getTime() + Math.round(passDayByBirthday * 24 * 3600 * 1000));
+                            //保存提前七天提醒消息
+                            sendTime.add(Calendar.HOUR_OF_DAY, -7);
+                            sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n  待办事项:宝宝在" + DateUtils.formatDate(new Date(sendTime.getTimeInMillis())) +
+                                    "后需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
+                            saveVaccineMessage(openId, sendContent, new Date(sendTime.getTimeInMillis()), "7");
 
-                        //保存提前七天提醒消息
-                        sendTime.add(Calendar.HOUR_OF_DAY, -7);
-                        sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n  待办事项:宝宝在" + DateUtils.formatDate(new Date(sendTime.getTimeInMillis())) +
-                                "后需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
-                        saveVaccineMessage(openId, sendContent, new Date(sendTime.getTimeInMillis()), "7");
+                            //保存提前一天提醒消息
+                            sendTime.add(Calendar.HOUR_OF_DAY, 6);
+                            sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n" +
+                                    "  待办事项:明天宝宝需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
+                            saveVaccineMessage(openId, sendContent, new Date(sendTime.getTimeInMillis()), "1");
 
-                        //保存提前一天提醒消息
-                        sendTime.add(Calendar.HOUR_OF_DAY, 6);
-                        sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n" +
-                                "  待办事项:明天宝宝需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
-                        saveVaccineMessage(openId, sendContent, new Date(sendTime.getTimeInMillis()), "1");
-
+                        }
                     }
+                    if (count > 2 && count != 0) {
+                        vaccination = vaccination.substring(0, vaccination.lastIndexOf("、")) + "和" + vaccination.substring(vaccination.lastIndexOf("、") + 1, vaccination.length());
+                    }
+                    WechatUtil.sendMsgToWechat(token, openId, "你的宝宝即将接种" + vaccination.toString().substring(0, vaccination.length() - 1));
                 }
-                if (count > 2 && count != 0) {
-                    vaccination = vaccination.substring(0, vaccination.lastIndexOf("、")) + "和" + vaccination.substring(vaccination.lastIndexOf("、") + 1, vaccination.length());
-                }
-                WechatUtil.sendMsgToWechat(token, openId, "你的宝宝即将接种" + vaccination.toString().substring(0, vaccination.length() - 1));
             }
         }
     }

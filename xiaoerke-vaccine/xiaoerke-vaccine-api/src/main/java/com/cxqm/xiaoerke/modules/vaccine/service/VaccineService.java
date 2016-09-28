@@ -1,6 +1,10 @@
 package com.cxqm.xiaoerke.modules.vaccine.service;
 
 
+import com.cxqm.xiaoerke.modules.vaccine.entity.*;
+
+import java.util.List;
+
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
@@ -11,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by zhaodeliang on 16/09/26.
+ * Created by wangbaowei on 15/12/16.
  */
 
 public interface VaccineService {
@@ -26,7 +30,19 @@ public interface VaccineService {
 
     int insertVaccineSendMessage(VaccineSendMessageVo record);
 
+    List<VaccineInfoWithBLOBsVo> findVaccineList(VaccineInfoWithBLOBsVo vo);
+
+    void saveVaccineInfo(VaccineInfoWithBLOBsVo vo);
+
+    void saveVaccineStationInfo(VaccineStationVo vo,List<VaccineStationRelVo> relList,String relid);
+
+    List<VaccineStationVo> findVaccineStationList(VaccineStationVo vo);
+
+    List<VaccineStationRelVo> findVaccineStationRelList(VaccineStationRelVo vo);
+
     int insertVaccineBabyRecord(VaccineBabyRecordVo record);
 
     List<VaccineBabyRecordVo> selectByVaccineBabyRecord(VaccineBabyRecordVo record);
+
+    List<VaccineSendMessageVo> selectByVaccineSendMessageInfo(VaccineSendMessageVo record);
 }
