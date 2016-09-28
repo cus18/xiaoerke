@@ -390,7 +390,7 @@ public class ConsultWechatController extends BaseController {
                             if(flag){
 //                                richConsultSession.setPayStatus(ConstantUtil.NOT_INSTANT_CONSULTATION);
                                 LogUtils.saveLog("feishishizixunfasong", openId);
-                                content +="\n-----------\n问题不急？欢迎体验<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=39"+"'>24h免费咨询</a>>>";
+                                content +="\n-----------\n问题不急？欢迎体验<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=39"+"'>24h免费咨询>></a>";
                             }
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             content = "不想掏钱？？ 还可以\n戳戳手指，邀请好友加入宝大夫，免费机会就来咯！\n" + "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42'>>>邀请好友赚机会</a>";
