@@ -34,6 +34,8 @@ public interface VaccineService {
 
     void saveVaccineInfo(VaccineInfoWithBLOBsVo vo);
 
+    void deleteVaccine(VaccineInfoWithBLOBsVo vo);
+
     void saveVaccineStationInfo(VaccineStationVo vo,List<VaccineStationRelVo> relList,String relid);
 
     List<VaccineStationVo> findVaccineStationList(VaccineStationVo vo);
@@ -45,4 +47,6 @@ public interface VaccineService {
     List<VaccineBabyRecordVo> selectByVaccineBabyRecord(VaccineBabyRecordVo record);
 
     List<VaccineSendMessageVo> selectByVaccineSendMessageInfo(VaccineSendMessageVo record);
+
+    void deleteVaccineStation(VaccineStationVo vo);
 }

@@ -21,6 +21,12 @@
 					}
 				}
 			});
+			$("#deleteVaccine").click(function(){
+				confirmx("确认删除吗？",function(){
+					$("#inputForm").attr("action","${ctx}/vaccine/deleteVaccine?id=${vo.id}");
+					$("#inputForm").submit();
+				})
+			});
 		});
 	</script>
 </head>
@@ -74,7 +80,7 @@
 		</div>
 		<div class="form-actions">
 			<input id="saveRole" class="btn btn-primary" type="submit" value="保存"/>
-			<input id="deleteRole" class="btn btn-primary" type="button" value="删除"/>
+			<input id="deleteVaccine" class="btn btn-primary" type="button" value="删除"/>
 			<input id="btnCancel" class="btn" type="button" value="返回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

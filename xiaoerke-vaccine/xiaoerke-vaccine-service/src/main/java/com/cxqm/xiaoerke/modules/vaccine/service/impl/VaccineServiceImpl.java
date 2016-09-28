@@ -91,11 +91,6 @@ public class VaccineServiceImpl implements VaccineService {
         return vaccineSendMessageDao.selectByVaccineSendMessage(record);
     }
 
-
-
-
-
-
     @Override
     public List<VaccineInfoWithBLOBsVo> findVaccineList(VaccineInfoWithBLOBsVo vo) {
         return vaccineInfoDao.findVaccineList(vo);
@@ -119,6 +114,11 @@ public class VaccineServiceImpl implements VaccineService {
     }
 
     @Override
+    public void deleteVaccine(VaccineInfoWithBLOBsVo vo) {
+        vaccineInfoDao.deleteByPrimaryKey(vo.getId());
+    }
+
+    @Override
     public List<VaccineStationRelVo> findVaccineStationRelList(VaccineStationRelVo vo) {
         return vaccineStationRelDao.findVaccineStationRelList(vo);
     }
@@ -133,27 +133,31 @@ public class VaccineServiceImpl implements VaccineService {
         if(StringUtils.isNotNull(vo.getId() + "")){
             vo.setUpdateTime(new Date());
             vaccineStationDao.updateByPrimaryKeySelective(vo);
-            if(relList.size()!=0){
-                for(VaccineStationRelVo temp:relList){
-                    temp.setVaccineStationId(vo.getId());
-                }
-                vaccineStationRelDao.saveVaccineStationRelList(relList);
-            }
             String[] relids = relid.split(",");
             for(String id : relids){
-                VaccineStationRelVo param = new VaccineStationRelVo();
-                param.setId(Integer.parseInt(id));
-                vaccineStationRelDao.deleteVaccineStationRel(param);
+                if(StringUtils.isNotNull(id)){
+                    VaccineStationRelVo param = new VaccineStationRelVo();
+                    param.setId(Integer.parseInt(id));
+                    vaccineStationRelDao.deleteVaccineStationRel(param);
+                }
             }
         }else{
             vo.setCreateTime(new Date());
             vaccineStationDao.insertSelective(vo);
-            if(relList.size()!=0){
-                for(VaccineStationRelVo temp:relList){
-                    temp.setVaccineStationId(vo.getId());
-                }
-                vaccineStationRelDao.saveVaccineStationRelList(relList);
-            }
         }
+        if(relList.size()!=0){
+            for(VaccineStationRelVo temp:relList){
+                temp.setVaccineStationId(vo.getId());
+            }
+            vaccineStationRelDao.saveVaccineStationRelList(relList);
+        }
+    }
+
+    @Override
+    public void deleteVaccineStation(VaccineStationVo vo) {
+        vaccineStationDao.deleteByPrimaryKey(vo.getId());
+        VaccineStationRelVo relVo = new VaccineStationRelVo();
+        relVo.setVaccineStationId(vo.getId());
+        vaccineStationRelDao.deleteVaccineStationRel(relVo);
     }
 }

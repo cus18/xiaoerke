@@ -60,7 +60,7 @@
 			<td>${u.workDate}</td>
 			<td>
 				<a href="${ctx}/vaccine/saveUpdateVaccineStationForm?id=${u.id}">修改</a>
-				<a href="${ctx}/vaccine/deleteKeywordRole?roleId=${u.id}" onclick="return confirmx('确认删除？', this.href)">删除</a>
+				<a href="${ctx}/vaccine/deleteVaccineStation?id=${u.id}" onclick="return confirmx('确认删除？', this.href)">删除</a>
 			</td>
 		</tr>
 	</c:forEach>

@@ -26,11 +26,17 @@
 				$("#inputForm").submit();
 			});
 			$("#deleteVaccineStation").click(function(){
-				$("#inputForm").attr("action","${ctx}/vaccine/deleteVaccineStation?");
-				$("#inputForm").submit();
+				confirmx("确认删除吗？",function(){
+					$("#inputForm").attr("action","${ctx}/vaccine/deleteVaccineStation?id=${vo.id}");
+					$("#inputForm").submit();
+				})
 			});
 			$("#addVaccine").click(function(){
 				$("#contentTable").append("<tr><td><select name='vaccine' onchange='fillblank()'><c:forEach items='${vaccineMap}' var='sta'><option value='${sta.key}' label='${sta.value}'/></c:forEach>	</select></td><td id='vaccineId'></td><td></td>	<td><select name='nextvaccine'><c:forEach items='${vaccineMap}' var='sta'><option value='${sta.key}' label='${sta.value}'/></c:forEach>	</select></td>	<td></td><td></td>	</tr>");
+			});
+			var workDate = '${vo.workDate}';
+			$(workDate.split(",")).each(function (i,day){
+				$(":checkbox[id='"+day+"']").attr("checked",true);
 			});
 		});
 		var relid = "";
@@ -39,9 +45,7 @@
 			var tbody=tr.parentNode;
 			tbody.removeChild(tr);
 			relid = relid+id+",";
-			alert(relid);
 		}
-
 	</script>
 </head>
 <body>
@@ -65,14 +69,14 @@
 		<div class="control-group">
 			<label class="control-label">联系人:</label>
 			<div class="controls">
-				<form:input id="contactName" path="contactName" htmlEscape="false" maxlength="50"  class="required" value="${vo.name}"/>
+				<form:input id="contactName" path="contactName" htmlEscape="false" maxlength="50"  class="required" value="${vo.contactName}"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">联系电话:</label>
 			<div class="controls">
-				<form:input id="contactPhone" path="contactPhone" htmlEscape="false" maxlength="50"  class="required" value="${vo.name}"/>
+				<form:input id="contactPhone" path="contactPhone" htmlEscape="false" maxlength="50"  class="required" value="${vo.contactPhone}"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -86,8 +90,20 @@
 		<div class="control-group">
 			<label class="control-label">接种工作日:</label>
 			<div class="controls">
-				<form:input id="workDate" path="workDate" htmlEscape="false" maxlength="50"  class="required" value="${vo.name}"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<input id="1" name="workDateList" type="checkbox" value="1">
+				<label for="1"><span>星期一</span></label>
+				<input id="2" name="workDateList" type="checkbox" value="2">
+				<label for="2"><span>星期二</span></label>
+				<input id="3" name="workDateList" type="checkbox" value="3">
+				<label for="3"><span>星期三</span></label>
+				<input id="4" name="workDateList" type="checkbox" value="4">
+				<label for="4"><span>星期四</span></label>
+				<input id="5" name="workDateList" type="checkbox" value="5">
+				<label for="5"><span>星期五</span></label>
+				<input id="6" name="workDateList" type="checkbox" value="6">
+				<label for="6"><span>星期六</span></label>
+				<input id="7" name="workDateList" type="checkbox" value="7">
+				<label for="7"><span>星期天</span></label>
 			</div>
 		</div>
 		<div class="control-group">

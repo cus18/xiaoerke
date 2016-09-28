@@ -7,6 +7,7 @@ import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationRelVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo;
 import com.cxqm.xiaoerke.modules.vaccine.service.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,12 @@ public class VaccineController {
 	VaccineService vaccineService;
 
 	/**
+	 * 管理基础路径
+	 */
+	@Value("${adminPath}")
+	protected String adminPath;
+
+	/**
 	 * 疫苗列表
 	 * sunxiao
 	 * @param
@@ -46,7 +53,7 @@ public class VaccineController {
 	}
 
 	/**
-	 * 疫苗列表
+	 * 保存修改疫苗页面
 	 * sunxiao
 	 * @param
 	 * @param model
@@ -65,7 +72,7 @@ public class VaccineController {
 	}
 
 	/**
-	 * 疫苗列表
+	 * 保存修改疫苗
 	 * sunxiao
 	 * @param
 	 * @param model
@@ -75,11 +82,25 @@ public class VaccineController {
 	public String saveUpdateVaccineInfo(VaccineInfoWithBLOBsVo vo , Model model) {
 		vaccineService.saveVaccineInfo(vo);
 		model.addAttribute("vo", vo);
-		return "modules/vaccine/vaccineList";
+		return "redirect:" + adminPath + "/vaccine/vaccineList?repage";
 	}
 
 	/**
-	 * 疫苗列表
+	 * 删除疫苗
+	 * sunxiao
+	 * @param
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "deleteVaccine")
+	public String deleteVaccine(VaccineInfoWithBLOBsVo vo , Model model) {
+		vaccineService.deleteVaccine(vo);
+		model.addAttribute("vo", vo);
+		return "redirect:" + adminPath + "/vaccine/vaccineList?repage";
+	}
+
+	/**
+	 * 疫苗站列表
 	 * sunxiao
 	 * @param
 	 * @param model
@@ -94,7 +115,7 @@ public class VaccineController {
 	}
 
 	/**
-	 * 疫苗列表
+	 * 保存修改疫苗站页面
 	 * sunxiao
 	 * @param
 	 * @param model
@@ -115,17 +136,17 @@ public class VaccineController {
 
 		VaccineInfoWithBLOBsVo vvo = new VaccineInfoWithBLOBsVo();
 		List<VaccineInfoWithBLOBsVo> vlist = vaccineService.findVaccineList(vvo);
-		Map<String,String> map = new HashMap<String, String>();
+		Map<String,String> vaccineMap = new HashMap<String, String>();
 		for(VaccineInfoWithBLOBsVo temp : vlist){
-			map.put(temp.getId()+","+temp.getName()+","+temp.getMiniumAge()+","+temp.getLastTimeInterval(),temp.getName());
+			vaccineMap.put(temp.getId()+","+temp.getName()+","+temp.getMiniumAge()+","+temp.getLastTimeInterval(),temp.getName());
 		}
-		map.put("","");
-		model.addAttribute("vaccineMap", map);
+		vaccineMap.put("", "");
+		model.addAttribute("vaccineMap", vaccineMap);
 		return "modules/vaccine/saveUpdateVaccineStationForm";
 	}
 
 	/**
-	 * 疫苗列表
+	 * 保存修改疫苗站
 	 * sunxiao
 	 * @param
 	 * @param model
@@ -135,6 +156,14 @@ public class VaccineController {
 	public String saveVaccineStationInfo(VaccineStationVo vo,HttpServletRequest request,Model model) {
 		String[] vaccines = request.getParameterValues("vaccine");
 		String[] nextvaccines = request.getParameterValues("nextvaccine");
+		String[] workDateList = request.getParameterValues("workDateList");
+		String workDate = "";
+		if(workDateList!=null){
+			for(String day : workDateList){
+				workDate = workDate + day + ",";
+			}
+			vo.setWorkDate(workDate.substring(0,workDate.length()-1));
+		}
 		String relid = request.getParameter("relid");
 		List<VaccineStationRelVo> relList = new ArrayList<VaccineStationRelVo>();
 		if(vaccines!=null){
@@ -153,7 +182,18 @@ public class VaccineController {
 		}
 		vaccineService.saveVaccineStationInfo(vo,relList,relid);
 		model.addAttribute("vo", vo);
-		return "modules/register/vaccineList";
+		return "redirect:" + adminPath + "/vaccine/vaccineStationList?repage";
+	}
+	/**
+	 * 删除疫苗站
+	 * sunxiao
+	 * @param
+	 * @return
+	 */
+	@RequestMapping(value = "deleteVaccineStation")
+	public String deleteVaccineStation(VaccineStationVo vo) {
+		vaccineService.deleteVaccineStation(vo);
+		return "redirect:" + adminPath + "/vaccine/vaccineStationList?repage";
 	}
 
 }
