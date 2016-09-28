@@ -400,3 +400,14 @@ var consultDoc = function(){
 var opinionFeedback = function(){
     window.location.href="baoFansCamp#/feedback";
 }
+function remindConsultClose(){
+    $(".remind-consult-f").hide();
+    $(".remind-consult").hide();
+}
+function remindConsultGet(){
+    window.location.href = "";
+}
+function remindConsultNo(){
+    $(".remind-consult-f").hide();
+    $(".remind-consult").hide();
+}
