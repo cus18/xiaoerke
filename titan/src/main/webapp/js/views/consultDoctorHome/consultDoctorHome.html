@@ -19,7 +19,7 @@
                 <div class="znum_num com_ceter com_font13 com_color3"><span class="com_bold com_font18">{{rate}}%</span>的用户觉得有用</div>
             </div>
         </div>
-        <div class="home_introduce" ng-if="description">
+        <div class="home_introduce" ng-if="description.length != 0">
             <div class="introduce_title com_font15 com_color3"><span>医生介绍</span></div>
             <div class="introduce_content">
                 <div class="com_color6 com_font18" ng-repeat="item in description" ng-if="(description.length)!=$index">{{item}}</div>
