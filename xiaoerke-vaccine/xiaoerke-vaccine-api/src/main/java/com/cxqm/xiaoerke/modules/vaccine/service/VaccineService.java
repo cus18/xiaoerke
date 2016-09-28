@@ -29,4 +29,6 @@ public interface VaccineService {
     int insertVaccineBabyRecord(VaccineBabyRecordVo record);
 
     List<VaccineBabyRecordVo> selectByVaccineBabyRecord(VaccineBabyRecordVo record);
+
+    List<VaccineSendMessageVo> selectByVaccineSendMessageInfo(VaccineSendMessageVo record);
 }

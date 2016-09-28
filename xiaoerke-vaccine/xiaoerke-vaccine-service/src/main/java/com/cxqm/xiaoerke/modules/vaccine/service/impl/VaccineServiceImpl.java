@@ -70,6 +70,13 @@ public class VaccineServiceImpl implements VaccineService {
         return vaccineBabyRecordDao.selectByVaccineBabyRecordVo(record);
     }
 
+    @Override
+    public List<VaccineSendMessageVo> selectByVaccineSendMessageInfo(VaccineSendMessageVo record){
+        return vaccineSendMessageDao.selectByVaccineSendMessage(record);
+    }
+
+
+
 
 
 
