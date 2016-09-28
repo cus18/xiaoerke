@@ -17,4 +17,10 @@ public interface VaccineStationRelDao {
 
     List<HashMap<String,Object>> getUserWillVaccination(HashMap<String, Object> searchMap);
 
+    List<VaccineStationRelVo> findVaccineStationRelList(VaccineStationRelVo vo);
+
+    void saveVaccineStationRelList(List<VaccineStationRelVo> list);
+
+    void deleteVaccineStationRel(VaccineStationRelVo vo);
+
 }

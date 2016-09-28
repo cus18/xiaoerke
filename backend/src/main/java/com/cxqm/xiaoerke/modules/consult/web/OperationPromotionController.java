@@ -79,6 +79,12 @@ public class OperationPromotionController extends BaseController {
     public String saveKeywordRole(OperationPromotionVo vo,HttpServletRequest request, Model model) {
         operationPromotionService.saveKeywordRole(vo);
         model.addAttribute("vo", new OperationPromotionVo());
+        try {
+            HttpRequestUtil.httpPost("", "http://101.200.180.132:8080/keeper/patient/updateKeyWordRecovery");
+            HttpRequestUtil.httpPost("", "http://101.201.197.251:8082/keeper/patient/updateKeyWordRecovery");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "redirect:" + adminPath + "/operationPromotion/operationPromotionKeywordList";
     }
 
@@ -91,7 +97,12 @@ public class OperationPromotionController extends BaseController {
     @RequestMapping(value = "deleteKeywordRole")
     public String deleteKeywordRole(OperationPromotionVo vo,HttpServletRequest request, Model model) {
         operationPromotionService.deleteKeywordRole(vo);
+        try {
+            HttpRequestUtil.httpPost("", "http://101.200.180.132:8080/keeper/patient/updateKeyWordRecovery");
+            HttpRequestUtil.httpPost("", "http://101.201.197.251:8082/keeper/patient/updateKeyWordRecovery");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "redirect:" + adminPath + "/operationPromotion/operationPromotionKeywordList";
     }
-
 }

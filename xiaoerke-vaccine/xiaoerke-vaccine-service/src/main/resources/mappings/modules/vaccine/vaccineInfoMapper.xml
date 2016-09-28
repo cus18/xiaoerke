@@ -233,4 +233,18 @@
       QR_code_url = #{QRCodeUrl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="findVaccineList" resultMap="ResultMapWithBLOBs" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineInfoWithBLOBsVo" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from vaccine_info
+    where 1=1
+    <if test="id != null" >
+      and id= #{id}
+    </if>
+    <if test="name != null" >
+      and name= #{name}
+    </if>
+  </select>
 </mapper>

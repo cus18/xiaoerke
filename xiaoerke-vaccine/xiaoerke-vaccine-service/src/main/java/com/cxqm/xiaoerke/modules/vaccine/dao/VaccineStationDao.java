@@ -23,4 +23,8 @@ public interface VaccineStationDao {
     int updateByPrimaryKeyWithBLOBs(VaccineStationVo record);
 
     int updateByPrimaryKey(VaccineStationVo record);
+
+    List<VaccineStationVo> findVaccineStationList(VaccineStationVo vo);
+
+    int saveVaccineStationInfo(VaccineStationVo vo);
 }

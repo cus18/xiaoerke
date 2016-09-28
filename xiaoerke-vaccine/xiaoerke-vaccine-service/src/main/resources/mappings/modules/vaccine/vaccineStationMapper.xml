@@ -34,7 +34,10 @@
     from vaccine_station
     where 1=1
     <if test="id != null" >
-      and #{id,jdbcType=INTEGER},
+      and id= #{id}
+    </if>
+    <if test="name != null" >
+      and name= #{name}
     </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -53,7 +56,7 @@
       #{bak1,jdbcType=VARCHAR}, #{bak2,jdbcType=VARCHAR}, #{bak3,jdbcType=VARCHAR}, #{bak4,jdbcType=VARCHAR}, 
       #{address,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo" >
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo"  useGeneratedKeys="true" keyProperty="id">
     insert into vaccine_station
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

@@ -130,4 +130,20 @@
     GROUP BY vbi.sys_user_id
   </select>
 
+  <select id="findVaccineStationRelList" resultMap="BaseResultMap">
+    select * from vaccine_station_rel where vaccine_station_id = #{vaccineStationId}
+  </select>
+
+  <insert id="saveVaccineStationRelList" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationRelVo">
+    INSERT INTO vaccine_station_rel(vaccine_id, vaccine_station_id,
+    next_vaccine_id, vaccine_name, minium_age,
+    last_time_interval, create_time,will_vaccine_name, next_vaccine_minium_age,next_last_time_interval)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.vaccineId}, #{item.vaccineStationId},
+      #{item.nextVaccineId}, #{item.vaccineName}, #{item.miniumAge},
+      #{item.lastTimeInterval}, now(), #{item.willVaccineName}, #{item.nextVaccineMiniumAge}, #{item.nextLastTimeInterval}
+      )
+    </foreach>
+  </insert>
 </mapper>
