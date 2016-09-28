@@ -17,6 +17,48 @@ $(function(){
     
 })
 
+$(document).on('keypress', '#getMoney', function (e) {
+    // 在 keypress 事件中拦截错误输入
+
+    var sCharCode = String.fromCharCode(e.charCode);
+    var sValue = this.value;
+
+    if (/[^0-9.]/g.test(sCharCode) || __getRegex(sCharCode).test(sValue)) {
+        return false;
+    }
+
+    /**
+     * 根据用户输入的字符获取相关的正则表达式
+     * @param  {string} sCharCode 用户输入的字符，如 'a'，'1'，'.' 等等
+     * @return {regexp} patt 正则表达式
+     */
+    function __getRegex (sCharCode) {
+        var patt;
+        if (/[0]/g.test(sCharCode)) {
+            // 判断是否为空
+            patt = /^$/g;
+        } else if (/[.]/g.test(sCharCode)) {
+            // 判断是否已经包含 . 字符或者为空
+            patt = /((\.)|(^$))/g;
+        } else if (/[1-9]/g.test(sCharCode)) {
+            // 判断是否已经到达小数点后两位
+            patt = /\.\d{1}$/g;
+        }
+        return patt;
+    }
+}).on('keyup paste', '#getMoney', function () {
+    // 在 keyup paste 事件中进行完整字符串检测
+
+    var patt = /^((?!0)\d+(\.\d{1,2})?)$/g;
+
+    if (this.value>200) {
+
+        // 错误提示相关代码，边框变红、气泡提示什么的
+        $("#getMoney").val(""); //设置
+        alert("感谢您的支持，请输入0~200元");
+    }
+});
+
 /*//判断输入心意钱
 var moreMoney = function () {
    // recordLogs("ZXPJSXY_JE");

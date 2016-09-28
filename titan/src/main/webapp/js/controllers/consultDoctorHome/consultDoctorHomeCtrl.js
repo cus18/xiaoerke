@@ -21,7 +21,7 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
                 $scope.description = data.description.split(" ");//医生介绍
                 $scope.rate = data.rate*100;//医生有用百分比
                 $scope.gender = data.gender;
-                for (i = $scope.description.length - 1;  i >0; i--) {
+                for (i = $scope.description.length - 1;  i >= 0; i--) {
                     if ($scope.description[i] === '') {
                         $scope.description.splice(i, 1);
                     }
