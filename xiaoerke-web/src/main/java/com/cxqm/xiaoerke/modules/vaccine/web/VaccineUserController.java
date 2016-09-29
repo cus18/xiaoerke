@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
@@ -34,7 +35,26 @@ public class VaccineUserController {
     @Autowired
     private SessionRedisCache sessionRedisCache;
 
+    @Autowired
+    private SystemService systemService;
 
+    public void babyVaccineRemind() {
+        Map parameter = systemService.getWechatParameter();
+        String token = (String) parameter.get("token");
+        VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
+        vaccineSendMessageVo.setSearchTime(DateUtils.DateToStr(new Date(),"date"));
+        vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
+        List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
+        for (VaccineSendMessageVo vo :vaccineSendMessageVos){
+            String resultStatus = WechatUtil.sendMsgToWechat(token, vo.getSysUserId(), vo.getContent());
+            if (resultStatus.equals("messageOk")){
+                vo.setId(vo.getId());
+                vo.setValidFlag(ConstantUtil.VACCINEINVALID.getVariable());
+                vaccineService.updateByPrimaryKeyWithBLOBs(vo);
+            }
+
+        }
+    }
     /**
      * 获取宝宝币，以及详细记录
      *
@@ -55,7 +75,7 @@ public class VaccineUserController {
 //        params.put("vaccineStationId", "1");
 //        params.put("vaccineStationName", "朝阳区疫苗站");
 //        saveBabyVaccine(params);
-        getVaccineStation();
+        babyVaccineRemind();
 
     }
 
@@ -226,6 +246,8 @@ public class VaccineUserController {
         response.put("vaccineStationInfo", vaccineStationVos);
         return response;
     }
+
+
 
 
 }

@@ -9,6 +9,10 @@ public class VaccineSendMessageVo {
 
     private Date sendTime;
 
+    private String searchTime;
+
+    private String searchCreateTime;
+
     private String validFlag;
 
     private String createBy;
@@ -99,6 +103,22 @@ public class VaccineSendMessageVo {
 
     public Integer getNextVaccineId() {
         return nextVaccineId;
+    }
+
+    public String getSearchTime() {
+        return searchTime;
+    }
+
+    public void setSearchTime(String searchTime) {
+        this.searchTime = searchTime;
+    }
+
+    public String getSearchCreateTime() {
+        return searchCreateTime;
+    }
+
+    public void setSearchCreateTime(String searchCreateTime) {
+        this.searchCreateTime = searchCreateTime;
     }
 
     public void setNextVaccineId(Integer nextVaccineId) {
