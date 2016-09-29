@@ -207,16 +207,22 @@ public class VaccineUserController {
      * <p/>
      * params:{}
      * <p/>
-     * response:
-     * {
-     * "vaccineStationInfo":{[]}
-     * }
+     *"vaccineStationInfo":
+     * [
+     *   {"vaccineStationName":"朝阳区疫苗站","vaccineStationId":1},
+     *   {"vaccineStationName":"海淀区疫苗站","vaccineStationId":2},
+     *   {"vaccineStationName":"昌平区疫苗站","vaccineStationId":3}
+     * ]
      */
     @RequestMapping(value = "/getVaccineStation", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map<String, Object> getVaccineStation() {
         HashMap<String, Object> response = new HashMap<String, Object>();
         List<VaccineStationVo> vaccineStationVos = vaccineService.selectByVaccineStationVo(new VaccineStationVo());
+        for(VaccineStationVo vaccineStationVo : vaccineStationVos){
+            vaccineStationVo.setVaccineStationId(String.valueOf(vaccineStationVo.getId()));
+            vaccineStationVo.setVaccineStationName(vaccineStationVo.getName());
+        }
         response.put("vaccineStationInfo", vaccineStationVos);
         return response;
     }

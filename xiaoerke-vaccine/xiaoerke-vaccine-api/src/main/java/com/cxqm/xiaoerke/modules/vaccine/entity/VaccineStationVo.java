@@ -9,6 +9,10 @@ public class VaccineStationVo {
 
     private String number;
 
+    private String vaccineStationId;
+
+    private String vaccineStationName;
+
     private String contactName;
 
     private String contactPhone;
@@ -141,5 +145,21 @@ public class VaccineStationVo {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getVaccineStationId() {
+        return vaccineStationId;
+    }
+
+    public void setVaccineStationId(String vaccineStationId) {
+        this.vaccineStationId = vaccineStationId;
+    }
+
+    public String getVaccineStationName() {
+        return vaccineStationName;
+    }
+
+    public void setVaccineStationName(String vaccineStationName) {
+        this.vaccineStationName = vaccineStationName;
     }
 }
