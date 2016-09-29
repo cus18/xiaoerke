@@ -76,7 +76,7 @@
 		<div class="control-group">
 			<label class="control-label">联系电话:</label>
 			<div class="controls">
-				<form:input id="contactPhone" path="contactPhone" htmlEscape="false" maxlength="50"  class="required" value="${vo.contactPhone}"/>
+				<form:input id="contactPhone" path="contactPhone" htmlEscape="false" maxlength="50"  class="required phone" value="${vo.contactPhone}"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -137,7 +137,7 @@
 									${rel.willVaccineName}
 								</td>
 								<td>
-									${rel.vaccineId}
+									${rel.nextLastTimeInterval}
 								</td>
 								<td>
 									<span onclick="deleteVaccine(this,'${rel.id}')">删除</span>
