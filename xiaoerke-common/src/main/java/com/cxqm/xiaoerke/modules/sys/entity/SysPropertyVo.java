@@ -107,7 +107,7 @@ public class SysPropertyVo {
 
     private String shortmessageswitchReceivertypeDoctor;
 
-    private String bak3;
+    private String vaccineUrl;
 
     private String bak4;
 
@@ -217,6 +217,14 @@ public class SysPropertyVo {
 
     public void setConsulAmount(String consulAmount) {
         this.consulAmount = consulAmount;
+    }
+
+    public String getVaccineUrl() {
+        return vaccineUrl;
+    }
+
+    public void setVaccineUrl(String vaccineUrl) {
+        this.vaccineUrl = vaccineUrl;
     }
 
     public String getOnceConsultNeedBabyCoin() {
@@ -553,14 +561,6 @@ public class SysPropertyVo {
 
     public void setDoctorSectet(String doctorSectet) {
         this.doctorSectet = doctorSectet;
-    }
-
-    public String getBak3() {
-        return bak3;
-    }
-
-    public void setBak3(String bak3) {
-        this.bak3 = bak3;
     }
 
     public String getBak4() {
