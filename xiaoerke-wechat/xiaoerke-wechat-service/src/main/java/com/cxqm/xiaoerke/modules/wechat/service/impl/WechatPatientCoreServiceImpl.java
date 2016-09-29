@@ -308,7 +308,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         vaccineSendMessageVo.setNextVaccineId(nextVaccineId);
         vaccineSendMessageVo.setSysUserId(openId);
         List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
-        if(vaccineSendMessageVos==null){
+        if(vaccineSendMessageVos==null || vaccineSendMessageVos.size() == 0){
             vaccineSendMessageVo.setContent(sendContent);
             vaccineSendMessageVo.setCreateBy(openId);
             vaccineSendMessageVo.setSendTime(sendTime);
