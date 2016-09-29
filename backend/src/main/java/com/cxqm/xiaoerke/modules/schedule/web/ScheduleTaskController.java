@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.schedule.web;
 
+import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
@@ -339,9 +340,16 @@ public class ScheduleTaskController extends BaseController {
         String token = (String) parameter.get("token");
         VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
         vaccineSendMessageVo.setSendTime(new Date());
+        vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
         List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
         for (VaccineSendMessageVo vo :vaccineSendMessageVos){
-            WechatUtil.sendMsgToWechat(token,vo.getSysUserId(),vo.getContent());
+            String resultStatus = WechatUtil.sendMsgToWechat(token, vo.getSysUserId(), vo.getContent());
+            if (resultStatus.equals("messageOk")){
+                vo.setId(vo.getId());
+                vo.setValidFlag(ConstantUtil.VACCINEINVALID.getVariable());
+                vaccineService.updateByPrimaryKeyWithBLOBs(vo);
+            }
+
         }
     }
 
