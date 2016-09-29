@@ -54,14 +54,14 @@
 			<label class="control-label">接种最小月龄:</label>
 			<div class="controls">
 				<form:input id="miniumAge" path="miniumAge" htmlEscape="false" maxlength="50"  class="required number" value="${vo.miniumAge}"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<span class="help-inline"><font color="red">*单位是天，每月按30天计算</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">周期:</label>
 			<div class="controls">
 				<form:input id="lastTimeInterval" path="lastTimeInterval" htmlEscape="false" maxlength="50"  class="required number" value="${vo.lastTimeInterval}"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<span class="help-inline"><font color="red">*单位是天，每月按30天计算</font> </span>
 			</div>
 		</div>
 		<div class="control-group">

@@ -176,6 +176,7 @@ public class VaccineController {
 				relVo.setMiniumAge(Integer.parseInt(vaccine[2]));
 				relVo.setNextVaccineId(Integer.parseInt(nextvaccine[0]));
 				relVo.setWillVaccineName(nextvaccine[1]);
+				relVo.setNextVaccineMiniumAge(Integer.parseInt(nextvaccine[2]));
 				relVo.setNextLastTimeInterval(Integer.parseInt(nextvaccine[3]));
 				relList.add(relVo);
 			}
