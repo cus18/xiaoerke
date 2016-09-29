@@ -223,7 +223,6 @@ public class FieldworkWechatController {
             //非及时咨询
             url = sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/patient/consult#/patientConsultNoFee";
         }
-
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +
                 "&secret=SECRET&" +
@@ -253,9 +252,10 @@ public class FieldworkWechatController {
         }
         if(url.startsWith("41")){
             url = getBabyCoinURL(request, openid,sysPropertyVoWithBLOBsVo);
-        }
-        if("42".equalsIgnoreCase(url)){
+        }else if("42".equalsIgnoreCase(url)){
             url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#/patientConsultInvitePage";
+        }else if("46".equals(url)){
+            url = sysPropertyVoWithBLOBsVo.getVaccineUrl() + "vaccine/main.html#/vaccineIndex?openId="+openid;
         }
         return "redirect:" + url;
     }
