@@ -45,6 +45,9 @@
     <if test="nextVaccineId != null" >
       and next_vaccine_id  = #{nextVaccineId}
     </if>
+    <if test="msgType != null" >
+      and msg_type  = #{msgType}
+    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from vaccine_send_message

@@ -156,10 +156,12 @@ public class VaccineUserController {
 
                 }
             }
-            if (count > 2 && count != 0) {
+
+            vaccination = vaccination.toString().substring(0, vaccination.length() - 1);
+            if (count >= 2 && count != 0) {
                 vaccination = vaccination.substring(0, vaccination.lastIndexOf("、")) + "和" + vaccination.substring(vaccination.lastIndexOf("、") + 1, vaccination.length());
             }
-            WechatUtil.sendMsgToWechat(token, openId, "你的宝宝即将接种" + vaccination.toString().substring(0, vaccination.length() - 1));
+            WechatUtil.sendMsgToWechat(token, openId, "你的宝宝即将接种" + vaccination);
             response.put("status", "success");
         }
 
@@ -171,14 +173,14 @@ public class VaccineUserController {
         VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
         vaccineSendMessageVo.setNextVaccineId(nextVaccineId);
         vaccineSendMessageVo.setSysUserId(openId);
+        vaccineSendMessageVo.setMsgType(msgType);
         List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
-        if(vaccineSendMessageVos==null){
+        if(vaccineSendMessageVos==null || vaccineSendMessageVos.size() == 0){
             vaccineSendMessageVo.setContent(sendContent);
             vaccineSendMessageVo.setCreateBy(openId);
             vaccineSendMessageVo.setSendTime(sendTime);
             vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
             vaccineSendMessageVo.setCreateTime(new Date());
-            vaccineSendMessageVo.setMsgType(msgType);
             vaccineService.insertVaccineSendMessage(vaccineSendMessageVo);
         }
     }
