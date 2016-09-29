@@ -2,29 +2,15 @@ package com.cxqm.xiaoerke.modules.vaccine.service.impl;
 
 
 import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineInfoDao;
-import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineStationDao;
-import com.cxqm.xiaoerke.modules.vaccine.entity.*;
-import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineBabyInfoDao;
-import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineSendMessageDao;
-import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineStationDao;
-import com.cxqm.xiaoerke.modules.vaccine.dao.VaccineStationRelDao;
 import com.cxqm.xiaoerke.modules.vaccine.dao.*;
-import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
-import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo;
-import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
-import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo;
+import com.cxqm.xiaoerke.modules.vaccine.entity.*;
 import com.cxqm.xiaoerke.modules.vaccine.service.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-
 import java.util.List;
 
 /**
@@ -89,6 +75,11 @@ public class VaccineServiceImpl implements VaccineService {
     @Override
     public List<VaccineSendMessageVo> selectByVaccineSendMessageInfo(VaccineSendMessageVo record){
         return vaccineSendMessageDao.selectByVaccineSendMessage(record);
+    }
+
+    @Override
+    public int updateByPrimaryKeyWithBLOBs(VaccineSendMessageVo record){
+        return vaccineSendMessageDao.updateByPrimaryKeyWithBLOBs(record);
     }
 
     @Override
