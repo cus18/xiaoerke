@@ -26,7 +26,7 @@ import java.util.*;
  * Created by Administrator on 2016/09/05 0024.
  */
 @Controller
-@RequestMapping(value = "vaccine")
+@RequestMapping(value = "vaccineUser")
 public class VaccineUserController {
 
     @Autowired
