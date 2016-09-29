@@ -2,7 +2,7 @@
 * @Author: acer-pc
 * @Date:   2016-09-23 16:29:17
 * @Last Modified by:   acer-pc
-* @Last Modified time: 2016-09-26 16:24:51
+* @Last Modified time: 2016-09-28 16:24:14
 */
 
 .message_div .title {
@@ -22,10 +22,15 @@
     color: #333;
 }
 
-.message_div .message ul li input {
-  font-size: 16px;
-  margin-left: 10px;
+.message_div .message ul li:nth-last-child(1) {
+    margin-bottom: 22px;
 }
+
+.message_div .message ul li input {
+    font-size: 16px;
+    margin-left: 10px;
+}
+
 .message_div .message ul li span {
     display: inline-block;
     float: right;
@@ -50,4 +55,35 @@
 .message_div .message ul li span.checked {
     background-color: #5F9FF9;
     color: #fff;
+}
+
+.confirm {
+    text-align: center;
+}
+
+.confirm .submit {
+    background-color: #5f9ff9;
+    width: 163px;
+    font-size: 16px;
+    line-height: 44px;
+    border-radius: 6px;
+    text-align: center;
+    color: #fff;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.select-area {
+    position: relative;
+    overflow: hidden;
+    float: right;
+    min-width: 80px;
+}
+
+.select-area select {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
 }

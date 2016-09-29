@@ -1,6 +1,6 @@
 app.controller('VaccineIndexController', [
-    '$scope', '$rootScope', '$location',
-    function($scope, $rootScope, $location) {
+    '$scope', '$http', 'ServiceConfig',
+    function($scope, $http, ServiceConfig) {
         $scope.showInput = function() {
             var date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
             $("#babyBirthday").mobiscroll().date();
@@ -27,8 +27,35 @@ app.controller('VaccineIndexController', [
                     //endYear:2099 //结束年份
             };
             $("#babyBirthday").mobiscroll(opt);
-            $("#babyBirthday").mobiscroll('show');
+            $("#babyBirthday").mobiscroll("show");
         };
+        var data = "";
+        $http.post(ServiceConfig.vaccine_index, data).success(function(data) {
+            console.log(data)
+        }).error(function() {});
 
+        $scope.isSelectedG = true;
+        $scope.isSelectedB = false;
+        //选择孩子性别
+        $scope.selectSex = function(sex) {
+            $scope.sexItem = sex;
+            if ($scope.sexItem == 0) {
+                $scope.isSelectedB = true;
+                $scope.isSelectedG = false;
+            }
+            if ($scope.sexItem == 1) {
+                $scope.isSelectedG = true;
+                $scope.isSelectedB = false;
+            }
+        };
+        $(".select-area .select-value").each(function() {
+            if ($(this).next("select").find("option:selected").length != 0) {
+                $(this).text($(this).next("select").find("option:selected").text());
+            }
+        });
+        $(".select-area select").change(function() {
+            var value = $(this).find("option:selected").text();
+            $(this).parent(".select-area").find(".select-value").text(value);
+        });
     }
 ]);

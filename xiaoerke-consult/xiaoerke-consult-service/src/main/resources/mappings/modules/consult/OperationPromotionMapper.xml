@@ -17,7 +17,7 @@
   </sql>
 
   <select id="findKeywordRoleList" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo">
-    select roleid,rolename,group_concat(keyword) as keyword,replytext,imgPath
+    select roleid,rolename,group_concat(keyword) as keyword,replytext,imgPath,messagetype
       from operation_promotion
     <if test="roleId != null and roleId != ''">
       where roleid=#{roleId}

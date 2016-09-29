@@ -2,7 +2,7 @@
 * @Author: acer-pc
 * @Date:   2016-09-23 16:29:17
 * @Last Modified by:   acer-pc
-* @Last Modified time: 2016-09-26 15:33:54
+* @Last Modified time: 2016-09-28 15:50:56
 */
 html, body, ul, li, ol, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, legend, img {
     margin: 0;
@@ -26,11 +26,11 @@ input {
     font-family: "SimSun", "宋体";
 }
 
-select, input {
+input {
     vertical-align: middle;
 }
 
-select, input, textarea {
+input, textarea {
     font-size: 12px;
     margin: 0;
 }
@@ -86,4 +86,12 @@ h1, h2, h3, h4, h5, h6 {
 s, i, em {
     font-style: normal;
     text-decoration: none;
+}
+select {
+    border-radius: 2px;
+    width: 75px;
+    margin: 18px 20px 0 5px;
+    color: #fff;
+    overflow: hidden;
+    background: transparent;
 }
