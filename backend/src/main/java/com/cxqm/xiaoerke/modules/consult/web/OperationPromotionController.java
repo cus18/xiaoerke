@@ -77,6 +77,8 @@ public class OperationPromotionController extends BaseController {
      */
     @RequestMapping(value = "saveKeywordRole")
     public String saveKeywordRole(OperationPromotionVo vo,HttpServletRequest request, Model model) {
+        String keywordQcode = request.getParameter("keywordQcode");
+        vo.setMessageType(keywordQcode);
         operationPromotionService.saveKeywordRole(vo);
         model.addAttribute("vo", new OperationPromotionVo());
         try {

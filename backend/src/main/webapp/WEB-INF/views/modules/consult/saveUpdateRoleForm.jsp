@@ -26,6 +26,7 @@
 				$("#inputForm").attr("action","${ctx}/operationPromotion/deleteKeywordRole");
 				$("#inputForm").submit();
 			});
+			$("input[name='keywordQcode'][value='${vo.messageType}']").attr("checked",true);
 		});
 
 		$(function(){
@@ -50,13 +51,19 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">关键字:</label>
+			<label class="control-label">关键字二维码:</label>
 			<div class="controls">
-				<form:textarea id="keyword" path="keyword" htmlEscape="false" maxlength="50"  class="required" value="${vo.keyword}"/>
-				<span class="help-inline"><font color="red" size="6px">*多个关键字以空格分隔</font> </span>
+				<input id="keywordradio" name="keywordQcode" value="keyword" type="radio" checked="checked"><label for="keywordradio">关键字</label>
+				<input id="qcoderadio" name="keywordQcode" value="qcode" type="radio"><label for="qcoderadio">二维码</label>
 			</div>
 		</div>
-
+		<div class="control-group">
+			<label class="control-label"></label>
+			<div class="controls">
+				<form:textarea id="keyword" path="keyword" htmlEscape="false" maxlength="50"  class="required" value="${vo.keyword}"/>
+				<span class="help-inline"><font color="red" size="6px">*多个以空格分隔</font> </span>
+			</div>
+		</div>
 		<div class="control-group">
 			<label class="control-label">回复:</label>
 			<div class="controls">

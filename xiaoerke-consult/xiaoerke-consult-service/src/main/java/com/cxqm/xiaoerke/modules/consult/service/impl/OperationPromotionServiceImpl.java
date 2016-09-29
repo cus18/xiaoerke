@@ -61,7 +61,6 @@ public class OperationPromotionServiceImpl implements OperationPromotionService 
         for(String keyword : keywords){
             if(StringUtils.isNotNull(keyword)){
                 vo.setKeyword(keyword);
-                vo.setMessageType("keyword");
                 operationPromotionDao.saveKeywordRole(vo);
             }
         }
