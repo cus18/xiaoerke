@@ -160,13 +160,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 specificChanneldeal(xmlEntity, token);
                 respMessage = processScanEvent(xmlEntity, "oldUser", request, response, sysPropertyVoWithBLOBsVo);
                 //疫苗提醒
-                babyVaccineRemind(xmlEntity, token);
+                babyVaccineRemind(xmlEntity, token,sysPropertyVoWithBLOBsVo);
 
             } else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
                 //扫描关注公众号或者搜索关注公众号都在其中
                 respMessage = processSubscribeEvent(xmlEntity, request, response, sysPropertyVoWithBLOBsVo);
                 //疫苗提醒
-                babyVaccineRemind(xmlEntity,token);
+                babyVaccineRemind(xmlEntity,token,sysPropertyVoWithBLOBsVo);
             }
             // 取消订阅
             else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
@@ -192,7 +192,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 if (keywordRecovery(xmlEntity, token)) {
                     return "success";
                 }
-                ;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -209,7 +208,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         return respMessage;
     }
 
-    private void babyVaccineRemind(ReceiveXmlEntity xmlEntity, String token) {
+    private void babyVaccineRemind(ReceiveXmlEntity xmlEntity, String token,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
 
         String openId = xmlEntity.getFromUserName();
         VaccineBabyInfoVo vaccineBabyInfoVo = new VaccineBabyInfoVo();
@@ -219,7 +218,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         String QRCode = EventKey.replace("qrscene_", "");
         if(QRCode.contains("YM")){
             if (vaccineBabyInfoVo == null || StringUtils.isBlank(vaccineBabyInfoVo.getBabySeedNumber())) {
-                String content = "欢迎加入宝大夫疫苗提醒功能";
+                String content = "欢迎加入宝大夫疫苗提醒功能\n"+
+                        "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="
+                        +sysPropertyVoWithBLOBsVo.getVaccineUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=46'>>>点击开启提醒</a>";
                 WechatUtil.sendMsgToWechat(token, openId, content);
             } else {
                 HashMap<String, Object> searchMap = new HashMap<String, Object>();
