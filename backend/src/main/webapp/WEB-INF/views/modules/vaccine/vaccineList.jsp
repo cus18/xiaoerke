@@ -22,10 +22,10 @@
 	<sys:message content="${message}"/>
 	<ul class="ul-form">
 		<li><label>疫苗名称：</label>
-			<form:input name="doctorName" path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
+			<form:input name="name" path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
 		</li>
 		<li><label>疫苗编号：</label>
-			<form:input name="doctorName" path="number" htmlEscape="false" maxlength="50" class="input-medium"/>
+			<form:input name="id" path="id" htmlEscape="false" maxlength="50" class="input-medium"/>
 		</li>
 		<li class="btns">
 			<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>

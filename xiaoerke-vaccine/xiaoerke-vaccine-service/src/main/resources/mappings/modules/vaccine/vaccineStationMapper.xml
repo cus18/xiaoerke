@@ -33,11 +33,11 @@
     <include refid="Blob_Column_List" />
     from vaccine_station
     where 1=1
-    <if test="id != null" >
-      and id= #{id}
+    <if test="id != null and id != ''" >
+      and id like CONCAT('%', #{id}, '%')
     </if>
-    <if test="name != null" >
-      and name= #{name}
+    <if test="name != null and name != ''" >
+      and name like CONCAT('%', #{name}, '%')
     </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
