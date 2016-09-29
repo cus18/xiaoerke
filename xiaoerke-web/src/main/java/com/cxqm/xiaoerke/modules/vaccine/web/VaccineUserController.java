@@ -38,23 +38,7 @@ public class VaccineUserController {
     @Autowired
     private SystemService systemService;
 
-    public void babyVaccineRemind() {
-        Map parameter = systemService.getWechatParameter();
-        String token = (String) parameter.get("token");
-        VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
-        vaccineSendMessageVo.setSearchTime(DateUtils.DateToStr(new Date(),"date"));
-        vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
-        List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
-        for (VaccineSendMessageVo vo :vaccineSendMessageVos){
-            String resultStatus = WechatUtil.sendMsgToWechat(token, vo.getSysUserId(), vo.getContent());
-            if (resultStatus.equals("messageOk")){
-                vo.setId(vo.getId());
-                vo.setValidFlag(ConstantUtil.VACCINEINVALID.getVariable());
-                vaccineService.updateByPrimaryKeyWithBLOBs(vo);
-            }
 
-        }
-    }
     /**
      * 获取宝宝币，以及详细记录
      *
@@ -75,7 +59,7 @@ public class VaccineUserController {
 //        params.put("vaccineStationId", "1");
 //        params.put("vaccineStationName", "朝阳区疫苗站");
 //        saveBabyVaccine(params);
-        babyVaccineRemind();
+//        babyVaccineRemind();
 
     }
 

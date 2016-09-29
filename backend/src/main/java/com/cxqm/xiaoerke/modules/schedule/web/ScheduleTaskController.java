@@ -339,7 +339,7 @@ public class ScheduleTaskController extends BaseController {
         Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
         VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
-        vaccineSendMessageVo.setSendTime(new Date());
+        vaccineSendMessageVo.setSearchTime(DateUtils.DateToStr(new Date(), "date"));
         vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
         List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
         for (VaccineSendMessageVo vo :vaccineSendMessageVos){
