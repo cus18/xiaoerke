@@ -9,7 +9,7 @@
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="bak_1" property="bak1" jdbcType="VARCHAR" />
+    <result column="next_vaccine_id" property="nextVaccineId" jdbcType="INTEGER" />
     <result column="bak_2" property="bak2" jdbcType="VARCHAR" />
     <result column="msg_type" property="msgType" jdbcType="VARCHAR" />
   </resultMap>
@@ -17,7 +17,7 @@
     <result column="content" property="content" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, sys_user_id, send_time, valid_flag, create_by, create_time, update_time, bak_1, 
+    id, sys_user_id, send_time, valid_flag, create_by, create_time, update_time, next_vaccine_id, 
     bak_2, msg_type
   </sql>
   <sql id="Blob_Column_List" >
@@ -36,8 +36,14 @@
     <if test="createTime != null" >
       and create_time  like '${createTime}%'
     </if>
-    <if test="createTime != null" >
+    <if test="sendTime != null" >
       and send_time  like '${sendTime}%'
+    </if>
+    <if test="sysUserId != null" >
+      and sys_user_id = #{sysUserId}
+    </if>
+    <if test="nextVaccineId != null" >
+      and next_vaccine_id  = #{nextVaccineId}
     </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -47,11 +53,11 @@
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo" >
     insert into vaccine_send_message (id, sys_user_id, send_time, 
       valid_flag, create_by, create_time, 
-      update_time, bak_1, bak_2, 
+      update_time, next_vaccine_id, bak_2, 
       msg_type, content)
     values (#{id,jdbcType=INTEGER}, #{sysUserId,jdbcType=VARCHAR}, #{sendTime,jdbcType=TIMESTAMP}, 
       #{validFlag,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{bak1,jdbcType=VARCHAR}, #{bak2,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{nextVaccineId,jdbcType=INTEGER}, #{bak2,jdbcType=VARCHAR},
       #{msgType,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo" >
@@ -78,8 +84,8 @@
       <if test="updateTime != null" >
         update_time,
       </if>
-      <if test="bak1 != null" >
-        bak_1,
+      <if test="nextVaccineId != null" >
+        next_vaccine_id,
       </if>
       <if test="bak2 != null" >
         bak_2,
@@ -113,8 +119,8 @@
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="bak1 != null" >
-        #{bak1,jdbcType=VARCHAR},
+      <if test="nextVaccineId != null" >
+        #{nextVaccineId,jdbcType=INTEGER},
       </if>
       <if test="bak2 != null" >
         #{bak2,jdbcType=VARCHAR},
@@ -148,8 +154,8 @@
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="bak1 != null" >
-        bak_1 = #{bak1,jdbcType=VARCHAR},
+      <if test="nextVaccineId != null" >
+        next_vaccine_id = #{nextVaccineId,jdbcType=INTEGER},
       </if>
       <if test="bak2 != null" >
         bak_2 = #{bak2,jdbcType=VARCHAR},
@@ -171,7 +177,7 @@
       create_by = #{createBy,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      bak_1 = #{bak1,jdbcType=VARCHAR},
+      next_vaccine_id = #{nextVaccineId,jdbcType=INTEGER},
       bak_2 = #{bak2,jdbcType=VARCHAR},
       msg_type = #{msgType,jdbcType=VARCHAR},
       content = #{content,jdbcType=LONGVARCHAR}
@@ -185,7 +191,7 @@
       create_by = #{createBy,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      bak_1 = #{bak1,jdbcType=VARCHAR},
+      next_vaccine_id = #{nextVaccineId,jdbcType=INTEGER},
       bak_2 = #{bak2,jdbcType=VARCHAR},
       msg_type = #{msgType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}

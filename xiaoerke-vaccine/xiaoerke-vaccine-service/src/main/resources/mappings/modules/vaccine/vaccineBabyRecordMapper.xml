@@ -28,9 +28,12 @@
      and id = #{id,jdbcType=INTEGER}
     </if>
     <if test="sysUserId != null" >
-      and sys_user_id = #{sysUserId,jdbcType=VARCHAR} ORDER by create_time desc
+      and sys_user_id = #{sysUserId,jdbcType=VARCHAR}
     </if>
-
+    <if test="vaccineInfoId != null" >
+      and vaccine_info_id = #{vaccineInfoId,jdbcType=INTEGER}
+    </if>
+    ORDER by create_time desc
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from vaccine_baby_record

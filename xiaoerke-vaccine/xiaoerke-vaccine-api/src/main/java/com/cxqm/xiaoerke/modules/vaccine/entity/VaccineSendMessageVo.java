@@ -19,11 +19,9 @@ public class VaccineSendMessageVo {
 
     private Date updateTime;
 
-    private String bak1;
-
     private String bak2;
 
-    private String bak3;
+    private Integer nextVaccineId;
 
     private String content;
 
@@ -83,20 +81,12 @@ public class VaccineSendMessageVo {
         this.updateTime = updateTime;
     }
 
-    public String getBak1() {
-        return bak1;
-    }
-
     public String getMsgType() {
         return msgType;
     }
 
     public void setMsgType(String msgType) {
         this.msgType = msgType;
-    }
-
-    public void setBak1(String bak1) {
-        this.bak1 = bak1;
     }
 
     public String getBak2() {
@@ -107,12 +97,12 @@ public class VaccineSendMessageVo {
         this.bak2 = bak2;
     }
 
-    public String getBak3() {
-        return bak3;
+    public Integer getNextVaccineId() {
+        return nextVaccineId;
     }
 
-    public void setBak3(String bak3) {
-        this.bak3 = bak3;
+    public void setNextVaccineId(Integer nextVaccineId) {
+        this.nextVaccineId = nextVaccineId;
     }
 
     public String getContent() {

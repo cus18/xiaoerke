@@ -4,9 +4,7 @@ import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
-import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
-import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
@@ -47,13 +45,16 @@ public class VaccineUserController {
     @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public void test(HttpSession session, HttpServletRequest request) {
-//        Map<String, Object> params = new HashMap<String, Object>();
-//        params.put("",);
-//        params.put("",);
-//        params.put("",);
-//        params.put("",);
-//        params.put("",);
-//        saveBabyVaccine();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("openId", "oogbDwH3DY2AMBHgFTY78zFGB43k");
+        params.put("birthday", "2016-01-01");
+        params.put("name", "超级大梅梅");
+        params.put("sex", "1");
+        params.put("QRCode", "YM_01");
+        params.put("babySeedNumber", "123123");
+        params.put("vaccineStationId", "1");
+        params.put("vaccineStationName", "朝阳区疫苗站");
+        saveBabyVaccine(params);
 
     }
 
@@ -67,7 +68,7 @@ public class VaccineUserController {
      * {
      * "status":"success"
      * }
-     * //success 成功  failure 失败
+     * //success 成功  failure 失败 UserInfoAlready 已经存在
      */
     @RequestMapping(value = "/saveBabyVaccine", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
@@ -79,25 +80,29 @@ public class VaccineUserController {
         String token = (String) userWechatParam.get("token");
         String openId = String.valueOf(params.get("openId"));
         String QRCode = String.valueOf(params.get("QRCode"));
-        searchMap.put("QR_code", QRCode);
+        searchMap.put("QRCode", QRCode);
         searchMap.put("openId", openId);
         VaccineBabyInfoVo vaccineBabyInfoVo = new VaccineBabyInfoVo();
-        vaccineBabyInfoVo.setBirthday(DateUtils.StrToDate(String.valueOf(params.get("birthday")), "date"));
-        vaccineBabyInfoVo.setBabyName(String.valueOf(params.get("name")));
         vaccineBabyInfoVo.setSysUserId(openId);
-        vaccineBabyInfoVo.setBabySex(String.valueOf(params.get("sex")));
-        vaccineBabyInfoVo.setBabySeedNumber(String.valueOf(params.get("babySeedNumber")));
-        vaccineBabyInfoVo.setVaccineStationId(Integer.valueOf(String.valueOf(params.get("vaccineStationId"))));
-        vaccineBabyInfoVo.setCreateBy(openId);
-        vaccineBabyInfoVo.setCreateTime(new Date());
-        vaccineBabyInfoVo.setVaccineStationName(String.valueOf(params.get("vaccineStationName")));
-        int insertFlag = vaccineService.insertSelective(vaccineBabyInfoVo);
-        if (insertFlag > 0) {
-            response.put("status", "success");
-            String content = "恭喜你，疫苗提醒开通成功！请注意给宝宝按时接种疫苗哦~~";
-            WechatUtil.sendMsgToWechat(token, openId, content);
+        VaccineBabyInfoVo insertCheckVo = vaccineService.selectByVaccineBabyInfoVo(vaccineBabyInfoVo);
+        if (StringUtils.isNotBlank(insertCheckVo.getBabyName())) {
+            response.put("status", "UserInfoAlready");
         } else {
-            response.put("status", "failure");
+            vaccineBabyInfoVo.setBirthday(DateUtils.StrToDate(String.valueOf(params.get("birthday")), "date"));
+            vaccineBabyInfoVo.setBabyName(String.valueOf(params.get("name")));
+            vaccineBabyInfoVo.setBabySex(String.valueOf(params.get("sex")));
+            vaccineBabyInfoVo.setBabySeedNumber(String.valueOf(params.get("babySeedNumber")));
+            vaccineBabyInfoVo.setVaccineStationId(Integer.valueOf(String.valueOf(params.get("vaccineStationId"))));
+            vaccineBabyInfoVo.setCreateBy(openId);
+            vaccineBabyInfoVo.setCreateTime(new Date());
+            vaccineBabyInfoVo.setVaccineStationName(String.valueOf(params.get("vaccineStationName")));
+            int insertFlag = vaccineService.insertSelective(vaccineBabyInfoVo);
+            if (insertFlag > 0) {
+                String content = "恭喜你，疫苗提醒开通成功！请注意给宝宝按时接种疫苗哦~~";
+                WechatUtil.sendMsgToWechat(token, openId, content);
+            } else {
+                response.put("status", "failure");
+            }
         }
 
         List<HashMap<String, Object>> resultList = vaccineService.getUserWillVaccination(searchMap);
@@ -140,13 +145,14 @@ public class VaccineUserController {
                     sendTime.add(Calendar.HOUR_OF_DAY, -7);
                     sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n  待办事项:宝宝在" + DateUtils.formatDate(new Date(sendTime.getTimeInMillis())) +
                             "后需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
-                    saveVaccineMessage(openId, sendContent, new Date(sendTime.getTimeInMillis()), "7");
+                    Integer nextVaccineId = Integer.valueOf(String.valueOf(map.get("nextVaccineId")));
+                    saveVaccineMessage(nextVaccineId,openId, sendContent, new Date(sendTime.getTimeInMillis()), "7");
 
                     //保存提前一天提醒消息
                     sendTime.add(Calendar.HOUR_OF_DAY, 6);
                     sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n" +
                             "  待办事项:明天宝宝需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
-                    saveVaccineMessage(openId, sendContent, new Date(sendTime.getTimeInMillis()), "1");
+                    saveVaccineMessage(nextVaccineId,openId, sendContent, new Date(sendTime.getTimeInMillis()), "1");
 
                 }
             }
@@ -154,35 +160,43 @@ public class VaccineUserController {
                 vaccination = vaccination.substring(0, vaccination.lastIndexOf("、")) + "和" + vaccination.substring(vaccination.lastIndexOf("、") + 1, vaccination.length());
             }
             WechatUtil.sendMsgToWechat(token, openId, "你的宝宝即将接种" + vaccination.toString().substring(0, vaccination.length() - 1));
+            response.put("status", "success");
         }
 
         return response;
     }
 
 
-    private void saveVaccineMessage(String openId, String sendContent, Date sendTime, String msgType) {
+    private void saveVaccineMessage(Integer nextVaccineId,String openId, String sendContent, Date sendTime, String msgType) {
         VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
-        vaccineSendMessageVo.setContent(sendContent);
-        vaccineSendMessageVo.setCreateBy(openId);
-        vaccineSendMessageVo.setSendTime(sendTime);
+        vaccineSendMessageVo.setNextVaccineId(nextVaccineId);
         vaccineSendMessageVo.setSysUserId(openId);
-        vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
-        vaccineSendMessageVo.setCreateTime(new Date());
-        vaccineSendMessageVo.setMsgType(msgType);
-        vaccineService.insertVaccineSendMessage(vaccineSendMessageVo);
+        List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
+        if(vaccineSendMessageVos==null){
+            vaccineSendMessageVo.setContent(sendContent);
+            vaccineSendMessageVo.setCreateBy(openId);
+            vaccineSendMessageVo.setSendTime(sendTime);
+            vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
+            vaccineSendMessageVo.setCreateTime(new Date());
+            vaccineSendMessageVo.setMsgType(msgType);
+            vaccineService.insertVaccineSendMessage(vaccineSendMessageVo);
+        }
     }
 
     private void saveVaccineBabyRecord(String openId, List<HashMap<String, Object>> resultList) {
         HashMap<String, Object> recordMap = resultList.get(0);
         VaccineBabyRecordVo vaccineBabyRecordVo = new VaccineBabyRecordVo();
-        vaccineBabyRecordVo.setBabyName(String.valueOf(recordMap.get("babyName")));
-        vaccineBabyRecordVo.setBabySeedNumber(String.valueOf(recordMap.get("babySeedNumber")));
-        vaccineBabyRecordVo.setCreateBy(openId);
-        vaccineBabyRecordVo.setCreateTime(new Date());
         vaccineBabyRecordVo.setSysUserId(openId);
         vaccineBabyRecordVo.setVaccineInfoId(Integer.valueOf(String.valueOf(recordMap.get("vaccineInfoId"))));
-        vaccineBabyRecordVo.setVaccineInfoName(String.valueOf(recordMap.get("vaccineInfoName")));
-        vaccineService.insertVaccineBabyRecord(vaccineBabyRecordVo);
+        List<VaccineBabyRecordVo> vaccineBabyRecordVos = vaccineService.selectByVaccineBabyRecord(vaccineBabyRecordVo);
+        if (vaccineBabyRecordVos == null || vaccineBabyRecordVos.size() == 0) {
+            vaccineBabyRecordVo.setBabyName(String.valueOf(recordMap.get("babyName")));
+            vaccineBabyRecordVo.setBabySeedNumber(String.valueOf(recordMap.get("babySeedNumber")));
+            vaccineBabyRecordVo.setCreateBy(openId);
+            vaccineBabyRecordVo.setCreateTime(new Date());
+            vaccineBabyRecordVo.setVaccineInfoName(String.valueOf(recordMap.get("vaccineInfoName")));
+            vaccineService.insertVaccineBabyRecord(vaccineBabyRecordVo);
+        }
     }
 
     /**
@@ -203,8 +217,6 @@ public class VaccineUserController {
         response.put("vaccineStationInfo", vaccineStationVos);
         return response;
     }
-
-
 
 
 }
