@@ -45,16 +45,17 @@ public class VaccineUserController {
     @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public void test(HttpSession session, HttpServletRequest request) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("openId", "oogbDwH3DY2AMBHgFTY78zFGB43k");
-        params.put("birthday", "2016-01-01");
-        params.put("name", "超级大梅梅");
-        params.put("sex", "1");
-        params.put("QRCode", "YM_01");
-        params.put("babySeedNumber", "123123");
-        params.put("vaccineStationId", "1");
-        params.put("vaccineStationName", "朝阳区疫苗站");
-        saveBabyVaccine(params);
+//        Map<String, Object> params = new HashMap<String, Object>();
+//        params.put("openId", "oogbDwH3DY2AMBHgFTY78zFGB43k");
+//        params.put("birthday", "2016-01-01");
+//        params.put("name", "超级大梅梅");
+//        params.put("sex", "1");
+//        params.put("QRCode", "YM_01");
+//        params.put("babySeedNumber", "123123");
+//        params.put("vaccineStationId", "1");
+//        params.put("vaccineStationName", "朝阳区疫苗站");
+//        saveBabyVaccine(params);
+        getVaccineStation();
 
     }
 
@@ -213,7 +214,7 @@ public class VaccineUserController {
      */
     @RequestMapping(value = "/getVaccineStation", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map<String, Object> getVaccineStation(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
+    public Map<String, Object> getVaccineStation() {
         HashMap<String, Object> response = new HashMap<String, Object>();
         List<VaccineStationVo> vaccineStationVos = vaccineService.selectByVaccineStationVo(new VaccineStationVo());
         response.put("vaccineStationInfo", vaccineStationVos);
