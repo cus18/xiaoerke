@@ -20,7 +20,7 @@ app.constant('ServiceConfig', {
     weibo_getByCondition: SERVER_BASE_URL + 'wei/getByCondition',
     weibo_set2null: SERVER_BASE_URL + 'wei/set2null',
     email_findPassword: SERVER_BASE_URL + 'email/findPassword',
-    vaccine_index: SERVER_BASE_URL + 'vaccine/demo'
+    vaccine_index: SERVER_BASE_URL + 'vaccine/getVaccineStation'
 });
 
 
@@ -45,7 +45,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
     $stateProvider
     //登录
         .state('login', {
-        url: '/',
+        url: '/login',
         views: {
             '': {
                 templateUrl: 'views/login.html',
@@ -64,7 +64,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             }
         })
         .state('vaccineIndex', {
-            url: '/vaccineIndex',
+            url: '/',
             views: {
                 '': {
                     templateUrl: 'views/vaccineIndex.html',
