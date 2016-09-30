@@ -8,10 +8,7 @@ module.exports = {
             status: '请求成功'
         });*/
 
-        var data = {
-            address: 'test@test.com',
-            subject: "test"
-        };
+        var data = {};
 
         data = JSON.stringify(data);
         console.log(data);
@@ -44,14 +41,10 @@ module.exports = {
         /*return res.send({
          status: '请求成功'
          });*/
-
-        var data = {
-            address: 'test@test.com',
-            subject: "test"
-        };
+        console.log('发来的数据:', req.body)
+        var data = req.body;
 
         data = JSON.stringify(data);
-        console.log(data);
         var opt = {
             method: "POST",
             host: "120.25.161.33",
