@@ -38,6 +38,13 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
                     $scope.doctorImg = doctorImg;
                 }
 
+                BabyCoinInit.save({},function(data){
+                    $scope.babyMoney = data.babyCoinVo.cash;
+                    $scope.babyCoinRecordVos = data.babyCoinRecordVos;
+                });
+
+                recordLogs("clickDetails");
+
                 //判断医生评论条数
                 if(data.evaluationList.length==0){
                     $scope.commentNum = 1;
