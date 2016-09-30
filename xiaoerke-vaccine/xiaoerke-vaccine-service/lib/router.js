@@ -77,7 +77,8 @@ module.exports = function(app) {
     app.post('/email/findPassword', email.findPassword);
 
 
-    //做测试用
-    app.post('/vaccine/demo',vaccine.demo);
+    //疫苗提醒
+    app.post('/vaccine/getVaccineStation',vaccine.getVaccineStation);
+    app.post('/vaccine/saveBabyVaccine',vaccine.saveBabyVaccine);
 
 };
