@@ -455,6 +455,13 @@ function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuS
 }]);;app.controller('VaccineIndexController', [
     '$scope', '$http', 'ServiceConfig',
     function($scope, $http, ServiceConfig) {
+        $scope.info = {
+            babyName: "",
+            babyNum: "",
+            vaccineStation: "请选择>"
+        }
+        $scope.openId = ""
+        $scope.sexItem = "";
         $scope.showInput = function() {
             var date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
             $("#babyBirthday").mobiscroll().date();
@@ -485,7 +492,8 @@ function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuS
         };
         var data = "";
         $http.post(ServiceConfig.vaccine_index, data).success(function(data) {
-            console.log(data)
+            $scope.vaccineStationType = data.vaccineStationInfo;
+            console.log("$scope.vaccineStationType", $scope.vaccineStationType)
         }).error(function() {});
 
         $scope.isSelectedG = true;
@@ -502,6 +510,7 @@ function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuS
                 $scope.isSelectedB = false;
             }
         };
+
         $(".select-area .select-value").each(function() {
             if ($(this).next("select").find("option:selected").length != 0) {
                 $(this).text($(this).next("select").find("option:selected").text());
@@ -511,5 +520,18 @@ function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuS
             var value = $(this).find("option:selected").text();
             $(this).parent(".select-area").find(".select-value").text(value);
         });
+        $scope.submit = function() {
+            var data = {
+                    "openId": $scope.openId,
+                    "birthday": $("#babyBirthday").val(),
+                    "name": $scope.info.babyName,
+                    "sex": $scope.sexItem,
+                    "QRCode": "YM_01",
+                    "babySeedNumber": $scope.info.babyNum,
+                    "vaccineStationId": $scope.info.vaccineStation.vaccineStationId,
+                    "vaccineStationName": $scope.info.vaccineStation.vaccineStationName
+                }
+                console.log(data);
+        };
     }
 ]);
