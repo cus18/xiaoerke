@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
@@ -25,7 +26,7 @@ import java.util.*;
  * Created by Administrator on 2016/09/05 0024.
  */
 @Controller
-@RequestMapping(value = "vaccine")
+@RequestMapping(value = "vaccineUser")
 public class VaccineUserController {
 
     @Autowired
@@ -33,6 +34,9 @@ public class VaccineUserController {
 
     @Autowired
     private SessionRedisCache sessionRedisCache;
+
+    @Autowired
+    private SystemService systemService;
 
 
     /**
@@ -55,7 +59,7 @@ public class VaccineUserController {
 //        params.put("vaccineStationId", "1");
 //        params.put("vaccineStationName", "朝阳区疫苗站");
 //        saveBabyVaccine(params);
-        getVaccineStation();
+//        babyVaccineRemind();
 
     }
 
@@ -226,6 +230,8 @@ public class VaccineUserController {
         response.put("vaccineStationInfo", vaccineStationVos);
         return response;
     }
+
+
 
 
 }

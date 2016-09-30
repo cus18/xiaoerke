@@ -33,11 +33,11 @@
     <if test="id != null" >
       and id = #{id,jdbcType=INTEGER}
     </if>
-    <if test="createTime != null" >
-      and create_time  like '${createTime}%'
+    <if test="searchCreateTime != null" >
+      and create_time  like '${searchCreateTime}%'
     </if>
-    <if test="sendTime != null" >
-      and send_time  like '${sendTime}%'
+    <if test="searchTime != null" >
+      and send_time  like '${searchTime}%'
     </if>
     <if test="sysUserId != null" >
       and sys_user_id = #{sysUserId}
@@ -47,6 +47,9 @@
     </if>
     <if test="msgType != null" >
       and msg_type  = #{msgType}
+    </if>
+    <if test="validFlag != null" >
+      and valid_flag  = #{validFlag}
     </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
