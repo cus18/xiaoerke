@@ -20,7 +20,8 @@ app.constant('ServiceConfig', {
     weibo_getByCondition: SERVER_BASE_URL + 'wei/getByCondition',
     weibo_set2null: SERVER_BASE_URL + 'wei/set2null',
     email_findPassword: SERVER_BASE_URL + 'email/findPassword',
-    vaccine_index: SERVER_BASE_URL + 'vaccine/getVaccineStation'
+    vaccine_getVaccineStation: SERVER_BASE_URL + 'vaccine/getVaccineStation',
+    vaccine_saveBabyVaccine: SERVER_BASE_URL + 'vaccine/saveBabyVaccine'
 });
 
 
