@@ -90,7 +90,7 @@ public class VaccineUserController {
         VaccineBabyInfoVo vaccineBabyInfoVo = new VaccineBabyInfoVo();
         vaccineBabyInfoVo.setSysUserId(openId);
         VaccineBabyInfoVo insertCheckVo = vaccineService.selectByVaccineBabyInfoVo(vaccineBabyInfoVo);
-        if (StringUtils.isNotBlank(insertCheckVo.getBabyName())) {
+        if (null != insertCheckVo&&StringUtils.isNotBlank(insertCheckVo.getBabyName())) {
             response.put("status", "UserInfoAlready");
         } else {
             vaccineBabyInfoVo.setBirthday(DateUtils.StrToDate(String.valueOf(params.get("birthday")), "date"));
