@@ -454,14 +454,15 @@ function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuS
 		});
 	};
 }]);;app.controller('VaccineIndexController', [
-    '$scope', '$http', 'ServiceConfig',
-    function($scope, $http, ServiceConfig) {
+    '$scope', '$http', 'ServiceConfig','$stateParams',
+    function($scope, $http, ServiceConfig,$stateParams) {
         $scope.info = {
             babyName: "",
             babyNum: "",
             vaccineStation: "请选择>"
         }
-        $scope.openId = "oogbDwH3DY2AMBHgFTY78zFGB43k";
+        $scope.openId = $stateParams.openId;
+        $scope.QRCode = $stateParams.QRCode;
         $scope.sexItem = "";
         $scope.showInput = function() {
             var date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
@@ -527,7 +528,7 @@ function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuS
                 "birthday": $("#babyBirthday").val(),
                 "name": $scope.info.babyName,
                 "sex": $scope.sexItem,
-                "QRCode": "YM_01",
+                "QRCode": $scope.QRCode,
                 "babySeedNumber": $scope.info.babyNum,
                 "vaccineStationId": $scope.info.vaccineStation.vaccineStationId,
                 "vaccineStationName": $scope.info.vaccineStation.vaccineStationName//汉字有点问题
