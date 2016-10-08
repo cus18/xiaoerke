@@ -258,7 +258,7 @@ public class FieldworkWechatController {
             if(StringUtils.isNull(openid)){
                 openid = "testOpenId";
             }
-            String QRCode = url.split("&")[1];
+            String QRCode = url.split(",")[1];
             url = sysPropertyVoWithBLOBsVo.getVaccineUrl() + "vaccine/main.html#/vaccineIndex?openId="+openid+"&QRCode="+QRCode;
         }
         return "redirect:" + url;
