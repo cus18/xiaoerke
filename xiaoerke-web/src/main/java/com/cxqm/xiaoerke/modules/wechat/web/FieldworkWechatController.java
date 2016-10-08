@@ -70,7 +70,7 @@ public class FieldworkWechatController {
             WechatBean wechat = JsonUtil.getObjFromJsonStr(json, WechatBean.class);
             openid = wechat.getOpenid();
             session.setAttribute("openId", openid);
-            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30,".baodf.com");
+            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30, ".baodf.com");
         }
         if ("1".equals(url)) {
             //每日清单
@@ -255,7 +255,11 @@ public class FieldworkWechatController {
         }else if("42".equalsIgnoreCase(url)){
             url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#/patientConsultInvitePage";
         }else if("46".equals(url)){
-            url = sysPropertyVoWithBLOBsVo.getVaccineUrl() + "vaccine/main.html#/vaccineIndex?openId="+openid;
+            if(StringUtils.isNull(openid)){
+                openid = "testOpenId";
+            }
+            String QRCode = java.net.URLDecoder.decode(request.getParameter("QRCode"), "utf-8");
+            url = sysPropertyVoWithBLOBsVo.getVaccineUrl() + "vaccine/main.html#/vaccineIndex?openId="+openid+"&QRCode="+QRCode;
         }
         return "redirect:" + url;
     }
