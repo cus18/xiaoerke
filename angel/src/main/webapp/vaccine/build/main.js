@@ -546,12 +546,12 @@ function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuS
             var information = {
                 "openId": $scope.openId,
                 "birthday": $("#babyBirthday").val(),
-                "name": $scope.info.babyName,
+                "name": encodeURI(encodeURI($scope.info.babyName)),
                 "sex": $scope.sexItem,
                 "QRCode": $scope.QRCode,
                 "babySeedNumber": $scope.info.babyNum,
                 "vaccineStationId": $scope.info.vaccineStation.vaccineStationId,
-                "vaccineStationName": $scope.info.vaccineStation.vaccineStationName//汉字有点问题
+                "vaccineStationName": encodeURI(encodeURI($scope.info.vaccineStation.vaccineStationName))//汉字有点问题
             }
             console.log("information", information);
             $http.post(ServiceConfig.vaccine_saveBabyVaccine, information).success(function(data) {
