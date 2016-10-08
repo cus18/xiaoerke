@@ -259,7 +259,7 @@ public class FieldworkWechatController {
                 openid = "testOpenId";
             }
             String QRCode = url.split(",")[1];
-            url = sysPropertyVoWithBLOBsVo.getVaccineUrl() + "vaccine/main.html#/vaccineIndex?openId="+openid+"&QRCode="+QRCode;
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "vaccine/main.html#/vaccineIndex?openId="+openid+"&QRCode="+QRCode;
         }
         return "redirect:" + url;
     }
