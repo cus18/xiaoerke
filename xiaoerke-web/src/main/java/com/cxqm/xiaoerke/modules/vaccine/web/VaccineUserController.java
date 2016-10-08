@@ -13,6 +13,7 @@ import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo;
 import com.cxqm.xiaoerke.modules.vaccine.service.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.util.DecodeUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -99,7 +100,7 @@ public class VaccineUserController {
             response.put("status", "UserInfoAlready");
         } else {
             vaccineBabyInfoVo.setBirthday(DateUtils.StrToDate(String.valueOf(params.get("birthday")), "date"));
-            vaccineBabyInfoVo.setBabyName(String.valueOf(params.get("name")));
+            vaccineBabyInfoVo.setBabyName(DecodeUtils.decode(String.valueOf(params.get("name")).getBytes()));
             vaccineBabyInfoVo.setBabySex(String.valueOf(params.get("sex")));
             vaccineBabyInfoVo.setBabySeedNumber(String.valueOf(params.get("babySeedNumber")));
             vaccineBabyInfoVo.setVaccineStationId(Integer.valueOf(String.valueOf(params.get("vaccineStationId"))));
