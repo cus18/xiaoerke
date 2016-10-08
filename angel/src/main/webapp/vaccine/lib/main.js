@@ -65,10 +65,10 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             }
         })
         .state('vaccineIndex', {
-            url: '/:openid,:QRCode',
+            url: '/',
             views: {
                 '': {
-                    templateUrl: 'views/vaccineIndex.html',
+                    templateUrl: 'views/vaccineIndex.html/:openid,:QRCode',
                     controller: 'VaccineIndexController'
                 }
             }
