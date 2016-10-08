@@ -100,19 +100,18 @@ public class VaccineUserController {
         VaccineBabyInfoVo insertCheckVo = vaccineService.selectByVaccineBabyInfoVo(vaccineBabyInfoVo);
         if (null != insertCheckVo&&StringUtils.isNotBlank(insertCheckVo.getBabyName())) {
             response.put("status", "UserInfoAlready");
-        } else {
+        } else {try {
             vaccineBabyInfoVo.setBirthday(DateUtils.StrToDate(String.valueOf(params.get("birthday")), "date"));
-            try {
-                vaccineBabyInfoVo.setBabyName(URLDecoder.decode(String.valueOf(params.get("name")), "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+            vaccineBabyInfoVo.setBabyName(URLDecoder.decode(String.valueOf(params.get("name")), "UTF-8"));
             vaccineBabyInfoVo.setBabySex(String.valueOf(params.get("sex")));
             vaccineBabyInfoVo.setBabySeedNumber(String.valueOf(params.get("babySeedNumber")));
             vaccineBabyInfoVo.setVaccineStationId(Integer.valueOf(String.valueOf(params.get("vaccineStationId"))));
             vaccineBabyInfoVo.setCreateBy(openId);
             vaccineBabyInfoVo.setCreateTime(new Date());
-            vaccineBabyInfoVo.setVaccineStationName(URLDecoder.decode(String.valueOf(params.get("vaccineStationName"))));
+            vaccineBabyInfoVo.setVaccineStationName(URLDecoder.decode(String.valueOf(params.get("vaccineStationName")), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
             int insertFlag = vaccineService.insertSelective(vaccineBabyInfoVo);
             if (insertFlag > 0) {
                 String content = "恭喜你，疫苗提醒开通成功！请注意给宝宝按时接种疫苗哦~~";
