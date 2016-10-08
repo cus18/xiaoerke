@@ -68,6 +68,26 @@ app.controller('VaccineIndexController', [
             $(this).parent(".select-area").find(".select-value").text(value);
         });
         $scope.submit = function() {
+            if($scope.info.babyName==""){
+                alert("宝宝姓名不能为空！");
+                return;
+            }
+            if($scope.sexItem == null){
+                alert("宝宝性别不能为空！");
+                return;
+            }
+            if($("#babyBirthday").val()==""){
+                alert("宝宝生日不能为空！");
+                return;
+            }
+            if($scope.info.babyNum==""){
+                alert("宝宝接种编号不能为空！");
+                return;
+            }
+            if($scope.info.vaccineStation.vaccineStationName==""){
+                alert("宝宝疫苗站不能为空！");
+                return;
+            }
             var information = {
                 "openId": $scope.openId,
                 "birthday": $("#babyBirthday").val(),
