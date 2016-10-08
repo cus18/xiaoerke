@@ -254,7 +254,7 @@ public class FieldworkWechatController {
             url = getBabyCoinURL(request, openid,sysPropertyVoWithBLOBsVo);
         }else if("42".equalsIgnoreCase(url)){
             url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#/patientConsultInvitePage";
-        }else if("46".startsWith(url)){
+        }else if(url.startsWith("46")){
             if(StringUtils.isNull(openid)){
                 openid = "testOpenId";
             }
