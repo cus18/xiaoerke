@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
@@ -38,6 +39,9 @@ public class VaccineUserController {
     @Autowired
     private SystemService systemService;
 
+    @Autowired
+    private OlyGamesService olyGamesService;
+
 
     /**
      * 获取宝宝币，以及详细记录
@@ -60,7 +64,8 @@ public class VaccineUserController {
 //        params.put("vaccineStationName", "朝阳区疫苗站");
 //        saveBabyVaccine(params);
 //        babyVaccineRemind();
-
+        String userQRCode = olyGamesService.getUserQRCode("YM_01");//二维码
+        System.out.println("================="+userQRCode+"==============");
     }
 
     /**
