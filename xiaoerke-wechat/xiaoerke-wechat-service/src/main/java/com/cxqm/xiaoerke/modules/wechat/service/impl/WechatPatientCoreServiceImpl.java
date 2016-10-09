@@ -219,8 +219,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         if(QRCode.contains("YM")){
             if (vaccineBabyInfoVo == null || StringUtils.isBlank(vaccineBabyInfoVo.getBabySeedNumber())) {
                 String content = "欢迎加入宝大夫疫苗提醒功能\n"+
-                        "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="
-                        +sysPropertyVoWithBLOBsVo.getVaccineUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=46&QRCode='"+QRCode+">>>点击开启提醒</a>";
+                        "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="
+                        +sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=46,"+QRCode+"'>>>点击开启提醒</a>";
                 WechatUtil.sendMsgToWechat(token, openId, content);
             } else {
                 HashMap<String, Object> searchMap = new HashMap<String, Object>();

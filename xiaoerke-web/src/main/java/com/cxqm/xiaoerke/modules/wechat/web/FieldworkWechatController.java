@@ -254,12 +254,12 @@ public class FieldworkWechatController {
             url = getBabyCoinURL(request, openid,sysPropertyVoWithBLOBsVo);
         }else if("42".equalsIgnoreCase(url)){
             url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#/patientConsultInvitePage";
-        }else if("46".equals(url)){
+        }else if(url.startsWith("46")){
             if(StringUtils.isNull(openid)){
                 openid = "testOpenId";
             }
-            String QRCode = java.net.URLDecoder.decode(request.getParameter("QRCode"), "utf-8");
-            url = sysPropertyVoWithBLOBsVo.getVaccineUrl() + "vaccine/main.html#/vaccineIndex?openId="+openid+"&QRCode="+QRCode;
+            String QRCode = url.split(",")[1];
+            url = sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/vaccine/main.html#/"+openid+","+QRCode;
         }
         return "redirect:" + url;
     }
