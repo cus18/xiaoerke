@@ -5,7 +5,7 @@
 <root>
 <!-- 全局默认值 -->
 <global>
-	<!-- 皮肤色调, "Light Gray"-浅灰色; "Caramel"-焦糖色; "Lilian"-百合花色; "Lividity"-青黑色; "一个自定义的XML文件的URL" - 自定义皮肤, 例如<hue>../../myskin.xml</hue>，其中的路径相对于本文件 -->
+	<!-- 皮肤色调, "LightTest Gray"-浅灰色; "Caramel"-焦糖色; "Lilian"-百合花色; "Lividity"-青黑色; "一个自定义的XML文件的URL" - 自定义皮肤, 例如<hue>../../myskin.xml</hue>，其中的路径相对于本文件 -->
 	<!-- 备注：等级低于 reg.ini 中记忆的hue值 -->
 	<hue>Lividity</hue>
 
