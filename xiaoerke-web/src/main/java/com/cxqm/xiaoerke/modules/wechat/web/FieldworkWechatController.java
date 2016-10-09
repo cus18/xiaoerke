@@ -100,7 +100,7 @@ public class FieldworkWechatController {
     @RequestMapping(value = "/getUserWechatMenId", method = {RequestMethod.POST, RequestMethod.GET})
     public String getUserWechatMenu(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-        
+
         String code = request.getParameter("code");
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
         System.out.println("yuanxing"+url);
@@ -252,8 +252,14 @@ public class FieldworkWechatController {
         }
         if(url.startsWith("41")){
             url = getBabyCoinURL(request, openid,sysPropertyVoWithBLOBsVo);
-        }else if("42".equalsIgnoreCase(url)){
-            url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#/patientConsultInvitePage";
+        }else if("42".startsWith(url)){
+            if(url.equals("42")){
+                url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#/patientConsultInvitePage";
+            }else{
+                String logstr = url.split(",")[1];
+                LogUtils.saveLog(logstr,openid);
+                url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#/patientConsultInvitePage";
+            }
         }else if(url.startsWith("46")){
             if(StringUtils.isNull(openid)){
                 openid = "testOpenId";
