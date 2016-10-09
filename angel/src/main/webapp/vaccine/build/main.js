@@ -454,8 +454,8 @@ function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuS
 		});
 	};
 }]);;app.controller('VaccineIndexController', [
-    '$scope', '$http', 'ServiceConfig','$stateParams',
-    function($scope, $http, ServiceConfig,$stateParams) {
+    '$scope', '$http', 'ServiceConfig', '$stateParams',
+    function($scope, $http, ServiceConfig, $stateParams) {
         $scope.info = {
             babyName: "",
             babyNum: "",
@@ -523,40 +523,45 @@ function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuS
             $(this).parent(".select-area").find(".select-value").text(value);
         });
         $scope.submit = function() {
-            if($scope.info.babyName==""){
+            if ($scope.info.babyName == "") {
                 alert("宝宝姓名不能为空！");
                 return;
             }
-            if($scope.sexItem == null){
+            if ($scope.sexItem == null) {
                 alert("宝宝性别不能为空！");
                 return;
             }
-            if($("#babyBirthday").val()==""){
+            if ($("#babyBirthday").val() == "") {
                 alert("宝宝生日不能为空！");
                 return;
             }
-            if($scope.info.babyNum==""){
+            if ($scope.info.babyNum == "") {
                 alert("宝宝接种编号不能为空！");
                 return;
             }
-            if($scope.info.vaccineStation.vaccineStationName==""){
+            if ($scope.info.vaccineStation.vaccineStationName == "") {
                 alert("宝宝疫苗站不能为空！");
                 return;
             }
             var information = {
                 "openId": $scope.openId,
                 "birthday": $("#babyBirthday").val(),
-                "name": encodeURI(encodeURI($scope.info.babyName)),
+                "name": $scope.info.babyName,
                 "sex": $scope.sexItem,
                 "QRCode": $scope.QRCode,
                 "babySeedNumber": $scope.info.babyNum,
                 "vaccineStationId": $scope.info.vaccineStation.vaccineStationId,
-                "vaccineStationName": encodeURI(encodeURI($scope.info.vaccineStation.vaccineStationName))//汉字有点问题
-            }
-            console.log("information", information);
+                "vaccineStationName": $scope.info.vaccineStation.vaccineStationName
+            };
             $http.post(ServiceConfig.vaccine_saveBabyVaccine, information).success(function(data) {
                 console.log(data);
-                console.log("information",information);
+                if (data.status == "success") {
+                    wx.closeWindow();
+                } else if (data.status == "failure") {
+                    alert("宝宝信息保存失败！")
+                } else if (data.status == "UserInfoAlready") {
+                    alert("宝宝信息已存在！")
+                }
             }).error(function() {});
         };
     }
