@@ -252,7 +252,7 @@ public class FieldworkWechatController {
         }
         if(url.startsWith("41")){
             url = getBabyCoinURL(request, openid,sysPropertyVoWithBLOBsVo);
-        }else if("42".startsWith(url)){
+        }else if(url.startsWith("42")){
             if(url.equals("42")){
                 url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#/patientConsultInvitePage";
             }else{
