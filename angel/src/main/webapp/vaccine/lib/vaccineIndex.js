@@ -96,11 +96,10 @@ app.controller('VaccineIndexController', [
                 "QRCode": $scope.QRCode,
                 "babySeedNumber": $scope.info.babyNum,
                 "vaccineStationId": $scope.info.vaccineStation.vaccineStationId,
-                "vaccineStationName": $scope.info.vaccineStation.vaccineStationName //汉字有点问题
-            }
-            console.log("information", information);
+                "vaccineStationName": $scope.info.vaccineStation.vaccineStationName
+            };
             $http.post(ServiceConfig.vaccine_saveBabyVaccine, information).success(function(data) {
-
+                console.log(data);
                 if (data.status == "success") {
                     wx.closeWindow();
                 } else if (data.status == "failure") {
@@ -108,7 +107,6 @@ app.controller('VaccineIndexController', [
                 } else if (data.status == "UserInfoAlready") {
                     alert("宝宝信息已存在！")
                 }
-                console.log(data);
             }).error(function() {});
         };
     }
