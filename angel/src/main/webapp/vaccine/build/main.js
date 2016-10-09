@@ -546,12 +546,12 @@ function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuS
             var information = {
                 "openId": $scope.openId,
                 "birthday": $("#babyBirthday").val(),
-                "name": $scope.info.babyName,
+                "name": encodeURI(encodeURI($scope.info.babyName)),
                 "sex": $scope.sexItem,
                 "QRCode": $scope.QRCode,
                 "babySeedNumber": $scope.info.babyNum,
                 "vaccineStationId": $scope.info.vaccineStation.vaccineStationId,
-                "vaccineStationName": $scope.info.vaccineStation.vaccineStationName
+                "vaccineStationName":encodeURI(encodeURI($scope.info.vaccineStation.vaccineStationName))
             };
             $http.post(ServiceConfig.vaccine_saveBabyVaccine, information).success(function(data) {
                 console.log(data);
