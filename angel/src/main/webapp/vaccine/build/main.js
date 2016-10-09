@@ -1,5 +1,5 @@
 var app = angular.module('app', ['ui.router', 'ngCookies', 'ngGrid']);
-var SERVER_BASE_URL = 'http://127.0.0.1:8088/';
+var SERVER_BASE_URL = 'http://123.57.45.33:8088/';
 
 //初始化配置
 app.run(['$rootScope', function($rootScope) {
@@ -20,7 +20,8 @@ app.constant('ServiceConfig', {
     weibo_getByCondition: SERVER_BASE_URL + 'wei/getByCondition',
     weibo_set2null: SERVER_BASE_URL + 'wei/set2null',
     email_findPassword: SERVER_BASE_URL + 'email/findPassword',
-    vaccine_index: SERVER_BASE_URL + 'vaccine/demo'
+    vaccine_getVaccineStation: SERVER_BASE_URL + 'vaccine/getVaccineStation',
+    vaccine_saveBabyVaccine: SERVER_BASE_URL + 'vaccine/saveBabyVaccine'
 });
 
 
@@ -45,7 +46,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
     $stateProvider
     //登录
         .state('login', {
-        url: '/',
+        url: '/login',
         views: {
             '': {
                 templateUrl: 'views/login.html',
@@ -55,23 +56,23 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
     })
 
     .state('index', {
-        url: '/index',
-        views: {
-            '': {
-                templateUrl: 'views/index.html',
-                controller: 'MenuController'
+            url: '/index',
+            views: {
+                '': {
+                    templateUrl: 'views/index.html',
+                    controller: 'MenuController'
+                }
             }
-        }
-    })
-    .state('vaccineIndex', {
-        url: '/vaccineIndex',
-        views: {
-            '': {
-                templateUrl: 'views/vaccineIndex.html',
-                controller: 'VaccineIndexController'
+        })
+        .state('vaccineIndex', {
+            url: '/:openId,:QRCode',
+            views: {
+                '': {
+                    templateUrl: 'views/vaccineIndex.html',
+                    controller: 'VaccineIndexController'
+                }
             }
-        }
-    })
+        })
 
     .state('index.article', {
         url: '/article',
@@ -453,8 +454,16 @@ function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuS
 		});
 	};
 }]);;app.controller('VaccineIndexController', [
-    '$scope', '$http', 'ServiceConfig',
-    function($scope, $http, ServiceConfig) {
+    '$scope', '$http', 'ServiceConfig', '$stateParams',
+    function($scope, $http, ServiceConfig, $stateParams) {
+        $scope.info = {
+            babyName: "",
+            babyNum: "",
+            vaccineStation: "请选择>"
+        }
+        $scope.openId = $stateParams.openId;
+        $scope.QRCode = $stateParams.QRCode;
+        $scope.sexItem = "";
         $scope.showInput = function() {
             var date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
             $("#babyBirthday").mobiscroll().date();
@@ -484,8 +493,9 @@ function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuS
             $("#babyBirthday").mobiscroll("show");
         };
         var data = "";
-        $http.post(ServiceConfig.vaccine_index, data).success(function(data) {
-            console.log(data)
+        $http.post(ServiceConfig.vaccine_getVaccineStation, data).success(function(data) {
+            $scope.vaccineStationType = data.vaccineStationInfo;
+            console.log("$scope.vaccineStationType", $scope.vaccineStationType)
         }).error(function() {});
 
         $scope.isSelectedG = true;
@@ -502,6 +512,7 @@ function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuS
                 $scope.isSelectedB = false;
             }
         };
+
         $(".select-area .select-value").each(function() {
             if ($(this).next("select").find("option:selected").length != 0) {
                 $(this).text($(this).next("select").find("option:selected").text());
@@ -511,5 +522,47 @@ function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuS
             var value = $(this).find("option:selected").text();
             $(this).parent(".select-area").find(".select-value").text(value);
         });
+        $scope.submit = function() {
+            if ($scope.info.babyName == "") {
+                alert("宝宝姓名不能为空！");
+                return;
+            }
+            if ($scope.sexItem == null) {
+                alert("宝宝性别不能为空！");
+                return;
+            }
+            if ($("#babyBirthday").val() == "") {
+                alert("宝宝生日不能为空！");
+                return;
+            }
+            if ($scope.info.babyNum == "") {
+                alert("宝宝接种编号不能为空！");
+                return;
+            }
+            if ($scope.info.vaccineStation.vaccineStationName == "") {
+                alert("宝宝疫苗站不能为空！");
+                return;
+            }
+            var information = {
+                "openId": $scope.openId,
+                "birthday": $("#babyBirthday").val(),
+                "name": encodeURI(encodeURI($scope.info.babyName)),
+                "sex": $scope.sexItem,
+                "QRCode": $scope.QRCode,
+                "babySeedNumber": $scope.info.babyNum,
+                "vaccineStationId": $scope.info.vaccineStation.vaccineStationId,
+                "vaccineStationName":encodeURI(encodeURI($scope.info.vaccineStation.vaccineStationName))
+            };
+            $http.post(ServiceConfig.vaccine_saveBabyVaccine, information).success(function(data) {
+                console.log(data);
+                if (data.status == "success") {
+                    wx.closeWindow();
+                } else if (data.status == "failure") {
+                    alert("宝宝信息保存失败！")
+                } else if (data.status == "UserInfoAlready") {
+                    alert("宝宝信息已存在！")
+                }
+            }).error(function() {});
+        };
     }
 ]);

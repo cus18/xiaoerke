@@ -3,14 +3,6 @@ package com.cxqm.xiaoerke.modules.vaccine.service;
 
 import com.cxqm.xiaoerke.modules.vaccine.entity.*;
 
-import java.util.List;
-
-import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
-import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo;
-import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
-import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo;
-import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +21,8 @@ public interface VaccineService {
     List<HashMap<String,Object>> getUserWillVaccination(HashMap<String, Object> searchMap);
 
     int insertVaccineSendMessage(VaccineSendMessageVo record);
+
+    int updateByPrimaryKeyWithBLOBs(VaccineSendMessageVo record);
 
     List<VaccineInfoWithBLOBsVo> findVaccineList(VaccineInfoWithBLOBsVo vo);
 

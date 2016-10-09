@@ -1,6 +1,14 @@
 app.controller('VaccineIndexController', [
-    '$scope', '$http', 'ServiceConfig',
-    function($scope, $http, ServiceConfig) {
+    '$scope', '$http', 'ServiceConfig', '$stateParams',
+    function($scope, $http, ServiceConfig, $stateParams) {
+        $scope.info = {
+            babyName: "",
+            babyNum: "",
+            vaccineStation: "请选择>"
+        }
+        $scope.openId = $stateParams.openId;
+        $scope.QRCode = $stateParams.QRCode;
+        $scope.sexItem = "";
         $scope.showInput = function() {
             var date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
             $("#babyBirthday").mobiscroll().date();
@@ -30,8 +38,9 @@ app.controller('VaccineIndexController', [
             $("#babyBirthday").mobiscroll("show");
         };
         var data = "";
-        $http.post(ServiceConfig.vaccine_index, data).success(function(data) {
-            console.log(data)
+        $http.post(ServiceConfig.vaccine_getVaccineStation, data).success(function(data) {
+            $scope.vaccineStationType = data.vaccineStationInfo;
+            console.log("$scope.vaccineStationType", $scope.vaccineStationType)
         }).error(function() {});
 
         $scope.isSelectedG = true;
@@ -48,6 +57,7 @@ app.controller('VaccineIndexController', [
                 $scope.isSelectedB = false;
             }
         };
+
         $(".select-area .select-value").each(function() {
             if ($(this).next("select").find("option:selected").length != 0) {
                 $(this).text($(this).next("select").find("option:selected").text());
@@ -57,5 +67,47 @@ app.controller('VaccineIndexController', [
             var value = $(this).find("option:selected").text();
             $(this).parent(".select-area").find(".select-value").text(value);
         });
+        $scope.submit = function() {
+            if ($scope.info.babyName == "") {
+                alert("宝宝姓名不能为空！");
+                return;
+            }
+            if ($scope.sexItem == null) {
+                alert("宝宝性别不能为空！");
+                return;
+            }
+            if ($("#babyBirthday").val() == "") {
+                alert("宝宝生日不能为空！");
+                return;
+            }
+            if ($scope.info.babyNum == "") {
+                alert("宝宝接种编号不能为空！");
+                return;
+            }
+            if ($scope.info.vaccineStation.vaccineStationName == "") {
+                alert("宝宝疫苗站不能为空！");
+                return;
+            }
+            var information = {
+                "openId": $scope.openId,
+                "birthday": $("#babyBirthday").val(),
+                "name": encodeURI(encodeURI($scope.info.babyName)),
+                "sex": $scope.sexItem,
+                "QRCode": $scope.QRCode,
+                "babySeedNumber": $scope.info.babyNum,
+                "vaccineStationId": $scope.info.vaccineStation.vaccineStationId,
+                "vaccineStationName":encodeURI(encodeURI($scope.info.vaccineStation.vaccineStationName))
+            };
+            $http.post(ServiceConfig.vaccine_saveBabyVaccine, information).success(function(data) {
+                console.log(data);
+                if (data.status == "success") {
+                    wx.closeWindow();
+                } else if (data.status == "failure") {
+                    alert("宝宝信息保存失败！")
+                } else if (data.status == "UserInfoAlready") {
+                    alert("宝宝信息已存在！")
+                }
+            }).error(function() {});
+        };
     }
 ]);

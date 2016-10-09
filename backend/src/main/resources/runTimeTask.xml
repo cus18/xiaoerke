@@ -34,11 +34,21 @@
 		<property name="cronExpression" value="0 0 0 * * ?"/>
 	</bean>
 
+	<bean id="babyVaccineRemindQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduledQuarz"/>
+		<property name="targetMethod" value="babyVaccineRemind"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	<bean id="babyVaccineRemindCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="babyVaccineRemindQuarzTask"/>
+		<property name="cronExpression" value="0 0 8 * * ?"/>
+	</bean>
+
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
 				<ref bean="consultStatisticCronTrigger"/>
-
+				<ref bean="babyVaccineRemindCronTrigger"/>
 				<ref bean="updateOlyGamesCronTrigger"/>
 			</list>
 		</property>

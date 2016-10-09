@@ -10,7 +10,6 @@
       <module fileurl="file://$PROJECT_DIR$/keeper/keeper.iml" filepath="$PROJECT_DIR$/keeper/keeper.iml" />
       <module fileurl="file://$PROJECT_DIR$/market/market.iml" filepath="$PROJECT_DIR$/market/market.iml" />
       <module fileurl="file://$PROJECT_DIR$/titan/titan.iml" filepath="$PROJECT_DIR$/titan/titan.iml" />
-      <module fileurl="file://$PROJECT_DIR$/vaccine/vaccine.iml" filepath="$PROJECT_DIR$/vaccine/vaccine.iml" />
       <module fileurl="file://$PROJECT_DIR$/wisdom/wisdom.iml" filepath="$PROJECT_DIR$/wisdom/wisdom.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke.iml" filepath="$PROJECT_DIR$/xiaoerke.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity.iml" filepath="$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity.iml" />

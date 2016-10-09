@@ -5,7 +5,7 @@
     <div class="message">
         <ul>
             <li>宝宝姓名
-                <input type="text">
+                <input type="text" ng-model="info.babyName">
             </li>
             <li>宝宝性别
                 <span ng-style="isSelectedB?{'background-color':'#5F9FF9', color: '#fff'}:{'background-color':'#fff', color: '#333'}" ng-click=" selectSex(0)">男宝</span>
@@ -14,23 +14,19 @@
                 <input type="text" readonly="readonly" id="babyBirthday" placeholder="选择宝宝的出生日期" ng-click="showInput()">
             </li>
             <li>接种编号
-                <input type="text">
+                <input type="text" ng-model="info.babyNum">
             </li>
             <li>
                 疫苗站
-                <!-- ng-model="selectedMessage" ng-change="setSearchMessageType(selectedMessage.searchType)" ng-options="date.searchContent for date in searchMessageType" -->
                 <div class="select-area">
-                    <div class="select-value"></div>
-                    <select>
-                        <option>请选择></option>
-                        <option>甘肃</option>
-                        <option>兰州</option>
+                    <div class="select-value">请选择></div>
+                    <select ng-model="info.vaccineStation" ng-options="date.vaccineStationName for date in vaccineStationType">
                     </select>
                 </div>
             </li>
         </ul>
     </div>
     <div class="confirm ">
-        <div class="submit " ng-click="submit() ">确定</div>
+        <div class="submit " ng-click="submit()">确定</div>
     </div>
 </div>

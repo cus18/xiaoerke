@@ -4,13 +4,16 @@ import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo;
 import com.cxqm.xiaoerke.modules.vaccine.service.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.util.DecodeUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,13 +22,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.*;
 
 /**
  * Created by Administrator on 2016/09/05 0024.
  */
 @Controller
-@RequestMapping(value = "vaccine")
+@RequestMapping(value = "vaccineUser")
 public class VaccineUserController {
 
     @Autowired
@@ -33,6 +38,12 @@ public class VaccineUserController {
 
     @Autowired
     private SessionRedisCache sessionRedisCache;
+
+    @Autowired
+    private SystemService systemService;
+
+    @Autowired
+    private OlyGamesService olyGamesService;
 
 
     /**
@@ -55,8 +66,9 @@ public class VaccineUserController {
 //        params.put("vaccineStationId", "1");
 //        params.put("vaccineStationName", "朝阳区疫苗站");
 //        saveBabyVaccine(params);
-        getVaccineStation();
-
+//        babyVaccineRemind();
+        String userQRCode = olyGamesService.getUserQRCode("YM_01");//二维码
+        System.out.println("================="+userQRCode+"==============");
     }
 
     /**
@@ -86,17 +98,20 @@ public class VaccineUserController {
         VaccineBabyInfoVo vaccineBabyInfoVo = new VaccineBabyInfoVo();
         vaccineBabyInfoVo.setSysUserId(openId);
         VaccineBabyInfoVo insertCheckVo = vaccineService.selectByVaccineBabyInfoVo(vaccineBabyInfoVo);
-        if (StringUtils.isNotBlank(insertCheckVo.getBabyName())) {
+        if (null != insertCheckVo&&StringUtils.isNotBlank(insertCheckVo.getBabyName())) {
             response.put("status", "UserInfoAlready");
-        } else {
+        } else {try {
             vaccineBabyInfoVo.setBirthday(DateUtils.StrToDate(String.valueOf(params.get("birthday")), "date"));
-            vaccineBabyInfoVo.setBabyName(String.valueOf(params.get("name")));
+            vaccineBabyInfoVo.setBabyName(URLDecoder.decode(String.valueOf(params.get("name")), "UTF-8"));
             vaccineBabyInfoVo.setBabySex(String.valueOf(params.get("sex")));
             vaccineBabyInfoVo.setBabySeedNumber(String.valueOf(params.get("babySeedNumber")));
             vaccineBabyInfoVo.setVaccineStationId(Integer.valueOf(String.valueOf(params.get("vaccineStationId"))));
             vaccineBabyInfoVo.setCreateBy(openId);
             vaccineBabyInfoVo.setCreateTime(new Date());
-            vaccineBabyInfoVo.setVaccineStationName(String.valueOf(params.get("vaccineStationName")));
+            vaccineBabyInfoVo.setVaccineStationName(URLDecoder.decode(String.valueOf(params.get("vaccineStationName")), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
             int insertFlag = vaccineService.insertSelective(vaccineBabyInfoVo);
             if (insertFlag > 0) {
                 String content = "恭喜你，疫苗提醒开通成功！请注意给宝宝按时接种疫苗哦~~";
@@ -226,6 +241,8 @@ public class VaccineUserController {
         response.put("vaccineStationInfo", vaccineStationVos);
         return response;
     }
+
+
 
 
 }
