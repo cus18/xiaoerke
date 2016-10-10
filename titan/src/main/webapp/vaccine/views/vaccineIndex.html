@@ -19,8 +19,9 @@
             <li>
                 疫苗站
                 <div class="select-area">
-                    <div class="select-value">请选择></div>
+                    <div class="select-value"></div>
                     <select ng-model="info.vaccineStation" ng-options="date.vaccineStationName for date in vaccineStationType">
+                        <option value="">请选择></option>
                     </select>
                 </div>
             </li>

@@ -16,7 +16,7 @@ module.exports = {
             method: "POST",
             host: "120.25.161.33",
             port: 80,
-            path: "/angel/vaccineUser/getVaccineStation",
+            path: "/titan/vaccineUser/getVaccineStation",
             headers: {
                 "Content-Type": 'application/json',
                 "Content-Length": data.length
@@ -49,7 +49,7 @@ module.exports = {
             method: "POST",
             host: "120.25.161.33",
             port: 80,
-            path: "/angel/vaccineUser/saveBabyVaccine",
+            path: "/titan/vaccineUser/saveBabyVaccine",
             headers: {
                 "Content-Type": 'application/json',
                 "Content-Length": data.length
