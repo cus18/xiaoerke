@@ -13,7 +13,6 @@ import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo;
 import com.cxqm.xiaoerke.modules.vaccine.service.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.connection.util.DecodeUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,7 +67,7 @@ public class VaccineUserController {
 //        saveBabyVaccine(params);
 //        babyVaccineRemind();
         String userQRCode = olyGamesService.getUserQRCode("YM_01");//二维码
-        System.out.println("================="+userQRCode+"==============");
+        System.out.println("=================" + userQRCode + "==============");
     }
 
     /**
@@ -93,25 +92,26 @@ public class VaccineUserController {
         String token = (String) userWechatParam.get("token");
         String openId = String.valueOf(params.get("openId"));
         String QRCode = String.valueOf(params.get("QRCode"));
-        searchMap.put("QRCode", QRCode);
+        searchMap.put("QRCode", QRCode.split("_")[2]);
         searchMap.put("openId", openId);
         VaccineBabyInfoVo vaccineBabyInfoVo = new VaccineBabyInfoVo();
         vaccineBabyInfoVo.setSysUserId(openId);
         VaccineBabyInfoVo insertCheckVo = vaccineService.selectByVaccineBabyInfoVo(vaccineBabyInfoVo);
-        if (null != insertCheckVo&&StringUtils.isNotBlank(insertCheckVo.getBabyName())) {
+        if (null != insertCheckVo && StringUtils.isNotBlank(insertCheckVo.getBabyName())) {
             response.put("status", "UserInfoAlready");
-        } else {try {
-            vaccineBabyInfoVo.setBirthday(DateUtils.StrToDate(String.valueOf(params.get("birthday")), "date"));
-            vaccineBabyInfoVo.setBabyName(URLDecoder.decode(String.valueOf(params.get("name")), "UTF-8"));
-            vaccineBabyInfoVo.setBabySex(String.valueOf(params.get("sex")));
-            vaccineBabyInfoVo.setBabySeedNumber(String.valueOf(params.get("babySeedNumber")));
-            vaccineBabyInfoVo.setVaccineStationId(Integer.valueOf(String.valueOf(params.get("vaccineStationId"))));
-            vaccineBabyInfoVo.setCreateBy(openId);
-            vaccineBabyInfoVo.setCreateTime(new Date());
-            vaccineBabyInfoVo.setVaccineStationName(URLDecoder.decode(String.valueOf(params.get("vaccineStationName")), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        } else {
+            try {
+                vaccineBabyInfoVo.setBirthday(DateUtils.StrToDate(String.valueOf(params.get("birthday")), "date"));
+                vaccineBabyInfoVo.setBabyName(URLDecoder.decode(String.valueOf(params.get("name")), "UTF-8"));
+                vaccineBabyInfoVo.setBabySex(String.valueOf(params.get("sex")));
+                vaccineBabyInfoVo.setBabySeedNumber(String.valueOf(params.get("babySeedNumber")));
+                vaccineBabyInfoVo.setVaccineStationId(Integer.valueOf(String.valueOf(params.get("vaccineStationId"))));
+                vaccineBabyInfoVo.setCreateBy(openId);
+                vaccineBabyInfoVo.setCreateTime(new Date());
+                vaccineBabyInfoVo.setVaccineStationName(URLDecoder.decode(String.valueOf(params.get("vaccineStationName")), "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             int insertFlag = vaccineService.insertSelective(vaccineBabyInfoVo);
             if (insertFlag > 0) {
                 String content = "恭喜你，疫苗提醒开通成功！请注意给宝宝按时接种疫苗哦~~";
@@ -162,13 +162,13 @@ public class VaccineUserController {
                     sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n  待办事项:宝宝在" + DateUtils.formatDate(new Date(sendTime.getTimeInMillis())) +
                             "后需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
                     Integer nextVaccineId = Integer.valueOf(String.valueOf(map.get("nextVaccineId")));
-                    saveVaccineMessage(nextVaccineId,openId, sendContent, new Date(sendTime.getTimeInMillis()), "7");
+                    saveVaccineMessage(nextVaccineId, openId, sendContent, new Date(sendTime.getTimeInMillis()), "7");
 
                     //保存提前一天提醒消息
                     sendTime.add(Calendar.HOUR_OF_DAY, 6);
                     sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n" +
                             "  待办事项:明天宝宝需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
-                    saveVaccineMessage(nextVaccineId,openId, sendContent, new Date(sendTime.getTimeInMillis()), "1");
+                    saveVaccineMessage(nextVaccineId, openId, sendContent, new Date(sendTime.getTimeInMillis()), "1");
 
                 }
             }
@@ -185,13 +185,13 @@ public class VaccineUserController {
     }
 
 
-    private void saveVaccineMessage(Integer nextVaccineId,String openId, String sendContent, Date sendTime, String msgType) {
+    private void saveVaccineMessage(Integer nextVaccineId, String openId, String sendContent, Date sendTime, String msgType) {
         VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
         vaccineSendMessageVo.setNextVaccineId(nextVaccineId);
         vaccineSendMessageVo.setSysUserId(openId);
         vaccineSendMessageVo.setMsgType(msgType);
         List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
-        if(vaccineSendMessageVos==null || vaccineSendMessageVos.size() == 0){
+        if (vaccineSendMessageVos == null || vaccineSendMessageVos.size() == 0) {
             vaccineSendMessageVo.setContent(sendContent);
             vaccineSendMessageVo.setCreateBy(openId);
             vaccineSendMessageVo.setSendTime(sendTime);
@@ -222,11 +222,11 @@ public class VaccineUserController {
      * <p/>
      * params:{}
      * <p/>
-     *"vaccineStationInfo":
+     * "vaccineStationInfo":
      * [
-     *   {"vaccineStationName":"朝阳区疫苗站","vaccineStationId":1},
-     *   {"vaccineStationName":"海淀区疫苗站","vaccineStationId":2},
-     *   {"vaccineStationName":"昌平区疫苗站","vaccineStationId":3}
+     * {"vaccineStationName":"朝阳区疫苗站","vaccineStationId":1},
+     * {"vaccineStationName":"海淀区疫苗站","vaccineStationId":2},
+     * {"vaccineStationName":"昌平区疫苗站","vaccineStationId":3}
      * ]
      */
     @RequestMapping(value = "/getVaccineStation", method = {RequestMethod.POST, RequestMethod.GET})
@@ -234,15 +234,13 @@ public class VaccineUserController {
     public Map<String, Object> getVaccineStation() {
         HashMap<String, Object> response = new HashMap<String, Object>();
         List<VaccineStationVo> vaccineStationVos = vaccineService.selectByVaccineStationVo(new VaccineStationVo());
-        for(VaccineStationVo vaccineStationVo : vaccineStationVos){
+        for (VaccineStationVo vaccineStationVo : vaccineStationVos) {
             vaccineStationVo.setVaccineStationId(String.valueOf(vaccineStationVo.getId()));
             vaccineStationVo.setVaccineStationName(vaccineStationVo.getName());
         }
         response.put("vaccineStationInfo", vaccineStationVos);
         return response;
     }
-
-
 
 
 }
