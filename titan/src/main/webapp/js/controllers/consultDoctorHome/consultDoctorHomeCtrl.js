@@ -18,6 +18,8 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
                 $scope.practitionerCertificateNo = data.practitionerCertificateNo;//医生注册号
                 $scope.personNum = data.personNum;//医生问诊量
                 $scope.evaluationList = data.evaluationList;//医生评论
+                $scope.allEvaluationNum = data.allEvaluationNum;//评论条数
+                $scope.allEvaluationNum = '0' ? $scope.allEvaluationNum = '1':$scope.allEvaluationNum = $scope.allEvaluationNum;
                 $scope.description = data.description.split(" ");//医生介绍
                 $scope.rate = data.rate*100;//医生有用百分比
                 $scope.gender = data.gender;
