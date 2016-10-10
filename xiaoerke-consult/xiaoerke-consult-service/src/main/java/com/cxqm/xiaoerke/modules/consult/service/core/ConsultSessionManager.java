@@ -17,6 +17,7 @@ import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import org.apache.shiro.crypto.hash.Hash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
@@ -285,6 +286,118 @@ public enum ConsultSessionManager {
             sessionRedisCache.putSessionIdConsultSessionPair(sessionId , consultSession);
         }
         return consultSession;
+    }
+
+    /**
+     * 合作公司创建consultSession
+     * @param consultSession userId
+     *
+     * @return
+     */
+    public HashMap<String,Object> createUserConsultSessionForCoop(RichConsultSession consultSession){
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        Channel csChannel = null ;
+        ConsultCountTotal consultCountTotal = new ConsultCountTotal();
+        consultCountTotal.setUserId(String.valueOf(consultSession.getUserId()));
+        consultCountTotal.setCreateDate(new Date());
+        int count = this.getConsultTotal(consultCountTotal);
+
+        List currentDistributorChannel = new ArrayList();
+        if (distributors != null && distributors.size() > 0) {
+            for (Map.Entry<String, Channel> entry : distributors.entrySet()) {
+                if (entry.getValue().isActive()) {
+                    HashMap<String, Channel> currentActiveChannel = new HashMap<String, Channel>();
+                    currentActiveChannel.put(entry.getKey(), entry.getValue());
+                    currentDistributorChannel.add(currentActiveChannel);
+                } else {
+                    distributors.remove(entry.getKey());
+                    csUserChannelMapping.remove(entry.getKey());
+                    userChannelMapping.remove(entry.getKey());
+                }
+            }
+            if (currentDistributorChannel != null && currentDistributorChannel.size() > 0) {
+                int number = count % currentDistributorChannel.size();
+                HashMap<String, Channel> hashMap = (HashMap) currentDistributorChannel.get(number);
+                for (Map.Entry<String, Channel> entry : hashMap.entrySet()) {
+                    consultSession.setCsUserId(entry.getKey());
+                    consultSession.setUserType(ConstantUtil.DISTRIBUTOR.getVariable());
+                    consultCountTotal.setCsUserId(entry.getKey());
+                    User csUser = systemService.getUserById(entry.getKey());
+                    consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+                    csChannel = entry.getValue();
+                }
+            }
+        }
+
+        if (csChannel != null) {
+            this.updateConsultCountTotal(consultCountTotal);
+        } else {
+            /***接诊员不在线，随机分配在线医生***/
+            /**
+             *  jiangzhongge modify
+             *  2016年7月4日11:52:04
+             */
+            this.deleteConsultCountTotal(consultCountTotal);
+            Map<String, Channel> currentCSUserChannelMap = csUserChannelMapping;
+            Channel nowChannel = null;
+            if (currentCSUserChannelMap.size() > 0) {
+                for (int i = 0; i < currentCSUserChannelMap.size(); i++) {
+                    //所有的接诊员不在线，随机分配一个在线医生
+                    String csUserId = RandomUtils.getRandomKeyFromMap(currentCSUserChannelMap);
+                    nowChannel = currentCSUserChannelMap.get(csUserId);
+                    if (nowChannel != null && nowChannel.isActive()) {
+                        User csUser = systemService.getUserById(csUserId);
+                        consultSession.setCsUserId(csUserId);
+                        consultSession.setUserType(ConstantUtil.CONSULTDOCTOR.getVariable());
+                        consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+                        csChannel = nowChannel;
+                        break;
+                    } else {
+                        csUserChannelMapping.remove(csUserId);
+                        csUserChannelMapping.remove(csUserId);
+                        userChannelMapping.remove(csUserId);
+                        currentCSUserChannelMap.remove(csUserId);
+                    }
+                }
+            }
+            /**
+             * @author jiangzg
+             * @date 2016-7-7 10:33:29
+             */
+            if (csChannel == null) {
+                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                String content = "抱歉，暂时没有医生在线，请稍后使用服务！";
+                /**
+                 * 推送消息给合作方用户
+                 */
+                WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), content);
+                return null;
+            }
+        }
+
+       /* if (StringUtils.isNotNull(consultSession.getCsUserId())) {
+            HashMap<String, Object> perInfo = userInfoService.findPersonDetailInfoByUserId(consultSession.getCsUserId());
+            consultSession.setCsUserName((String) perInfo.get("name"));
+        }*/
+
+        //可开启线程进行记录
+        if (consultSession.getCsUserId() != null) {
+            //查询该用户之前咨询次数
+            Map praiseParam = new HashMap();
+            praiseParam.put("userId", consultSession.getUserId());
+            Integer sessionCount = consultSessionService.getConsultSessionByUserId(praiseParam);
+            consultSession.setConsultNumber(sessionCount + 1);
+            consultSessionService.saveConsultInfo(consultSession);
+            Integer sessionId = consultSession.getId();
+            System.out.println("sessionId-----" + sessionId + "consultSession.getCsUserId()" + consultSession.getUserId());
+            saveCustomerEvaluation(consultSession);
+            response.put("csChannel", csChannel);
+            response.put("sessionId", sessionId);
+            response.put("consultSession", consultSession);
+            return response;
+        } else {
+            return null;
+        }
     }
 
     public HashMap<String, Object> createUserWXConsultSession(RichConsultSession consultSession) {

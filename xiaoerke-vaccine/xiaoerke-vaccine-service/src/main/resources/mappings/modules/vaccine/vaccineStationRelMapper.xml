@@ -126,7 +126,7 @@
     INNER JOIN vaccine_baby_info vbi on vsr.vaccine_station_id = vbi.vaccine_station_id
     INNER JOIN vaccine_info vi on vi.id = vsr.vaccine_id
     INNER JOIN vaccine_station vs on vs.id = vsr.vaccine_station_id
-    where vi.QR_code = #{QRCode} and vbi.sys_user_id = #{openId}
+    where vi.id = #{QRCode} and vbi.sys_user_id = #{openId}
     GROUP BY vbi.sys_user_id
   </select>
 
