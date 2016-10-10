@@ -4,10 +4,7 @@ import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
-import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
-import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
-import com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.OperationPromotionService;
@@ -128,6 +125,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     @Autowired
     private SessionRedisCache sessionRedisCache;
 
+    @Autowired
+    private TraceElementsServiceImpl traceElementsService;
+
     private Map<String, OperationPromotionVo> keywordMap;
 
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -161,12 +161,17 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 respMessage = processScanEvent(xmlEntity, "oldUser", request, response, sysPropertyVoWithBLOBsVo);
                 //疫苗提醒
                 babyVaccineRemind(xmlEntity, token,sysPropertyVoWithBLOBsVo);
+                //微量元素检测
+                traceElementsDetection(xmlEntity,token);
 
             } else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
                 //扫描关注公众号或者搜索关注公众号都在其中
                 respMessage = processSubscribeEvent(xmlEntity, request, response, sysPropertyVoWithBLOBsVo);
                 //疫苗提醒
                 babyVaccineRemind(xmlEntity,token,sysPropertyVoWithBLOBsVo);
+
+                //微量元素检测
+                traceElementsDetection(xmlEntity,token);
             }
             // 取消订阅
             else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
@@ -189,7 +194,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String token = (String) userWechatParam.get("token");
             try {
                 //关键字回复功能
-                if (keywordRecovery(xmlEntity, token)) {
+                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)) {
                     return "success";
                 }
             } catch (Exception e) {
@@ -206,6 +211,28 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             }
         }
         return respMessage;
+    }
+
+    private void traceElementsDetection(ReceiveXmlEntity xmlEntity, String token){
+        String EventKey = xmlEntity.getEventKey();
+        String QRCode = EventKey.replace("qrscene_", "");
+        if(QRCode.contains("PD_WLYS_")){
+            String openId = xmlEntity.getFromUserName();
+//            查询当前用户是否已经生成标示,为用户再数据库创建相关信息,唯一标示2016100110500000(年月日时分加四位数字 不能重复)
+            // 查询max的id值
+            TraceElementsVo traceElementsVo =traceElementsService.selectByOpenid(openId);
+            String userNo = DateUtils.formatDateToStr(new Date(),"yyyy MMdd");
+            if(null == traceElementsVo){
+                traceElementsVo = new TraceElementsVo();
+                traceElementsVo.setOpenid(openId);
+                traceElementsVo.setUserNo(userNo);
+                traceElementsService.insertSelective(traceElementsVo);
+//                traceElementsVo.setUserNo(userNo+" "+traceElementsVo.getId());
+//                traceElementsService.updateByPrimaryKeySelective(traceElementsVo);
+            }
+//            推送相关文案
+            WechatUtil.sendMsgToWechat(token,openId,"检测编码:"+userNo+" "+String.format("%04d", traceElementsVo.getId())+"\n\n此编码是检测您宝宝微量元素的唯一编码，请将编码标注在检测样本上，以便您能即时接收到检测结果！[爱心]");
+        }
     }
 
     private void babyVaccineRemind(ReceiveXmlEntity xmlEntity, String token,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
@@ -993,6 +1020,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 queryDate.addCriteria(criteria);
                 queryDate.with(new Sort(new Sort.Order(Sort.Direction.ASC, "date"))).limit(1);
                 List<SpecificChannelInfoVo> infoList = specificChannelInfoMongoDBService.queryList(queryDate);
+                //此条件判断当前用户是否参与过特殊渠道赠送活动,多个活动不能同时参与 ,如修改则需要在增加渠道判断条件
                 if (infoList.size() == 0) {
                     WechatUtil.sendMsgToWechat(token, openid, vo.getDocuments());
                     BabyCoinVo babyCoin = new BabyCoinVo();
@@ -1468,13 +1496,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
      * @return boolean
      * 根据返回状态判断是否结束程序
      */
-    public boolean keywordRecovery(ReceiveXmlEntity xmlEntity, String token) {
+    public boolean keywordRecovery(ReceiveXmlEntity xmlEntity, String token, OperationPromotionStatusVo type) {
 //        做一个缓存放在系统中
         if (null == keywordMap) {
             keywordMap = operationPromotionService.getAllRoleListByKeyword();
         }
         OperationPromotionVo roleInfo = keywordMap.get(xmlEntity.getContent());
-        if (null == roleInfo) {
+        if (null == roleInfo||!roleInfo.getMessageType().equals(type.getVariable())) {
             return false;
         }
 
