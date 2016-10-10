@@ -210,13 +210,14 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
     private void babyVaccineRemind(ReceiveXmlEntity xmlEntity, String token,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
 
-        String openId = xmlEntity.getFromUserName();
-        VaccineBabyInfoVo vaccineBabyInfoVo = new VaccineBabyInfoVo();
-        vaccineBabyInfoVo.setSysUserId(xmlEntity.getFromUserName());
-        vaccineBabyInfoVo = vaccineService.selectByVaccineBabyInfoVo(vaccineBabyInfoVo);
         String EventKey = xmlEntity.getEventKey();
         String QRCode = EventKey.replace("qrscene_", "");
+
         if(QRCode.contains("YM")){
+            String openId = xmlEntity.getFromUserName();
+            VaccineBabyInfoVo vaccineBabyInfoVo = new VaccineBabyInfoVo();
+            vaccineBabyInfoVo.setSysUserId(xmlEntity.getFromUserName());
+            vaccineBabyInfoVo = vaccineService.selectByVaccineBabyInfoVo(vaccineBabyInfoVo);
             if (vaccineBabyInfoVo == null || StringUtils.isBlank(vaccineBabyInfoVo.getBabySeedNumber())) {
                 String content = "欢迎加入宝大夫疫苗提醒功能\n"+
                         "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="
