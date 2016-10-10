@@ -389,8 +389,9 @@ public class ConsultDoctorController extends BaseController {
                             }
                             WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                             st =  "医生的及时解答很给力，有木有？下次还想要？\n戳戳手指，邀请好友加入宝大夫，免费机会就来咯！\n"+
-                                    "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_TS_N3'>>>邀请好友赚机会</a>";
+                                    "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_3_backend'>>>邀请好友赚机会</a>";
                             WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
+                            LogUtils.saveLog("ZXYQ_RK_TS_N3",userId);
                         }
                         //分享的代码
 //                    patientRegisterPraiseService.sendRemindMsgToUser(userId,sessionId);
