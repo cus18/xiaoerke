@@ -213,7 +213,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         String EventKey = xmlEntity.getEventKey();
         String QRCode = EventKey.replace("qrscene_", "");
 
-        if(QRCode.contains("YM")){
+        if(QRCode.indexOf("YM")!=-1){
             String openId = xmlEntity.getFromUserName();
             VaccineBabyInfoVo vaccineBabyInfoVo = new VaccineBabyInfoVo();
             vaccineBabyInfoVo.setSysUserId(xmlEntity.getFromUserName());
