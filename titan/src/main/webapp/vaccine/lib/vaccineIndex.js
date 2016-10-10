@@ -3,8 +3,7 @@ app.controller('VaccineIndexController', [
     function($scope, $http, ServiceConfig, $stateParams) {
         $scope.info = {
             babyName: "",
-            babyNum: "",
-            vaccineStation: "请选择>"
+            babyNum: ""
         }
         $scope.openId = $stateParams.openId;
         $scope.QRCode = $stateParams.QRCode;
@@ -84,7 +83,7 @@ app.controller('VaccineIndexController', [
                 alert("宝宝接种编号不能为空！");
                 return;
             }
-            if ($scope.info.vaccineStation.vaccineStationName == "") {
+            if ($scope.info.vaccineStation == undefined) {
                 alert("宝宝疫苗站不能为空！");
                 return;
             }
