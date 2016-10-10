@@ -250,6 +250,9 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         Map<String,Object> param = new HashMap<String, Object>();
         param.put("doctorId", csUserId);
         List<Map<String,Object>> evaluationList = patientRegisterPraiseService.findDoctorEvaluationById(param);
+        param.put("startRowNo",0);
+        param.put("pageSize",10000);
+        List<Map<String,Object>> allEvaluationList = patientRegisterPraiseService.findDoctorAllEvaluationByInfo(param);
         for(Map<String,Object> temp : evaluationList){
             Map<String, Object> wechatMap = getWechatMessage((String)temp.get("openid"));
             if(wechatMap.get("subscribe")!=null && (Integer)wechatMap.get("subscribe") == 1){
@@ -269,6 +272,7 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         returnMap.put("department",vo.getDepartment());
         returnMap.put("description",vo.getDescription() + " " + vo.getSkill());
         returnMap.put("evaluationList",evaluationList);
+        returnMap.put("allEvaluationNum",allEvaluationList.size());
         returnMap.put("personNum",num);
         return returnMap;
     }
