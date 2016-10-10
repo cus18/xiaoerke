@@ -65,7 +65,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
             }
         })
         .state('vaccineIndex', {
-            url: '/:openId,:QRCode',
+            url: '/',
             views: {
                 '': {
                     templateUrl: 'views/vaccineIndex.html',
@@ -146,75 +146,75 @@ function($rootScope){
 		}
 	}
 }]);
-;
-app.controller('LoginController',
-['$scope', '$http', '$rootScope', '$cookieStore', '$timeout', '$location', 'ServiceConfig', 
-function($scope, $http, $rootScope, $cookieStore, $timeout, $location, ServiceConfig) {
-	$scope.login = function() {
-		var email = $scope.email,
-			password = $scope.password,
-			data = {
-				'email': email,
-				'password': password
-			};
-		$http.post(ServiceConfig.user_login, data).success(function(data) {
-			if (data.status) {
-				$cookieStore.put('user', data);
-				$location.path('/index/user');
-			} else {
-				var width = window.innerWidth;
-				Tip.setTip(250, (parseInt(width) - 240) / 2, null, null, 260, 80, '难倒你忘记了密码...', 1);
-				$timeout(Tip.hideTip, 3000);
-			}
-		}).error(function() {
-			var width = window.innerWidth;
-			Tip.setTip(250, (parseInt(width) - 240) / 2, null, null, 260, 80, '服务君该回家养老了...', 1);
-			$timeout(Tip.hideTip, 3000);
-		});
-	};
+;app.controller('LoginController', ['$scope', '$http', '$rootScope', '$cookieStore', '$timeout', '$location', 'ServiceConfig',
+    function($scope, $http, $rootScope, $cookieStore, $timeout, $location, ServiceConfig) {
+        $scope.login = function() {
+            var email = $scope.email,
+                password = $scope.password,
+                data = {
+                    'email': email,
+                    'password': password
+                };
+            $http.post(ServiceConfig.user_login, data).success(function(data) {
+                if (data.status) {
+                    $cookieStore.put('user', data);
+                    $location.path('/index/user');
+                } else {
+                    var width = window.innerWidth;
+                    Tip.setTip(250, (parseInt(width) - 240) / 2, null, null, 260, 80, '难倒你忘记了密码...', 1);
+                    $timeout(Tip.hideTip, 3000);
+                }
+            }).error(function() {
+                var width = window.innerWidth;
+                Tip.setTip(250, (parseInt(width) - 240) / 2, null, null, 260, 80, '服务君该回家养老了...', 1);
+                $timeout(Tip.hideTip, 3000);
+            });
+        };
 
-	$scope.goRegister = function() {
-		$location.path('/register');
-	};
-}]);;
-app.controller('ArticleController', 
-['$scope', '$rootScope', '$timeout', '$http', '$cookieStore', 'ServiceConfig', 'MenuSelect',
-function($scope, $rootScope, $timeout, $http, $cookieStore, ServiceConfig, MenuSelect) {
-	var user = $cookieStore.get('user');
-	var width = window.innerWidth;
-	
-	MenuSelect.setSelected('select_article');
-	
-	$scope.author = '';
-	
-	$scope.submit = function(title, author, link, ref, content){
-		var article = {
-			token: user.token,
-			title: title || '',
-			author: author || '',
-			link: link || '',
-			ref: ref || '',
-			content: content || []
-		};
-		
-		$http.post(ServiceConfig.article_create, article).success(function(data){
-			if(data.status){
-				$scope.author = '';
-				$scope.title = '';
-				$scope.author = '';
-				$scope.ref = '';
-				$scope.link = '';
-				$scope.content = '';
-				
-				Tip.setTip(250, (parseInt(width) - 240) / 2, null, null, 260, 80, '文章发表成功....', 1);
-				$timeout(Tip.hideTip, 3000);
-			}else{
-				Tip.setTip(250, (parseInt(width) - 240) / 2, null, null, 260, 80, '文章发表失败....', 1);
-				$timeout(Tip.hideTip, 3000);
-			}
-		});
-	};
-}]);;
+        $scope.goRegister = function() {
+            $location.path('/register');
+        };
+    }
+]);
+;app.controller('ArticleController', ['$scope', '$rootScope', '$timeout', '$http', '$cookieStore', 'ServiceConfig', 'MenuSelect',
+    function($scope, $rootScope, $timeout, $http, $cookieStore, ServiceConfig, MenuSelect) {
+        var user = $cookieStore.get('user');
+        var width = window.innerWidth;
+
+        MenuSelect.setSelected('select_article');
+
+        $scope.author = '';
+
+        $scope.submit = function(title, author, link, ref, content) {
+            var article = {
+                token: user.token,
+                title: title || '',
+                author: author || '',
+                link: link || '',
+                ref: ref || '',
+                content: content || []
+            };
+
+            $http.post(ServiceConfig.article_create, article).success(function(data) {
+                if (data.status) {
+                    $scope.author = '';
+                    $scope.title = '';
+                    $scope.author = '';
+                    $scope.ref = '';
+                    $scope.link = '';
+                    $scope.content = '';
+
+                    Tip.setTip(250, (parseInt(width) - 240) / 2, null, null, 260, 80, '文章发表成功....', 1);
+                    $timeout(Tip.hideTip, 3000);
+                } else {
+                    Tip.setTip(250, (parseInt(width) - 240) / 2, null, null, 260, 80, '文章发表失败....', 1);
+                    $timeout(Tip.hideTip, 3000);
+                }
+            });
+        };
+    }
+]);
+;
 app.controller('MenuController', [
 '$rootScope', '$location',
 function($rootScope, $location){
@@ -428,38 +428,37 @@ function($scope, $rootScope, $http, $cookieStore, $timeout, ServiceConfig, MenuS
 			}
 		});
 	};
-}]);;
-app.controller('EmailController',
-['$scope', '$rootScope', '$http', '$timeout', '$cookieStore', 'ServiceConfig', 'MenuSelect',
-function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuSelect) {
-	var user = $cookieStore.get('user');
-	var width = window.innerWidth;
-	
-	MenuSelect.setSelected('select_email');
-	
-	$scope.postEmail = function(email){
-		var data = {
-			token: user.token,
-			email: email
-		};
-		
-		$http.post(ServiceConfig.email_findPassword, data).success(function(data){
-			if(data.status){
-				Tip.setTip(250, (parseInt(width) - 240) / 2, null, null, 260, 80, '邮件发送成功....', 1);
-				$timeout(Tip.hideTip, 3000);
-			}else{
-				Tip.setTip(250, (parseInt(width) - 240) / 2, null, null, 260, 80, '邮件发送失败....', 1);
-				$timeout(Tip.hideTip, 3000);
-			}
-		});
-	};
-}]);;app.controller('VaccineIndexController', [
+}]);;app.controller('EmailController', ['$scope', '$rootScope', '$http', '$timeout', '$cookieStore', 'ServiceConfig', 'MenuSelect',
+    function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuSelect) {
+        var user = $cookieStore.get('user');
+        var width = window.innerWidth;
+
+        MenuSelect.setSelected('select_email');
+
+        $scope.postEmail = function(email) {
+            var data = {
+                token: user.token,
+                email: email
+            };
+
+            $http.post(ServiceConfig.email_findPassword, data).success(function(data) {
+                if (data.status) {
+                    Tip.setTip(250, (parseInt(width) - 240) / 2, null, null, 260, 80, '邮件发送成功....', 1);
+                    $timeout(Tip.hideTip, 3000);
+                } else {
+                    Tip.setTip(250, (parseInt(width) - 240) / 2, null, null, 260, 80, '邮件发送失败....', 1);
+                    $timeout(Tip.hideTip, 3000);
+                }
+            });
+        };
+    }
+]);
+;app.controller('VaccineIndexController', [
     '$scope', '$http', 'ServiceConfig', '$stateParams',
     function($scope, $http, ServiceConfig, $stateParams) {
         $scope.info = {
             babyName: "",
-            babyNum: "",
-            vaccineStation: "请选择>"
+            babyNum: ""
         }
         $scope.openId = $stateParams.openId;
         $scope.QRCode = $stateParams.QRCode;
@@ -539,7 +538,7 @@ function($scope, $rootScope, $http, $timeout, $cookieStore, ServiceConfig, MenuS
                 alert("宝宝接种编号不能为空！");
                 return;
             }
-            if ($scope.info.vaccineStation.vaccineStationName == "") {
+            if ($scope.info.vaccineStation == undefined) {
                 alert("宝宝疫苗站不能为空！");
                 return;
             }
