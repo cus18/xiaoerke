@@ -1072,9 +1072,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     private void babyCoinHandler(ReceiveXmlEntity xmlEntity, String token, String marketer) {
         if (marketer.startsWith("110")) {
             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-            String openId = xmlEntity.getFromUserName();
+            String newOpenId = xmlEntity.getFromUserName();
             SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
-            sysWechatAppintInfoVo.setOpen_id(openId);
+            sysWechatAppintInfoVo.setOpen_id(newOpenId);
             SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
             //新用户从来没有关注过的
             if (wechatAttentionVo == null) {
@@ -1099,33 +1099,35 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     babyCoinRecordVo.setSource("invitePresent");
                     int recordflag = babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
 
-                    //给当前用户推送消息
+                    //------------给当前用户推送消息------------
                     String content = "恭喜您获得4次免费咨询儿科专家的机会。\n" +
                             "点击左下角小键盘，即可咨询医生。";
-                    WechatUtil.sendMsgToWechat(token, openId, content);
+                    WechatUtil.sendMsgToWechat(token, newOpenId, content);
 
-                    //给推荐人推送消息
-                    WechatBean wechatBean = WechatUtil.getWechatName(token, openId);
-                    String nickName = wechatBean.getNickname();
-                    if (wechatAttentionVo != null && wechatAttentionVo.getWechat_name() != null) {
-                        nickName = wechatAttentionVo.getWechat_name();
+                    //------------给推荐人推送消息-------------
+                    //获取新用户newUserNickName
+                    WechatBean wechatBean = WechatUtil.getWechatName(token, newOpenId);
+                    String newUserNickName = wechatBean.getNickname();
+                    if(StringUtils.isNull(newUserNickName)){
+                        if (wechatAttentionVo != null && wechatAttentionVo.getWechat_name() != null) {
+                            newUserNickName = wechatAttentionVo.getWechat_name();
+                        }else{
+                            newUserNickName = "了一位朋友";
+                        }
                     }
 
-                    if (StringUtils.isNull(nickName)) {
-                        nickName = "了一位朋友";
-                    }
-                    LogUtils.saveLog("老用户剩余的宝宝币数="+(preCash + olderUser.getCash())+"邀请的好友为："+nickName,olderUser.getOpenId());
-                    String timeContent = "业务状态：您有" + (preCash + olderUser.getCash()) / 99 + "次免费咨询专家的机会，本月还可邀请好友*次\n";
-                    if ((preCash + olderUser.getCash()) / 99 == 0) {
-                        timeContent = "业务状态：你暂时还没有免费咨询转接的机会\n";
-                    }
-                    content = "恭喜您成功邀请 " + nickName + " 加入宝大夫，您的您的宝宝币将增加" + cash + "枚！\n" +
-                            "业务进度：您的宝宝币余额为 " + (preCash + olderUser.getCash()) + "枚\n" +
-                            timeContent + "邀请更多好友加入，获得更多机会！";
-                    WechatUtil.sendMsgToWechat(token, olderUser.getOpenId(), content);
+                    LogUtils.saveLog("老用户剩余的宝宝币数="+(preCash + olderUser.getCash())+"邀请的好友为："+newUserNickName,olderUser.getOpenId());
+
+//                    WechatUtil.sendMsgToWechat(token, olderUser.getOpenId(), content);
+                    String title = "恭喜您成功邀请 " + newUserNickName + " 加入宝大夫，您的您的宝宝币将增加" + cash + "枚！";
+                    String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
+                    String keyword1 = "业务进度：您的宝宝币余额为 " + (preCash + olderUser.getCash()) + "枚";
+                    String keyword2 = "您有" + (preCash + olderUser.getCash()) / 99 + "次免费咨询专家的机会，本月还可邀请好友*次\n";
+                    String remark = "邀请更多好友加入，获得更多机会！";
+                    String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_MBXX";
+                    WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, olderUser.getOpenId(), templateId);
+
                 }
-
-//                }
 
             }
         }
