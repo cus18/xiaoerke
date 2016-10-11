@@ -1110,7 +1110,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         nickName = "了一位朋友";
                     }
                     String timeContent = "业务状态：您有" + (preCash + olderUser.getCash()) / 99 + "次免费咨询专家的机会，本月还可邀请好友*次\n";
-                    if (olderUser.getCash() / 99 == 0) {
+                    if ((preCash + olderUser.getCash()) / 99 == 0) {
                         timeContent = "业务状态：你暂时还没有免费咨询转接的机会\n";
                     }
                     content = "恭喜您成功邀请 " + nickName + " 加入宝大夫，您的您的宝宝币将增加" + cash + "枚！\n" +
