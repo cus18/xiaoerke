@@ -83,9 +83,10 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
 
         //跳转评价详情页
         $scope.goCommentDetails = function () {
-            if($scope.goDetails){
+            /*if($scope.goDetails){
                 $state.go("consultDoctorCommentDetails",{"id":$stateParams.id,"name":$scope.doctorName,"gender":$scope.gender});
-            }
+            }*/
+            $state.go("consultDoctorCommentDetails",{"id":$stateParams.id,"name":$scope.doctorName,"gender":$scope.gender});
         }
 
 

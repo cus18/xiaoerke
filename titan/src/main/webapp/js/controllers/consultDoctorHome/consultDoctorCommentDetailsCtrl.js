@@ -40,10 +40,14 @@ angular.module('controllers', ['ionic']).controller('consultDoctorCommentDetails
                 FindDoctorAllEvaluation.get({"userId":$stateParams.id,"pageNo":num,"pageSize":10},function (data) {
                     if(data.allEvaluationList.length<10){
                         $scope.showMore = false;
+                        for(var i = 0;i<data.allEvaluationList.length;i++){
+                            // $scope.commentList.splice(0,0,data.allEvaluationList[i]);
+                            $scope.commentList.push(data.allEvaluationList[i]);
+                        }
                     }else{
                         // $scope.allEvaluationList = data.allEvaluationList[0];
 
-                        for(var i = 1;i<data.allEvaluationList.length;i++){
+                        for(var i = 0;i<data.allEvaluationList.length;i++){
                             // $scope.commentList.splice(0,0,data.allEvaluationList[i]);
                             $scope.commentList.push(data.allEvaluationList[i]);
                         }
