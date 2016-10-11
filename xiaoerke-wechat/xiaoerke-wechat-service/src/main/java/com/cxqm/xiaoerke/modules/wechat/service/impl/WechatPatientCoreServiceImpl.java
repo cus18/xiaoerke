@@ -1084,21 +1084,25 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //                synchronized (this) {
                 olderUser.setMarketer(marketer);
                 olderUser = babyCoinService.selectByBabyCoinVo(olderUser);//推荐人的babyCoin
+                String oldOpenId = olderUser.getOpenId();
                 if (olderUser.getInviteNumberMonth() <= 20) {
                     Long preCash = olderUser.getCash();
                     olderUser.setCash(Long.valueOf(cash));
                     olderUser.setInviteNumberMonth(1);
                     //推荐人宝宝币加sysPropertyVoWithBLOBsVo.getBabyCoin()个
                     babyCoinService.updateCashByOpenId(olderUser);
+                    Long afterCash = preCash + Long.valueOf(cash);
 
                     BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
                     babyCoinRecordVo.setBalance(Double.valueOf(sysPropertyVoWithBLOBsVo.getBabyCoin()));
                     babyCoinRecordVo.setCreateTime(new Date());
-                    babyCoinRecordVo.setCreateBy(olderUser.getOpenId());
-                    babyCoinRecordVo.setOpenId(olderUser.getOpenId());
+                    babyCoinRecordVo.setCreateBy(oldOpenId);
+                    babyCoinRecordVo.setOpenId(oldOpenId);
                     babyCoinRecordVo.setSource("invitePresent");
                     int recordflag = babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
-
+                    if(recordflag == 0){
+                        throw new RuntimeException("宝宝币插入异常");
+                    }
                     //------------给当前用户推送消息------------
                     String content = "恭喜您获得4次免费咨询儿科专家的机会。\n" +
                             "点击左下角小键盘，即可咨询医生。";
@@ -1116,16 +1120,16 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         }
                     }
 
-                    LogUtils.saveLog("老用户剩余的宝宝币数="+(preCash + olderUser.getCash())+"邀请的好友为："+newUserNickName,olderUser.getOpenId());
+                    LogUtils.saveLog("老用户剩余的宝宝币数="+afterCash+"邀请的好友为："+newUserNickName,oldOpenId);
 
 //                    WechatUtil.sendMsgToWechat(token, olderUser.getOpenId(), content);
                     String title = "恭喜您成功邀请 " + newUserNickName + " 加入宝大夫，您的您的宝宝币将增加" + cash + "枚！";
                     String templateId = sysPropertyVoWithBLOBsVo.getTemplateIdYWDTTX();
-                    String keyword1 = "业务进度：您的宝宝币余额为 " + (preCash + olderUser.getCash()) + "枚";
-                    String keyword2 = "您有" + (preCash + olderUser.getCash()) / 99 + "次免费咨询专家的机会，本月还可邀请好友*次\n";
+                    String keyword1 = "业务进度：您的宝宝币余额为 " + afterCash + "枚";
+                    String keyword2 = "您有" + afterCash / 99 + "次免费咨询专家的机会，本月还可邀请好友*次\n";
                     String remark = "邀请更多好友加入，获得更多机会！";
                     String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_MBXX";
-                    WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, olderUser.getOpenId(), templateId);
+                    WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, oldOpenId, templateId);
 
                 }
 
