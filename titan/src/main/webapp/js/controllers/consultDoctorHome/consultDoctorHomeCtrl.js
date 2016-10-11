@@ -19,7 +19,7 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
                 $scope.personNum = data.personNum;//医生问诊量
                 $scope.evaluationList = data.evaluationList;//医生评论
                 $scope.allEvaluationNum = data.allEvaluationNum;//评论条数
-                $scope.allEvaluationNum = '0' ? $scope.allEvaluationNum = '1':$scope.allEvaluationNum = $scope.allEvaluationNum;
+                $scope.allEvaluationNum == '0' ? $scope.allEvaluationNum = '1':$scope.allEvaluationNum = $scope.allEvaluationNum;
                 $scope.description = data.description.split(" ");//医生介绍
                 $scope.rate = data.rate*100;//医生有用百分比
                 $scope.gender = data.gender;
@@ -40,10 +40,25 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
                     $scope.doctorImg = doctorImg;
                 }
 
-                BabyCoinInit.save({},function(data){
+                /*BabyCoinInit.save({},function(data){
                     $scope.babyMoney = data.babyCoinVo.cash;
                     $scope.babyCoinRecordVos = data.babyCoinRecordVos;
-                });
+                });*/
+
+                var recordLogs = function(val){
+                    $.ajax({
+                        url:"util/recordLogs",// 跳转到 action
+                        async:true,
+                        type:'get',
+                        data:{logContent:encodeURI(val)},
+                        cache:false,
+                        dataType:'json',
+                        success:function(data) {
+                        },
+                        error : function() {
+                        }
+                    });
+                };
 
                 recordLogs("clickDetails");
 
@@ -83,9 +98,10 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
 
         //跳转评价详情页
         $scope.goCommentDetails = function () {
-            if($scope.goDetails){
+            /*if($scope.goDetails){
                 $state.go("consultDoctorCommentDetails",{"id":$stateParams.id,"name":$scope.doctorName,"gender":$scope.gender});
-            }
+            }*/
+            $state.go("consultDoctorCommentDetails",{"id":$stateParams.id,"name":$scope.doctorName,"gender":$scope.gender});
         }
 
 
