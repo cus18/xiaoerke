@@ -141,7 +141,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     @Override
     public String processPatientRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("processPatientRequest===================================");
-        String respMessage = null;
+        String respMessage = "";
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         /** 解析xml数据 */
         ReceiveXmlEntity xmlEntity = new ReceiveXmlProcess().getMsgEntity(getXmlDataFromWechat(request));
@@ -804,7 +804,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
         @Override
         public void run() {
-            sendUBWechatMessage(toOpenId, EventKey);
+            try{
+                sendUBWechatMessage(toOpenId, EventKey);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
     }
 
