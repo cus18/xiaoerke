@@ -4,12 +4,10 @@ import com.cxqm.xiaoerke.common.bean.*;
 import com.cxqm.xiaoerke.modules.sys.entity.Article;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
-import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import net.sf.json.JSONException;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -181,6 +179,7 @@ public class WechatUtil {
      * @param content 发送内容
      */
     public static String sendMsgToWechat(String token, String openId, String content) {
+        LogUtils.saveLog(content,openId);
         String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
         String result = "failure";
         try {

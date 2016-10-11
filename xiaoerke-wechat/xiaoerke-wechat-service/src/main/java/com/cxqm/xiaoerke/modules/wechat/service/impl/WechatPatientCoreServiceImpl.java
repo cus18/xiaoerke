@@ -1120,7 +1120,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 //                    WechatUtil.sendMsgToWechat(token, olderUser.getOpenId(), content);
                     String title = "恭喜您成功邀请 " + newUserNickName + " 加入宝大夫，您的您的宝宝币将增加" + cash + "枚！";
-                    String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg";
+                    String templateId = sysPropertyVoWithBLOBsVo.getTemplateIdYWDTTX();
                     String keyword1 = "业务进度：您的宝宝币余额为 " + (preCash + olderUser.getCash()) + "枚";
                     String keyword2 = "您有" + (preCash + olderUser.getCash()) / 99 + "次免费咨询专家的机会，本月还可邀请好友*次\n";
                     String remark = "邀请更多好友加入，获得更多机会！";

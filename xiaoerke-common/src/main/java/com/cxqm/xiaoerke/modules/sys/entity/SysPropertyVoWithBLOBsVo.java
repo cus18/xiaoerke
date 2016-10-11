@@ -9,7 +9,7 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String coopWjyUrl;
 
-    private String bak15;
+    private String templateIdYWDTTX;
 
     private String bak16;
 
@@ -53,12 +53,12 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
         this.coopWjyUrl = coopWjyUrl;
     }
 
-    public String getBak15() {
-        return bak15;
+    public String getTemplateIdYWDTTX() {
+        return templateIdYWDTTX;
     }
 
-    public void setBak15(String bak15) {
-        this.bak15 = bak15;
+    public void setTemplateIdYWDTTX(String templateIdYWDTTX) {
+        this.templateIdYWDTTX = templateIdYWDTTX;
     }
 
     public String getBak16() {
