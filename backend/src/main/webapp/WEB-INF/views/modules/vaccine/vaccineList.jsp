@@ -52,8 +52,26 @@
 		<tr>
 			<td>${u.name}</td>
 			<td>PD_YMTX_${u.id}</td>
-			<td>${u.introduce}</td>
-			<td>${u.attention}</td>
+			<td>
+				<c:choose>
+					<c:when test="${fn:length(u.introduce) > 30}">
+						${fn:substring(u.introduce, 0, 30)}...
+					</c:when>
+					<c:otherwise>
+						${u.introduce}
+					</c:otherwise>
+				</c:choose>
+			</td>
+			<td>
+				<c:choose>
+					<c:when test="${fn:length(u.attention) > 30}">
+						${fn:substring(u.attention, 0, 30)}...
+					</c:when>
+					<c:otherwise>
+						${u.attention}
+					</c:otherwise>
+				</c:choose>
+			</td>
 			<td>
 				<a href="${ctx}/vaccine/saveUpdateVaccineForm?id=${u.id}">修改</a>
 				<a href="${ctx}/vaccine/deleteVaccine?id=${u.id}" onclick="return confirmx('确认删除？', this.href)">删除</a>
