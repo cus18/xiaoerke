@@ -1114,7 +1114,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     if (StringUtils.isNull(nickName)) {
                         nickName = "了一位朋友";
                     }
-                    LogUtils.saveLog("老用户剩余的宝宝币数="+(preCash + olderUser.getCash()),olderUser.getOpenId());
+                    LogUtils.saveLog("老用户剩余的宝宝币数="+(preCash + olderUser.getCash())+"邀请的好友为："+nickName,olderUser.getOpenId());
                     String timeContent = "业务状态：您有" + (preCash + olderUser.getCash()) / 99 + "次免费咨询专家的机会，本月还可邀请好友*次\n";
                     if ((preCash + olderUser.getCash()) / 99 == 0) {
                         timeContent = "业务状态：你暂时还没有免费咨询转接的机会\n";
