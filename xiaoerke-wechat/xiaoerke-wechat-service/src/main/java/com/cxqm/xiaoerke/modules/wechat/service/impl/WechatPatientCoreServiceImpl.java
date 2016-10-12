@@ -268,7 +268,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                             stringBuffer.append("、");
                             vaccinaName = stringBuffer.toString();
 
-                            String sendContent;
                             Calendar sendTime = Calendar.getInstance();
                             Calendar tempTime = Calendar.getInstance();
                             Date birthday = (Date) map.get("birthday");
@@ -290,18 +289,30 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                             else
                                 sendTime.setTimeInMillis(birthday.getTime() + Math.round(passDayByBirthday * 24 * 3600 * 1000));
 
+                            Integer vaccineId = Integer.valueOf(String.valueOf(map.get("nextVaccineId")));
                             //保存提前七天提醒消息
                             sendTime.add(Calendar.DAY_OF_MONTH, -7);
-                            sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n  待办事项:宝宝在" + DateUtils.formatDate(new Date(sendTime.getTimeInMillis())) +
-                                    "后需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
-                            Integer vaccineId = Integer.valueOf(String.valueOf(map.get("nextVaccineId")));
-                            saveVaccineMessage(vaccineId, openId, sendContent, sendTime.getTime(), "7");
+                            StringBuffer sendContent7 = new StringBuffer();
+                            sendContent7.append("宝宝该打疫苗了！！");
+                            sendContent7.append("||");
+                            sendContent7.append("宝宝在"+DateUtils.formatDate(new Date(sendTime.getTimeInMillis()))+"后需要接种" +map.get("willVaccineName")+"疫苗");
+                            sendContent7.append("||");
+                            sendContent7.append("很高哦！");
+                            sendContent7.append("||");
+                            sendContent7.append("接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦");
+                            saveVaccineMessage(vaccineId, openId, sendContent7.toString(), sendTime.getTime(), "7");
 
                             //保存提前一天提醒消息
                             sendTime.add(Calendar.DAY_OF_MONTH, 6);
-                            sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n" +
-                                    "  待办事项:明天宝宝需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
-                            saveVaccineMessage(vaccineId, openId, sendContent, new Date(sendTime.getTimeInMillis()), "1");
+                            StringBuffer sendContent1 = new StringBuffer();
+                            sendContent1.append("宝宝该打疫苗了！！");
+                            sendContent1.append("||");
+                            sendContent1.append("明天宝宝需要接种"+map.get("willVaccineName")+"疫苗");
+                            sendContent1.append("||");
+                            sendContent1.append("很高哦！");
+                            sendContent1.append("||");
+                            sendContent1.append("接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦");
+                            saveVaccineMessage(vaccineId, openId, sendContent1.toString(), new Date(sendTime.getTimeInMillis()), "1");
 
                             //跟当前码有关的提醒消息失效
                             VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();

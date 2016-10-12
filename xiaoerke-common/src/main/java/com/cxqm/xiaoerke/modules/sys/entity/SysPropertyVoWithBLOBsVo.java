@@ -11,7 +11,7 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String templateIdYWDTTX;
 
-    private String bak16;
+    private String templateIdDBRWTX;
 
     private String bak17;
 
@@ -61,12 +61,12 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
         this.templateIdYWDTTX = templateIdYWDTTX;
     }
 
-    public String getBak16() {
-        return bak16;
+    public String getTemplateIdDBRWTX() {
+        return templateIdDBRWTX;
     }
 
-    public void setBak16(String bak16) {
-        this.bak16 = bak16;
+    public void setTemplateIdDBRWTX(String templateIdDBRWTX) {
+        this.templateIdDBRWTX = templateIdDBRWTX;
     }
 
     public String getBak17() {
