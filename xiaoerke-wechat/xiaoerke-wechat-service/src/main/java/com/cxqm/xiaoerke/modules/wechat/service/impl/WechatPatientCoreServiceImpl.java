@@ -252,7 +252,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 WechatUtil.sendMsgToWechat(token, openId, content);
             } else {
                 HashMap<String, Object> searchMap = new HashMap<String, Object>();
-                searchMap.put("QRCode", QRCode);
+                searchMap.put("QRCode", QRCode.split("_")[2]);
                 searchMap.put("openId", openId);
                 List<HashMap<String, Object>> resultList = vaccineService.getUserWillVaccination(searchMap);
                 if (resultList != null && resultList.size() > 0) {
