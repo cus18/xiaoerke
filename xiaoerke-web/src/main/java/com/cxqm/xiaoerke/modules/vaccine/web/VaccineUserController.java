@@ -161,14 +161,14 @@ public class VaccineUserController {
                     sendTime.add(Calendar.DAY_OF_MONTH, -7);
                     sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n  待办事项:宝宝在" + DateUtils.formatDate(new Date(sendTime.getTimeInMillis())) +
                             "后需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
-                    Integer nextVaccineId = Integer.valueOf(String.valueOf(map.get("nextVaccineId")));
-                    saveVaccineMessage(nextVaccineId, openId, sendContent, sendTime.getTime(), "7");
+                    Integer vaccineId = Integer.valueOf(String.valueOf(map.get("nextVaccineId")));
+                    saveVaccineMessage(vaccineId, openId, sendContent, sendTime.getTime(), "7");
 
                     //保存提前一天提醒消息
                     sendTime.add(Calendar.DAY_OF_MONTH, 6);
                     sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n" +
                             "  待办事项:明天宝宝需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
-                    saveVaccineMessage(nextVaccineId, openId, sendContent, sendTime.getTime(), "1");
+                    saveVaccineMessage(vaccineId, openId, sendContent, sendTime.getTime(), "1");
 
                 }
             }
@@ -187,7 +187,7 @@ public class VaccineUserController {
 
     private void saveVaccineMessage(Integer nextVaccineId, String openId, String sendContent, Date sendTime, String msgType) {
         VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
-        vaccineSendMessageVo.setNextVaccineId(nextVaccineId);
+        vaccineSendMessageVo.setVaccineId(nextVaccineId);
         vaccineSendMessageVo.setSysUserId(openId);
         vaccineSendMessageVo.setMsgType(msgType);
         List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);

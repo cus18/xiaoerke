@@ -335,6 +335,9 @@ public class ScheduleTaskController extends BaseController {
         calendar.set(Calendar.SECOND, 0);
     }
 
+    /**
+     * 疫苗提醒
+     */
     public void babyVaccineRemind() {
         Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
@@ -345,8 +348,12 @@ public class ScheduleTaskController extends BaseController {
         for (VaccineSendMessageVo vo :vaccineSendMessageVos){
             String resultStatus = WechatUtil.sendMsgToWechat(token, vo.getSysUserId(), vo.getContent());
             if (resultStatus.equals("messageOk")){
+                //将疫苗的发送时间往后延迟三十天，消息失效按照用户扫描为准，扫码后与当前码有关的消息失效
                 vo.setId(vo.getId());
-                vo.setValidFlag(ConstantUtil.VACCINEINVALID.getVariable());
+                Calendar calendar = Calendar.getInstance();
+                Calendar.getInstance().setTime(vo.getSendTime());
+                calendar.add(Calendar.DAY_OF_MONTH,30);
+                vo.setSendTime(calendar.getTime());
                 vaccineService.updateByPrimaryKeyWithBLOBs(vo);
             }
 
@@ -356,5 +363,7 @@ public class ScheduleTaskController extends BaseController {
     public void updateOlyGames() {
         olyGamesService.updateLevelCurrentTimes(new OlyBabyGamesVo());
     }
+
+
 
 }

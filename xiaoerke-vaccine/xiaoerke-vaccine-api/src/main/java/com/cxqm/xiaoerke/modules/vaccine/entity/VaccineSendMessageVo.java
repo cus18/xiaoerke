@@ -25,7 +25,7 @@ public class VaccineSendMessageVo {
 
     private String bak2;
 
-    private Integer nextVaccineId;
+    private Integer vaccineId;
 
     private String content;
 
@@ -101,10 +101,6 @@ public class VaccineSendMessageVo {
         this.bak2 = bak2;
     }
 
-    public Integer getNextVaccineId() {
-        return nextVaccineId;
-    }
-
     public String getSearchTime() {
         return searchTime;
     }
@@ -121,15 +117,19 @@ public class VaccineSendMessageVo {
         this.searchCreateTime = searchCreateTime;
     }
 
-    public void setNextVaccineId(Integer nextVaccineId) {
-        this.nextVaccineId = nextVaccineId;
-    }
-
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Integer getVaccineId() {
+        return vaccineId;
+    }
+
+    public void setVaccineId(Integer vaccineId) {
+        this.vaccineId = vaccineId;
     }
 }

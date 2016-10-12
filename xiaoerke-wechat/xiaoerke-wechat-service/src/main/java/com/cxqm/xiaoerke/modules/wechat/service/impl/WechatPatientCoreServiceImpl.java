@@ -259,14 +259,14 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     //保存疫苗接种记录
                     saveVaccineBabyRecord(openId, resultList);
                     StringBuffer stringBuffer = new StringBuffer();
-                    String vaccination = "";
+                    String vaccinaName = "";
                     int count = 0;
                     for (Map map : resultList) {
                         if (map != null && StringUtils.isNotBlank(String.valueOf(map.get("willVaccineName")))) {
                             count++;
                             stringBuffer.append(map.get("willVaccineName"));
                             stringBuffer.append("、");
-                            vaccination = stringBuffer.toString();
+                            vaccinaName = stringBuffer.toString();
 
                             String sendContent;
                             Calendar sendTime = Calendar.getInstance();
@@ -294,21 +294,44 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                             sendTime.add(Calendar.DAY_OF_MONTH, -7);
                             sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n  待办事项:宝宝在" + DateUtils.formatDate(new Date(sendTime.getTimeInMillis())) +
                                     "后需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
-                            Integer nextVaccineId = Integer.valueOf(String.valueOf(map.get("nextVaccineId")));
-                            saveVaccineMessage(nextVaccineId, openId, sendContent, sendTime.getTime(), "7");
+                            Integer vaccineId = Integer.valueOf(String.valueOf(map.get("nextVaccineId")));
+                            saveVaccineMessage(vaccineId, openId, sendContent, sendTime.getTime(), "7");
 
                             //保存提前一天提醒消息
                             sendTime.add(Calendar.DAY_OF_MONTH, 6);
                             sendContent = "待办任务提醒\n  宝宝该打疫苗了！！\n" +
                                     "  待办事项:明天宝宝需要接种" + map.get("willVaccineName") + "疫苗\n  优先级：很高哦！\n  接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦";
-                            saveVaccineMessage(nextVaccineId, openId, sendContent, new Date(sendTime.getTimeInMillis()), "1");
+                            saveVaccineMessage(vaccineId, openId, sendContent, new Date(sendTime.getTimeInMillis()), "1");
+
+                            //跟当前码有关的提醒消息失效
+                            VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
+                            vaccineSendMessageVo.setVaccineId(Integer.valueOf(String.valueOf(map.get("vaccineInfoId"))));
+                            List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
+                            for (VaccineSendMessageVo vo :vaccineSendMessageVos){
+                                vo.setId(vo.getId());
+                                vo.setValidFlag(ConstantUtil.VACCINEINVALID.getVariable());
+                                vaccineService.updateByPrimaryKeyWithBLOBs(vo);
+                            }
 
                         }
                     }
-                    if (count > 2 && count != 0) {
-                        vaccination = vaccination.substring(0, vaccination.lastIndexOf("、")) + "和" + vaccination.substring(vaccination.lastIndexOf("、") + 1, vaccination.length());
+                    //查询当前扫码用户所有有效提醒消息，当前时间距离下次接种疫苗的时间，小于三十天的按照三十天算
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.add(Calendar.DAY_OF_MONTH,30);
+                    VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
+                    vaccineSendMessageVo.setSendTime(calendar.getTime());
+                    vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
+                    List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
+                    for (VaccineSendMessageVo vo :vaccineSendMessageVos){
+                            vo.setId(vo.getId());
+                            vo.setSendTime(calendar.getTime());
+                            vaccineService.updateByPrimaryKeyWithBLOBs(vo);
                     }
-                    WechatUtil.sendMsgToWechat(token, openId, "你的宝宝即将接种" + vaccination.toString().substring(0, vaccination.length() - 1));
+
+                    if (count > 2 && count != 0) {
+                        vaccinaName = vaccinaName.substring(0, vaccinaName.lastIndexOf("、")) + "和" + vaccinaName.substring(vaccinaName.lastIndexOf("、") + 1, vaccinaName.length());
+                    }
+                    WechatUtil.sendMsgToWechat(token, openId, "你的宝宝即将接种" + vaccinaName.toString().substring(0, vaccinaName.length() - 1));
                 }
             }
         }
@@ -332,7 +355,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
     private void saveVaccineMessage(Integer nextVaccineId, String openId, String sendContent, Date sendTime, String msgType) {
         VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
-        vaccineSendMessageVo.setNextVaccineId(nextVaccineId);
+        vaccineSendMessageVo.setVaccineId(nextVaccineId);
         vaccineSendMessageVo.setSysUserId(openId);
         List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
         if (vaccineSendMessageVos == null || vaccineSendMessageVos.size() == 0) {
