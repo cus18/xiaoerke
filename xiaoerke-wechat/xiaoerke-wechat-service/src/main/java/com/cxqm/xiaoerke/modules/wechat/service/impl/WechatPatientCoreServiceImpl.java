@@ -312,7 +312,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                             sendContent1.append("很高哦！");
                             sendContent1.append("||");
                             sendContent1.append("接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦");
-                            sendTime.add(Calendar.DAY_OF_MONTH, 6);
                             saveVaccineMessage(vaccineId, openId, sendContent1.toString(), new Date(sendTime.getTimeInMillis()), "1");
 
                             //跟当前码有关的提醒消息失效
@@ -340,7 +339,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                             vaccineService.updateByPrimaryKeyWithBLOBs(vo);
                     }
 
-                    if (count > 2 && count != 0) {
+                    if (count >= 2 && count != 0) {
                         vaccinaName = vaccinaName.substring(0, vaccinaName.lastIndexOf("、")) + "和" + vaccinaName.substring(vaccinaName.lastIndexOf("、") + 1, vaccinaName.length());
                     }
                     WechatUtil.sendMsgToWechat(token, openId, "你的宝宝即将接种" + vaccinaName.toString().substring(0, vaccinaName.length() - 1));
