@@ -37,7 +37,7 @@
       and create_time  like '${searchCreateTime}%'
     </if>
     <if test="sendTime != null" >
-      and  #{sendTime} > sendTime
+      and  #{sendTime} > send_time
     </if>
     <if test="searchTime != null" >
       and send_time  like '${searchTime}%'
