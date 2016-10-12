@@ -74,4 +74,7 @@ public interface ConsultRecordService {
 
     //jiangzg add 修改mongo中ConsultSessionStatusVo第一次接入医生时间
     int updateConsultSessionFirstTransferDate(Query query ,Update update ,Class t);
+
+    //jiangzg add 2016-10-12 11:56:31 删除mongo中记录
+    int deleteMongoRecordBySelective(Query query , Class t);
 }
