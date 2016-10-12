@@ -127,7 +127,7 @@
     INNER JOIN vaccine_info vi on vi.id = vsr.vaccine_id
     INNER JOIN vaccine_station vs on vs.id = vsr.vaccine_station_id
     where vi.id = #{QRCode} and vbi.sys_user_id = #{openId}
-    GROUP BY vbi.sys_user_id
+    GROUP BY vsr.id
   </select>
 
   <select id="findVaccineStationRelList" resultMap="BaseResultMap">
