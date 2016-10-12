@@ -300,4 +300,10 @@ public class ConsultRecordServiceImpl implements ConsultRecordService{
     public int updateConsultSessionFirstTransferDate(Query query, Update update, Class t) {
        return  consultRecordMongoDBService.updateConsultSessionFirstTransferDate(query,update,t);
     }
+
+    //jiangzg add 2016-10-12 11:56:31 删除mongo集合中满足条件的记录
+    @Override
+    public int deleteMongoRecordBySelective(Query query, Class t) {
+        return consultRecordMongoDBService.deleteMongoRecordBySelective(query,t);
+    }
 }
