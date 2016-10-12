@@ -3,18 +3,6 @@
  */
 package com.cxqm.xiaoerke.modules.sys.utils;
 
-import java.lang.reflect.Method;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.web.method.HandlerMethod;
-
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.CacheUtils;
 import com.cxqm.xiaoerke.common.utils.Exceptions;
@@ -29,6 +17,16 @@ import com.cxqm.xiaoerke.modules.sys.service.LogMongoDBServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.web.method.HandlerMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 字典工具类
@@ -127,6 +125,7 @@ public class LogUtils {
 		log.setType(Log.TYPE_EXCEPTION);
 		log.setTitle(title);
 		log.setParameters(parameters);
+		log.setOpenId(parameters);
 		// 异步保存日志
 		Runnable thread = new SaveLogThread(log, null, null);
 		threadExecutor.execute(thread);
