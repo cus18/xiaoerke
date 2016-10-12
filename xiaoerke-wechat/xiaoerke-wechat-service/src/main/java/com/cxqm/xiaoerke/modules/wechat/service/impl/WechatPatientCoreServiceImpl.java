@@ -215,6 +215,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
     private void traceElementsDetection(ReceiveXmlEntity xmlEntity, String token) {
         String EventKey = xmlEntity.getEventKey();
+        if(!StringUtils.isNotNull(EventKey)) return;
         String QRCode = EventKey.replace("qrscene_", "");
         if (QRCode.contains("PD_WLYS_")) {
             String openId = xmlEntity.getFromUserName();
