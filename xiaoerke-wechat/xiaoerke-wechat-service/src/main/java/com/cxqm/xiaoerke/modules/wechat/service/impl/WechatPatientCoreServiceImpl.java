@@ -162,7 +162,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 //疫苗提醒
                 babyVaccineRemind(xmlEntity, token, sysPropertyVoWithBLOBsVo);
                 //微量元素检测
-                traceElementsDetection(xmlEntity, token);
+//                traceElementsDetection(xmlEntity, token);
 
             } else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
                 //扫描关注公众号或者搜索关注公众号都在其中
