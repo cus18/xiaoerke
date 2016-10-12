@@ -219,6 +219,12 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		return 0 ;
 	}
 
+	//jiangzg add 2016-10-12 11:56:31 删除mongo集合中满足条件的记录
+	public int deleteMongoRecordBySelective(Query query,Class t){
+		mongoTemplate.findAllAndRemove(query,t);
+		return 0 ;
+	}
+
 	long consultCount(Query query){
 		long totalCount = this.mongoTemplate.count(query, ConsultSessionStatusVo.class, "consultSessionStatusVo");
 		return totalCount;
