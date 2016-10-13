@@ -14,5 +14,17 @@ angular.module('doctorConsultApp', ['angularFileUpload', 'ui.router','controller
                 controller: 'messageListCtrl',
                 title: '消息列表'
             })
+            .state('helpDocsList',{
+                url:'/helpDocsList',
+                templateUrl: root + '/helpDocsList.html',
+                controller: 'helpDocsListCtrl',
+                title: '消息列表'
+            })
+            .state('helpDocsDetail',{
+                url:'/helpDocsDetail',
+                templateUrl: root + '/helpDocsDetail.html',
+                controller: 'helpDocsDetailCtrl',
+                title: '消息列表'
+            })
         $urlRouterProvider.otherwise('doctorConsultFirst/,');
     })

@@ -1,0 +1,22 @@
+.helpDocsDetail{
+    background-color: #fff;
+}
+.helpDocsDetail .content{
+    margin:30px;
+    padding:14px 18px 50px;
+    background-color: #fff;
+    box-shadow: 1px 2px 5px 1px #999;
+}
+.helpDocsDetail .content h2{
+    text-align: center;
+    font-size: 20px;
+    color:#333;
+    margin:18px 0 30px;
+}
+.helpDocsDetail .content p{
+    font-size: 14px;
+    line-height:22px;
+    color:#666;
+    margin-top:30px;
+    text-indent: 2em;
+}

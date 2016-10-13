@@ -53,10 +53,6 @@ header {
     color: #fff;
     margin-right: 30px;
     cursor: pointer;
-    font: 13px/55px 'Microsoft Yahei';
-}
-
-.bdf-dkf-content-right div:nth-child(1) div {
     border: 1px solid #FFF;
     font: 13px/20px 'Microsoft Yahei';
     margin-top: 17px;

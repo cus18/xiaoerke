@@ -1,0 +1,57 @@
+.helpDocs{
+    background-color: #fff;
+}
+.helpDocs .fl{
+    float: left;
+}
+.helpDocs .main{
+    width:70%;
+    max-width:1200px;
+    min-width:400px;
+    margin:0 auto;
+    background-color: #455161;
+    overflow: hidden;
+}
+.helpDocs .main .main-l{
+    width:15%;
+    float: left;
+
+}
+.helpDocs .main .main-r{
+    width:85%;
+    float: right;
+    background-color: #f0f0f0;
+    padding-bottom:50px;
+    position: relative;
+}
+.helpDocs .main-l li{
+   text-align: center;
+    height:50px;
+    line-height:50px;
+}
+.helpDocs .main-l a{
+    display: block;
+    width:100%;
+    height:100%;
+    color:#fff;
+    font-size:16px;
+}
+.helpDocs .main-l a:hover,.helpDocs .main-l a.cur{
+   background-color: #323c49;
+}
+.helpDocs .main-r .top{
+    height:53px;
+    background-color: #f3f3f3;
+    border-bottom:1px solid #e7e7e7;
+    text-align: right;
+}
+.helpDocs  .tag{
+    font-size: 12px;
+    color:#666;
+    margin:0 20px;
+}
+.helpDocs .tag a{
+    font-size: 12px;
+    color:#666;
+    float: right;
+}

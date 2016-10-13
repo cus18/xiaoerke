@@ -12,11 +12,13 @@
                 <span ng-if="loseConnectionFirstFlag||loseConnectionSecondFlag">您已与平台断开了连接，请检查您的网络情况，谢谢！</span>
                 <span ng-if="!loseConnectionFirstFlag&&!loseConnectionSecondFlag">您目前与平台连接正常！</span>
                 <div class="bdf-dkf-content-right">
-                    <div ng-click="tapShowButton('specialistList')"
-                         ng-style="userType=='distributor'?{'display':'block'}:{'display':'none'}"
-                            >
-                        <div>专科列表</div>
+                    <div ng-click="goHelpDocs()">
+                        帮助文档
                     </div>
+                    <div ng-click="tapShowButton('specialistList')"> <!--ng-style="userType=='distributor'?{'display':'block'}:{'display':'none'}"-->
+                        专科列表
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -55,7 +57,7 @@
                     <div>
                         <img ng-style="item.notifyType=='1001'?{'display':'block'}:{'display':'none'}" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fbiaoqian_03.png" alt=""/>
                         <img ng-style="item.notifyType=='1002'?{'display':'block'}:{'display':'none'}" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fbiaoqian_06.png" alt=""/>
-                        <img ng-style="item.notifyType=='1003'?{'display':'block'}:{'display':'none'}" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf/consult/mianfei_03.png" alt=""/>
+                        <img ng-style="isrctem.notifyType=='1003'?{'display':'block'}:{'display':'none'}" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf/consult/mianfei_03.png" alt=""/>
                     </div>
                     <div><nobr>{{item.patientName|limitTo:6}}</nobr></div>
                     <div><nobr>{{transformDate(item.dateTime)}}</nobr></div>

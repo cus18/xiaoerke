@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="scripts/styles/helpDocsCommon.css?ver=1.1.3" type="text/css"/>
+<link rel="stylesheet" href="scripts/styles/helpDocsDetail.css?ver=1.1.3" type="text/css"/>
+<div ui-view ng-init="helpDocsDetailInit()" class="helpDocs helpDocsDetail">
+    <div class="main">
+        <div class="main-l">
+            <ul>
+                <li  ng-repeat="item in helpDocsClassify">
+                    <a ng-click="selectClassify($index)" ng-class="{'cur':$index==classifyIndex}">{{item}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="main-r ">
+            <div class="top">
+                <img width="53" height="58" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/helpDocs/top.png">
+            </div>
+            <div class="content">
+                <div class="tag">
+                    <span>创建时间：{{detailInfo.date}}</span>
+                    <a >作者：{{detailInfo.author}} </a>
+                </div>
+                <div class="text">
+                    <h2>到底怎么说话 孩子才愿意听</h2>
+                    <img width="100%" height="auto" ng-src="{{detailInfo.pic}}">
+                    <p>我们经常把“孩子不听话”挂在嘴边，那么孩子不爱听什么样的话呢？到底怎么说，孩子才愿意听呢？
+                        　　孩子最讨厌什么样的话
+                        　　指责
+                        　　“你怎么这么粗心，又把水弄得满地都是，想累死妈妈吗？”
+                        　　“你看，都是因为你早上太磨蹭，今天妈妈上班又迟到了！”
+                        　　问题：经常指责，会让孩子害怕，不敢也不愿意跟父母沟通。
+                        　　唠叨
+                        　　“跟你说过多少次了，吃完饭之后要用纸巾擦嘴巴，你就是不听。你看你的袖子多脏啊，怎么不注意点呢？妈妈每天工作都已经很累了，还要给你洗衣服，你就不能听话，讲卫生吗？”
+                        　　问题：反复啰嗦，分散重点。具体要求不明确。久而久之孩子就烦了，同时根本不能起什么作用。
+                        　　评判
+                        　　“你过来！老师都打电话给我了，可见你最近的学习情况是多么糟糕！”
+                        　　
+                  </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
