@@ -285,8 +285,8 @@ public class ScheduleTaskController extends BaseController {
         /**
          * 付费推送推了多少人需要去重
          */
-        Query query = new Query().addCriteria(Criteria.where("title").regex("consult_charge_twice_information")).addCriteria(Criteria.where("create_date").gte(startDate).andOperator(Criteria.where("create_date").lte(endDate)));
-        int chargeSendMessageNumber = logMongoDBService.queryListDistinct(query, "open_id").size();
+        Query query = new Query().addCriteria(Criteria.where("title").is("consult_charge_twice_information")).addCriteria(Criteria.where("create_date").gte(startDate).andOperator(Criteria.where("create_date").lte(endDate)));
+        int chargeSendMessageNumber = logMongoDBService.queryListDistinct(query, "parameters").size();
 
         /**
          * 付费推送多少人点击了   需要去重  时间改为当天
