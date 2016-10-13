@@ -10,7 +10,7 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="vaccine_id" property="vaccineId" jdbcType="INTEGER" />
-    <result column="bak_2" property="bak2" jdbcType="VARCHAR" />
+    <result column="inoculation_time" property="inoculationTime" jdbcType="TIMESTAMP" />
     <result column="msg_type" property="msgType" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo" extends="BaseResultMap" >
@@ -18,7 +18,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, sys_user_id, send_time, valid_flag, create_by, create_time, update_time, vaccine_id, 
-    bak_2, msg_type
+    inoculation_time, msg_type
   </sql>
   <sql id="Blob_Column_List" >
     content
@@ -62,11 +62,11 @@
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo" >
     insert into vaccine_send_message (id, sys_user_id, send_time, 
       valid_flag, create_by, create_time, 
-      update_time, vaccine_id, bak_2, 
+      update_time, vaccine_id, inoculation_time, 
       msg_type, content)
     values (#{id,jdbcType=INTEGER}, #{sysUserId,jdbcType=VARCHAR}, #{sendTime,jdbcType=TIMESTAMP}, 
       #{validFlag,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{vaccineId,jdbcType=INTEGER}, #{bak2,jdbcType=VARCHAR},
+      #{updateTime,jdbcType=TIMESTAMP}, #{vaccineId,jdbcType=INTEGER}, #{inoculationTime,jdbcType=VARCHAR},
       #{msgType,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo" >
@@ -96,8 +96,8 @@
       <if test="vaccineId != null" >
         vaccine_id,
       </if>
-      <if test="bak2 != null" >
-        bak_2,
+      <if test="inoculationTime != null" >
+        inoculation_time,
       </if>
       <if test="msgType != null" >
         msg_type,
@@ -131,8 +131,8 @@
       <if test="vaccineId != null" >
         #{vaccineId,jdbcType=INTEGER},
       </if>
-      <if test="bak2 != null" >
-        #{bak2,jdbcType=VARCHAR},
+      <if test="inoculationTime != null" >
+        #{inoculationTime,jdbcType=TIMESTAMP},
       </if>
       <if test="msgType != null" >
         #{msgType,jdbcType=VARCHAR},
@@ -166,8 +166,8 @@
       <if test="vaccineId != null" >
         vaccine_id = #{vaccineId,jdbcType=INTEGER},
       </if>
-      <if test="bak2 != null" >
-        bak_2 = #{bak2,jdbcType=VARCHAR},
+      <if test="inoculationTime != null" >
+        inoculation_time = #{inoculationTime,jdbcType=TIMESTAMP},
       </if>
       <if test="msgType != null" >
         msg_type = #{msgType,jdbcType=VARCHAR},
@@ -187,7 +187,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       vaccine_id = #{vaccineId,jdbcType=INTEGER},
-      bak_2 = #{bak2,jdbcType=VARCHAR},
+      inoculation_time = #{inoculationTime,jdbcType=TIMESTAMP},
       msg_type = #{msgType,jdbcType=VARCHAR},
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
@@ -201,7 +201,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       vaccine_id = #{vaccineId,jdbcType=INTEGER},
-      bak_2 = #{bak2,jdbcType=VARCHAR},
+      inoculation_time = #{inoculationTime,jdbcType=TIMESTAMP},
       msg_type = #{msgType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

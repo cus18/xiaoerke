@@ -215,7 +215,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
     private void traceElementsDetection(ReceiveXmlEntity xmlEntity, String token) {
         String EventKey = xmlEntity.getEventKey();
-        if(!StringUtils.isNotNull(EventKey)) return;
+        if (!StringUtils.isNotNull(EventKey)) return;
         String QRCode = EventKey.replace("qrscene_", "");
         if (QRCode.contains("PD_WLYS_")) {
             String openId = xmlEntity.getFromUserName();
@@ -291,35 +291,36 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                                 sendTime.setTimeInMillis(birthday.getTime() + Math.round(passDayByBirthday * 24 * 3600 * 1000));
 
                             Integer vaccineId = Integer.valueOf(String.valueOf(map.get("nextVaccineId")));
+                            Date inoculationTime = sendTime.getTime();
                             //保存提前七天提醒消息
                             sendTime.add(Calendar.DAY_OF_MONTH, -7);
                             StringBuffer sendContent7 = new StringBuffer();
                             sendContent7.append("宝宝该打疫苗了！！");
                             sendContent7.append("||");
-                            sendContent7.append("宝宝在"+DateUtils.formatDate(new Date(sendTime.getTimeInMillis()))+"后需要接种" +map.get("willVaccineName")+"疫苗");
+                            sendContent7.append("宝宝在" + DateUtils.formatDate(new Date(sendTime.getTimeInMillis())) + "后需要接种" + map.get("willVaccineName") + "疫苗");
                             sendContent7.append("||");
                             sendContent7.append("很高哦！");
                             sendContent7.append("||");
                             sendContent7.append("接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦");
-                            saveVaccineMessage(vaccineId, openId, sendContent7.toString(), sendTime.getTime(), "7");
+                            saveVaccineMessage(vaccineId, openId, sendContent7.toString(), sendTime.getTime(), "7", inoculationTime);
 
                             //保存提前一天提醒消息
                             sendTime.add(Calendar.DAY_OF_MONTH, 6);
                             StringBuffer sendContent1 = new StringBuffer();
                             sendContent1.append("宝宝该打疫苗了！！");
                             sendContent1.append("||");
-                            sendContent1.append("明天宝宝需要接种"+map.get("willVaccineName")+"疫苗");
+                            sendContent1.append("明天宝宝需要接种" + map.get("willVaccineName") + "疫苗");
                             sendContent1.append("||");
                             sendContent1.append("很高哦！");
                             sendContent1.append("||");
                             sendContent1.append("接种疫苗可以帮助宝宝抵抗疾病，爸爸妈妈千万不要大意哦");
-                            saveVaccineMessage(vaccineId, openId, sendContent1.toString(), new Date(sendTime.getTimeInMillis()), "1");
+                            saveVaccineMessage(vaccineId, openId, sendContent1.toString(), new Date(sendTime.getTimeInMillis()), "1", inoculationTime);
 
                             //跟当前码有关的提醒消息失效
                             VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
                             vaccineSendMessageVo.setVaccineId(Integer.valueOf(String.valueOf(map.get("vaccineInfoId"))));
                             List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
-                            for (VaccineSendMessageVo vo :vaccineSendMessageVos){
+                            for (VaccineSendMessageVo vo : vaccineSendMessageVos) {
                                 vo.setId(vo.getId());
                                 vo.setValidFlag(ConstantUtil.VACCINEINVALID.getVariable());
                                 vaccineService.updateByPrimaryKeyWithBLOBs(vo);
@@ -327,24 +328,72 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
                         }
                     }
-                    //查询当前扫码用户所有有效提醒消息，当前时间距离下次接种疫苗的时间，小于三十天的按照三十天算
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.add(Calendar.DAY_OF_MONTH,30);
-                    VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
-                    vaccineSendMessageVo.setSendTime(calendar.getTime());
-                    vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
-                    List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
-                    for (VaccineSendMessageVo vo :vaccineSendMessageVos){
-                            vo.setId(vo.getId());
-                            vo.setSendTime(calendar.getTime());
-                            vaccineService.updateByPrimaryKeyWithBLOBs(vo);
-                    }
+                    babyVaccineExceptionalCase();
+
 
                     if (count >= 2 && count != 0) {
                         vaccinaName = vaccinaName.substring(0, vaccinaName.lastIndexOf("、")) + "和" + vaccinaName.substring(vaccinaName.lastIndexOf("、") + 1, vaccinaName.length());
                     }
                     WechatUtil.sendMsgToWechat(token, openId, "你的宝宝即将接种" + vaccinaName.toString().substring(0, vaccinaName.length() - 1));
                 }
+            }
+        }
+    }
+
+    private void babyVaccineExceptionalCase() {
+        //如果有下一次疫苗提醒消息的发送时间小于（当前时间+30天），说明用户没有按照约定的时间去接种疫苗，例如出现了这种情况，宝宝感冒了，延迟几天去接种疫苗,
+        //那么之前生成的疫苗提醒就有时间误差（两次疫苗的接种时间>=30天，下次接种疫苗的时间有可能<30天了），在这里,需要重新调整用户的下一次疫苗提醒消息
+        //调整规则如下：
+        //1、下次提醒消息<=30天，但是下次提醒距离下下次提醒消息小于15天，那么下次提醒消息往后挪到和下下次提醒消息一起发送
+        //2、下次提醒消息<=30天，但是下次提醒距离下下次提醒消息大于15天，那么下次提醒消息往后挪到距离现在的30天之后发
+        VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
+        Calendar calendar29 = Calendar.getInstance();
+        calendar29.add(Calendar.DAY_OF_MONTH, 29);
+
+        vaccineSendMessageVo.setStartSearchDate(new Date());
+        vaccineSendMessageVo.setEndSearchDate(calendar29.getTime());
+        vaccineSendMessageVo.setInoculationTime(new Date());
+        vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
+        List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
+        //存在特殊情况
+        if (vaccineSendMessageVos != null && vaccineSendMessageVos.size() > 0) {
+            for (VaccineSendMessageVo vo : vaccineSendMessageVos) {
+                Calendar calendar30 = Calendar.getInstance();
+                calendar30.add(Calendar.DAY_OF_MONTH, 30);
+                Calendar calendar45 = Calendar.getInstance();
+                calendar45.add(Calendar.DAY_OF_MONTH, 45);
+                VaccineSendMessageVo messageVo = new VaccineSendMessageVo();
+                vaccineSendMessageVo.setStartSearchDate(calendar30.getTime());
+                vaccineSendMessageVo.setEndSearchDate(calendar45.getTime());
+                messageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
+                List<VaccineSendMessageVo> sendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);//时间升序排序
+
+                if (sendMessageVos != null && sendMessageVos.size() > 0) {//下次提醒距离下下次提醒消息小于15天
+                    VaccineSendMessageVo messageVo1 = sendMessageVos.get(0);
+                    vo.setInoculationTime(messageVo1.getInoculationTime());
+                    Calendar transCalendar = Calendar.getInstance();
+                    transCalendar.setTime(messageVo1.getInoculationTime());
+                    if (vo.getMsgType().equals("7")){
+                        transCalendar.add(Calendar.DAY_OF_MONTH,-7);
+                        vo.setSendTime(transCalendar.getTime());
+                    }else{
+                        transCalendar.add(Calendar.DAY_OF_MONTH,-1);
+                        vo.setSendTime(transCalendar.getTime());
+                    }
+
+                }else {//下次提醒距离下下次提醒消息大于15天,下次提醒消息往后挪到距离现在的30天之后发
+                    Calendar transCalendar = Calendar.getInstance();
+                    transCalendar.add(Calendar.DAY_OF_MONTH,30);
+                    vo.setInoculationTime(transCalendar.getTime());
+                    if (vo.getMsgType().equals("7")){
+                        transCalendar.add(Calendar.DAY_OF_MONTH,-7);
+                        vo.setSendTime(transCalendar.getTime());
+                    }else{
+                        transCalendar.add(Calendar.DAY_OF_MONTH,-1);
+                        vo.setSendTime(transCalendar.getTime());
+                    }
+                }
+                vaccineService.updateByPrimaryKeyWithBLOBs(vo);
             }
         }
     }
@@ -365,7 +414,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         }
     }
 
-    private void saveVaccineMessage(Integer nextVaccineId, String openId, String sendContent, Date sendTime, String msgType) {
+    private void saveVaccineMessage(Integer nextVaccineId, String openId, String sendContent, Date sendTime, String msgType, Date inoculationTime) {
         VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
         vaccineSendMessageVo.setVaccineId(nextVaccineId);
         vaccineSendMessageVo.setSysUserId(openId);
@@ -378,6 +427,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
             vaccineSendMessageVo.setCreateTime(new Date());
             vaccineSendMessageVo.setMsgType(msgType);
+            vaccineSendMessageVo.setInoculationTime(inoculationTime);
             vaccineService.insertVaccineSendMessage(vaccineSendMessageVo);
         }
     }
@@ -841,9 +891,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
         @Override
         public void run() {
-            try{
+            try {
                 sendUBWechatMessage(toOpenId, EventKey);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -1137,7 +1187,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     babyCoinRecordVo.setOpenId(oldOpenId);
                     babyCoinRecordVo.setSource("invitePresent");
                     int recordflag = babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
-                    if(recordflag == 0){
+                    if (recordflag == 0) {
                         throw new RuntimeException("宝宝币插入异常");
                     }
                     //------------给当前用户推送消息------------
@@ -1149,23 +1199,23 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     //获取新用户newUserNickName
                     WechatBean wechatBean = WechatUtil.getWechatName(token, newOpenId);
                     String newUserNickName = wechatBean.getNickname();
-                    if(StringUtils.isNull(newUserNickName)){
+                    if (StringUtils.isNull(newUserNickName)) {
                         if (wechatAttentionVo != null && wechatAttentionVo.getWechat_name() != null) {
                             newUserNickName = wechatAttentionVo.getWechat_name();
-                        }else{
+                        } else {
                             newUserNickName = "了一位朋友";
                         }
                     }
 
-                    LogUtils.saveLog("老用户剩余的宝宝币数="+afterCash+"邀请的好友为："+newUserNickName,oldOpenId);
+                    LogUtils.saveLog("老用户剩余的宝宝币数=" + afterCash + "邀请的好友为：" + newUserNickName, oldOpenId);
 
 //                    WechatUtil.sendMsgToWechat(token, olderUser.getOpenId(), content);
                     String title = "恭喜您成功邀请 " + newUserNickName + " 加入宝大夫，您的您的宝宝币将增加" + cash + "枚！";
                     String templateId = sysPropertyVoWithBLOBsVo.getTemplateIdYWDTTX();
                     String keyword1 = "业务进度：您的宝宝币余额为 " + afterCash + "枚";
-                    String keyword2 = "您有" + afterCash / 99 + "次免费咨询专家的机会，本月还可邀请好友"+(20-olderUser.getInviteNumberMonth())+"次";
+                    String keyword2 = "您有" + afterCash / 99 + "次免费咨询专家的机会，本月还可邀请好友" + (20 - olderUser.getInviteNumberMonth()) + "次";
                     String remark = "邀请更多好友加入，获得更多机会！";
-                    String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_MBXX";
+                    String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_MBXX";
                     WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, oldOpenId, templateId);
 
                 }

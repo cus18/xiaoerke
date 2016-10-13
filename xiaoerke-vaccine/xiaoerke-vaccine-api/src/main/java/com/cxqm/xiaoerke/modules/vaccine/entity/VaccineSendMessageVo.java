@@ -23,11 +23,15 @@ public class VaccineSendMessageVo {
 
     private Date updateTime;
 
-    private String bak2;
+    private Date inoculationTime;
 
     private Integer vaccineId;
 
     private String content;
+
+    private Date startSearchDate;
+
+    private Date endSearchDate;
 
     public Integer getId() {
         return id;
@@ -93,12 +97,12 @@ public class VaccineSendMessageVo {
         this.msgType = msgType;
     }
 
-    public String getBak2() {
-        return bak2;
+    public Date getInoculationTime() {
+        return inoculationTime;
     }
 
-    public void setBak2(String bak2) {
-        this.bak2 = bak2;
+    public void setInoculationTime(Date inoculationTime) {
+        this.inoculationTime = inoculationTime;
     }
 
     public String getSearchTime() {
@@ -131,5 +135,21 @@ public class VaccineSendMessageVo {
 
     public void setVaccineId(Integer vaccineId) {
         this.vaccineId = vaccineId;
+    }
+
+    public Date getStartSearchDate() {
+        return startSearchDate;
+    }
+
+    public void setStartSearchDate(Date startSearchDate) {
+        this.startSearchDate = startSearchDate;
+    }
+
+    public Date getEndSearchDate() {
+        return endSearchDate;
+    }
+
+    public void setEndSearchDate(Date endSearchDate) {
+        this.endSearchDate = endSearchDate;
     }
 }
