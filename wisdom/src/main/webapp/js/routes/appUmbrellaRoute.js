@@ -167,7 +167,7 @@ define(['appUmbrella'], function(app){
                         }
                     })
                     .state('umbrellaPublicize', {
-                        url: '/umbrellaPublicize',
+                        url: '/umbrellaPublicize/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'umbrellaPublicizeCtrl',
                         resolve: {
