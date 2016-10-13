@@ -494,62 +494,63 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         newsMessage.setCreateTime(new Date().getTime());
         newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
         newsMessage.setFuncFlag(0);
-        if (EventKey.indexOf("baoxian_000001") > -1 && xmlEntity.getEvent().equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
-            TextMessage textMessage = new TextMessage();
-            textMessage.setToUserName(xmlEntity.getFromUserName());
-            textMessage.setFromUserName(xmlEntity.getToUserName());
-            textMessage.setCreateTime(new Date().getTime());
-            textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
-            textMessage.setFuncFlag(0);
-            textMessage.setContent("尊敬的诺安康VIP客户，您好！欢迎加入宝大夫，让您从此育儿不用愁！\n\n【咨询大夫】直接咨询北京三甲医院儿科专家，一分钟内极速回复！\n\n【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝爸宝妈一起交流分享，参与更多好玩的活动！\n\n如需人工协助，请您拨打：400-623-7120。\n");
-            return MessageUtil.textMessageToXml(textMessage);
-
-        } else if (EventKey.indexOf("YY0016") > -1) {
-            Map parameter = systemService.getWechatParameter();
-            String token = (String) parameter.get("token");
-            String msg = "欢迎来到宝大夫，请按照下方操作领走12本超值电子书籍 \n\n1·将海报图片（见下方）发送到朋友圈，集齐10个赞\n\n2·截图发给宝大夫客服（客服二维码见下方图片）\n\n以上操作完成后请静待客服把12本亲子书籍送到您手里。关注宝大夫后期会有更多福利送不停。";
-            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), msg);
-            WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6fe8844t0Ewt49JlUhW7ukzDQ", 1);
-            WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6fe-amTDnt4DhnNviDaW7kTNc", 1);
-        } else if (EventKey.indexOf("YY0018") > -1) {
-            Map parameter = systemService.getWechatParameter();
-            String token = (String) parameter.get("token");
-            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), "欢迎来到宝大夫，请按照下方操作领走精品食谱，儿歌，绘本，动画片等资源。\n" +
-                    "\n" +
-                    "1·将海报图片（见下方）发送到朋友圈，集齐10个赞。\n" +
-                    " 或  随机分享到母婴相关的5个微信群即可；\n" +
-                    "\n" +
-                    "2·截图发给宝大夫客服（客服二维码见下方图片）\n" +
-                    "\n" +
-                    "以上操作完成后请静待客服把众多资源送到您手里。关注宝大夫后期会有更多福利送不停哦。");
-            WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6feyoI5F7e9v8waWTGfb56bcg", 1);
-            WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6fe41AjIlPrqLyUz5-S99mCls", 1);
-        } else if (EventKey.indexOf("doc") > -1) {
-            Map<String, Object> map = wechatInfoDao.getDoctorInfo(EventKey.replace("doc", ""));
-            article.setTitle("您已经成功关注" + map.get("hospitalName") + map.get("name") + "医生，点击即可预约");
-            article.setDescription("");
-            article.setPicUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/images/attentionDoc.jpg");
-            article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/doctorAppointment/" + map.get("id") + ",,,,,doctorShare,,");
-            articleList.add(article);
-        } else if (EventKey.indexOf("267") > -1) {
-            article.setTitle("恭喜您,通过‘糖盒儿(tanghe2)’关注宝大夫,不仅可以随时免费咨询儿科专家,还可获赠一次预约名医的机会。");
-            article.setDescription("");
-            articleList.add(article);
-        } else if (EventKey.indexOf("263") > -1) {
-            article.setTitle("【郑玉巧育儿经】--宝大夫");
-            article.setDescription("智能匹配月龄，获取针对一对一育儿指导，建立宝宝专属健康档案，一路呵护，茁壮成长！");
-            article.setPicUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/images/Follow.jpg");
-            article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/knowledgeIndex");
-            articleList.add(article);
-        } else if (EventKey.indexOf("521") > -1) {
-            article.setTitle("宝大夫关爱儿童公益活动");
-            article.setDescription("赶快去邀请更多的人传递爱吧！");
-            article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/MessageImage/10.pic_hd.jpg");
-            article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/knowledgeIndex");
-            articleList.add(article);
-            //更新二维码拥有者善款
-            loveMarketingService.updateInviteMan(EventKey, xmlEntity.getFromUserName());
-        } else if (EventKey.indexOf("month") > -1) {
+//        if (EventKey.indexOf("baoxian_000001") > -1 && xmlEntity.getEvent().equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
+//            TextMessage textMessage = new TextMessage();
+//            textMessage.setToUserName(xmlEntity.getFromUserName());
+//            textMessage.setFromUserName(xmlEntity.getToUserName());
+//            textMessage.setCreateTime(new Date().getTime());
+//            textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
+//            textMessage.setFuncFlag(0);
+//            textMessage.setContent("尊敬的诺安康VIP客户，您好！欢迎加入宝大夫，让您从此育儿不用愁！\n\n【咨询大夫】直接咨询北京三甲医院儿科专家，一分钟内极速回复！\n\n【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝爸宝妈一起交流分享，参与更多好玩的活动！\n\n如需人工协助，请您拨打：400-623-7120。\n");
+//            return MessageUtil.textMessageToXml(textMessage);
+//
+//        } else if (EventKey.indexOf("YY0016") > -1) {
+//            Map parameter = systemService.getWechatParameter();
+//            String token = (String) parameter.get("token");
+//            String msg = "欢迎来到宝大夫，请按照下方操作领走12本超值电子书籍 \n\n1·将海报图片（见下方）发送到朋友圈，集齐10个赞\n\n2·截图发给宝大夫客服（客服二维码见下方图片）\n\n以上操作完成后请静待客服把12本亲子书籍送到您手里。关注宝大夫后期会有更多福利送不停。";
+//            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), msg);
+//            WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6fe8844t0Ewt49JlUhW7ukzDQ", 1);
+//            WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6fe-amTDnt4DhnNviDaW7kTNc", 1);
+//        } else if (EventKey.indexOf("YY0018") > -1) {
+//            Map parameter = systemService.getWechatParameter();
+//            String token = (String) parameter.get("token");
+//            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), "欢迎来到宝大夫，请按照下方操作领走精品食谱，儿歌，绘本，动画片等资源。\n" +
+//                    "\n" +
+//                    "1·将海报图片（见下方）发送到朋友圈，集齐10个赞。\n" +
+//                    " 或  随机分享到母婴相关的5个微信群即可；\n" +
+//                    "\n" +
+//                    "2·截图发给宝大夫客服（客服二维码见下方图片）\n" +
+//                    "\n" +
+//                    "以上操作完成后请静待客服把众多资源送到您手里。关注宝大夫后期会有更多福利送不停哦。");
+//            WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6feyoI5F7e9v8waWTGfb56bcg", 1);
+//            WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6fe41AjIlPrqLyUz5-S99mCls", 1);
+//        } else if (EventKey.indexOf("doc") > -1) {
+//            Map<String, Object> map = wechatInfoDao.getDoctorInfo(EventKey.replace("doc", ""));
+//            article.setTitle("您已经成功关注" + map.get("hospitalName") + map.get("name") + "医生，点击即可预约");
+//            article.setDescription("");
+//            article.setPicUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/images/attentionDoc.jpg");
+//            article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/doctorAppointment/" + map.get("id") + ",,,,,doctorShare,,");
+//            articleList.add(article);
+//        } else if (EventKey.indexOf("267") > -1) {
+//            article.setTitle("恭喜您,通过‘糖盒儿(tanghe2)’关注宝大夫,不仅可以随时免费咨询儿科专家,还可获赠一次预约名医的机会。");
+//            article.setDescription("");
+//            articleList.add(article);
+//        } else if (EventKey.indexOf("263") > -1) {
+//            article.setTitle("【郑玉巧育儿经】--宝大夫");
+//            article.setDescription("智能匹配月龄，获取针对一对一育儿指导，建立宝宝专属健康档案，一路呵护，茁壮成长！");
+//            article.setPicUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/images/Follow.jpg");
+//            article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/knowledgeIndex");
+//            articleList.add(article);
+//        } else if (EventKey.indexOf("521") > -1) {
+//            article.setTitle("宝大夫关爱儿童公益活动");
+//            article.setDescription("赶快去邀请更多的人传递爱吧！");
+//            article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/MessageImage/10.pic_hd.jpg");
+//            article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/knowledgeIndex");
+//            articleList.add(article);
+//            //更新二维码拥有者善款
+//            loveMarketingService.updateInviteMan(EventKey, xmlEntity.getFromUserName());
+//        } else
+        if (EventKey.indexOf("month") > -1) {
             if (userType.equals("newUser")) {
                 Boolean value = activityService.judgeActivityValidity(EventKey.replace("qrscene_", ""));
                 if (value == false) {
