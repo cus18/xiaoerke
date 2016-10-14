@@ -2106,7 +2106,6 @@ angular.module('controllers', ['luegg.directives'])
                 return val;
             };
 
-            };
         }])
 
     .controller('messageListCtrl', ['$scope', '$log', '$state', '$sce', 'GetUserConsultListInfo',
@@ -2461,7 +2460,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.helpDocsClassify=data.categoryList;
                     $scope.classifyId = $scope.helpDocsClassify[0].categoryId;
                     //初始化第一个分类下的文章
-                    GetArticleList.save({"id": $scope.classifyId,"pageNo":1,"pageSize":1000},function(data){
+                    GetArticleList.save({"id": $scope.classifyId,"pageNo":1,"pageSize":10},function(data){
                         $scope.helpDocsList=data.articleList;
                     });
                 });
