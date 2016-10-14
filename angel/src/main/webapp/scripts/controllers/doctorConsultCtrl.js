@@ -2442,7 +2442,6 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.classifyId = id;
                 //获取某一分类下的文章列表
                 GetArticleList.save({"id": $scope.classifyId,"pageNo":1,"pageSize":10},function(data){
-                    console.log("文章列表2", data.articleList);
                     $scope.helpDocsList=data.articleList;
 
                 });
@@ -2451,7 +2450,6 @@ angular.module('controllers', ['luegg.directives'])
             // 跳转到 文章详情页
             $scope.goHelpDocsDetail = function (id) {
                 $state.go("helpDocsDetail",{articleId:id});
-                console.log("w文章详情页 id ",id)
             };
             $scope.helpDocsListInit = function () {
                 document.title="帮助文档列表页"; //修改页面title
@@ -2460,7 +2458,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.helpDocsClassify=data.categoryList;
                     $scope.classifyId = $scope.helpDocsClassify[0].categoryId;
                     //初始化第一个分类下的文章
-                    GetArticleList.save({"id": $scope.classifyId,"pageNo":1,"pageSize":10},function(data){
+                    GetArticleList.save({"id": $scope.classifyId,"pageNo":1,"pageSize":1000},function(data){
                         $scope.helpDocsList=data.articleList;
                     });
                 });
