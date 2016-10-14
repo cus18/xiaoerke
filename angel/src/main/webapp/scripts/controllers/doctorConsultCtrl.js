@@ -2106,9 +2106,6 @@ angular.module('controllers', ['luegg.directives'])
                 return val;
             };
 
-            //跳转到 帮助文档 页面
-            $scope.goHelpDocs = function () {
-                $state.go('helpDocsList');
             };
         }])
 
