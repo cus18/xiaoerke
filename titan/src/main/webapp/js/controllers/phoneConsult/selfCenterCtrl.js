@@ -32,9 +32,9 @@
                 /* window.location.href = "/titan/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;*/
             };
             /*宝贝保*/
-            $scope.myService = function(){
-                RecordLogs.get({logContent:encodeURI("DHZX_HYZX_HYFW")},function(){})
-                window.location.href="appoint#/myService";
+            $scope.myInsurance = function(){
+                // RecordLogs.get({logContent:encodeURI("DHZX_HYZX_HYFW")},function(){})
+                window.location.href="http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=29";
             };
             /* 当前订单*/
             $scope.currentOrder = function(){
