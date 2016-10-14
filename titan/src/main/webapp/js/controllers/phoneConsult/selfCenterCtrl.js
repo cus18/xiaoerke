@@ -31,6 +31,11 @@
                 window.location.href="appoint#/myService";
                 /* window.location.href = "/titan/appoint#/healthRecordSelectBaby/"+index+",1,"+$stateParams.conid;*/
             };
+            /*宝贝保*/
+            $scope.myService = function(){
+                RecordLogs.get({logContent:encodeURI("DHZX_HYZX_HYFW")},function(){})
+                window.location.href="appoint#/myService";
+            };
             /* 当前订单*/
             $scope.currentOrder = function(){
                 RecordLogs.get({logContent:encodeURI("DHZX_HYZX_DQDD")},function(){})
