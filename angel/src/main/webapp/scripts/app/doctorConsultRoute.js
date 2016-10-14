@@ -21,7 +21,7 @@ angular.module('doctorConsultApp', ['angularFileUpload', 'ui.router','controller
                 title: '消息列表'
             })
             .state('helpDocsDetail',{
-                url:'/helpDocsDetail',
+                url:'/helpDocsDetail/:articleId',
                 templateUrl: root + '/helpDocsDetail.html',
                 controller: 'helpDocsDetailCtrl',
                 title: '消息列表'

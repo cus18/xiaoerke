@@ -1,3 +1,6 @@
+.helpDocsList .main-l a:hover{
+    background-color: #323c49;
+}
 .helpDocsList .main-r .line{
     position: absolute;
     top:54px;
@@ -18,7 +21,7 @@
 .helpDocsList .brief .circle{
     position: absolute;
     top:5px;
-    left:-14.5px;
+    left:-15px;
     width:7px;
     height:7px;
     border-radius: 50%;

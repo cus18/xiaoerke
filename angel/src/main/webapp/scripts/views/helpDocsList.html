@@ -5,7 +5,7 @@
        <div class="main-l">
            <ul>
                <li  ng-repeat="item in helpDocsClassify">
-                   <a ng-click="selectClassify($index)" ng-class="{'cur':$index==classifyIndex}">{{item}}</a>
+                   <a ng-click="selectClassify($index,item.categoryId)" ng-class="{'cur':$index==classifyIndex}">{{item.categoryName}}</a>
                </li>
            </ul>
        </div>
@@ -17,17 +17,17 @@
            <div class="wrap-list">
                <ul>
                    <li ng-repeat="item in helpDocsList" >
-                       <div class="brief" ng-click="goHelpDocsDetail(item.link)">
+                       <div class="brief" ng-click="goHelpDocsDetail(item.id)">
                            <div class="circle"></div>
                             <div class="tag">
-                                <span>创建时间：{{item.date}}</span>
+                                <span>创建时间：{{item.createDate | date:'yyyy-MM-dd'}}</span>
                                 <a >查看全文>> </a>
                             </div>
                            <div class="text">
-                               <img width="70" height="70" ng-src="{{item.pic}}">
+                               <img width="70" height="70"  ng-src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/{{item.id}}">
                                 <div class="word">
                                     <h3>{{item.title}}</h3>
-                                    <p>{{item.describe}}</p>
+                                    <p>{{item.description}}</p>
                                 </div>
                            </div>
                        </div>

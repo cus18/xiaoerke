@@ -48,7 +48,8 @@ header {
     float: right;
 }
 
-.bdf-dkf-content-right div {
+.bdf-dkf-content-right .support {
+    display: block;
     float: right;
     color: #fff;
     margin-right: 30px;

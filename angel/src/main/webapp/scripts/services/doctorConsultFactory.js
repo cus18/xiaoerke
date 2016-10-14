@@ -151,6 +151,18 @@ angular.module('services', ['ngResource'])
     .factory('SaveReturnService', ['$resource', function ($resource) {
         return $resource(public + '/angel/customer/saveReturnService');
     }])
+    //查询栏目列表接口  根据id获取目录
+    .factory('GetCategoryList',['$resource',function ($resource){
+        return $resource(public + 'knowledge/category/findByParentId');
+    }])
+    //根据文章栏目或标题查询文章接口 根据目录id和分页信息获取文章列表
+    .factory('GetArticleList',['$resource',function ($resource){
+        return $resource(public + 'knowledge/article/articleList');
+    }])
+    //查询文章内容接口 获取文章详情
+    .factory('GetArticleDetail',['$resource',function ($resource){
+        return $resource(public + 'knowledge/article/articleDetail');
+    }])
 
 
 

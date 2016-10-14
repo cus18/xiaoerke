@@ -1,5 +1,6 @@
 .helpDocs{
     background-color: #fff;
+    font-family: "微软雅黑";
 }
 .helpDocs .fl{
     float: left;
@@ -15,7 +16,6 @@
 .helpDocs .main .main-l{
     width:15%;
     float: left;
-
 }
 .helpDocs .main .main-r{
     width:85%;
@@ -35,8 +35,9 @@
     height:100%;
     color:#fff;
     font-size:16px;
+    cursor: pointer;
 }
-.helpDocs .main-l a:hover,.helpDocs .main-l a.cur{
+.helpDocs .main-l a.cur{
    background-color: #323c49;
 }
 .helpDocs .main-r .top{

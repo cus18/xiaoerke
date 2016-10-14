@@ -1,6 +1,9 @@
 .helpDocsDetail{
     background-color: #fff;
 }
+.helpDocs.helpDocsDetail .main-l a{
+    cursor: default;
+}
 .helpDocsDetail .content{
     margin:30px;
     padding:14px 18px 50px;

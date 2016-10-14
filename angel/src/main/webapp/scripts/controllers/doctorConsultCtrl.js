@@ -2433,75 +2433,63 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.showFlag[key] = !$scope.showFlag[key];
             };
         }])
-    .controller('helpDocsListCtrl', ['$scope', '$log', '$state',
-        function ($scope, $log, $state) {
+    .controller('helpDocsListCtrl', ['$scope', '$log', '$state','GetCategoryList','GetArticleList',
+        function ($scope, $log, $state,GetCategoryList,GetArticleList) {
             $scope.info = {};
-            $scope.helpDocsClassify= ["公司规定","部门条款","排班制度","内部资料","最新消息","紧急通知"];
-            $scope.helpDocsList= [
-                {
-                date: "2016.10.08",
-                pic:"http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg",
-                title: "到底怎么说话 孩子才愿意听",
-                describe:"我们经常把“孩子不听话”挂在嘴边，那么孩子不爱听什么样的话呢？到底怎么说，孩子才愿意听呢？我们经常把“孩子不听话”挂在嘴边，那么孩子不爱听什么样的话呢？到底怎么说，孩子才愿意听呢？",
-                link:"http://baby.sina.com.cn/edu/jtjy/2016-10-12/doc-ifxwrhpn9675294.shtml"
-                 },
-                {
-                    date: "2016.10.06",
-                    pic:"http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg",
-                    title: "骨头汤真的可以补钙吗？ ",
-                    describe:"给孩子补钙是家长关心的话题。很多妈妈给孩子补钙却还是出现孩子缺钙的情况，是什么原因呢？给孩子喝骨头汤真的可以补钙吗？",
-                    link:"http://blog.baby.sina.com.cn/s/blog_5394004c0102wbm3.html"
-                },
-                {
-                    date: "2016.10.03",
-                    pic:"http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg",
-                    title: "小儿腹泻病的治疗",
-                    describe:"腹泻病是个常见疾病，也是发展中国家造成孩子营养不良和死亡的一个主要的原因之一。因此世界卫生组织制订了有关腹泻的治疗方案",
-                    link:"http://blog.baby.sina.com.cn/s/blog_6070f1da0102vnz4.html"
-                },
-                {
-                    date: "2016.10.02",
-                    pic:"http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg",
-                    title: "宝宝发烧的10个谣言",
-                    describe:"在宝宝的成长过程中，发烧总是一不小心就“缠”上他们。关于发烧的谣言也是一直此起彼伏，滔滔不绝，为了让新手爸妈获取靠谱实用的知识，在照顾发烧的宝宝时得心应手，我们本期的特意来做一个盘点，有关发烧的这些谣言，有多少你曾经坚信不疑呢？",
-                    link:"http://baby.sina.com.cn/z/fsdsgyy/"
-                }
-            ];
+            $scope.classifyIndex=0;
+            $scope.classifyIndex=0;
+            $scope.helpDocsClassify= {};
+            $scope.helpDocsList={};
             // 选择 左边的分类
-            $scope.selectClassify = function (index) {
+            $scope.selectClassify = function (index,id) {
                 $scope.classifyIndex = index;
+                $scope.classifyId = id;
+                //获取某一分类下的文章列表
+                GetArticleList.save({"id": $scope.classifyId,"pageNo":1,"pageSize":10},function(data){
+                    console.log("文章列表2", data.articleList);
+                    $scope.helpDocsList=data.articleList;
+
+                });
+
             };
             // 跳转到 文章详情页
-            $scope.goHelpDocsDetail = function (link) {
-               // window.location.href = link;
-                $state.go("helpDocsDetail");
+            $scope.goHelpDocsDetail = function (id) {
+                $state.go("helpDocsDetail",{articleId:id});
+                console.log("w文章详情页 id ",id)
             };
             $scope.helpDocsListInit = function () {
                 document.title="帮助文档列表页"; //修改页面title
+                //获取左边分类
+                GetCategoryList.save({"categoryId":"164bf4c85d824776b2b2d4f94d6726bd"},function(data){
+                    $scope.helpDocsClassify=data.categoryList;
+                    $scope.classifyId = $scope.helpDocsClassify[0].categoryId;
+                    //初始化第一个分类下的文章
+                    GetArticleList.save({"id": $scope.classifyId,"pageNo":1,"pageSize":1000},function(data){
+                        $scope.helpDocsList=data.articleList;
+                    });
+                });
             };
 
         }])
-    .controller('helpDocsDetailCtrl', ['$scope', '$log', '$state',
-        function ($scope, $log, $state) {
+    .controller('helpDocsDetailCtrl', ['$scope', '$log', '$state','$stateParams','$sce','GetCategoryList','GetArticleDetail',
+        function ($scope, $log, $state, $stateParams,$sce,GetCategoryList,GetArticleDetail) {
             $scope.info = {};
-            $scope.classifyIndex = 0;
-            $scope.helpDocsClassify= ["公司规定","部门条款","排班制度","内部资料","最新消息","紧急通知"];
-            $scope.detailInfo=
-                {
-                    date: "2016.10.08",
-                    author: "梁医生",
-                    pic:"http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/constipation/constipation_banner4.png",
-                    title: "到底怎么说话 孩子才愿意听",
-                    text:"我们经常把“孩子不听话”挂在嘴边，那么孩子不爱听什么样的话呢？到底怎么说，孩子才愿意听呢？我们经常把“孩子不听话”挂在嘴边，那么孩子不爱听什么样的话呢？到底怎么说，孩子才愿意听呢？我们经常把“孩子不听话”挂在嘴边，那么孩子不爱听什么样的话呢？到底怎么说，孩子才愿意听呢？我们经常把“孩子不听话”挂在嘴边，那么孩子不爱听什么样的话呢？到底怎么说，孩子才愿意听呢？",
-                };
-            // 选择 左边的分类
-            $scope.selectClassify = function (index) {
-                $scope.classifyIndex = index;
-            };
+            $scope.helpDocsClassify= {};
+            $scope.articleDetail={};
             $scope.helpDocsDetailInit = function () {
                 document.title="帮助文档详情页"; //修改页面title
+                $scope.articleId =$stateParams.articleId;//文章id
+                //获取左边分类
+                GetCategoryList.save({"categoryId":"164bf4c85d824776b2b2d4f94d6726bd"},function(data){
+                    $scope.helpDocsClassify=data.categoryList;
+                });
+                //获取文章详情
+                GetArticleDetail.save({"id":$stateParams.articleId},function(data){
+                    $scope.info.articleContent = $sce.trustAsHtml(angular.copy(data.articleDetail.content));
+                    $scope.articleDetail=data.article;
+                    $scope.articleDetail.name=data.article.category.name
+                });
             };
-
         }])
 
 
