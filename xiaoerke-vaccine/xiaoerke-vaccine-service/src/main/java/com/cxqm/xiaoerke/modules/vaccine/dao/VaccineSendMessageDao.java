@@ -17,6 +17,8 @@ public interface VaccineSendMessageDao {
 
     List<VaccineSendMessageVo> selectByVaccineSendMessage(VaccineSendMessageVo record);
 
+    List<VaccineSendMessageVo> selectSendMessageInfo(VaccineSendMessageVo record);
+
     int updateByPrimaryKeySelective(VaccineSendMessageVo record);
 
     int updateByPrimaryKeyWithBLOBs(VaccineSendMessageVo record);

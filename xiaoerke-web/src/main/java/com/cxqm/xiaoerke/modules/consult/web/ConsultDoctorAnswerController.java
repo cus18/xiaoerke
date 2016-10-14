@@ -6,6 +6,8 @@ import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.service.AnswerService;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,8 @@ public class ConsultDoctorAnswerController extends BaseController {
     @Autowired
     private AnswerService answerService;
 
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
     /***
      * 获取回复 type 为 myAnswer获取我的回复  common获取公共回复
      *
@@ -139,7 +143,8 @@ public class ConsultDoctorAnswerController extends BaseController {
         if(answerType.equals("myAnswer")){
             tranMap.put("myAnswer",params.get("answer"));
         }else if(answerType.equals("commonAnswer") || answerType.equals("diagnosis")){
-            String doctorManagerStr = Global.getConfig("doctorManager.list");
+            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+            String doctorManagerStr = sysPropertyVoWithBLOBsVo.getDoctormanagerList();
         //    String csUserId = "8ab94e95afe448dab66403fc5407d0ca";// UserUtils.getUser().getId()
             String csUserId = UserUtils.getUser().getId();
             if (doctorManagerStr.indexOf(csUserId) != -1) {

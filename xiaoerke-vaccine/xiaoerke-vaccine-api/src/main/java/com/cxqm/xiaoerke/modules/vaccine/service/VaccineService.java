@@ -22,6 +22,8 @@ public interface VaccineService {
 
     int insertVaccineSendMessage(VaccineSendMessageVo record);
 
+    List<VaccineSendMessageVo> selectSendMessageInfo(VaccineSendMessageVo record);
+
     int updateByPrimaryKeyWithBLOBs(VaccineSendMessageVo record);
 
     List<VaccineInfoWithBLOBsVo> findVaccineList(VaccineInfoWithBLOBsVo vo);
