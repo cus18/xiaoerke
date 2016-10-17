@@ -11,14 +11,16 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.sessionId = "";
             $scope.socketServer = "";
             $scope.glued = true;
-            $scope.source = "h5bhqUser";
+            $scope.source = "h5ykdlUser";
             $scope.loseConnectionFlag = false;
             var heartBeatNum = 0;
             $scope.lookMore = false;//查看更多
             var patientImg ;
+            var patientName ;
+            var patientSex ;
             $scope.fucengLock = true;//第一次进入页面的浮层
             $scope.alertFlag = false;
-            $scope.remoteBabyUrl = "http://rest.ihiss.com:9000/user/children";
+            $scope.remoteUrl = " http://wxsp-dev.ykbenefit.com/customer_info";
             $scope.imgBarFlag = false;
 
 
@@ -40,15 +42,18 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
 
                 //
                 var id = $stateParams.id;
-
-                    if($stateParams.image == null){
+                $http.post('http://wxsp-dev.ykbenefit.com/customer_info',{
+                    params:{"user_uuid":id}
+                }).success(function(data, status, headers, config) {
+                    if(data.headimgurl == null || data.headimgurl == ''){
                         patientImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
                     }else{
-                        patientImg = $stateParams.image;
+                        patientImg = data.headimgurl;
                     }
-                    $scope.patientName = $stateParams.name==null?$stateParams.id:$stateParams.name;
+                    patientName = data.nickname == null?"":data.nickname ;
+                    patientSex = data.sex == null ? "" : data.sex;
                     CreateOrUpdateWJYPatientInfo.save({
-                        patientName:$scope.patientName,source:$scope.source,thirdId:id},function(data){
+                        patientName:patientName,source:$scope.source,thirdId:id,patientSex:patientSex},function(data){
                         $scope.patientId = data.patientId;
                         GetSessionId.get({"userId":$scope.patientId},function(data){
                             console.log("data",data);
@@ -77,6 +82,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                         });
                         $scope.initConsultSocket();
                     });
+                });
             };
 
             //初始化接口
