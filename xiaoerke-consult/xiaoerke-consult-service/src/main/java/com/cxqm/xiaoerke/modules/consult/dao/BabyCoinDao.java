@@ -20,4 +20,6 @@ public interface BabyCoinDao {
     int updateByOpenId(BabyCoinVo record);
 
     int updateCashByOpenId(BabyCoinVo record);
+
+    int updateBabyCoinInviteNumber(BabyCoinVo babyCoinVo);
 }

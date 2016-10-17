@@ -19,6 +19,8 @@ public interface BabyCoinService {
 
     int updateCashByOpenId(BabyCoinVo record);
 
+    int updateBabyCoinInviteNumber(BabyCoinVo babyCoinVo);
+
     int updateBabyCoinByOpenId(BabyCoinVo record);
 
     int insertBabyCoinSelective(BabyCoinVo record);
