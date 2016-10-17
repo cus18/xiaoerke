@@ -42,8 +42,17 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
 
                 //
                 var id = $stateParams.id;
-                $http.post('http://wxsp-dev.ykbenefit.com/customer_info',{
-                    params:{"user_uuid":id}
+                $http.header('Access-Control-Allow-Origin: *');
+                $http.header('Access-Control-Allow-Headers: X-Requested-With');
+                $http.post({
+                    url:'http://wxsp-dev.ykbenefit.com/customer_info',
+                    method:"POST",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    data: {
+                        'user_uuid': id
+                    }
                 }).success(function(data, status, headers, config) {
                     if(data.headimgurl == null || data.headimgurl == ''){
                         patientImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
@@ -96,7 +105,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     //ws://s201.xiaork.com:2048;
                     $scope.socketServer = new WebSocket("ws://s132.baodf.com/wsbackend/ws&user&"
-                        + $scope.patientId +"&h5bhq");//cs,user,distributor*/
+                        + $scope.patientId +"&h5ykdl");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {
                         var consultData = JSON.parse(event.data);
@@ -259,7 +268,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                             "content": data.showFile,
                             "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                             "senderId": $scope.patientId,
-                            "senderName": "保护圈"+$scope.patientName,
+                            "senderName": "YKDL-"+$scope.patientName,
                             "sessionId": parseInt($scope.sessionId),
                             "avatar":patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                         };
@@ -294,7 +303,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                         "content": $("#saytext").val(),
                         "dateTime": moment().format("YYYY-MM-DD HH:mm:ss"),
                         "senderId":$scope.patientId,
-                        "senderName":"保护圈"+$scope.patientName,
+                        "senderName":"YKDL-"+$scope.patientName,
                         "sessionId":parseInt($scope.sessionId),
                         "source":$scope.source,
                         "avatar":patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
