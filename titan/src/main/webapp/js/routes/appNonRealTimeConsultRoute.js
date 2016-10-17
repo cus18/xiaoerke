@@ -69,6 +69,7 @@ define(['appNonRealTimeConsult'], function(app){
                         }
                     })
                    /* 用户端*/
+                    /*咨询详情*/
                     .state('NonTimeUserConversation', {
                         url: '/NonTimeUserConversation',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -77,10 +78,54 @@ define(['appNonRealTimeConsult'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.NonTimeUserConversationCtrl',
                                     [
-                                        'js/libs/lodash.min.js',
                                         'js/controllers/nonRealTimeConsult/user/NonTimeUserConversationCtrl.js?ver='+nonRealTimeConsultVersion,
                                         'styles/nonRealTimeConsult/user/NonTimeUserConversation.less?ver='+nonRealTimeConsultVersion],
                                     'js/views/nonRealTimeConsult/user/NonTimeUserConversation.html?ver='+nonRealTimeConsultVersion);
+                            }
+                        }
+                    })
+                    /*咨询列表*/
+                    .state('NonTimeUserConsultList', {
+                        url: '/NonTimeUserConsultList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'NonTimeUserConsultListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.NonTimeUserConsultListCtrl',
+                                    [
+                                        'js/controllers/nonRealTimeConsult/user/NonTimeUserConsultListCtrl.js?ver='+nonRealTimeConsultVersion,
+                                        'styles/nonRealTimeConsult/user/NonTimeUserConsultList.less?ver='+nonRealTimeConsultVersion],
+                                    'js/views/nonRealTimeConsult/user/NonTimeUserConsultList.html?ver='+nonRealTimeConsultVersion);
+                            }
+                        }
+                    })
+                    /*首次咨询*/
+                    .state('NonTimeUserFirstConsult', {
+                        url: '/NonTimeUserFirstConsult',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'NonTimeUserFirstConsultCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.NonTimeUserFirstConsultCtrl',
+                                    [
+                                        'js/controllers/nonRealTimeConsult/user/NonTimeUserFirstConsultCtrl.js?ver='+nonRealTimeConsultVersion,
+                                        'styles/nonRealTimeConsult/user/NonTimeUserFirstConsult.less?ver='+nonRealTimeConsultVersion],
+                                    'js/views/nonRealTimeConsult/user/NonTimeUserFirstConsult.html?ver='+nonRealTimeConsultVersion);
+                            }
+                        }
+                    })
+                    /*医生列表*/
+                    .state('NonTimeUserDoctorList', {
+                        url: '/NonTimeUserDoctorList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'NonTimeUserDoctorListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.NonTimeUserDoctorListCtrl',
+                                    [
+                                        'js/controllers/nonRealTimeConsult/user/NonTimeUserDoctorListCtrl.js?ver='+nonRealTimeConsultVersion,
+                                        'styles/nonRealTimeConsult/user/NonTimeUserDoctorList.less?ver='+nonRealTimeConsultVersion],
+                                    'js/views/nonRealTimeConsult/user/NonTimeUserDoctorList.html?ver='+nonRealTimeConsultVersion);
                             }
                         }
                     })
