@@ -1140,7 +1140,7 @@ public enum ConsultSessionManager {
                         doctorManagerStr = sysPropertyVoWithBLOBsVo.getDoctormanagerList();  //增加抢断会话功能doctorManager.list；createConsult.list
                     }
                     String csUserId = UserUtils.getUser().getId();
-                    if (doctorManagerStr.indexOf(csUserId) != -1) {
+                    if (StringUtils.isNotNull(doctorManagerStr) && doctorManagerStr.indexOf(csUserId) != -1) {
                         //此医生为管理员医生，有权限抢过会话，将会话抢过来
                         richConsultSession.setCsUserId(csUserId);
                         richConsultSession.setCsUserName(UserUtils.getUser().getName());
