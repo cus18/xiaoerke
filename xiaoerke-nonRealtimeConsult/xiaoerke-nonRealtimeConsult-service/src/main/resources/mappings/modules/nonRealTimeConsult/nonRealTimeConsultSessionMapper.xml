@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.nonRealTimeConsult.dao.NonRealTimeConsultSessionDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="user__id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="cs_user_id" property="csUserId" jdbcType="VARCHAR" />
+    <result column="cs_user_name" property="csUserName" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="last_message_time" property="lastMessageTime" jdbcType="TIMESTAMP" />
+    <result column="last_message_type" property="lastMessageType" jdbcType="VARCHAR" />
+    <result column="consult_number" property="consultNumber" jdbcType="INTEGER" />
+    <result column="doctor_department_name" property="doctorDepartmentName" jdbcType="VARCHAR" />
+    <result column="doctor_Professor" property="doctorProfessor" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="bak_1" property="bak1" jdbcType="VARCHAR" />
+    <result column="bak_2" property="bak2" jdbcType="VARCHAR" />
+    <result column="bak_3" property="bak3" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo" extends="BaseResultMap" >
+    <result column="last_message_content" property="lastMessageContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, status, user__id, user_name, cs_user_id, cs_user_name, source, last_message_time, 
+    last_message_type, consult_number, doctor_department_name, doctor_Professor, create_time, 
+    update_time, bak_1, bak_2, bak_3
+  </sql>
+  <sql id="Blob_Column_List" >
+    last_message_content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from non_real_time_consult_session
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from non_real_time_consult_session
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo" >
+    insert into non_real_time_consult_session (id, status, user__id, 
+      user_name, cs_user_id, cs_user_name, 
+      source, last_message_time, last_message_type, 
+      consult_number, doctor_department_name, doctor_Professor, 
+      create_time, update_time, bak_1, 
+      bak_2, bak_3, last_message_content
+      )
+    values (#{id,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{csUserId,jdbcType=VARCHAR}, #{csUserName,jdbcType=VARCHAR}, 
+      #{source,jdbcType=VARCHAR}, #{lastMessageTime,jdbcType=TIMESTAMP}, #{lastMessageType,jdbcType=VARCHAR}, 
+      #{consultNumber,jdbcType=INTEGER}, #{doctorDepartmentName,jdbcType=VARCHAR}, #{doctorProfessor,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{bak1,jdbcType=VARCHAR}, 
+      #{bak2,jdbcType=VARCHAR}, #{bak3,jdbcType=VARCHAR}, #{lastMessageContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo" >
+    insert into non_real_time_consult_session
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="userId != null" >
+        user__id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="csUserId != null" >
+        cs_user_id,
+      </if>
+      <if test="csUserName != null" >
+        cs_user_name,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="lastMessageTime != null" >
+        last_message_time,
+      </if>
+      <if test="lastMessageType != null" >
+        last_message_type,
+      </if>
+      <if test="consultNumber != null" >
+        consult_number,
+      </if>
+      <if test="doctorDepartmentName != null" >
+        doctor_department_name,
+      </if>
+      <if test="doctorProfessor != null" >
+        doctor_Professor,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="bak1 != null" >
+        bak_1,
+      </if>
+      <if test="bak2 != null" >
+        bak_2,
+      </if>
+      <if test="bak3 != null" >
+        bak_3,
+      </if>
+      <if test="lastMessageContent != null" >
+        last_message_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="csUserId != null" >
+        #{csUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="csUserName != null" >
+        #{csUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="lastMessageTime != null" >
+        #{lastMessageTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastMessageType != null" >
+        #{lastMessageType,jdbcType=VARCHAR},
+      </if>
+      <if test="consultNumber != null" >
+        #{consultNumber,jdbcType=INTEGER},
+      </if>
+      <if test="doctorDepartmentName != null" >
+        #{doctorDepartmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorProfessor != null" >
+        #{doctorProfessor,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bak1 != null" >
+        #{bak1,jdbcType=VARCHAR},
+      </if>
+      <if test="bak2 != null" >
+        #{bak2,jdbcType=VARCHAR},
+      </if>
+      <if test="bak3 != null" >
+        #{bak3,jdbcType=VARCHAR},
+      </if>
+      <if test="lastMessageContent != null" >
+        #{lastMessageContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo" >
+    update non_real_time_consult_session
+    <set >
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user__id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="csUserId != null" >
+        cs_user_id = #{csUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="csUserName != null" >
+        cs_user_name = #{csUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="lastMessageTime != null" >
+        last_message_time = #{lastMessageTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastMessageType != null" >
+        last_message_type = #{lastMessageType,jdbcType=VARCHAR},
+      </if>
+      <if test="consultNumber != null" >
+        consult_number = #{consultNumber,jdbcType=INTEGER},
+      </if>
+      <if test="doctorDepartmentName != null" >
+        doctor_department_name = #{doctorDepartmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorProfessor != null" >
+        doctor_Professor = #{doctorProfessor,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bak1 != null" >
+        bak_1 = #{bak1,jdbcType=VARCHAR},
+      </if>
+      <if test="bak2 != null" >
+        bak_2 = #{bak2,jdbcType=VARCHAR},
+      </if>
+      <if test="bak3 != null" >
+        bak_3 = #{bak3,jdbcType=VARCHAR},
+      </if>
+      <if test="lastMessageContent != null" >
+        last_message_content = #{lastMessageContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo" >
+    update non_real_time_consult_session
+    set status = #{status,jdbcType=VARCHAR},
+      user__id = #{userId,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      cs_user_id = #{csUserId,jdbcType=VARCHAR},
+      cs_user_name = #{csUserName,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      last_message_time = #{lastMessageTime,jdbcType=TIMESTAMP},
+      last_message_type = #{lastMessageType,jdbcType=VARCHAR},
+      consult_number = #{consultNumber,jdbcType=INTEGER},
+      doctor_department_name = #{doctorDepartmentName,jdbcType=VARCHAR},
+      doctor_Professor = #{doctorProfessor,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      bak_1 = #{bak1,jdbcType=VARCHAR},
+      bak_2 = #{bak2,jdbcType=VARCHAR},
+      bak_3 = #{bak3,jdbcType=VARCHAR},
+      last_message_content = #{lastMessageContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo" >
+    update non_real_time_consult_session
+    set status = #{status,jdbcType=VARCHAR},
+      user__id = #{userId,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      cs_user_id = #{csUserId,jdbcType=VARCHAR},
+      cs_user_name = #{csUserName,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      last_message_time = #{lastMessageTime,jdbcType=TIMESTAMP},
+      last_message_type = #{lastMessageType,jdbcType=VARCHAR},
+      consult_number = #{consultNumber,jdbcType=INTEGER},
+      doctor_department_name = #{doctorDepartmentName,jdbcType=VARCHAR},
+      doctor_Professor = #{doctorProfessor,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      bak_1 = #{bak1,jdbcType=VARCHAR},
+      bak_2 = #{bak2,jdbcType=VARCHAR},
+      bak_3 = #{bak3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
