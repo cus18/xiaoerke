@@ -9,16 +9,26 @@ import java.util.Date;
  */
 public class ConsultDoctorDepartmentVo {
 
-    private Integer id;
+    private String id;
 
     private String name;
 
-    public Integer getId() {
+    private Short sorting;
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public Short getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(Short sorting) {
+        this.sorting = sorting;
     }
 
     public String getName() {
