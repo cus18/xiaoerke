@@ -114,6 +114,21 @@ define(['appNonRealTimeConsult'], function(app){
                             }
                         }
                     })
+                    /*找医生*/
+                    .state('NonTimeUserFindDoctor', {
+                        url: '/NonTimeUserFindDoctor',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'NonTimeUserFindDoctorCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.NonTimeUserFindDoctorCtrl',
+                                    [
+                                        'js/controllers/nonRealTimeConsult/user/NonTimeUserFindDoctorCtrl.js?ver='+nonRealTimeConsultVersion,
+                                        'styles/nonRealTimeConsult/user/NonTimeUserFindDoctor.less?ver='+nonRealTimeConsultVersion],
+                                    'js/views/nonRealTimeConsult/user/NonTimeUserFindDoctor.html?ver='+nonRealTimeConsultVersion);
+                            }
+                        }
+                    })
                     /*医生列表*/
                     .state('NonTimeUserDoctorList', {
                         url: '/NonTimeUserDoctorList',

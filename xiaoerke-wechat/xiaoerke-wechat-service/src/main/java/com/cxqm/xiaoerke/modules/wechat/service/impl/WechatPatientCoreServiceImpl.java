@@ -5,10 +5,7 @@ import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
-import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
-import com.cxqm.xiaoerke.modules.consult.service.OperationPromotionService;
-import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
 import com.cxqm.xiaoerke.modules.marketing.service.LoveMarketingService;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
@@ -17,9 +14,9 @@ import com.cxqm.xiaoerke.modules.sys.service.*;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
-import com.cxqm.xiaoerke.modules.umbrella.entity.BabyUmbrellaInfo;
-import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
-import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoThirdPartyService;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.BabyUmbrellaInfo;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.BabyUmbrellaInfoService;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.BabyUmbrellaInfoThirdPartyService;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
@@ -128,6 +125,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     @Autowired
     private TraceElementsServiceImpl traceElementsService;
 
+    @Autowired
+    private ConsultSessionPropertyService consultSessionPropertyService;
+
     private Map<String, OperationPromotionVo> keywordMap;
 
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -194,7 +194,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String token = (String) userWechatParam.get("token");
             try {
                 //关键字回复功能
-                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)) {
+                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)||nonRealTimeCheck(xmlEntity, token)) {
                     return "success";
                 }
             } catch (Exception e) {
@@ -1616,6 +1616,32 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             }
         }
         return true;
+    }
+
+    /**
+     * 非实时咨询检测
+     * 1、用户的免费机会是否用完
+     * 2、没有购买的机会、本月首次，咨询次数是否超过26次
+     * */
+    public boolean nonRealTimeCheck(ReceiveXmlEntity xmlEntity, String token){
+        String openid = xmlEntity.getFromUserName();
+        ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
+        //所有机会都用完
+        if((propertyVo.getPermTimes()+propertyVo.getMonthTimes()) == 0){
+            String content = "问题不着急？\n来试试“点名咨询”。您可指定专家医生或曾咨询过的医生，医生会在24小时内尽快对您的提问进行答复\n" +
+                    "<a href='http://www.baidu.com'>>>点名咨询医生<a/>";
+            WechatUtil.sendMsgToWechat(openid,token,content);
+            return true;
+        }
+        ConsultSession  consultInfo = consultConversationService.selectByOpenid(openid);
+//        首次
+        if((propertyVo.getPermTimes() == 4 && propertyVo.getPermTimes()==0 && consultInfo.getConsultNumber() > 26)){
+            String content = "不想掏钱？\n来试试“点名咨询”。你可指定专家医生或曾咨询过的医生， 医生会在24h 内尽快对您的提问进行答复哦~\n（如有疑问，可直接拨打400-6237-120）\n" +
+                    "<a href='http://www.baidu.com'>>>点名咨询医生<a/>";
+            WechatUtil.sendMsgToWechat(openid,token,content);
+            return true;
+        }
+        return false;
     }
 
     /**
