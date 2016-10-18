@@ -21,8 +21,8 @@
         <div class="line"></div>
         <div class="content-bottom">
             <div class="add-photo">
-                <div class="add">
-                    <img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt=""/>
+                <div class="add" type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000" ng-file-max-size="2MB">
+                    <img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt="addPhoto"/>
                 </div>
                 <div class="describe">
                     <span>添加图片（图片最多上传5张）</span>
@@ -30,11 +30,12 @@
                 </div>
             </div>
             <ul class="photo-list">
-                <li><img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt=""/></li>
-                <li><img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt=""/></li>
-                <li><img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt=""/></li>
-                <li><img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt=""/></li>
-                <li><img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt=""/></li>
+                <li ng-repeat="item in photoList">
+                    <img class="pos" width="100%" ng-src="{{item.url}}" alt=""/>
+                    <img class="del" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fc_10.png"
+                         ng-click="deletePhoto($index)"
+                         alt=""/>
+                </li>
             </ul>
         </div>
     </div>
