@@ -89,6 +89,8 @@ public class FieldworkWechatController {
             url = "#/phoneConsultFirst/";
 
             return "redirect:" + sysPropertyVoWithBLOBsVo.getDoctorWebUrl() + "/doctor/phoneConsultDoctor" + url;
+        }else if ("6".equals("url")){
+            return "redirect:" + sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeDoctorMessageList";
         }
 
         return "redirect:" + sysPropertyVoWithBLOBsVo.getDoctorWebUrl() + "/doctor/doctor" + url;
