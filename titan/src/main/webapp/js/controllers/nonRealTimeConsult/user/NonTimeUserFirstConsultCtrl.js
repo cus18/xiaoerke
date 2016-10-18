@@ -1,9 +1,26 @@
 angular.module('controllers', []).controller('NonTimeUserFirstConsultCtrl', [
         '$scope','$state','$timeout','$http',
         function ($scope,$state,$timeout,$http) {
+            $scope.info = {
+                describeIllness:""
+            };
+            $scope.sexItem = 0;
+            $scope.isSelectedB = true;
+            $scope.isSelectedG = false;
             $scope.NonTimeUserFirstConsultInit = function(){
 
-            }
+            };
+            $scope.selectSex = function(sex) {
+                $scope.sexItem = sex;
+                if ($scope.sexItem == 0) {
+                    $scope.isSelectedB = true;
+                    $scope.isSelectedG = false;
+                }
+                if ($scope.sexItem == 1) {
+                    $scope.isSelectedG = true;
+                    $scope.isSelectedB = false;
+                }
+            };
             $scope.showInput = function() {
                 var date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
                 $("#babyBirthday").mobiscroll().date();
@@ -31,5 +48,13 @@ angular.module('controllers', []).controller('NonTimeUserFirstConsultCtrl', [
                 };
                 $("#babyBirthday").mobiscroll(opt);
                 $("#babyBirthday").mobiscroll("show");
+            };
+            $scope.submit = function(){
+                var information = {
+                    "openId": $scope.openId,
+                    "sex": $scope.sexItem,
+                    "birthday": $("#babyBirthday").val(),
+                    "describeIllness": encodeURI(encodeURI($scope.info.describeIllness))
+                };
             };
     }]);
