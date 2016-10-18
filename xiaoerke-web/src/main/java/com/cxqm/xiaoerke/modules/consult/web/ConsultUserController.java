@@ -631,7 +631,7 @@ public class ConsultUserController extends BaseController {
                 threadExecutor.execute(thread);
             }
             response.put("patientId", result.get("sys_user_id"));
-            response.put("status", result.get("success"));
+            response.put("status", "success");
         }
         return response;
     }
