@@ -352,6 +352,20 @@ public class ConsultH5CoopController {
                 }
             }
         }
+        if (params.containsKey("ykdlToken") && StringUtils.isNotNull(String.valueOf(params.get("ykdlToken")))) {
+            String id = (String) params.get("ykdlToken");
+            String remoteUrl = String.valueOf(params.get("remoteUrl"));
+            String method = "GET";
+            String dataType = "json";
+            String data = "{\"user_uuid\":\""+id+"\"}";
+            String result = CoopConsultUtil.getCurrentUserInfo(remoteUrl, method, dataType, null, data, 4);
+            if (result != null) {
+                JSONObject jsonObject = JSONObject.fromObject(result);
+                if (StringUtils.isNotNull((String) jsonObject.get("headimgurl"))) {
+                    imgUrl = (String) jsonObject.get("headimgurl");
+                }
+            }
+        }
         List<ConsultRecordMongoVo> currentUserHistoryRecord = null;
         Date date = null;
         if (dateTime.indexOf("-") != -1) {
