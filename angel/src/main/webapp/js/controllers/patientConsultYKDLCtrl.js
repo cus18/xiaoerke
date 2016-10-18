@@ -189,7 +189,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                 if($scope.consultContent[0]!=undefined){
                     now = $scope.consultContent[0].dateTime;
                 }
-                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":10,"token":""},function (data) {
+                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":10,"ykdlToken":$stateParams.id,"remoteUrl":$scope.remoteUrl},function (data) {
                     $.each(data.consultDataList,function (index,value) {
                         filterMediaData(value);
                         $scope.consultContent.splice(0,0,value);
@@ -286,7 +286,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                             "senderId": $scope.patientId,
                             "senderName": "YKDL-"+$scope.patientName,
                             "sessionId": parseInt($scope.sessionId),
-                            "avatar":patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
+                            "avatar":$scope.patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                         };
                         if (!window.WebSocket) {
                             return;
@@ -322,7 +322,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                         "senderName":"YKDL-"+$scope.patientName,
                         "sessionId":parseInt($scope.sessionId),
                         "source":$scope.source,
-                        "avatar":patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
+                        "avatar":$scope.patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                     };
                     if (!window.WebSocket) {
                         return;
