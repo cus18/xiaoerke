@@ -4,9 +4,9 @@ angular.module('controllers', []).controller('NonTimeDoctorConversationCtrl', [
 
             $scope.prizeArray = {};
 
-            //Ò³Ãæ³õÊ¼»¯
+            //é¡µé¢åˆå§‹åŒ–
             $scope.NonTimeDoctorConversationInit = function(){
-                document.title="Ò½Éú»á»°"; //ĞŞ¸ÄÒ³Ãætitle
+                document.title="æ¶ˆæ¯ä¼šè¯"; //é¡µé¢title
 
             };
 

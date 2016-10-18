@@ -4,9 +4,9 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
 
             $scope.prizeArray = {};
 
-            //Ò³Ãæ³õÊ¼»¯
+            //é¡µé¢åˆå§‹åŒ–
             $scope.NonTimeDoctorLoginInit = function(){
-                document.title="Ò½ÉúµÇÂ¼"; //ĞŞ¸ÄÒ³Ãætitle
+                document.title="åŒ»ç”Ÿç™»é™†"; //title
 
             };
 

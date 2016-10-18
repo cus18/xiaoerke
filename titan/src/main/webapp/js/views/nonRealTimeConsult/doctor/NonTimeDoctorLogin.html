@@ -1,5 +1,24 @@
 <div ui-view class="NonTimeDoctorLogin" ng-init="NonTimeDoctorLoginInit()">
-    NonTimeDoctorConversation
+    <div class="fillInfo-wrap">
+        <div class="fillInfo">
+            <label class="phone bg1" for="phone" >
+                <span class="icon"><img class="" width="16.5" height="24.5" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/icon_phone.png"></span>
+                <input  class="tc f6 c5" type="number" id="phone" placeholder="请输入您的手机号码">
+            </label>
+            <label class="code bg1" for="code" >
+                <span class="icon"><img class="" width="18" height="23.5" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/icon_lock.png"></span>
+                <input  class="tc f6 c5 " type="number" id="code" placeholder="请输入验证码">
+            </label>
+            <button class="getCode f6 c0 tc" id="getCode">获取验证码</button>
+        </div>
+        <button class="button foot-btn">确认开通</button>
+    </div>
+    <div class="tips tc">
+        <div class="line fl bg1"></div>
+        <div class="line fr bg1"></div>
+        <div class="hd f6 c0">温馨提示</div>
+        <p class="f4 c0">开通成功之后，尽量在四小时内回复</p>
+    </div>
 
 </div>
 
