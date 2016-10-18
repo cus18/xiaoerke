@@ -1,7 +1,46 @@
-<ion-view view-title="首次咨询" ng-init="NonTimeUserFirstConsultInit()">
-    <ion-content class="nonTimeUserFirstConsult" style="top:0;">
-        <ion-scroll direction="y" has-bouncing="true">
-            首次咨询
-        </ion-scroll>
-    </ion-content>
-</ion-view>
+<div ui-view class="nonTimeUserFirstConsult" ng-init="NonTimeUserFirstConsultInit()">
+    <div class="header">
+        <img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fcc_02.png" alt="title"/>
+    </div>
+    <div class="information">问诊信息</div>
+    <div class="content">
+        <div class="content-title">
+            <div class="sex">
+                性别
+                <div class="checked">女</div>
+                <div>男</div>
+            </div>
+            <div class="birth">
+                生日<input type="text" readonly="readonly" id="babyBirthday" placeholder="选择日期>" ng-click="showInput()">
+            </div>
+        </div>
+        <div class="content-middle">
+            <div class="line"></div>
+            <textarea placeholder="请详细描述宝宝的病情、症状、治疗经过以及想获得的帮助哦~（不少于18个字）" ng-model="info.describeIllness"></textarea>
+        </div>
+        <div class="line"></div>
+        <div class="content-bottom">
+            <div class="add-photo">
+                <div class="add">
+                    <img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt=""/>
+                </div>
+                <div class="describe">
+                    <span>添加图片（图片最多上传5张）</span>
+                    <span>病历照片或检查照片，方便医生确认</span>
+                </div>
+            </div>
+            <ul class="photo-list">
+                <li><img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt=""/></li>
+                <li><img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt=""/></li>
+                <li><img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt=""/></li>
+                <li><img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt=""/></li>
+                <li><img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt=""/></li>
+            </ul>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="submit">
+            提问
+        </div>
+    </div>
+</div>
