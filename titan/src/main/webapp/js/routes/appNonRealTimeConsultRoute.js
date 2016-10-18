@@ -62,6 +62,7 @@ define(['appNonRealTimeConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.NonTimeDoctorConversationCtrl',
                                     [
                                         'js/libs/lodash.min.js',
+                                        'js/libs/scrollglue.js',
                                         'js/controllers/nonRealTimeConsult/doctor/NonTimeDoctorConversationCtrl.js?ver='+nonRealTimeConsultVersion,
                                         'styles/nonRealTimeConsult/doctor/NonTimeDoctorConversation.less?ver='+nonRealTimeConsultVersion],
                                     'js/views/nonRealTimeConsult/doctor/NonTimeDoctorConversation.html?ver='+nonRealTimeConsultVersion);
