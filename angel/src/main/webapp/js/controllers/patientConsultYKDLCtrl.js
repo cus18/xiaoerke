@@ -96,7 +96,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                                      $scope.consultContent.push(val);*/
                                     var now = moment().format("YYYY-MM-DD HH:mm:ss");
                                     GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,
-                                        "pageSize":10,"token":""},function (data) {
+                                        "pageSize":10,"ykdlToken":$stateParams.id,"remoteUrl":$scope.remoteUrl},function (data) {
                                         if(data.consultDataList.length!=0){
                                             $scope.lookMore = true;
                                             $scope.fucengLock = false;
