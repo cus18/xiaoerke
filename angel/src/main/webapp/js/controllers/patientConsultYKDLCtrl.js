@@ -15,9 +15,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.loseConnectionFlag = false;
             var heartBeatNum = 0;
             $scope.lookMore = false;//查看更多
-            var patientImg ;
-            var patientName ;
-            var patientSex ;
+            $scope.patientImg = "";
+            $scope.patientName= "" ;
             $scope.fucengLock = true;//第一次进入页面的浮层
             $scope.alertFlag = false;
             $scope.remoteUrl = " http://wxsp-dev.ykbenefit.com/customer_info";
@@ -76,11 +75,11 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                         if(data.status == "success"){
                             $scope.patientId = data.patientId;
                             if(data.headimgurl == null || data.headimgurl == ''){
-                                patientImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
+                                $scope.patientImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
                             }else{
-                                patientImg = data.headimgurl;
+                                $scope.patientImg = data.headimgurl;
                             }
-                            patientName = data.userName == null?"":data.userName;
+                            $scope.patientName = data.userName == null?$scope.patientId:data.userName;
                             GetSessionId.get({"userId":$scope.patientId},function(data){
                                 console.log("data",data);
                                 if(data.status=="0"){
