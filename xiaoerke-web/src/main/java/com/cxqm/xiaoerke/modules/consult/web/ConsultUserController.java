@@ -534,6 +534,7 @@ public class ConsultUserController extends BaseController {
         String userName = "" ;
         Integer userSex = 3;            //代表没有传性别信息
         String remoteUrl = "";
+        String headimgurl = "";
         if (params.containsKey("source")) {
             source = String.valueOf(params.get("source"));
         }
@@ -571,17 +572,41 @@ public class ConsultUserController extends BaseController {
                 //         request.put("sys_user_id", sys_user_id);
             } else if (source.contains("ykdl") || source.contains("YKDL")) {
                 source = "COOP_YKDL";
-                userName = StringUtils.isNotNull(String.valueOf(params.get("patientName"))) ? String.valueOf(params.get("patientName")) : "";
-                userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone"))) ? String.valueOf(params.get("patientPhone")) : "";
                 thirdId = String.valueOf(params.get("thirdId"));
-                if (params.get("patientSex") != null && params.get("patientSex") != "") {
-                    userSex = Integer.valueOf(String.valueOf(params.get("patientSex")));
+                if(StringUtils.isNotNull(thirdId)){
+                    if(StringUtils.isNotNull(String.valueOf(params.get("remoteUrl")))){
+                        remoteUrl = String.valueOf(params.get("remoteUrl"));
+                    }else{
+                        remoteUrl = "http://wxsp-dev.ykbenefit.com/customer_info";
+                    }
+                    String method = "POST";
+                    String content_type = "json";
+                    String data = "{\"user_uuid\":\""+thirdId+"\"}";
+                    String str = CoopConsultUtil.getCurrentUserInfo(remoteUrl,method,content_type,null,data,4);
+                    JSONObject jsonObject = JSONObject.fromObject(str);
+                    if(jsonObject.containsKey("error_msg") && "success".equalsIgnoreCase(String.valueOf(jsonObject.get("error_msg")))){
+                        headimgurl = StringUtils.isNotNull(String.valueOf(jsonObject.get("headimgurl"))) ? String.valueOf(jsonObject.get("headimgurl")) : "";
+                        userName = StringUtils.isNotNull(String.valueOf(jsonObject.get("nickname"))) ? String.valueOf(jsonObject.get("nickname")) : "";
+                        if (jsonObject.get("sex") != null && jsonObject.get("sex") != "") {
+                            userSex = Integer.valueOf(String.valueOf(jsonObject.get("sex")));
+                        }
+                        userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone"))) ? String.valueOf(params.get("patientPhone")) : "";
+                        request.put("userPhone", userPhone);
+                        request.put("userName", userName);
+                        request.put("userSex", userSex);
+                        request.put("source", source);
+                        request.put("thirdId", thirdId);
+                        response.put("headimgurl",headimgurl);
+                        response.put("userName",userName);
+                    }else{
+                       response.put("status", "failure");
+                       return response ;
+                    }
+                }else{
+                    response.put("status", "failure");
+                    return response;
                 }
-                request.put("userPhone", userPhone);
-                request.put("userName", userName);
-                request.put("userSex", userSex);
-                request.put("source", source);
-                request.put("thirdId", thirdId);
+
             } else {
                 userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone"))) ? String.valueOf(params.get("patientPhone")) : "";
                 userName = StringUtils.isNotNull(String.valueOf(params.get("patientName"))) ? String.valueOf(params.get("patientName")) : "";
@@ -601,6 +626,7 @@ public class ConsultUserController extends BaseController {
                 threadExecutor.execute(thread);
             }
             response.put("patientId", result.get("sys_user_id"));
+            response.put("status", result.get("success"));
         }
         return response;
     }
