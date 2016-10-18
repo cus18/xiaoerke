@@ -102,6 +102,15 @@ public class NgRouteController extends BaseController {
         return "angular/consultDoctorHomeIndex";
     }
 
+    /**
+     * vaccine 疫苗站主页
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/vaccine",method = {RequestMethod.POST, RequestMethod.GET})
+    public String vaccineIndex() {
+        return "angular/vaccineIndex";
+    }
+
     /*
         wisdom 项目
     */

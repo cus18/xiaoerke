@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+    <base href="/titan/"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name = "format-detection" content = "telephone=no">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <title>宝大夫</title>
+</head>
+<body>
+<div ui-view></div>
+</body>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="js/libs/ionic.bundle.min.js"></script>
+<script>
+    "use strict";
+    var require = {
+        waitSeconds: 15,
+        urlArgs: "ver=1.0.4",  //防止读取缓存，调试用
+        deps : ['js/mainVaccine']
+    };
+    var phoneConsultVersion = "1.0.2";
+    var picVersion = "1.0.2";
+    var appName = 'appVaccine';
+</script>
+<script type="text/javascript" src="js/libs/require.min.js"></script>
+</html>
+

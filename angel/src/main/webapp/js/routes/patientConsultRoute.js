@@ -139,7 +139,7 @@ define(['appPatientConsult'], function(app){
                                     ['js/controllers/patientConsultBHQCtrl.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
                                         "js/libs/jquery.qqFace.js","js/libs/jquery.browser.min.js",
-                                        'js/styles/patientConsultBHQ.css'],
+                                        'js/styles/patientConsultBHQ.css','js/libs/jquery.base64.js'],
                                     'js/views/patientConsultBHQ.html?ver='+patientConsultVersion);
                             }
                         },
@@ -215,7 +215,7 @@ define(['appPatientConsult'], function(app){
                     })
 
                     .state('patientConsultYKDL', {
-                        url: '/patientConsultYKDL/:id,:name,:image',
+                        url: '/patientConsultYKDL/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'patientConsultYKDLCtrl',
                         resolve: {

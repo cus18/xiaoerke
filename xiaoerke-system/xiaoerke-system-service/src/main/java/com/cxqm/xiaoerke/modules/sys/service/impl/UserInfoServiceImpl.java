@@ -190,6 +190,39 @@ public class UserInfoServiceImpl implements UserInfoService {
                 response.put("sys_user_id", sys_user_id);
                 response.put("result", 0);
             }
+        }else if(StringUtils.isNotNull(source) && "COOP_YKDL".equalsIgnoreCase(source)){
+            userNew.setLoginName(String.valueOf(params.get("thirdId")));
+            if (userdao.getUserByLoginName(new User(null, String.valueOf(params.get("thirdId")))) == null) {
+                String sys_user_id = String.valueOf(params.get("thirdId"));
+                userNew.setId(sys_user_id);
+                userNew.setLoginName(String.valueOf(params.get("thirdId")));
+                userNew.setCreateDate(new Date());
+                userNew.setPhone((String) params.get("userPhone"));
+                userNew.setCompany(new Office("1"));
+                userNew.setOffice(new Office("3"));
+                userNew.setPassword(SystemService.entryptPassword("ILoveXiaoErKe"));
+                userNew.setUserType(User.USER_TYPE_USER);
+                userNew.setMarketer(source);
+                userNew.setName((String) params.get("userName"));
+//                userNew.setOpenid(String.valueOf(params.get("thirdId")));
+                int result = userdao.insert(userNew);
+                System.out.println("======================= not WJY RESULT==="+result);
+                if (result == 1) {
+                    PatientVo patientVo = new PatientVo();
+                    String sys_patient_id = UUID.randomUUID().toString().replaceAll("-", "");
+                    patientVo.setId(sys_patient_id);
+                    patientVo.setSysUserId(sys_user_id);
+                    patientVo.setStatus("0");
+                    patientVo.setGender(String.valueOf(params.get("userSex")));
+                    patientDao.insert(patientVo);
+                }
+                response.put("sys_user_id", sys_user_id);
+                response.put("result", 1);
+            } else {
+                String sys_user_id = (String) userdao.getUserByLoginName(new User(null, String.valueOf(params.get("thirdId")))).get("id");
+                response.put("sys_user_id", sys_user_id);
+                response.put("result", 0);
+            }
         }else{
             System.out.println("======================= not WJY");
             userNew.setLoginName((String) params.get("userPhone"));

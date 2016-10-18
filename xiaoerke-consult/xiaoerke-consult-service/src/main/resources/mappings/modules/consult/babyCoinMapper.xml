@@ -152,6 +152,10 @@
     where marketer = #{marketer,jdbcType=VARCHAR}
   </update>
 
+  <update id="updateBabyCoinInviteNumber" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
+    update baby_coin set invite_number_month = #{inviteNumberMonth}
+  </update>
+
 
   <update id="updateByOpenId" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
     update baby_coin

@@ -44,12 +44,23 @@
 		<property name="cronExpression" value="0 0 8 * * ?"/>
 	</bean>
 
+	<bean id="updateBabyCoinInviteNumberCronTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduledQuarz"/>
+		<property name="targetMethod" value="updateBabyCoinInviteNumber"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	<bean id="updateBabyCoinInviteNumberCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="updateBabyCoinInviteNumberCronTask"/>
+		<property name="cronExpression" value="0 0 1 1 * ?"/>
+	</bean>
+
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
 				<ref bean="consultStatisticCronTrigger"/>
 				<ref bean="babyVaccineRemindCronTrigger"/>
 				<ref bean="updateOlyGamesCronTrigger"/>
+				<ref bean="updateBabyCoinInviteNumberCronTrigger"/>
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

@@ -1,0 +1,172 @@
+/*
+* @Author: acer-pc
+* @Date:   2016-09-23 16:29:17
+* @Last Modified by:   acer-pc
+* @Last Modified time: 2016-09-30 11:59:21
+*/
+html, body, ul, li, ol, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, legend, img {
+    margin: 0;
+    padding: 0;
+}
+
+fieldset, img, input, button {
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline-style: none;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+input {
+    padding-top: 0;
+    padding-bottom: 0;
+    font-family: "SimSun", "宋体";
+}
+
+input {
+    vertical-align: middle;
+}
+
+input, textarea {
+    font-size: 12px;
+    margin: 0;
+}
+textarea {
+    resize: none;
+}
+
+/*防止拖动*/
+img {
+    border: 0;
+    vertical-align: middle;
+}
+
+/*  去掉图片低测默认的3像素空白缝隙*/
+table {
+    border-collapse: collapse;
+}
+
+body {
+    font: 16px/36px Arial, Verdana, "\5b8b\4f53";
+    color: #666;
+    background: #fff
+}
+
+.clearfix:before, .clearfix:after {
+    content: "";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    *zoom: 1; /*IE/7/6*/
+}
+
+a {
+    color: #666;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #C81623;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-decoration: none;
+    font-weight: normal;
+    font-size: 100%;
+}
+
+s, i, em {
+    font-style: normal;
+    text-decoration: none;
+}
+
+.message_div .title {
+    width: 100%;
+    padding: 15px 0;
+    text-align: center;
+    background-color: #f9f9f9;
+    font-size: 18px;
+    color: #333;
+}
+
+.message_div .message ul li {
+    margin: 0 15px;
+    border-bottom: 1px solid #ccc;
+    padding: 15px 0;
+    background-color: #fff;
+    color: #333;
+}
+
+.message_div .message ul li:nth-last-child(1) {
+    margin-bottom: 22px;
+}
+
+.message_div .message ul li input {
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.message_div .message ul li span {
+    display: inline-block;
+    float: right;
+    width: 92px;
+    text-align: center;
+    /*background-color: #fff;*/
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #5F9FF9;
+    color: #333;
+    padding-left: 20px;
+    margin-right: 20px;
+    background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Fnan_png_03.png) 10px center no-repeat #fff;
+    background-size: 23px;
+}
+
+.message_div .message ul li span:nth-child(2) {
+    background: url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/branchAnswer%2Fnv_png_03.png) 10px center no-repeat;
+    background-size: 23px;
+}
+
+.message_div .message ul li span.checked {
+    background-color: #5F9FF9;
+    color: #fff;
+}
+
+.confirm {
+    text-align: center;
+}
+
+.confirm .submit {
+    background-color: #5f9ff9;
+    width: 163px;
+    font-size: 16px;
+    line-height: 44px;
+    border-radius: 6px;
+    text-align: center;
+    color: #fff;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.select-area {
+    position: relative;
+    overflow: hidden;
+    float: right;
+    min-width: 80px;
+}
+
+.select-area select {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+}
