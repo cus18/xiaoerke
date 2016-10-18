@@ -16,8 +16,8 @@ import javax.servlet.http.HttpSession;
  * Created by Administrator on 2016/09/05 0024.
  */
 @Controller
-@RequestMapping(value = "nonRealTimeConsultUser")
-public class NonRealTimeConsultUserContorller {
+@RequestMapping(value = "nonRealTimeConsultDoctor")
+public class NonRealTimeConsultDoctorContorller {
 
 
     @Autowired
