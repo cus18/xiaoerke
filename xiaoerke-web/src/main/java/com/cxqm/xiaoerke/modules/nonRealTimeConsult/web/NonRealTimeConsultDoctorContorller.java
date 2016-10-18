@@ -5,14 +5,11 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
-import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRecordVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
-import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,16 +30,6 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "nonRealTimeConsultDoctor")
 public class NonRealTimeConsultDoctorContorller {
-
-
-    @Autowired
-    private SessionRedisCache sessionRedisCache;
-
-    @Autowired
-    private ConsultSessionPropertyService consultSessionPropertyService;
-
-    @Autowired
-    private SystemService systemService;
 
     @Autowired
     private ConsultDoctorInfoService consultDoctorInfoService;
