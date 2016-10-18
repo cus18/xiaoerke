@@ -62,6 +62,7 @@ define(['appNonRealTimeConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.NonTimeDoctorConversationCtrl',
                                     [
                                         'js/libs/lodash.min.js',
+                                        'js/libs/scrollglue.js',
                                         'js/controllers/nonRealTimeConsult/doctor/NonTimeDoctorConversationCtrl.js?ver='+nonRealTimeConsultVersion,
                                         'styles/nonRealTimeConsult/doctor/NonTimeDoctorConversation.less?ver='+nonRealTimeConsultVersion],
                                     'js/views/nonRealTimeConsult/doctor/NonTimeDoctorConversation.html?ver='+nonRealTimeConsultVersion);
@@ -107,7 +108,8 @@ define(['appNonRealTimeConsult'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.NonTimeUserFirstConsultCtrl',
-                                    [
+                                    ['js/libs/mobiscroll.custom-2.17.0.min.js',
+                                        'styles/lib/mobiscroll.custom-2.17.0.min.css',
                                         'js/controllers/nonRealTimeConsult/user/NonTimeUserFirstConsultCtrl.js?ver='+nonRealTimeConsultVersion,
                                         'styles/nonRealTimeConsult/user/NonTimeUserFirstConsult.less?ver='+nonRealTimeConsultVersion],
                                     'js/views/nonRealTimeConsult/user/NonTimeUserFirstConsult.html?ver='+nonRealTimeConsultVersion);
