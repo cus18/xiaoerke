@@ -8,6 +8,7 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRecordVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
@@ -138,17 +139,47 @@ public class NonRealTimeConsultDoctorContorller {
                     int nowDateYear = nowDate.getYear();
                     int nowDateMonth = nowDate.getMonth();
                     int chaDate = 0;
-                    if(nowDateMonth > babyBirthdayMonth){
+                    if (nowDateMonth > babyBirthdayMonth) {
                         chaDate = nowDateMonth - babyBirthdayMonth;
-                    }else if (babyBirthdayMonth > nowDateMonth){
+                    } else if (babyBirthdayMonth > nowDateMonth) {
                         chaDate = babyBirthdayMonth - nowDateMonth;
                     }
 
-                    String babyInfo = babyBaseInfoVo.getName() +","+(nowDateYear - babyBirthdayYear) +"岁" + chaDate +"个月";
+                    String babyInfo = babyBaseInfoVo.getName() + "," + (nowDateYear - babyBirthdayYear) + "岁" + chaDate + "个月";
                     nonRealTimeConsultSessionVo.setBabyInfo(babyInfo);
                 }
             }
         }
+        return response;
+    }
+
+
+    /**
+     * 获取当前医生与用户的聊天记录
+     * <p/>
+     * params:{"csUserId":"sdfsdfsdfsdfsdf","userId":"123sdfsf"}
+     * <p/>
+     *
+     * @param session
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/GetSessionRecord", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map GetSessionRecord(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<String, Object>();
+        String csUserId = String.valueOf(params.get("csUserId"));
+        String userId = String.valueOf(params.get("userId"));
+        NonRealTimeConsultRecordVo nonRealTimeConsultRecordVo = new NonRealTimeConsultRecordVo();
+        nonRealTimeConsultRecordVo.setCsUserId(csUserId);
+        nonRealTimeConsultRecordVo.setSysUserId(userId);
+        List<NonRealTimeConsultRecordVo> nonRealTimeConsultRecordVos = nonRealTimeConsultService.selectSessionRecordByVo(nonRealTimeConsultRecordVo);
+        if (nonRealTimeConsultRecordVos != null && nonRealTimeConsultRecordVos.size() > 0) {
+            for (NonRealTimeConsultRecordVo vo : nonRealTimeConsultRecordVos) {
+                vo.setDisplayTimes(DateUtils.DateToStr(vo.getCreateTime(), "flag1"));
+            }
+        }
+        response.put("nonRealTimeConsultRecordInfo", nonRealTimeConsultRecordVos);
         return response;
     }
 

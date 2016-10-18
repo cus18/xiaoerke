@@ -23,6 +23,8 @@ public class NonRealTimeConsultRecordVo {
 
     private Date updateTime;
 
+    private String displayTimes;
+
     private String bak1;
 
     private String bak2;
@@ -30,6 +32,16 @@ public class NonRealTimeConsultRecordVo {
     private String bak3;
 
     private String message;
+
+    private String order;
+
+    public String getDisplayTimes() {
+        return displayTimes;
+    }
+
+    public void setDisplayTimes(String displayTimes) {
+        this.displayTimes = displayTimes;
+    }
 
     public Integer getId() {
         return id;
@@ -117,6 +129,14 @@ public class NonRealTimeConsultRecordVo {
 
     public void setBak1(String bak1) {
         this.bak1 = bak1;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
     }
 
     public String getBak2() {

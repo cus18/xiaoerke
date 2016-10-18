@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.nonRealTimeConsult.service;
 
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRecordVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 
 import java.util.List;
@@ -10,4 +11,6 @@ import java.util.List;
 public interface NonRealTimeConsultService {
 
     List<NonRealTimeConsultSessionVo> selectByNonRealTimeConsultSessionVo(NonRealTimeConsultSessionVo realTimeConsultSessionVo);
+
+    List<NonRealTimeConsultRecordVo> selectSessionRecordByVo(NonRealTimeConsultRecordVo nonRealTimeConsultRecordVo);
 }

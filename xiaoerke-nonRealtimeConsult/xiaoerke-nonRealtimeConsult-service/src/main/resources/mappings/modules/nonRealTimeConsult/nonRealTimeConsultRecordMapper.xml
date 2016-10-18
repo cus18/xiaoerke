@@ -125,4 +125,58 @@
       </if>
     </trim>
   </insert>
+
+  <select id="selectSessionRecordByVo" resultMap="ResultMapWithBLOBs" parameterType="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRecordVo" >
+    select *
+    from non_real_time_consult_record
+    where 1=1
+    <if test="id != null" >
+      and #{id,jdbcType=INTEGER}
+    </if>
+    <if test="sessionId != null" >
+      and #{sessionId,jdbcType=INTEGER}
+    </if>
+    <if test="senderId != null" >
+      and #{senderId,jdbcType=VARCHAR}
+    </if>
+    <if test="sysUserId != null" >
+      and #{sysUserId,jdbcType=VARCHAR}
+    </if>
+    <if test="csUserId != null" >
+      and #{csUserId,jdbcType=VARCHAR}
+    </if>
+    <if test="doctorName != null" >
+      and #{doctorName,jdbcType=VARCHAR}
+    </if>
+    <if test="messageType != null" >
+      and #{messageType,jdbcType=VARCHAR}
+    </if>
+    <if test="userName != null" >
+      and #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime != null" >
+      and #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateTime != null" >
+      and #{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="bak1 != null" >
+      and #{bak1,jdbcType=VARCHAR}
+    </if>
+    <if test="bak2 != null" >
+      and #{bak2,jdbcType=VARCHAR}
+    </if>
+    <if test="bak3 != null" >
+      and #{bak3,jdbcType=VARCHAR}
+    </if>
+    <if test="message != null" >
+      and #{message,jdbcType=LONGVARCHAR}
+    </if>
+    <if test="order == 'createTimeAsc'" >
+      order by create_time asc
+    </if>
+    <if test="order == 'createTimeDesc'" >
+      order by create_time desc
+    </if>
+  </select>
 </mapper>
