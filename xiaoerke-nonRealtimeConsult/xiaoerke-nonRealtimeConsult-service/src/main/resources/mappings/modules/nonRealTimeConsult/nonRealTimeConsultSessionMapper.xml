@@ -31,14 +31,72 @@
   <sql id="Blob_Column_List" >
     last_message_content
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+
+
+  <select id="selectByNonRealTimeConsultSessionVo" resultMap="ResultMapWithBLOBs" parameterType="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo" >
     select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from non_real_time_consult_session
-    where id = #{id,jdbcType=INTEGER}
+    where 1=1
+    <if test="id != null" >
+      and #{id,jdbcType=INTEGER}
+    </if>
+    <if test="status != null" >
+      and #{status,jdbcType=VARCHAR}
+    </if>
+    <if test="userId != null" >
+      and #{userId,jdbcType=VARCHAR}
+    </if>
+    <if test="userName != null" >
+      and #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="csUserId != null" >
+      and #{csUserId,jdbcType=VARCHAR}
+    </if>
+    <if test="csUserName != null" >
+      and #{csUserName,jdbcType=VARCHAR}
+    </if>
+    <if test="source != null" >
+      and #{source,jdbcType=VARCHAR}
+    </if>
+    <if test="lastMessageTime != null" >
+      and #{lastMessageTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="lastMessageType != null" >
+      and #{lastMessageType,jdbcType=VARCHAR}
+    </if>
+    <if test="consultNumber != null" >
+      and #{consultNumber,jdbcType=INTEGER}
+    </if>
+    <if test="doctorDepartmentName != null" >
+      and #{doctorDepartmentName,jdbcType=VARCHAR}
+    </if>
+    <if test="doctorProfessor != null" >
+      and #{doctorProfessor,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime != null" >
+      and #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateTime != null" >
+      and #{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="bak1 != null" >
+      and #{bak1,jdbcType=VARCHAR}
+    </if>
+    <if test="bak2 != null" >
+      and #{bak2,jdbcType=VARCHAR}
+    </if>
+    <if test="bak3 != null" >
+      and #{bak3,jdbcType=VARCHAR}
+    </if>
+    <if test="lastMessageContent != null" >
+      and #{lastMessageContent,jdbcType=LONGVARCHAR}
+    </if>
   </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from non_real_time_consult_session
     where id = #{id,jdbcType=INTEGER}

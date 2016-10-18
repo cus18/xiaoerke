@@ -1,5 +1,11 @@
 package com.cxqm.xiaoerke.modules.operation.service;
 
-public interface Test {
+public class Test {
+    public static void main(String[] args) {
+        String t = "ary||bfgdfg||cfdghdfgh||fghdhgd";
 
+        String[] temp = t.split("\\|\\|");
+
+        System.out.println(temp.length);
+    }
 }

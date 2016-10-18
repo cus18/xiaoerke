@@ -9,6 +9,7 @@ import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -71,7 +72,35 @@ public class NonRealTimeConsultDoctorContorller {
         } else {
             response.put("status", "failure");
         }
-        return param;
+        return response;
+    }
+
+    /**
+     * 获取医生的服务（当前服务和全部服务）
+     * <p/>
+     * params:{"serviceType":"current","openId":"123sdfsf"}  //serviceType  currentService 当前服务 allService 全部服务
+     * <p/>
+     * response:S
+     * {
+     * "status":"success"
+     * }
+     * //success 成功  failure 失败
+     * @param session
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/GetDoctorService", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map GetDoctorService(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<String, Object>();
+        String serviceType = (String) params.get("serviceType");
+        String openId = (String) params.get("openId");
+        if (serviceType.equals("currentService")){//查询当前服务
+
+        }else{//查询全部服务
+
+        }
+        return response;
     }
 
 

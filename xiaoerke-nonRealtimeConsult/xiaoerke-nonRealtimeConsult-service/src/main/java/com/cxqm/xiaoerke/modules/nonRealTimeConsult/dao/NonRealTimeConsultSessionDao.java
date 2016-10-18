@@ -3,6 +3,9 @@ package com.cxqm.xiaoerke.modules.nonRealTimeConsult.dao;
 
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
+
+import java.util.List;
+
 @MyBatisDao
 public interface NonRealTimeConsultSessionDao {
     int deleteByPrimaryKey(Integer id);
@@ -11,7 +14,7 @@ public interface NonRealTimeConsultSessionDao {
 
     int insertSelective(NonRealTimeConsultSessionVo record);
 
-    NonRealTimeConsultSessionVo selectByPrimaryKey(Integer id);
+    List<NonRealTimeConsultSessionVo> selectByNonRealTimeConsultSessionVo(NonRealTimeConsultSessionVo realTimeConsultSessionVo);
 
     int updateByPrimaryKeySelective(NonRealTimeConsultSessionVo record);
 
