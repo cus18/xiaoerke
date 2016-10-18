@@ -3,6 +3,8 @@
   height:100%;
 }
 .NonTimeDoctorConversation .conversation{
+  height:76%;
+  overflow-y: scroll;
   margin:21px 10px;
 }
 .NonTimeDoctorConversation .dialog{
@@ -83,7 +85,14 @@
    margin-left:25px;
    margin-top:-2px;
 }
-
+.NonTimeDoctorConversation .send-wrap .btn-send{
+  width:60px;
+  height:25px;
+  line-height:25px;
+  background-color: #5cb8ff;
+  border-radius: 3px;
+  border:none;
+}
 .NonTimeDoctorConversation .close div:first-of-type{
   border-radius: 30px;
   padding:5px 13px;
@@ -94,4 +103,7 @@
 .NonTimeDoctorConversation .close div:last-of-type{
   width:100%;
   padding:10px 0;
+}
+[scroll-glue-bottom], {
+  overflow-y: scroll;
 }
