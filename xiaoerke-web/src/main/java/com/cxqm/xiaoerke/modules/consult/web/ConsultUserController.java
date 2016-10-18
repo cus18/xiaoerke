@@ -582,25 +582,30 @@ public class ConsultUserController extends BaseController {
                     String method = "POST";
                     String content_type = "json";
                     String data = "{\"user_uuid\":\""+thirdId+"\"}";
-                    String str = CoopConsultUtil.getCurrentUserInfo(remoteUrl,method,content_type,null,data,4);
-                    JSONObject jsonObject = JSONObject.fromObject(str);
-                    if(jsonObject.containsKey("error_msg") && "success".equalsIgnoreCase(String.valueOf(jsonObject.get("error_msg")))){
-                        headimgurl = StringUtils.isNotNull(String.valueOf(jsonObject.get("headimgurl"))) ? String.valueOf(jsonObject.get("headimgurl")) : "";
-                        userName = StringUtils.isNotNull(String.valueOf(jsonObject.get("nickname"))) ? String.valueOf(jsonObject.get("nickname")) : "";
-                        if (jsonObject.get("sex") != null && jsonObject.get("sex") != "") {
-                            userSex = Integer.valueOf(String.valueOf(jsonObject.get("sex")));
+                    String str = CoopConsultUtil.getCurrentUserInfo(remoteUrl, method, content_type, null, data, 4);
+                    if(StringUtils.isNotNull(str)){
+                        JSONObject jsonObject = JSONObject.fromObject(str);
+                        if(jsonObject.containsKey("error_msg") && "success".equalsIgnoreCase(String.valueOf(jsonObject.get("error_msg")))){
+                            headimgurl = StringUtils.isNotNull(String.valueOf(jsonObject.get("headimgurl"))) ? String.valueOf(jsonObject.get("headimgurl")) : "";
+                            userName = StringUtils.isNotNull(String.valueOf(jsonObject.get("nickname"))) ? String.valueOf(jsonObject.get("nickname")) : "";
+                            if (jsonObject.get("sex") != null && jsonObject.get("sex") != "") {
+                                userSex = Integer.valueOf(String.valueOf(jsonObject.get("sex")));
+                            }
+                            userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone"))) ? String.valueOf(params.get("patientPhone")) : "";
+                            request.put("userPhone", userPhone);
+                            request.put("userName", userName);
+                            request.put("userSex", userSex);
+                            request.put("source", source);
+                            request.put("thirdId", thirdId);
+                            response.put("headimgurl",headimgurl);
+                            response.put("userName",userName);
+                        }else{
+                            response.put("status", "failure");
+                            return response ;
                         }
-                        userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone"))) ? String.valueOf(params.get("patientPhone")) : "";
-                        request.put("userPhone", userPhone);
-                        request.put("userName", userName);
-                        request.put("userSex", userSex);
-                        request.put("source", source);
-                        request.put("thirdId", thirdId);
-                        response.put("headimgurl",headimgurl);
-                        response.put("userName",userName);
                     }else{
-                       response.put("status", "failure");
-                       return response ;
+                        response.put("status", "failure");
+                        return response ;
                     }
                 }else{
                     response.put("status", "failure");
