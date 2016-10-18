@@ -26,7 +26,7 @@
     </select>
 
 
-    <select id="selectByPrOpenid" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="selectByOpenid" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"/>
         from consult_session
