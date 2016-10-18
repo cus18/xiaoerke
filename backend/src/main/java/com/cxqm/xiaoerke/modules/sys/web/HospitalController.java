@@ -118,7 +118,7 @@ public class HospitalController extends BaseController {
                 //插入医院信息数据
                 HospitalServiceImpl.insertHospitalData(hospitalVo);
                 //掉用rds接口，同步数据到rds上
-                rdsDataSourceJDBC.insertHospitalToRds(hospitalVo);
+//                rdsDataSourceJDBC.insertHospitalToRds(hospitalVo);
                 model.addAttribute("message", "医院录入成功！");
             } else {
                 model.addAttribute("message", "对不起，当前医院已存在！");

@@ -191,7 +191,7 @@ public class OperationHandleServiceImpl implements OperationHandleService {
                 //插入医生账户信息
                 accountServiceImpl.createAccountInfo(sys_user_id, 0f);
                 //将医生表同步到rds上，以便搜索时能搜到
-                rdsDataSourceJDBC.insertDoctorToRds(hashMap, "yes");
+//                rdsDataSourceJDBC.insertDoctorToRds(hashMap, "yes");
             }
         } else {//医生已存在，更新医生信息
             DoctorVo doctorVo = new DoctorVo();

@@ -1,4 +1,5 @@
 package com.cxqm.xiaoerke.modules.bankend.service.impl;
+
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
@@ -15,7 +16,6 @@ import com.cxqm.xiaoerke.modules.sys.dao.HospitalDao;
 import com.cxqm.xiaoerke.modules.sys.entity.DoctorHospitalRelationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.DoctorLocationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.DoctorVo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -133,9 +133,9 @@ public class DoctorServiceImpl implements DoctorService {
         doctorDao.saveEditUser(doctorVo);
         //修改rds上的医生表
         if(doctorVo.getIsDisplay().equals("hidden")){
-            rdsDataSourceJDBC.deletedoctor(doctorVo);
+//            rdsDataSourceJDBC.deletedoctor(doctorVo);
         }else{
-            rdsDataSourceJDBC.deletedoctor(doctorVo);
+//            rdsDataSourceJDBC.deletedoctor(doctorVo);
             HashMap<String, Object> doctorMap = new HashMap<String, Object>();
             doctorMap.put("sysDoctorId",doctorVo.getId());
             doctorMap.put("sys_user_id",doctorVo.getSysUserId());
@@ -145,9 +145,9 @@ public class DoctorServiceImpl implements DoctorService {
             doctorMap.put("personal_details",doctorVo.getPersonDetails());
             doctorMap.put("fans_number",doctorVo.getFansNumber());
             doctorMap.put("experince",doctorVo.getExperience());
-            doctorMap.put("hospitalName",doctorVo.getHospital());
+            doctorMap.put("hospitalName", doctorVo.getHospital());
 
-            rdsDataSourceJDBC.insertDoctorToRds(doctorMap,"no");
+//            rdsDataSourceJDBC.insertDoctorToRds(doctorMap,"no");
         }
     }
 
