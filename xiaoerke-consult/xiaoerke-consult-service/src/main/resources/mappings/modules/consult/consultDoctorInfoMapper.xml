@@ -19,10 +19,11 @@
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
     <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, sys_user_id, password,gender,name, title, hospital, department,practitionerCertificateNo, skill, description, grab_session, send_message, receive_differential_notification,
-    create_date, update_date,type
+    create_date, update_date,type,open_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -51,6 +52,10 @@
     <if test="type != null and id != ''" >
       and type =  #{type,jdbcType=VARCHAR}
     </if>
+    <if test="openId != null">
+      and open_id =  #{openId,jdbcType=VARCHAR}
+    </if>
+
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

@@ -53,6 +53,16 @@ public class ConsultDoctorInfoVo {
 
     private String password;
 
+    private String openId;
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
     public String getFromDate() {
         return fromDate;
     }
