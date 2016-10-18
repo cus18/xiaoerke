@@ -1,11 +1,16 @@
 package com.cxqm.xiaoerke.modules.nonRealTimeConsult.web;
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
+import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +46,12 @@ public class NonRealTimeConsultDoctorContorller {
     @Autowired
     private ConsultDoctorInfoService consultDoctorInfoService;
 
+    @Autowired
+    private NonRealTimeConsultService nonRealTimeConsultService;
+
+    @Autowired
+    private HealthRecordsService healthRecordsService;
+
 
     @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
@@ -55,6 +67,7 @@ public class NonRealTimeConsultDoctorContorller {
      * "status":"success"
      * }
      * //success 成功  failure 失败
+     *
      * @param session
      * @param request
      * @return
@@ -85,20 +98,56 @@ public class NonRealTimeConsultDoctorContorller {
      * "status":"success"
      * }
      * //success 成功  failure 失败
+     *
      * @param session
      * @param request
      * @return
      */
     @RequestMapping(value = "/GetDoctorService", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map GetDoctorService(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
+    public Map GetDoctorService(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
         Map<String, Object> response = new HashMap<String, Object>();
         String serviceType = (String) params.get("serviceType");
         String openId = (String) params.get("openId");
-        if (serviceType.equals("currentService")){//查询当前服务
+        NonRealTimeConsultSessionVo realTimeConsultSessionVo = new NonRealTimeConsultSessionVo();
+        realTimeConsultSessionVo.setCsUserId(openId);
+        if (serviceType.equals("currentService")) {//查询当前服务
+            realTimeConsultSessionVo.setStatus("ongoing");
+            realTimeConsultSessionVo.setOrder("lastMessageTimeAsc");
+        } else {
+            realTimeConsultSessionVo.setOrder("lastMessageTimeDesc");
+        }
+        //查询当前医生的会话信息
+        List<NonRealTimeConsultSessionVo> nonRealTimeConsultSessionVos =
+                nonRealTimeConsultService.selectByNonRealTimeConsultSessionVo(realTimeConsultSessionVo);
+        if (nonRealTimeConsultSessionVos != null && nonRealTimeConsultSessionVos.size() > 0) {
+            for (NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo : nonRealTimeConsultSessionVos) {
+                if (DateUtils.pastHour(nonRealTimeConsultSessionVo.getLastMessageTime()) > 24) {
+                    nonRealTimeConsultSessionVo.setDispalyTimes(DateUtils.DateToStr(nonRealTimeConsultSessionVo.getLastMessageTime(), "time"));
+                } else {
+                    nonRealTimeConsultSessionVo.setDispalyTimes(DateUtils.DateToStr(nonRealTimeConsultSessionVo.getLastMessageTime(), "monthDate"));
+                }
+                //查询宝宝信息
+                List<BabyBaseInfoVo> babyInfoList = healthRecordsService.getUserBabyInfolistByOpenId(openId);
+                if (babyInfoList != null && babyInfoList.size() > 0) {
+                    BabyBaseInfoVo babyBaseInfoVo = babyInfoList.get(0);
+                    Date babyBirthday = babyBaseInfoVo.getBirthday();
+                    int babyBirthdayYear = babyBirthday.getYear();
+                    int babyBirthdayMonth = babyBirthday.getMonth();
+                    Date nowDate = new Date();
+                    int nowDateYear = nowDate.getYear();
+                    int nowDateMonth = nowDate.getMonth();
+                    int chaDate = 0;
+                    if(nowDateMonth > babyBirthdayMonth){
+                        chaDate = nowDateMonth - babyBirthdayMonth;
+                    }else if (babyBirthdayMonth > nowDateMonth){
+                        chaDate = babyBirthdayMonth - nowDateMonth;
+                    }
 
-        }else{//查询全部服务
-
+                    String babyInfo = babyBaseInfoVo.getName() +","+(nowDateYear - babyBirthdayYear) +"岁" + chaDate +"个月";
+                    nonRealTimeConsultSessionVo.setBabyInfo(babyInfo);
+                }
+            }
         }
         return response;
     }

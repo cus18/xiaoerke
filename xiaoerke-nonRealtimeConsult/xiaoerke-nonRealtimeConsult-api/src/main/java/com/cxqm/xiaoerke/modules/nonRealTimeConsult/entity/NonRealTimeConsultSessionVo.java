@@ -19,6 +19,10 @@ public class NonRealTimeConsultSessionVo {
 
     private Date lastMessageTime;
 
+    private String dispalyTimes;
+
+    private String order;
+
     private String lastMessageType;
 
     private Integer consultNumber;
@@ -39,6 +43,8 @@ public class NonRealTimeConsultSessionVo {
 
     private String lastMessageContent;
 
+    private String babyInfo;
+
     public Integer getId() {
         return id;
     }
@@ -49,6 +55,22 @@ public class NonRealTimeConsultSessionVo {
 
     public String getStatus() {
         return status;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
+
+    public String getBabyInfo() {
+        return babyInfo;
+    }
+
+    public void setBabyInfo(String babyInfo) {
+        this.babyInfo = babyInfo;
     }
 
     public void setStatus(String status) {
@@ -69,6 +91,14 @@ public class NonRealTimeConsultSessionVo {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getDispalyTimes() {
+        return dispalyTimes;
+    }
+
+    public void setDispalyTimes(String dispalyTimes) {
+        this.dispalyTimes = dispalyTimes;
     }
 
     public String getCsUserId() {

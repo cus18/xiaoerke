@@ -309,6 +309,7 @@ public class ConsultDoctorController extends BaseController {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         System.out.println("close session========" + sessionId + "==========userId========" + userId);
+        LogUtils.saveLog(sessionId,userId);
         Map<String, Object> params = new HashMap<String, Object>();
         Map<String, Object> response = new HashMap<String, Object>();
         params.put("openid", userId);

@@ -94,6 +94,13 @@
     <if test="lastMessageContent != null" >
       and #{lastMessageContent,jdbcType=LONGVARCHAR}
     </if>
+    <if test="order == 'lastMessageTimeAsc'" >
+      order by lastMessageTime ASC
+    </if>
+    <if test="order == 'lastMessageTimeDesc'" >
+      order by lastMessageTime DESC
+    </if>
+
   </select>
 
 

@@ -44,7 +44,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 
 /**
- * 会员Controller
+ * 微信咨询Controller
  *
  * @author deliang
  * @version 2015-11-04
