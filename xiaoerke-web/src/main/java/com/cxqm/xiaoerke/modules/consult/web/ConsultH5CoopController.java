@@ -355,7 +355,7 @@ public class ConsultH5CoopController {
         if (params.containsKey("ykdlToken") && StringUtils.isNotNull(String.valueOf(params.get("ykdlToken")))) {
             String id = (String) params.get("ykdlToken");
             String remoteUrl = String.valueOf(params.get("remoteUrl"));
-            String method = "GET";
+            String method = "POST";
             String dataType = "json";
             String data = "{\"user_uuid\":\""+id+"\"}";
             String result = CoopConsultUtil.getCurrentUserInfo(remoteUrl, method, dataType, null, data, 4);
@@ -386,7 +386,15 @@ public class ConsultH5CoopController {
                         dataMap.put("content", dataVo.getMessage());
                         dataMap.put("dateTime", (new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(dataVo.getCreateDate()));
                         dataMap.put("senderId", dataVo.getSenderId());
-                        dataMap.put("senderName", dataVo.getSenderName());
+                        if(dataVo.getSource().contains("ykdl")){
+                            dataMap.put("senderName", "YKDL-"+dataVo.getSenderName());
+                        }else if(dataVo.getSource().contains("wjy")){
+                            dataMap.put("senderName", "微家园-"+dataVo.getSenderName());
+                        }else if(dataVo.getSource().contains("bhq")){
+                            dataMap.put("senderName", "宝护圈-"+dataVo.getSenderName());
+                        }else{
+                            dataMap.put("senderName", dataVo.getSenderName());
+                        }
                         dataMap.put("sessionId", dataVo.getSessionId());
                         dataMap.put("avatar", imgUrl);
                     } else {
