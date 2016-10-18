@@ -41,58 +41,75 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                 $scope.getQQExpression();
 
                 //
-                var id = $stateParams.id;
-                $http.header('Access-Control-Allow-Origin: *');
-                $http.header('Access-Control-Allow-Headers: X-Requested-With');
-                $http.post({
-                    url:'http://wxsp-dev.ykbenefit.com/customer_info',
-                    method:"POST",
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    data: {
+
+                /*$http.post(
+                    'http://wxsp-dev.ykbenefit.com/customer_info',
+                    {
                         'user_uuid': id
+                    },
+                    {
+                        'Content-Type':'application/json',
+                        'Access-Control-Allow-Origin': '*'
                     }
-                }).success(function(data, status, headers, config) {
+                )*/
+                var id = $stateParams.id;
+                /*$http({
+                    method:"POST",
+                    url:"http://wxsp-dev.ykbenefit.com/customer_info",
+                    params:{
+                        "user_uuid":id
+                    },
+                    headers:{
+                        'Content-Type':'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                }).success(function(data) {
                     if(data.headimgurl == null || data.headimgurl == ''){
                         patientImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
                     }else{
                         patientImg = data.headimgurl;
                     }
                     patientName = data.nickname == null?"":data.nickname ;
-                    patientSex = data.sex == null ? "" : data.sex;
+                    patientSex = data.sex == null ? "" : data.sex;*/
                     CreateOrUpdateWJYPatientInfo.save({
-                        patientName:patientName,source:$scope.source,thirdId:id,patientSex:patientSex},function(data){
-                        $scope.patientId = data.patientId;
-                        GetSessionId.get({"userId":$scope.patientId},function(data){
-                            console.log("data",data);
-                            if(data.status=="0"){
-                                $scope.sessionId = data.sessionId;
-                                $scope.lookMore = true;
-                                $scope.fucengLock = false;
-                            }else if(data.status=="1"){
-                                $scope.sessionId = "";
-                                /*var val = {
-                                 "type": 4,
-                                 "notifyType": "0000"
-                                 }
-                                 $scope.consultContent.push(val);*/
-                                var now = moment().format("YYYY-MM-DD HH:mm:ss");
-                                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,
-                                    "pageSize":10,"token":""},function (data) {
-                                    if(data.consultDataList.length!=0){
-                                        $scope.lookMore = true;
-                                        $scope.fucengLock = false;
-                                    }else{
-                                        $scope.lookMore = false;
-                                    }
-                                });
+                        source:$scope.source,thirdId:id,remoteUrl:$scope.remoteUrl},function(data){
+                        if(data.status == "success"){
+                            $scope.patientId = data.patientId;
+                            if(data.headimgurl == null || data.headimgurl == ''){
+                                patientImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
+                            }else{
+                                patientImg = data.headimgurl;
                             }
-                        });
-                        $scope.initConsultSocket();
+                            patientName = data.userName == null?"":data.userName;
+                            GetSessionId.get({"userId":$scope.patientId},function(data){
+                                console.log("data",data);
+                                if(data.status=="0"){
+                                    $scope.sessionId = data.sessionId;
+                                    $scope.lookMore = true;
+                                    $scope.fucengLock = false;
+                                }else if(data.status=="1"){
+                                    $scope.sessionId = "";
+                                    /*var val = {
+                                     "type": 4,
+                                     "notifyType": "0000"
+                                     }
+                                     $scope.consultContent.push(val);*/
+                                    var now = moment().format("YYYY-MM-DD HH:mm:ss");
+                                    GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,
+                                        "pageSize":10,"token":""},function (data) {
+                                        if(data.consultDataList.length!=0){
+                                            $scope.lookMore = true;
+                                            $scope.fucengLock = false;
+                                        }else{
+                                            $scope.lookMore = false;
+                                        }
+                                    });
+                                }
+                            });
+                            $scope.initConsultSocket();
+                        }
                     });
-                });
-            };
+                }
 
             //初始化接口
             $scope.initConsultSocket = function(){
