@@ -22,7 +22,7 @@ define(['appNonRealTimeConsult'], function(app){
                 };
 
                 $stateProvider
-                    /* phoneConsult 电话咨询*/
+                    /* doctor 医生端*/
                     .state('NonTimeDoctorLogin', {
                         url: '/NonTimeDoctorLogin',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -48,7 +48,7 @@ define(['appNonRealTimeConsult'], function(app){
                                     [
                                         'js/libs/lodash.min.js',
                                         'js/controllers/nonRealTimeConsult/doctor/NonTimeDoctorMessageListCtrl.js?ver='+nonRealTimeConsultVersion,
-                                        'styles/nonRealTimeConsult/doctor/NonTimeDoctorMessageList.less?ver='+nonRealTimeConsultVersion],
+                                        'styles/nonRealTimeConsult/doctor/NonTimeHistoryRecord.less?ver='+nonRealTimeConsultVersion],
                                     'js/views/nonRealTimeConsult/doctor/NonTimeDoctorMessageList.html?ver='+nonRealTimeConsultVersion);
                             }
                         }
@@ -94,7 +94,7 @@ define(['appNonRealTimeConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.NonTimeUserConsultListCtrl',
                                     [
                                         'js/controllers/nonRealTimeConsult/user/NonTimeUserConsultListCtrl.js?ver='+nonRealTimeConsultVersion,
-                                        'styles/nonRealTimeConsult/user/NonTimeUserConsultList.less?ver='+nonRealTimeConsultVersion],
+                                        'styles/nonRealTimeConsult/doctor/NonTimeHistoryRecord.less?ver='+nonRealTimeConsultVersion],
                                     'js/views/nonRealTimeConsult/user/NonTimeUserConsultList.html?ver='+nonRealTimeConsultVersion);
                             }
                         }
