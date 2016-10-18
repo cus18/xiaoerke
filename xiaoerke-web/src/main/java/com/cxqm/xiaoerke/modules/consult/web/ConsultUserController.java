@@ -295,7 +295,15 @@ public class ConsultUserController extends BaseController {
                         pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "temporary");
                         searchMap.put("patientId",userId);
                         searchMap.put("source",richConsultSession.getSource());
-                        searchMap.put("patientName", richConsultSession.getUserName());
+                        if(richConsultSession.getSource().contains("ykdl")){
+                            searchMap.put("patientName", "YKDL-"+richConsultSession.getUserName());
+                        }else if(richConsultSession.getSource().contains("wjy")){
+                            searchMap.put("patientName", "微家园-"+richConsultSession.getUserName());
+                        }else if(richConsultSession.getSource().contains("bhq")){
+                            searchMap.put("patientName", "宝护圈-"+richConsultSession.getUserName());
+                        }else{
+                            searchMap.put("patientName", richConsultSession.getUserName());
+                        }
                         searchMap.put("serverAddress",richConsultSession.getServerAddress());
                         searchMap.put("sessionId",richConsultSession.getId());
                         searchMap.put("isOnline",true);
@@ -316,15 +324,20 @@ public class ConsultUserController extends BaseController {
                             sessionRedisCache.putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
                         }
 
-                        if (null !=consultSessionStatusVo && ConstantUtil.PAY_SUCCESS.getVariable().indexOf(consultSessionStatusVo.getPayStatus())>-1) {
-                            searchMap.put("notifyType", "1001");
-                        } else if(null !=consultSessionStatusVo &&  ConstantUtil.NO_PAY.getVariable().indexOf(consultSessionStatusVo.getPayStatus())>-1){
-                            searchMap.put("notifyType", "1002");
-                        } else if(ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable().indexOf(consultSessionStatusVo.getPayStatus()) > -1) {
-                            searchMap.put("notifyType", "1003");
-                        } else {
-                            searchMap.put("notifyType", "1004");
+                        if(null !=consultSessionStatusVo && consultSessionStatusVo.getSource().contains("wxcxqm")){
+                            if(StringUtils.isNotNull(consultSessionStatusVo.getPayStatus())){
+                                if (ConstantUtil.PAY_SUCCESS.getVariable().indexOf(consultSessionStatusVo.getPayStatus())>-1) {
+                                    searchMap.put("notifyType", "1001");
+                                } else if(ConstantUtil.NO_PAY.getVariable().indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                                    searchMap.put("notifyType", "1002");
+                                } else if(ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable().indexOf(consultSessionStatusVo.getPayStatus()) > -1) {
+                                    searchMap.put("notifyType", "1003");
+                                } else {
+                                    searchMap.put("notifyType", "1004");
+                                }
+                            }
                         }
+
 
 //                            if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
 //
