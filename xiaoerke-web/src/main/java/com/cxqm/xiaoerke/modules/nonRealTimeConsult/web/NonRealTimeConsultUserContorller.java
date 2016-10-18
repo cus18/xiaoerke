@@ -30,15 +30,6 @@ public class NonRealTimeConsultUserContorller {
     private SystemService systemService;
 
 
-
-
-    /**
-     * 获取宝宝币，以及详细记录
-     *
-     * @param request
-     * @param
-     * @return
-     */
     @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public void test(HttpSession session, HttpServletRequest request) {
