@@ -25,6 +25,14 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
+
+    <select id="selectByPrOpenid" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from consult_session
+        where sys_user_id = #{openid,jdbcType=INTEGER}
+    </select>
+
     <select id="selectBySelective" resultMap="BaseResultMap"
             parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
         select
