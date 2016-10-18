@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 @RequestMapping(value = "nonRealTimeConsult")
-public class NonRealTimeConsultContorller {
+public class NonRealTimeConsultUserContorller {
 
 
     @Autowired
