@@ -204,7 +204,7 @@
     </filter>
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>/auth/*</url-pattern>
+        <url-pattern>/auaath/*</url-pattern>
     </filter-mapping> 
 
 </web-app>
