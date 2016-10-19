@@ -54,5 +54,5 @@ public interface NonRealTimeConsultService {
     /**
      * 患者医生间的咨询消息
      * */
-    void savenConsultRecord(Integer sessionId,String toUser,String fromUser,String content,String type);
+    void savenConsultRecord(Integer sessionid, String userId, String fromType, String content, String msgtype);
 }
