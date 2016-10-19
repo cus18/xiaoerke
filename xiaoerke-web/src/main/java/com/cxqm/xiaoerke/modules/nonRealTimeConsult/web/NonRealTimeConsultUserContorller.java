@@ -3,7 +3,7 @@ package com.cxqm.xiaoerke.modules.nonRealTimeConsult.web;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
-import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultUserService;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/09/05 0024.
  */
-//@Controller
+@Controller
 @RequestMapping(value = "nonRealTimeConsultUser")
 public class NonRealTimeConsultUserContorller {
 
@@ -34,7 +34,7 @@ public class NonRealTimeConsultUserContorller {
     private SystemService systemService;
 
     @Autowired
-    private NonRealTimeConsultUserService nonRealTimeConsultUserService;
+    private NonRealTimeConsultService nonRealTimeConsultUserService;
 
     @Autowired
     private ConsultDoctorInfoService consultDoctorInfoService;
