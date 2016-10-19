@@ -106,7 +106,7 @@ public class NonRealTimeConsultUserContorller {
         Map<String,Object> resultMap = new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session,request);
         String csUserId = (String )params.get("csUserId");
-        String content =  (Integer)params.get("sex")+"||"+(String )params.get("birthday")+"||"+(String )params.get("describeIllness");
+        String content =  (String) params.get("sex")+"||"+(String )params.get("birthday")+"||"+(String )params.get("describeIllness");
         List<String> imgList = (List)params.get("imgList");
         if(imgList.size()>0){
             for(String str:imgList){
