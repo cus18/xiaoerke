@@ -305,4 +305,10 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         return jsonMap;
     }
 
+    @Override
+    public List<ConsultDoctorInfoVo> getStarDoctorList( ) {
+        List<ConsultDoctorInfoVo> result = consultDoctorInfoDao.getStarDoctorList();
+        return result;
+    }
+
 }

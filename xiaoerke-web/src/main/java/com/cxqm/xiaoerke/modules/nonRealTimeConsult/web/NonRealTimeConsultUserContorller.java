@@ -57,7 +57,7 @@ public class NonRealTimeConsultUserContorller {
     @ResponseBody
     public Map<String,Object> starDoctorlist(HttpSession session, HttpServletRequest request) {
         Map<String,Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("startDoctorList",consultDoctorInfoService.findManagerDoctorInfoBySelective(null));
+        resultMap.put("startDoctorList",consultDoctorInfoService.getStarDoctorList());
         return resultMap;
     }
 

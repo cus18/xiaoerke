@@ -43,4 +43,6 @@ public interface ConsultDoctorInfoDao {
     void saveLecture (ConsultDoctorInfoVo consultDoctorInfoVo);
 
     List<ConsultDoctorInfoVo> getConsultLecture(Map param);
+
+    List<ConsultDoctorInfoVo> getStarDoctorList();
 }

@@ -55,4 +55,6 @@ public interface ConsultDoctorInfoService {
     HashMap<String, Object> getConsultDoctorHomepageInfo(String userId);
 
     HashMap<String, Object> findDoctorAllEvaluation(Map<String, Object> param);
+
+    List<ConsultDoctorInfoVo> getStarDoctorList();
 }
