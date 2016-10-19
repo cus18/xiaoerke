@@ -64,7 +64,7 @@ angular.module('controllers', []).controller('NonTimeUserFindDoctorCtrl', [
                 doctorId: '21',
                 department: '妇科',
                 position: '副主任医师',
-                description: '擅长：婴儿湿疹，婴儿湿疹，婴儿湿疹，手足口',
+                description: '擅长：婴儿湿疹，婴儿湿疹，婴儿湿疹，手足口擅长：婴儿湿疹，婴儿湿疹，婴儿湿疹，手足口',
                 population: '9999',
                 evaluate: '99%'
             },
