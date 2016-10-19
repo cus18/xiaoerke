@@ -1,16 +1,15 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
-import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
-import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorTimeGiftVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.entity.DissatisfiedVo;
 import com.cxqm.xiaoerke.modules.entity.ReceiveTheMindVo;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
@@ -42,12 +41,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.*;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 /**
  * 咨询Controller
@@ -75,6 +77,15 @@ public class ConsultController extends BaseController {
 
 	@Autowired
 	private UtilService utilService;
+
+	@Autowired
+	private SessionRedisCache sessionRedisCache;
+
+	@Autowired
+	private ConsultRecordService consultRecordService;
+
+	@Autowired
+	private ConsultSessionService consultSessionService ;
 
 	/**
 	 * 咨询的医生 列表
@@ -202,6 +213,7 @@ public class ConsultController extends BaseController {
 		model.addAttribute("sessionCount", map.get("sessionCount"));
 		model.addAttribute("sessionMap", map.get("sessionMap"));
 		model.addAttribute("lectureList", map.get("lectureList"));
+		model.addAttribute("departmentList", map.get("departmentList"));
 		return "modules/consult/doctorMoreSettingForm";
 	}
 
@@ -471,5 +483,201 @@ public class ConsultController extends BaseController {
 		accountService.updateAccount(vo.getAmount() * 100, vo.getOrderId(), new HashMap<String, Object>(), false, vo.getOpenid(), reason);
 		result.put("suc", "suc");
 		return result.toString();
+	}
+
+	/**
+	 * 咨询的医生科室列表
+	 * sunxiao
+	 * @param
+	 * @param model
+	 */
+	@RequestMapping(value = "consultDoctorDepartmentList")
+	public String consultDoctorDepartmentList(ConsultDoctorDepartmentVo vo,HttpServletRequest request, Model model) {
+		List<ConsultDoctorDepartmentVo> departmentList = consultDoctorInfoService.findDepartmentList(vo);
+		model.addAttribute("vo", vo);
+		model.addAttribute("departmentList", departmentList);
+		return "modules/consult/departmentList";
+	}
+
+	/**
+	 * 咨询医生操作页面
+	 * sunxiao
+	 * @param
+	 * @param model
+	 */
+	@RequestMapping(value = "departmentOperForm")
+	public String departmentOperForm(ConsultDoctorDepartmentVo vo, Model model) {
+		ConsultDoctorDepartmentVo cddvo = new ConsultDoctorDepartmentVo();
+		if(StringUtils.isNotNull(vo.getId())){
+			List<ConsultDoctorDepartmentVo> list = consultDoctorInfoService.findDepartmentList(vo);//consultDoctorInfoService.findDepartmentList(vo);
+			cddvo = list.get(0);
+			cddvo.setImage("http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/"+vo.getId());
+		}
+		model.addAttribute("vo", cddvo);
+		return "modules/consult/departmentOperForm";
+	}
+
+	/**
+	 * 添加修改医生信息
+	 * @param
+	 * @param
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "departmentOper")
+	public String departmentOper(ConsultDoctorDepartmentVo vo) {
+		JSONObject result = new JSONObject();
+		try {
+			consultDoctorInfoService.consultDoctorDepartmentOper(vo);
+			result.put("result","suc");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.put("result","fail");
+		}
+		return result.toString();
+	}
+
+	/**
+	 * 添加修改医生信息
+	 * @param
+	 * @param
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "departmentIsShow")
+	public String departmentIsShow(ConsultDoctorDepartmentVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+		JSONObject result = new JSONObject();
+		try {
+			consultDoctorInfoService.consultDoctorDepartmentOper(vo);
+			result.put("result","suc");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.put("result","fail");
+		}
+		return result.toString();
+	}
+
+	/**
+	 * 添加修改医生信息
+	 * @param
+	 * @param
+	 * @return
+	 */
+	@RequestMapping(value = "deleteDepartment")
+	public String deleteDepartment(ConsultDoctorDepartmentVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+		JSONObject result = new JSONObject();
+		try {
+			consultDoctorInfoService.deleteDepartment(vo);
+			result.put("result","suc");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.put("result","fail");
+		}
+		return "redirect:" + adminPath + "/consult/consultDoctorDepartmentList?repage";
+	}
+
+	/**
+	 * 清理redis、mongo、mysql垃圾数据
+	 * 2016-10-12 15:51:46 jiangzg add
+	 */
+	@RequestMapping(value = "clearRedisData")
+	public Map<String, Object> clearRedisData() {
+		//o3_NPwmmMGpZxC5eS491_JzFRHtU
+		Map<String, Object> result = new HashMap<String, Object>();
+		List dataList = new ArrayList();          //删除的数据
+		List<Object> consultSessions = sessionRedisCache.getConsultSessionsByKey();
+		List<Object> sessionIds = sessionRedisCache.getSessionIdByKey();
+		List<Integer> sessionIdList = null;            //redis 所有sessionID
+		if(sessionIds != null && sessionIds.size() >0){
+			sessionIdList = new ArrayList<Integer>();
+			for (Object o : sessionIds) {
+				Integer sessionId = (Integer) o;
+				sessionIdList.add(sessionId);
+			}
+		}
+		Date nowDate = new Date();
+		HashMap<Object,Object> dataMap = new HashMap<Object,Object>();
+		/**
+		 * mysql
+		 */
+		ConsultSession consultSession = new ConsultSession();
+		consultSession.setStatus(ConsultSession.STATUS_ONGOING);
+		List<ConsultSession> consultSessionList = consultSessionService.selectBySelective(consultSession);
+		if(consultSessionList !=null && consultSessionList.size() >0){
+			for(ConsultSession ongoingConsultSession : consultSessionList){
+				if(nowDate.getTime() - ongoingConsultSession.getCreateTime().getTime() > 6*60*60*1000){
+					ongoingConsultSession.setStatus(ConsultSession.STATUS_COMPLETED);
+					consultSessionService.updateSessionInfo(ongoingConsultSession);
+					if(!dataMap.containsKey(ongoingConsultSession.getId())){
+						dataMap.put(ongoingConsultSession.getId(), ongoingConsultSession.getUserId());
+					}
+				}
+			}
+		}
+		/**
+		 * mongo
+		 */
+		Query queryAgain = new Query(where("status").is("ongoing"));
+		List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
+		if(consultSessionStatusAgainVos != null && consultSessionStatusAgainVos.size()>0){
+			for(int i=0 ; i<consultSessionStatusAgainVos.size();i++){
+				if(consultSessionStatusAgainVos.get(i).getLastMessageTime() != null && consultSessionStatusAgainVos.get(i).getLastMessageTime().getTime()-nowDate.getTime() > 6*60*60*1000){
+					//清除mongo内的残留数据
+					Query removeQuery = new Query().addCriteria(where("_id").is(consultSessionStatusAgainVos.get(i).getId()));
+					consultRecordService.updateConsultSessionStatusVo(removeQuery,"complete");
+					if(!dataMap.containsKey(consultSessionStatusAgainVos.get(i).getSessionId())){
+						dataMap.put(consultSessionStatusAgainVos.get(i).getSessionId(), consultSessionStatusAgainVos.get(i).getUserId());
+					}
+                    /*if(!removelist.contains(consultSessionStatusAgainVos.get(i).getSessionId())) {
+                         removelist.add(consultSessionStatusAgainVos.get(i).getSessionId());
+                    }*/
+				}
+			}
+		}
+		/**
+		 * monog sessionId is null
+		 */
+		List matchList = new ArrayList();
+		matchList.add("null");
+		matchList.add("");
+		Query clearQuery = new Query(where("sessionId").in(matchList));
+		consultRecordService.deleteMongoRecordBySelective(clearQuery, ConsultSessionStatusVo.class);
+
+		/**
+		 * redis
+		 */
+		Map noRemoveMap = new HashMap();
+		if(consultSessions !=null && consultSessions.size()>0){
+			for(Object consultSessionObject:consultSessions){
+				RichConsultSession consultSessionValue = ConsultUtil.transferMapToRichConsultSession((HashMap<String, Object>) consultSessionObject);
+				if(nowDate.getTime() - consultSessionValue.getCreateTime().getTime() > 6*60*60*1000){
+					if("ongoing".equalsIgnoreCase(consultSessionValue.getStatus())){
+						sessionRedisCache.removeConsultSessionBySessionId(consultSessionValue.getId());
+						if(!dataMap.containsKey(consultSessionValue.getId())) {
+							dataMap.put(consultSessionValue.getId(), consultSessionValue.getUserId());
+						}
+                       /* if(!removelist.contains(consultSessionValue.getId())){
+                            removelist.add(consultSessionValue.getId());
+                        }*/
+						if(sessionIdList != null && sessionIdList.size() >0){
+							if(sessionIdList.contains(consultSessionValue.getId())){
+								Integer sessionId = sessionRedisCache.getSessionIdByUserId(consultSessionValue.getUserId());
+								if((sessionId !=null) && String.valueOf(sessionId).equalsIgnoreCase(String.valueOf(consultSessionValue.getId()))){
+									sessionRedisCache.removeUserIdSessionIdPair(consultSessionValue.getUserId());
+								}else{
+									HashMap userIdSessionIdPair = new HashMap();
+									userIdSessionIdPair.put(sessionId,consultSessionValue.getUserId());
+									noRemoveMap.put(consultSessionValue.getId(),userIdSessionIdPair);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		dataList.add(dataMap);
+		result.put("removeSessionList",dataList);
+		result.put("noRemoveSessionList",noRemoveMap);
+		return result;
 	}
 }

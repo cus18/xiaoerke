@@ -15,8 +15,28 @@ public class ConsultDoctorDepartmentVo {
 
     private Short sorting;
 
+    private String isShow;
+
+    private String image;
+
     public String getId() {
         return id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getIsShow() {
+        return isShow;
+    }
+
+    public void setIsShow(String isShow) {
+        this.isShow = isShow;
     }
 
     public void setId(String id) {
