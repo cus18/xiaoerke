@@ -21,4 +21,6 @@ public interface NonRealTimeConsultSessionDao {
     int updateByPrimaryKeyWithBLOBs(NonRealTimeConsultSessionVo record);
 
     int updateByPrimaryKey(NonRealTimeConsultSessionVo record);
+
+    NonRealTimeConsultSessionVo selectByPrimaryKey(Integer id);
 }
