@@ -56,6 +56,11 @@
       and open_id =  #{openId,jdbcType=VARCHAR}
     </if>
 
+    <if test="startDoctor != null">
+      and start_doctor = #{startDoctor,jdbcType=VARCHAR}
+    </if>
+    order by sort
+
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
