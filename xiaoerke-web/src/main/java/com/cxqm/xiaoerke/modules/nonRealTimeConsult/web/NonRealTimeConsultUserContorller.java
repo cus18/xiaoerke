@@ -63,4 +63,9 @@ public class NonRealTimeConsultUserContorller {
         return consultDoctorInfoService.getConsultDoctorInfo(null);
     }
 
+    @RequestMapping(value = "/sendMsg", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public void sendMsg(Integer sessionid,String toUser,String fromUser,String content,String type){
+        nonRealTimeConsultUserService.savenConsultRecord(sessionid,toUser,fromUser,content,type);
+    }
 }
