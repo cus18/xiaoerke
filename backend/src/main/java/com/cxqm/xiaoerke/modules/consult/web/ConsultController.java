@@ -549,10 +549,10 @@ public class ConsultController extends BaseController {
 		JSONObject result = new JSONObject();
 		try {
 			consultDoctorInfoService.consultDoctorDepartmentOper(vo);
-			result.put("result","suc");
+			result.put("result", "suc");
 		} catch (Exception e) {
 			e.printStackTrace();
-			result.put("result","fail");
+			result.put("result", "fail");
 		}
 		return result.toString();
 	}
@@ -580,6 +580,7 @@ public class ConsultController extends BaseController {
 	 * 清理redis、mongo、mysql垃圾数据
 	 * 2016-10-12 15:51:46 jiangzg add
 	 */
+	@ResponseBody
 	@RequestMapping(value = "clearRedisData")
 	public Map<String, Object> clearRedisData() {
 		//o3_NPwmmMGpZxC5eS491_JzFRHtU
@@ -649,25 +650,27 @@ public class ConsultController extends BaseController {
 		Map noRemoveMap = new HashMap();
 		if(consultSessions !=null && consultSessions.size()>0){
 			for(Object consultSessionObject:consultSessions){
-				RichConsultSession consultSessionValue = ConsultUtil.transferMapToRichConsultSession((HashMap<String, Object>) consultSessionObject);
-				if(nowDate.getTime() - consultSessionValue.getCreateTime().getTime() > 6*60*60*1000){
-					if("ongoing".equalsIgnoreCase(consultSessionValue.getStatus())){
-						sessionRedisCache.removeConsultSessionBySessionId(consultSessionValue.getId());
-						if(!dataMap.containsKey(consultSessionValue.getId())) {
-							dataMap.put(consultSessionValue.getId(), consultSessionValue.getUserId());
-						}
+				if(consultSessionObject != null) {
+					RichConsultSession consultSessionValue = ConsultUtil.transferMapToRichConsultSession((HashMap<String, Object>) consultSessionObject);
+					if(consultSessionValue != null && consultSessionValue.getCreateTime() != null && (nowDate.getTime() - consultSessionValue.getCreateTime().getTime() > 6*60*60*1000)){
+						if("ongoing".equalsIgnoreCase(consultSessionValue.getStatus())){
+							sessionRedisCache.removeConsultSessionBySessionId(consultSessionValue.getId());
+							if(!dataMap.containsKey(consultSessionValue.getId())) {
+								dataMap.put(consultSessionValue.getId(), consultSessionValue.getUserId());
+							}
                        /* if(!removelist.contains(consultSessionValue.getId())){
                             removelist.add(consultSessionValue.getId());
                         }*/
-						if(sessionIdList != null && sessionIdList.size() >0){
-							if(sessionIdList.contains(consultSessionValue.getId())){
-								Integer sessionId = sessionRedisCache.getSessionIdByUserId(consultSessionValue.getUserId());
-								if((sessionId !=null) && String.valueOf(sessionId).equalsIgnoreCase(String.valueOf(consultSessionValue.getId()))){
-									sessionRedisCache.removeUserIdSessionIdPair(consultSessionValue.getUserId());
-								}else{
-									HashMap userIdSessionIdPair = new HashMap();
-									userIdSessionIdPair.put(sessionId,consultSessionValue.getUserId());
-									noRemoveMap.put(consultSessionValue.getId(),userIdSessionIdPair);
+							if(sessionIdList != null && sessionIdList.size() >0){
+								if(sessionIdList.contains(consultSessionValue.getId())){
+									Integer sessionId = sessionRedisCache.getSessionIdByUserId(consultSessionValue.getUserId());
+									if((sessionId !=null) && String.valueOf(sessionId).equalsIgnoreCase(String.valueOf(consultSessionValue.getId()))){
+										sessionRedisCache.removeUserIdSessionIdPair(consultSessionValue.getUserId());
+									}else{
+										HashMap userIdSessionIdPair = new HashMap();
+										userIdSessionIdPair.put(sessionId,consultSessionValue.getUserId());
+										noRemoveMap.put(consultSessionValue.getId(),userIdSessionIdPair);
+									}
 								}
 							}
 						}
