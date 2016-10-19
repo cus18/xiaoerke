@@ -35,5 +35,7 @@ public interface BabyBaseInfoDao {
     List<BabyBaseInfoVo> getBabyInfoByInfo(BabyBaseInfoVo vo);
 
     int updateBabyInfoByUserId(BabyBaseInfoVo vo);
+
+    BabyBaseInfoVo selectLastBabyInfo(String openid);
     
 }
