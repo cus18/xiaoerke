@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/09/05 0024.
  */
-@Controller
+//@Controller
 @RequestMapping(value = "nonRealTimeConsultDoctor")
 public class NonRealTimeConsultDoctorContorller {
 
