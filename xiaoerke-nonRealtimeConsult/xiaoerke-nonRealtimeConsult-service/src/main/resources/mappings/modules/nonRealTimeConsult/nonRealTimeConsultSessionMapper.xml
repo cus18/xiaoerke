@@ -32,12 +32,16 @@
     last_message_content
   </sql>
 
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from non_real_time_consult_session
+    where id = #{id,jdbcType=INTEGER}
+  </select>
 
   <select id="selectByNonRealTimeConsultSessionVo" resultMap="ResultMapWithBLOBs" parameterType="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo" >
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from non_real_time_consult_session
     where 1=1
     <if test="id != null" >
