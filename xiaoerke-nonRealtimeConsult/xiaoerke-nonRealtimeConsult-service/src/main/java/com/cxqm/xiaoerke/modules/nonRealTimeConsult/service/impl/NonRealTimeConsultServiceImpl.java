@@ -90,7 +90,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 //        查询医生基本信息
         ConsultDoctorInfoVo doctorvo = consultDoctorInfoService.getConsultDoctorInfoByUserId(csUserId);
         WechatAttention attentionInfo  = wechatAttentionService.getAttentionByOpenId(openid);
-
+        attentionInfo = new WechatAttention();
         //创建新会话
         NonRealTimeConsultSessionVo sessionVo = new NonRealTimeConsultSessionVo();
         Date nowTime = new Date();
