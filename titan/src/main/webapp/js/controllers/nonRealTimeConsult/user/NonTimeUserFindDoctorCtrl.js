@@ -50,11 +50,11 @@ angular.module('controllers', []).controller('NonTimeUserFindDoctorCtrl', [
             },
             {
                 departmentName: "小儿中医科",
-                src: "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_21.png"
+                src: "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_39.png"
             },
             {
                 departmentName: "预防接种科",
-                src: "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_21.png"
+                src: "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_46.png"
             }
         ];
         $scope.doctorList = [
