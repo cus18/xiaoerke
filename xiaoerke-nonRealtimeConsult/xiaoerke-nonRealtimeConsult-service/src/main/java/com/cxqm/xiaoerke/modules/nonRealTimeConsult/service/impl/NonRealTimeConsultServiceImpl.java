@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultDoctorDepartmentDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
@@ -16,7 +18,10 @@ import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -142,5 +147,25 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         nonRealTimeConsultRecordDao.insertSelective(recordVo);
     }
 
+    @Override
+    public HashMap<String, Object> uploadMediaFile(MultipartFile file) {
+        HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+        if(file !=null && ! file.isEmpty()) {
+            String fileName = file.getOriginalFilename();
+            Map<String, Object> msgMap;
+            try {
+                InputStream inputStream = file.getInputStream();
+                OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
+                resultMap.put("status","success");
+                resultMap.put("imgPath","http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/"+fileName);
+                return resultMap;
+            } catch (Exception e) {
+                e.printStackTrace();
+                resultMap.put("status","failure");
+            }
+        }
+        return resultMap;
+    }
 
 }
