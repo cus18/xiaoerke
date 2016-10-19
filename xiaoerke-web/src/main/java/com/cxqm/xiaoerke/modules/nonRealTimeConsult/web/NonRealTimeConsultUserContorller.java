@@ -44,7 +44,7 @@ public class NonRealTimeConsultUserContorller {
     @ResponseBody
     public Map<String,Object> departmentList(HttpSession session, HttpServletRequest request) {
         Map<String,Object> resultMap = new HashMap<String, Object>();
-//        resultMap.put("departmentList",nonRealTimeConsultUserService.departmentList());
+        resultMap.put("departmentList",nonRealTimeConsultUserService.departmentList());
         return resultMap;
     }
 
