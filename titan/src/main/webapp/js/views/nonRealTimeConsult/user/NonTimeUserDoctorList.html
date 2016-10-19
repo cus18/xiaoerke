@@ -1,17 +1,12 @@
-<!--<div ui-view view-title="医生列表" class="nonTimeUserDoctorList" ng-init="NonTimeUserDoctorListInit()">
 
-    医生列表
-
-</div>-->
 <ion-view view-title="医生列表" ng-init="NonTimeUserDoctorListInit()">
     <ion-content class="nonTimeUserDoctorList" style="top:0;">
         <ion-scroll direction="y" has-bouncing="true">
             <div class="doctor-list">
-                <div class="doctor-information" ng-repeat="item in doctorList">
+                <div class="doctor-information" ng-repeat="item in doctorList" ng-click="checkDoctorInformation($index)">
                     <div class="top">
                 <span class="head-portrait">
                     <img width="100%" ng-src="{{item.src}}" alt=""/>
-                    <img width="60%" class="pos" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_62.png" alt=""/>
                 </span>
                         <span>{{item.doctorName}}</span>
                         <span>{{item.department}}</span>

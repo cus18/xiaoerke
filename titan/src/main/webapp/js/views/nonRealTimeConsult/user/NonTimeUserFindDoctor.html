@@ -16,7 +16,7 @@
     </div>
     <div class="search">明星医生</div>
     <div class="doctor-list">
-        <div class="doctor-information" ng-repeat="item in doctorList">
+        <div class="doctor-information" ng-repeat="item in doctorList" ng-click="checkDoctorInformation($index)">
             <div class="top">
                 <span class="head-portrait">
                     <img width="100%" ng-src="{{item.src}}" alt="医生头像"/>

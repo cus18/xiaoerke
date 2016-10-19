@@ -61,29 +61,33 @@ angular.module('controllers', []).controller('NonTimeUserFindDoctorCtrl', [
             {
                 src: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png',
                 doctorName: '梁医生',
+                doctorId: '21',
                 department: '妇科',
                 position: '副主任医师',
                 description: '擅长：婴儿湿疹，婴儿湿疹，婴儿湿疹，手足口',
                 population: '9999',
                 evaluate: '99%'
-            }, {
+            },
+            {
                 src: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png',
                 doctorName: '梁医生',
+                doctorId: '21321',
                 department: '妇科',
                 position: '副主任医师',
                 description: '擅长：婴儿湿疹，婴儿湿疹，婴儿湿疹，手足口',
                 population: '9999',
                 evaluate: '99%'
-            }, {
+            },
+            {
                 src: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png',
                 doctorName: '梁医生',
+                doctorId: '21321324',
                 department: '妇科',
                 position: '副主任医师',
                 description: '擅长：婴儿湿疹，婴儿湿疹，婴儿湿疹，手足口',
                 population: '9999',
                 evaluate: '99%'
-            }
-        ];
+            } ];
         $scope.checkDepartment = function (index) {
             console.log($scope.departmentlist[index].departmentName);
             $state.go("NonTimeUserDoctorList", {department: $scope.departmentlist[index].departmentName});
@@ -92,5 +96,9 @@ angular.module('controllers', []).controller('NonTimeUserFindDoctorCtrl', [
             $scope.moreDepartments = $scope.departmentlist.length;
             $scope.showDepartments = false;
 
+        };
+        $scope.checkDoctorInformation = function(index){
+            console.log($scope.doctorList[index].doctorId);
+            location.href="http://localhost:8080/titan/consultDoctorHome#/consultDoctorHome/id="+$scope.doctorList[index].doctorId
         }
     }]);

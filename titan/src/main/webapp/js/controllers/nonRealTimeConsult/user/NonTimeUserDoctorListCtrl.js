@@ -4,9 +4,6 @@ angular.module('controllers', []).controller('NonTimeUserDoctorListCtrl', [
             $scope.NonTimeUserDoctorListInit = function(){
 
             };
-            $scope.goDoctorHomepage = function(){
-
-            };
             $scope.doctorList = [
                 {
                     src:'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png',
@@ -34,4 +31,8 @@ angular.module('controllers', []).controller('NonTimeUserDoctorListCtrl', [
                     evaluate:'99%'
                 }
             ];
+            $scope.checkDoctorInformation = function(index){
+                console.log($scope.doctorList[index].doctorId);
+                location.href="http://localhost:8080/titan/consultDoctorHome#/consultDoctorHome/id="+$scope.doctorList[index].doctorId
+            }
     }]);

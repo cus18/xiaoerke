@@ -102,7 +102,7 @@ define(['appNonRealTimeConsult'], function(app){
                     })
                     /*首次咨询*/
                     .state('NonTimeUserFirstConsult', {
-                        url: '/NonTimeUserFirstConsult',
+                        url: '/NonTimeUserFirstConsult/:doctorId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'NonTimeUserFirstConsultCtrl',
                         resolve: {
