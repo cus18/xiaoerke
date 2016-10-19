@@ -1,5 +1,31 @@
-<div ui-view view-title="医生列表" class="nonTimeUserDoctorList" ng-init="NonTimeUserDoctorListInit()">
+<!--<div ui-view view-title="医生列表" class="nonTimeUserDoctorList" ng-init="NonTimeUserDoctorListInit()">
 
     医生列表
 
-</div>
+</div>-->
+<ion-view view-title="医生列表" ng-init="NonTimeUserDoctorListInit()">
+    <ion-content class="nonTimeUserDoctorList" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="doctor-list">
+                <div class="doctor-information" ng-repeat="item in doctorList">
+                    <div class="top">
+                <span class="head-portrait">
+                    <img width="100%" ng-src="{{item.src}}" alt=""/>
+                    <img width="60%" class="pos" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_62.png" alt=""/>
+                </span>
+                        <span>{{item.doctorName}}</span>
+                        <span>{{item.department}}</span>
+                        <span>{{item.position}}</span>
+                        <span>{{item.description}}</span>
+                    </div>
+                    <div class="line"></div>
+                    <div class="bottom">
+                        <span><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_10.png" alt=""/>已帮助{{item.population}}人</span>
+                        <span></span>
+                        <span><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_07.png" alt=""/>好评率{{item.evaluate}}</span>
+                    </div>
+                </div>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>
