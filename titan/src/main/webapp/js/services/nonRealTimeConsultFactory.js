@@ -13,5 +13,9 @@ define(['appNonRealTimeConsult'], function (app) {
         .factory('BabyBaseInfo',['$resource',function ($resource){
             return $resource(path_user + 'getBabyBaseInfo');
         }])
+        .factory('CreateSession',['$resource',function ($resource){
+            return $resource(path_user + 'createSession');
+        }])
+
 
 })
