@@ -1,20 +1,30 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstConsultCtrl', [
-        '$scope','$state','$timeout','$http',
-        function ($scope,$state,$timeout,$http) {
+        '$scope','$upload','$state','$timeout','$http','BabyBaseInfo',
+        function ($scope,$upload,$state,$timeout,$http,BabyBaseInfo) {
             $scope.info = {
                 describeIllness:""
             };
-            $scope.photoList = [
-                {url:"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"},
-                {url:"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"},
-                {url:"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"},
-                {url:"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"},
-                {url:"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"}
-                ];
+            $scope.photoList = [];
             $scope.sexItem = 0;
             $scope.isSelectedB = true;
             $scope.isSelectedG = false;
             $scope.NonTimeUserFirstConsultInit = function(){
+                // 获取宝宝基本信息
+                BabyBaseInfo.save({},function (data) {
+                    console.log(data)
+                    $scope.sexItem = data.babySex;
+                    if ($scope.sexItem == 0) {
+                        $scope.isSelectedB = true;
+                        $scope.isSelectedG = false;
+                    }
+                    if ($scope.sexItem == 1) {
+                        $scope.isSelectedG = true;
+                        $scope.isSelectedB = false;
+                    }
+                    if(data.babyBirthDay != ""){
+                        $("#babyBirthday").val( $scope.sexItem = data.babyBirthDay)
+                    }
+                    })
             };
             $scope.deletePhoto = function(index){
                 $scope.photoList.splice(index, 1);
@@ -61,32 +71,15 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             //提交图片
             $scope.uploadFiles = function($files,fileType) {
                 console.log('dataJsonValue');
-                var dataValue = {
-                    "fileType": fileType,
-                    "senderId": $scope.patientId,
-                    "sessionId":$scope.sessionId
-                };
-                var dataJsonValue = JSON.stringify(dataValue);
-                console.log('dataJsonValue',JSON.stringify(dataValue));
                 for (var i = 0; i < $files.length; i++) {
                     var file = $files[i];
                     $scope.upload = $upload.upload({
-                        url: 'consult/h5/uploadMediaFile',
-                        data: encodeURI(dataJsonValue),
+                        url: 'nonRealTimeConsultUser/uploadMediaFile',
                         file: file
                     }).progress(function(evt) {
                         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                     }).success(function(data, status, headers, config){
-                        var patientValMessage = {
-                            "type": 1,
-                            "content": data.showFile,
-                            "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                            "senderId": $scope.patientId,
-                            "senderName": $scope.senderName,
-                            "sessionId":$scope.sessionId,
-                            "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
-                        };
-                        console.log(patientValMessage.content);
+                        $scope.photoList.push(data.imgPath)
                     });
                 }
             };
