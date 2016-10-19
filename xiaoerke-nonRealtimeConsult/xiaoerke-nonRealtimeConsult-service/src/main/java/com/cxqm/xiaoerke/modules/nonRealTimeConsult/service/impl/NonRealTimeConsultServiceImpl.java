@@ -125,18 +125,18 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
     }
 
     @Override
-    public void savenConsultRecord(Integer sessionId,String toUser, String fromUser, String content, String type) {
+    public void savenConsultRecord(Integer sessionid, String userId, String fromType, String content, String msgtype) {
         //创建新聊天内容
-        NonRealTimeConsultSessionVo sessionVo = nonRealTimeConsultSessionDao.selectByPrimaryKey(sessionId);
+        NonRealTimeConsultSessionVo sessionVo = nonRealTimeConsultSessionDao.selectByPrimaryKey(sessionid);
         Date nowTime = new Date();
         NonRealTimeConsultRecordVo recordVo = new NonRealTimeConsultRecordVo();
-        recordVo.setSessionId(sessionId);
+        recordVo.setSessionId(sessionid);
         recordVo.setCreateTime(nowTime);
         recordVo.setCsUserId(sessionVo.getCsUserId());
         recordVo.setDoctorName(sessionVo.getCsUserName());
         recordVo.setMessage(content);
         recordVo.setMessageType("send");
-        recordVo.setSenderId(fromUser);
+        recordVo.setSenderId(userId);
         recordVo.setSysUserId(sessionVo.getCsUserId());
         recordVo.setUserName(sessionVo.getUserName());
         nonRealTimeConsultRecordDao.insertSelective(recordVo);
