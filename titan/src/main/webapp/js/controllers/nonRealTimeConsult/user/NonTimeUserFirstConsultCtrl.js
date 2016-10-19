@@ -1,6 +1,6 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstConsultCtrl', [
-        '$scope','$upload','$state','$timeout','$http','BabyBaseInfo',
-        function ($scope,$upload,$state,$timeout,$http,BabyBaseInfo) {
+        '$scope','$upload','$state','$timeout','$http','BabyBaseInfo','CreateSession',
+        function ($scope,$upload,$state,$timeout,$http,BabyBaseInfo,CreateSession) {
             $scope.info = {
                 describeIllness:""
             };
@@ -22,7 +22,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                         $scope.isSelectedB = false;
                     }
                     if(data.babyBirthDay != ""){
-                        $("#babyBirthday").val( $scope.sexItem = data.babyBirthDay)
+                        $("#babyBirthday").val(data.babyBirthDay)
                     }
                     })
             };
@@ -85,10 +85,14 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             };
             $scope.submit = function(){
                 var information = {
-                    "openId": $scope.openId,
-                    "sex": $scope.sexItem,
+                    "csUserId":"csUserId",
+                    "sex": $scope.sexItem+"",
                     "birthday": $("#babyBirthday").val(),
-                    "describeIllness": encodeURI(encodeURI($scope.info.describeIllness))
+                    "describeIllness": encodeURI(encodeURI($scope.info.describeIllness)),
+                    "imgList":$scope.photoList
                 };
+                CreateSession.save(information,function (data) {
+                    console.log(data)
+                })
             };
     }]);
