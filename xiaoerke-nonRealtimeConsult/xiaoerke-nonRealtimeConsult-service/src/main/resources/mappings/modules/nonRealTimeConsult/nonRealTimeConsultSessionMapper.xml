@@ -128,7 +128,8 @@
       #{bak2,jdbcType=VARCHAR}, #{bak3,jdbcType=VARCHAR}, #{lastMessageContent,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo" >
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo" useGeneratedKeys="true"
+          keyProperty="id">
     insert into non_real_time_consult_session
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
