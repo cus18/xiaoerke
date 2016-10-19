@@ -4,57 +4,13 @@
     <div class="search">按科室查找</div>
     <div class="department-list">
         <ul>
-            <li ng-click="checkDepartment(1)">
-                <span><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_15.png" alt=""/></span>
-                <span>儿内科</span>
+            <li ng-repeat="item in departmentlist | limitTo:moreDepartments" ng-click="checkDepartment($index)">
+                <span><img ng-src="{{item.src}}" alt=""/></span>
+                <span>{{item.departmentName}}</span>
             </li>
-            <li ng-click="checkDepartment(2)">
-                <span><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_21.png" alt=""/></span>
-                <span>小儿呼吸科</span>
-            </li>
-            <li ng-click="checkDepartment(3)">
-                <span><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_23.png" alt=""/></span>
-                <span>小儿消化科</span>
-            </li>
-            <li ng-click="checkDepartment(4)">
-                <span><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_18.png" alt=""/></span>
-                <span>小儿皮肤科</span>
-            </li>
-            <li ng-click="checkDepartment(5)">
-                <span><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_36.png" alt=""/></span>
-                <span>小儿保健科</span>
-            </li>
-            <li ng-click="checkDepartment(6)">
-                <span><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_30.png" alt=""/></span>
-                <span>妇产科</span>
-            </li>
-            <li ng-click="checkDepartment(7)">
-                <span><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_33.png" alt=""/></span>
-                <span>小儿耳鼻喉科</span>
-            </li>
-            <li ng-click="moreDepartment()" ng-show="moreDepartments">
+            <li ng-click="moreDepartment()" ng-show="showDepartments">
                 <span><img class="more" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_01.png" alt=""/></span>
                 <span>更多科室</span>
-            </li>
-            <li ng-click="checkDepartment(8)" ng-show="otherDepartment">
-                <span><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_39.png" alt=""/></span>
-                <span>小儿外科</span>
-            </li>
-            <li ng-click="checkDepartment(9)" ng-show="otherDepartment">
-                <span><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_55.png" alt=""/></span>
-                <span>小儿眼科</span>
-            </li>
-            <li ng-click="checkDepartment(10)" ng-show="otherDepartment">
-                <span><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_52.png" alt=""/></span>
-                <span>小儿口腔科</span>
-            </li>
-            <li ng-click="checkDepartment(11)" ng-show="otherDepartment">
-                <span><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_49.png" alt=""/></span>
-                <span>小儿中医科</span>
-            </li>
-            <li ng-click="checkDepartment(12)" ng-show="otherDepartment">
-                <span><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_46.png" alt=""/></span>
-                <span>预防接种科</span>
             </li>
         </ul>
     </div>
