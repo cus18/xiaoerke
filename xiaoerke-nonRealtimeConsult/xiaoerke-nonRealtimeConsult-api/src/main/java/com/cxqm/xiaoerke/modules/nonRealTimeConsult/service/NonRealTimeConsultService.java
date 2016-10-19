@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRecordVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,4 +56,6 @@ public interface NonRealTimeConsultService {
      * 患者医生间的咨询消息
      * */
     void savenConsultRecord(Integer sessionid, String userId, String fromType, String content, String msgtype);
+
+    HashMap<String, Object> uploadMediaFile( MultipartFile file);
 }
