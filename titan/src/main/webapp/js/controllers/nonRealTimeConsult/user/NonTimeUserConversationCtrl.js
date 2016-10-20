@@ -4,4 +4,5 @@ angular.module('controllers', []).controller('NonTimeUserConversationCtrl', [
             $scope.NonTimeUserConversationInit = function(){
 
             }
+            $scope.glued = true;
     }]);

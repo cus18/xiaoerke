@@ -11,7 +11,6 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             $scope.NonTimeUserFirstConsultInit = function(){
                 // 获取宝宝基本信息
                 BabyBaseInfo.save({},function (data) {
-                    console.log(data)
                     $scope.sexItem = data.babySex;
                     if ($scope.sexItem == 0) {
                         $scope.isSelectedB = true;
