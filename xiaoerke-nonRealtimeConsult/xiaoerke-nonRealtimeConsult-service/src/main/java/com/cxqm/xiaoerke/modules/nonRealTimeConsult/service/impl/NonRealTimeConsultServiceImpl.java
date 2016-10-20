@@ -123,8 +123,8 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 
     @Override
     public void updateConsultDoctorInfo() {
-
-
+        nonRealTimeConsultSessionDao.updateEvaluateEarchDay();
+        nonRealTimeConsultSessionDao.updateConsultNumEarchDay();
 
     }
 
