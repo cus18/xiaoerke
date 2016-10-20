@@ -5,7 +5,7 @@
     <div class="department-list">
         <ul>
             <li ng-repeat="item in departmentlist | limitTo:moreDepartments" ng-click="checkDepartment($index)">
-                <span><img ng-src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/{{item.id}}" alt=""/></span>
+                <span><img ng-src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/{{item.id}}" err-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_21.png" alt=""/></span>
                 <span>{{item.name}}</span>
             </li>
             <li ng-click="moreDepartment()" ng-show="showDepartments">
@@ -19,10 +19,10 @@
         <div class="doctor-information" ng-repeat="item in doctorList" ng-click="checkDoctorInformation($index)">
             <div class="top">
                 <span class="head-portrait">
-                    <img width="100%" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.id}}" alt="医生头像"/>
-                    <img width="60%" class="pos" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_62.png" alt=""/>
+                    <img width="100%" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.id}}"  err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt="医生头像"/>
+                    <img width="60%" class="pos" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_62.png"  alt=""/>
                 </span>
-                <span>{{item.doctorName}}</span>
+                <span>{{item.name}}</span>
                 <span>{{item.department}}</span>
                 <span>{{item.title}}</span>
                 <span><nobr>{{item.skill}}</nobr></span>
