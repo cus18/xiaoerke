@@ -167,4 +167,12 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         return resultMap;
     }
 
+    @Override
+    public List<ConsultDoctorInfoVo> getDoctorListByDepartment(String departmentName) {
+        ConsultDoctorInfoVo doctorInfoVo = new ConsultDoctorInfoVo();
+        doctorInfoVo.setDepartment(departmentName);
+        doctorInfoVo.setNonrealtimeStatus("1");
+        return consultDoctorInfoService.findManagerDoctorInfoBySelective(doctorInfoVo);
+    }
+
 }
