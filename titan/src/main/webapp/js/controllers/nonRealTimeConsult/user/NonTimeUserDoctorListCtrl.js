@@ -38,6 +38,6 @@ angular.module('controllers', []).controller('NonTimeUserDoctorListCtrl', [
             // ];
             $scope.checkDoctorInformation = function(index){
                 console.log($scope.doctorList[index].doctorId);
-                location.href="http://localhost:8080/titan/consultDoctorHome#/consultDoctorHome/id="+$scope.doctorList[index].id
+                location.href="http://localhost:8080/titan/consultDoctorHome#/consultDoctorHome/"+$scope.doctorList[index].userId
             }
     }]);
