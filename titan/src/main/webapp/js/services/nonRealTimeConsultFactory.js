@@ -25,5 +25,9 @@ define(['appNonRealTimeConsult'], function (app) {
             return $resource(path_user + 'getStarDoctorlist');
         }])
 
+        .factory('DoctorListByDepartment',['$resource',function ($resource){
+            return $resource(path_user + 'doctorListByDepartment');
+        }])
+
 
 })
