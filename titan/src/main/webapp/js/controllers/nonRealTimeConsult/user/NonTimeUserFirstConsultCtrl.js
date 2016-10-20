@@ -1,6 +1,6 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstConsultCtrl', [
-        '$scope','$upload','$state','$timeout','$http','BabyBaseInfo','CreateSession',
-        function ($scope,$upload,$state,$timeout,$http,BabyBaseInfo,CreateSession) {
+        '$scope','$upload','$state','$stateParams','$timeout','$http','BabyBaseInfo','CreateSession',
+        function ($scope,$upload,$state,$stateParams,$timeout,$http,BabyBaseInfo,CreateSession) {
             $scope.info = {
                 describeIllness:""
             };
@@ -85,7 +85,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             };
             $scope.submit = function(){
                 var information = {
-                    "csUserId":"csUserId",
+                    "csUserId":$stateParams.doctorId,
                     "sex": $scope.sexItem+"",
                     "birthday": $("#babyBirthday").val(),
                     "describeIllness": encodeURI(encodeURI($scope.info.describeIllness)),
