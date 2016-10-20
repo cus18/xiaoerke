@@ -58,4 +58,6 @@ public interface NonRealTimeConsultService {
     void savenConsultRecord(Integer sessionid, String userId, String fromType, String content, String msgtype);
 
     HashMap<String, Object> uploadMediaFile( MultipartFile file);
+
+    List<ConsultDoctorInfoVo> getDoctorListByDepartment(String departmentName);
 }
