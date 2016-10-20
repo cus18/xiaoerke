@@ -6,9 +6,9 @@
                 <div class="doctor-information" ng-repeat="item in doctorList" ng-click="checkDoctorInformation($index)">
                     <div class="top">
                 <span class="head-portrait">
-                    <img width="100%" ng-src="{{item.src}}" alt=""/>
+                    <img width="100%" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.id}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
                 </span>
-                        <span>{{item.doctorName}}</span>
+                        <span>{{item.name}}</span>
                         <span>{{item.department}}</span>
                         <span>{{item.title}}</span>
                         <span><nobr>{{item.skill}}</nobr></span>
