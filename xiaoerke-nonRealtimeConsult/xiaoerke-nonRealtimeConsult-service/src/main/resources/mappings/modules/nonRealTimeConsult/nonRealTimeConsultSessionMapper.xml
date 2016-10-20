@@ -342,4 +342,60 @@
       bak_3 = #{bak3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <update id="updateEvaluateEarchDay">
+UPDATE consult_doctor_info cdi,
+ (
+	SELECT
+		TRUNCATE (
+			(
+				count(
+					CASE ce.serviceAttitude
+					WHEN '3' THEN
+						'3'
+					WHEN '5' THEN
+						'5'
+					END
+				) / count(
+					CASE ce.serviceAttitude
+					WHEN '1' THEN
+						'1'
+					WHEN '3' THEN
+						'3'
+					WHEN '5' THEN
+						'5'
+					END
+				)
+			) * 100,
+			0
+		) evalua,
+		ce.doctorId
+	FROM
+		customerevaluation ce
+	GROUP BY
+		ce.doctorId
+) ces
+SET cdi.evaluate = ces.evalua
+WHERE
+	cdi.sys_user_id = ces.doctorId
+
+  </update>
+
+  <update id="updateConsultNumEarchDay">
+
+UPDATE consult_doctor_info cdi,
+ (
+	SELECT
+		count(cs.id) countnum,
+		cs.sys_user_id_cs
+	FROM
+		consult_session cs
+	GROUP BY
+		cs.sys_user_id_cs
+) css
+SET cdi.consult_num = css.countnum
+WHERE
+	cdi.sys_user_id = css.sys_user_id_cs
+  </update>
 </mapper>
