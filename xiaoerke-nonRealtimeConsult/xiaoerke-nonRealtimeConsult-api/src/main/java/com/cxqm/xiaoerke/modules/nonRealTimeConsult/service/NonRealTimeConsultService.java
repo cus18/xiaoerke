@@ -57,7 +57,13 @@ public interface NonRealTimeConsultService {
      * */
     void savenConsultRecord(Integer sessionid, String userId, String fromType, String content, String msgtype);
 
+    /**
+     * 上传文件
+     * */
     HashMap<String, Object> uploadMediaFile( MultipartFile file);
 
+    /**
+     * 根据部门去查询医生
+     * */
     List<ConsultDoctorInfoVo> getDoctorListByDepartment(String departmentName);
 }
