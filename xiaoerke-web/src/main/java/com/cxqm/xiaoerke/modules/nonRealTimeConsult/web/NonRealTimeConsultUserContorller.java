@@ -2,6 +2,8 @@ package com.cxqm.xiaoerke.modules.nonRealTimeConsult.web;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
@@ -119,4 +121,14 @@ public class NonRealTimeConsultUserContorller {
         return resultMap;
     }
 
+
+    @RequestMapping(value = "/doctorListByDepartment", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> getDoctorListByDepartment(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        String  departmentName = (String) params.get("departmentName");
+        List<ConsultDoctorInfoVo> departmentVoList = nonRealTimeConsultUserService.getDoctorListByDepartment(departmentName);
+        resultMap.put("departmentVoList",departmentVoList);
+        return resultMap;
+    }
 }
