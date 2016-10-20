@@ -23,4 +23,8 @@ public interface NonRealTimeConsultSessionDao {
     int updateByPrimaryKey(NonRealTimeConsultSessionVo record);
 
     NonRealTimeConsultSessionVo selectByPrimaryKey(Integer id);
+
+    void updateEvaluateEarchDay();
+
+    void updateConsultNumEarchDay();
 }
