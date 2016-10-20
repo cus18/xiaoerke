@@ -59,6 +59,8 @@ public class ConsultDoctorInfoVo {
 
     private String consult_num;
 
+    private String nonrealtimeStatus;
+
     public String getOpenId() {
         return openId;
     }
@@ -257,5 +259,13 @@ public class ConsultDoctorInfoVo {
 
     public void setConsult_num(String consult_num) {
         this.consult_num = consult_num;
+    }
+
+    public String getNonrealtimeStatus() {
+        return nonrealtimeStatus;
+    }
+
+    public void setNonrealtimeStatus(String nonrealtimeStatus) {
+        this.nonrealtimeStatus = nonrealtimeStatus;
     }
 }
