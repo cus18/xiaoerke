@@ -94,8 +94,8 @@ angular.module('controllers', []).controller('NonTimeUserFindDoctorCtrl', [
         //     }
         // ];
         $scope.checkDepartment = function (index) {
-            console.log($scope.departmentlist[index].departmentName);
-            $state.go("NonTimeUserDoctorList", {department: $scope.departmentlist[index].departmentName});
+            console.log($scope.departmentlist[index].name);
+            $state.go("NonTimeUserDoctorList", {department: $scope.departmentlist[index].name});
         };
         $scope.moreDepartment = function () {
             $scope.moreDepartments = $scope.departmentlist.length;
