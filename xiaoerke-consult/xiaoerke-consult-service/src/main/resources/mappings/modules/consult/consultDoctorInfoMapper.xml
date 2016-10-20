@@ -23,12 +23,13 @@
 
     <result column="consult_num" property="consult_num" jdbcType="VARCHAR" />
     <result column="evaluate" property="evaluate" jdbcType="VARCHAR" />
+    <result column="nonrealtime_status" property="nonrealtimeStatus" jdbcType="VARCHAR" />
 
 
   </resultMap>
   <sql id="Base_Column_List" >
     id, sys_user_id, password,gender,name, title, hospital, department,practitionerCertificateNo, skill, description, grab_session, send_message, receive_differential_notification,
-    create_date, update_date,type,open_id,consult_num,evaluate
+    create_date, update_date,type,open_id,consult_num,evaluate,nonrealtime_status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -318,6 +319,10 @@
     <if test="type != null and type != ''">
       and type = #{type,jdbcType=VARCHAR}
     </if>
+    <if test="nonrealtimeStatus != null and nonrealtimeStatus != ''">
+      and nonrealtime_status = #{nonrealtimeStatus,jdbcType=VARCHAR}
+    </if>
+
   </select>
 
   <insert id="saveLecture" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" >
