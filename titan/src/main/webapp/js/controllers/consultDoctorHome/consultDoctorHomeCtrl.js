@@ -106,7 +106,7 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
 
         //跳转首次咨询
         $scope.goConsultDoctor = function () {
-            location.href="http://localhost:8080/titan/nonRealTimeConsult#/NonTimeUserFirstConsult/doctorId="+$stateParams.id
+            location.href="http://localhost:8080/titan/nonRealTimeConsult#/NonTimeUserFirstConsult/"+$stateParams.id
 
         }
     }]);
