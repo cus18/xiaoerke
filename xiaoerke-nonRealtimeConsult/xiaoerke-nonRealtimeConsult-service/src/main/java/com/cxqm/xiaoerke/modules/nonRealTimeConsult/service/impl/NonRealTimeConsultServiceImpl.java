@@ -177,4 +177,9 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         return consultDoctorInfoService.findManagerDoctorInfoBySelective(doctorInfoVo);
     }
 
+    @Override
+    public void sessinTimeOut() {
+        nonRealTimeConsultSessionDao.sessinTimeOut();
+    }
+
 }
