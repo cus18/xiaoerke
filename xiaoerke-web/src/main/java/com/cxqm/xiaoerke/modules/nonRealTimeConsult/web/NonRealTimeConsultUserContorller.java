@@ -156,7 +156,7 @@ public class NonRealTimeConsultUserContorller {
             voMap.put("doctorProfessor",sessionVo.getDoctorProfessor());
             String message = sessionVo.getLastMessageContent();
             if("createSession".equals(sessionVo.getLastMessageType())){
-                message = message.split("#")[2];
+                message = message.split("\\#")[2];
             }
             voMap.put("message",message);
 
