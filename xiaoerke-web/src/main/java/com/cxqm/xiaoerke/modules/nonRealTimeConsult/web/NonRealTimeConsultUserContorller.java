@@ -1,12 +1,14 @@
 package com.cxqm.xiaoerke.modules.nonRealTimeConsult.web;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRecordVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
@@ -177,6 +179,73 @@ public class NonRealTimeConsultUserContorller {
             sessionlist.add(voMap);
         }
         resultMap.put("sessionVoList",sessionlist);
+        return resultMap;
+    }
+
+    @RequestMapping(value = "/conversationInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String,Object> conversationInfo(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params){
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        String openid = WechatUtil.getOpenId(session,request);
+        openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
+        Integer sessionid = Integer.parseInt((String)params.get("sessionId"));
+        if(!StringUtils.isNotNull(openid)){
+            resultMap.put("state","error");
+            resultMap.put("result_info","请重新打开页面");
+            return resultMap;
+        }
+
+        NonRealTimeConsultSessionVo sessionVo = new NonRealTimeConsultSessionVo();
+        sessionVo.setId(sessionid);
+        sessionVo.setUserId(openid);
+        List<NonRealTimeConsultSessionVo> sessionInfo = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(sessionVo);
+        if(sessionInfo.size()>0){
+            sessionVo = sessionInfo.get(0);
+            resultMap.put("doctorName",sessionVo.getCsUserName());
+            resultMap.put("doctorId",sessionVo.getUserId());
+            resultMap.put("professor",sessionVo.getDoctorProfessor());
+            resultMap.put("department",sessionVo.getDoctorDepartmentName());
+        }else{
+            resultMap.put("state","error");
+            resultMap.put("result_info","未找到相应的会话");
+            return resultMap;
+        }
+
+        NonRealTimeConsultRecordVo recordVo = new NonRealTimeConsultRecordVo();
+        recordVo.setSessionId(sessionid);
+        recordVo.setOrder("createTimeAsc");
+        List<NonRealTimeConsultRecordVo> recodevoList = nonRealTimeConsultUserService.selectSessionRecordByVo(recordVo);
+        //开始组装数据
+        List<Map> messageList = new ArrayList<Map>();
+        for(NonRealTimeConsultRecordVo vo:recodevoList){
+            Map<String ,Object> recordMap = new HashMap<String, Object>();
+            if(openid.equals(vo.getSenderId())){
+                recordMap.put("source","user");
+            }else{
+                recordMap.put("source","doctor");
+            };
+            String messageType = vo.getMessageType();
+            recordMap.put("messageType",messageType);
+            if("createSession".equals(messageType)){
+                String[] messageInfo = vo.getMessage().split("\\#");
+                recordMap.put("babyBaseInfo",messageInfo[0]+" "+messageInfo[1]);
+                recordMap.put("discribe",messageInfo[2]);
+
+                if(messageInfo.length>3){
+                    List<String > imgList = new ArrayList<String>();
+                    for(int i=3;i<messageInfo.length;i++){
+                        imgList.add(messageInfo[i]);
+                    }
+                    recordMap.put("imgPath",imgList);
+                }
+            }else{
+                recordMap.put("message",vo.getMessage());
+            }
+            recordMap.put("messageTime",DateUtils.formatDateToStr(vo.getCreateTime(),"MM月ddH日 H时mm分"));
+            messageList.add(recordMap);
+        }
+        resultMap.put("messageList",messageList);
         return resultMap;
     }
 }
