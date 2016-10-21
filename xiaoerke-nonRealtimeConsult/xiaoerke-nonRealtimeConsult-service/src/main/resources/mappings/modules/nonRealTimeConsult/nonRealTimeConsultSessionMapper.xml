@@ -26,7 +26,7 @@
   <sql id="Base_Column_List" >
     id, status, user__id, user_name, cs_user_id, cs_user_name, source, last_message_time, 
     last_message_type, consult_number, doctor_department_name, doctor_Professor, create_time, 
-    update_time, bak_1, bak_2, bak_3
+    update_time, bak_1, bak_2, bak_3,last_message_content
   </sql>
   <sql id="Blob_Column_List" >
     last_message_content
