@@ -6,16 +6,16 @@
                 <div class="service-item f6 fl" ng-click="selectService('cur')" ng-class="{'select':selectItem=='cur'}">当前服务</div>
                 <div class="service-item f6 fr" ng-click="selectService('all')" ng-class="{'select':selectItem=='all'}">全部</div>
             </div>
-            <div class="message-list">
+            <div class="message-list" >
                 <ul class="cur" ng-if="selectItem=='cur'">
                     <li class="bg1" ng-repeat="item in curMessageList">
                         <img class="state" width="37" height="37" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/state{{item.state}}.png">
                         <div class="pic tc" >
-                            <img class="radius" width="50" height="50" ng-src="{{item.pic}}">
-                            <div class="f2 c4">{{item.date}}</div>
+                            <img class="radius" width="50" height="50" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorid}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png">
+                            <div class="f2 c4">{{item.lastMessageTime| date:'shortDate' }}</div>
                         </div>
                         <div class="text" >
-                            <div class="info f4 c3">{{item.name}}&nbsp;{{item.department}}&nbsp;{{item.position}}</div>
+                            <div class="info f4 c3">{{item.csUserName}}&nbsp;{{item.doctorDepartmentName}}&nbsp;{{item.doctorProfessor}}</div>
                             <div class="message f4 c3">{{item.message}}</div>
                         </div>
                     </li>
@@ -33,7 +33,7 @@
                         </div>
                     </li>
                 </ul>
-                <div class="noService tc">
+                <div class="noService tc" ng-if="curMessageList.length==0">
                     <img class="" width="89" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/UserNoService.png">
                     <p class="f5 c5">您还没有制定医生咨询过问题哦~</p>
                 </div>
