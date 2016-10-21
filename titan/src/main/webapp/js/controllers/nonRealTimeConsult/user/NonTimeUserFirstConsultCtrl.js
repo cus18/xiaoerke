@@ -92,6 +92,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                 };
                 CreateSession.save(information,function (data) {
                     console.log(data)
+                    $state.go("NonTimeUserConversation",{"sessionId":data.sessionId})
                 })
             };
     }]);
