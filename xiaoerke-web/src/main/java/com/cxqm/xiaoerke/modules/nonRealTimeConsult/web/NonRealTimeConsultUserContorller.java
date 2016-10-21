@@ -64,12 +64,12 @@ public class NonRealTimeConsultUserContorller {
         return resultMap;
     }
 
-    @RequestMapping(value = "/getStarDoctorInfo", method = {RequestMethod.POST, RequestMethod.GET})
-    @ResponseBody
-    public Map<String,Object> starDoctorInfo(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
-        Map<String,Object> resultMap = new HashMap<String, Object>();
-        return consultDoctorInfoService.getConsultDoctorInfo(null);
-    }
+//    @RequestMapping(value = "/getStarDoctorInfo", method = {RequestMethod.POST, RequestMethod.GET})
+//    @ResponseBody
+//    public Map<String,Object> starDoctorInfo(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
+//        Map<String,Object> resultMap = new HashMap<String, Object>();
+//        return consultDoctorInfoService.getConsultDoctorInfo(null);
+//    }
 
     @RequestMapping(value = "/savenConsultRecord", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
@@ -276,6 +276,12 @@ public class NonRealTimeConsultUserContorller {
             resultMap.put("result_info","未找到相应的会话");
         }
 
+        //通知相关医生来回答--模板消息
+        Map parameter = systemService.getDoctorWechatParameter();
+        String token = (String) parameter.get("token");
+        ConsultDoctorInfoVo doctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(sessionVo.getUserId());
+//        WechatUtil.sendMsgToWechat(token,doctorInfoVo.getOpenId(),"你有问题了 ,赶快去回到吧");
+        WechatUtil.sendTemplateMsgToUser(token,openid,"temid","temconten");
         return resultMap;
     }
 }
