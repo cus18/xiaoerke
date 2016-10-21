@@ -1,8 +1,6 @@
 angular.module('controllers', []).controller('NonTimeUserConversationCtrl', [
         '$scope','$state','$stateParams','$timeout','$http','ConversationInfo','UpadateRecorde',
         function ($scope,$state,$stateParams,$timeout,$http,ConversationInfo,UpadateRecorde) {
-            $scope.pageData =[]
-
             $scope.NonTimeUserConversationInit = function(){
                 ConversationInfo.save({sessionId:$stateParams.sessionId},function (data) {
                     console.log(data)
@@ -12,12 +10,13 @@ angular.module('controllers', []).controller('NonTimeUserConversationCtrl', [
             $scope.glued = true;
             $scope.msgType= "text";
             $scope.content = "";
+            $scope.info = []
 
             //发送消息
             $scope.sendMsg = function(){
                 var information = {
-                    "sessionid":$stateParams.sessionId,
-                    "content": $scope.content,
+                    "sessionId":$stateParams.sessionId,
+                    "content": $scope.info.content,
                     "msgType": $scope.msgType
                 };
                 UpadateRecorde.save(information,function (data) {
@@ -39,7 +38,7 @@ angular.module('controllers', []).controller('NonTimeUserConversationCtrl', [
                         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                     }).success(function(data, status, headers, config){
                         $scope.msgType= "img";
-                        $scope.content = data.imgPath
+                        $scope.info.content = data.imgPath
                         $scope.sendMsg()
                     });
                 }
