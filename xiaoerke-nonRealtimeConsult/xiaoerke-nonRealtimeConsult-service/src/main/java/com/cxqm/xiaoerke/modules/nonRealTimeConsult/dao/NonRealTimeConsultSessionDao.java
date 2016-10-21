@@ -27,4 +27,6 @@ public interface NonRealTimeConsultSessionDao {
     void updateEvaluateEarchDay();
 
     void updateConsultNumEarchDay();
+
+    void sessinTimeOut();
 }
