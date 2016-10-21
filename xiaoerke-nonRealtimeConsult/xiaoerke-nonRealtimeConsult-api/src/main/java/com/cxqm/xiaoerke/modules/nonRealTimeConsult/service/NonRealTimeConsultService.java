@@ -45,7 +45,7 @@ public interface NonRealTimeConsultService {
     /**
      * 创建会话。保存宝宝问诊信息
      * */
-    void createSession(String csUserId,String openid,String content);
+    HashMap<String, Object> createSession(String csUserId,String openid,String content);
 
     /**
      * 每天更新医生的咨询量 以及好评度
