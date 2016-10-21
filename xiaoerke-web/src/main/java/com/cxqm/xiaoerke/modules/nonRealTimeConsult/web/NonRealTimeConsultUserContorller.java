@@ -255,6 +255,7 @@ public class NonRealTimeConsultUserContorller {
         //根据sessionid和openid确认会话
 //        然后插入。。。
         String openid = WechatUtil.getOpenId(session,request);
+        openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
         Integer sessionid = Integer.parseInt((String)params.get("sessionId"));
         String content = (String)params.get("content");
         String msgType = (String)params.get("msgType");
