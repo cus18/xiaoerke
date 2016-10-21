@@ -171,7 +171,7 @@ public class NonRealTimeConsultUserContorller {
             }
 
             if(sessionVo.getLastMessageTime().getTime()+24*60*60*1000<nowTime.getTime()){
-                voMap.put("lastMessageTime",DateUtils.formatDateToStr(sessionVo.getLastMessageTime(),"M")+"月"+DateUtils.formatDateToStr(sessionVo.getLastMessageTime(),"d")+"日");
+                voMap.put("lastMessageTime",DateUtils.formatDateToStr(sessionVo.getLastMessageTime(),"MM月dd日"));
             }else{
                 voMap.put("lastMessageTime",DateUtils.formatDateToStr(sessionVo.getLastMessageTime(),"HH:ss"));
             }
@@ -229,7 +229,7 @@ public class NonRealTimeConsultUserContorller {
             recordMap.put("messageType",messageType);
             if("createSession".equals(messageType)){
                 String[] messageInfo = vo.getMessage().split("\\#");
-                recordMap.put("babyBaseInfo",messageInfo[0]+" "+messageInfo[1]);
+                recordMap.put("babyBaseInfo",messageInfo[0] == "0"?"女":"男"+" "+messageInfo[1]);
                 recordMap.put("discribe",messageInfo[2]);
 
                 if(messageInfo.length>3){
@@ -242,7 +242,7 @@ public class NonRealTimeConsultUserContorller {
             }else{
                 recordMap.put("message",vo.getMessage());
             }
-            recordMap.put("messageTime",DateUtils.formatDateToStr(vo.getCreateTime(),"MM月ddH日 H时mm分"));
+            recordMap.put("messageTime",DateUtils.formatDateToStr(vo.getCreateTime(),"MM月dd日 H时mm分"));
             messageList.add(recordMap);
         }
         resultMap.put("messageList",messageList);
