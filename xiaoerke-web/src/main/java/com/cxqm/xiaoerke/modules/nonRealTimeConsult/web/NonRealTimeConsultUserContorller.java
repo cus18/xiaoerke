@@ -246,4 +246,35 @@ public class NonRealTimeConsultUserContorller {
         resultMap.put("messageList",messageList);
         return resultMap;
     }
+
+    @RequestMapping(value = "/upadateRecorde", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String,Object> upadateRecorde(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params){
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        //根据sessionid和openid确认会话
+//        然后插入。。。
+        String openid = WechatUtil.getOpenId(session,request);
+        Integer sessionid = Integer.parseInt((String)params.get("sessionId"));
+        String content = (String)params.get("content");
+        String msgType = (String)params.get("msgType");
+        if(!StringUtils.isNotNull(openid)){
+            resultMap.put("state","error");
+            resultMap.put("result_info","请重新打开页面");
+            return resultMap;
+        }
+        NonRealTimeConsultSessionVo sessionVo = new NonRealTimeConsultSessionVo();
+        sessionVo.setId(sessionid);
+        sessionVo.setUserId(openid);
+        List<NonRealTimeConsultSessionVo> sessionInfo = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(sessionVo);
+        if(sessionInfo.size()>0){
+            nonRealTimeConsultUserService.savenConsultRecord(sessionid,openid, "user", content,msgType);
+            resultMap.put("state","success");
+        }else{
+            resultMap.put("state","error");
+            resultMap.put("result_info","未找到相应的会话");
+        }
+
+        return resultMap;
+    }
 }
