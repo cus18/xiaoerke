@@ -72,7 +72,7 @@ define(['appNonRealTimeConsult'], function(app){
                    /* 用户端*/
                     /*咨询详情*/
                     .state('NonTimeUserConversation', {
-                        url: '/NonTimeUserConversation',
+                        url: '/NonTimeUserConversation/:sessionId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'NonTimeUserConversationCtrl',
                         resolve: {
