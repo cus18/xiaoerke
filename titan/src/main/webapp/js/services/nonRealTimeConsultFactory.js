@@ -37,5 +37,9 @@ define(['appNonRealTimeConsult'], function (app) {
             return $resource(path_user + 'conversationInfo');
         }])
 
+        .factory('UpadateRecorde',['$resource',function ($resource){
+            return $resource(path_user + 'upadateRecorde');
+        }])
+
 
 })
