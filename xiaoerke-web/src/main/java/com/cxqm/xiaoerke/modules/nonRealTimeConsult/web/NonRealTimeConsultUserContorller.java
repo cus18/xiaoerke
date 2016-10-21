@@ -147,6 +147,7 @@ public class NonRealTimeConsultUserContorller {
         Date nowTime = new Date();
         for(NonRealTimeConsultSessionVo sessionVo:sessionVoList){
             Map<String,Object> voMap = new HashMap<String, Object>();
+            voMap.put("sessionId",sessionVo.getId());
             voMap.put("doctorid",sessionVo.getCsUserId());
             voMap.put("csUserName",sessionVo.getCsUserName());
             voMap.put("doctorDepartmentName",sessionVo.getDoctorDepartmentName());
@@ -167,12 +168,12 @@ public class NonRealTimeConsultUserContorller {
                 voMap.put("state","0");
             }
 
-            if(sessionVo.getLastMessageTime().getTime()+24*60*60*1000>nowTime.getTime()){
+            if(sessionVo.getLastMessageTime().getTime()+24*60*60*1000<nowTime.getTime()){
                 voMap.put("lastMessageTime",DateUtils.formatDateToStr(sessionVo.getLastMessageTime(),"M")+"月"+DateUtils.formatDateToStr(sessionVo.getLastMessageTime(),"d")+"日");
             }else{
                 voMap.put("lastMessageTime",DateUtils.formatDateToStr(sessionVo.getLastMessageTime(),"HH:ss"));
             }
-
+            voMap.put("sortDate",sessionVo.getLastMessageTime());
             sessionlist.add(voMap);
         }
         resultMap.put("sessionVoList",sessionlist);
