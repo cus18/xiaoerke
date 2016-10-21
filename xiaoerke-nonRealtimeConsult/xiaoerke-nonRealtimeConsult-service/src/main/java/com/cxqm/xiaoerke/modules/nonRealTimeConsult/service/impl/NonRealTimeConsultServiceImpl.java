@@ -85,8 +85,8 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
     }
 
     @Override
-    public void createSession(String csUserId,String openid,String content) {
-
+    public HashMap<String, Object> createSession(String csUserId,String openid,String content) {
+        HashMap<String,Object> resultMap = new HashMap<String, Object>();
 //        查询医生基本信息
         ConsultDoctorInfoVo doctorvo = consultDoctorInfoService.getConsultDoctorInfoByUserId(csUserId);
         WechatAttention attentionInfo  = wechatAttentionService.getAttentionByOpenId(openid);
@@ -119,6 +119,8 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         recordVo.setSysUserId(openid);
         recordVo.setUserName(attentionInfo.getNickname());
         nonRealTimeConsultRecordDao.insertSelective(recordVo);
+        resultMap.put("sessionId",sessionVo.getId());
+        return resultMap;
     }
 
     @Override
