@@ -13,4 +13,8 @@ angular.module('controllers', []).controller('NonTimeUserConsultListCtrl', [
                 })
 
             }
+            
+            $scope.conversationPage = function (sessionid){
+                $state.go('NonTimeUserConversation',{"sessionId":sessionid});
+            }
     }]);
