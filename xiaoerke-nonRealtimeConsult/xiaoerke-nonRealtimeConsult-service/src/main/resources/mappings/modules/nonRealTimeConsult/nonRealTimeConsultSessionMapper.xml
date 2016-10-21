@@ -45,46 +45,46 @@
     from non_real_time_consult_session
     where 1=1
     <if test="id != null" >
-      and #{id,jdbcType=INTEGER}
+      and id = #{id,jdbcType=INTEGER}
     </if>
     <if test="status != null" >
-      and #{status,jdbcType=VARCHAR}
+      and status = #{status,jdbcType=VARCHAR}
     </if>
     <if test="userId != null" >
-      and #{userId,jdbcType=VARCHAR}
+      and user__id = #{userId,jdbcType=VARCHAR}
     </if>
     <if test="userName != null" >
-      and #{userName,jdbcType=VARCHAR}
+      and user_name = #{userName,jdbcType=VARCHAR}
     </if>
     <if test="csUserId != null" >
-      and #{csUserId,jdbcType=VARCHAR}
+      and cs_user_id = #{csUserId,jdbcType=VARCHAR}
     </if>
     <if test="csUserName != null" >
-      and #{csUserName,jdbcType=VARCHAR}
+      and cs_user_name = #{csUserName,jdbcType=VARCHAR}
     </if>
     <if test="source != null" >
-      and #{source,jdbcType=VARCHAR}
+      and source = #{source,jdbcType=VARCHAR}
     </if>
     <if test="lastMessageTime != null" >
-      and #{lastMessageTime,jdbcType=TIMESTAMP}
+      and last_message_time = #{lastMessageTime,jdbcType=TIMESTAMP}
     </if>
     <if test="lastMessageType != null" >
-      and #{lastMessageType,jdbcType=VARCHAR}
+      and last_message_type = #{lastMessageType,jdbcType=VARCHAR}
     </if>
     <if test="consultNumber != null" >
       and #{consultNumber,jdbcType=INTEGER}
     </if>
     <if test="doctorDepartmentName != null" >
-      and #{doctorDepartmentName,jdbcType=VARCHAR}
+      and doctor_department_name =#{doctorDepartmentName,jdbcType=VARCHAR}
     </if>
     <if test="doctorProfessor != null" >
-      and #{doctorProfessor,jdbcType=VARCHAR}
+      and doctor_Professor  =  #{doctorProfessor,jdbcType=VARCHAR}
     </if>
     <if test="createTime != null" >
-      and #{createTime,jdbcType=TIMESTAMP}
+      and create_time= #{createTime,jdbcType=TIMESTAMP}
     </if>
     <if test="updateTime != null" >
-      and #{updateTime,jdbcType=TIMESTAMP}
+      and update_time= #{updateTime,jdbcType=TIMESTAMP}
     </if>
     <if test="bak1 != null" >
       and #{bak1,jdbcType=VARCHAR}
@@ -96,7 +96,7 @@
       and #{bak3,jdbcType=VARCHAR}
     </if>
     <if test="lastMessageContent != null" >
-      and #{lastMessageContent,jdbcType=LONGVARCHAR}
+      and  last_message_content =#{lastMessageContent,jdbcType=LONGVARCHAR}
     </if>
     <if test="order == 'lastMessageTimeAsc'" >
       order by lastMessageTime ASC
