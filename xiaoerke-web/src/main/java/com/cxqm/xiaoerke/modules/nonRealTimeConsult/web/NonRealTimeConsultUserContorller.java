@@ -106,7 +106,6 @@ public class NonRealTimeConsultUserContorller {
     @RequestMapping(value = "/createSession", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map<String,Object> createSession(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
-        Map<String,Object> resultMap = new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session,request);
         String csUserId = (String )params.get("csUserId");
         String content =  (String) params.get("sex")+"||"+(String )params.get("birthday")+"||"+(String )params.get("describeIllness");
@@ -118,8 +117,7 @@ public class NonRealTimeConsultUserContorller {
         }
         csUserId = "01164bds0d42dmdsa6rt0d6esd0e9dsf";
         openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
-        nonRealTimeConsultUserService.createSession(csUserId,openid,content);
-        return resultMap;
+        return nonRealTimeConsultUserService.createSession(csUserId,openid,content);
     }
 
 
@@ -242,7 +240,7 @@ public class NonRealTimeConsultUserContorller {
             }else{
                 recordMap.put("message",vo.getMessage());
             }
-            recordMap.put("messageTime",DateUtils.formatDateToStr(vo.getCreateTime(),"MM月dd日 H时mm分"));
+            recordMap.put("messageTime",DateUtils.formatDateToStr(vo.getCreateTime(),"MM月dd日 HH:mm"));
             messageList.add(recordMap);
         }
         resultMap.put("messageList",messageList);
