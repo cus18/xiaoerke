@@ -7,10 +7,12 @@
 <!--</ion-view>-->
 <div ui-view view-title="资询详情" class="nonTimeUserConversation" ng-init="NonTimeUserConversationInit()">
     <div class="doctor-information">
-        <span><img width="30px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/></span>
-        <span>梁医生</span>
-        <span>妇科</span>
-        <span>主任医师</span>
+        <span>
+            <img width="100%" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{pageData.doctorId}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
+        </span>
+        <span>{{pageData.doctorName}}</span>
+        <span>{{pageData.department}}</span>
+        <span>{{pageData.professor}}</span>
     </div>
     <div class="chat-box">
         <div class="chat-content" scroll-glue-bottom="glued">
