@@ -7,6 +7,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
@@ -19,9 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/09/05 0024.
@@ -129,6 +128,54 @@ public class NonRealTimeConsultUserContorller {
         String  departmentName = (String) params.get("departmentName");
         List<ConsultDoctorInfoVo> departmentVoList = nonRealTimeConsultUserService.getDoctorListByDepartment(departmentName);
         resultMap.put("departmentVoList",departmentVoList);
+        return resultMap;
+    }
+
+    @RequestMapping(value = "/sessionList", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> sessionList(HttpSession session, HttpServletRequest request) {
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        String openid = WechatUtil.getOpenId(session,request);
+
+        NonRealTimeConsultSessionVo vo = new NonRealTimeConsultSessionVo();
+        openid = "01164bds0d42dmdsa6rt0d6esd0e9dsf";
+        vo.setUserId(openid);
+        List<NonRealTimeConsultSessionVo> sessionVoList = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(vo);
+
+        //组装页面数据
+        List<Map<String,Object>> sessionlist = new ArrayList<Map<String, Object>>();
+        Date nowTime = new Date();
+        for(NonRealTimeConsultSessionVo sessionVo:sessionVoList){
+            Map<String,Object> voMap = new HashMap<String, Object>();
+            voMap.put("doctorid",sessionVo.getCsUserId());
+            voMap.put("csUserName",sessionVo.getCsUserName());
+            voMap.put("doctorDepartmentName",sessionVo.getDoctorDepartmentName());
+            voMap.put("doctorProfessor",sessionVo.getDoctorProfessor());
+            String message = sessionVo.getLastMessageContent();
+            if("createSession".equals(sessionVo.getLastMessageType())){
+                message = message.split("#")[2];
+            }
+            voMap.put("message",message);
+
+            if("ongoing".equals(sessionVo.getStatus())){
+                if("doctor".equals(sessionVo.getLastMessageType())){
+                    voMap.put("state","2");
+                }else{
+                    voMap.put("state","1");
+                }
+            }else{
+                voMap.put("state","0");
+            }
+
+            if(sessionVo.getLastMessageTime().getTime()+24*60*60*1000>nowTime.getTime()){
+                voMap.put("lastMessageTime",DateUtils.formatDateToStr(sessionVo.getLastMessageTime(),"M")+"月"+DateUtils.formatDateToStr(sessionVo.getLastMessageTime(),"d")+"日");
+            }else{
+                voMap.put("lastMessageTime",DateUtils.formatDateToStr(sessionVo.getLastMessageTime(),"HH:ss"));
+            }
+
+            sessionlist.add(voMap);
+        }
+        resultMap.put("sessionVoList",sessionlist);
         return resultMap;
     }
 }
