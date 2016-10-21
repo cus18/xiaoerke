@@ -8,7 +8,7 @@
             </div>
             <div class="message-list" >
                 <ul class="cur" ng-if="selectItem=='cur'">
-                    <li class="bg1" ng-repeat="item in curMessageList">
+                    <li class="bg1" ng-repeat="item in curMessageList | orderBy:'sortDate':true" ng-if="item.state != 0">
                         <img class="state" width="37" height="37" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/state{{item.state}}.png">
                         <div class="pic tc" >
                             <img class="radius" width="50" height="50" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorid}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png">
@@ -21,14 +21,14 @@
                     </li>
                 </ul>
                 <ul class="all" ng-if="selectItem=='all'">
-                    <li class="bg1" ng-repeat="item in allMessageList">
+                    <li class="bg1" ng-repeat="item in curMessageList  | orderBy:'sortDate':false">
                         <img class="state" width="37" height="37" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/state{{item.state}}.png">
                         <div class="pic tc" >
-                            <img class="radius" width="50" height="50" ng-src="{{item.pic}}">
-                            <div class="f2 c4">{{item.date}}</div>
+                            <img class="radius" width="50" height="50" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.doctorid}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png">
+                            <div class="f2 c4">{{item.lastMessageTime| date:'shortDate' }}</div>
                         </div>
                         <div class="text" >
-                            <div class="info f4 c3">{{item.name}}&nbsp;{{item.department}}&nbsp;{{item.position}}</div>
+                            <div class="info f4 c3">{{item.csUserName}}&nbsp;{{item.doctorDepartmentName}}&nbsp;{{item.doctorProfessor}}</div>
                             <div class="message f4 c3">{{item.message}}</div>
                         </div>
                     </li>
