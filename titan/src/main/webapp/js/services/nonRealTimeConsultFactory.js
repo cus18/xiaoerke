@@ -29,5 +29,13 @@ define(['appNonRealTimeConsult'], function (app) {
             return $resource(path_user + 'doctorListByDepartment');
         }])
 
+        .factory('UserSessionList',['$resource',function ($resource){
+            return $resource(path_user + 'sessionList');
+        }])
+
+        .factory('ConversationInfo',['$resource',function ($resource){
+            return $resource(path_user + 'conversationInfo');
+        }])
+
 
 })
