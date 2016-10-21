@@ -100,7 +100,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         sessionVo.setLastMessageContent(content);
         sessionVo.setLastMessageType("user");
         sessionVo.setDoctorDepartmentName(doctorvo.getDepartment());
-        sessionVo.setDoctorProfessor(doctorvo.getDescription());
+        sessionVo.setDoctorProfessor(doctorvo.getSkill());
         sessionVo.setCsUserId(csUserId);
         sessionVo.setCsUserName(doctorvo.getName());
         sessionVo.setUserId(openid);
