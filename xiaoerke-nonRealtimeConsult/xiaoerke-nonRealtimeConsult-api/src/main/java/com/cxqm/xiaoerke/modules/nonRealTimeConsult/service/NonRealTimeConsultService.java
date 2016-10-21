@@ -48,6 +48,7 @@ public interface NonRealTimeConsultService {
     HashMap<String, Object> createSession(String csUserId,String openid,String content);
 
     /**
+     * 定时器- 每天一次
      * 每天更新医生的咨询量 以及好评度
      * */
     void updateConsultDoctorInfo();
@@ -66,4 +67,10 @@ public interface NonRealTimeConsultService {
      * 根据部门去查询医生
      * */
     List<ConsultDoctorInfoVo> getDoctorListByDepartment(String departmentName);
+
+    /**
+     * 定时器 -每小时一次
+     * 将36小时后的会话关闭
+     * */
+    void sessinTimeOut();
 }
