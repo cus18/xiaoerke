@@ -398,4 +398,13 @@ SET cdi.consult_num = css.countnum
 WHERE
 	cdi.sys_user_id = css.sys_user_id_cs
   </update>
+
+  <update id="sessinTimeOut">
+    UPDATE non_real_time_consult_session
+    SET status = 'sessionend'
+    WHERE NOW()>DATE_ADD(create_time,
+    INTERVAL 36 HOUR
+    );
+</update>
+
 </mapper>
