@@ -91,7 +91,6 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                     "imgList":$scope.photoList
                 };
                 CreateSession.save(information,function (data) {
-                    console.log(data)
                     $state.go("NonTimeUserConversation",{"sessionId":data.sessionId})
                 })
             };
