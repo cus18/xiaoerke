@@ -16,18 +16,11 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserConversat
                 })
             };
             //发送消息
-            $scope.sendMsg = function(){
-                var conversation = {
-                    message:$scope.info.content,
-                    messageTime:"",
-                    messageType:"send",
-                    source:"user"
-                };
-
+            $scope.sendMsg = function(messageType,content){
                 var information = {
                     "sessionId":$stateParams.sessionId,
-                    "content": $scope.info.content,
-                    "msgType": $scope.msgType
+                    "content": content,
+                    "msgType": messageType
                 };
                 UpdateReCode.save(information,function (data) {
                     if(data.state == "error"){
@@ -49,9 +42,15 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserConversat
                     }).progress(function(evt) {
                         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                     }).success(function(data, status, headers, config){
-                        $scope.photoList.push(data.imgPath)
+                        $scope.sendMsg("img",data.imgPath);
+
                     });
                 }
+            };
+
+            //发送消息
+            $scope.sendTextMsg = function(){
+                $scope.sendMsg("text",$scope.info.content);
             };
 
     }]);
