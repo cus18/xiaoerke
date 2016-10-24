@@ -20,6 +20,7 @@
                         <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Ftriangle2.png" alt=""/>
                     </div>
                     <div ng-style="item.messageType=='createSession'?{'display':'block'}:{'display':'none'}" class="content fr w70 b-box bgg">
+                        {{item.babyBaseInfo}}</br>
                         {{item.message}}</br>
                         <div ng-style="item.imgPath?{'display':'block'}:{'display':'none'}" >
                             <img width="40px" height="40px" ng-repeat="item2 in item.imgPath" ng-src="{{item2}}" alt=""/>
@@ -29,7 +30,7 @@
                         {{item.message}}</br>
                     </div>
                     <div ng-style="item.messageType=='img'?{'display':'block'}:{'display':'none'}" class="content fr w70 b-box bgg">
-                        <img ng-src="{{item.message}}" alt=""/>
+                        <img width="100%" ng-src="{{item.message}}" alt=""/>
                     </div>
                 </div>
                 <div ng-style="item.source=='doctor'?{'display':'block'}:{'display':'none'}" class="doctor-content posr fl w80">
@@ -47,7 +48,7 @@
                             <img width="40px" height="40px" ng-repeat="item2 in item.imgPath" ng-src="{{item2}}" alt=""/>
                         </div>
                     </div>
-                    <div ng-style="item.messageType=='text'?{'display':'block'}:{'display':'none'}" class="co   ntent fl w70 b-box bgf">
+                    <div ng-style="item.messageType=='text'?{'display':'block'}:{'display':'none'}" class="content fl w70 b-box bgf">
                         {{item.message}}</br>
                     </div>
                     <div ng-style="item.messageType=='img'?{'display':'block'}:{'display':'none'}" class="content fl w70 b-box bgf">
