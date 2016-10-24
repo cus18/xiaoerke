@@ -125,6 +125,7 @@ public class NonRealTimeConsultUserContorller {
             Map<String,Object> resultMap = new HashMap<String, Object>();
             resultMap.put("status","error");
             resultMap.put("msg","未获取到用户的先关信息,请重新打开页面");
+            return resultMap;
         }
 //        csUserId = "01164bds0d42dmdsa6rt0d6esd0e9dsf";
 //        openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
