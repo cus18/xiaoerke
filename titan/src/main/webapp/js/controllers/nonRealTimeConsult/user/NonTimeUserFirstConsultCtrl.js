@@ -96,8 +96,12 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                     "describeIllness": encodeURI(encodeURI($scope.info.describeIllness)),
                     "imgList":$scope.photoList
                 };
-                CreateSession.save(information,function (data) {
 
+                if(information.birthday == ""){
+                    alert("请输入宝宝生日");
+                    return;
+                }
+                CreateSession.save(information,function (data) {
                     if(data.status == "error"){
                         alert (data.msg);
                         return;
