@@ -16,12 +16,12 @@
         </div>
         <div class="content-middle">
             <div class="line"></div>
-            <textarea placeholder="请详细描述宝宝的病情、症状、治疗经过以及想获得的帮助哦~（不少于18个字）" minlength="18" ng-model="info.describeIllness"></textarea>
+            <textarea placeholder="请详细描述宝宝的病情、症状、治疗经过以及想获得的帮助哦~（不少于18个字）" ng-model="info.describeIllness"></textarea>
         </div>
         <div class="line"></div>
         <div class="content-bottom">
             <div class="add-photo">
-                <div class="add" type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000" ng-file-max-size="10MB">
+                <div class="add" type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000" ng-file-max-size="10MB"  ng-if="photoList.length<1">
                     <img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt="addPhoto"/>
                 </div>
                 <div class="describe">
@@ -40,9 +40,13 @@
         </div>
     </div>
     <div class="bottom">
-        <div class="submit" ng-click="submit()" ng-disabled="info.describeIllness.length>10">
+        <button  class="  bottom-btn bg3" ng-click="submit()" ng-disabled="info.describeIllness.length < 18">
             提问
-        </div>
+        </button>
+
+        <!--<div class="submit" ng-click="submit()" ng-disabled="info.describeIllness.length>10">-->
+            <!--提问-->
+        <!--</div>-->
     </div>
 </div>
 </ion-view>
