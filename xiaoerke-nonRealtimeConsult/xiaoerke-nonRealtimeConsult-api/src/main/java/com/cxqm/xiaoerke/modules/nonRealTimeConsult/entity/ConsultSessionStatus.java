@@ -6,7 +6,7 @@ import javax.servlet.jsp.tagext.TagExtraInfo;
  * Created by wangbaowei on 16/10/24.
  */
 public enum  ConsultSessionStatus {
-    CREATE_SESSION("create_session"),
+    CREATE_SESSION("createSession"),
     TEXT("text"),
     IMG("img");
 

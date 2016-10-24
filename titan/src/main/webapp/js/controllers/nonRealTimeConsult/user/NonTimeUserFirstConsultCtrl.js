@@ -75,21 +75,17 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             };
             //提交图片
             $scope.uploadFiles = function($files,fileType) {
-                console.log($scope.photoList.length);
-                if($scope.photoList.length >=5){
-                    alert('最多只能添加五张照片！')
-                }else {
-                    for (var i = 0; i < $files.length; i++) {
-                        var file = $files[i];
-                        $scope.upload = $upload.upload({
-                            url: 'nonRealTimeConsultUser/uploadMediaFile',
-                            file: file
-                        }).progress(function(evt) {
-                            console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-                        }).success(function(data, status, headers, config){
-                            $scope.photoList.push(data.imgPath)
-                        });
-                    }
+                console.log('dataJsonValue');
+                for (var i = 0; i < $files.length; i++) {
+                    var file = $files[i];
+                    $scope.upload = $upload.upload({
+                        url: 'nonRealTimeConsultUser/uploadMediaFile',
+                        file: file
+                    }).progress(function(evt) {
+                        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                    }).success(function(data, status, headers, config){
+                        $scope.photoList.push(data.imgPath)
+                    });
                 }
             };
             $scope.submit = function(){
@@ -100,10 +96,12 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                     "describeIllness": encodeURI(encodeURI($scope.info.describeIllness)),
                     "imgList":$scope.photoList
                 };
-                var lenght = encodeURI($scope.info.describeIllness).length;
-                console.log(lenght);
-                CreateSession.save(information,function (data) {
 
+                if(information.birthday == ""){
+                    alert("请输入宝宝生日");
+                    return;
+                }
+                CreateSession.save(information,function (data) {
                     if(data.status == "error"){
                         alert (data.msg);
                         return;
