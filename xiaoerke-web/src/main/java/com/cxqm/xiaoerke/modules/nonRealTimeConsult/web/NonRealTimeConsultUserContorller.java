@@ -8,6 +8,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.ConsultSessionStatus;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRecordVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
@@ -113,6 +114,7 @@ public class NonRealTimeConsultUserContorller {
     @ResponseBody
     public Map<String,Object> createSession(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
         String openid = WechatUtil.getOpenId(session,request);
+        openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
         String csUserId = (String )params.get("csUserId");
         String content =  (String) params.get("sex")+"#"+(String )params.get("birthday")+"#"+(String )params.get("describeIllness");
         List<String> imgList = (List)params.get("imgList");
@@ -128,7 +130,7 @@ public class NonRealTimeConsultUserContorller {
             return resultMap;
         }
 //        csUserId = "01164bds0d42dmdsa6rt0d6esd0e9dsf";
-//        openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
+
         return nonRealTimeConsultUserService.createSession(csUserId,openid,content);
     }
 
@@ -238,7 +240,7 @@ public class NonRealTimeConsultUserContorller {
             };
             String messageType = vo.getMessageType();
             recordMap.put("messageType",messageType);
-            if("createSession".equals(messageType)){
+            if(ConsultSessionStatus.CREATE_SESSION.getVariable().equals(messageType)){
                 String[] messageInfo = vo.getMessage().split("\\#");
                 recordMap.put("babyBaseInfo",messageInfo[0] == "0"?"女":"男"+" "+messageInfo[1]);
                 recordMap.put("message",messageInfo[2]);
