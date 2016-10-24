@@ -228,7 +228,7 @@ public class NonRealTimeConsultUserContorller {
             if("createSession".equals(messageType)){
                 String[] messageInfo = vo.getMessage().split("\\#");
                 recordMap.put("babyBaseInfo",messageInfo[0] == "0"?"女":"男"+" "+messageInfo[1]);
-                recordMap.put("discribe",messageInfo[2]);
+                recordMap.put("message",messageInfo[2]);
 
                 if(messageInfo.length>3){
                     List<String > imgList = new ArrayList<String>();
