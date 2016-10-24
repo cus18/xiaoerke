@@ -8,6 +8,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.dao.NonRealTimeConsultRecordDao;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.dao.NonRealTimeConsultSessionDao;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.ConsultSessionStatus;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRecordVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
@@ -114,7 +115,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         recordVo.setCsUserId(csUserId);
         recordVo.setDoctorName(doctorvo.getName());
         recordVo.setMessage(content);
-        recordVo.setMessageType("create");
+        recordVo.setMessageType(ConsultSessionStatus.CREATE_SESSION.getVariable());
         recordVo.setSenderId(openid);
         recordVo.setSysUserId(openid);
         recordVo.setUserName(attentionInfo.getNickname());
@@ -141,11 +142,19 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         recordVo.setCsUserId(sessionVo.getCsUserId());
         recordVo.setDoctorName(sessionVo.getCsUserName());
         recordVo.setMessage(content);
-        recordVo.setMessageType("send");
+        recordVo.setMessageType(msgtype);
         recordVo.setSenderId(userId);
         recordVo.setSysUserId(sessionVo.getCsUserId());
         recordVo.setUserName(sessionVo.getUserName());
         nonRealTimeConsultRecordDao.insertSelective(recordVo);
+
+//        更新session的last字段
+        sessionVo.setLastMessageType("doctor");
+        sessionVo.setLastMessageContent(content);
+        sessionVo.setLastMessageTime(nowTime);
+        nonRealTimeConsultSessionDao.updateByPrimaryKeySelective(sessionVo);
+
+
     }
 
     @Override
