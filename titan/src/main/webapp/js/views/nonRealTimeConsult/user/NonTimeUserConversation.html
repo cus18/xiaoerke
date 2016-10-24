@@ -9,96 +9,51 @@
     </div>
     <div class="chat-box">
         <div class="chat-content" scroll-glue-bottom="glued">
-            <div class="user-content posr fr w80">
-                <div class="tae c9">10月9号&nbsp17:00</div>
-                <div class="head-portrait fr">
-                    <img width="100%" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
+            <div ng-repeat="item in messageList">
+                <div ng-style="item.source=='user'?{'display':'block'}:{'display':'none'}" class="user-content posr fr w80">
+                    <div class="tae c9">{{item.messageTime}}</div>
+                    <div class="head-portrait fr">
+                        <img width="100%" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{pageData.doctorId}}"
+                             err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png" alt=""/>
+                    </div>
+                    <div class="arrows">
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Ftriangle2.png" alt=""/>
+                    </div>
+                    <div ng-style="item.messageType=='createSession'?{'display':'block'}:{'display':'none'}" class="content fr w70 b-box bgg">
+                        {{item.message}}</br>
+                        <div ng-style="item.imgPath?{'display':'block'}:{'display':'none'}" >
+                            <img width="40px" height="40px" ng-repeat="item2 in item.imgPath" ng-src="{{item2}}" alt=""/>
+                        </div>
+                    </div>
+                    <div ng-style="item.messageType=='text'?{'display':'block'}:{'display':'none'}" class="content fr w70 b-box bgg">
+                        {{item.message}}</br>
+                    </div>
+                    <div ng-style="item.messageType=='img'?{'display':'block'}:{'display':'none'}" class="content fr w70 b-box bgg">
+                        <img ng-src="{{item.message}}" alt=""/>
+                    </div>
                 </div>
-                <div class="arrows">
-                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Ftriangle2.png" alt=""/>
+                <div ng-style="item.source=='doctor'?{'display':'block'}:{'display':'none'}" class="doctor-content posr fl w80">
+                    <div class="c9">{{item.messageTime}}</div>
+                    <div class="head-portrait fl">
+                        <img width="100%" ng-src="{{pageData.wechatImg}}"
+                             err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
+                    </div>
+                    <div class="arrows">
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Ftriangle1.png" alt=""/>
+                    </div>
+                    <div ng-style="item.messageType=='createSession'?{'display':'block'}:{'display':'none'}" class="content fl w70 b-box bgf">
+                        {{item.message}}</br>
+                        <div ng-style="item.imgPath?{'display':'block'}:{'display':'none'}">
+                            <img width="40px" height="40px" ng-repeat="item2 in item.imgPath" ng-src="{{item2}}" alt=""/>
+                        </div>
+                    </div>
+                    <div ng-style="item.messageType=='text'?{'display':'block'}:{'display':'none'}" class="co   ntent fl w70 b-box bgf">
+                        {{item.message}}</br>
+                    </div>
+                    <div ng-style="item.messageType=='img'?{'display':'block'}:{'display':'none'}" class="content fl w70 b-box bgf">
+                            <img ng-src="{{item.message}}" alt=""/></br>
+                    </div>
                 </div>
-                <div class="content fr w70 b-box bgg">
-                    用户我是对话内容我是对话内容我是对话内容我是对话内容我是对话内容</br>
-                    <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                    <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                    <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                </div>
-            </div>
-            <div class="user-content posr fr w80">
-                <div class="tae c9">10月9号&nbsp17:00</div>
-                <div class="head-portrait fr">
-                    <img width="100%" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                </div>
-                <div class="arrows">
-                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Ftriangle2.png" alt=""/>
-                </div>
-                <div class="content fr w70 b-box bgg">
-                    用户我是对话内容我是对话内容我是对话内容我是对话内容我是对话内容</br>
-                    <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                    <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                    <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                </div>
-            </div>
-            <div class="doctor-content posr fl w80">
-                <div class="c9">10月9号&nbsp17:00</div>
-                <div class="head-portrait fl">
-                    <img width="100%" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                </div>
-                <div class="arrows">
-                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Ftriangle1.png" alt=""/>
-                </div>
-                <div class="content fl w70 b-box bgf">
-                    医生我是对话内容我是对话内容我是对话内容我是对话内容我是对话内容</br>
-                    <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                    <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                    <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                </div>
-            </div>
-            <div class="doctor-content posr fl w80">
-                <div class="c9">10月9号&nbsp17:00</div>
-                <div class="head-portrait fl">
-                    <img width="100%" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                </div>
-                <div class="arrows">
-                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Ftriangle1.png" alt=""/>
-                </div>
-                <div class="content fl w70 b-box bgf">
-                    医生我是对话内容我是对话内容
-                </div>
-            </div>
-            <div class="user-content posr fr w80">
-                <div class="tae c9">10月9号&nbsp17:00</div>
-                <div class="head-portrait fr">
-                    <img width="100%" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                </div>
-                <div class="arrows">
-                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Ftriangle2.png" alt=""/>
-                </div>
-                <div class="content fr w70 b-box bgg">
-                    用户我是对话内容我是对话内容我是对话内容我是对话内容我是对话内容</br>
-                    <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                    <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                    <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                </div>
-            </div>
-            <div class="doctor-content posr fl w80">
-                <div class="c9">10月9号&nbsp17:00</div>
-                <div class="head-portrait fl">
-                    <img width="100%" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                </div>
-                <div class="arrows">
-                    <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Ftriangle1.png" alt=""/>
-                </div>
-                <div class="content fl w70 b-box bgf">
-                    医生我是对话内容我是对话内容我是对话内容我是对话内容我是对话内容</br>
-                    <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                    <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                    <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
-                </div>
-            </div>
-
-            <div class="add">
-                <img width="100%" type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000" ng-file-max-size="10MB" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt="addPhoto"/>
             </div>
         </div>
     </div>
@@ -109,7 +64,7 @@
                 <span class="face"><img width="22px" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fe_07.png" alt=""/></span>
                 <span class="img"><img width="22px" type="file" ng-file-select="uploadFiles($files)" accept="image/*" ng-file-max-height="2000" ng-file-max-size="10MB"
                                        src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fe_10.png" alt=""/></span>
-                <span class="send"  ng-click="sendMsg()">发送</span>
+                <span class="send" ng-click="sendMsg()">发送</span>
             </div>
         </div>
     </div>
