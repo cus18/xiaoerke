@@ -12,6 +12,7 @@ import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRec
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisServer;
@@ -108,11 +109,11 @@ public class NonRealTimeConsultUserContorller {
     public Map<String,Object> createSession(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
         String openid = WechatUtil.getOpenId(session,request);
         String csUserId = (String )params.get("csUserId");
-        String content =  (String) params.get("sex")+"||"+(String )params.get("birthday")+"||"+(String )params.get("describeIllness");
+        String content =  (String) params.get("sex")+"#"+(String )params.get("birthday")+"#"+(String )params.get("describeIllness");
         List<String> imgList = (List)params.get("imgList");
         if(imgList.size()>0){
             for(String str:imgList){
-                content +="||"+str;
+                content +="#"+str;
             }
         }
         csUserId = "01164bds0d42dmdsa6rt0d6esd0e9dsf";
@@ -243,7 +244,12 @@ public class NonRealTimeConsultUserContorller {
             recordMap.put("messageTime",DateUtils.formatDateToStr(vo.getCreateTime(),"MM月dd日 HH:mm"));
             messageList.add(recordMap);
         }
-        resultMap.put("messageList",messageList);
+
+        //用户微信头像的信息
+        Map parameter = systemService.getWechatParameter();
+        String token = (String) parameter.get("token");
+        WechatBean wechatInfo = WechatUtil.getWechatName(token,openid);
+        resultMap.put("wechatImg",wechatInfo.getHeadimgurl());
         return resultMap;
     }
 
