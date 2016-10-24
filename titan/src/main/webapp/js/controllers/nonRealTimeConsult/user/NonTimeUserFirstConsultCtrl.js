@@ -11,6 +11,12 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             $scope.NonTimeUserFirstConsultInit = function(){
                 // 获取宝宝基本信息
                 BabyBaseInfo.save({},function (data) {
+
+                    if(data.status == "error"){
+                       alert (data.msg);
+                        return;
+                    }
+
                     $scope.sexItem = data.babySex;
                     if ($scope.sexItem == 0) {
                         $scope.isSelectedB = true;
@@ -91,6 +97,11 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                     "imgList":$scope.photoList
                 };
                 CreateSession.save(information,function (data) {
+
+                    if(data.status == "error"){
+                        alert (data.msg);
+                        return;
+                    }
                     $state.go("NonTimeUserConversation",{"sessionId":data.sessionId})
                 })
             };
