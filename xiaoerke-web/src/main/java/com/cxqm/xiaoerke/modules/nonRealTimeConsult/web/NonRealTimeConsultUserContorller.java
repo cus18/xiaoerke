@@ -83,7 +83,12 @@ public class NonRealTimeConsultUserContorller {
     public Map<String,Object> getBabyBaseInfo(HttpSession session, HttpServletRequest request){
         Map<String,Object> reusltMap = new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session,request);
-        openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
+//        openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
+        if(!StringUtils.isNotNull(openid)) {
+            reusltMap.put("status", "error");
+            reusltMap.put("msg", "未获取到用户的先关信息,请重新打开页面");
+            return reusltMap;
+        }
         BabyBaseInfoVo babyBaseInfoVo = nonRealTimeConsultUserService.babyBaseInfo(openid);
         reusltMap.put("babySex",babyBaseInfoVo.getSex());
         reusltMap.put("babyBirthDay", DateUtils.DateToStr(babyBaseInfoVo.getBirthday(),"date"));
@@ -116,8 +121,13 @@ public class NonRealTimeConsultUserContorller {
                 content +="#"+str;
             }
         }
-        csUserId = "01164bds0d42dmdsa6rt0d6esd0e9dsf";
-        openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
+        if(!StringUtils.isNotNull(openid)){
+            Map<String,Object> resultMap = new HashMap<String, Object>();
+            resultMap.put("status","error");
+            resultMap.put("msg","未获取到用户的先关信息,请重新打开页面");
+        }
+//        csUserId = "01164bds0d42dmdsa6rt0d6esd0e9dsf";
+//        openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
         return nonRealTimeConsultUserService.createSession(csUserId,openid,content);
     }
 
