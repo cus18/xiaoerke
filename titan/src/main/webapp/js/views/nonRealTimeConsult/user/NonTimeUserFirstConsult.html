@@ -1,4 +1,4 @@
-<div ui-view class="nonTimeUserFirstConsult" ng-init="NonTimeUserFirstConsultInit()">
+<ion-view class="nonTimeUserFirstConsult" ng-init="NonTimeUserFirstConsultInit()">
     <div class="header">
         <img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fcc_02.png" alt="title"/>
     </div>
@@ -41,8 +41,9 @@
         </div>
     </div>
     <div class="bottom">
-        <div class="submit" ng-click="submit()">
+        <div class="submit" ng-click="submit()" ng-disabled="info.describeIllness.length>10">
             提问
         </div>
     </div>
 </div>
+</ion-view>
