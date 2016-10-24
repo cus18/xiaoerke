@@ -1,17 +1,17 @@
 angular.module('controllers', []).controller('NonTimeUserFindDoctorCtrl', [
-    '$scope', '$state', '$timeout', '$http','DepartmentList','StarDoctorlist',
-    function ($scope, $state, $timeout, $http,DepartmentList,StarDoctorlist) {
+    '$scope', '$state','DepartmentList','StarDoctorList',
+    function ($scope,$state,DepartmentList,StarDoctorList) {
         $scope.NonTimeUserFindDoctorInit = function () {
             //获取科室信息
             DepartmentList.save({},function (date) {
-                console.log(date)
-                $scope.departmentlist = date.departmentList
-            })
+                console.log(date);
+                $scope.departmentlist = date.departmentList;
+            });
             //获取明星医生信息
-            StarDoctorlist.save({},function (date) {
-                console.log(date)
-                $scope.doctorList = date.startDoctorList
-            })
+            StarDoctorList.save({},function (date) {
+                console.log(date);
+                $scope.doctorList = date.startDoctorList;
+            });
         };
 
         $scope.moreDepartments = 7;

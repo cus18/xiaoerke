@@ -1,6 +1,6 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstConsultCtrl', [
-        '$scope','$upload','$state','$stateParams','$timeout','$http','BabyBaseInfo','CreateSession',
-        function ($scope,$upload,$state,$stateParams,$timeout,$http,BabyBaseInfo,CreateSession) {
+        '$scope','$upload','$state','$stateParams','BabyBaseInfo','CreateSession',
+        function ($scope,$upload,$state,$stateParams,BabyBaseInfo,CreateSession) {
             $scope.info = {
                 describeIllness:""
             };

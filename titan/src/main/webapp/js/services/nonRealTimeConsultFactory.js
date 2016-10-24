@@ -21,7 +21,7 @@ define(['appNonRealTimeConsult'], function (app) {
             return $resource(path_user + 'getDepartmentList');
         }])
 
-        .factory('StarDoctorlist',['$resource',function ($resource){
+        .factory('StarDoctorList',['$resource',function ($resource){
             return $resource(path_user + 'getStarDoctorlist');
         }])
 
@@ -37,7 +37,7 @@ define(['appNonRealTimeConsult'], function (app) {
             return $resource(path_user + 'conversationInfo');
         }])
 
-        .factory('UpadateRecorde',['$resource',function ($resource){
+        .factory('UpdateReCode',['$resource',function ($resource){
             return $resource(path_user + 'upadateRecorde');
         }])
 

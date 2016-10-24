@@ -96,6 +96,10 @@
                     <img width="40px" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
                 </div>
             </div>
+
+            <div class="add">
+                <img width="100%" type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000" ng-file-max-size="10MB" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt="addPhoto"/>
+            </div>
         </div>
     </div>
     <div class="send-message">
@@ -103,9 +107,8 @@
             <textarea placeholder="请输入消息内容" ng-model="info.content"></textarea>
             <div class="btn">
                 <span class="face"><img width="22px" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fe_07.png" alt=""/></span>
-                <!--<div class="add" type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000" ng-file-max-size="10MB">-->
-                    <span class="img"><img width="22px" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fe_10.png" alt=""/></span>
-                <!--</div>-->
+                <span class="img"><img width="22px" type="file" ng-file-select="uploadFiles($files)" accept="image/*" ng-file-max-height="2000" ng-file-max-size="10MB"
+                                       src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fe_10.png" alt=""/></span>
                 <span class="send"  ng-click="sendMsg()">发送</span>
             </div>
         </div>
