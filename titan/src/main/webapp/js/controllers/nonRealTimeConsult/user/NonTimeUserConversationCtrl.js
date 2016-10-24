@@ -1,16 +1,16 @@
-angular.module('controllers', []).controller('NonTimeUserConversationCtrl', [
-        '$scope','$state','$stateParams','$timeout','$http','ConversationInfo','UpadateRecorde',
-        function ($scope,$state,$stateParams,$timeout,$http,ConversationInfo,UpadateRecorde) {
+angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserConversationCtrl', [
+        '$scope','$state','$stateParams','$upload','ConversationInfo','UpdateReCode',
+        function ($scope,$state,$stateParams,$upload,ConversationInfo,UpdateReCode) {
             $scope.NonTimeUserConversationInit = function(){
                 ConversationInfo.save({sessionId:$stateParams.sessionId},function (data) {
-                    console.log(data)
-                    $scope.pageData = data
+                    $scope.pageData = data;
+                    console.log("$scope.pageData",$scope.pageData);
                 })
-            }
+            };
             $scope.glued = true;
             $scope.msgType= "text";
             $scope.content = "";
-            $scope.info = []
+            $scope.info = [];
 
             //发送消息
             $scope.sendMsg = function(){
@@ -19,13 +19,12 @@ angular.module('controllers', []).controller('NonTimeUserConversationCtrl', [
                     "content": $scope.info.content,
                     "msgType": $scope.msgType
                 };
-                UpadateRecorde.save(information,function (data) {
+                UpdateReCode.save(information,function (data) {
                     if(data.state == "error"){
                         alert("请重新打开页面提交信息");
                     }
-                })
-            }
-
+                });
+            };
             //提交图片
             $scope.uploadFiles = function($files,fileType) {
                 console.log('dataJsonValue');
@@ -37,9 +36,7 @@ angular.module('controllers', []).controller('NonTimeUserConversationCtrl', [
                     }).progress(function(evt) {
                         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                     }).success(function(data, status, headers, config){
-                        $scope.msgType= "img";
-                        $scope.info.content = data.imgPath
-                        $scope.sendMsg()
+                        $scope.photoList.push(data.imgPath)
                     });
                 }
             };
