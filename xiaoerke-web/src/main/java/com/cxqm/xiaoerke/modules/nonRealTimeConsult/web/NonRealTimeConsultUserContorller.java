@@ -250,6 +250,7 @@ public class NonRealTimeConsultUserContorller {
         String token = (String) parameter.get("token");
         WechatBean wechatInfo = WechatUtil.getWechatName(token,openid);
         resultMap.put("wechatImg",wechatInfo.getHeadimgurl());
+        resultMap.put("messageList",messageList);
         return resultMap;
     }
 
