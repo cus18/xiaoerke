@@ -242,7 +242,7 @@ public class NonRealTimeConsultUserContorller {
             recordMap.put("messageType",messageType);
             if(ConsultSessionStatus.CREATE_SESSION.getVariable().equals(messageType)){
                 String[] messageInfo = vo.getMessage().split("\\#");
-                recordMap.put("babyBaseInfo",messageInfo[0] == "0"?"女":"男"+" "+messageInfo[1]);
+                recordMap.put("babyBaseInfo",messageInfo[0] == "0"?"女":"男"+"  "+messageInfo[1]);
                 recordMap.put("message",messageInfo[2]);
 
                 if(messageInfo.length>3){

@@ -93,7 +93,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                     "csUserId":$stateParams.doctorId,
                     "sex": $scope.sexItem+"",
                     "birthday": $("#babyBirthday").val(),
-                    "describeIllness": encodeURI(encodeURI($scope.info.describeIllness)),
+                    "describeIllness": $scope.info.describeIllness,
                     "imgList":$scope.photoList
                 };
 
