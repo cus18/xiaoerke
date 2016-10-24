@@ -205,6 +205,7 @@ public class NonRealTimeConsultUserContorller {
             resultMap.put("doctorId",sessionVo.getUserId());
             resultMap.put("professor",sessionVo.getDoctorProfessor());
             resultMap.put("department",sessionVo.getDoctorDepartmentName());
+            resultMap.put("sessionStatus",sessionVo.getStatus());
         }else{
             resultMap.put("state","error");
             resultMap.put("result_info","未找到相应的会话");
