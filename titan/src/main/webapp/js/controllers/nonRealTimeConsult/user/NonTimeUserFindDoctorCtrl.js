@@ -27,6 +27,6 @@ angular.module('controllers', []).controller('NonTimeUserFindDoctorCtrl', [
         };
         $scope.checkDoctorInformation = function(index){
             console.log($scope.doctorList[index].userId);
-            location.href="http://localhost:8080/titan/consultDoctorHome#/consultDoctorHome/"+$scope.doctorList[index].userId
+            location.href="consultDoctorHome#/consultDoctorHome/"+$scope.doctorList[index].userId
         }
     }]);
