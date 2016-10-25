@@ -6,7 +6,7 @@ angular.module('controllers', []).controller('NonTimeDoctorMessageListCtrl', [
         GetDoctorLoginStatus.save({}, function (data) {
             $scope.pageLoading = false;
             if (data.status == "failure") {
-                window.location.href = "http://localhost/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
+                window.location.href = "http://127.0.0.1/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
             } else {
                 $scope.selectItem = "cur";
                 $scope.curMessageList = [
