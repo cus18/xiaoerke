@@ -11,7 +11,7 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
                 if (data.status == "failure") {
                     alert("验证码错误！");
                 } else {
-                    window.location.href = "http://localhost/titan/nonRealTimeConsult#/NonTimeDoctorConversation";
+                    $state.go('NonTimeDoctorMessageList');
                 }
             });
         }
