@@ -1,4 +1,4 @@
-<ion-view view-title="资询列表" ng-init="NonTimeDoctorMessageListInit()">
+<ion-view view-title="消息列表" ng-init="NonTimeDoctorMessageListInit()">
     <ion-content class="NonTimeDoctorMessageList historyList" style="top:0;">
         <ion-scroll direction="y" has-bouncing="true">
             <div class="service bg1 tc">
@@ -38,6 +38,7 @@
                     <p class="f5 c5">您暂时无当前服务</p>
                     <p class="f5 c5">您暂时无任何服务</p>
                 </div>
+                <div ng-click="goConversation()">去会话页面</div>
             </div>
         </ion-scroll>
     </ion-content>

@@ -63,15 +63,15 @@ angular.module('controllers', []).controller('NonTimeDoctorMessageListCtrl', [
                         state: "1"
                     }
                 ];
-                $scope.selectService = function (item) {
-                    $scope.selectItem = item;
-                };
-                //页面初始化
-                $scope.NonTimeDoctorMessageListInit = function () {
-                    document.title = "消息列表"; //页面title
 
-                };
             }
         });
+        $scope.selectService = function (item) {
+            $scope.selectItem = item;
+        };
+        //页面初始化
+        $scope.NonTimeDoctorMessageListInit = function () {
+
+        };
 
     }]);

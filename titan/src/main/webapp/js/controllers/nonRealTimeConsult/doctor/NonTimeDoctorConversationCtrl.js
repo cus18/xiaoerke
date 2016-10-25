@@ -88,7 +88,6 @@ angular.module('controllers', []).controller('NonTimeDoctorConversationCtrl', [
             };*/
             //页面初始化
             $scope.NonTimeDoctorConversationInit = function(){
-                document.title="消息会话"; //页面title
                 $scope.glued = true;
                 ConversationInfo.save({sessionId:$stateParams.sessionId},function (data) {
                     console.log(data)

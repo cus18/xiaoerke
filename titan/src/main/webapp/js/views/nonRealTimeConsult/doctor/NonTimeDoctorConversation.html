@@ -1,4 +1,4 @@
-<ion-view view-title="资询列表" class="NonTimeDoctorConversation" ng-init="NonTimeDoctorConversationInit()">
+<ion-view view-title="医生会话页面" class="NonTimeDoctorConversation" ng-init="NonTimeDoctorConversationInit()">
     <div class="conversation"  scroll-glue-bottom="glued">
         <div class="dialog" ng-repeat="item in pageData.messageList" ng-if="item.message!=''" ng-class="{'user fl':item.source=='user','doctor fr':item.source=='doctor'}">
             <div class="date">{{item.messageTime}}</div>
