@@ -457,15 +457,31 @@ public class ConsultH5CoopController {
         String secCodeNow = "";
         if (StringUtils.isNotNull(source)) {
             if (currentMonth < 10) {
-                secCodeNow = currentDate + "0" + currentMonth + currentYear + source;
+                if(currentDate < 10){
+                    secCodeNow = "0"+currentDate + "0" + currentMonth + currentYear + source;
+                }else{
+                    secCodeNow = currentDate + "0" + currentMonth + currentYear + source;
+                }
             } else {
-                secCodeNow = currentDate + currentMonth + currentYear + source;
+                if(currentDate < 10){
+                    secCodeNow = "0"+currentDate + currentMonth + currentYear + source;
+                }else{
+                    secCodeNow = currentDate + currentMonth + currentYear + source;
+                }
             }
         } else {
             if (currentMonth < 10) {
-                secCodeNow = currentDate + "0" + currentMonth + currentYear;
+                if(currentDate < 10){
+                    secCodeNow = "0"+currentDate + "0" + currentMonth + currentYear;
+                }else{
+                    secCodeNow = currentDate + "0" + currentMonth + currentYear ;
+                }
             } else {
-                secCodeNow += currentDate + currentMonth + currentYear;
+                if(currentDate < 10){
+                    secCodeNow = "0"+currentDate + currentMonth + currentYear;
+                }else{
+                    secCodeNow = ""+currentDate + currentMonth + currentYear;
+                }
             }
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
