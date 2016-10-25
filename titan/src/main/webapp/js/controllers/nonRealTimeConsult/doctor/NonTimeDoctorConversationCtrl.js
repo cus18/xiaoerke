@@ -1,6 +1,6 @@
 angular.module('controllers', []).controller('NonTimeDoctorConversationCtrl', [
-        '$scope','$state','$stateParams','$timeout','$http','$upload','ConversationInfo',
-        function ($scope,$state,$stateParams,$timeout,$http,$upload,ConversationInfo) {
+        '$scope','$state','$stateParams','$timeout','$http','$upload','ConversationInfo','GetDoctorLoginStatus',
+        function ($scope,$state,$stateParams,$timeout,$http,$upload,ConversationInfo,GetDoctorLoginStatus) {
 
             $scope.prizeArray = {};
             $scope.sendMessage = function () {
@@ -87,12 +87,21 @@ angular.module('controllers', []).controller('NonTimeDoctorConversationCtrl', [
                 }*!/
             };*/
             //页面初始化
-            $scope.NonTimeDoctorConversationInit = function(){
-                $scope.glued = true;
-                ConversationInfo.save({sessionId:$stateParams.sessionId},function (data) {
-                    console.log(data)
-                    $scope.pageData = data;
-                })
-            };
+            //校验是否登陆
+            GetDoctorLoginStatus.save({}, function (data) {
+                $scope.pageLoading = false;
+                if (data.status == "failure") {
+                    window.location.href = "http://127.0.0.1/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
+                } else {
+                    $scope.NonTimeDoctorConversationInit = function(){
+                        $scope.glued = true;
+                        ConversationInfo.save({sessionId:$stateParams.sessionId},function (data) {
+                            console.log(data)
+                            $scope.pageData = data;
+                        })
+                    };
+                }
+            });
+
 
     }]);
