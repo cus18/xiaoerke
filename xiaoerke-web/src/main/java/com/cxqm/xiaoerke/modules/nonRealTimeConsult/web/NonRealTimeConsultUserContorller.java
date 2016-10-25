@@ -303,6 +303,15 @@ public class NonRealTimeConsultUserContorller {
         ConsultDoctorInfoVo doctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(sessionVo.getUserId());
 //        WechatUtil.sendMsgToWechat(token,doctorInfoVo.getOpenId(),"你有问题了 ,赶快去回到吧");
         WechatUtil.sendTemplateMsgToUser(token,openid,"temid","temconten");
+
+
+        //通知前台更新聊天记录
+        Map<String,Object> conversationData = new HashMap<String, Object>();
+        conversationData.put("message",content);
+        conversationData.put("messageTime",DateUtils.formatDateToStr(new Date(),"MM月dd日 HH:mm"));
+        conversationData.put("messageType",msgType);
+        conversationData.put("source","user");
+        resultMap.put("conversationData",conversationData);
         return resultMap;
     }
 }
