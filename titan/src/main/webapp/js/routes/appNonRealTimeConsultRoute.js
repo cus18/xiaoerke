@@ -54,7 +54,7 @@ define(['appNonRealTimeConsult'], function(app){
                         }
                     })
                     .state('NonTimeDoctorConversation', {
-                        url: '/NonTimeDoctorConversation',
+                        url: '/NonTimeDoctorConversation/:sessionId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'NonTimeDoctorConversationCtrl',
                         resolve: {
@@ -63,6 +63,9 @@ define(['appNonRealTimeConsult'], function(app){
                                     [
                                         'js/libs/lodash.min.js',
                                         'js/libs/scrollglue.js',
+                                        'js/libs/angular-file-upload-shim.min.js',
+                                        'js/libs/angular-file-upload.min.js',
+                                        'js/libs/jquery.qqFace.js',
                                         'js/controllers/nonRealTimeConsult/doctor/NonTimeDoctorConversationCtrl.js?ver='+nonRealTimeConsultVersion,
                                         'styles/nonRealTimeConsult/doctor/NonTimeDoctorConversation.less?ver='+nonRealTimeConsultVersion],
                                     'js/views/nonRealTimeConsult/doctor/NonTimeDoctorConversation.html?ver='+nonRealTimeConsultVersion);
