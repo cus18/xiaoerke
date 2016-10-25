@@ -210,6 +210,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                                         CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
                                     }
                                 }else if(richConsultSession.getSource().equals("h5ykdl")){
+
                                     net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
                                     String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
                                     int nameIndex = content.indexOf("：");
