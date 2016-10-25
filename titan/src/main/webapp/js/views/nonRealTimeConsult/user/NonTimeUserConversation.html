@@ -7,9 +7,9 @@
         <span>{{pageData.department}}</span>
         <span>{{pageData.professor}}</span>
     </div>
-    <div class="chat-box">
-        <div class="chat-content" scroll-glue-bottom="glued">
-            <div ng-repeat="item in messageList">
+    <div class="chat-box" scroll-glue-bottom="glued">
+        <div class="chat-content">
+            <div class="ofh" ng-repeat="item in messageList">
                 <div ng-style="item.source=='user'?{'display':'block'}:{'display':'none'}" class="user-content posr fr w80">
                     <div class="tae c9">{{item.messageTime}}</div>
                     <div class="head-portrait fr">
@@ -28,7 +28,6 @@
                     </div>
                     <div ng-style="item.messageType=='text'?{'display':'block'}:{'display':'none'}" class="content fr w70 b-box bgg">
                         <div ng-bind-html="item.message|emotionReceive:item.messageType"></div>
-                        </br>
                     </div>
                     <div ng-style="item.messageType=='img'?{'display':'block'}:{'display':'none'}" class="content fr w70 b-box bgg">
                         <img width="100%" ng-src="{{item.message}}" alt=""/>
@@ -51,10 +50,9 @@
                     </div>
                     <div ng-style="item.messageType=='text'?{'display':'block'}:{'display':'none'}" class="content fl w70 b-box bgf">
                         <div ng-bind-html="item.message|emotionReceive:item.messageType"></div>
-                       </br>
                     </div>
                     <div ng-style="item.messageType=='img'?{'display':'block'}:{'display':'none'}" class="content fl w70 b-box bgf">
-                            <img ng-src="{{item.message}}" alt=""/></br>
+                            <img ng-src="{{item.message}}" alt=""/>
                     </div>
                 </div>
             </div>
@@ -70,8 +68,7 @@
             </div>
         </div>
     </div>
-    <!--ng-style="pageData.sessionStatus=='ongoing'?{'display':'block'}:{'display':'none'}" -->
-    <div class="send-message">
+    <div class="send-message" ng-style="pageData.sessionStatus=='ongoing'?{'display':'block'}:{'display':'none'}">
         <div class="send-content">
             <textarea placeholder="请输入消息内容" id="saytext" ng-model="info.content"></textarea>
             <div class="btn">

@@ -52,7 +52,6 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
                         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                     }).success(function(data, status, headers, config){
                         $scope.sendMsg("img",data.imgPath);
-
                         $scope.messageList.push(data.conversationData);
                     });
                 }
@@ -72,20 +71,6 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
                 });
             };
 
-            //过滤媒体数据
-            var filterMediaData = function (val) {
-                if(val.senderId==$scope.patientId){
-                    if (val.type == "0") {
-                        val.content = $sce.trustAsHtml(replace_em(emotionReceiveFilter(angular.copy(val.content))));
-                    }
-                }else{
-                    if (val.type == "2"||val.type == "3") {
-                        val.content = $sce.trustAsResourceUrl(angular.copy(val.content));
-                    }else if(val.type == "0"){
-                        val.content = $sce.trustAsHtml(replace_em(emotionReceiveFilter(angular.copy(val.content))));
-                    }
-                }
-            };
             //查看结果
             var replace_em = function (str) {
                 str = str.replace(/\</g,'&lt;');

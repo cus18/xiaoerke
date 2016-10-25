@@ -83,6 +83,7 @@ define(['appNonRealTimeConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.NonTimeUserConversationCtrl',
                                     [
                                         'js/libs/jquery.qqFace.js',"js/libs/jquery.browser.min.js",
+                                        'js/libs/scrollglue.js',
                                         'js/controllers/nonRealTimeConsult/user/NonTimeUserConversationCtrl.js?ver='+nonRealTimeConsultVersion,
                                         'styles/nonRealTimeConsult/user/NonTimeUserConversation.less?ver='+nonRealTimeConsultVersion],
                                     'js/views/nonRealTimeConsult/user/NonTimeUserConversation.html?ver='+nonRealTimeConsultVersion);
