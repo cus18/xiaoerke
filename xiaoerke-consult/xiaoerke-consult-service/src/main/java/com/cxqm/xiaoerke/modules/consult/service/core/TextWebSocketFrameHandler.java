@@ -210,7 +210,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                                         CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
                                     }
                                 }else if(richConsultSession.getSource().equals("h5ykdl")){
-
                                     net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
                                     String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
                                     int nameIndex = content.indexOf("：");
@@ -229,7 +228,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                                     String dataType="json";
                                     String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
                                     net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
-                                    if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
+                                    if(jsonObject.containsKey("error_msg") && "success".equals(jsonObject.get("error_msg"))){
                                         CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
                                     }
                                 }
@@ -257,6 +256,28 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
                             net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
                             if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
+                                CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
+                            }
+                        }else if(richConsultSession.getSource().equals("h5ykdl")){
+                            net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
+                            String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
+                            int nameIndex = content.indexOf("：");
+                            String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
+                            //    noReadMsg.put("action","doctorMessage");
+                            noReadMsg.put("doctorName",content.substring(0,nameIndex));
+                            noReadMsg.put("uid",userId);
+                            noReadMsg.put("messageType",msgType);
+                            noReadMsg.put("messageContent",newContent);
+                            noReadMsg.put("doctorId",csUserId);
+                            String currentUrl = "http://wxsp-dev.ykbenefit.com/consult_interrupted";
+                            if(StringUtils.isNull(currentUrl)){
+                                currentUrl = "http://wxsp-dev.ykbenefit.com/consult_interrupted";
+                            }
+                            String method = "POST";
+                            String dataType="json";
+                            String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
+                            net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
+                            if(jsonObject.containsKey("error_msg") && "success".equals(jsonObject.get("error_msg"))){
                                 CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
                             }
                         }
