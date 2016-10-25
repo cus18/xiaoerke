@@ -4,13 +4,18 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
 
         $scope.prizeArray = {};
 
-        //页面初始化
-        $scope.NonTimeDoctorLoginInit = function () {
-            document.title = "医生登陆"; //title
-            doctorBinding.save({}, function (data) {
-
+        $scope.doctorBindingAction = function () {
+            $scope.username = $('#username').val();
+            $scope.password = $('#username').val();
+            doctorBinding.save({username: $scope.username, password: $scope.password}, function (data) {
+                if (data.status = "failure") {
+                    alert("验证码错误！");
+                } else {
+                    window.location.href = "http://localhost/titan/nonRealTimeConsult#/NonTimeDoctorConversation";
+                }
             });
-        };
+        }
+
 
         $scope.getValidateCode = function () {
             if (countdown < 60) {
@@ -33,10 +38,11 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
                         cache: false,
                         contentType: "application/json; charset=utf-8",
                         dataType: 'json',
-                        success: function (data) {
+                        success: function () {
 
                         },
                         error: function () {
+
                         }
                     });
                     $scope.lockValidateCode();
@@ -60,7 +66,6 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
         };
 
         var countdown = 60;
-
 
 
     }]);

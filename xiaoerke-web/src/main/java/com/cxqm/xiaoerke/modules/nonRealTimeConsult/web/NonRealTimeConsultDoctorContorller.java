@@ -12,6 +12,7 @@ import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultSe
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
+import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,6 +46,8 @@ public class NonRealTimeConsultDoctorContorller {
     @Autowired
     private UserInfoService userInfoService;
 
+    @Autowired
+    private UtilService utilService;
 
     @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
@@ -97,14 +100,20 @@ public class NonRealTimeConsultDoctorContorller {
     @ResponseBody
     public Map doctorBinding(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) throws Exception {
         Map<String, Object> response = new HashMap<String, Object>();
-        String phone = String.valueOf(params.get("phone"));
-        User user = new User();
-        user.setPhone(phone);
-        user = userInfoService.doctorOper(user);
-        ConsultDoctorInfoVo consultDoctorInfoVo = new ConsultDoctorInfoVo();
-        consultDoctorInfoVo.setOpenId(WechatUtil.getOpenId(session,request));
-        consultDoctorInfoVo.setUserId(user.getId());
-        consultDoctorInfoService.updateByphone(consultDoctorInfoVo);
+        String username = String.valueOf(params.get("username"));
+        String openid = "oogbDwD_2BTQpftPu9QClr-mCw7U";//WechatUtil.getOpenId(session,request)
+        String passeord = String.valueOf(params.get("passeord"));
+        String status = utilService.bindUser4ConsultDoctor(username,passeord,openid);
+
+        if(status.equals("1") && StringUtils.isNotNull(passeord)){
+            User user = new User();
+            user.setPhone(passeord);
+            user = userInfoService.doctorOper(user);
+            ConsultDoctorInfoVo consultDoctorInfoVo = new ConsultDoctorInfoVo();
+            consultDoctorInfoVo.setOpenId(openid);
+            consultDoctorInfoVo.setUserId(user.getId());
+            consultDoctorInfoService.updateByphone(consultDoctorInfoVo);
+        }
         return response;
     }
 
