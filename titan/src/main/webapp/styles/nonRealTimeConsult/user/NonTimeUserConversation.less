@@ -118,6 +118,9 @@
   background: #fff url(http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_03.png) 0 0 no-repeat;
   -webkit-background-size: 100% 100%;
   background-size: 100% 100%;
+  color: #cccccc;
+  font-size: 13px;
+  line-height: 24px;
 }
 
 textarea {
@@ -135,20 +138,39 @@ textarea {
 }
 .nonTimeUserConversation .send-message .btn {
   overflow: hidden;
+  text-align: center;
 }
 .nonTimeUserConversation .send-message .btn img {
-  margin: 4px 10px;
+  margin: 2px 1px;
 }
 
-.nonTimeUserConversation .send-message span.send {
+.nonTimeUserConversation .send-message span{
   display: inline-block;
-  float: right;
-  background-color: #1FC3C5;
+  border-radius: 5px;
+  padding: 5px 10px;
   color: #fff;
   font-size: 15px;
-  padding: 5px 10px;
+  text-align: center;
+}
+.nonTimeUserConversation .send-message span.give{
+  background-color: #ffb548;
+  width: 40%;
+}
+.nonTimeUserConversation .send-message span.again{
+  background-color: #1FC3C5;
+  width: 40%;
+}
+
+.nonTimeUserConversation .send-message span.face{
+  float: left;
+}
+.nonTimeUserConversation .send-message span.img{
+  float: left;
+}
+.nonTimeUserConversation .send-message span.send {
+  float: right;
+  background-color: #1FC3C5;
   margin-right: 20px;
-  border-radius: 5px;
 }
 [scroll-glue-bottom], {
   overflow-y: scroll;

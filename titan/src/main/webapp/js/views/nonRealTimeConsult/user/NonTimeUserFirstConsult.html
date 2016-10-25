@@ -40,12 +40,10 @@
         </div>
     </div>
     <div class="bottom">
-        <button  class="  bottom-btn bg3" ng-click="submit()" ng-disabled="info.describeIllness.length < 18">
-            提问
-        </button>
+        <input type="button" value="提问" class="submit" ng-click="submit()" ng-disabled="info.describeIllness.length < 18" ng-style="info.describeIllness.length < 18?{'background-color':'#ccc'}:{'background-color':'#53D4DD'}">
 
-        <!--<div class="submit" ng-click="submit()" ng-disabled="info.describeIllness.length>10">-->
-            <!--提问-->
+        <!--<div class="submit" ng-click="submit()" ng-style="info.describeIllness.length < 18?{'background-color':'#ccc'}:{'background-color':'#53D4DD'}">-->
+        <!--提问-->
         <!--</div>-->
     </div>
 </div>
