@@ -64,12 +64,12 @@ public class NonRealTimeConsultUserContorller {
         return resultMap;
     }
 
-//    @RequestMapping(value = "/getStarDoctorInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//    @ResponseBody
-//    public Map<String,Object> starDoctorInfo(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
-//        Map<String,Object> resultMap = new HashMap<String, Object>();
-//        return consultDoctorInfoService.getConsultDoctorInfo(null);
-//    }
+    @RequestMapping(value = "/getStarDoctorInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> starDoctorInfo(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        return consultDoctorInfoService.getConsultDoctorInfo(null);
+    }
 
     @RequestMapping(value = "/savenConsultRecord", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
@@ -133,15 +133,15 @@ public class NonRealTimeConsultUserContorller {
     }
 
 
-//    @RequestMapping(value = "/doctorListByDepartment", method = {RequestMethod.POST, RequestMethod.GET})
-//    @ResponseBody
-//    public Map<String,Object> getDoctorListByDepartment(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
-//        Map<String,Object> resultMap = new HashMap<String, Object>();
-//        String  departmentName = (String) params.get("departmentName");
-//        List<ConsultDoctorInfoVo> departmentVoList = nonRealTimeConsultUserService.getDoctorListByDepartment(departmentName);
-//        resultMap.put("departmentVoList",departmentVoList);
-//        return resultMap;
-//    }
+    @RequestMapping(value = "/doctorListByDepartment", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> getDoctorListByDepartment(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        String  departmentName = (String) params.get("departmentName");
+        List<ConsultDoctorInfoVo> departmentVoList = nonRealTimeConsultUserService.getDoctorListByDepartment(departmentName);
+        resultMap.put("departmentVoList",departmentVoList);
+        return resultMap;
+    }
 
     @RequestMapping(value = "/sessionList", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
