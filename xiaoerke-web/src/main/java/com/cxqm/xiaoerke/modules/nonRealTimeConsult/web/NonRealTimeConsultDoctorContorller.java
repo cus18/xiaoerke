@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.nonRealTimeConsult.web;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
@@ -44,6 +45,9 @@ public class NonRealTimeConsultDoctorContorller {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private OlyGamesService olyGamesService;
 
     @Autowired
     private UtilService utilService;
@@ -161,6 +165,10 @@ public class NonRealTimeConsultDoctorContorller {
                 }
                 if (nonRealTimeConsultSessionVo.getStatus().equals("sessionend")) {
                     nonRealTimeConsultSessionVo.setLastMessageType("close");
+                }
+                String headUrl = olyGamesService.getWechatMessage(nonRealTimeConsultSessionVo.getUserId());
+                if(StringUtils.isNotNull(headUrl)){
+                    nonRealTimeConsultSessionVo.setHeadImgUrl(headUrl);
                 }
 
                 //查询宝宝信息
