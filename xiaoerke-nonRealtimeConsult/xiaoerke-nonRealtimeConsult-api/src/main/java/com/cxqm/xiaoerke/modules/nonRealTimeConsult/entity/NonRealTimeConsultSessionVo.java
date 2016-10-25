@@ -41,6 +41,8 @@ public class NonRealTimeConsultSessionVo {
 
     private String bak3;
 
+    private String headImgUrl;
+
     private String lastMessageContent;
 
     private String babyInfo;
@@ -103,6 +105,14 @@ public class NonRealTimeConsultSessionVo {
 
     public String getCsUserId() {
         return csUserId;
+    }
+
+    public String getHeadImgUrl() {
+        return headImgUrl;
+    }
+
+    public void setHeadImgUrl(String headImgUrl) {
+        this.headImgUrl = headImgUrl;
     }
 
     public void setCsUserId(String csUserId) {
