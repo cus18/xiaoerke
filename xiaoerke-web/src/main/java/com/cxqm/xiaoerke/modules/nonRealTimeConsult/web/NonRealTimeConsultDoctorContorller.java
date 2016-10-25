@@ -102,10 +102,10 @@ public class NonRealTimeConsultDoctorContorller {
         Map<String, Object> response = new HashMap<String, Object>();
         String username = String.valueOf(params.get("username"));
         String openid = "oogbDwD_2BTQpftPu9QClr-mCw7U";//WechatUtil.getOpenId(session,request)
-        String passeord = String.valueOf(params.get("passeord"));
+        String passeord = String.valueOf(params.get("password"));
         String status = utilService.bindUser4ConsultDoctor(username,passeord,openid);
-
-        if(status.equals("1") && StringUtils.isNotNull(passeord)){
+        response.put("status","failure");
+        if(status.equals("1") && StringUtils.isNotNull(passeord) && StringUtils.isNotNull(username)){
             User user = new User();
             user.setPhone(passeord);
             user = userInfoService.doctorOper(user);
@@ -113,6 +113,7 @@ public class NonRealTimeConsultDoctorContorller {
             consultDoctorInfoVo.setOpenId(openid);
             consultDoctorInfoVo.setUserId(user.getId());
             consultDoctorInfoService.updateByphone(consultDoctorInfoVo);
+            response.put("status", "success");
         }
         return response;
     }

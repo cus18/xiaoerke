@@ -6,7 +6,7 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
 
         $scope.doctorBindingAction = function () {
             $scope.username = $('#username').val();
-            $scope.password = $('#username').val();
+            $scope.password = $('#password').val();
             doctorBinding.save({username: $scope.username, password: $scope.password}, function (data) {
                 if (data.status = "failure") {
                     alert("验证码错误！");
