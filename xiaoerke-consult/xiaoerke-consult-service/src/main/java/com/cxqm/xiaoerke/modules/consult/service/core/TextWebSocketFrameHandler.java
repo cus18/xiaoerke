@@ -228,7 +228,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                                     String dataType="json";
                                     String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
                                     net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
-                                    if(jsonObject.containsKey("error_msg") && "success".equals(jsonObject.get("error_msg"))){
+                                    if(jsonObject.containsKey("error_msg") && !"success".equals(jsonObject.get("error_msg"))){
                                         CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
                                     }
                                 }
@@ -277,7 +277,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             String dataType="json";
                             String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
                             net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
-                            if(jsonObject.containsKey("error_msg") && "success".equals(jsonObject.get("error_msg"))){
+                            if(jsonObject.containsKey("error_msg") && !"success".equals(jsonObject.get("error_msg"))){
                                 CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
                             }
                         }
