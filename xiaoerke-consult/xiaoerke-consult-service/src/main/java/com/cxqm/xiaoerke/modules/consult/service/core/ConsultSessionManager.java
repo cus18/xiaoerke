@@ -147,7 +147,7 @@ public enum ConsultSessionManager {
             channelUserMapping.put(channel, distributorUserId);
             csUserConnectionTimeMapping.put(distributorUserId, new Date());
         } else {
-            log.warn("Maybe a Simulated Distributor: The userId is " + distributorUserId);di'c
+            log.warn("Maybe a Simulated Distributor: The userId is " + distributorUserId);
         }
     }
 
