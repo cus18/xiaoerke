@@ -80,7 +80,7 @@ public class NonRealTimeConsultDoctorContorller {
         String openId = "8ab94e95afe448dab66403fc5407d0ca";//WechatUtil.getOpenId(session, request)
         param.put("openId", openId);
         response.put("status", "failure");
-        if(StringUtils.isNotNull(openId)){
+        if (StringUtils.isNotNull(openId)) {
             List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
             if (consultDoctorInfoVos != null && consultDoctorInfoVos.size() > 0 && StringUtils.isNotBlank(consultDoctorInfoVos.get(0).getUserId())) {
                 response.put("status", "success");
@@ -103,14 +103,14 @@ public class NonRealTimeConsultDoctorContorller {
      */
     @RequestMapping(value = "/doctorBinding", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map doctorBinding(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) throws Exception {
+    public Map doctorBinding(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) throws Exception {
         Map<String, Object> response = new HashMap<String, Object>();
         String username = String.valueOf(params.get("username"));
         String openid = "oogbDwD_2BTQpftPu9QClr-mCw7U";//WechatUtil.getOpenId(session,request)
         String passeord = String.valueOf(params.get("password"));
-        String status = utilService.bindUser4ConsultDoctor(username,passeord,openid);
-        response.put("status","failure");
-        if(status.equals("1") && StringUtils.isNotNull(passeord) && StringUtils.isNotNull(username)){
+        String status = utilService.bindUser4ConsultDoctor(username, passeord, openid);
+        response.put("status", "failure");
+        if (status.equals("1") && StringUtils.isNotNull(passeord) && StringUtils.isNotNull(username)) {
             User user = new User();
             user.setPhone(passeord);
             user = userInfoService.doctorOper(user);
@@ -167,9 +167,21 @@ public class NonRealTimeConsultDoctorContorller {
                     nonRealTimeConsultSessionVo.setLastMessageType("close");
                 }
                 String headUrl = olyGamesService.getWechatMessage(nonRealTimeConsultSessionVo.getUserId());
-                if(StringUtils.isNotNull(headUrl)){
+                if (StringUtils.isNotNull(headUrl)) {
                     nonRealTimeConsultSessionVo.setHeadImgUrl(headUrl);
                 }
+                String lastMessageContent = nonRealTimeConsultSessionVo.getLastMessageContent();
+                String sex = "";
+                if (lastMessageContent.indexOf("#") != -1) {
+                    lastMessageContent = lastMessageContent.split("#")[2];
+                    sex = lastMessageContent.split("#")[0];
+                    if(sex.equals("1")){
+                        sex = "男,";
+                    }else {
+                        sex = "女,";
+                    }
+                }
+                nonRealTimeConsultSessionVo.setLastMessageContent(lastMessageContent);
 
                 //查询宝宝信息
                 List<BabyBaseInfoVo> babyInfoList = healthRecordsService.getUserBabyInfolistByOpenId(openId);
@@ -187,16 +199,20 @@ public class NonRealTimeConsultDoctorContorller {
                     } else if (babyBirthdayMonth > nowDateMonth) {
                         chaDate = babyBirthdayMonth - nowDateMonth;
                     }
+                    String babyName = babyBaseInfoVo.getName();
+                    if(StringUtils.isNotNull(babyName)){
+                        babyName = babyBaseInfoVo.getName() + ",";
+                    }
 
-                    babyInfo = babyBaseInfoVo.getName() + "," + (nowDateYear - babyBirthdayYear) + "岁" + chaDate + "个月";
+                    babyInfo = sex + babyName + (nowDateYear - babyBirthdayYear) + "岁" + chaDate + "个月";
 
-                }else{
+                } else {
                     babyInfo = "暂无数据";
                 }
                 nonRealTimeConsultSessionVo.setBabyInfo(babyInfo);
             }
         }
-        response.put("ListInfo",nonRealTimeConsultSessionVos);
+        response.put("ListInfo", nonRealTimeConsultSessionVos);
         return response;
     }
 
