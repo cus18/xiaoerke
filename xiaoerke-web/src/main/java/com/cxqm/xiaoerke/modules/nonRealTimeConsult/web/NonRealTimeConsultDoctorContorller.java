@@ -10,6 +10,8 @@ import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRec
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,6 +41,9 @@ public class NonRealTimeConsultDoctorContorller {
 
     @Autowired
     private HealthRecordsService healthRecordsService;
+
+    @Autowired
+    private UserInfoService userInfoService;
 
 
     @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
@@ -73,6 +78,33 @@ public class NonRealTimeConsultDoctorContorller {
         } else {
             response.put("status", "failure");
         }
+        return response;
+    }
+
+    /**
+     * 医生绑定接口
+     * response:
+     * {
+     * "status":"success"
+     * }
+     * //success 成功  failure 失败
+     *
+     * @param session
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/doctorBinding", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map doctorBinding(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) throws Exception {
+        Map<String, Object> response = new HashMap<String, Object>();
+        String phone = String.valueOf(params.get("phone"));
+        User user = new User();
+        user.setPhone(phone);
+        user = userInfoService.doctorOper(user);
+        ConsultDoctorInfoVo consultDoctorInfoVo = new ConsultDoctorInfoVo();
+        consultDoctorInfoVo.setOpenId(WechatUtil.getOpenId(session,request));
+        consultDoctorInfoVo.setUserId(user.getId());
+        consultDoctorInfoService.updateByphone(consultDoctorInfoVo);
         return response;
     }
 

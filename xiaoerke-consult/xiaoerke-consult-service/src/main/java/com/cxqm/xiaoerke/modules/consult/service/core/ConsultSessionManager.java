@@ -17,7 +17,6 @@ import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import org.apache.shiro.crypto.hash.Hash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
@@ -148,7 +147,7 @@ public enum ConsultSessionManager {
             channelUserMapping.put(channel, distributorUserId);
             csUserConnectionTimeMapping.put(distributorUserId, new Date());
         } else {
-            log.warn("Maybe a Simulated Distributor: The userId is " + distributorUserId);
+            log.warn("Maybe a Simulated Distributor: The userId is " + distributorUserId);di'c
         }
     }
 

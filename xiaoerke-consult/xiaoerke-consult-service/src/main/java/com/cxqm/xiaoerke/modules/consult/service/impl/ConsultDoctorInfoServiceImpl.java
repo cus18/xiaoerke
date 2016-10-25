@@ -150,6 +150,12 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         return count;
     }
 
+    @Override
+    public int updateByphone(ConsultDoctorInfoVo record){
+        return consultDoctorInfoDao.updateByphone(record);
+    }
+
+
     /**
      * 获取咨询医生所有科室
      * @author jiangzg
