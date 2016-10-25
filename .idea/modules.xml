@@ -45,6 +45,9 @@
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-mutualHelp/xiaoerke-mutualHelp.iml" filepath="$PROJECT_DIR$/xiaoerke-mutualHelp/xiaoerke-mutualHelp.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-mutualHelp/xiaoerke-mutualHelp-api/xiaoerke-mutualHelp-api.iml" filepath="$PROJECT_DIR$/xiaoerke-mutualHelp/xiaoerke-mutualHelp-api/xiaoerke-mutualHelp-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-mutualHelp/xiaoerke-mutualHelp-service/xiaoerke-mutualHelp-service.iml" filepath="$PROJECT_DIR$/xiaoerke-mutualHelp/xiaoerke-mutualHelp-service/xiaoerke-mutualHelp-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult.iml" filepath="$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-api/xiaoerke-nonRealtimeConsult-api.iml" filepath="$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-api/xiaoerke-nonRealtimeConsult-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-service/xiaoerke-nonRealtimeConsult-service.iml" filepath="$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-service/xiaoerke-nonRealtimeConsult-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-operation/xiaoerke-operation.iml" filepath="$PROJECT_DIR$/xiaoerke-operation/xiaoerke-operation.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-operation/xiaoerke-operation-api/xiaoerke-operation-api.iml" filepath="$PROJECT_DIR$/xiaoerke-operation/xiaoerke-operation-api/xiaoerke-operation-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-operation/xiaoerke-operation-service/xiaoerke-operation-service.iml" filepath="$PROJECT_DIR$/xiaoerke-operation/xiaoerke-operation-service/xiaoerke-operation-service.iml" />
