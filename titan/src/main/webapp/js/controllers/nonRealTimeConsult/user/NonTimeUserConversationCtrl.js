@@ -1,4 +1,4 @@
-angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserConversationCtrl', [
+var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserConversationCtrl', [
         '$scope','$state','$stateParams','$upload','ConversationInfo','UpdateReCode',
         function ($scope,$state,$stateParams,$upload,ConversationInfo,UpdateReCode) {
             $scope.glued = true;
@@ -27,6 +27,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserConversat
                     }
                     if(data.state == "success"){
                         $scope.messageList.push(data.conversationData);
+                        $scope.info.content = "";
                     }
                 });
             };
