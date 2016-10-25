@@ -10,6 +10,9 @@ import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRec
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
+import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +43,11 @@ public class NonRealTimeConsultDoctorContorller {
     @Autowired
     private HealthRecordsService healthRecordsService;
 
+    @Autowired
+    private UserInfoService userInfoService;
+
+    @Autowired
+    private UtilService utilService;
 
     @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
@@ -72,6 +80,40 @@ public class NonRealTimeConsultDoctorContorller {
             response.put("status", "success");
         } else {
             response.put("status", "failure");
+        }
+        return response;
+    }
+
+    /**
+     * 医生绑定接口
+     * response:
+     * {
+     * "status":"success"
+     * }
+     * //success 成功  failure 失败
+     *
+     * @param session
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/doctorBinding", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map doctorBinding(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) throws Exception {
+        Map<String, Object> response = new HashMap<String, Object>();
+        String username = String.valueOf(params.get("username"));
+        String openid = "oogbDwD_2BTQpftPu9QClr-mCw7U";//WechatUtil.getOpenId(session,request)
+        String passeord = String.valueOf(params.get("password"));
+        String status = utilService.bindUser4ConsultDoctor(username,passeord,openid);
+        response.put("status","failure");
+        if(status.equals("1") && StringUtils.isNotNull(passeord) && StringUtils.isNotNull(username)){
+            User user = new User();
+            user.setPhone(passeord);
+            user = userInfoService.doctorOper(user);
+            ConsultDoctorInfoVo consultDoctorInfoVo = new ConsultDoctorInfoVo();
+            consultDoctorInfoVo.setOpenId(openid);
+            consultDoctorInfoVo.setUserId(user.getId());
+            consultDoctorInfoService.updateByphone(consultDoctorInfoVo);
+            response.put("status", "success");
         }
         return response;
     }

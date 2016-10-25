@@ -13,6 +13,10 @@ define(['appNonRealTimeConsult'], function (app) {
         .factory('BabyBaseInfo',['$resource',function ($resource){
             return $resource(path_user + 'getBabyBaseInfo');
         }])
+
+        .factory('GetDoctorLoginStatus',['$resource',function ($resource){
+            return $resource(path_doc + 'GetDoctorLoginStatus');
+        }])
         .factory('CreateSession',['$resource',function ($resource){
             return $resource(path_user + 'createSession');
         }])
@@ -24,6 +28,10 @@ define(['appNonRealTimeConsult'], function (app) {
         .factory('StarDoctorList',['$resource',function ($resource){
             return $resource(path_user + 'getStarDoctorlist');
         }])
+        .factory('doctorBinding',['$resource',function ($resource){
+            return $resource(path_doc + 'doctorBinding');
+        }])
+
 
         .factory('DoctorListByDepartment',['$resource',function ($resource){
             return $resource(path_user + 'doctorListByDepartment');

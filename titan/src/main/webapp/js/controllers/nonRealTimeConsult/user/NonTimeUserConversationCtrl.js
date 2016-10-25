@@ -1,10 +1,11 @@
-angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserConversationCtrl', [
+var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserConversationCtrl', [
         '$scope','$state','$stateParams','$upload','ConversationInfo','UpdateReCode',
         function ($scope,$state,$stateParams,$upload,ConversationInfo,UpdateReCode) {
             $scope.glued = true;
             $scope.msgType= "text";
             $scope.content = "";
             $scope.info = [];
+            $scope.info.content = "";
             $scope.messageList = [];
             $scope.NonTimeUserConversationInit = function(){
                 $scope.getQQExpression();
@@ -27,6 +28,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserConversat
                     }
                     if(data.state == "success"){
                         $scope.messageList.push(data.conversationData);
+                        $scope.info.content = "";
                     }
                 });
             };
@@ -58,6 +60,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserConversat
 
             //发送消息
             $scope.sendTextMsg = function(){
+                $scope.info.content =  $('#saytext').val();
                 $scope.sendMsg("text",$scope.info.content);
             };
             //发送表情

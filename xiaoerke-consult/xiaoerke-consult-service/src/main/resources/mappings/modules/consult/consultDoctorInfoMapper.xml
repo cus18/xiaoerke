@@ -246,6 +246,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="updateByphone" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" >
+    update consult_doctor_info set  open_id = #{openId,jdbcType=VARCHAR}
+    where sys_user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+
   <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" >
     update consult_doctor_info
     set sys_user_id = #{userId,jdbcType=VARCHAR},

@@ -348,6 +348,18 @@
         <processorPath useClasspath="true" />
         <module name="xiaoerke-vaccine-api" />
       </profile>
+      <profile default="false" name="Annotation profile for xiaoerke-nonRealtimeConsult-api" enabled="true">
+        <sourceOutputDir name="target\generated-sources\annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+      </profile>
+      <profile default="false" name="Annotation profile for xiaoerke-nonRealtimeConsult-service" enabled="true">
+        <sourceOutputDir name="target\generated-sources\annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="angel" target="1.6" />
@@ -393,6 +405,9 @@
       <module name="xiaoerke-mutualHelp" target="1.6" />
       <module name="xiaoerke-mutualHelp-api" target="1.6" />
       <module name="xiaoerke-mutualHelp-service" target="1.6" />
+      <module name="xiaoerke-nonRealtimeConsult" target="1.6" />
+      <module name="xiaoerke-nonRealtimeConsult-api" target="1.6" />
+      <module name="xiaoerke-nonRealtimeConsult-service" target="1.6" />
       <module name="xiaoerke-operation" target="1.6" />
       <module name="xiaoerke-operation-api" target="1.6" />
       <module name="xiaoerke-operation-service" target="1.6" />

@@ -3,7 +3,6 @@ package com.cxqm.xiaoerke.modules.nonRealTimeConsult.web;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
@@ -16,7 +15,6 @@ import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.connection.RedisServer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -66,12 +64,12 @@ public class NonRealTimeConsultUserContorller {
         return resultMap;
     }
 
-//    @RequestMapping(value = "/getStarDoctorInfo", method = {RequestMethod.POST, RequestMethod.GET})
-//    @ResponseBody
-//    public Map<String,Object> starDoctorInfo(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
-//        Map<String,Object> resultMap = new HashMap<String, Object>();
-//        return consultDoctorInfoService.getConsultDoctorInfo(null);
-//    }
+    @RequestMapping(value = "/getStarDoctorInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> starDoctorInfo(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        return consultDoctorInfoService.getConsultDoctorInfo(null);
+    }
 
     @RequestMapping(value = "/savenConsultRecord", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
