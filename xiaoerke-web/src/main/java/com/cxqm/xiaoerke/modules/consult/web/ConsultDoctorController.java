@@ -453,7 +453,7 @@ public class ConsultDoctorController extends BaseController {
                                 String dataType="json";
                                 String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
                                 net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
-                                if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
+                                if(jsonObject.containsKey("error_msg") && !"success".equals(jsonObject.get("error_msg"))){
                                     CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
                                 }
                             }
@@ -488,7 +488,7 @@ public class ConsultDoctorController extends BaseController {
                             String dataType="json";
                             String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
                             net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
-                            if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
+                            if(jsonObject.containsKey("error_msg") && !"success".equals(jsonObject.get("error_msg")) ){
                                 CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
                             }
                         }
