@@ -5,6 +5,7 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
             $scope.msgType= "text";
             $scope.content = "";
             $scope.info = [];
+            $scope.info.content = "";
             $scope.messageList = [];
             $scope.NonTimeUserConversationInit = function(){
                 $scope.getQQExpression();
@@ -59,6 +60,11 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
 
             //发送消息
             $scope.sendTextMsg = function(){
+                // alert($('#saytext').val()+"|"+$scope.info.content)
+
+                // if($scope.info.content == ""&& $('#saytext').val() != ""){
+                    $scope.info.content =  $('#saytext').val();
+                // }
                 $scope.sendMsg("text",$scope.info.content);
             };
             //发送表情
