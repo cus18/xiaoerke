@@ -270,7 +270,7 @@ public class ConsultUserController extends BaseController {
             int pageNo = (Integer) params.get("pageNo");
             int pageSize = (Integer) params.get("pageSize");
             List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
-do'c
+
             ConsultSession consultSessionSearch = new ConsultSession();
             consultSessionSearch.setCsUserId(csUserId);
             consultSessionSearch.setStatus(ConsultSession.STATUS_ONGOING);
