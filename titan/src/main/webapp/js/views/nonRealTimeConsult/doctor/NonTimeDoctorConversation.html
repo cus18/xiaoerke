@@ -1,82 +1,15 @@
-<div ui-view class="NonTimeDoctorConversation" ng-init="NonTimeDoctorConversationInit()">
-    <div class="conversation" scroll-glue-bottom="glued">
-        <div class="dialog user fl">
-            <div class="date">10月10日 17:00</div>
-            <div class="content">
-                <img class="radius" width="43" height="43" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg">
-                <span class="word  bg1">
-                    <img class="triangle" width="" height="" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/triangle1.png" >
-                    从背后从我那次我从你万次菜鸟那次从你猜呢从背后从我那次我从你万次菜鸟那次从你猜呢
-                </span>
-            </div>
-        </div>
-        <div class="dialog doctor fr">
-            <div class="date">10月10日 17:00</div>
-            <div class="content">
-                <img class="radius" width="43" height="43" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg">
-                <span class="word ">
-                     <img class="triangle" width="" height="" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/triangle2.png" >
-                    从背后从我那次我从你
-                </span>
-            </div>
-        </div>
-        <div class="dialog user fl">
-            <div class="date">10月10日 17:00</div>
-            <div class="content">
-                <img class="radius" width="43" height="43" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg">
-                <span class="word  bg1">
-                    <img class="triangle" width="" height="" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/triangle1.png" >
-                    从背后从我那次我从你万次菜鸟那次从你猜呢从背后从我那次我从你万次菜鸟那次从你猜呢
-                </span>
-            </div>
-        </div>
-        <div class="dialog doctor fr">
-            <div class="date">10月10日 17:00</div>
-            <div class="content">
-                <img class="radius" width="43" height="43" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg">
-                <span class="word ">
-                     <img class="triangle" width="" height="" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/triangle2.png" >
-                    从背后从我那次我从你
-                </span>
-            </div>
-        </div>
-        <div class="dialog user fl">
-            <div class="date">10月10日 17:00</div>
-            <div class="content">
-                <img class="radius" width="43" height="43" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg">
-                <span class="word  bg1">
-                    <img class="triangle" width="" height="" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/triangle1.png" >
-                    从背后从我那次我从你万次菜鸟那次从你猜呢从背后从我那次我从你万次菜鸟那次从你猜呢
-                </span>
-            </div>
-        </div>
-        <div class="dialog doctor fr">
-            <div class="date">10月10日 17:00</div>
-            <div class="content">
-                <img class="radius" width="43" height="43" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg">
-                <span class="word ">
-                     <img class="triangle" width="" height="" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/triangle2.png" >
-                    从背后从我那次我从你
-                </span>
-            </div>
-        </div>
-        <div class="dialog user fl">
-            <div class="date">10月10日 17:00</div>
-            <div class="content">
-                <img class="radius" width="43" height="43" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg">
-                <span class="word  bg1">
-                    <img class="triangle" width="" height="" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/triangle1.png" >
-                    从背后从我那次我从你万次菜鸟那次从你猜呢从背后从我那次我从你万次菜鸟那次从你猜呢
-                </span>
-            </div>
-        </div>
-        <div class="dialog doctor fr">
-            <div class="date">10月10日 17:00</div>
-            <div class="content">
-                <img class="radius" width="43" height="43" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg">
-                <span class="word ">
-                     <img class="triangle" width="" height="" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/triangle2.png" >
-                    从背后从我那次我从你
+<ion-view view-title="资询列表" class="NonTimeDoctorConversation" ng-init="NonTimeDoctorConversationInit()">
+    <div class="conversation"  scroll-glue-bottom="glued">
+        <div class="dialog" ng-repeat="item in pageData.messageList" ng-if="item.message!=''" ng-class="{'user fl':item.source=='user','doctor fr':item.source=='doctor'}">
+            <div class="date">{{item.messageTime}}</div>
+            <div class="content" >
+                <img ng-if="item.source=='user'" class="radius" width="43" height="43" ng-src="{{pageData.wechatImg}}"  err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png">
+                <img ng-if="item.source=='doctor'" class="radius" width="43" height="43"  ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{pageData.doctorId}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png" alt="" />
+                 <span class="word ">
+                     <img class="triangle" width="12" height="17" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/{{item.source=='user' ? 'triangle1.png':'triangle2.png'}}" />
+                     <a ng-if="item.messageType=='createSession'||item.messageType=='text'">{{item.message}}</a>
+                     <img ng-if="item.messageType=='createSession'" class="pic-talk" ng-if="item.imgPath.length>0" width="60" height="60" ng-repeat="prop in item.imgPath" ng-src="{{prop}}" />
+                     <img  ng-if="item.messageType=='img'" class="pic-talk"  width="100%" height="auto" ng-src="{{item.message}}" />
                 </span>
             </div>
         </div>
@@ -84,20 +17,26 @@
     </div>
     <div class="down">
         <!--36小时内可回复-->
-        <div class="send-wrap bg1">
-            <textarea  placeholder="输入消息内容"></textarea>
+        <div class="send-wrap bg1" ng-if="pageData.sessionStatus=='sessionongoing'">
+            <textarea class="input" id="saytext" name="saytext" placeholder="输入消息内容"></textarea>
             <div class="add ">
-                <img width="21" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/icon_expression.png">
-                <img width="20" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/icon_addPic.png">
-                <button class="btn-send tc f3 c0 fr">发 送</button>
+                <a class="emotion" ng-click="getQQExpression()">
+                    <img width="21" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/icon_expression.png">
+                </a>
+                <span type="file" ng-file-select="onFileSelect($files)"  accept="image/*">图片</span>
+              <!--  <span class="addPic" type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000" ng-file-max-size="2MB">
+                    图片
+                   &lt;!&ndash; <img class="pic" width="20" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/icon_addPic.png">&ndash;&gt;
+                </span>-->
+                <button class="btn-send tc f3 c0 fr" ng-click="sendMessage()">发 送</button>
             </div>
         </div>
         <!--36小时外会话关闭-->
-       <!-- <div class="close">
+        <div class="close" ng-if="pageData.sessionStatus=='sessionend'">
             <div class="f3 c0 fr">该问题提出已超过36小时，系统自动关闭</div>
             <div class="tc bg1 fl f5 c4">当前咨询已结束</div>
-        </div>-->
+        </div>
 
     </div>
-</div>
+</ion-view>
 

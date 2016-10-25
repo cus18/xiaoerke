@@ -8,15 +8,17 @@
   margin:21px 10px;
 }
 .NonTimeDoctorConversation .dialog{
+  min-width:51%;
   max-width:85%;
   margin-bottom: 27px;
+}
+.NonTimeDoctorConversation .dialog.doctor{
+ text-align: right;
 }
 .NonTimeDoctorConversation .dialog .date{
   margin-bottom: 10px;
 }
-.NonTimeDoctorConversation .dialog.doctor .date{
-  text-align: right;
-}
+
 .NonTimeDoctorConversation  .content{
   position: relative;
 }
@@ -42,17 +44,30 @@
   position: relative;
   display: inline-block;
   border-radius: 5px;
-  border:1px solid #ccc;
   padding:12px 15px;
+}
+.NonTimeDoctorConversation .content .word.img{
+  border-radius: 5px;
+  padding:0;
+}
+.NonTimeDoctorConversation .content .word.img img{
+  display: block;
+}
+.NonTimeDoctorConversation .user .content .word{
+  background-color:#fff;
+  border:1px solid #ccc;
 }
 .NonTimeDoctorConversation .doctor .content .word{
   background-color:#9eea6a;
   border:1px solid #74d82f;
-  position: relative;
 }
 .NonTimeDoctorConversation .word .triangle{
   position: absolute;
   top:10px;
+}
+.NonTimeDoctorConversation .word .pic-talk{
+  margin-right:10px;
+  margin-top:10px;
 }
 .NonTimeDoctorConversation .user .word .triangle{
   left:-12px;
@@ -69,6 +84,7 @@
 .NonTimeDoctorConversation .send-wrap{
   margin:0 10px 10px;
   padding:15px;
+  position: relative;
 }
 .NonTimeDoctorConversation .send-wrap textarea{
   width:100%;
@@ -78,10 +94,10 @@
 .NonTimeDoctorConversation .send-wrap .add{
   position: relative;
 }
-.NonTimeDoctorConversation .send-wrap .add img{
+.NonTimeDoctorConversation .send-wrap .add a{
   vertical-align: middle;
 }
-.NonTimeDoctorConversation .send-wrap .add img:last-of-type{
+.NonTimeDoctorConversation .send-wrap .add a:last-of-type img{
    margin-left:25px;
    margin-top:-2px;
 }
@@ -106,4 +122,25 @@
 }
 [scroll-glue-bottom], {
   overflow-y: scroll;
+}
+.qqFace{
+  width:100%;
+  border: 1px #dfe6f6 solid;
+  background-color: #fff;
+
+}
+.qqFace table{
+  width:100%;
+  text-align: center;
+}
+.qqFace table tr{
+  width:100%;
+  text-align: center;
+}
+.qqFace table td{
+  width:10%;
+  padding:0;
+}
+.qqFace table td img:hover{
+  border:1px #0066cc solid;
 }
