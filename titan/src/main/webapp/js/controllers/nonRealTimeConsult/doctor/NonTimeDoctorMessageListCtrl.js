@@ -1,6 +1,6 @@
 angular.module('controllers', []).controller('NonTimeDoctorMessageListCtrl', [
-    '$scope', '$state', '$timeout', '$http', 'GetDoctorLoginStatus',
-    function ($scope, $state, $timeout, $http, GetDoctorLoginStatus) {
+    '$scope', '$state', '$timeout', '$http', 'GetDoctorLoginStatus','GetDoctorService',
+    function ($scope, $state, $timeout, $http, GetDoctorLoginStatus,GetDoctorService) {
 
         //校验是否登陆
         GetDoctorLoginStatus.save({}, function (data) {
@@ -8,67 +8,20 @@ angular.module('controllers', []).controller('NonTimeDoctorMessageListCtrl', [
             if (data.status == "failure") {
                 window.location.href = "http://127.0.0.1/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
             } else {
-                $scope.selectItem = "cur";
-                $scope.curMessageList = [
-                    {
-                        pic: "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg",
-                        date: "10月8日",
-                        sex: "男",
-                        age: "6岁2个月",
-                        message: "肠胃问题",
-                        state: "2"
-
-                    },
-                    {
-                        pic: "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg",
-                        date: "10月12日",
-                        sex: "女",
-                        age: "3岁2个月",
-                        message: "肠胃问题",
-                        state: "1"
-                    },
-                    {
-                        pic: "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg",
-                        date: "15:12",
-                        sex: "男",
-                        age: "4岁2个月",
-                        message: "肠胃问题",
-                        state: "2"
-                    },
-                ];
-                $scope.allMessageList = [
-                    {
-                        pic: "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg",
-                        date: "10月10日",
-                        sex: "女",
-                        age: "2岁2个月",
-                        message: "肠胃问题",
-                        state: "0"
-
-                    },
-                    {
-                        pic: "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg",
-                        date: "10月10日",
-                        sex: "男",
-                        age: "3岁2个月",
-                        message: "肠胃问题",
-                        state: "2"
-                    },
-                    {
-                        pic: "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg",
-                        date: "10月10日",
-                        sex: "女",
-                        age: "5岁2个月",
-                        message: "肠胃问题",
-                        state: "1"
-                    }
-                ];
-
+                $scope.MessageListInfo = $scope.GetMessageList("currentService");//currentService 当前服务 allService 全部服务
             }
         });
+        $scope.GetMessageList = function (item) {
+            GetDoctorService.save({serviceType:item}, function (data) {
+                $scope.MessageList = data.ListInfo;
+            });
+        };
+
         $scope.selectService = function (item) {
             $scope.selectItem = item;
         };
+
+
         //页面初始化
         $scope.NonTimeDoctorMessageListInit = function () {
 

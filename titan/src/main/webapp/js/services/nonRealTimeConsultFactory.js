@@ -31,6 +31,9 @@ define(['appNonRealTimeConsult'], function (app) {
         .factory('doctorBinding',['$resource',function ($resource){
             return $resource(path_doc + 'doctorBinding');
         }])
+        .factory('GetDoctorService',['$resource',function ($resource){
+            return $resource(path_doc + 'GetDoctorService');
+        }])
 
 
         .factory('DoctorListByDepartment',['$resource',function ($resource){
