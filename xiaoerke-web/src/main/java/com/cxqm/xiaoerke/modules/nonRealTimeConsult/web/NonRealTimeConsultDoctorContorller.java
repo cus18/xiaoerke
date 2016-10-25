@@ -153,6 +153,8 @@ public class NonRealTimeConsultDoctorContorller {
         } else {
             realTimeConsultSessionVo.setOrder("lastMessageTimeDesc");
         }
+        Date date = new Date();
+        date.getTime();
         //查询当前医生的会话信息
         List<NonRealTimeConsultSessionVo> nonRealTimeConsultSessionVos =
                 nonRealTimeConsultService.selectByNonRealTimeConsultSessionVo(realTimeConsultSessionVo);
