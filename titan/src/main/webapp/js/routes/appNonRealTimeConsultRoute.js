@@ -84,6 +84,8 @@ define(['appNonRealTimeConsult'], function(app){
                                     [
                                         'js/libs/jquery.qqFace.js',"js/libs/jquery.browser.min.js",
                                         'js/libs/scrollglue.js',
+                                        'js/libs/angular-file-upload.min.js',
+                                        'js/libs/angular-file-upload-shim.min.js',
                                         'js/controllers/nonRealTimeConsult/user/NonTimeUserConversationCtrl.js?ver='+nonRealTimeConsultVersion,
                                         'styles/nonRealTimeConsult/user/NonTimeUserConversation.less?ver='+nonRealTimeConsultVersion],
                                     'js/views/nonRealTimeConsult/user/NonTimeUserConversation.html?ver='+nonRealTimeConsultVersion);
@@ -115,8 +117,8 @@ define(['appNonRealTimeConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.NonTimeUserFirstConsultCtrl',
                                     ['js/libs/mobiscroll.custom-2.17.0.min.js',
                                         'styles/lib/mobiscroll.custom-2.17.0.min.css',
-                                        "js/libs/angular-file-upload.min.js",
-                                        "js/libs/angular-file-upload-shim.min.js",
+                                        'js/libs/angular-file-upload.min.js',
+                                        'js/libs/angular-file-upload-shim.min.js',
                                         'js/controllers/nonRealTimeConsult/user/NonTimeUserFirstConsultCtrl.js?ver='+nonRealTimeConsultVersion,
                                         'styles/nonRealTimeConsult/user/NonTimeUserFirstConsult.less?ver='+nonRealTimeConsultVersion],
                                     'js/views/nonRealTimeConsult/user/NonTimeUserFirstConsult.html?ver='+nonRealTimeConsultVersion);
