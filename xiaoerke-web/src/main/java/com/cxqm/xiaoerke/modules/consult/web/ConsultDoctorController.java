@@ -396,7 +396,7 @@ public class ConsultDoctorController extends BaseController {
                         //分享的代码
 //                    patientRegisterPraiseService.sendRemindMsgToUser(userId,sessionId);
                     }
-                }else if("h5bhq".equalsIgnoreCase(richConsultSession.getSource())){
+                }else if("h5bhq".equalsIgnoreCase(richConsultSession.getSource()) || "h5ykdl".equalsIgnoreCase(richConsultSession.getSource())){
                     Map<String, Date> userConnectionTimeMapping = ConsultSessionManager.INSTANCE.getUserConnectionTimeMapping();
                     Date oldDate = null;
                     if(userConnectionTimeMapping.containsKey(richConsultSession.getUserId())){
@@ -424,6 +424,42 @@ public class ConsultDoctorController extends BaseController {
                             }
                         }
                         if(flag){
+                            if("h5bhq".equalsIgnoreCase(richConsultSession.getSource())){
+                                net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
+                                noReadMsg.put("action","doctorCloseSession");
+                                noReadMsg.put("sessionId",sessionId);
+                                noReadMsg.put("uid",richConsultSession.getUserId());
+                                String currentUrl = Global.getConfig("COOP_BHQ_URL");
+                                if(StringUtils.isNull(currentUrl)){
+                                    currentUrl = "http://coapi.baohuquan.com/baodaifu";
+                                }
+                                String method = "POST";
+                                String dataType="json";
+                                String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
+                                net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
+                                if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
+                                    CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
+                                }
+                            }else if("h5ykdl".equalsIgnoreCase(richConsultSession.getSource())){
+                                net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
+                            //    noReadMsg.put("action","doctorCloseSession");
+                                noReadMsg.put("sessionId",sessionId);
+                                noReadMsg.put("uid",richConsultSession.getUserId());
+                                String currentUrl = "http://wxsp-dev.ykbenefit.com/consult_over";
+                                if(StringUtils.isNull(currentUrl)){
+                                    currentUrl = "http://wxsp-dev.ykbenefit.com/consult_over";
+                                }
+                                String method = "POST";
+                                String dataType="json";
+                                String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
+                                net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
+                                if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
+                                    CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
+                                }
+                            }
+                        }
+                    }else{
+                        if("h5bhq".equalsIgnoreCase(richConsultSession.getSource())){
                             net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
                             noReadMsg.put("action","doctorCloseSession");
                             noReadMsg.put("sessionId",sessionId);
@@ -439,22 +475,22 @@ public class ConsultDoctorController extends BaseController {
                             if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
                                 CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
                             }
-                        }
-                    }else{
-                        net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
-                        noReadMsg.put("action","doctorCloseSession");
-                        noReadMsg.put("sessionId",sessionId);
-                        noReadMsg.put("uid",richConsultSession.getUserId());
-                        String currentUrl = Global.getConfig("COOP_BHQ_URL");
-                        if(StringUtils.isNull(currentUrl)){
-                            currentUrl = "http://coapi.baohuquan.com/baodaifu";
-                        }
-                        String method = "POST";
-                        String dataType="json";
-                        String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
-                        net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
-                        if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
-                            CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
+                        }else if("h5ykdl".equalsIgnoreCase(richConsultSession.getSource())){
+                            net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
+                            //    noReadMsg.put("action","doctorCloseSession");
+                            noReadMsg.put("sessionId",sessionId);
+                            noReadMsg.put("uid",richConsultSession.getUserId());
+                            String currentUrl = "http://wxsp-dev.ykbenefit.com/consult_over";
+                            if(StringUtils.isNull(currentUrl)){
+                                currentUrl = "http://wxsp-dev.ykbenefit.com/consult_over";
+                            }
+                            String method = "POST";
+                            String dataType="json";
+                            String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
+                            net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
+                            if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
+                                CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
+                            }
                         }
                     }
                 }
