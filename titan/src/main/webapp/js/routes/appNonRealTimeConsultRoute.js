@@ -159,17 +159,12 @@ define(['appNonRealTimeConsult'], function(app){
             $rootScope.memberFunction = "false";
         })
 
-        .directive('errSrc', function() {
-        return {
-            link: function(scope, element, attrs) {
-                element.bind('error', function() {
-                    if (attrs.src != attrs.errSrc) {
-                        attrs.$set('src', attrs.errSrc);
-                    }
-                });
-            }
-        }
-    })
+        .run(['$anchorScroll', function($anchorScroll) {
+            $anchorScroll.yOffset = 50;
+            // 默认向下便宜50px
+            // 在此处配置偏移量
+        }])
+
     .filter('emotionReceive',function(){
             return function(val,messageType){
                 if(messageType = "text"){
