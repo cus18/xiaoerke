@@ -2,7 +2,6 @@ package com.cxqm.xiaoerke.modules.nonRealTimeConsult.web;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
@@ -74,12 +73,14 @@ public class NonRealTimeConsultDoctorContorller {
         Map<String, Object> response = new HashMap<String, Object>();
         //根据openid查询当前医生
         Map param = new HashMap();
-        param.put("openId", WechatUtil.getOpenId(session, request));
-        List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
-        if (consultDoctorInfoVos != null && consultDoctorInfoVos.size() > 0 && StringUtils.isNotBlank(consultDoctorInfoVos.get(0).getUserId())) {
-            response.put("status", "success");
-        } else {
-            response.put("status", "failure");
+        String openId = "8ab94e95afe448dab66403fc5407d0ca1";//WechatUtil.getOpenId(session, request)
+        param.put("openId", openId);
+        response.put("status", "failure");
+        if(StringUtils.isNotNull(openId)){
+            List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
+            if (consultDoctorInfoVos != null && consultDoctorInfoVos.size() > 0 && StringUtils.isNotBlank(consultDoctorInfoVos.get(0).getUserId())) {
+                response.put("status", "success");
+            }
         }
         return response;
     }
