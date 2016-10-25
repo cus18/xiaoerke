@@ -140,6 +140,7 @@ public class NonRealTimeConsultDoctorContorller {
         Map<String, Object> response = new HashMap<String, Object>();
         String serviceType = (String) params.get("serviceType");
         String openId = (String) params.get("openId");
+        String babyInfo = "";
         NonRealTimeConsultSessionVo realTimeConsultSessionVo = new NonRealTimeConsultSessionVo();
         realTimeConsultSessionVo.setCsUserId(openId);
         if (serviceType.equals("currentService")) {//查询当前服务
@@ -158,6 +159,10 @@ public class NonRealTimeConsultDoctorContorller {
                 } else {
                     nonRealTimeConsultSessionVo.setDispalyTimes(DateUtils.DateToStr(nonRealTimeConsultSessionVo.getLastMessageTime(), "monthDate"));
                 }
+                if (nonRealTimeConsultSessionVo.getStatus().equals("sessionend")) {
+                    nonRealTimeConsultSessionVo.setLastMessageType("close");
+                }
+
                 //查询宝宝信息
                 List<BabyBaseInfoVo> babyInfoList = healthRecordsService.getUserBabyInfolistByOpenId(openId);
                 if (babyInfoList != null && babyInfoList.size() > 0) {
@@ -175,9 +180,12 @@ public class NonRealTimeConsultDoctorContorller {
                         chaDate = babyBirthdayMonth - nowDateMonth;
                     }
 
-                    String babyInfo = babyBaseInfoVo.getName() + "," + (nowDateYear - babyBirthdayYear) + "岁" + chaDate + "个月";
-                    nonRealTimeConsultSessionVo.setBabyInfo(babyInfo);
+                    babyInfo = babyBaseInfoVo.getName() + "," + (nowDateYear - babyBirthdayYear) + "岁" + chaDate + "个月";
+
+                }else{
+                    babyInfo = "暂无数据";
                 }
+                nonRealTimeConsultSessionVo.setBabyInfo(babyInfo);
             }
         }
         response.put("ListInfo",nonRealTimeConsultSessionVos);
