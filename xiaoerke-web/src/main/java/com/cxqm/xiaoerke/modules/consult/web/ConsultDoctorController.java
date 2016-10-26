@@ -443,6 +443,11 @@ public class ConsultDoctorController extends BaseController {
                             }else if("h5ykdl".equalsIgnoreCase(richConsultSession.getSource())){
                                 net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
                             //    noReadMsg.put("action","doctorCloseSession");
+                                if(richConsultSession.getCsUserName().contains("宝大夫")){
+                                    noReadMsg.put("doctorName",richConsultSession.getCsUserName());
+                                }else{
+                                    noReadMsg.put("doctorName","宝大夫"+richConsultSession.getCsUserName());
+                                }
                                 noReadMsg.put("sessionId",sessionId);
                                 noReadMsg.put("uid",richConsultSession.getUserId());
                                 String currentUrl = "http://wxsp-dev.ykbenefit.com/consult_over";
@@ -478,6 +483,11 @@ public class ConsultDoctorController extends BaseController {
                         }else if("h5ykdl".equalsIgnoreCase(richConsultSession.getSource())){
                             net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
                             //    noReadMsg.put("action","doctorCloseSession");
+                            if(richConsultSession.getCsUserName().contains("宝大夫")){
+                                noReadMsg.put("doctorName",richConsultSession.getCsUserName());
+                            }else{
+                                noReadMsg.put("doctorName","宝大夫"+richConsultSession.getCsUserName());
+                            }
                             noReadMsg.put("sessionId",sessionId);
                             noReadMsg.put("uid",richConsultSession.getUserId());
                             String currentUrl = "http://wxsp-dev.ykbenefit.com/consult_over";
