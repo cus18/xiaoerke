@@ -27,6 +27,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
                     console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                 }).success(function(data, status, headers, config){
                     $scope.sendMsg("img",data.imgPath);
+                    console.log("上传图片成功");
 
                 });
             }
