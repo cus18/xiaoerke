@@ -82,7 +82,6 @@ public class NonRealTimeConsultUserContorller {
     public Map<String,Object> getBabyBaseInfo(HttpSession session, HttpServletRequest request){
         Map<String,Object> reusltMap = new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session,request);
-//        openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
         if(!StringUtils.isNotNull(openid)) {
             reusltMap.put("status", "error");
             reusltMap.put("msg", "未获取到用户的先关信息,请重新打开页面");
@@ -112,7 +111,6 @@ public class NonRealTimeConsultUserContorller {
     @ResponseBody
     public Map<String,Object> createSession(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
         String openid = WechatUtil.getOpenId(session,request);
-        openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
         String csUserId = (String )params.get("csUserId");
         String content =  (String) params.get("sex")+"#"+(String )params.get("birthday")+"#"+(String )params.get("describeIllness");
         List<String> imgList = (List)params.get("imgList");
@@ -127,8 +125,6 @@ public class NonRealTimeConsultUserContorller {
             resultMap.put("msg","未获取到用户的先关信息,请重新打开页面");
             return resultMap;
         }
-//        csUserId = "01164bds0d42dmdsa6rt0d6esd0e9dsf";
-
         return nonRealTimeConsultUserService.createSession(csUserId,openid,content);
     }
 
@@ -148,9 +144,7 @@ public class NonRealTimeConsultUserContorller {
     public Map<String,Object> sessionList(HttpSession session, HttpServletRequest request) {
         Map<String,Object> resultMap = new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session,request);
-
         NonRealTimeConsultSessionVo vo = new NonRealTimeConsultSessionVo();
-        openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
         vo.setUserId(openid);
         List<NonRealTimeConsultSessionVo> sessionVoList = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(vo);
 
@@ -198,7 +192,6 @@ public class NonRealTimeConsultUserContorller {
     Map<String,Object> conversationInfo(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params){
         Map<String,Object> resultMap = new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session,request);
-        openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
         Integer sessionid = Integer.parseInt((String)params.get("sessionId"));
         if(!StringUtils.isNotNull(openid)){
             resultMap.put("state","error");
@@ -274,7 +267,6 @@ public class NonRealTimeConsultUserContorller {
         //根据sessionid和openid确认会话
 //        然后插入。。。
         String openid = WechatUtil.getOpenId(session,request);
-        openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
         Integer sessionid = Integer.parseInt((String)params.get("sessionId"));
         String content = (String)params.get("content");
         String msgType = (String)params.get("msgType");

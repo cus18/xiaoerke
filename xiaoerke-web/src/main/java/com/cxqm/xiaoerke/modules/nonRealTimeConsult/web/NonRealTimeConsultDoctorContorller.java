@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.nonRealTimeConsult.web;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
@@ -77,7 +78,7 @@ public class NonRealTimeConsultDoctorContorller {
         Map<String, Object> response = new HashMap<String, Object>();
         //根据openid查询当前医生
         Map param = new HashMap();
-        String openId = "8ab94e95afe448dab66403fc5407d0ca";//WechatUtil.getOpenId(session, request)
+        String openId = "oogbDwD_2BTQpftPu9QClr-mCw7U";//"8ab94e95afe448dab66403fc5407d0ca"
         param.put("openId", openId);
         response.put("status", "failure");
         if (StringUtils.isNotNull(openId)) {
@@ -106,7 +107,7 @@ public class NonRealTimeConsultDoctorContorller {
     public Map doctorBinding(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) throws Exception {
         Map<String, Object> response = new HashMap<String, Object>();
         String username = String.valueOf(params.get("username"));
-        String openid = "oogbDwD_2BTQpftPu9QClr-mCw7U";//WechatUtil.getOpenId(session,request)
+        String openid = WechatUtil.getOpenId(session,request);//"oogbDwD_2BTQpftPu9QClr-mCw7U"
         String passeord = String.valueOf(params.get("password"));
         String status = utilService.bindUser4ConsultDoctor(username, passeord, openid);
         response.put("status", "failure");
@@ -143,7 +144,7 @@ public class NonRealTimeConsultDoctorContorller {
     public Map GetDoctorService(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
         Map<String, Object> response = new HashMap<String, Object>();
         String serviceType = (String) params.get("serviceType");
-        String openId = (String) params.get("openId");
+        String openId = "oogbDwD_2BTQpftPu9QClr-mCw7U";
         String babyInfo = "";
         NonRealTimeConsultSessionVo realTimeConsultSessionVo = new NonRealTimeConsultSessionVo();
         realTimeConsultSessionVo.setCsUserId(openId);
@@ -175,11 +176,11 @@ public class NonRealTimeConsultDoctorContorller {
                 String lastMessageContent = nonRealTimeConsultSessionVo.getLastMessageContent();
                 String sex = "";
                 if (lastMessageContent.indexOf("#") != -1) {
-                    lastMessageContent = lastMessageContent.split("#")[2];
                     sex = lastMessageContent.split("#")[0];
-                    if(sex.equals("1")){
+                    lastMessageContent = lastMessageContent.split("#")[2];
+                    if (sex.equals("1")) {
                         sex = "男,";
-                    }else {
+                    } else {
                         sex = "女,";
                     }
                 }
@@ -202,7 +203,7 @@ public class NonRealTimeConsultDoctorContorller {
                         chaDate = babyBirthdayMonth - nowDateMonth;
                     }
                     String babyName = babyBaseInfoVo.getName();
-                    if(StringUtils.isNotNull(babyName)){
+                    if (StringUtils.isNotNull(babyName)) {
                         babyName = babyBaseInfoVo.getName() + ",";
                     }
 

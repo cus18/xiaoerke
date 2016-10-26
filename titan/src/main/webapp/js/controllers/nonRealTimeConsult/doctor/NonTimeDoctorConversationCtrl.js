@@ -1,9 +1,6 @@
-angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConversationCtrl', [
-        '$scope','$state','$stateParams','$timeout','$http','$upload','ConversationInfo','GetDoctorLoginStatus','UpdateReCode',
-        function ($scope,$state,$stateParams,$timeout,$http,$upload,ConversationInfo,GetDoctorLoginStatus,UpdateReCode) {
-            $scope.info = {};
-            $scope.msgType= "text";
-            $scope.content = "";
+angular.module('controllers', []).controller('NonTimeDoctorConversationCtrl', [
+        '$scope','$state','$stateParams','$timeout','$http','$upload','ConversationInfo','GetDoctorLoginStatus',
+        function ($scope,$state,$stateParams,$timeout,$http,$upload,ConversationInfo,GetDoctorLoginStatus) {
 
             //添加表情
             $scope.getQQExpression = function () {
@@ -35,34 +32,15 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
                     }).success(function(data, status, headers, config){
                         $scope.sendMsg("img",data.imgPath);
 
-                    });
-                }
-            };
+                    }).success(function(data, status, headers, config) {
+                        // 文件上传成功处理函数
+                        console.log(data);
 
-            //发送消息
-            $scope.sendTextMsg = function(){
-                $scope.info.content =  $('#saytext').val();
-                $scope.sendMsg("text",$scope.info.content);
-            };
-            //发送消息
-            $scope.sendMsg = function(messageType,content){
-                var information = {
-                    "sessionId":$stateParams.sessionId,
-                    "content": content,
-                    "msgType": messageType,
-                    "source":"doctor",
-                    "doctorId":"oogbDwJHcUYsQjmGjSnfJTJ9psZ8"
+                    }).error(function(data, status, headers, config) {
+                        //失败处理函数
+                        console.log('上传失败');
+                    });
                 };
-                UpdateReCode.save(information,function (data) {
-                    if(data.state == "error"){
-                        alert("请重新打开页面提交信息");
-                    }
-                    if(data.state == "success"){
-                        console.log("更新会话信息",data);
-                        $scope.messageList.push(data.conversationData);
-                        $scope.info.content = "";
-                    }
-                });
             };
 
            /* $scope.onFileSelect = function($files) {
@@ -94,22 +72,21 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
                 }*!/
             };*/
             //页面初始化
-            $scope.NonTimeDoctorConversationInit = function(){
-                $scope.glued = true;
-              //校验是否登陆
-                GetDoctorLoginStatus.save({}, function (data) {
-                    $scope.pageLoading = false;
-                    if(data.status == "failure"){
-                        window.location.href = "http://127.0.0.1/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
-                    }
-                    else{
+            //校验是否登陆
+            GetDoctorLoginStatus.save({}, function (data) {
+                $scope.pageLoading = false;
+                if (data.status == "failure") {
+                    window.location.href = "http://127.0.0.1/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
+                } else {
+                    $scope.NonTimeDoctorConversationInit = function(){
+                        $scope.glued = true;
                         ConversationInfo.save({sessionId:$stateParams.sessionId},function (data) {
-                            console.log("会话信息列表",data)
+                            console.log(data)
                             $scope.pageData = data;
-                            $scope.messageList = data.messageList;
                         })
-                    }
-                })
+                    };
+                }
+            });
 
             }
 
