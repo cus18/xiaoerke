@@ -150,7 +150,7 @@ public class NonRealTimeConsultUserContorller {
         String openid = WechatUtil.getOpenId(session,request);
 
         NonRealTimeConsultSessionVo vo = new NonRealTimeConsultSessionVo();
-        openid = "01164bds0d42dmdsa6rt0d6esd0e9dsf";
+        openid = "oogbDwJHcUYsQjmGjSnfJTJ9psZ8";
         vo.setUserId(openid);
         List<NonRealTimeConsultSessionVo> sessionVoList = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(vo);
 
