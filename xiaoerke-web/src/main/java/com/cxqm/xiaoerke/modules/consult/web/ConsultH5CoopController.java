@@ -570,13 +570,26 @@ public class ConsultH5CoopController {
     @ResponseBody
     JSONObject consultEvaluateUserByCoop(@RequestBody Map params) {
         JSONObject jsonObject = new JSONObject();
-        int sessionId = StringUtils.isNotNull(String.valueOf(params.get("sessionId"))) ? Integer.valueOf(String.valueOf(params.get("sessionId"))) : 0;
+        String source = String.valueOf(params.get("source"));
+        int sessionId = 0;
+        int evaLevel = 0;
+        if(StringUtils.isNotNull(source)){
+            if("COOP_BHQ".equalsIgnoreCase(source)){
+                sessionId = StringUtils.isNotNull(String.valueOf(params.get("sessionId"))) ? Integer.valueOf(String.valueOf(params.get("sessionId"))) : 0;
+                evaLevel = StringUtils.isNotNull(String.valueOf(params.get("socre"))) ? Integer.valueOf(String.valueOf(params.get("socre"))) : 0;
+            }else{
+                sessionId = StringUtils.isNotNull(String.valueOf(params.get("id"))) ? Integer.valueOf(String.valueOf(params.get("id"))) : 0;
+                evaLevel = StringUtils.isNotNull(String.valueOf(params.get("evaLevel"))) ? Integer.valueOf(String.valueOf(params.get("evaLevel"))) : 0;
+            }
+        }else{
+            sessionId = StringUtils.isNotNull(String.valueOf(params.get("id"))) ? Integer.valueOf(String.valueOf(params.get("id"))) : 0;
+            evaLevel = StringUtils.isNotNull(String.valueOf(params.get("evaLevel"))) ? Integer.valueOf(String.valueOf(params.get("evaLevel"))) : 0;
+        }
         String userId = String.valueOf(params.get("userId"));
         String csUserId = "";
         if (params.containsKey("csUserId")) {
             csUserId = String.valueOf(params.get("csUserId"));
         }
-        int evaLevel = StringUtils.isNotNull(String.valueOf(params.get("socre"))) ? Integer.valueOf(String.valueOf(params.get("socre"))) : 0;
         //0：代表非常满意  1：代表一般 2：代表不满意
         String suggestMsg = String.valueOf(params.get("suggestMsg"));
         if(StringUtils.isNotNull(suggestMsg)){
@@ -601,7 +614,6 @@ public class ConsultH5CoopController {
         } else {
             evaluateDate = new Date();
         }
-        String source = String.valueOf(params.get("source"));
         int result = 0;
         /**
          *  加入评价信息添加
