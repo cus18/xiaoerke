@@ -11,7 +11,7 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
                 if (data.status == "failure") {
                     alert("验证码错误！");
                 } else {
-                    $state.go('NonTimeDoctorMessageList');
+                    window.location.href = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getDoctorWechatMenId?url=6";
                 }
             });
         }
