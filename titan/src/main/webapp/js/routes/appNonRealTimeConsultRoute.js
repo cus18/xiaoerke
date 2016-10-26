@@ -155,6 +155,21 @@ define(['appNonRealTimeConsult'], function(app){
                             }
                         }
                     })
+                    /*微量元素*/
+                    .state('microElement', {
+                        url: '/microElement',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'microElementCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.microElementCtrl',
+                                    [
+                                        'js/controllers/nonRealTimeConsult/user/microElement.js?ver='+nonRealTimeConsultVersion,
+                                        'styles/nonRealTimeConsult/user/microElement.less?ver='+nonRealTimeConsultVersion],
+                                    'js/views/nonRealTimeConsult/user/microElement.html?ver='+nonRealTimeConsultVersion);
+                            }
+                        }
+                    })
 
                 $urlRouterProvider.otherwise('');
             }])
