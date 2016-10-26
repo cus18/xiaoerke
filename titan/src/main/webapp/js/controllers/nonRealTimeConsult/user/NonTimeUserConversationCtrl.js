@@ -20,6 +20,7 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
                 var information = {
                     "sessionId":$stateParams.sessionId,
                     "content": content,
+                    "source": "user",
                     "msgType": messageType
                 };
                 UpdateReCode.save(information,function (data) {
