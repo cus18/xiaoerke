@@ -229,7 +229,7 @@ public class NonRealTimeConsultDoctorContorller {
     @RequestMapping(value = "/conversationDoctorInfo", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String,Object> conversationInfo(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params){
+    Map<String,Object> conversationDoctorInfo(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params){
         Map<String,Object> resultMap = new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session,request);
         Integer sessionid = Integer.parseInt((String)params.get("sessionId"));
@@ -245,7 +245,7 @@ public class NonRealTimeConsultDoctorContorller {
         if(sessionInfo.size()>0){
             sessionVo = sessionInfo.get(0);
             resultMap.put("doctorName",sessionVo.getCsUserName());
-            resultMap.put("doctorId",sessionVo.getUserId());
+            resultMap.put("doctorId",sessionVo.getCsUserId());
             resultMap.put("professor",sessionVo.getDoctorProfessor());
             resultMap.put("department",sessionVo.getDoctorDepartmentName());
             resultMap.put("sessionStatus",sessionVo.getStatus());

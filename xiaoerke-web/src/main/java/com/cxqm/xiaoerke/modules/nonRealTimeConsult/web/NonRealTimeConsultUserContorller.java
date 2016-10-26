@@ -206,7 +206,7 @@ public class NonRealTimeConsultUserContorller {
         if(sessionInfo.size()>0){
             sessionVo = sessionInfo.get(0);
             resultMap.put("doctorName",sessionVo.getCsUserName());
-            resultMap.put("doctorId",sessionVo.getUserId());
+            resultMap.put("doctorId",sessionVo.getCsUserId());
             resultMap.put("professor",sessionVo.getDoctorProfessor());
             resultMap.put("department",sessionVo.getDoctorDepartmentName());
             resultMap.put("sessionStatus",sessionVo.getStatus());
