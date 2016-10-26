@@ -460,13 +460,13 @@ public class ConsultH5CoopController {
                 if(currentDate < 10){
                     secCodeNow = "0"+currentDate + "0" + currentMonth + currentYear + source;
                 }else{
-                    secCodeNow = currentDate + "0" + currentMonth + currentYear + source;
+                    secCodeNow = ""+currentDate + "0" + currentMonth + currentYear + source;
                 }
             } else {
                 if(currentDate < 10){
                     secCodeNow = "0"+currentDate + currentMonth + currentYear + source;
                 }else{
-                    secCodeNow = currentDate + currentMonth + currentYear + source;
+                    secCodeNow = ""+currentDate + currentMonth + currentYear + source;
                 }
             }
         } else {
@@ -474,7 +474,7 @@ public class ConsultH5CoopController {
                 if(currentDate < 10){
                     secCodeNow = "0"+currentDate + "0" + currentMonth + currentYear;
                 }else{
-                    secCodeNow = currentDate + "0" + currentMonth + currentYear ;
+                    secCodeNow = ""+currentDate + "0" + currentMonth + currentYear ;
                 }
             } else {
                 if(currentDate < 10){
@@ -514,7 +514,7 @@ public class ConsultH5CoopController {
                             /**
                              * 加入聊天记录提取代码
                              */
-                            Query query = new Query(Criteria.where("createDate").exists(true).andOperator(Criteria.where("createDate").gte(sdf.parse(startTime)), Criteria.where("createDate").lte(sdf.parse(endTime))).and("source").is(source));
+                            Query query = new Query(Criteria.where("createDate").exists(true).andOperator(Criteria.where("createDate").gte(sdf.parse(startTime)), Criteria.where("createDate").lt(sdf.parse(endTime))).and("source").is(source));
                             query.with(new Sort(Sort.Direction.DESC, "createDate"));
                             List<ConsultRecordMongoVo> consultRecordMongoVos = consultRecordService.getCurrentUserHistoryRecord(query);
                             if (consultRecordMongoVos != null && consultRecordMongoVos.size() > 0) {
