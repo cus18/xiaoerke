@@ -95,7 +95,7 @@ angular.module('controllers', []).controller('NonTimeDoctorConversationCtrl', [
         GetDoctorLoginStatus.save({}, function (data) {
             $scope.pageLoading = false;
             if (data.status == "failure") {
-                window.location.href = "http://s201.xiaork.com/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
+                window.location.href = "http://127.0.0.1/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
             } else {
                 ConversationInfo.save({sessionId: $stateParams.sessionId}, function (data) {
                     console.log(data)
