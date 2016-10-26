@@ -20,20 +20,20 @@
 		$(this).click(function(e){
 			var strFace, labFace;
 			if($('#'+id).length<=0){
-				strFace = '<div id="'+id+'" style="position:absolute;display:none;z-index:1000;" class="qqFace">' +
-							  '<table border="0" cellspacing="0" cellpadding="0"><tr>';
+				strFace = '<div id="'+id+'" style="width:100%;position:absolute;display:none;z-index:1000;" class="qqFace">' +
+							  '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>';
 				for(var i=1; i<=75; i++){
 					labFace = '['+tip+i+']';
 					strFace += '<td><img src="'+path+i+'.gif" onclick="$(\'#'+option.assign+'\').setCaret();$(\'#'+option.assign+'\').insertAtCaret(\'' + labFace + '\');" /></td>';
-					if( i % 15 == 0 ) strFace += '</tr><tr>';
+					if( i % 12 == 0 ) strFace += '</tr><tr>';
 				}
 				strFace += '</tr></table></div>';
 			}
 			$(this).parent().append(strFace);
 			var offset = $(this).position();
 			var top = offset.top + $(this).outerHeight();
-			$('#'+id).css('top',"-125px");
-			$('#'+id).css('left',"10px");
+			$('#'+id).css('bottom','1px');
+			$('#'+id).css('left',0);
 			$('#'+id).css('background-color',"#fff");
 			$('#'+id).show();
 			e.stopPropagation();

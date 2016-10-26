@@ -82,24 +82,30 @@
   bottom:0;
 }
 .NonTimeDoctorConversation .send-wrap{
-  margin:0 10px 10px;
-  padding:15px;
   position: relative;
+  background-color: #f5f5f5;
+  margin-bottom:10px;
+}
+.NonTimeDoctorConversation .send-wrap .enter{
+  margin:0 10px;
 }
 .NonTimeDoctorConversation .send-wrap textarea{
   width:100%;
   display: block;
   min-height:60px;
+  resize: none;
+  padding:15px;
 }
 .NonTimeDoctorConversation .send-wrap .add{
   position: relative;
+  margin:0 10px;
+  padding: 0 15px 15px 0;
 }
-.NonTimeDoctorConversation .send-wrap .add a{
-  vertical-align: middle;
+.NonTimeDoctorConversation .send-wrap .add .face{
+  margin-left:15px;
 }
-.NonTimeDoctorConversation .send-wrap .add a:last-of-type img{
+.NonTimeDoctorConversation .send-wrap .add .pic{
    margin-left:25px;
-   margin-top:-2px;
 }
 .NonTimeDoctorConversation .send-wrap .btn-send{
   width:60px;
@@ -123,24 +129,4 @@
 [scroll-glue-bottom], {
   overflow-y: scroll;
 }
-.qqFace{
-  width:100%;
-  border: 1px #dfe6f6 solid;
-  background-color: #fff;
 
-}
-.qqFace table{
-  width:100%;
-  text-align: center;
-}
-.qqFace table tr{
-  width:100%;
-  text-align: center;
-}
-.qqFace table td{
-  width:10%;
-  padding:0;
-}
-.qqFace table td img:hover{
-  border:1px #0066cc solid;
-}
