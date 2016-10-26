@@ -44,8 +44,8 @@ angular.module('controllers', []).controller('microElementCtrl', [
 
             $scope.showImg = function () {
                 wx.previewImage({
-                    current: $stateParams.imgPath, // 当前显示图片的http链接
-                    urls: [$stateParams.imgPath] // 需要预览的图片http链接列表
+                    current: $scope.imgPaht, // 当前显示图片的http链接
+                    urls: [$scope.imgPaht] // 需要预览的图片http链接列表
                 });
             }
     }]);
