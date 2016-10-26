@@ -16,7 +16,7 @@
                         </div>
                         <div class="text" >
                             <div class="info f4 c3">{{item.csUserName}}&nbsp;{{item.doctorDepartmentName}}&nbsp;{{item.doctorProfessor}}</div>
-                            <div class="message f4 c3">{{item.message}}</div>
+                            <div ng-bind-html="item.message|emotionReceive:'text'"></div>
                         </div>
                     </li>
                 </ul>
@@ -29,7 +29,7 @@
                         </div>
                         <div class="text" >
                             <div class="info f4 c3">{{item.csUserName}}&nbsp;{{item.doctorDepartmentName}}&nbsp;{{item.doctorProfessor}}</div>
-                            <div class="message f4 c3">{{item.message}}</div>
+                            <div ng-bind-html="item.message|emotionReceive:'text'"></div>
                         </div>
                     </li>
                 </ul>
