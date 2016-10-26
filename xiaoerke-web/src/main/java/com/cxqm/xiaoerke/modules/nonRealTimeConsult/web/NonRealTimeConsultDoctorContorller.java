@@ -231,14 +231,14 @@ public class NonRealTimeConsultDoctorContorller {
     @ResponseBody
     Map<String,Object> conversationDoctorInfo(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params){
         Map<String,Object> resultMap = new HashMap<String, Object>();
-        String openid = WechatUtil.getOpenId(session,request);
-        Integer sessionid = Integer.parseInt((String)params.get("sessionId"));
+        String openid = WechatUtil.getOpenId(session, request);
+        Integer sessionid = Integer.parseInt((String) params.get("sessionId"));
         if(!StringUtils.isNotNull(openid)){
             resultMap.put("state","error");
             resultMap.put("result_info","请重新打开页面");
             return resultMap;
         }
-
+        String csUserId = "";
         NonRealTimeConsultSessionVo sessionVo = new NonRealTimeConsultSessionVo();
         sessionVo.setId(sessionid);
         List<NonRealTimeConsultSessionVo> sessionInfo = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(sessionVo);
@@ -249,6 +249,7 @@ public class NonRealTimeConsultDoctorContorller {
             resultMap.put("professor",sessionVo.getDoctorProfessor());
             resultMap.put("department",sessionVo.getDoctorDepartmentName());
             resultMap.put("sessionStatus",sessionVo.getStatus());
+            csUserId = sessionVo.getCsUserId();
         }else{
             resultMap.put("state","error");
             resultMap.put("result_info","未找到相应的会话");
@@ -261,33 +262,36 @@ public class NonRealTimeConsultDoctorContorller {
         List<NonRealTimeConsultRecordVo> recodevoList = nonRealTimeConsultUserService.selectSessionRecordByVo(recordVo);
         //开始组装数据
         List<Map> messageList = new ArrayList<Map>();
-        for(NonRealTimeConsultRecordVo vo:recodevoList){
-            Map<String ,Object> recordMap = new HashMap<String, Object>();
-            if(openid.equals(vo.getSenderId())){
-                recordMap.put("source","user");
-            }else{
-                recordMap.put("source","doctor");
-            };
-            String messageType = vo.getMessageType();
-            recordMap.put("messageType",messageType);
-            if(ConsultSessionStatus.CREATE_SESSION.getVariable().equals(messageType)){
-                String[] messageInfo = vo.getMessage().split("\\#");
-                recordMap.put("babyBaseInfo",messageInfo[0] == "0"?"女":"男"+"  "+messageInfo[1]);
-                recordMap.put("message",messageInfo[2]);
+        if(recodevoList!=null && recodevoList.size()>0){
+            for(NonRealTimeConsultRecordVo vo:recodevoList){
+                Map<String ,Object> recordMap = new HashMap<String, Object>();
+                if(csUserId.equals(vo.getSenderId())){
+                    recordMap.put("source","doctor");
+                }else{
+                    recordMap.put("source","user");
+                };
+                String messageType = vo.getMessageType();
+                recordMap.put("messageType",messageType);
+                if(ConsultSessionStatus.CREATE_SESSION.getVariable().equals(messageType)){
+                    String[] messageInfo = vo.getMessage().split("\\#");
+                    recordMap.put("babyBaseInfo",messageInfo[0] == "0"?"女":"男"+"  "+messageInfo[1]);
+                    recordMap.put("message",messageInfo[2]);
 
-                if(messageInfo.length>3){
-                    List<String > imgList = new ArrayList<String>();
-                    for(int i=3;i<messageInfo.length;i++){
-                        imgList.add(messageInfo[i]);
+                    if(messageInfo.length>3){
+                        List<String > imgList = new ArrayList<String>();
+                        for(int i=3;i<messageInfo.length;i++){
+                            imgList.add(messageInfo[i]);
+                        }
+                        recordMap.put("imgPath",imgList);
                     }
-                    recordMap.put("imgPath",imgList);
+                }else{
+                    recordMap.put("message",vo.getMessage());
                 }
-            }else{
-                recordMap.put("message",vo.getMessage());
+                recordMap.put("messageTime",DateUtils.formatDateToStr(vo.getCreateTime(),"MM月dd日 HH:mm"));
+                messageList.add(recordMap);
             }
-            recordMap.put("messageTime",DateUtils.formatDateToStr(vo.getCreateTime(),"MM月dd日 HH:mm"));
-            messageList.add(recordMap);
         }
+
 
         //用户微信头像的信息
         Map parameter = systemService.getWechatParameter();

@@ -286,7 +286,11 @@ public class NonRealTimeConsultUserContorller {
         }
         List<NonRealTimeConsultSessionVo> sessionInfo = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(sessionVo);
         if(sessionInfo.size()>0){
-            nonRealTimeConsultUserService.savenConsultRecord(sessionid,openid, source, content,msgType);
+            if(StringUtils.isNotNull(doctorId)){
+                nonRealTimeConsultUserService.savenConsultRecord(sessionid,doctorId, source, content,msgType);
+            }else{
+                nonRealTimeConsultUserService.savenConsultRecord(sessionid,doctorId, source, content,msgType);
+            }
             resultMap.put("state","success");
         }else{
             resultMap.put("state","error");
