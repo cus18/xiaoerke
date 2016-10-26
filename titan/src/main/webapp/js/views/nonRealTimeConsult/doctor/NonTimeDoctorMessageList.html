@@ -17,7 +17,7 @@
                         </div>
                         <div class="text" >
                             <div class="info f4 c3">{{item.babyInfo}}</div>
-                            <div class="message f4 c3">{{item.lastMessageContent}}</div>
+                            <div class="message f4 c3" ng-bind-html="item.lastMessageContent|emotionReceive:'text'"></div>
                         </div>
                     </li>
                 </ul>
@@ -30,7 +30,7 @@
                         </div>
                         <div class="text" >
                             <div class="info f4 c3">{{item.babyInfo}}</div>
-                            <div class="message f4 c3">{{item.lastMessageContent}}</div>
+                            <div class="message f4 c3" ng-bind-html="item.lastMessageContent|emotionReceive:'text'"></div>
                         </div>
                     </li>
                 </ul>
