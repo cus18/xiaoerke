@@ -2,7 +2,7 @@ angular.module('controllers', []).controller('microElementCtrl', [
         '$scope','$stateParams',
         function ($scope,$stateParams) {
 
-            $scope.imgPaht = $stateParams.imgPath;
+            $scope.imgPaht = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/"+$stateParams.imgPath;
 
             $scope.doRefresh = function(){
                 var timestamp;//时间戳
