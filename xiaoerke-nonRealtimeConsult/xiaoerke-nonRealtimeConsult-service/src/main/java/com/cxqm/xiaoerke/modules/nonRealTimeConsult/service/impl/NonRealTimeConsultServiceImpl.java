@@ -1,6 +1,5 @@
 package com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultDoctorDepartmentDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -91,6 +89,9 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 //        查询医生基本信息
         ConsultDoctorInfoVo doctorvo = consultDoctorInfoService.getConsultDoctorInfoByUserId(csUserId);
         WechatAttention attentionInfo  = wechatAttentionService.getAttentionByOpenId(openid);
+        if(null == attentionInfo){
+            attentionInfo = new WechatAttention();
+        }
         //创建新会话
         NonRealTimeConsultSessionVo sessionVo = new NonRealTimeConsultSessionVo();
         Date nowTime = new Date();
