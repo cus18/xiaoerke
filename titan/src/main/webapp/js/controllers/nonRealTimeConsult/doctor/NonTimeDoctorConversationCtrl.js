@@ -1,6 +1,6 @@
 angular.module('controllers', []).controller('NonTimeDoctorConversationCtrl', [
-    '$scope', '$state', '$stateParams', '$timeout', '$http', '$upload', 'ConversationInfo', 'GetDoctorLoginStatus',
-    function ($scope, $state, $stateParams, $timeout, $http, $upload, ConversationInfo, GetDoctorLoginStatus) {
+    '$scope', '$state', '$stateParams', '$timeout', '$http', '$upload', 'ConversationDoctorInfo', 'GetDoctorLoginStatus',
+    function ($scope, $state, $stateParams, $timeout, $http, $upload, ConversationDoctorInfo, GetDoctorLoginStatus) {
 
         $scope.prizeArray = {};
         $scope.sendMessage = function () {
@@ -97,7 +97,7 @@ angular.module('controllers', []).controller('NonTimeDoctorConversationCtrl', [
             if (data.status == "failure") {
                 window.location.href = "http://127.0.0.1/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
             } else {
-                ConversationInfo.save({sessionId: $stateParams.sessionId}, function (data) {
+                ConversationDoctorInfo.save({sessionId: $stateParams.sessionId}, function (data) {
                     console.log(data)
                     $scope.pageData = data;
                 })

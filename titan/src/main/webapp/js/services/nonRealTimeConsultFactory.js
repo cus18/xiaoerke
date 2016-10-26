@@ -48,6 +48,10 @@ define(['appNonRealTimeConsult'], function (app) {
             return $resource(path_user + 'conversationInfo');
         }])
 
+        .factory('ConversationDoctorInfo',['$resource',function ($resource){
+            return $resource(path_doc + 'conversationDoctorInfo');
+        }])
+
         .factory('UpdateReCode',['$resource',function ($resource){
             return $resource(path_user + 'upadateRecorde');
         }])
