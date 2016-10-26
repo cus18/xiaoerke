@@ -1,7 +1,7 @@
-<ion-view view-title="资询列表" ng-init="microElementInit()">
+<ion-view view-title="资询列表" ng-init="doRefresh()">
     <div class="microElement">
-        <div class="img">
-            <img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fc_02.png" alt=""/>
+        <div class="img" ng-click="showImg()">
+            <img width="100%" src="{{imgPaht}}" alt=""/>
         </div>
     </div>
 </ion-view>
