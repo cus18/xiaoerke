@@ -157,7 +157,7 @@ define(['appNonRealTimeConsult'], function(app){
                     })
                     /*微量元素*/
                     .state('microElement', {
-                        url: '/microElement',
+                        url: '/microElement/:imgPath',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'microElementCtrl',
                         resolve: {
