@@ -99,10 +99,10 @@
       and  last_message_content =#{lastMessageContent,jdbcType=LONGVARCHAR}
     </if>
     <if test="order == 'lastMessageTimeAsc'" >
-      order by last_message_time ASC
+      order by create_time ASC
     </if>
     <if test="order == 'lastMessageTimeDesc'" >
-      order by last_message_time DESC
+      order by create_time DESC
     </if>
 
   </select>
