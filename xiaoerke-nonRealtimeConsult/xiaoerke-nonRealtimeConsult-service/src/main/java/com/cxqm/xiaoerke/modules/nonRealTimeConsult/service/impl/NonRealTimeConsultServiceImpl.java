@@ -145,7 +145,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         recordVo.setMessage(content);
         recordVo.setMessageType(msgtype);
         recordVo.setSenderId(userId);
-        recordVo.setSysUserId(sessionVo.getCsUserId());
+        recordVo.setSysUserId(sessionVo.getUserId());
         recordVo.setUserName(sessionVo.getUserName());
         nonRealTimeConsultRecordDao.insertSelective(recordVo);
 
