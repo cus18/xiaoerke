@@ -314,7 +314,7 @@ public class NonRealTimeConsultUserContorller {
         conversationData.put("message",content);
         conversationData.put("messageTime",DateUtils.formatDateToStr(new Date(),"MM月dd日 HH:mm"));
         conversationData.put("messageType",msgType);
-        conversationData.put("source","user");
+        conversationData.put("source",source);
         resultMap.put("conversationData",conversationData);
         return resultMap;
     }
