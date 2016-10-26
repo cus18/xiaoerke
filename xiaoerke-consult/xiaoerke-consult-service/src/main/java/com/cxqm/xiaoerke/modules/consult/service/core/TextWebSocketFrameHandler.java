@@ -215,7 +215,11 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                                     int nameIndex = content.indexOf("：");
                                     String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
                                 //    noReadMsg.put("action","doctorMessage");
-                                    noReadMsg.put("doctorName",content.substring(0,nameIndex));
+                                    if(content.substring(0,nameIndex).contains("宝大夫")){
+                                        noReadMsg.put("doctorName",content.substring(0,nameIndex));
+                                    }else{
+                                        noReadMsg.put("doctorName","宝大夫"+content.substring(0,nameIndex));
+                                    }
                                     noReadMsg.put("uid",userId);
                                     noReadMsg.put("messageType",msgType);
                                     noReadMsg.put("messageContent",newContent);
@@ -264,7 +268,11 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             int nameIndex = content.indexOf("：");
                             String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
                             //    noReadMsg.put("action","doctorMessage");
-                            noReadMsg.put("doctorName",content.substring(0,nameIndex));
+                            if(content.substring(0,nameIndex).contains("宝大夫")){
+                                noReadMsg.put("doctorName",content.substring(0,nameIndex));
+                            }else{
+                                noReadMsg.put("doctorName","宝大夫"+content.substring(0,nameIndex));
+                            }
                             noReadMsg.put("uid",userId);
                             noReadMsg.put("messageType",msgType);
                             noReadMsg.put("messageContent",newContent);
