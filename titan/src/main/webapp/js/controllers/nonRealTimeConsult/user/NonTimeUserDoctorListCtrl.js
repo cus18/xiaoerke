@@ -9,6 +9,7 @@ angular.module('controllers', []).controller('NonTimeUserDoctorListCtrl', [
                     $scope.doctorList = data.departmentVoList;
                 })
             };
+            $scope.consulted = true;
             $scope.checkDoctorInformation = function(index){
                 console.log($scope.doctorList[index].doctorId);
                 location.href="consultDoctorHome#/consultDoctorHome/"+$scope.doctorList[index].userId;

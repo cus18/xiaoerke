@@ -155,6 +155,21 @@ define(['appNonRealTimeConsult'], function(app){
                             }
                         }
                     })
+                    /*微量元素*/
+                    .state('microElement', {
+                        url: '/microElement/:imgPath',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'microElementCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.microElementCtrl',
+                                    [
+                                        'js/controllers/nonRealTimeConsult/user/microElement.js?ver='+nonRealTimeConsultVersion,
+                                        'styles/nonRealTimeConsult/user/microElement.less?ver='+nonRealTimeConsultVersion],
+                                    'js/views/nonRealTimeConsult/user/microElement.html?ver='+nonRealTimeConsultVersion);
+                            }
+                        }
+                    })
 
                 $urlRouterProvider.otherwise('');
             }])
@@ -172,7 +187,7 @@ define(['appNonRealTimeConsult'], function(app){
 
     .filter('emotionReceive',function(){
             return function(val,messageType){
-                if(messageType = "text"){
+                if(messageType == "text"){
                     val = val.replace(/\/::\)/g, '[em_1]');val = val.replace(/\/::~/g, '[em_2]');val = val.replace(/\/::B/g, '[em_3]');val = val.replace(/\/::\|/g, '[em_4]');
                     val = val.replace(/\/:8-\)/g, '[em_5]');val = val.replace(/\/::</g, '[em_6]');val = val.replace(/\/::X/g, '[em_7]');val = val.replace(/\/::Z/g, '[em_8]');
                     val = val.replace(/\/::</g, '[em_9]');val = val.replace(/\/::-\|/g, '[em_10]');val = val.replace(/\/::@/g, '[em_11]');val = val.replace(/\/::P/g, '[em_12]');

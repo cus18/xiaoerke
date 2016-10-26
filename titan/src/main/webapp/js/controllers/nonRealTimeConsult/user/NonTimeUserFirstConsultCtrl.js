@@ -85,6 +85,9 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                     }).success(function(data, status, headers, config){
                         $scope.photoList.push(data.imgPath)
+                    }).error(function (data, status, headers, config) {
+                        //上传失败
+                        console.log('error status: ' + status);
                     });
                 }
             };

@@ -4,16 +4,17 @@
             <div class="fillInfo">
                 <label class="phone bg1" for="username" >
                     <span class="icon"><img class="" width="16.5" height="24.5" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/icon_phone.png"></span>
-                    <input  class="tc f6 c5" type="number" id="username" placeholder="请输入您的手机号码">
+                    <input  class="tc f6 c5"  type="tel"  id="username" placeholder="请输入您的手机号码" ng-model="info.phoneNum"  maxlength="11" />
+
+                   <!-- <input  class="tc f6 c5"  id="username" placeholder="请输入您的手机号码"  ng-model="info.phoneNum" ng-maxlength="11" maxlength="11">-->
                 </label>
                 <label class="code bg1" for="password" >
                     <span class="icon"><img class="" width="18" height="23.5" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/icon_lock.png"></span>
-                    <input  class="tc f6 c5 " type="number" id="password" placeholder="请输入验证码">
+                    <input  class="tc f6 c5 " type="tel" id="password" placeholder="请输入验证码"  maxlength="6" ng-model="info.password"  >
                 </label>
-                <button class="getCode f6 c0 tc" id="validateCode" ng-click="getValidateCode()">获取验证码</button>
-
+                <button  ng-disabled="( info.phoneNum.length<11 || info.phoneNum==null)" class="getCode f6 c0 tc" id="validateCode" ng-click="getValidateCode()">获取验证码</button>
             </div>
-            <button class="button foot-btn" ng-click = "doctorBindingAction()">确认开通</button>
+            <button  class="button foot-btn" ng-click = "doctorBindingAction()"  ng-disabled="(info.phoneNum.length<11||info.phoneNum==null)||(info.password.length<6 || info.password==null)" >确认开通</button>
         </div>
         <div class="tips tc">
             <div class="line fl bg1"></div>

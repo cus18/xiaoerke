@@ -8,7 +8,6 @@ angular.module('controllers', []).controller('NonTimeUserConsultListCtrl', [
             $scope.NonTimeUserConsultListInit = function(){
                 //获取当前用户会话列表
                 UserSessionList.save({},function (data) {
-                    console.log(data);
                     $scope.curMessageList = data.sessionVoList;
                 })
 

@@ -1,4 +1,5 @@
 <ion-view view-title="消息列表" ng-init="NonTimeDoctorMessageListInit()">
+    <ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
     <ion-content class="NonTimeDoctorMessageList historyList" style="top:0;">
         <ion-scroll direction="y" has-bouncing="true">
             <div class="service bg1 tc">
@@ -8,7 +9,7 @@
             </div>
             <div class="message-list">
                 <ul class="cur" ng-if="selectItem=='cur'">
-                    <li class="bg1" ng-repeat="item in curServiceList">
+                    <li class="bg1" ng-repeat="item in curServiceList" ng-click="goConversationPage(item.id)">
                         <img class="state" width="37" height="37" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/{{item.lastMessageType=='user' ? 'state1': 'state2'}}.png">
                         <div class="pic tc" >
                             <img class="radius" width="50" height="50" ng-src="{{item.headImgUrl}}">
@@ -21,7 +22,7 @@
                     </li>
                 </ul>
                 <ul class="all" ng-if="selectItem=='all'">
-                    <li class="bg1" ng-repeat="item in allServiceList">
+                    <li class="bg1" ng-repeat="item in allServiceList" ng-click="goConversationPage(item.id)">
                         <img class="state" width="37" height="37" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/{{item.lastMessageType=='user' ? 'state1': item.lastMessageType=='doctor' ? 'state2':'state0'}}.png">
                         <div class="pic tc" >
                             <img class="radius" width="50" height="50" ng-src="{{item.headImgUrl}}">
