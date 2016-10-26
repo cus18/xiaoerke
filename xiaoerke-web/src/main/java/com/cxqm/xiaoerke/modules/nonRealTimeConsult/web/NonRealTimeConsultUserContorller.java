@@ -286,7 +286,11 @@ public class NonRealTimeConsultUserContorller {
         }
         NonRealTimeConsultSessionVo sessionVo = new NonRealTimeConsultSessionVo();
         sessionVo.setId(sessionid);
-        sessionVo.setUserId(openid);
+        if("user".equals(source)){
+            sessionVo.setUserId(openid);
+        }else{
+            sessionVo.setCsUserId(openid);
+        }
         List<NonRealTimeConsultSessionVo> sessionInfo = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(sessionVo);
         if(sessionInfo.size()>0){
             nonRealTimeConsultUserService.savenConsultRecord(sessionid,openid, source, content,msgType);
