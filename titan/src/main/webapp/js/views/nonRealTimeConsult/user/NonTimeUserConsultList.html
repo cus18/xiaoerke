@@ -15,8 +15,8 @@
                             <div class="f2 c4">{{item.lastMessageTime| date:'shortDate' }}</div>
                         </div>
                         <div class="text" >
-                            <div class="info f4 c3">{{item.csUserName}}&nbsp;{{item.doctorDepartmentName}}&nbsp;{{item.doctorProfessor}}</div>
-                            <div ng-bind-html="item.message|emotionReceive:'text'"></div>
+                            <div class="info f4 c3">{{item.csUserName}}&nbsp;&nbsp;<span class="f2 c4">{{item.doctorDepartmentName}}&nbsp;{{item.doctorProfessor}}</span></div>
+                            <div class="message f2 c3" ng-bind-html="item.message|emotionReceive:'text'"></div>
                         </div>
                     </li>
                 </ul>
@@ -28,8 +28,8 @@
                             <div class="f2 c4">{{item.lastMessageTime| date:'shortDate' }}</div>
                         </div>
                         <div class="text" >
-                            <div class="info f4 c3">{{item.csUserName}}&nbsp;{{item.doctorDepartmentName}}&nbsp;{{item.doctorProfessor}}</div>
-                            <div ng-bind-html="item.message|emotionReceive:'text'"></div>
+                            <div class="info f4 c3">{{item.csUserName}}&nbsp;&nbsp;<span class="f2 c4">{{item.doctorDepartmentName}}&nbsp;{{item.doctorProfessor}}</span></div>
+                            <div class="message f2 c3" ng-bind-html="item.message|emotionReceive:'text'"></div>
                         </div>
                     </li>
                 </ul>
