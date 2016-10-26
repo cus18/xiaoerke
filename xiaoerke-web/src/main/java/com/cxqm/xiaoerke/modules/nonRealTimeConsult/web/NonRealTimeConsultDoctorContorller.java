@@ -7,11 +7,14 @@ import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.ConsultSessionStatus;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRecordVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/09/05 0024.
@@ -52,6 +52,12 @@ public class NonRealTimeConsultDoctorContorller {
 
     @Autowired
     private UtilService utilService;
+
+    @Autowired
+    private NonRealTimeConsultService nonRealTimeConsultUserService;
+
+    @Autowired
+    private SystemService systemService;
 
     @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
@@ -219,6 +225,78 @@ public class NonRealTimeConsultDoctorContorller {
         return response;
     }
 
+
+    @RequestMapping(value = "/conversationDoctorInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String,Object> conversationInfo(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params){
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        String openid = WechatUtil.getOpenId(session,request);
+        Integer sessionid = Integer.parseInt((String)params.get("sessionId"));
+        if(!StringUtils.isNotNull(openid)){
+            resultMap.put("state","error");
+            resultMap.put("result_info","请重新打开页面");
+            return resultMap;
+        }
+
+        NonRealTimeConsultSessionVo sessionVo = new NonRealTimeConsultSessionVo();
+        sessionVo.setId(sessionid);
+        List<NonRealTimeConsultSessionVo> sessionInfo = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(sessionVo);
+        if(sessionInfo.size()>0){
+            sessionVo = sessionInfo.get(0);
+            resultMap.put("doctorName",sessionVo.getCsUserName());
+            resultMap.put("doctorId",sessionVo.getUserId());
+            resultMap.put("professor",sessionVo.getDoctorProfessor());
+            resultMap.put("department",sessionVo.getDoctorDepartmentName());
+            resultMap.put("sessionStatus",sessionVo.getStatus());
+        }else{
+            resultMap.put("state","error");
+            resultMap.put("result_info","未找到相应的会话");
+            return resultMap;
+        }
+
+        NonRealTimeConsultRecordVo recordVo = new NonRealTimeConsultRecordVo();
+        recordVo.setSessionId(sessionid);
+        recordVo.setOrder("createTimeAsc");
+        List<NonRealTimeConsultRecordVo> recodevoList = nonRealTimeConsultUserService.selectSessionRecordByVo(recordVo);
+        //开始组装数据
+        List<Map> messageList = new ArrayList<Map>();
+        for(NonRealTimeConsultRecordVo vo:recodevoList){
+            Map<String ,Object> recordMap = new HashMap<String, Object>();
+            if(openid.equals(vo.getSenderId())){
+                recordMap.put("source","user");
+            }else{
+                recordMap.put("source","doctor");
+            };
+            String messageType = vo.getMessageType();
+            recordMap.put("messageType",messageType);
+            if(ConsultSessionStatus.CREATE_SESSION.getVariable().equals(messageType)){
+                String[] messageInfo = vo.getMessage().split("\\#");
+                recordMap.put("babyBaseInfo",messageInfo[0] == "0"?"女":"男"+"  "+messageInfo[1]);
+                recordMap.put("message",messageInfo[2]);
+
+                if(messageInfo.length>3){
+                    List<String > imgList = new ArrayList<String>();
+                    for(int i=3;i<messageInfo.length;i++){
+                        imgList.add(messageInfo[i]);
+                    }
+                    recordMap.put("imgPath",imgList);
+                }
+            }else{
+                recordMap.put("message",vo.getMessage());
+            }
+            recordMap.put("messageTime",DateUtils.formatDateToStr(vo.getCreateTime(),"MM月dd日 HH:mm"));
+            messageList.add(recordMap);
+        }
+
+        //用户微信头像的信息
+        Map parameter = systemService.getWechatParameter();
+        String token = (String) parameter.get("token");
+        WechatBean wechatInfo = WechatUtil.getWechatName(token, openid);
+        resultMap.put("wechatImg",wechatInfo.getHeadimgurl());
+        resultMap.put("messageList",messageList);
+        return resultMap;
+    }
 
     /**
      * 获取当前医生与用户的聊天记录
