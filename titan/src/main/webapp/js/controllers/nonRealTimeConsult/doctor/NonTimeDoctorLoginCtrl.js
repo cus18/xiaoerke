@@ -3,7 +3,7 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
     function ($scope, $state, $timeout, $http, doctorBinding) {
 
         $scope.prizeArray = {};
-
+        $scope.info = {};
         $scope.doctorBindingAction = function () {
             $scope.username = $('#username').val();
             $scope.password = $('#password').val();
@@ -66,6 +66,7 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
         };
 
         var countdown = 60;
-
+        $scope.NonTimeDoctorLoginInit=function(){
+        }
 
     }]);
