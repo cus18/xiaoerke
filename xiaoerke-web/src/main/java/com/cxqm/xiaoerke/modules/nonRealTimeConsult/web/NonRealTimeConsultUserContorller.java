@@ -279,6 +279,7 @@ public class NonRealTimeConsultUserContorller {
         String content = (String)params.get("content");
         String msgType = (String)params.get("msgType");
         String source = (String)params.get("source");
+        String doctorId = (String)params.get("doctorId");
         if(!StringUtils.isNotNull(openid)){
             resultMap.put("state","error");
             resultMap.put("result_info","请重新打开页面");
@@ -289,7 +290,7 @@ public class NonRealTimeConsultUserContorller {
         if("user".equals(source)){
             sessionVo.setUserId(openid);
         }else{
-            sessionVo.setCsUserId(openid);
+            sessionVo.setCsUserId(doctorId);
         }
         List<NonRealTimeConsultSessionVo> sessionInfo = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(sessionVo);
         if(sessionInfo.size()>0){
@@ -313,7 +314,7 @@ public class NonRealTimeConsultUserContorller {
         conversationData.put("message",content);
         conversationData.put("messageTime",DateUtils.formatDateToStr(new Date(),"MM月dd日 HH:mm"));
         conversationData.put("messageType",msgType);
-        conversationData.put("source","user");
+        conversationData.put("source",source);
         resultMap.put("conversationData",conversationData);
         return resultMap;
     }
