@@ -86,6 +86,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             };
             $scope.deletePhoto = function(index){
                 $scope.photoList.splice(index, 1);
+                $scope.showPhotoList.splice(index, 1);
             };
             $scope.selectSex = function(sex) {
                 $scope.sexItem = sex;
