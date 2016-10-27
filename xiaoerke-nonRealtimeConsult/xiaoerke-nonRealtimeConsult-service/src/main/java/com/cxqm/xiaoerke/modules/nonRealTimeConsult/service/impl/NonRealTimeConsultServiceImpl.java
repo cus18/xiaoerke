@@ -84,6 +84,11 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
     }
 
     @Override
+    public void saveBabyBaseInfo(BabyBaseInfoVo babyBaseInfoVo) {
+        babyBaseInfoService.insertSelective(babyBaseInfoVo);
+    }
+
+    @Override
     public HashMap<String, Object> createSession(String csUserId,String openid,String content) {
         HashMap<String,Object> resultMap = new HashMap<String, Object>();
 //        查询医生基本信息
@@ -150,7 +155,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         nonRealTimeConsultRecordDao.insertSelective(recordVo);
 
 //        更新session的last字段
-        sessionVo.setLastMessageType("doctor");
+        sessionVo.setLastMessageType(fromType);
         sessionVo.setLastMessageContent(content);
         sessionVo.setLastMessageTime(nowTime);
         nonRealTimeConsultSessionDao.updateByPrimaryKeySelective(sessionVo);
