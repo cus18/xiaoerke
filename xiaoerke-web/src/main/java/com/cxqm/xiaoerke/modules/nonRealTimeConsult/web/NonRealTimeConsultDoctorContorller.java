@@ -188,11 +188,7 @@ public class NonRealTimeConsultDoctorContorller {
                 if (lastMessageContent.indexOf("#") != -1) {
                     sex = lastMessageContent.split("#")[0];
                     lastMessageContent = lastMessageContent.split("#")[2];
-                    if (sex.equals("1")) {
-                        sex = "男,";
-                    } else {
-                        sex = "女,";
-                    }
+                    sex = sex.equals("1") ? "男" : "女";
                 }
                 nonRealTimeConsultSessionVo.setLastMessageContent(lastMessageContent);
 
@@ -215,6 +211,8 @@ public class NonRealTimeConsultDoctorContorller {
                     String babyName = babyBaseInfoVo.getName();
                     if (StringUtils.isNotNull(babyName)) {
                         babyName = babyBaseInfoVo.getName() + ",";
+                    }else {
+                        babyName="";
                     }
 
                     babyInfo = sex + babyName + (nowDateYear - babyBirthdayYear) + "岁" + chaDate + "个月";
