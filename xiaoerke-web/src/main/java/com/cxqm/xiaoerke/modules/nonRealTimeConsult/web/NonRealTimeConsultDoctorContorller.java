@@ -84,13 +84,16 @@ public class NonRealTimeConsultDoctorContorller {
         Map<String, Object> response = new HashMap<String, Object>();
         //根据openid查询当前医生
         Map param = new HashMap();
-        String openId = "oogbDwD_2BTQpftPu9QClr-mCw7U";//"8ab94e95afe448dab66403fc5407d0ca"
+        String openId = WechatUtil.getOpenId(session,request);//"8ab94e95afe448dab66403fc5407d0ca"
         param.put("openId", openId);
         response.put("status", "failure");
         if (StringUtils.isNotNull(openId)) {
             List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
             if (consultDoctorInfoVos != null && consultDoctorInfoVos.size() > 0 && StringUtils.isNotBlank(consultDoctorInfoVos.get(0).getUserId())) {
                 response.put("status", "success");
+                if("0".equals(consultDoctorInfoVos.get(0).getNonrealtimeStatus())){
+                    response.put("status", "backendClose");
+                }
             }
         }
         return response;
@@ -124,6 +127,7 @@ public class NonRealTimeConsultDoctorContorller {
             ConsultDoctorInfoVo consultDoctorInfoVo = new ConsultDoctorInfoVo();
             consultDoctorInfoVo.setOpenId(openid);
             consultDoctorInfoVo.setUserId(user.getId());
+            consultDoctorInfoVo.setNonrealtimeStatus("1");
             consultDoctorInfoService.updateByphone(consultDoctorInfoVo);
             response.put("status", "success");
         }

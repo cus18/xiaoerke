@@ -68,8 +68,9 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
                 $scope.pageLoading = false;
                 if(data.status == "failure"){
                     window.location.href = "http://s201.xiaork.com/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
-                }
-                else{
+                }else if(data.status == "backendClose"){
+                    alert("后台已关闭，请联系接诊员！");
+                }else{
                     ConversationDoctorInfo.save({sessionId:$stateParams.sessionId,doctorId:$scope.doctorId},function (data) {
                         console.log("会话信息列表",data)
                         $scope.pageData = data;
