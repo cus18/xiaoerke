@@ -10,7 +10,7 @@ require.config({
         "angular-sanitize" : "libs/angular-sanitize.min",
         "angular-route" : "libs/angular-route.min",
         "ocLazyLoad":"libs/ocLazyLoad.require.min",
-        "jquery":"libs/jquery-2.1.3.min",
+        "jquery":"libs/jquery-1.8.3.min",
         "nonRealTimeConsultFactory" : "services/nonRealTimeConsultFactory",
         "nonRealTimeConsultDirective" : "directives/nonRealTimeConsultDirective",
         "appNonRealTimeConsultRoute" : "routes/appNonRealTimeConsultRoute",

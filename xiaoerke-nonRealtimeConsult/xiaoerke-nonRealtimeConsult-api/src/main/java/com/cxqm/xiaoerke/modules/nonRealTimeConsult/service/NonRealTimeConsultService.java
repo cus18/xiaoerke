@@ -45,9 +45,10 @@ public interface NonRealTimeConsultService {
     /**
      * 创建会话。保存宝宝问诊信息
      * */
-    void createSession(String csUserId,String openid,String content);
+    HashMap<String, Object> createSession(String csUserId,String openid,String content);
 
     /**
+     * 定时器- 每天一次
      * 每天更新医生的咨询量 以及好评度
      * */
     void updateConsultDoctorInfo();
@@ -57,5 +58,19 @@ public interface NonRealTimeConsultService {
      * */
     void savenConsultRecord(Integer sessionid, String userId, String fromType, String content, String msgtype);
 
+    /**
+     * 上传文件
+     * */
     HashMap<String, Object> uploadMediaFile( MultipartFile file);
+
+    /**
+     * 根据部门去查询医生
+     * */
+    List<ConsultDoctorInfoVo> getDoctorListByDepartment(String departmentName);
+
+    /**
+     * 定时器 -每小时一次
+     * 将36小时后的会话关闭
+     * */
+    void sessinTimeOut();
 }

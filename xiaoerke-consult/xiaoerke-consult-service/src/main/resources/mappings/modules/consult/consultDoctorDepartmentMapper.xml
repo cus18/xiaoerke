@@ -7,7 +7,25 @@
     <result column="sorting" property="sorting" jdbcType="SMALLINT" />
     <result column="isShow" property="isShow" jdbcType="VARCHAR" />
   </resultMap>
+<resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo" >
+  <id column="id" property="id" jdbcType="VARCHAR" />
+  <result column="name" property="name" jdbcType="VARCHAR" />
+  <result column="sorting" property="sorting" jdbcType="SMALLINT" />
+  <result column="isShow" property="isshow" jdbcType="VARCHAR" />
+</resultMap>
+<sql id="Base_Column_List" >
+  id, name, sorting, isShow
+</sql>
+<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  select
+  <include refid="Base_Column_List" />
+  from consult_doctor_department
+  where id = #{id,jdbcType=VARCHAR}
+</select>
 
+  <select id="getConsultDoctorDepartmentByInfo" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select * from consult_doctor_department
+  </select>
   <select id="findDepartmentListByInfo" resultMap="BaseResultMap" parameterType="java.util.Map" >
     select * from consult_doctor_department
     where 1=1
@@ -18,7 +36,6 @@
       and id = #{id}
     </if>
   </select>
-
   <insert id="saveDepartment" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo">
     insert into consult_doctor_department (id,name,sorting) VALUES (#{id},#{name},#{sorting})
   </insert>
@@ -41,4 +58,67 @@
   <delete id="deleteDepartment" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo">
     delete from consult_doctor_department where id = #{id}
   </delete>
+<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  delete from consult_doctor_department
+  where id = #{id,jdbcType=VARCHAR}
+</delete>
+<insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo" >
+  insert into consult_doctor_department (id, name, sorting,
+  isShow)
+  values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{sorting,jdbcType=SMALLINT},
+  #{isshow,jdbcType=VARCHAR})
+</insert>
+<insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo" >
+  insert into consult_doctor_department
+  <trim prefix="(" suffix=")" suffixOverrides="," >
+    <if test="id != null" >
+      id,
+    </if>
+    <if test="name != null" >
+      name,
+    </if>
+    <if test="sorting != null" >
+      sorting,
+    </if>
+    <if test="isshow != null" >
+      isShow,
+    </if>
+  </trim>
+  <trim prefix="values (" suffix=")" suffixOverrides="," >
+    <if test="id != null" >
+      #{id,jdbcType=VARCHAR},
+    </if>
+    <if test="name != null" >
+      #{name,jdbcType=VARCHAR},
+    </if>
+    <if test="sorting != null" >
+      #{sorting,jdbcType=SMALLINT},
+    </if>
+    <if test="isshow != null" >
+      #{isshow,jdbcType=VARCHAR},
+    </if>
+  </trim>
+</insert>
+<update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo" >
+  update consult_doctor_department
+  <set >
+    <if test="name != null" >
+      name = #{name,jdbcType=VARCHAR},
+    </if>
+    <if test="sorting != null" >
+      sorting = #{sorting,jdbcType=SMALLINT},
+    </if>
+    <if test="isshow != null" >
+      isShow = #{isshow,jdbcType=VARCHAR},
+    </if>
+  </set>
+  where id = #{id,jdbcType=VARCHAR}
+</update>
+<update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo" >
+  update consult_doctor_department
+  set name = #{name,jdbcType=VARCHAR},
+  sorting = #{sorting,jdbcType=SMALLINT},
+  isShow = #{isshow,jdbcType=VARCHAR}
+  where id = #{id,jdbcType=VARCHAR}
+</update>
 </mapper>

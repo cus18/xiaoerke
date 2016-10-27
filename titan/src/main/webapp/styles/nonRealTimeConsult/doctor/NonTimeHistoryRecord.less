@@ -52,6 +52,18 @@
 }
 .historyList .message-list .info {
   margin-bottom: 15px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-right:5px;
+}
+.historyList .message-list .message{
+  height:40px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
 }
 .historyList  .noService{
    margin-top:100px;

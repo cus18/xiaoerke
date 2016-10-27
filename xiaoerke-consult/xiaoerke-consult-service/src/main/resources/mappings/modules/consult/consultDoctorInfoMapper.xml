@@ -20,10 +20,16 @@
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="open_id" property="openId" jdbcType="VARCHAR" />
+
+    <result column="consult_num" property="consult_num" jdbcType="VARCHAR" />
+    <result column="evaluate" property="evaluate" jdbcType="VARCHAR" />
+    <result column="nonrealtime_status" property="nonrealtimeStatus" jdbcType="VARCHAR" />
+
+
   </resultMap>
   <sql id="Base_Column_List" >
     id, sys_user_id, password,gender,name, title, hospital, department,practitionerCertificateNo, skill, description, grab_session, send_message, receive_differential_notification,
-    create_date, update_date,type,open_id
+    create_date, update_date,type,open_id,consult_num,evaluate,nonrealtime_status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -55,6 +61,11 @@
     <if test="openId != null">
       and open_id =  #{openId,jdbcType=VARCHAR}
     </if>
+
+    <if test="startDoctor != null">
+      and start_doctor = #{startDoctor,jdbcType=VARCHAR}
+    </if>
+    order by sort
 
   </select>
 
@@ -235,6 +246,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="updateByphone" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" >
+    update consult_doctor_info set  open_id = #{openId,jdbcType=VARCHAR}
+    where sys_user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+
   <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" >
     update consult_doctor_info
     set sys_user_id = #{userId,jdbcType=VARCHAR},
@@ -308,6 +325,10 @@
     <if test="type != null and type != ''">
       and type = #{type,jdbcType=VARCHAR}
     </if>
+    <if test="nonrealtimeStatus != null and nonrealtimeStatus != ''">
+      and nonrealtime_status = #{nonrealtimeStatus,jdbcType=VARCHAR}
+    </if>
+
   </select>
 
   <insert id="saveLecture" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" >
@@ -317,5 +338,9 @@
 
   <select id="getConsultLecture" parameterType="java.util.Map" resultMap="BaseResultMap">
     SELECT * from consult_doctor_lecture where sys_doctor_id = #{userId}
+  </select>
+
+  <select id="getStarDoctorList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT * from consult_doctor_info where star_doctor = '1' order by  sort,name
   </select>
 </mapper>

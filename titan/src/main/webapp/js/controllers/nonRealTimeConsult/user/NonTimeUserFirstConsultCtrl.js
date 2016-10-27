@@ -1,6 +1,6 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstConsultCtrl', [
-        '$scope','$upload','$state','$timeout','$http','BabyBaseInfo',
-        function ($scope,$upload,$state,$timeout,$http,BabyBaseInfo) {
+        '$scope','$upload','$state','$stateParams','BabyBaseInfo','CreateSession',
+        function ($scope,$upload,$state,$stateParams,BabyBaseInfo,CreateSession) {
             $scope.info = {
                 describeIllness:""
             };
@@ -11,7 +11,12 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             $scope.NonTimeUserFirstConsultInit = function(){
                 // 获取宝宝基本信息
                 BabyBaseInfo.save({},function (data) {
-                    console.log(data)
+
+                    if(data.status == "error"){
+                       alert (data.msg);
+                        return;
+                    }
+
                     $scope.sexItem = data.babySex;
                     if ($scope.sexItem == 0) {
                         $scope.isSelectedB = true;
@@ -22,7 +27,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                         $scope.isSelectedB = false;
                     }
                     if(data.babyBirthDay != ""){
-                        $("#babyBirthday").val( $scope.sexItem = data.babyBirthDay)
+                        $("#babyBirthday").val(data.babyBirthDay)
                     }
                     })
             };
@@ -80,15 +85,31 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                         console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                     }).success(function(data, status, headers, config){
                         $scope.photoList.push(data.imgPath)
+                    }).error(function (data, status, headers, config) {
+                        //上传失败
+                        console.log('error status: ' + status);
                     });
                 }
             };
             $scope.submit = function(){
                 var information = {
-                    "openId": $scope.openId,
-                    "sex": $scope.sexItem,
+                    "csUserId":$stateParams.doctorId,
+                    "sex": $scope.sexItem+"",
                     "birthday": $("#babyBirthday").val(),
-                    "describeIllness": encodeURI(encodeURI($scope.info.describeIllness))
+                    "describeIllness": $scope.info.describeIllness,
+                    "imgList":$scope.photoList
                 };
+
+                if(information.birthday == ""){
+                    alert("请输入宝宝生日");
+                    return;
+                }
+                CreateSession.save(information,function (data) {
+                    if(data.status == "error"){
+                        alert (data.msg);
+                        return;
+                    }
+                    $state.go("NonTimeUserConversation",{"sessionId":data.sessionId})
+                })
             };
     }]);

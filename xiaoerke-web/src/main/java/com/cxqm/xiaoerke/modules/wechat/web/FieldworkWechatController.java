@@ -89,7 +89,7 @@ public class FieldworkWechatController {
             url = "#/phoneConsultFirst/";
 
             return "redirect:" + sysPropertyVoWithBLOBsVo.getDoctorWebUrl() + "/doctor/phoneConsultDoctor" + url;
-        }else if ("6".equals("url")){
+        }else if ("6".equals(url)){
             return "redirect:" + sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeDoctorMessageList";
         }
 
@@ -224,6 +224,9 @@ public class FieldworkWechatController {
         }else if("39".equals(url)){
             //非及时咨询
             url = sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/patient/consult#/patientConsultNoFee";
+        }else if("40".equals(url)){
+            //非及时咨询
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeUserFindDoctor";
         }
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +

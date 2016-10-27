@@ -158,6 +158,12 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         return count;
     }
 
+    @Override
+    public int updateByphone(ConsultDoctorInfoVo record){
+        return consultDoctorInfoDao.updateByphone(record);
+    }
+
+
     /**
      * 获取咨询医生所有科室
      * @author jiangzg
@@ -346,6 +352,12 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         Map<String, Object> jsonMap = (Map) jasonObject;
 
         return jsonMap;
+    }
+
+    @Override
+    public List<ConsultDoctorInfoVo> getStarDoctorList( ) {
+        List<ConsultDoctorInfoVo> result = consultDoctorInfoDao.getStarDoctorList();
+        return result;
     }
 
 }

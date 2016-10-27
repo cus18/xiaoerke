@@ -1,6 +1,5 @@
 package com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultDoctorDepartmentDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo;
@@ -8,6 +7,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.dao.NonRealTimeConsultRecordDao;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.dao.NonRealTimeConsultSessionDao;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.ConsultSessionStatus;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRecordVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -85,12 +84,14 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
     }
 
     @Override
-    public void createSession(String csUserId,String openid,String content) {
-
+    public HashMap<String, Object> createSession(String csUserId,String openid,String content) {
+        HashMap<String,Object> resultMap = new HashMap<String, Object>();
 //        查询医生基本信息
         ConsultDoctorInfoVo doctorvo = consultDoctorInfoService.getConsultDoctorInfoByUserId(csUserId);
         WechatAttention attentionInfo  = wechatAttentionService.getAttentionByOpenId(openid);
-
+        if(null == attentionInfo){
+            attentionInfo = new WechatAttention();
+        }
         //创建新会话
         NonRealTimeConsultSessionVo sessionVo = new NonRealTimeConsultSessionVo();
         Date nowTime = new Date();
@@ -101,7 +102,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         sessionVo.setLastMessageContent(content);
         sessionVo.setLastMessageType("user");
         sessionVo.setDoctorDepartmentName(doctorvo.getDepartment());
-        sessionVo.setDoctorProfessor(doctorvo.getDescription());
+        sessionVo.setDoctorProfessor(doctorvo.getSkill());
         sessionVo.setCsUserId(csUserId);
         sessionVo.setCsUserName(doctorvo.getName());
         sessionVo.setUserId(openid);
@@ -115,17 +116,19 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         recordVo.setCsUserId(csUserId);
         recordVo.setDoctorName(doctorvo.getName());
         recordVo.setMessage(content);
-        recordVo.setMessageType("create");
+        recordVo.setMessageType(ConsultSessionStatus.CREATE_SESSION.getVariable());
         recordVo.setSenderId(openid);
         recordVo.setSysUserId(openid);
         recordVo.setUserName(attentionInfo.getNickname());
         nonRealTimeConsultRecordDao.insertSelective(recordVo);
+        resultMap.put("sessionId",sessionVo.getId());
+        return resultMap;
     }
 
     @Override
     public void updateConsultDoctorInfo() {
-
-
+        nonRealTimeConsultSessionDao.updateEvaluateEarchDay();
+        nonRealTimeConsultSessionDao.updateConsultNumEarchDay();
 
     }
 
@@ -140,11 +143,19 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         recordVo.setCsUserId(sessionVo.getCsUserId());
         recordVo.setDoctorName(sessionVo.getCsUserName());
         recordVo.setMessage(content);
-        recordVo.setMessageType("send");
+        recordVo.setMessageType(msgtype);
         recordVo.setSenderId(userId);
-        recordVo.setSysUserId(sessionVo.getCsUserId());
+        recordVo.setSysUserId(sessionVo.getUserId());
         recordVo.setUserName(sessionVo.getUserName());
         nonRealTimeConsultRecordDao.insertSelective(recordVo);
+
+//        更新session的last字段
+        sessionVo.setLastMessageType("doctor");
+        sessionVo.setLastMessageContent(content);
+        sessionVo.setLastMessageTime(nowTime);
+        nonRealTimeConsultSessionDao.updateByPrimaryKeySelective(sessionVo);
+
+
     }
 
     @Override
@@ -166,6 +177,19 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
             }
         }
         return resultMap;
+    }
+
+    @Override
+    public List<ConsultDoctorInfoVo> getDoctorListByDepartment(String departmentName) {
+        ConsultDoctorInfoVo doctorInfoVo = new ConsultDoctorInfoVo();
+        doctorInfoVo.setDepartment(departmentName);
+        doctorInfoVo.setNonrealtimeStatus("1");
+        return consultDoctorInfoService.findManagerDoctorInfoBySelective(doctorInfoVo);
+    }
+
+    @Override
+    public void sessinTimeOut() {
+        nonRealTimeConsultSessionDao.sessinTimeOut();
     }
 
 }

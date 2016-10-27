@@ -1626,10 +1626,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     public boolean nonRealTimeCheck(ReceiveXmlEntity xmlEntity, String token){
         String openid = xmlEntity.getFromUserName();
         ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
+
+        String path = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=40";
         //所有机会都用完
         if((propertyVo.getPermTimes()+propertyVo.getMonthTimes()) == 0){
             String content = "问题不着急？\n来试试“点名咨询”。您可指定专家医生或曾咨询过的医生，医生会在24小时内尽快对您的提问进行答复\n" +
-                    "<a href='http://www.baidu.com'>>>点名咨询医生<a/>";
+                    "<a href='"+path+"'>>>点名咨询医生<a/>";
             WechatUtil.sendMsgToWechat(openid,token,content);
             return true;
         }
@@ -1637,7 +1639,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //        首次
         if((propertyVo.getPermTimes() == 4 && propertyVo.getPermTimes()==0 && consultInfo.getConsultNumber() > 26)){
             String content = "不想掏钱？\n来试试“点名咨询”。你可指定专家医生或曾咨询过的医生， 医生会在24h 内尽快对您的提问进行答复哦~\n（如有疑问，可直接拨打400-6237-120）\n" +
-                    "<a href='http://www.baidu.com'>>>点名咨询医生<a/>";
+                    "<a href='"+path+"'>>>点名咨询医生<a/>";
             WechatUtil.sendMsgToWechat(openid,token,content);
             return true;
         }

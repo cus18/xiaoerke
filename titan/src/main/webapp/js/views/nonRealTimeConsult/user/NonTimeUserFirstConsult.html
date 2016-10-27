@@ -1,4 +1,4 @@
-<div ui-view class="nonTimeUserFirstConsult" ng-init="NonTimeUserFirstConsultInit()">
+<ion-view class="nonTimeUserFirstConsult" ng-init="NonTimeUserFirstConsultInit()">
     <div class="header">
         <img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fcc_02.png" alt="title"/>
     </div>
@@ -21,7 +21,7 @@
         <div class="line"></div>
         <div class="content-bottom">
             <div class="add-photo">
-                <div class="add" type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000" ng-file-max-size="2MB">
+                <div class="add" type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*" ng-file-max-height="2000" ng-file-max-size="10MB"  ng-if="photoList.length<5">
                     <img width="100%" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fccc_03.png" alt="addPhoto"/>
                 </div>
                 <div class="describe">
@@ -40,8 +40,11 @@
         </div>
     </div>
     <div class="bottom">
-        <div class="submit" ng-click="submit()">
-            提问
-        </div>
+        <input type="button" value="提问" class="submit" ng-click="submit()" ng-disabled="info.describeIllness.length < 18" ng-style="info.describeIllness.length < 18?{'background-color':'#ccc'}:{'background-color':'#53D4DD'}">
+
+        <!--<div class="submit" ng-click="submit()" ng-style="info.describeIllness.length < 18?{'background-color':'#ccc'}:{'background-color':'#53D4DD'}">-->
+        <!--提问-->
+        <!--</div>-->
     </div>
 </div>
+</ion-view>

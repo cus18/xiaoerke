@@ -1,42 +1,43 @@
-<ion-view view-title="资询列表" ng-init="NonTimeDoctorMessageListInit()">
+<ion-view view-title="消息列表" ng-init="NonTimeDoctorMessageListInit()">
+    <ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
     <ion-content class="NonTimeDoctorMessageList historyList" style="top:0;">
         <ion-scroll direction="y" has-bouncing="true">
             <div class="service bg1 tc">
                 <div class="line"></div>
-                <div class="service-item f6 fl" ng-click="selectService('cur')" ng-class="{'select':selectItem=='cur'}">当前服务(12)</div>
-                <div class="service-item f6 fr" ng-click="selectService('all')" ng-class="{'select':selectItem=='all'}">全部(20)</div>
+                <div class="service-item f6 fl" ng-click="selectService('cur')" ng-class="{'select':selectItem=='cur'}">当前服务({{curServiceList.length}})</div>
+                <div class="service-item f6 fr" ng-click="selectService('all')" ng-class="{'select':selectItem=='all'}">全部({{allServiceList.length}})</div>
             </div>
             <div class="message-list">
                 <ul class="cur" ng-if="selectItem=='cur'">
-                    <li class="bg1" ng-repeat="item in curMessageList">
-                        <img class="state" width="37" height="37" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/state{{item.state}}.png">
+                    <li class="bg1" ng-repeat="item in curServiceList" ng-click="goConversationPage(item.id)">
+                        <img class="state" width="37" height="37" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/{{item.lastMessageType=='user' ? 'state1': 'state2'}}.png">
                         <div class="pic tc" >
-                            <img class="radius" width="50" height="50" ng-src="{{item.pic}}">
-                            <div class="f2 c4">{{item.date}}</div>
+                            <img class="radius" width="50" height="50" ng-src="{{item.headImgUrl}}">
+                            <div class="f2 c4">{{item.dispalyTimes}}</div>
                         </div>
                         <div class="text" >
-                            <div class="info f4 c3">{{item.sex}}，{{item.age}}</div>
-                            <div class="message f4 c3">{{item.message}}</div>
+                            <div class="info f4 c3">{{item.babyInfo}}</div>
+                            <div class="message f4 c3" ng-bind-html="item.lastMessageContent|emotionReceive:'text'"></div>
                         </div>
                     </li>
                 </ul>
                 <ul class="all" ng-if="selectItem=='all'">
-                    <li class="bg1" ng-repeat="item in allMessageList">
-                        <img class="state" width="37" height="37" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/state{{item.state}}.png">
+                    <li class="bg1" ng-repeat="item in allServiceList" ng-click="goConversationPage(item.id)">
+                        <img class="state" width="37" height="37" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/{{item.lastMessageType=='user' ? 'state1': item.lastMessageType=='doctor' ? 'state2':'state0'}}.png">
                         <div class="pic tc" >
-                            <img class="radius" width="50" height="50" ng-src="{{item.pic}}">
-                            <div class="f2 c4">{{item.date}}</div>
+                            <img class="radius" width="50" height="50" ng-src="{{item.headImgUrl}}">
+                            <div class="f2 c4">{{item.dispalyTimes}}</div>
                         </div>
                         <div class="text" >
-                            <div class="info f4 c3">{{item.sex}}，{{item.age}}</div>
-                            <div class="message f4 c3">{{item.message}}</div>
+                            <div class="info f4 c3">{{item.babyInfo}}</div>
+                            <div class="message f4 c3" ng-bind-html="item.lastMessageContent|emotionReceive:'text'"></div>
                         </div>
                     </li>
                 </ul>
-                <div class="noService tc">
-                    <img class="" width="89" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/noService.png">
-                    <p class="f5 c5">您暂时无当前服务</p>
-                    <p class="f5 c5">您暂时无任何服务</p>
+                <div class="noService tc" ng-if="curServiceList.length==0 || allServiceList.length==0">
+                    <img mg-if="" class="" width="89" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/noService.png">
+                    <p ng-if="curServiceList.length==0" class="f5 c5">您暂时无当前服务</p>
+                    <p ng-if="allServiceList.length==0" class="f5 c5">您暂时无任何服务</p>
                 </div>
             </div>
         </ion-scroll>

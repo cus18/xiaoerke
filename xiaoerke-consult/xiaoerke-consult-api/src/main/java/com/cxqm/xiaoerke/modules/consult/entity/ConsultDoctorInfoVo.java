@@ -55,6 +55,12 @@ public class ConsultDoctorInfoVo {
 
     private String openId;
 
+    private String evaluate;
+
+    private String consult_num;
+
+    private String nonrealtimeStatus;
+
     public String getOpenId() {
         return openId;
     }
@@ -237,5 +243,29 @@ public class ConsultDoctorInfoVo {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getEvaluate() {
+        return evaluate;
+    }
+
+    public void setEvaluate(String evaluate) {
+        this.evaluate = evaluate;
+    }
+
+    public String getConsult_num() {
+        return consult_num;
+    }
+
+    public void setConsult_num(String consult_num) {
+        this.consult_num = consult_num;
+    }
+
+    public String getNonrealtimeStatus() {
+        return nonrealtimeStatus;
+    }
+
+    public void setNonrealtimeStatus(String nonrealtimeStatus) {
+        this.nonrealtimeStatus = nonrealtimeStatus;
     }
 }

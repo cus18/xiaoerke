@@ -1,12 +1,87 @@
-<!--<ion-view view-title="资询详情" ng-init="NonTimeUserConversationInit()">-->
-    <!--<ion-content class="nonTimeUserConversation" style="top:0;">-->
-        <!--<ion-scroll direction="y" has-bouncing="true">-->
-            <!--资询详情-->
-        <!--</ion-scroll>-->
-    <!--</ion-content>-->
-<!--</ion-view>-->
-<div ui-view view-title="资询详情" class="nonTimeUserConversation" ng-init="NonTimeUserConversationInit()">
-
-    资询详情
-
-</div>
+<ion-view view-title="资询详情" class="nonTimeUserConversation" ng-init="NonTimeUserConversationInit()">
+    <div class="doctor-information">
+        <span>
+            <img width="100%" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{pageData.doctorId}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
+        </span>
+        <span>{{pageData.doctorName}}</span>
+        <span>{{pageData.department}}</span>
+        <span>{{pageData.professor}}</span>
+    </div>
+    <div class="chat-box" scroll-glue-bottom="glued">
+        <div class="chat-content">
+            <div class="ofh" ng-repeat="item in messageList">
+                <div ng-style="item.source=='user'?{'display':'block'}:{'display':'none'}" class="user-content posr fr w80">
+                    <div class="tae c9">{{item.messageTime}}</div>
+                    <div class="head-portrait fr">
+                        <img width="100%" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{pageData.doctorId}}"
+                             err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png" alt=""/>
+                    </div>
+                    <div class="arrows">
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Ftriangle2.png" alt=""/>
+                    </div>
+                    <div ng-style="item.messageType=='createSession'?{'display':'block'}:{'display':'none'}" class="content fr w70 b-box bgg">
+                        {{item.babyBaseInfo}}</br>
+                        {{item.message}}</br>
+                        <div ng-style="item.imgPath?{'display':'block'}:{'display':'none'}" >
+                            <img width="40px" height="40px" ng-repeat="item2 in item.imgPath" ng-src="{{item2}}" alt=""/>
+                        </div>
+                    </div>
+                    <div ng-style="item.messageType=='text'?{'display':'block'}:{'display':'none'}" class="content fr w70 b-box bgg">
+                        <div ng-bind-html="item.message|emotionReceive:item.messageType"></div>
+                    </div>
+                    <div ng-style="item.messageType=='img'?{'display':'block'}:{'display':'none'}" class="content fr w70 b-box bgg">
+                        <img width="100%" ng-src="{{item.message}}" alt=""/>
+                    </div>
+                </div>
+                <div ng-style="item.source=='doctor'?{'display':'block'}:{'display':'none'}" class="doctor-content posr fl w80">
+                    <div class="c9">{{item.messageTime}}</div>
+                    <div class="head-portrait fl">
+                        <img width="100%" ng-src="{{pageData.wechatImg}}"
+                             err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
+                    </div>
+                    <div class="arrows">
+                        <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Ftriangle1.png" alt=""/>
+                    </div>
+                    <div ng-style="item.messageType=='createSession'?{'display':'block'}:{'display':'none'}" class="content fl w70 b-box bgf">
+                        {{item.message}}</br>
+                        <div ng-style="item.imgPath?{'display':'block'}:{'display':'none'}">
+                            <img width="40px" height="40px" ng-repeat="item2 in item.imgPath" ng-src="{{item2}}" alt=""/>
+                        </div>
+                    </div>
+                    <div ng-style="item.messageType=='text'?{'display':'block'}:{'display':'none'}" class="content fl w70 b-box bgf">
+                        <div ng-bind-html="item.message|emotionReceive:item.messageType"></div>
+                    </div>
+                    <div ng-style="item.messageType=='img'?{'display':'block'}:{'display':'none'}" class="content fl w70 b-box bgf">
+                            <img ng-src="{{item.message}}" alt=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-style="pageData.sessionStatus=='sessionend'?{'display':'block'}:{'display':'none'}" class="send-message">
+        <div class="send-content">
+            36h已到，您和{{pageData.doctorName}}的问诊会话自动关闭。</br>
+            还有问题要问？</br>
+            <div class="btn">
+                <span class="again" ng-click="againConsulting()">再次咨询</span>
+                <span class="give" ng-click="giveMind()">送心意</span>
+            </div>
+        </div>
+    </div>
+    <div class="send-message" ng-style="pageData.sessionStatus=='ongoing'?{'display':'block'}:{'display':'none'}">
+        <div class="send-content">
+            <textarea placeholder="请输入消息内容" id="saytext" ng-model="info.content"></textarea>
+            <div class="btn">
+                <span class="face">
+                    <img width="22px" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fe_07.png" id="face"
+                         ng-click="getQQExpression()" alt=""/>
+                </span>
+                <span class="img">
+                    <img width="22px" type="file" ng-file-select="uploadFiles($files)" accept="image/*" ng-file-max-height="2000" ng-file-max-size="10MB"
+                         src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fe_10.png" alt=""/>
+                </span>
+                <span class="send" ng-click="sendTextMsg()">发送</span>
+            </div>
+        </div>
+    </div>
+</ion-view>

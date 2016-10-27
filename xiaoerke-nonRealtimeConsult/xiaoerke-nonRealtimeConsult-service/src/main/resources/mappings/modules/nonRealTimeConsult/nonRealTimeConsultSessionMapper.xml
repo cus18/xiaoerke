@@ -26,7 +26,7 @@
   <sql id="Base_Column_List" >
     id, status, user__id, user_name, cs_user_id, cs_user_name, source, last_message_time, 
     last_message_type, consult_number, doctor_department_name, doctor_Professor, create_time, 
-    update_time, bak_1, bak_2, bak_3
+    update_time, bak_1, bak_2, bak_3,last_message_content
   </sql>
   <sql id="Blob_Column_List" >
     last_message_content
@@ -45,46 +45,46 @@
     from non_real_time_consult_session
     where 1=1
     <if test="id != null" >
-      and #{id,jdbcType=INTEGER}
+      and id = #{id,jdbcType=INTEGER}
     </if>
     <if test="status != null" >
-      and #{status,jdbcType=VARCHAR}
+      and status = #{status,jdbcType=VARCHAR}
     </if>
     <if test="userId != null" >
-      and #{userId,jdbcType=VARCHAR}
+      and user__id = #{userId,jdbcType=VARCHAR}
     </if>
     <if test="userName != null" >
-      and #{userName,jdbcType=VARCHAR}
+      and user_name = #{userName,jdbcType=VARCHAR}
     </if>
     <if test="csUserId != null" >
-      and #{csUserId,jdbcType=VARCHAR}
+      and cs_user_id = #{csUserId,jdbcType=VARCHAR}
     </if>
     <if test="csUserName != null" >
-      and #{csUserName,jdbcType=VARCHAR}
+      and cs_user_name = #{csUserName,jdbcType=VARCHAR}
     </if>
     <if test="source != null" >
-      and #{source,jdbcType=VARCHAR}
+      and source = #{source,jdbcType=VARCHAR}
     </if>
     <if test="lastMessageTime != null" >
-      and #{lastMessageTime,jdbcType=TIMESTAMP}
+      and last_message_time = #{lastMessageTime,jdbcType=TIMESTAMP}
     </if>
     <if test="lastMessageType != null" >
-      and #{lastMessageType,jdbcType=VARCHAR}
+      and last_message_type = #{lastMessageType,jdbcType=VARCHAR}
     </if>
     <if test="consultNumber != null" >
       and #{consultNumber,jdbcType=INTEGER}
     </if>
     <if test="doctorDepartmentName != null" >
-      and #{doctorDepartmentName,jdbcType=VARCHAR}
+      and doctor_department_name =#{doctorDepartmentName,jdbcType=VARCHAR}
     </if>
     <if test="doctorProfessor != null" >
-      and #{doctorProfessor,jdbcType=VARCHAR}
+      and doctor_Professor  =  #{doctorProfessor,jdbcType=VARCHAR}
     </if>
     <if test="createTime != null" >
-      and #{createTime,jdbcType=TIMESTAMP}
+      and create_time= #{createTime,jdbcType=TIMESTAMP}
     </if>
     <if test="updateTime != null" >
-      and #{updateTime,jdbcType=TIMESTAMP}
+      and update_time= #{updateTime,jdbcType=TIMESTAMP}
     </if>
     <if test="bak1 != null" >
       and #{bak1,jdbcType=VARCHAR}
@@ -96,13 +96,13 @@
       and #{bak3,jdbcType=VARCHAR}
     </if>
     <if test="lastMessageContent != null" >
-      and #{lastMessageContent,jdbcType=LONGVARCHAR}
+      and  last_message_content =#{lastMessageContent,jdbcType=LONGVARCHAR}
     </if>
     <if test="order == 'lastMessageTimeAsc'" >
-      order by lastMessageTime ASC
+      order by create_time ASC
     </if>
     <if test="order == 'lastMessageTimeDesc'" >
-      order by lastMessageTime DESC
+      order by create_time DESC
     </if>
 
   </select>
@@ -128,7 +128,8 @@
       #{bak2,jdbcType=VARCHAR}, #{bak3,jdbcType=VARCHAR}, #{lastMessageContent,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo" >
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo" useGeneratedKeys="true"
+          keyProperty="id">
     insert into non_real_time_consult_session
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -341,4 +342,69 @@
       bak_3 = #{bak3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <update id="updateEvaluateEarchDay">
+UPDATE consult_doctor_info cdi,
+ (
+	SELECT
+		TRUNCATE (
+			(
+				count(
+					CASE ce.serviceAttitude
+					WHEN '3' THEN
+						'3'
+					WHEN '5' THEN
+						'5'
+					END
+				) / count(
+					CASE ce.serviceAttitude
+					WHEN '1' THEN
+						'1'
+					WHEN '3' THEN
+						'3'
+					WHEN '5' THEN
+						'5'
+					END
+				)
+			) * 100,
+			0
+		) evalua,
+		ce.doctorId
+	FROM
+		customerevaluation ce
+	GROUP BY
+		ce.doctorId
+) ces
+SET cdi.evaluate = ces.evalua
+WHERE
+	cdi.sys_user_id = ces.doctorId
+
+  </update>
+
+  <update id="updateConsultNumEarchDay">
+
+UPDATE consult_doctor_info cdi,
+ (
+	SELECT
+		count(cs.id) countnum,
+		cs.sys_user_id_cs
+	FROM
+		consult_session cs
+	GROUP BY
+		cs.sys_user_id_cs
+) css
+SET cdi.consult_num = css.countnum
+WHERE
+	cdi.sys_user_id = css.sys_user_id_cs
+  </update>
+
+  <update id="sessinTimeOut">
+    UPDATE non_real_time_consult_session
+    SET status = 'sessionend'
+    WHERE NOW()>DATE_ADD(create_time,
+    INTERVAL 36 HOUR
+    );
+</update>
+
 </mapper>
