@@ -172,9 +172,9 @@ public class NonRealTimeConsultDoctorContorller {
         if (nonRealTimeConsultSessionVos != null && nonRealTimeConsultSessionVos.size() > 0) {
             for (NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo : nonRealTimeConsultSessionVos) {
                 if (DateUtils.pastHour(nonRealTimeConsultSessionVo.getLastMessageTime()) > 24) {
-                    nonRealTimeConsultSessionVo.setDispalyTimes(DateUtils.DateToStr(nonRealTimeConsultSessionVo.getLastMessageTime(), "time"));
-                } else {
                     nonRealTimeConsultSessionVo.setDispalyTimes(DateUtils.DateToStr(nonRealTimeConsultSessionVo.getLastMessageTime(), "monthDate"));
+                } else {
+                    nonRealTimeConsultSessionVo.setDispalyTimes(DateUtils.DateToStr(nonRealTimeConsultSessionVo.getLastMessageTime(), "time"));
                 }
                 if (nonRealTimeConsultSessionVo.getStatus().equals("sessionend")) {
                     nonRealTimeConsultSessionVo.setLastMessageType("close");
