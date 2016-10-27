@@ -43,6 +43,11 @@ public interface NonRealTimeConsultService {
     BabyBaseInfoVo babyBaseInfo(String openid);
 
     /**
+     * 获取用户宝宝信息
+     * */
+    void saveBabyBaseInfo(BabyBaseInfoVo babyBaseInfoVo);
+
+    /**
      * 创建会话。保存宝宝问诊信息
      * */
     HashMap<String, Object> createSession(String csUserId,String openid,String content);
