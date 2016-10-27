@@ -16,9 +16,7 @@ angular.module('controllers', []).controller('NonTimeDoctorMessageListCtrl', [
                 $scope.pageLoading = false;
                 if (data.status == "failure") {
                     window.location.href = "http://s201.xiaork.com/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
-                } else if(data.status == "backendClose"){
-                    alert("后台已关闭，请联系接诊员！");
-                }else {
+                }else if(data.status == "success"){
                     GetDoctorService.save({serviceType:"currentService"}, function (data) {
                         $scope.curServiceList = data.ListInfo;
                         console.log("curService",data.ListInfo);
@@ -28,6 +26,8 @@ angular.module('controllers', []).controller('NonTimeDoctorMessageListCtrl', [
                         console.log("allService",data.ListInfo);
                     });
 
+                }else {
+                    alert("非系统咨询医生，请联系接诊员！");
                 }
             });
         };

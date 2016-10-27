@@ -79,7 +79,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
                         $scope.doctorId = $scope.pageData.doctorId;
                     })
                 } else {
-                    alert("后台已关闭，请联系接诊员！");
+                    alert("非系统咨询医生，请联系接诊员！");
                 }
             })
         }
