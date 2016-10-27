@@ -11,6 +11,9 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
                 $scope.getQQExpression();
                 $scope.getQQExpression();
                 ConversationInfo.save({sessionId:$stateParams.sessionId},function (data) {
+                    if(data.state == "error"){
+                        alert("请重新打开页面提交信息");
+                    }
                     $scope.pageData = data;
                     $scope.messageList = $scope.pageData.messageList;
                 })

@@ -14,6 +14,7 @@ import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultSe
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -88,6 +92,7 @@ public class NonRealTimeConsultUserContorller {
             return reusltMap;
         }
         BabyBaseInfoVo babyBaseInfoVo = nonRealTimeConsultUserService.babyBaseInfo(openid);
+        reusltMap.put("babyId",babyBaseInfoVo.getId());
         reusltMap.put("babySex",babyBaseInfoVo.getSex());
         reusltMap.put("babyBirthDay", DateUtils.DateToStr(babyBaseInfoVo.getBirthday(),"date"));
         return reusltMap;
@@ -111,6 +116,12 @@ public class NonRealTimeConsultUserContorller {
     @ResponseBody
     public Map<String,Object> createSession(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
         String openid = WechatUtil.getOpenId(session,request);
+        if(!StringUtils.isNotNull(openid)){
+            Map<String,Object> resultMap = new HashMap<String, Object>();
+            resultMap.put("status","error");
+            resultMap.put("msg","未获取到用户的先关信息,请重新打开页面");
+            return resultMap;
+        }
         String csUserId = (String )params.get("csUserId");
         String content =  (String) params.get("sex")+"#"+(String )params.get("birthday")+"#"+(String )params.get("describeIllness");
         List<String> imgList = (List)params.get("imgList");
@@ -119,11 +130,18 @@ public class NonRealTimeConsultUserContorller {
                 content +="#"+str;
             }
         }
-        if(!StringUtils.isNotNull(openid)){
-            Map<String,Object> resultMap = new HashMap<String, Object>();
-            resultMap.put("status","error");
-            resultMap.put("msg","未获取到用户的先关信息,请重新打开页面");
-            return resultMap;
+        if(null ==params.get("babyId")){
+            BabyBaseInfoVo vo = new BabyBaseInfoVo();
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date dfa =sdf.parse((String )params.get("birthday"));
+                vo.setBirthday(dfa);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            vo.setSex((String) params.get("sex"));
+            vo.setOpenid(openid);
+            nonRealTimeConsultUserService.saveBabyBaseInfo(vo);
         }
         return nonRealTimeConsultUserService.createSession(csUserId,openid,content);
     }
