@@ -1,6 +1,6 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstConsultCtrl', [
-        '$scope','$upload','$state','$stateParams','BabyBaseInfo','CreateSession',
-        function ($scope,$upload,$state,$stateParams,BabyBaseInfo,CreateSession) {
+        '$scope','$sce','$upload','$state','$stateParams','BabyBaseInfo','CreateSession',
+        function ($scope,$sce,$upload,$state,$stateParams,BabyBaseInfo,CreateSession) {
 
             //初始化数据
             $scope.info = {
@@ -85,7 +85,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                     })
             };
             $scope.deletePhoto = function(index){
-                $scope.photoList.splice(index, 1);
+                $scope.showPhotoList.splice(index, 1);
             };
             $scope.selectSex = function(sex) {
                 $scope.sexItem = sex;
@@ -138,16 +138,22 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                     sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                     sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                     success: function (res) {
-                        var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                        $scope.showPhotoList.push(localIds[0])
-                        wx.uploadImage({
-                            localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
-                            isShowProgressTips: 1, // 默认为1，显示进度提示
-                            success: function (res) {
-                                var serverId = res.serverId; // 返回图片的服务器端ID
-                                $scope.photoList.push(serverId)
-                            }
-                        });
+                        var localIds = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+
+                        alert(localIds);
+                        //$scope.trustSrc = $sce.trustAs($sce.RESOURCE_URL,localIds);/
+                        //$scope.trustSrc = $sce.trustAsResourceUrl(localIds);//等同于这个方法
+                        $("#imghead").attr('src',localIds);
+                        $scope.showPhotoList.push(localIds)
+                        //wx.uploadImage({
+                        //    localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
+                        //    isShowProgressTips: 1, // 默认为1，显示进度提示
+                        //    success: function (res) {
+                        //        var serverId = res.serverId; // 返回图片的服务器端ID
+                        //        alert(serverId);
+                        //        $scope.photoList.push(serverId)
+                        //    }
+                        //});
 
                     }
                 });
