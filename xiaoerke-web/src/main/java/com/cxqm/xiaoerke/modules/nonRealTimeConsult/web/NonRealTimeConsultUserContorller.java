@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
@@ -127,7 +128,14 @@ public class NonRealTimeConsultUserContorller {
         List<String> imgList = (List)params.get("imgList");
         if(imgList.size()>0){
             for(String str:imgList){
-                content +="#"+str;
+                Map parameter = systemService.getWechatParameter();
+                String token = (String) parameter.get("token");
+                try {
+                    String mediaURL = WechatUtil.downloadMediaFromWx(token,str, "image",null);
+                    content +="#"+mediaURL;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         if(null ==params.get("babyId")){
