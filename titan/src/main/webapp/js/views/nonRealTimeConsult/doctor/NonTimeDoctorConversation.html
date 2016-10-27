@@ -20,7 +20,7 @@
         <!--36小时内可回复-->
         <div class="send-wrap " ng-if="pageData.sessionStatus=='ongoing'">
             <div class="enter bg1">
-                <textarea class="input" id="saytext" name="saytext" ng-model="info.content" placeholder="输入消息内容"></textarea>
+                <textarea class="input" id="saytext" name="saytext" ng-model="info.content" placeholder="输入消息内容" ng-bind-html="info.content|emotionReceive:item.messageType"></textarea>
             </div>
             <div class="add bg1">
                 <img class="face" id="face" ng-click="getQQExpression()"  width="21" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/icon_expression.png">

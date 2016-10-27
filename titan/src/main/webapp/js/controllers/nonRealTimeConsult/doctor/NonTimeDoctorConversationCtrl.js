@@ -70,7 +70,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
                     window.location.href = "http://127.0.0.1/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
                 }
                 else{
-                    ConversationDoctorInfo.save({sessionId:$stateParams.sessionId},function (data) {
+                    ConversationDoctorInfo.save({sessionId:$stateParams.sessionId,doctorId:$scope.doctorId},function (data) {
                         console.log("会话信息列表",data)
                         $scope.pageData = data;
                         $scope.messageList = data.messageList;
