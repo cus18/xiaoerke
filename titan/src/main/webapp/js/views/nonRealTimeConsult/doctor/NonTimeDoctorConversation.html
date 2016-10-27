@@ -25,7 +25,7 @@
             <div class="add bg1">
                 <img class="face" id="face" ng-click="getQQExpression()"  width="21" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/icon_expression.png">
                 <img class="pic" width="20" height="auto" type="file" ng-file-select="uploadFiles($files)" accept="image/*" ng-file-max-height="2000" ng-file-max-size="10MB" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/icon_addPic.png">
-                <button ng-disabled="info.content.length>0" class="btn-send tc f3 c0 fr" ng-click="sendTextMsg()">发 送</button>
+                <button ng-disabled="info.content.length<=0 || sendLock" class="btn-send tc f3 c0 fr" ng-click="sendMsg('text',info.content)">发 送</button>
             </div>
         </div>
         <!--36小时外会话关闭-->

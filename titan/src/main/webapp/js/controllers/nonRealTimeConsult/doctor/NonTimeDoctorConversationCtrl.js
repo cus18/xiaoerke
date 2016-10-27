@@ -1,9 +1,9 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConversationCtrl', [
-    '$scope','$state','$stateParams','$timeout','$http','$upload','ConversationDoctorInfo','GetDoctorLoginStatus','UpdateReCode',
-    function ($scope,$state,$stateParams,$timeout,$http,$upload,ConversationDoctorInfo,GetDoctorLoginStatus,UpdateReCode) {
+    '$scope','$state','$stateParams','$timeout','$http','$digest','$upload','ConversationDoctorInfo','GetDoctorLoginStatus','UpdateReCode',
+    function ($scope,$state,$stateParams,$timeout,$http,$digest,$upload,ConversationDoctorInfo,GetDoctorLoginStatus,UpdateReCode) {
         $scope.info = {};
         $scope.msgType= "text";
-        $scope.content = "";
+        $scope.sendLock= false;
 
         //添加表情
         $scope.getQQExpression = function () {
@@ -34,12 +34,12 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
         };
 
         //发送消息
-        $scope.sendTextMsg = function(){
-            $scope.info.content =  $('#saytext').val();
-            $scope.sendMsg("text",$scope.info.content);
-        };
-        //发送消息
         $scope.sendMsg = function(messageType,content){
+            $scope.sendLock= true;
+            $timeout(function() {
+                $scope.sendLock= false;
+                $scope.$digest(); // 通知视图模型的变化
+            }, 2000);
             var information = {
                 "sessionId":$stateParams.sessionId,
                 "content": content,
