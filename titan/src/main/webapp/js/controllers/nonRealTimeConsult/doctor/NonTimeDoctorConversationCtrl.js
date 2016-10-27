@@ -67,7 +67,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
             GetDoctorLoginStatus.save({}, function (data) {
                 $scope.pageLoading = false;
                 if(data.status == "failure"){
-                    window.location.href = "http://127.0.0.1/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
+                    window.location.href = "http://s201.xiaork.com/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
                 }
                 else{
                     ConversationDoctorInfo.save({sessionId:$stateParams.sessionId,doctorId:$scope.doctorId},function (data) {
