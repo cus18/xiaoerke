@@ -1,6 +1,6 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstConsultCtrl', [
-        '$scope','$sce','$upload','$state','$stateParams','BabyBaseInfo','CreateSession',
-        function ($scope,$sce,$upload,$state,$stateParams,BabyBaseInfo,CreateSession) {
+        '$scope','$upload','$state','$stateParams','BabyBaseInfo','CreateSession',
+        function ($scope,$upload,$state,$stateParams,BabyBaseInfo,CreateSession) {
 
             //初始化数据
             $scope.info = {
@@ -132,29 +132,23 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
 
             //提交图片
             $scope.uploadFiles = function() {
-                console.log('dataJsonValue');
                 wx.chooseImage({
                     count: 1, // 默认9
                     sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                     sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                     success: function (res) {
                         var localIds = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-
-                        alert(localIds);
-                        //$scope.trustSrc = $sce.trustAs($sce.RESOURCE_URL,localIds);/
-                        //$scope.trustSrc = $sce.trustAsResourceUrl(localIds);//等同于这个方法
-                        $("#imghead").attr('src',localIds);
-                        $scope.showPhotoList.push(localIds)
-                        //wx.uploadImage({
-                        //    localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
-                        //    isShowProgressTips: 1, // 默认为1，显示进度提示
-                        //    success: function (res) {
-                        //        var serverId = res.serverId; // 返回图片的服务器端ID
-                        //        alert(serverId);
-                        //        $scope.photoList.push(serverId)
-                        //    }
-                        //});
-
+                        $scope.showPhotoList.push(localIds);
+                        $scope.$digest(); // 通知视图模型的变化
+                        wx.uploadImage({
+                            localId: localIds, // 需要上传的图片的本地ID，由chooseImage接口获得
+                            isShowProgressTips: 1, // 默认为1，显示进度提示
+                            success: function (res) {
+                                var serverId = res.serverId; // 返回图片的服务器端ID
+                                alert(serverId);
+                                $scope.photoList.push(serverId)
+                            }
+                        });
                     }
                 });
             };
