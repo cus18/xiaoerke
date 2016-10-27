@@ -528,7 +528,7 @@ public class ConsultDoctorController extends BaseController {
     }
 
     /**
-     * 获取咨询医生主页信息
+     * 获取咨询医生主页的信息
      */
     @RequestMapping(value = "/findDoctorAllEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
     public

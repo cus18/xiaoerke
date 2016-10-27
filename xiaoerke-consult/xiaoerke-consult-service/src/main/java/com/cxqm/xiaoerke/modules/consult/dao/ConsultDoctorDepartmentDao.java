@@ -13,6 +13,10 @@ import java.util.Map;
 @MyBatisDao
 public interface ConsultDoctorDepartmentDao {
 
+    List<ConsultDoctorDepartmentVo> getConsultDoctorDepartmentByInfo(Map map);
+
+    void saveDepartment(ConsultDoctorDepartmentVo vo);
+
     int deleteByPrimaryKey(String id);
 
     int insert(ConsultDoctorDepartmentVo record);
@@ -27,4 +31,9 @@ public interface ConsultDoctorDepartmentDao {
 
     List<ConsultDoctorDepartmentVo> getShowDepartmentList();
 
+    void updateDepartment(ConsultDoctorDepartmentVo vo);
+
+    List<ConsultDoctorDepartmentVo> findDepartmentListByInfo(ConsultDoctorDepartmentVo vo);
+
+    void deleteDepartment(ConsultDoctorDepartmentVo vo);
 }

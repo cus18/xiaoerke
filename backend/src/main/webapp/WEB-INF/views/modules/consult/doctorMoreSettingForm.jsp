@@ -313,7 +313,11 @@
 			<div class="control-group">
 				<label class="control-label">科室:</label>
 				<div class="controls">
-					<input id="department" value="${doctor.department}" htmlEscape="false" maxlength="50" class="input-medium"/>
+					<form:select path="department">
+						<c:forEach items="${departmentList}" var="department">
+							<form:option value="${department.id}" label="${department.name}"/>
+						</c:forEach>
+					</form:select>
 					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
 			</div>
