@@ -233,7 +233,15 @@ public class ConsultDoctorTransferController extends BaseController {
                     dataValue.put("messageDateTime", DateUtils.DateToStr(consultRecordMongoVo.get(0).getCreateDate()));
                 }
                 dataValue.put("userId",richConsultSession.getUserId());
-                dataValue.put("userName",richConsultSession.getUserName());
+                if(richConsultSession.getSource().contains("ykdl")){
+                    dataValue.put("userName", "YKDL-"+richConsultSession.getUserName());
+                }else if(richConsultSession.getSource().contains("wjy")){
+                    dataValue.put("userName", "微家园-"+richConsultSession.getUserName());
+                }else if(richConsultSession.getSource().contains("bhq")){
+                    dataValue.put("userName", "宝护圈-"+richConsultSession.getUserName());
+                }else{
+                    dataValue.put("userName", richConsultSession.getUserName());
+                }
                 dataValue.put("source",richConsultSession.getSource());
                 dataValue.put("serverAddress",richConsultSession.getServerAddress());
 
@@ -263,15 +271,20 @@ public class ConsultDoctorTransferController extends BaseController {
 
                 Query sessionquery = (new Query()).addCriteria(where("sessionId").is(""+waitJoinListVo.getConversationId()+""));
                 ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(sessionquery);
-                if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.PAY_SUCCESS.getVariable()).indexOf(consultSessionStatusVo.getPayStatus())>-1){
-                    dataValue.put("notifyType","1001");
-                }else if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.NO_PAY.getVariable()).indexOf(consultSessionStatusVo.getPayStatus())>-1){
-                    dataValue.put("notifyType","1002");
-                }else if(null != consultSessionStatusVo&&null != consultSessionStatusVo.getPayStatus()&&(ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable()).indexOf(consultSessionStatusVo.getPayStatus())>-1){
-                    dataValue.put("notifyType","1003");
-                }else {
+                if(richConsultSession.getSource().equalsIgnoreCase("wxcxqm")){
+                    if(null != consultSessionStatusVo && StringUtils.isNotNull(consultSessionStatusVo.getPayStatus())&&(ConstantUtil.PAY_SUCCESS.getVariable()).indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                        dataValue.put("notifyType","1001");
+                    }else if(null != consultSessionStatusVo && StringUtils.isNotNull(consultSessionStatusVo.getPayStatus())&&(ConstantUtil.NO_PAY.getVariable()).indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                        dataValue.put("notifyType","1002");
+                    }else if(null != consultSessionStatusVo && StringUtils.isNotNull(consultSessionStatusVo.getPayStatus())&&(ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable()).indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                        dataValue.put("notifyType","1003");
+                    }else {
+                        dataValue.put("notifyType","1004");
+                    }
+                }else{
                     dataValue.put("notifyType","1004");
                 }
+
 
                 dataList.add(dataValue);
             }

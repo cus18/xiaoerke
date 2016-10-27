@@ -17,7 +17,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.lookMore = false;//查看更多
             $scope.patientImg = "";
             $scope.patientName= "" ;
-            $scope.fucengLock = true;//第一次进入页面的浮层
+            $scope.fucengLock = false;//第一次进入页面的浮层
             $scope.alertFlag = false;
             $scope.remoteUrl = " http://wxsp-dev.ykbenefit.com/customer_info";
             $scope.imgBarFlag = false;

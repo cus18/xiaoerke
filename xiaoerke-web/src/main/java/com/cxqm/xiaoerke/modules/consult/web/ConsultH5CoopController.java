@@ -590,16 +590,14 @@ public class ConsultH5CoopController {
         if (params.containsKey("csUserId")) {
             csUserId = String.valueOf(params.get("csUserId"));
         }
-        //0：代表非常满意  1：代表一般 2：代表不满意
+        //5：代表非常满意  3：代表一般 1：代表不满意 0：默认
         String suggestMsg = String.valueOf(params.get("suggestMsg"));
-        if(StringUtils.isNotNull(suggestMsg)){
+        if(StringUtils.isNotNull(suggestMsg) && "COOP_BHQ".equalsIgnoreCase(source) ){
             try {
                 suggestMsg  = new String(org.springframework.security.crypto.codec.Base64.decode(suggestMsg.getBytes("utf-8")),"utf-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-        }else{
-            suggestMsg = "";
         }
 
         String evaDate = String.valueOf(params.get("evaDate"));
