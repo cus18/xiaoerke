@@ -15,22 +15,32 @@ public class ConsultDoctorDepartmentVo {
 
     private Short sorting;
 
-    private String isshow;
+    private String isShow;
+
+    private String image;
 
     public String getId() {
         return id;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getIsShow() {
+        return isShow;
+    }
+
+    public void setIsShow(String isShow) {
+        this.isShow = isShow;
+    }
+
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Short getSorting() {
@@ -41,11 +51,11 @@ public class ConsultDoctorDepartmentVo {
         this.sorting = sorting;
     }
 
-    public String getIsshow() {
-        return isshow;
+    public String getName() {
+        return name;
     }
 
-    public void setIsshow(String isshow) {
-        this.isshow = isshow;
+    public void setName(String name) {
+        this.name = name;
     }
 }

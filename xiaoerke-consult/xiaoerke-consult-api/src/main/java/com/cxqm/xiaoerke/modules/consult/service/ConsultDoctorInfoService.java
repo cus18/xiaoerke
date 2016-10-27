@@ -4,6 +4,8 @@ import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorTimeGiftVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo;
+import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 
@@ -57,4 +59,10 @@ public interface ConsultDoctorInfoService {
     HashMap<String, Object> findDoctorAllEvaluation(Map<String, Object> param);
 
     List<ConsultDoctorInfoVo> getStarDoctorList();
+
+    List<ConsultDoctorDepartmentVo> findDepartmentList(ConsultDoctorDepartmentVo vo);
+
+    void consultDoctorDepartmentOper(ConsultDoctorDepartmentVo vo);
+
+    void deleteDepartment(ConsultDoctorDepartmentVo vo);
 }
