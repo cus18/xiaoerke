@@ -1,32 +1,32 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConversationCtrl', [
-    '$scope','$state','$stateParams','$timeout','$http','$digest','$upload','ConversationDoctorInfo','GetDoctorLoginStatus','UpdateReCode',
-    function ($scope,$state,$stateParams,$timeout,$http,$digest,$upload,ConversationDoctorInfo,GetDoctorLoginStatus,UpdateReCode) {
+    '$scope', '$state', '$stateParams', '$timeout', '$http', '$digest', '$upload', 'ConversationDoctorInfo', 'GetDoctorLoginStatus', 'UpdateReCode',
+    function ($scope, $state, $stateParams, $timeout, $http, $digest, $upload, ConversationDoctorInfo, GetDoctorLoginStatus, UpdateReCode) {
         $scope.info = {};
-        $scope.msgType= "text";
-        $scope.sendLock= false;
+        $scope.msgType = "text";
+        $scope.sendLock = false;
 
         //添加表情
         $scope.getQQExpression = function () {
             $('#face').qqFace({
-                id : 'facebox', //表情盒子的ID
-                assign:'saytext', //给那个控件赋值
-                path:'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F'	//表情存放的路径
+                id: 'facebox', //表情盒子的ID
+                assign: 'saytext', //给那个控件赋值
+                path: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F'	//表情存放的路径
             });
         };
 
 
         //发送图片
-        $scope.uploadFiles = function($files,fileType) {
+        $scope.uploadFiles = function ($files, fileType) {
             console.log('dataJsonValue');
             for (var i = 0; i < $files.length; i++) {
                 var file = $files[i];
                 $scope.upload = $upload.upload({
                     url: 'nonRealTimeConsultUser/uploadMediaFile',
                     file: file
-                }).progress(function(evt) {
+                }).progress(function (evt) {
                     console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-                }).success(function(data, status, headers, config){
-                    $scope.sendMsg("img",data.imgPath);
+                }).success(function (data, status, headers, config) {
+                    $scope.sendMsg("img", data.imgPath);
                     console.log("上传图片成功");
 
                 });
@@ -34,25 +34,25 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
         };
 
         //发送消息
-        $scope.sendMsg = function(messageType,content){
-            $scope.sendLock= true;
-            $timeout(function() {
-                $scope.sendLock= false;
+        $scope.sendMsg = function (messageType, content) {
+            $scope.sendLock = true;
+            $timeout(function () {
+                $scope.sendLock = false;
                 $scope.$digest(); // 通知视图模型的变化
             }, 2000);
             var information = {
-                "sessionId":$stateParams.sessionId,
+                "sessionId": $stateParams.sessionId,
                 "content": content,
                 "msgType": messageType,
-                "source":"doctor",
-                "doctorId":$scope.doctorId
+                "source": "doctor",
+                "doctorId": $scope.doctorId
             };
-            UpdateReCode.save(information,function (data) {
-                if(data.state == "error"){
+            UpdateReCode.save(information, function (data) {
+                if (data.state == "error") {
                     alert("请重新打开页面提交信息");
                 }
-                if(data.state == "success"){
-                    console.log("更新会话信息",data);
+                if (data.state == "success") {
+                    console.log("更新会话信息", data);
                     $scope.messageList.push(data.conversationData);
                     $scope.info.content = "";
                 }
@@ -61,23 +61,26 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
 
 
         //页面初始化
-        $scope.NonTimeDoctorConversationInit = function(){
+        $scope.NonTimeDoctorConversationInit = function () {
             $scope.glued = true;
             //校验是否登陆
             GetDoctorLoginStatus.save({}, function (data) {
                 $scope.pageLoading = false;
-                if(data.status == "failure"){
+                if (data.status == "failure") {
                     window.location.href = "http://s201.xiaork.com/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
-                }else if(data.status == "backendClose"){
-                    alert("后台已关闭，请联系接诊员！");
-                }else{
-                    ConversationDoctorInfo.save({sessionId:$stateParams.sessionId,doctorId:$scope.doctorId},function (data) {
-                        console.log("会话信息列表",data)
+                } else if (data.status == "success") {
+                    ConversationDoctorInfo.save({
+                        sessionId: $stateParams.sessionId,
+                        doctorId: $scope.doctorId
+                    }, function (data) {
+                        console.log("会话信息列表", data)
                         $scope.pageData = data;
                         $scope.messageList = data.messageList;
                         $scope.doctorId = $scope.pageData.doctorId;
                     })
+                } else {
+                    alert("后台已关闭，请联系接诊员！");
                 }
             })
-            }
+        }
     }]);
