@@ -216,10 +216,9 @@ public class NonRealTimeConsultDoctorContorller {
                     }
 
                     babyInfo = sex + babyName + (nowDateYear - babyBirthdayYear) + "岁" + chaDate + "个月";
-
-                } else {
-                    babyInfo = "暂无数据";
                 }
+                babyInfo = StringUtils.isNull(babyInfo)?"暂无数据":babyInfo;
+
                 nonRealTimeConsultSessionVo.setBabyInfo(babyInfo);
             }
         }
