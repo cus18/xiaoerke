@@ -8,6 +8,8 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             $scope.sexItem = 0;
             $scope.isSelectedB = true;
             $scope.isSelectedG = false;
+            $scope.babyId = "";
+            $scope.sexItem == 0;
             $scope.NonTimeUserFirstConsultInit = function(){
                 // 获取宝宝基本信息
                 BabyBaseInfo.save({},function (data) {
@@ -16,16 +18,18 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                        alert (data.msg);
                         return;
                     }
-
-                    $scope.sexItem = data.babySex;
-                    if ($scope.sexItem == 0) {
-                        $scope.isSelectedB = true;
-                        $scope.isSelectedG = false;
+                    if(data.babySex != ""){
+                        $scope.sexItem = data.babySex;
+                        if ($scope.sexItem == 0) {
+                            $scope.isSelectedB = true;
+                            $scope.isSelectedG = false;
+                        }
+                        if ($scope.sexItem == 1) {
+                            $scope.isSelectedG = true;
+                            $scope.isSelectedB = false;
+                        }
                     }
-                    if ($scope.sexItem == 1) {
-                        $scope.isSelectedG = true;
-                        $scope.isSelectedB = false;
-                    }
+                    $scope.babyId = data.babyId;
                     if(data.babyBirthDay != ""){
                         $("#babyBirthday").val(data.babyBirthDay)
                     }
@@ -97,6 +101,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                     "sex": $scope.sexItem+"",
                     "birthday": $("#babyBirthday").val(),
                     "describeIllness": $scope.info.describeIllness,
+                    "babyId": $scope.babyId,
                     "imgList":$scope.photoList
                 };
 
