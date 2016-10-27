@@ -268,7 +268,7 @@ public class WechatUtil {
      *
      * @author deliang
      */
-    public String downloadMediaFromWx(String accessToken, String mediaId, String messageType ,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) throws IOException {
+    public static String downloadMediaFromWx(String accessToken, String mediaId, String messageType ,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) throws IOException {
         if (StringUtils.isEmpty(accessToken) || StringUtils.isEmpty(mediaId)) return "";
         Long picLen = 0L;
         InputStream inputStream = null;
@@ -336,7 +336,7 @@ public class WechatUtil {
         return mediaURL;
     }
 
-    public void ToMp3(String webroot, String sourcePath,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo){
+    public static void ToMp3(String webroot, String sourcePath,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo){
 
         String targetPath = sourcePath+".mp3";//转换后文件的存储地址，直接将原来的文件名后加mp3后缀名
         Runtime run = null;
@@ -630,7 +630,7 @@ public class WechatUtil {
             is.read(jsonBytes);
             reResult = new String(jsonBytes, "UTF-8");
             System.out.println("请求返回结果:"+reResult);
-            LogUtils.saveLog(json+"----"+reResult);
+//            LogUtils.saveLog(json+"----"+reResult);
             is.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -689,8 +689,14 @@ public class WechatUtil {
         return result;
     }
 
-   /* public static void main(String[] args){
-        List<String> openIds = new ArrayList<String>();
+  public static void main(String[] args){
+      String token = "qUjyIaqq5GemBwRXeg5bw0MIIRycQ9RowiUJXy6zA9ONIUWW0o1rpHkppiSFvIoSTJvfO-6sCGIpv7y01dpAsCX6zyZ_8qViFI-EjeIQBi6JKSv72HnmGYLqAJt7N8TLLMDeACAQRI";
+      String openid = "oogbDwCLH1_x-KLcQKqlrmUzG2ng";
+      String content ="VqbZoh6NyIk5kmVZ0AVT-BMQDAenOeQyZ5GfbLrbAhE";
+//      sendMsgToWechat(token,openid,content);
+      sendNoTextMsgToWechat(token,openid,content,1);
+  }
+   /*       List<String> openIds = new ArrayList<String>();
         openIds.add("o3_NPwsDuiEk1LW1dFvpBlozafu4");
         openIds.add("o3_NPwh8Jqkf9Dr2YsuFSSoAyzpc");
         openIds.add("o3_NPwq71mM836w64VUVdKi7gNEA");
