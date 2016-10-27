@@ -1,15 +1,63 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstConsultCtrl', [
         '$scope','$upload','$state','$stateParams','BabyBaseInfo','CreateSession',
         function ($scope,$upload,$state,$stateParams,BabyBaseInfo,CreateSession) {
+
+            //初始化数据
             $scope.info = {
                 describeIllness:""
             };
+            $scope.showPhotoList = []
             $scope.photoList = [];
             $scope.sexItem = 0;
             $scope.isSelectedB = true;
             $scope.isSelectedG = false;
             $scope.babyId = "";
             $scope.sexItem == 0;
+
+            //微信js-sdk 初始化接口
+            $scope.doRefresh = function(){
+                var timestamp;//时间戳
+                var nonceStr;//随机字符串
+                var signature;//得到的签名
+                var appid;//得到的签名
+                $.ajax({
+                    url:"wechatInfo/getConfig",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                        if(data!=null ){
+                            timestamp=data.timestamp;//得到时间戳
+                            nonceStr=data.nonceStr;//得到随机字符串
+                            signature=data.signature;//得到签名
+                            appid=data.appid;//appid
+                            //微信配置
+                            wx.config({
+                                debug: false,
+                                appId: appid,
+                                timestamp:timestamp,
+                                nonceStr: nonceStr,
+                                signature: signature,
+                                jsApiList: [
+                                    'previewImage',
+                                    'chooseImage',
+                                    'uploadImage'
+                                ] // 功能列表
+                            });
+                            wx.ready(function () {
+                            })
+                        }
+                    },
+                    error : function() {
+                    }
+                });
+            }
+
+
+
+            //页面数据请求
             $scope.NonTimeUserFirstConsultInit = function(){
                 // 获取宝宝基本信息
                 BabyBaseInfo.save({},function (data) {
@@ -49,6 +97,8 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                     $scope.isSelectedB = false;
                 }
             };
+
+
             $scope.showInput = function() {
                 var date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
                 $("#babyBirthday").mobiscroll().date();
@@ -77,24 +127,32 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                 $("#babyBirthday").mobiscroll(opt);
                 $("#babyBirthday").mobiscroll("show");
             };
+
+
             //提交图片
-            $scope.uploadFiles = function($files,fileType) {
+            $scope.uploadFiles = function() {
                 console.log('dataJsonValue');
-                for (var i = 0; i < $files.length; i++) {
-                    var file = $files[i];
-                    $scope.upload = $upload.upload({
-                        url: 'nonRealTimeConsultUser/uploadMediaFile',
-                        file: file
-                    }).progress(function(evt) {
-                        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-                    }).success(function(data, status, headers, config){
-                        $scope.photoList.push(data.imgPath)
-                    }).error(function (data, status, headers, config) {
-                        //上传失败
-                        console.log('error status: ' + status);
-                    });
-                }
+                wx.chooseImage({
+                    count: 1, // 默认9
+                    sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                    sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                    success: function (res) {
+                        var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                        $scope.showPhotoList.push(serverId)
+                        wx.uploadImage({
+                            localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
+                            isShowProgressTips: 1, // 默认为1，显示进度提示
+                            success: function (res) {
+                                var serverId = res.serverId; // 返回图片的服务器端ID
+                                $scope.photoList.push(serverId)
+                            }
+                        });
+
+                    }
+                });
             };
+
+
             $scope.submit = function(){
                 var information = {
                     "csUserId":$stateParams.doctorId,
