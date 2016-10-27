@@ -30,8 +30,12 @@
                 </div>
             </div>
             <ul class="photo-list">
-                <li ng-repeat="item in photoList">
-                    <img class="pos" width="100%" ng-src="{{item}}" alt=""/>
+                <wx-img  class="pos" width="100%">
+                </wx-img>
+
+                <li ng-repeat="per in showPhotoList">
+                    <wx-img  class="pos" width="100%">
+                    </wx-img>
                     <img class="del" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fc_10.png"
                          ng-click="deletePhoto($index)"
                          alt=""/>
