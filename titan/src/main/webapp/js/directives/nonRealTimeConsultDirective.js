@@ -78,10 +78,7 @@ define(['appNonRealTimeConsult','jquery'], function (app,$) {
                 return {
                     restrict: 'E',
                     replace: true,
-                    // template: '<img class="pos" width="100%" src=""/><a><img class="del"  src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fc_10.png" /></a>',
-                   fdafdsa:'<li><img class="pos" width="100%" src="" alt=""/>' +
-                   '<img class="del" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fc_10.png"' +
-                   'ng-click="deletePhoto($index)"alt=""/></li>',
+                    template: '<img class="pos" width="100%" src=""/>',
                     link: function(scope,ele,attrs) {
                         scope.$watch('per',function(nowVal){
                                             ele.attr('src',nowVal);
