@@ -14,7 +14,6 @@ import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultSe
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
-import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -153,7 +151,7 @@ public class NonRealTimeConsultUserContorller {
 //            创建评价记录
         }
         HashMap<String, Object>  sessionMap = nonRealTimeConsultUserService.createSession(csUserId,openid,content);
-        nonRealTimeConsultUserService.saveCustomerEvaluation(openid,csUserId,(String) sessionMap.get("sessionId"));
+        nonRealTimeConsultUserService.saveCustomerEvaluation(openid,csUserId,(Integer) sessionMap.get("sessionId")+"");
         return sessionMap;
     }
 
@@ -280,7 +278,7 @@ public class NonRealTimeConsultUserContorller {
         }
 
         //用户微信头像的信息
-        Map parameter = systemService.getWechatParameter();
+            Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
         WechatBean wechatInfo = WechatUtil.getWechatName(token,openid);
         resultMap.put("wechatImg",wechatInfo.getHeadimgurl());
@@ -329,6 +327,7 @@ public class NonRealTimeConsultUserContorller {
                 nonRealTimeConsultUserService.savenConsultRecord(sessionid,doctorId, source, content,msgType);
             }else{
                 nonRealTimeConsultUserService.savenConsultRecord(sessionid,openid, source, content,msgType);
+                doctorId = sessionInfo.get(0).getCsUserId();
             }
             resultMap.put("state","success");
         }else{
@@ -339,7 +338,7 @@ public class NonRealTimeConsultUserContorller {
         //通知相关医生来回答--模板消息
         Map parameter = systemService.getDoctorWechatParameter();
         String token = (String) parameter.get("token");
-        ConsultDoctorInfoVo doctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(sessionVo.getUserId());
+        ConsultDoctorInfoVo doctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(doctorId);
 //        WechatUtil.sendMsgToWechat(token,doctorInfoVo.getOpenId(),"你有问题了 ,赶快去回到吧");
 
         String data = "{ \"first\": {\"value\":\"恭喜你购买成功！\",\"color\":\"#173177\"},\"keynote1\":{\"value\":\"巧克力\",\"color\":\"#173177\"}, \"keynote2\": {\"value\":\"39.8元\", \"color\":\"#173177\"},\"keynote3\": { \"value\":\"2014年9月22日\", \"color\":\"#173177\" }, \"remark\":{ \"value\":\"欢迎再次购买！\", \"color\":\"#173177\" }";
