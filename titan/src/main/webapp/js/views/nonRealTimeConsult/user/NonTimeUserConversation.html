@@ -13,8 +13,8 @@
                 <div ng-style="item.source=='user'?{'display':'block'}:{'display':'none'}" class="user-content posr fr w80">
                     <div class="tae c9">{{item.messageTime}}</div>
                     <div class="head-portrait fr">
-                        <img width="100%" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{pageData.doctorId}}"
-                             err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png" alt=""/>
+                        <img width="100%" ng-src="{{pageData.wechatImg}}"
+                             err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
                     </div>
                     <div class="arrows">
                         <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Ftriangle2.png" alt=""/>
@@ -36,8 +36,8 @@
                 <div ng-style="item.source=='doctor'?{'display':'block'}:{'display':'none'}" class="doctor-content posr fl w80">
                     <div class="c9">{{item.messageTime}}</div>
                     <div class="head-portrait fl">
-                        <img width="100%" ng-src="{{pageData.wechatImg}}"
-                             err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
+                        <img width="100%" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{pageData.doctorId}}"
+                             err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png" alt=""/>
                     </div>
                     <div class="arrows">
                         <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Ftriangle1.png" alt=""/>
