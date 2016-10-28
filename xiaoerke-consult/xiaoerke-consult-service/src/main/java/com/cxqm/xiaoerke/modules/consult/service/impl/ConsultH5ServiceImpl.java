@@ -2,10 +2,7 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
-import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
-import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultH5Service;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
@@ -51,6 +48,11 @@ public class ConsultH5ServiceImpl implements ConsultH5Service {
 
         if(file !=null && ! file.isEmpty()){
             String fileName = file.getOriginalFilename();
+            if(fileName.contains(".jpg")||fileName.contains(".png")||fileName.contains(".jpeg") || fileName.contains(".bmp") ||fileName.contains(".gif")){
+                fileName = IdGen.uuid() + fileName.substring(fileName.lastIndexOf("."),fileName.length());
+            }else{
+                fileName = IdGen.uuid();
+            }
             Map<String, Object> msgMap;
             InputStream inputStream = null;
             InputStream inputStream_ws = null;
