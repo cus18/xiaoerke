@@ -59,6 +59,7 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
                         alert("请重新打开页面提交信息");
                     }
                     $scope.pageData = data;
+                    $scope.mindPath = data.mindPath
                     $scope.messageList = $scope.pageData.messageList;
                 })
             };
@@ -87,6 +88,7 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
             //送心意
             $scope.giveMind = function(){
                 //$state.go("NonTimeUserFirstConsult",{"doctorId":$scope.pageData.doctorId});
+                location.href = $scope.mindPath;
             };
             //提交图片
             $scope.uploadFiles = function() {
