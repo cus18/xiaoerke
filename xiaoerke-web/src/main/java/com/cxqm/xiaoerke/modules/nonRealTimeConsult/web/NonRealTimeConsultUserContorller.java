@@ -354,15 +354,7 @@ public class NonRealTimeConsultUserContorller {
         }
 
         //通知相关医生来回答--模板消息
-        Map parameter = systemService.getDoctorWechatParameter();
-        String token = (String) parameter.get("token");
-        ConsultDoctorInfoVo doctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(doctorId);
-//        WechatUtil.sendMsgToWechat(token,doctorInfoVo.getOpenId(),"你有问题了 ,赶快去回到吧");
-
-        String data = "{ \"first\": {\"value\":代办事项\n\",\"color\":\"#173177\"},\"keynote1\":{\"value\":\"+doctorInfoVo.getName()+\"医生您好， 您有新消息\n" +
-                "\",\"color\":\"#173177\"}, \"keynote2\": {\"value\":\"用户向您咨询，请尽快回复。\", \"color\":\"#173177\"}, \"remark\":{ \"value\":\"优先级很高哦！\", \"color\":\"#173177\" }";
-        WechatUtil.sendTemplateMsgToUser(token,doctorInfoVo.getOpenId(),"APZhFvwnuhFL9TA-ufQo5xJxG4y1bM2J9anNsmnzvXM",data);
-
+        nonRealTimeConsultUserService.sendRemindDoctor(doctorId,sessionVo.getUserName());
 
         //通知前台更新聊天记录
         Map<String,Object> conversationData = new HashMap<String, Object>();
