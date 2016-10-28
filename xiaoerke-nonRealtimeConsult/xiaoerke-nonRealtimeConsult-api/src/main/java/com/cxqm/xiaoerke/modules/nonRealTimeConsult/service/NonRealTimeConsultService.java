@@ -78,4 +78,7 @@ public interface NonRealTimeConsultService {
      * 将36小时后的会话关闭
      * */
     void sessinTimeOut();
+
+    //记录评价信息
+    void saveCustomerEvaluation(String openid, String doctorid, String sessionid);
 }
