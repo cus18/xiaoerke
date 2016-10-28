@@ -12,7 +12,9 @@ import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRec
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,6 +51,9 @@ public class NonRealTimeConsultUserContorller {
 
     @Autowired
     private ConsultDoctorInfoService consultDoctorInfoService;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
 
     @RequestMapping(value = "/getDepartmentList", method = {RequestMethod.POST, RequestMethod.GET})
@@ -237,6 +242,17 @@ public class NonRealTimeConsultUserContorller {
             resultMap.put("professor",sessionVo.getDoctorProfessor());
             resultMap.put("department",sessionVo.getDoctorDepartmentName());
             resultMap.put("sessionStatus",sessionVo.getStatus());
+
+//            送心意地址
+            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl() +"keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
+            stringBuilder.append("");
+            stringBuilder.append("&sessionId=");
+            stringBuilder.append(sessionid);
+            stringBuilder.append("&evaluateSource=nonRealtimeConsult");
+            resultMap.put("mindPath",stringBuilder.toString());
+
         }else{
             resultMap.put("state","error");
             resultMap.put("result_info","未找到相应的会话");
