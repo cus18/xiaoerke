@@ -487,4 +487,9 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 	public List<Map<String, Object>> findDoctorAllEvaluationByInfo(Map<String, Object> map) {
 		return patientRegisterPraiseDao.findDoctorAllEvaluationById(map);
 	}
+
+	@Override
+	public String getNonRealtimeCustomerId(Integer sessionid) {
+		return patientRegisterPraiseDao.getNonRealtimeCustomerId(sessionid);
+	}
 }
