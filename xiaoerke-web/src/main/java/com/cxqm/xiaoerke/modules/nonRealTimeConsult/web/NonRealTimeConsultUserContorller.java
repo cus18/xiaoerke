@@ -325,7 +325,7 @@ public class NonRealTimeConsultUserContorller {
             if(StringUtils.isNotNull(doctorId)){
                 nonRealTimeConsultUserService.savenConsultRecord(sessionid,doctorId, source, content,msgType);
             }else{
-                nonRealTimeConsultUserService.savenConsultRecord(sessionid,doctorId, source, content,msgType);
+                nonRealTimeConsultUserService.savenConsultRecord(sessionid,openid, source, content,msgType);
             }
             resultMap.put("state","success");
         }else{
