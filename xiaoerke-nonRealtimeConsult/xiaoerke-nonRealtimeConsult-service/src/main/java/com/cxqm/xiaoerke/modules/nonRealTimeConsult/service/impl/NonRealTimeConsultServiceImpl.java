@@ -223,4 +223,9 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         patientRegisterPraiseService.saveCustomerEvaluation(evaluationMap);
     }
 
+    @Override
+    public String getNonRealtimeCustomerId(Integer sessionid){
+        return patientRegisterPraiseService.getNonRealtimeCustomerId(sessionid);
+    };
+
 }

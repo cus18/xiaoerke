@@ -81,4 +81,6 @@ public interface NonRealTimeConsultService {
 
     //记录评价信息
     void saveCustomerEvaluation(String openid, String doctorid, String sessionid);
+
+    String getNonRealtimeCustomerId(Integer sessionid);
 }
