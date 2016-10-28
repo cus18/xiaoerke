@@ -150,8 +150,11 @@ public class NonRealTimeConsultUserContorller {
             vo.setSex((String) params.get("sex"));
             vo.setOpenid(openid);
             nonRealTimeConsultUserService.saveBabyBaseInfo(vo);
+//            创建评价记录
         }
-        return nonRealTimeConsultUserService.createSession(csUserId,openid,content);
+        HashMap<String, Object>  sessionMap = nonRealTimeConsultUserService.createSession(csUserId,openid,content);
+        nonRealTimeConsultUserService.saveCustomerEvaluation(openid,csUserId,(String) sessionMap.get("sessionId"));
+        return sessionMap;
     }
 
 
@@ -338,7 +341,9 @@ public class NonRealTimeConsultUserContorller {
         String token = (String) parameter.get("token");
         ConsultDoctorInfoVo doctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(sessionVo.getUserId());
 //        WechatUtil.sendMsgToWechat(token,doctorInfoVo.getOpenId(),"你有问题了 ,赶快去回到吧");
-        WechatUtil.sendTemplateMsgToUser(token,openid,"temid","temconten");
+
+        String data = "{ \"first\": {\"value\":\"恭喜你购买成功！\",\"color\":\"#173177\"},\"keynote1\":{\"value\":\"巧克力\",\"color\":\"#173177\"}, \"keynote2\": {\"value\":\"39.8元\", \"color\":\"#173177\"},\"keynote3\": { \"value\":\"2014年9月22日\", \"color\":\"#173177\" }, \"remark\":{ \"value\":\"欢迎再次购买！\", \"color\":\"#173177\" }";
+        WechatUtil.sendTemplateMsgToUser(token,doctorInfoVo.getOpenId(),"APZhFvwnuhFL9TA-ufQo5xJxG4y1bM2J9anNsmnzvXM",data);
 
 
         //通知前台更新聊天记录
