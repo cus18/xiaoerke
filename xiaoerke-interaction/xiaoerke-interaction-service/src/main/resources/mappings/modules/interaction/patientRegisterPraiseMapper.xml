@@ -341,12 +341,22 @@
 	</select>
 
     <select id="getCustomerStarSingById" resultType="java.util.Map">
+    SELECT
+    COUNT(serviceAttitude) AS startNum
+    FROM
+    customerEvaluation
+    WHERE
+    doctorId =#{doctorId} and serviceAttitude>1
+</select>
+
+
+    <select id="getNonRealtimeCustomerId" resultType="java.lang.String">
         SELECT
-        COUNT(serviceAttitude) AS startNum
+        id
         FROM
         customerEvaluation
         WHERE
-        doctorId =#{doctorId} and serviceAttitude>1
+        consult_session_id =#{sessionid} and evaluateSource = 'nonRealtimeConsult'
     </select>
 
     <select id="getCustomerStarCountById" resultType="java.util.Map">
