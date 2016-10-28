@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.impl;
 
 import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultDoctorDepartmentDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
@@ -16,6 +17,7 @@ import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSes
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.service.BabyBaseInfoService;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,9 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 
     @Autowired
     private PatientRegisterPraiseService patientRegisterPraiseService;
+
+    @Autowired
+    private SystemService systemService;
 
 
     @Override
@@ -226,6 +231,22 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
     @Override
     public String getNonRealtimeCustomerId(Integer sessionid){
         return patientRegisterPraiseService.getNonRealtimeCustomerId(sessionid);
-    };
+    }
+
+    @Override
+    public void sendRemindDoctor(String doctorId,String userName) {
+        Map parameter = systemService.getDoctorWechatParameter();
+        String token = (String) parameter.get("token");
+        ConsultDoctorInfoVo doctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(doctorId);
+//        WechatUtil.sendMsgToWechat(token,doctorInfoVo.getOpenId(),"你有问题了 ,赶快去回到吧");
+
+        String data = "{ \"first\": {\"value\":代办事项\n\",\"color\":\"#173177\"},\"keynote1\":{\"value\":"+doctorInfoVo.getName()+"医生您好， 您有新消息\n"
+                +",\"color\":\"#173177\"}, \"keynote2\": {\"value\":"+userName+"向您咨询，请尽快回复。\", \"color\":\"#173177\"}, \"remark\":{ \"value\":\"优先级很高哦！\", \"color\":\"#173177\" }";
+        WechatUtil.sendTemplateMsgToUser(token,doctorInfoVo.getOpenId(),"APZhFvwnuhFL9TA-ufQo5xJxG4y1bM2J9anNsmnzvXM",data);
+
+
+    }
+
+    ;
 
 }
