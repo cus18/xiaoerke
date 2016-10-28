@@ -83,4 +83,6 @@ public interface NonRealTimeConsultService {
     void saveCustomerEvaluation(String openid, String doctorid, String sessionid);
 
     String getNonRealtimeCustomerId(Integer sessionid);
+
+    void sendRemindDoctor(String doctorId ,String userName);
 }
