@@ -88,25 +88,6 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
             $scope.giveMind = function(){
                 //$state.go("NonTimeUserFirstConsult",{"doctorId":$scope.pageData.doctorId});
             };
-            // //提交图片
-            // $scope.uploadFiles = function($files,fileType) {
-            //     console.log('dataJsonValue');
-            //     for (var i = 0; i < $files.length; i++) {
-            //         var file = $files[i];
-            //         $scope.upload = $upload.upload({
-            //             url: 'nonRealTimeConsultUser/uploadMediaFile',
-            //             file: file
-            //         }).progress(function(evt) {
-            //             console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-            //         }).success(function(data, status, headers, config){
-            //             $scope.sendMsg("img",data.imgPath);
-            //             //
-            //             //
-            //             // $scope.messageList.push(data.conversationData);
-            //         });
-            //     }
-            // };
-
             //提交图片
             $scope.uploadFiles = function() {
                 wx.chooseImage({
