@@ -553,6 +553,7 @@ public enum ConsultSessionManager {
         evaluationMap.put("dissatisfied", null);
         evaluationMap.put("redPacket", null);
         evaluationMap.put("consultSessionId", consultSession.getId());
+        evaluationMap.put("evaluateSource", "realtimeConsult");
         patientRegisterPraiseService.saveCustomerEvaluation(evaluationMap);
     }
 
