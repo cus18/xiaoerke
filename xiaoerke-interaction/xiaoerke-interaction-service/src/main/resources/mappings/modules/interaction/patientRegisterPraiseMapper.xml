@@ -285,8 +285,8 @@
 
 <!--    保存评价内容 -->
 	<insert id="saveCustomerEvaluation">
-	 INSERT INTO customerEvaluation(id,serviceAttitude,professional,Solve,openid,doctorId,createtime,content,dissatisfied,redPacket,consult_session_id)
-        VALUES(#{uuid},#{starNum1},#{starNum2},#{starNum3},#{openid},#{doctorId},now(),#{content},#{dissatisfied},#{redPacket},#{consultSessionId})
+	 INSERT INTO customerEvaluation(id,serviceAttitude,professional,Solve,openid,doctorId,createtime,content,dissatisfied,redPacket,consult_session_id,evaluateSource)
+        VALUES(#{uuid},#{starNum1},#{starNum2},#{starNum3},#{openid},#{doctorId},now(),#{content},#{dissatisfied},#{redPacket},#{consultSessionId},#{evaluateSource})
 	</insert>
 <!-- 	修改评价内容 -->
 	<update id="updateCustomerEvaluation">
