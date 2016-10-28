@@ -207,7 +207,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 
         //记录评价信息
     @Override
-    public void saveCustomerEvaluation(String openid,String doctorid,String sessionid) {
+    public void saveCustomerEvaluation(String openid, String doctorid, String sessionid) {
         Map<String, Object> evaluationMap = new HashMap<String, Object>();
         evaluationMap.put("openid", openid);
         evaluationMap.put("uuid", IdGen.uuid());
@@ -219,6 +219,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         evaluationMap.put("dissatisfied", null);
         evaluationMap.put("redPacket", null);
         evaluationMap.put("consultSessionId", sessionid);
+        evaluationMap.put("evaluateSource", "nonRealtimeConsult");
         patientRegisterPraiseService.saveCustomerEvaluation(evaluationMap);
     }
 
