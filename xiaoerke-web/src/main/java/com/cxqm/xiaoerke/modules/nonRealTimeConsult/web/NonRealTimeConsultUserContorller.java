@@ -298,6 +298,16 @@ public class NonRealTimeConsultUserContorller {
         String msgType = (String)params.get("msgType");
         String source = (String)params.get("source");
         String doctorId = (String)params.get("doctorId");
+        if("img".equals(msgType)){
+            Map parameter = systemService.getWechatParameter();
+            String token = (String) parameter.get("token");
+            try {
+                content = WechatUtil.downloadMediaFromWx(token,content, "image",null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         if(!StringUtils.isNotNull(openid)){
             resultMap.put("state","error");
             resultMap.put("result_info","请重新打开页面");
