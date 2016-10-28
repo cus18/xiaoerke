@@ -359,7 +359,8 @@ public class NonRealTimeConsultUserContorller {
         ConsultDoctorInfoVo doctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(doctorId);
 //        WechatUtil.sendMsgToWechat(token,doctorInfoVo.getOpenId(),"你有问题了 ,赶快去回到吧");
 
-        String data = "{ \"first\": {\"value\":\"恭喜你购买成功！\",\"color\":\"#173177\"},\"keynote1\":{\"value\":\"巧克力\",\"color\":\"#173177\"}, \"keynote2\": {\"value\":\"39.8元\", \"color\":\"#173177\"},\"keynote3\": { \"value\":\"2014年9月22日\", \"color\":\"#173177\" }, \"remark\":{ \"value\":\"欢迎再次购买！\", \"color\":\"#173177\" }";
+        String data = "{ \"first\": {\"value\":代办事项\n\",\"color\":\"#173177\"},\"keynote1\":{\"value\":\"+doctorInfoVo.getName()+\"医生您好， 您有新消息\n" +
+                "\",\"color\":\"#173177\"}, \"keynote2\": {\"value\":\"用户向您咨询，请尽快回复。\", \"color\":\"#173177\"}, \"remark\":{ \"value\":\"优先级很高哦！\", \"color\":\"#173177\" }";
         WechatUtil.sendTemplateMsgToUser(token,doctorInfoVo.getOpenId(),"APZhFvwnuhFL9TA-ufQo5xJxG4y1bM2J9anNsmnzvXM",data);
 
 
