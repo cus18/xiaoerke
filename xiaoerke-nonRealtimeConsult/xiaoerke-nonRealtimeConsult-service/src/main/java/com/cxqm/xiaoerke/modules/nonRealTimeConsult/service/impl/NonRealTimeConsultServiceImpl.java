@@ -1,10 +1,13 @@
 package com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.impl;
 
+import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultDoctorDepartmentDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
+import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
+import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.dao.NonRealTimeConsultRecordDao;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.dao.NonRealTimeConsultSessionDao;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.ConsultSessionStatus;
@@ -50,6 +53,9 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 
     @Autowired
     private WechatAttentionService wechatAttentionService;
+
+    @Autowired
+    private PatientRegisterPraiseService patientRegisterPraiseService;
 
 
     @Override
@@ -195,6 +201,25 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
     @Override
     public void sessinTimeOut() {
         nonRealTimeConsultSessionDao.sessinTimeOut();
+    }
+
+
+
+        //记录评价信息
+    @Override
+    public void saveCustomerEvaluation(String openid,String doctorid,String sessionid) {
+        Map<String, Object> evaluationMap = new HashMap<String, Object>();
+        evaluationMap.put("openid", openid);
+        evaluationMap.put("uuid", IdGen.uuid());
+        evaluationMap.put("starNum1", 0);
+        evaluationMap.put("starNum2", 0);
+        evaluationMap.put("starNum3", 0);
+        evaluationMap.put("doctorId", doctorid);
+        evaluationMap.put("content", "");
+        evaluationMap.put("dissatisfied", null);
+        evaluationMap.put("redPacket", null);
+        evaluationMap.put("consultSessionId", sessionid);
+        patientRegisterPraiseService.saveCustomerEvaluation(evaluationMap);
     }
 
 }
