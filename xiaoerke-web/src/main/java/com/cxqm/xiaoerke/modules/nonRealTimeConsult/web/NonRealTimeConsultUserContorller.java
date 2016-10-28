@@ -248,7 +248,7 @@ public class NonRealTimeConsultUserContorller {
                 String customerId = nonRealTimeConsultUserService.getNonRealtimeCustomerId(sessionid);
                 SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl() +"keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
+                stringBuilder.append(sysPropertyVoWithBLOBsVo.getKeeperWebUrl() +"keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
                 stringBuilder.append(customerId);
                 stringBuilder.append("&sessionId=");
                 stringBuilder.append(sessionid);
