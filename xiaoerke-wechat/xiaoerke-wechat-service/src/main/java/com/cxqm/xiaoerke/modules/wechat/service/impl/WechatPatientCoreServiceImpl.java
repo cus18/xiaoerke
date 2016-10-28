@@ -1451,6 +1451,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         params.put("content", "");
         params.put("dissatisfied", null);
         params.put("redPacket", null);
+        params.put("evaluateSource", "realtimeConsult");
         patientRegisterPraiseDao.saveCustomerEvaluation(params);
         String st = "感谢您对我们的信任与支持，为了以后能更好的为您服务，请对本次服务做出评价！【" +
                 "<a href='http://s68.baodf.com/titan/appoint#/userEvaluate/" + params.get("uuid") + "'>我要评价</a>】";
