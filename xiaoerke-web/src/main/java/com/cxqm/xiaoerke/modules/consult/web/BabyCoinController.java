@@ -226,10 +226,7 @@ public class BabyCoinController {
 
 
         PayRecord payRecord = new PayRecord();
-        User user = UserUtils.getUser();
-        if (user != null) {
-            payRecord.setUserId(user.getId());
-        }
+        payRecord.setUserId(openId);
         String payRecordId = IdGen.uuid();
         payRecord.setId(payRecordId);
         payRecord.setOpenId(openId);
