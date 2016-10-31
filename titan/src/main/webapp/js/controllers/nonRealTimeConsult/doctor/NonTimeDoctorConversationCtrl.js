@@ -5,6 +5,48 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
         $scope.msgType = "text";
         $scope.sendLock = false;
 
+
+        //微信js-sdk 初始化接口
+        $scope.doRefresh = function(){
+            var timestamp;//时间戳
+            var nonceStr;//随机字符串
+            var signature;//得到的签名
+            var appid;//得到的签名
+            $.ajax({
+                url:"wechatInfo/getConfig",// 跳转到 action
+                async:true,
+                type:'get',
+                data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+                cache:false,
+                dataType:'json',
+                success:function(data) {
+                    if(data!=null ){
+                        timestamp=data.timestamp;//得到时间戳
+                        nonceStr=data.nonceStr;//得到随机字符串
+                        signature=data.signature;//得到签名
+                        appid=data.appid;//appid
+                        //微信配置
+                        wx.config({
+                            debug: false,
+                            appId: appid,
+                            timestamp:timestamp,
+                            nonceStr: nonceStr,
+                            signature: signature,
+                            jsApiList: [
+                                'previewImage',
+                                'chooseImage',
+                                'uploadImage'
+                            ] // 功能列表
+                        });
+                        wx.ready(function () {
+                        })
+                    }
+                },
+                error : function() {
+                }
+            });
+        }
+
         //添加表情
         $scope.getQQExpression = function () {
             $('#face').qqFace({
@@ -15,22 +57,25 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
         };
 
 
-        //发送图片
-        $scope.uploadFiles = function ($files, fileType) {
-            console.log('dataJsonValue');
-            for (var i = 0; i < $files.length; i++) {
-                var file = $files[i];
-                $scope.upload = $upload.upload({
-                    url: 'nonRealTimeConsultUser/uploadMediaFile',
-                    file: file
-                }).progress(function (evt) {
-                    console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-                }).success(function (data, status, headers, config) {
-                    $scope.sendMsg("img", data.imgPath);
-                    console.log("上传图片成功");
-
-                });
-            }
+        //提交图片
+        $scope.uploadFiles = function() {
+            wx.chooseImage({
+                count: 1, // 默认9
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    var localIds = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                    $scope.$digest(); // 通知视图模型的变化
+                    wx.uploadImage({
+                        localId: localIds, // 需要上传的图片的本地ID，由chooseImage接口获得
+                        isShowProgressTips: 1, // 默认为1，显示进度提示
+                        success: function (res) {
+                            var serverId = res.serverId; // 返回图片的服务器端ID
+                            $scope.sendMsg("img",serverId);
+                        }
+                    });
+                }
+            });
         };
 
         //发送消息
@@ -62,6 +107,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
 
         //页面初始化
         $scope.NonTimeDoctorConversationInit = function () {
+            $scope.doRefresh();
             $scope.glued = true;
             //校验是否登陆
             GetDoctorLoginStatus.save({}, function (data) {
