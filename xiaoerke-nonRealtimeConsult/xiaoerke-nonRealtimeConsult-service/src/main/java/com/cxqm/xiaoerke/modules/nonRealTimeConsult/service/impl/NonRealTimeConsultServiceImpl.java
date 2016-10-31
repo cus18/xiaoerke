@@ -6,7 +6,6 @@ import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultDoctorDepartmentDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.dao.NonRealTimeConsultRecordDao;
@@ -242,10 +241,12 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         String token = (String) parameter.get("token");
         ConsultDoctorInfoVo doctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(doctorId);
 //        WechatUtil.sendMsgToWechat(token,doctorInfoVo.getOpenId(),"你有问题了 ,赶快去回到吧");
+       if(doctorInfoVo!=null){
+           String data = "{ \"first\": {\"value\":代办事项\n\",\"color\":\"#173177\"},\"keynote1\":{\"value\":"+null==doctorInfoVo.getName()?"":doctorInfoVo.getName()+"医生您好， 您有新消息\n"
+                   +",\"color\":\"#173177\"}, \"keynote2\": {\"value\":"+userName+"向您咨询，请尽快回复。\", \"color\":\"#173177\"}, \"remark\":{ \"value\":\"优先级很高哦！\", \"color\":\"#173177\" }";
+           WechatUtil.sendTemplateMsgToUser(token,doctorInfoVo.getOpenId(),"APZhFvwnuhFL9TA-ufQo5xJxG4y1bM2J9anNsmnzvXM",data);
 
-        String data = "{ \"first\": {\"value\":代办事项\n\",\"color\":\"#173177\"},\"keynote1\":{\"value\":"+doctorInfoVo.getName()+"医生您好， 您有新消息\n"
-                +",\"color\":\"#173177\"}, \"keynote2\": {\"value\":"+userName+"向您咨询，请尽快回复。\", \"color\":\"#173177\"}, \"remark\":{ \"value\":\"优先级很高哦！\", \"color\":\"#173177\" }";
-        WechatUtil.sendTemplateMsgToUser(token,doctorInfoVo.getOpenId(),"APZhFvwnuhFL9TA-ufQo5xJxG4y1bM2J9anNsmnzvXM",data);
+       }
 
 
     }
