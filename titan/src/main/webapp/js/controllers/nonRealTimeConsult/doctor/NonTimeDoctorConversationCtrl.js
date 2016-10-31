@@ -1,6 +1,6 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConversationCtrl', [
-    '$scope', '$state', '$stateParams', '$timeout', '$http', '$digest', '$upload', 'ConversationDoctorInfo', 'GetDoctorLoginStatus', 'UpdateReCode',
-    function ($scope, $state, $stateParams, $timeout, $http, $digest, $upload, ConversationDoctorInfo, GetDoctorLoginStatus, UpdateReCode) {
+    '$scope', '$state', '$stateParams', '$timeout', '$http', '$upload', 'ConversationDoctorInfo', 'GetDoctorLoginStatus', 'UpdateReCode',
+    function ($scope, $state, $stateParams, $timeout, $http, $upload, ConversationDoctorInfo, GetDoctorLoginStatus, UpdateReCode) {
         $scope.info = {};
         $scope.msgType = "text";
         $scope.sendLock = false;
