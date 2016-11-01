@@ -3,8 +3,6 @@ var  customerId;//此次咨询会话的ID
 var sessionId ; //咨询ID
 var starNum1=3;
 var noManYi = [];
-var moneyNum = 0;
-var ptm3Flag = 1;//显示输入其它金额
 //医生提示语数组
 var showDocList = ["他们说我收到心意后开心得像个小孩子","宝宝在长大，医生会变老","谢谢妈妈们的好评和心意","让宝宝更健康是宝大夫团队的信仰"];
 //随机钱数和图片数组
@@ -36,7 +34,6 @@ var randomMoneyList = [
 ];
 var randomMoney ;//随机钱数和图片数组 下标值
 var randomMoneyItem;// 随机生成钱数和图片选项
-var indexFlag = 0;
 var redPacket ; // 最终支付钱数
 
 var sendHeartInit= function (){
