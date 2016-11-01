@@ -224,7 +224,7 @@ function getCustomerInfo(){
 }
 //提交评价
 function updateCustomerInfo(){
-
+    var content=$("#content").val();
     if (redPacket != "" && redPacket > 0  ) {
         recordLogs("ZXPJSXY_JE");
         $.ajax({
