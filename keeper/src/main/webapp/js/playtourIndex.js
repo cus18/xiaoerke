@@ -69,7 +69,7 @@ var setEvaluate = function (index) {
     }
 }
 
-//医生心意标题改变
+//医生提示语 标题改变
 var changeDocTitle = function () {
     var randomNum = parseInt(4*Math.random());
     $(".doctorWord").html(showDocList[randomNum]);
@@ -303,7 +303,7 @@ function updateCustomerInfo(){
     }
 }
 
-//页面初始化执行,用户初始化页面参数信息以及微信的支付接口
+//初始化微信的支付接口
 var weChatInit = function(){
     var timestamp;//时间戳
     var nonceStr;//随机字符串
