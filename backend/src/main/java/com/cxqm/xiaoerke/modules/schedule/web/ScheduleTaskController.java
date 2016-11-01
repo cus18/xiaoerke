@@ -5,7 +5,9 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
+import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
+import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
 import com.cxqm.xiaoerke.modules.operation.service.ConsultStatisticService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.LogMongoDBServiceImpl;
@@ -48,6 +50,9 @@ public class ScheduleTaskController extends BaseController {
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
+
+    @Autowired
+    private BabyCoinService babyCoinService;
 
 
     /**
@@ -414,6 +419,12 @@ public class ScheduleTaskController extends BaseController {
 
     public void updateOlyGames() {
         olyGamesService.updateLevelCurrentTimes(new OlyBabyGamesVo());
+    }
+
+    public void updateBabyCoinInviteNumber(){
+        BabyCoinVo babyCoinVo = new BabyCoinVo();
+        babyCoinVo.setInviteNumberMonth(0);
+        babyCoinService.updateBabyCoinInviteNumber(babyCoinVo);
     }
 
 

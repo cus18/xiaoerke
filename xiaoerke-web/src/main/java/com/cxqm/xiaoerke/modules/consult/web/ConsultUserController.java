@@ -295,7 +295,15 @@ public class ConsultUserController extends BaseController {
                         pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "temporary");
                         searchMap.put("patientId",userId);
                         searchMap.put("source",richConsultSession.getSource());
-                        searchMap.put("patientName", richConsultSession.getUserName());
+                        if(richConsultSession.getSource().contains("ykdl")){
+                            searchMap.put("patientName", "YKDL-"+richConsultSession.getUserName());
+                        }else if(richConsultSession.getSource().contains("wjy")){
+                            searchMap.put("patientName", "微家园-"+richConsultSession.getUserName());
+                        }else if(richConsultSession.getSource().contains("bhq")){
+                            searchMap.put("patientName", "宝护圈-"+richConsultSession.getUserName());
+                        }else{
+                            searchMap.put("patientName", richConsultSession.getUserName());
+                        }
                         searchMap.put("serverAddress",richConsultSession.getServerAddress());
                         searchMap.put("sessionId",richConsultSession.getId());
                         searchMap.put("isOnline",true);
@@ -316,15 +324,20 @@ public class ConsultUserController extends BaseController {
                             sessionRedisCache.putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
                         }
 
-                        if (null !=consultSessionStatusVo && ConstantUtil.PAY_SUCCESS.getVariable().indexOf(consultSessionStatusVo.getPayStatus())>-1) {
-                            searchMap.put("notifyType", "1001");
-                        } else if(null !=consultSessionStatusVo &&  ConstantUtil.NO_PAY.getVariable().indexOf(consultSessionStatusVo.getPayStatus())>-1){
-                            searchMap.put("notifyType", "1002");
-                        } else if(ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable().indexOf(consultSessionStatusVo.getPayStatus()) > -1) {
-                            searchMap.put("notifyType", "1003");
-                        } else {
-                            searchMap.put("notifyType", "1004");
+                        if(null !=consultSessionStatusVo && consultSessionStatusVo.getSource().contains("wxcxqm")){
+                            if(StringUtils.isNotNull(consultSessionStatusVo.getPayStatus())){
+                                if (ConstantUtil.PAY_SUCCESS.getVariable().indexOf(consultSessionStatusVo.getPayStatus())>-1) {
+                                    searchMap.put("notifyType", "1001");
+                                } else if(ConstantUtil.NO_PAY.getVariable().indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                                    searchMap.put("notifyType", "1002");
+                                } else if(ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable().indexOf(consultSessionStatusVo.getPayStatus()) > -1) {
+                                    searchMap.put("notifyType", "1003");
+                                } else {
+                                    searchMap.put("notifyType", "1004");
+                                }
+                            }
                         }
+
 
 //                            if(null != needPayList&&consultPayUserService.angelChargeCheck(userId)){
 //
@@ -534,16 +547,17 @@ public class ConsultUserController extends BaseController {
         String userName = "" ;
         Integer userSex = 3;            //代表没有传性别信息
         String remoteUrl = "";
+        String headimgurl = "";
         if (params.containsKey("source")) {
             source = String.valueOf(params.get("source"));
         }
-        if(StringUtils.isNotNull(source)){
-            if(source.contains("wjy")){
+        if(StringUtils.isNotNull(source)) {
+            if (source.contains("wjy")) {
                 thirdId = String.valueOf(params.get("thirdId"));
                 source = "WJY";
-                userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone")))?String.valueOf(params.get("patientPhone")):"";
-                userName = StringUtils.isNotNull(String.valueOf(params.get("patientName")))?String.valueOf(params.get("patientName")):"";
-                if(params.get("patientSex") != null && params.get("patientSex") != ""){
+                userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone"))) ? String.valueOf(params.get("patientPhone")) : "";
+                userName = StringUtils.isNotNull(String.valueOf(params.get("patientName"))) ? String.valueOf(params.get("patientName")) : "";
+                if (params.get("patientSex") != null && params.get("patientSex") != "") {
                     userSex = Integer.valueOf(String.valueOf(params.get("patientSex")));
                 }
                 remoteUrl = String.valueOf(params.get("remoteUrl"));
@@ -557,10 +571,10 @@ public class ConsultUserController extends BaseController {
                 request.put("sys_user_id", sys_user_id);
                 request.put("remoteUrl", remoteUrl);
 
-            }else if(source.contains("bhq")||source.contains("BHQ")){
+            } else if (source.contains("bhq") || source.contains("BHQ")) {
                 source = "COOP_BHQ";
-                userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone")))?String.valueOf(params.get("patientPhone")):"";
-                userName = StringUtils.isNotNull(String.valueOf(params.get("patientName")))?String.valueOf(params.get("patientName")):"";
+                userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone"))) ? String.valueOf(params.get("patientPhone")) : "";
+                userName = StringUtils.isNotNull(String.valueOf(params.get("patientName"))) ? String.valueOf(params.get("patientName")) : "";
                 thirdId = String.valueOf(params.get("thirdId"));
                 request.put("userPhone", userPhone);
                 request.put("userName", userName);
@@ -569,15 +583,57 @@ public class ConsultUserController extends BaseController {
                 request.put("thirdId", thirdId);
                 //         String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
                 //         request.put("sys_user_id", sys_user_id);
+            } else if (source.contains("ykdl") || source.contains("YKDL")) {
+                source = "COOP_YKDL";
+                thirdId = String.valueOf(params.get("thirdId"));
+                if(StringUtils.isNotNull(thirdId)){
+                    if(StringUtils.isNotNull(String.valueOf(params.get("remoteUrl")))){
+                        remoteUrl = String.valueOf(params.get("remoteUrl"));
+                    }else{
+                        remoteUrl = "http://wxsp-dev.ykbenefit.com/customer_info";
+                    }
+                    String method = "POST";
+                    String content_type = "json";
+                    String data = "{\"user_uuid\":\""+thirdId+"\"}";
+                    String str = CoopConsultUtil.getCurrentUserInfo(remoteUrl, method, content_type, null, data, 4);
+                    if(StringUtils.isNotNull(str)){
+                        JSONObject jsonObject = JSONObject.fromObject(str);
+                        if(jsonObject.containsKey("error_msg") && "success".equalsIgnoreCase(String.valueOf(jsonObject.get("error_msg")))){
+                            headimgurl = StringUtils.isNotNull(String.valueOf(jsonObject.get("headimgurl"))) ? String.valueOf(jsonObject.get("headimgurl")) : "";
+                            userName = StringUtils.isNotNull(String.valueOf(jsonObject.get("nickname"))) ? String.valueOf(jsonObject.get("nickname")) : "";
+                            if (jsonObject.get("sex") != null && jsonObject.get("sex") != "") {
+                                userSex = Integer.valueOf(String.valueOf(jsonObject.get("sex")));
+                            }
+                            userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone"))) ? String.valueOf(params.get("patientPhone")) : "";
+                            request.put("userPhone", userPhone);
+                            request.put("userName", userName);
+                            request.put("userSex", userSex);
+                            request.put("source", source);
+                            request.put("thirdId", thirdId);
+                            response.put("headimgurl",headimgurl);
+                            response.put("userName",userName);
+                        }else{
+                            response.put("status", "failure");
+                            return response ;
+                        }
+                    }else{
+                        response.put("status", "failure");
+                        return response ;
+                    }
+                }else{
+                    response.put("status", "failure");
+                    return response;
+                }
+
+            } else {
+                userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone"))) ? String.valueOf(params.get("patientPhone")) : "";
+                userName = StringUtils.isNotNull(String.valueOf(params.get("patientName"))) ? String.valueOf(params.get("patientName")) : "";
+                request.put("source", source);
+                request.put("userPhone", userPhone);
+                request.put("userName", userName);
+                String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
+                request.put("sys_user_id", sys_user_id);
             }
-        }else{
-            userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone")))?String.valueOf(params.get("patientPhone")):"";
-            userName = StringUtils.isNotNull(String.valueOf(params.get("patientName")))?String.valueOf(params.get("patientName")):"";
-            request.put("source", source);
-            request.put("userPhone", userPhone);
-            request.put("userName", userName);
-            String sys_user_id = UUID.randomUUID().toString().replaceAll("-", "");
-            request.put("sys_user_id", sys_user_id);
         }
 //        System.out.println("========================userPhone="+userPhone+"=userName="+userName+"=userSex="+userSex+"=remoteUrl="+remoteUrl+"=source="+source+"=thirdId="+thirdId+"=sys_user_id="+sys_user_id);
         Map result = userInfoService.createOrUpdateThirdPartPatientInfo(request);
@@ -588,6 +644,7 @@ public class ConsultUserController extends BaseController {
                 threadExecutor.execute(thread);
             }
             response.put("patientId", result.get("sys_user_id"));
+            response.put("status", "success");
         }
         return response;
     }

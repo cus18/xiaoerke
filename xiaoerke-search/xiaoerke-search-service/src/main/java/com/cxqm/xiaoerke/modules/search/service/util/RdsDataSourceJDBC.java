@@ -341,7 +341,7 @@ public class RdsDataSourceJDBC {
             ps.executeUpdate();
             //插入医院与医生的关联关系
             if(insertRelationFlag.equals("yes")){
-                ps = insertDoctorAndHospitalRelationToRds(doctorMap, con, ps);
+//                ps = insertDoctorAndHospitalRelationToRds(doctorMap, con, ps);
             }
         } catch (SQLException e) {
             e.printStackTrace();
