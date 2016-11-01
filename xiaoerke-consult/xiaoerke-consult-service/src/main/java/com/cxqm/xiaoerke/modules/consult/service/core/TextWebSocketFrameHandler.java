@@ -198,7 +198,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                                     noReadMsg.put("messageType",msgType);
                                     noReadMsg.put("messageContent",newContent);
                                     noReadMsg.put("doctorId",csUserId);
-                                    String currentUrl = Global.getConfig("COOP_BHQ_URL");
+                                    String currentUrl = sysPropertyVoWithBLOBsVo.getCoopBhqUrl();
                                     if(StringUtils.isNull(currentUrl)){
                                         currentUrl = "http://coapi.baohuquan.com/baodaifu";
                                     }
@@ -225,7 +225,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                                     noReadMsg.put("messageType",msgType);
                                     noReadMsg.put("messageContent",newContent);
                                     noReadMsg.put("doctorId",csUserId);
-                                    String currentUrl = "http://wxsp-dev.ykbenefit.com/consult_interrupted";
+                                    String currentUrl = sysPropertyVoWithBLOBsVo.getCoopYkdlUrl();
                                     if(StringUtils.isNull(currentUrl)){
                                         currentUrl = "http://wxsp-dev.ykbenefit.com/consult_interrupted";
                                     }
@@ -252,7 +252,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             noReadMsg.put("messageType",msgType);
                             noReadMsg.put("messageContent",newContent);
                             noReadMsg.put("doctorId",csUserId);
-                            String currentUrl = Global.getConfig("COOP_BHQ_URL");
+                            String currentUrl = sysPropertyVoWithBLOBsVo.getCoopBhqUrl();
                             if(StringUtils.isNull(currentUrl)){
                                 currentUrl = "http://coapi.baohuquan.com/baodaifu";
                             }
@@ -279,7 +279,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             noReadMsg.put("messageType",msgType);
                             noReadMsg.put("messageContent",newContent);
                             noReadMsg.put("doctorId",csUserId);
-                            String currentUrl = "http://wxsp-dev.ykbenefit.com/consult_interrupted";
+                            String currentUrl = sysPropertyVoWithBLOBsVo.getCoopYkdlUrl();
                             if(StringUtils.isNull(currentUrl)){
                                 currentUrl = "http://wxsp-dev.ykbenefit.com/consult_interrupted";
                             }

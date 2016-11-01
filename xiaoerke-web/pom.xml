@@ -134,6 +134,13 @@
             <artifactId>xiaoerke-vaccine-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.cxqm</groupId>
+            <artifactId>xiaoerke-payment-service</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
   
 </project>

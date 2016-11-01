@@ -429,7 +429,7 @@ public class ConsultDoctorController extends BaseController {
                                 noReadMsg.put("action","doctorCloseSession");
                                 noReadMsg.put("sessionId",sessionId);
                                 noReadMsg.put("uid",richConsultSession.getUserId());
-                                String currentUrl = Global.getConfig("COOP_BHQ_URL");
+                                String currentUrl = sysPropertyVoWithBLOBsVo.getCoopBhqUrl();
                                 if(StringUtils.isNull(currentUrl)){
                                     currentUrl = "http://coapi.baohuquan.com/baodaifu";
                                 }
@@ -452,7 +452,7 @@ public class ConsultDoctorController extends BaseController {
                                 noReadMsg.put("doctorId",richConsultSession.getCsUserId());
                                 noReadMsg.put("sessionId",sessionId);
                                 noReadMsg.put("uid",richConsultSession.getUserId());
-                                String currentUrl = "http://wxsp-dev.ykbenefit.com/consult_over";
+                                String currentUrl = sysPropertyVoWithBLOBsVo.getCoopYkdlUrl();
                                 if(StringUtils.isNull(currentUrl)){
                                     currentUrl = "http://wxsp-dev.ykbenefit.com/consult_over";
                                 }
@@ -471,7 +471,7 @@ public class ConsultDoctorController extends BaseController {
                             noReadMsg.put("action","doctorCloseSession");
                             noReadMsg.put("sessionId",sessionId);
                             noReadMsg.put("uid",richConsultSession.getUserId());
-                            String currentUrl = Global.getConfig("COOP_BHQ_URL");
+                            String currentUrl = sysPropertyVoWithBLOBsVo.getCoopBhqUrl();
                             if(StringUtils.isNull(currentUrl)){
                                 currentUrl = "http://coapi.baohuquan.com/baodaifu";
                             }
@@ -494,7 +494,7 @@ public class ConsultDoctorController extends BaseController {
                             noReadMsg.put("doctorName",richConsultSession.getCsUserName());
                             noReadMsg.put("sessionId",sessionId);
                             noReadMsg.put("uid",richConsultSession.getUserId());
-                            String currentUrl = "http://wxsp-dev.ykbenefit.com/consult_over";
+                            String currentUrl = sysPropertyVoWithBLOBsVo.getCoopYkdlUrl();
                             if(StringUtils.isNull(currentUrl)){
                                 currentUrl = "http://wxsp-dev.ykbenefit.com/consult_over";
                             }

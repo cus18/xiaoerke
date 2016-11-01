@@ -13,6 +13,16 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String templateIdDBRWTX;
 
+    private String coopYkdlUrl;
+
+    public String getCoopYkdlUrl() {
+        return coopYkdlUrl;
+    }
+
+    public void setCoopYkdlUrl(String coopYkdlUrl) {
+        this.coopYkdlUrl = coopYkdlUrl;
+    }
+
     private String bak17;
 
     private String bak18;

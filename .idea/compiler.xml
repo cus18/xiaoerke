@@ -311,7 +311,6 @@
         <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="xiaoerke-activity-service" />
       </profile>
       <profile default="false" name="Annotation profile for xiaoerke-alipay-service" enabled="true">
         <sourceOutputDir name="target\generated-sources\annotations" />
@@ -325,7 +324,6 @@
         <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="xiaoerke-activity-api" />
       </profile>
       <profile default="false" name="Annotation profile for xiaoerke-alipay-api" enabled="true">
         <sourceOutputDir name="target\generated-sources\annotations" />
@@ -339,14 +337,12 @@
         <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="xiaoerke-vaccine-service" />
       </profile>
       <profile default="false" name="Annotation profile for xiaoerke-vaccine-api" enabled="true">
         <sourceOutputDir name="target\generated-sources\annotations" />
         <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="xiaoerke-vaccine-api" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
