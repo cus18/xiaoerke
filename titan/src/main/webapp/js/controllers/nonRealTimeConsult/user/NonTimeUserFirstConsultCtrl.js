@@ -2,6 +2,21 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
         '$scope','$upload','$state','$stateParams','BabyBaseInfo','CreateSession',
         function ($scope,$upload,$state,$stateParams,BabyBaseInfo,CreateSession) {
 
+            var recordLogs = function(val){
+                $.ajax({
+                    url:"util/recordLogs",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{logContent:encodeURI(val)},
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                    },
+                    error : function() {
+                    }
+                });
+            }
+            recordLogs("FSS_YHD_TWY");
             //初始化数据
             $scope.info = {
                 describeIllness:""
@@ -173,6 +188,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                         alert (data.msg);
                         return;
                     }
+                    recordLogs("FSS_YHD_TWY_TW");
                     $state.go("NonTimeUserConversation",{"sessionId":data.sessionId})
                 })
             };
