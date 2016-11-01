@@ -270,7 +270,7 @@ public class ConsultUserController extends BaseController {
         String csUserId = String.valueOf(params.get("csUserId"));
         String csuserType =(String)params.get("userType");
         ConcurrentHashMap<String,Object> needPayList = new ConcurrentHashMap<String, Object>();
-
+        LogUtils.saveLog("left list--------------------------start------------------",csUserId);
         if(StringUtils.isNotNull(csUserId)){
             int pageNo = (Integer) params.get("pageNo");
             int pageSize = (Integer) params.get("pageSize");
@@ -280,14 +280,15 @@ public class ConsultUserController extends BaseController {
             consultSessionSearch.setCsUserId(csUserId);
             consultSessionSearch.setStatus(ConsultSession.STATUS_ONGOING);
             List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSessionSearch);
-
+            LogUtils.saveLog("left list--------------------------min------------------"+consultSessions.size(),csUserId);
             if(consultSessions!=null && consultSessions.size()>0){
                 for(ConsultSession consultSession :consultSessions){
                     HashMap<String,Object> searchMap = new HashMap<String, Object>();
                     RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(consultSession.getId());
-
+                    LogUtils.saveLog("richConsultSession--------"+richConsultSession,csUserId);
                     Query sessionquery = (new Query()).addCriteria(where("sessionId").is(""+consultSession.getId()+""));
                     ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(sessionquery);
+                    LogUtils.saveLog("consultSessionStatusVo------------"+consultSessionStatusVo,csUserId);
 
                     if(richConsultSession !=null && StringUtils.isNotNull(richConsultSession.getUserId())){
                         String userId = richConsultSession.getUserId();
@@ -360,6 +361,8 @@ public class ConsultUserController extends BaseController {
         } else {
             response.put("alreadyJoinPatientConversation", "");
         }
+        LogUtils.saveLog("left list--------------------------end------------------",csUserId);
+
         return response;
     }
 
