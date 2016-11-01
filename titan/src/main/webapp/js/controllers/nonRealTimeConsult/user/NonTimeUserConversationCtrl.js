@@ -1,6 +1,23 @@
 var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserConversationCtrl', [
         '$scope','$state','$stateParams','$upload','ConversationInfo','UpdateReCode',
         function ($scope,$state,$stateParams,$upload,ConversationInfo,UpdateReCode) {
+
+            var recordLogs = function(val){
+                $.ajax({
+                    url:"util/recordLogs",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{logContent:encodeURI(val)},
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                    },
+                    error : function() {
+                    }
+                });
+            }
+
+
             $scope.glued = true;
             $scope.msgType= "text";
             $scope.content = "";
@@ -83,10 +100,12 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
             };
             //再次咨询
             $scope.againConsulting = function(){
+                recordLogs("FSS_YHD_WTXQ_ZCZX");
                 $state.go("NonTimeUserFirstConsult",{"doctorId":$scope.pageData.doctorId});
             };
             //送心意
             $scope.giveMind = function(){
+                recordLogs("FSS_YHD_WTXQ_SXY");
                 //$state.go("NonTimeUserFirstConsult",{"doctorId":$scope.pageData.doctorId});
                 location.href = $scope.mindPath;
             };
