@@ -93,6 +93,7 @@ public class NonRealTimeConsultDoctorContorller {
                 response.put("status", "success");
                 if ("0".equals(consultDoctorInfoVos.get(0).getNonrealtimeStatus())) {
                     response.put("status", "backendClose");
+                    response.put("csUserId",consultDoctorInfoVos.get(0).getUserId());
                 }
             }
         }
@@ -129,6 +130,7 @@ public class NonRealTimeConsultDoctorContorller {
             consultDoctorInfoVo.setUserId(user.getId());
             consultDoctorInfoVo.setNonrealtimeStatus("1");
             int updateFlag = consultDoctorInfoService.updateByphone(consultDoctorInfoVo);
+
             response.put("status", (updateFlag > 0) ? "success" : "notConsultDoctor");
         }
         return response;
@@ -154,10 +156,11 @@ public class NonRealTimeConsultDoctorContorller {
     public Map GetDoctorService(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
         Map<String, Object> response = new HashMap<String, Object>();
         String serviceType = (String) params.get("serviceType");
+        String csUserId = String.valueOf(params.get("csUserId"));
         String openId = WechatUtil.getOpenId(session, request);
         String babyInfo = "";
         NonRealTimeConsultSessionVo realTimeConsultSessionVo = new NonRealTimeConsultSessionVo();
-        realTimeConsultSessionVo.setCsUserId(openId);
+        realTimeConsultSessionVo.setCsUserId(csUserId);
         if (serviceType.equals("currentService")) {//查询当前服务
             realTimeConsultSessionVo.setStatus("ongoing");
             realTimeConsultSessionVo.setOrder("lastMessageTimeAsc");

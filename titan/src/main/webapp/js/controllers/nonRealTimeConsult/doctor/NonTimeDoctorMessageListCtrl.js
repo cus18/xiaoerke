@@ -17,7 +17,7 @@ angular.module('controllers', []).controller('NonTimeDoctorMessageListCtrl', [
                 if (data.status == "failure") {
                     window.location.href = "http://s201.xiaork.com/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
                 }else if(data.status == "success"){
-                    GetDoctorService.save({serviceType:"currentService"}, function (data) {
+                    GetDoctorService.save({serviceType:"currentService",csUserId:data.csUserId}, function (data) {
                         $scope.curServiceList = data.ListInfo;
                         console.log("curService",data.ListInfo);
                     });
