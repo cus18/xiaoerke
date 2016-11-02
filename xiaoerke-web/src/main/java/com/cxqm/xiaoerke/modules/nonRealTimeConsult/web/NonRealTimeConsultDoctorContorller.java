@@ -93,8 +93,8 @@ public class NonRealTimeConsultDoctorContorller {
                 response.put("status", "success");
                 if ("0".equals(consultDoctorInfoVos.get(0).getNonrealtimeStatus())) {
                     response.put("status", "backendClose");
-                    response.put("csUserId",consultDoctorInfoVos.get(0).getUserId());
                 }
+                response.put("csUserId",consultDoctorInfoVos.get(0).getUserId());
             }
         }
         return response;

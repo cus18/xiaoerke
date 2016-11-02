@@ -21,7 +21,7 @@ angular.module('controllers', []).controller('NonTimeDoctorMessageListCtrl', [
                         $scope.curServiceList = data.ListInfo;
                         console.log("curService",data.ListInfo);
                     });
-                    GetDoctorService.save({serviceType:"allService"}, function (data) {
+                    GetDoctorService.save({serviceType:"allService",csUserId:data.csUserId}, function (data) {
                         $scope.allServiceList = data.ListInfo;
                         console.log("allService",data.ListInfo);
                     });
