@@ -59,7 +59,27 @@ public class ConsultDoctorInfoVo {
 
     private String consult_num;
 
+    public String getStarDoctor() {
+        return starDoctor;
+    }
+
+    public void setStarDoctor(String starDoctor) {
+        this.starDoctor = starDoctor;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
     private String nonrealtimeStatus;
+
+    private String starDoctor;
+
+    private String sort;
 
     public String getOpenId() {
         return openId;
