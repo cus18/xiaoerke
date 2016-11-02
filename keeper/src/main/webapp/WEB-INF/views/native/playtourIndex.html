@@ -13,143 +13,145 @@
     <link rel="stylesheet" href="/keeper/styles/nativeCommon.less" type="text/css" />
     <link rel="stylesheet" href="/keeper/styles/playtour/playtourIndex.less" type="text/css" />
 </head>
-<body class="sendHeart" onload="sendHeartInit()">
-<!--头部医生信息-->
-<div class="doctor-info tc f5 c0">
-    <div class="name  fl">
-        <img class="radius" id="headImage" src="images/a1.png" width="54" height="54" onerror="$('#headImage').attr('src','images/a1.png')"/>
-        <div id="doctorName" class="doctorName">梁平</div>
-    </div>
-    <div class="heart info-box fl">
-        <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_liwu.png" width="30" height="29"/>
-        <div class="text">收到心意：<span id="redPacket">32</span></div>
-    </div>
-    <div class="good-evaluate info-box fr">
-        <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_haoping03.png" width="27" height="30"/>
-        <div class="text">好评率：<span id="starInfo">100%</span></div>
-    </div>
-</div>
-<!--图片 ‘放心评价，宝大夫信任您’-->
-<div class="evaluation-remind tc">
-    <img class="my-img2" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_font.png" width="204" height="18"/>
-</div>
-<!--不满意 满意 非常满意 选择模块 -->
-<div class="evaluate-select">
-    <ul class="evaluate-item f5 c3 tc">
-        <li class="item1 fl" onclick="setEvaluate(0)">
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy1_no.png" width="37" height="37"/>
-            <div class="">不满意</div>
-        </li>
-        <li class="item2 fl " onclick="setEvaluate(1)">
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy2_no.png" width="37" height="37"/>
-            <div class="">满意</div>
-        </li>
-        <li class="item1 fl" onclick="setEvaluate(2)">
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy3_no.png" width="37" height="37"/>
-            <div class="">非常满意</div>
-        </li>
-    </ul>
-</div>
-<div class="main-under " hidden>
-    <!--用户选择 不满意 模块-->
-    <div class="no-satisfy select-content">
-        <div class="headline f5 tc">
-            <span class="line line-l"></span>
-            <span class="line line-r"></span>
-            <span class="text">哪里不满意?</span>
+<body class="sendHeart" onload="sendHeartInit()" >
+<div class="main-box">
+    <!--头部医生信息-->
+    <div class="doctor-info tc f5 c0">
+        <div class="name  fl">
+            <img class="radius" id="headImage" src="images/a1.png" width="54" height="54" onerror="$('#headImage').attr('src','images/a1.png')"/>
+            <div id="doctorName" class="doctorName">梁平</div>
         </div>
-        <ul class="noSatisfy-item">
-            <li class="fl tc f4">
-                <span class="" onclick="setNo(0)">服务态度不好</span>
+        <div class="heart info-box fl">
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_liwu.png" width="30" height="29"/>
+            <div class="text">收到心意：<span id="redPacket">32</span></div>
+        </div>
+        <div class="good-evaluate info-box fr">
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_haoping03.png" width="27" height="30"/>
+            <div class="text">好评率：<span id="starInfo">100%</span></div>
+        </div>
+    </div>
+    <!--图片 ‘放心评价，宝大夫信任您’-->
+    <div class="evaluation-remind tc">
+        <img class="my-img2" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_font.png" width="204" height="18"/>
+    </div>
+    <!--不满意 满意 非常满意 选择模块 -->
+    <div class="evaluate-select">
+        <ul class="evaluate-item f5 c3 tc">
+            <li class="item1 fl" onclick="setEvaluate(0)">
+                <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy1_no.png" width="37" height="37"/>
+                <div class="">不满意</div>
             </li>
-            <li class="fl tc f4">
-                <span class="" onclick="setNo(1)">专业水平不高</span>
+            <li class="item2 fl " onclick="setEvaluate(1)">
+                <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy2_no.png" width="37" height="37"/>
+                <div class="">满意</div>
             </li>
-            <li class="fl tc f4">
-                <span class="" onclick="setNo(2)">响应速度太慢</span>
-            </li>
-            <li class="fl tc f4">
-                <span class="" onclick="setNo(3)">其它</span>
+            <li class="item1 fl" onclick="setEvaluate(2)">
+                <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy3_no.png" width="37" height="37"/>
+                <div class="">非常满意</div>
             </li>
         </ul>
     </div>
-    <!--用户选择 满意 模块-->
-    <div class="satisfy-box select-content">
-        <div class="headline f5 tc">
-            <span class="line line-l"></span>
-            <span class="line line-r"></span>
+    <div class="main-under " hidden>
+        <!--用户选择 不满意 模块-->
+        <div class="no-satisfy select-content">
+            <div class="headline f5 tc">
+                <span class="line line-l"></span>
+                <span class="line line-r"></span>
+                <span class="text">哪里不满意?</span>
+            </div>
+            <ul class="noSatisfy-item">
+                <li class="fl tc f4">
+                    <span class="" onclick="setNo(0)">服务态度不好</span>
+                </li>
+                <li class="fl tc f4">
+                    <span class="" onclick="setNo(1)">专业水平不高</span>
+                </li>
+                <li class="fl tc f4">
+                    <span class="" onclick="setNo(2)">响应速度太慢</span>
+                </li>
+                <li class="fl tc f4">
+                    <span class="" onclick="setNo(3)">其它</span>
+                </li>
+            </ul>
+        </div>
+        <!--用户选择 满意 模块-->
+        <div class="satisfy-box select-content">
+            <div class="headline f5 tc">
+                <span class="line line-l"></span>
+                <span class="line line-r"></span>
             <span class="text">
                 <span class="doctorName">梁平</span>:
                 <span class="doctorWord">宝宝在长大，医生会变老</span>
             </span>
+            </div>
+            <ul class="money-item ">
+                <li class="fl tc" onclick="selectMoneyItem(0,5)">
+                    <a class="radius f2"><span class="f5 bold num">5</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(1,8)">
+                    <a class="radius f2"><span class="f5 bold num">8</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(2,12)">
+                    <a class="radius f2"><span class="f5 bold num">12</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(3,20)">
+                    <a class="radius f2"><span class="f5 bold num">20</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(4,52)">
+                    <a class="radius f2"><span class="f5 bold num">52</span>元</a>
+                </li>
+            </ul>
+            <div class="random-money tc">
+                <a class="randomSelectMoney f5" onclick="getRandomMoney()">随机</a>
+            </div>
         </div>
-        <ul class="money-item ">
-            <li class="fl tc" onclick="selectMoneyItem(0,5)">
-                <a class="radius f2"><span class="f5 bold num">5</span>元</a>
-            </li>
-            <li class="fl tc" onclick="selectMoneyItem(1,8)">
-                <a class="radius f2"><span class="f5 bold num">8</span>元</a>
-            </li>
-            <li class="fl tc" onclick="selectMoneyItem(2,12)">
-                <a class="radius f2"><span class="f5 bold num">12</span>元</a>
-            </li>
-            <li class="fl tc" onclick="selectMoneyItem(3,20)">
-                <a class="radius f2"><span class="f5 bold num">20</span>元</a>
-            </li>
-            <li class="fl tc" onclick="selectMoneyItem(4,52)">
-                <a class="radius f2"><span class="f5 bold num">52</span>元</a>
-            </li>
-        </ul>
-        <div class="random-money tc">
-            <a class="randomSelectMoney f5" onclick="getRandomMoney()">随机</a>
-        </div>
-    </div>
-    <!--用户 非常满意 模块-->
-    <div class="satisfy-box select-content">
-        <div class="headline f5 tc">
-            <span class="line line-l"></span>
-            <span class="line line-r"></span>
+        <!--用户 非常满意 模块-->
+        <div class="satisfy-box select-content">
+            <div class="headline f5 tc">
+                <span class="line line-l"></span>
+                <span class="line line-r"></span>
             <span class="text">
                 <span class="doctorName">梁平</span>:
                 <span class="doctorWord">宝宝在长大，医生会变老</span>
             </span>
+            </div>
+            <ul class="money-item ">
+                <li class="fl tc " onclick="selectMoneyItem(5,10)">
+                    <a class="radius f2"><span class="f5 bold num">10</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(6,20)">
+                    <a class="radius f2"><span class="f5 bold num">20</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(7,50)">
+                    <a class="radius f2"><span class="f5 bold num">50</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(8,100)">
+                    <a class="radius f2"><span class="f5 bold num">100</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(9,200)">
+                    <a class="radius f2"><span class="f5 bold num">200</span>元</a>
+                </li>
+            </ul>
+            <div class="random-money tc">
+                <a class="randomSelectMoney f5" onclick="getRandomMoney()" >随机</a>
+            </div>
         </div>
-        <ul class="money-item ">
-            <li class="fl tc " onclick="selectMoneyItem(5,10)">
-                <a class="radius f2"><span class="f5 bold num">10</span>元</a>
-            </li>
-            <li class="fl tc" onclick="selectMoneyItem(6,20)">
-                <a class="radius f2"><span class="f5 bold num">20</span>元</a>
-            </li>
-            <li class="fl tc" onclick="selectMoneyItem(7,50)">
-                <a class="radius f2"><span class="f5 bold num">50</span>元</a>
-            </li>
-            <li class="fl tc" onclick="selectMoneyItem(8,100)">
-                <a class="radius f2"><span class="f5 bold num">100</span>元</a>
-            </li>
-            <li class="fl tc" onclick="selectMoneyItem(9,200)">
-                <a class="radius f2"><span class="f5 bold num">200</span>元</a>
-            </li>
-        </ul>
-        <div class="random-money tc">
-            <a class="randomSelectMoney f5" onclick="getRandomMoney()" >随机</a>
-        </div>
-    </div>
-    <!-- 随机 生成钱数 模块-->
+        <!-- 随机 生成钱数 模块-->
 
-    <!--留言框-->
-    <div class="leave-word ">
-        <textarea class="f13 bg1" placeholder="更多留言..." maxlength="100" id="content"></textarea>
-        <div class="heart-remind tc f2 c5">
-            申明：您的心意会转入相应的医生账户，作为服务和科研经费
+        <!--留言框-->
+        <div class="leave-word ">
+            <textarea class="f13 bg1" placeholder="更多留言..." maxlength="100" id="content"></textarea>
+            <div class="heart-remind tc f2 c5">
+                申明：您的心意会转入相应的医生账户，作为服务和科研经费
+            </div>
         </div>
+        <!--支付错误提示-->
+        <div class="pay-problem tc f3" hidden>
+            亲，支付出现问题哦~
+        </div>
+        <br/><br/><br/><br/><br/><br/>
+        <button  class="bottom-btn" id="but" onclick="updateCustomerInfo()" >提交评价</button>
     </div>
-    <!--支付错误提示-->
-    <div class="pay-problem tc f3" hidden>
-        亲，支付出现问题哦~
-    </div>
-    <br/><br/><br/><br/><br/><br/>
-    <button  class="bottom-btn" id="but" onclick="updateCustomerInfo()" >提交评价</button>
 </div>
 <!--随机生成钱数浮层 模块-->
 <div class="c-shadow" hidden> </div>
