@@ -9,27 +9,27 @@ var showDocList = ["他们说我收到心意后开心得像个小孩子","宝宝
 var randomMoneyList = [
     {
         pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/heart1_1.1.png",
-        money:"1.1元"
+        money:1.1
     },
     {
         pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/heart2_2.8.png",
-        money:"2.8元"
+        money:2.8
     },
     {
         pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/heart3_5.2.png",
-        money:"5.2元"
+        money:5.2
     },
     {
         pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/heart4_6.6.png",
-        money:"6.6元"
+        money:6.6
     },
     {
         pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/heart5_8.8.png",
-        money:"8.8元"
+        money:8.8
     },
     {
         pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/heart6_26.6.png",
-        money:"26.6元"
+        money:26.6
     },
 ];
 var randomMoney ;//随机钱数和图片数组 下标值
@@ -41,6 +41,7 @@ var sendHeartInit= function (){
     weChatInit();// 初始化微信配置信息
     customerId=GetQueryString("customerId");
     sessionId=GetQueryString("sessionId");
+
 }
 //点击选择是否满意
 var setEvaluate = function (index) {
@@ -110,6 +111,9 @@ function selectMoneyItem(index,selectMoney){
 function getRandomMoney(){
     $(".c-shadow").show();
     $(".shadow-content").show();
+    /* $(".c-shadow").height();*/
+    console.log( " height",$(".c-shadow").height())
+    /* pageHeight=document.body.clientHeight-200;//获取页面高度*/
     changeRandomInfo();
 }
 //点击浮层 换一波 按钮
@@ -125,7 +129,7 @@ function closeRandomMoney(){
 function finishRandomMoney(){
     $(".c-shadow").hide();
     $(".shadow-content").hide();
-    $(".randomSelectMoney").html(randomMoneyList[randomMoney].money).addClass("select");
+    $(".randomSelectMoney").html(randomMoneyList[randomMoney].money+"元").addClass("select");
     $(".money-item li").children('a').removeClass("select");
     redPacket=randomMoneyList[randomMoney].money;
     console.log("选择的钱数",redPacket);
@@ -134,7 +138,7 @@ function finishRandomMoney(){
 function changeRandomInfo(){
     randomMoney = parseInt(6*Math.random());
     randomMoneyItem= ' <img width="200" height="auto" src='+randomMoneyList[randomMoney].pic+'>' +
-        '<div class="bold f3 money"> '+ randomMoneyList[randomMoney].money+ '</div>';
+        '<div class="bold f3 money"> '+ randomMoneyList[randomMoney].money+ '元'+'</div>';
     $(".random-info").html(randomMoneyItem);
 }
 //校验输入框输入的钱数
