@@ -154,7 +154,7 @@ public class NonRealTimeConsultDoctorContorller {
     public Map GetDoctorService(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
         Map<String, Object> response = new HashMap<String, Object>();
         String serviceType = (String) params.get("serviceType");
-        String openId = "oogbDwD_2BTQpftPu9QClr-mCw7U";
+        String openId = WechatUtil.getOpenId(session, request);
         String babyInfo = "";
         NonRealTimeConsultSessionVo realTimeConsultSessionVo = new NonRealTimeConsultSessionVo();
         realTimeConsultSessionVo.setCsUserId(openId);
