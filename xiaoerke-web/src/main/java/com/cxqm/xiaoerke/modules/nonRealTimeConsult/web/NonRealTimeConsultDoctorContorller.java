@@ -122,7 +122,7 @@ public class NonRealTimeConsultDoctorContorller {
         response.put("status", "failure");
         if (status.equals("1") && StringUtils.isNotNull(passeord) && StringUtils.isNotNull(username)) {
             User user = new User();
-            user.setPhone(passeord);
+            user.setPhone(username);
             user = userInfoService.doctorOper(user);
             ConsultDoctorInfoVo consultDoctorInfoVo = new ConsultDoctorInfoVo();
             consultDoctorInfoVo.setOpenId(openid);

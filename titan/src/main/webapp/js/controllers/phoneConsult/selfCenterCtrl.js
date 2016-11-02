@@ -48,8 +48,9 @@
             };
             /* 电话咨询订单*/
             $scope.phoneConsultOrder = function(){
-                RecordLogs.get({logContent:encodeURI("DHZX_HYZX_DHZX")},function(){})
-                resolveUserLoginStatus.events("phoneConsultOrder","","","","notGo");
+                RecordLogs.get({logContent:encodeURI("FSS_YHD_GRZX_TWZX")},function(){})
+                location.href="nonRealTimeConsult#/NonTimeUserFindDoctor";
+                //resolveUserLoginStatus.events("phoneConsultOrder","","","","notGo");
             };
 
            /* 我的资产*/
