@@ -1,16 +1,23 @@
 angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
     '$scope', '$state', '$timeout', '$http', 'doctorBinding',
     function ($scope, $state, $timeout, $http, doctorBinding) {
-
-        $scope.prizeArray = {};
+        $scope.doctorLock = false;
         $scope.info = {};
+        //关闭提示
+        $scope.close = function () {
+            $scope.doctorLock = false;
+        };
+
         $scope.doctorBindingAction = function () {
             $scope.username = $('#username').val();
             $scope.password = $('#password').val();
             doctorBinding.save({username: $scope.username, password: $scope.password}, function (data) {
                 if (data.status == "failure") {
                     alert("验证码错误！");
-                } else {
+                }
+                else if(data.status == "notConsultDoctor"){
+                    $scope.doctorLock = true;
+                }else {
                     window.location.href = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getDoctorWechatMenId?url=6";
                 }
             });
