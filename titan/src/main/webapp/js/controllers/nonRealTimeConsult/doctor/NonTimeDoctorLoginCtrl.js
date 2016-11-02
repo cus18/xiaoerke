@@ -29,7 +29,7 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
                 return;
             }
             else {
-                var partner = /^1[3578]\d{9}$/;
+                var partner = /^1[34578]\d{9}$/;
                 if (!partner.exec($('#username').val())) {
                     $('#info').html("手机号格式不对");
                     return;
