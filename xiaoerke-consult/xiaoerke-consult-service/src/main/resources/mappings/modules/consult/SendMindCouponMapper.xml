@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.SendMindCouponDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.SendMindCouponVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="name" property="name" jdbcType="VARCHAR" />
+    <result column="link" property="link" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, name,link
+  </sql>
+
+  <select id="findSendMindCouponByInfo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.SendMindCouponVo">
+    select id, name,link
+      from send_mind_coupon
+    where 1=1
+    <if test="id != null and id != ''">
+      and id = #{id}
+    </if>
+  </select>
+
+  <insert id="saveSendMindCoupon" parameterType="com.cxqm.xiaoerke.modules.consult.entity.SendMindCouponVo" useGeneratedKeys="true"
+          keyProperty="id">
+    insert into send_mind_coupon( name,link)
+    values (#{name},#{link})
+  </insert>
+
+  <delete id="deleteSendMindCoupon" parameterType="com.cxqm.xiaoerke.modules.consult.entity.SendMindCouponVo">
+    delete from send_mind_coupon where id=#{id}
+  </delete>
+  
+  <update id="updateMessageContentConf">
+    update send_mind_coupon
+    <set>
+      <if test="scene != null and scene != ''">
+        name = #{name},
+      </if>
+      <if test="week != null and week != ''">
+        link = #{link},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+</mapper>
