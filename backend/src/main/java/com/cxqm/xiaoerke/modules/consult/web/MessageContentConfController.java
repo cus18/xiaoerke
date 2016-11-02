@@ -52,8 +52,6 @@ public class MessageContentConfController extends BaseController {
         if(StringUtils.isNotNull(vo.getId()+"")){
             List<MessageContentConfVo> list = messageContentConfService.findMessageContentConfByInfo(vo);
             returnVo = list.get(0);
-        }else{
-            returnVo.setPriority("0");
         }
         model.addAttribute("vo", returnVo);
         return "modules/consult/saveUpdateConfForm";
@@ -68,7 +66,17 @@ public class MessageContentConfController extends BaseController {
     @RequestMapping(value = "saveMessageContentConf")
     public String saveMessageContentConf(MessageContentConfVo vo,HttpServletRequest request, Model model,RedirectAttributes redirectAttributes) {
         String[] weekList = request.getParameterValues("weekList");
-        vo.setWeek(weekList.toString());
+        String weeks = "";
+        if(weekList == null){
+            weeks = "0,";
+            vo.setStartTime("00:00");
+            vo.setEndTime("23:59");
+        }else{
+            for(String temp:weekList){
+                weeks = weeks+temp+",";
+            }
+        }
+        vo.setWeek(weeks.substring(0,weeks.length()-1));
         String retString = messageContentConfService.saveMessageContentConf(vo);
         model.addAttribute("vo", new MessageContentConfVo());
         addMessage(redirectAttributes, retString);

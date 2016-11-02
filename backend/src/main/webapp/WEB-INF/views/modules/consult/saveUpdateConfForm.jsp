@@ -25,7 +25,7 @@
 				$("#inputForm").attr("action","${ctx}/messageContentConf/deleteMessageContentConf");
 				$("#inputForm").submit();
 			});
-			if('${vo.priority}' == '0'){
+			if('${vo.priority}' == '0' || '${vo.priority}' == ''){
 				$("#startTime").attr("value",'00:00');
 				$("#endTime").attr("value",'24:00');
 				$("#startTime").attr("disabled",true);
@@ -34,7 +34,16 @@
 				for(var i=1;i<8;i++){
 					$('#week'+i).attr('disabled','disabled');
 				}
+			}else{
+				var week = '${vo.week}';
+				var weeks = week.split(",");
+				alert(weeks);
+				for(var temp in weeks){
+					alert(weeks[temp]);
+					$('#week'+weeks[temp]).attr('checked',true);
+				}
 			}
+
 		});
 
 		function priorityChange(){
@@ -46,6 +55,7 @@
 				$('#week').attr('checked',true).attr('disabled','disabled');
 				for(var i=1;i<8;i++){
 					$('#week'+i).attr('disabled','disabled');
+					$('#week'+i).attr('checked','');
 				}
 			}else{
 				$("#startTime").attr("value",'');
@@ -80,35 +90,33 @@
 		<div class="control-group">
 			<label class="control-label">应用场景:</label>
 			<div class="controls">
-				<c:if test="${vo.priority eq 0}">
+				<c:if test="${not empty vo.id}">
 					${vo.scene}
 				</c:if>
-				<c:if test="${vo.priority ne 0}">
+				<c:if test="${empty vo.id}">
 					<form:select path="scene" name="scene" id="scene" onchange="priorityChange()">
-						<option value="0">咨询关闭评价</option>
-						<option value="1">邀请卡</option>
-						<option value="2">分享</option>
-						<option value="3">添加</option>
+						<option value="咨询关闭评价">咨询关闭评价</option>
+						<option value="送心意成功">送心意成功</option>
 					</form:select>
+					<span class="help-inline"><font color="red">*</font> </span>
 				</c:if>
-				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">优先级:</label>
 			<div class="controls">
-				<c:if test="${vo.priority eq 0}">
-					0
+				<c:if test="${not empty vo.priority}">
+					${vo.priority}
 				</c:if>
-				<c:if test="${vo.priority ne 0}">
+				<c:if test="${empty vo.priority}">
 					<form:select path="priority" name="priority" id="priority" onchange="priorityChange()">
 						<option value="0">0</option>
 						<option value="1">1</option>
 						<option value="2">2</option>
 						<option value="3">3</option>
 					</form:select>
+					<span class="help-inline"><font color="red" size="3px">*每个场景没有0优先级就不能添加其他优先级，0优先级只能修改内容，不能删除</font> </span>
 				</c:if>
-				<span class="help-inline"><font color="red" size="3px">*每个场景没有0优先级就不能添加其他优先级，0优先级只能修改内容，不能删除</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
@@ -130,27 +138,31 @@
 				<label for="week6">周六</label>
 				<input id="week7" name="weekList" class="" type="checkbox" value="7" onclick="kick()">
 				<label for="week7">周日</label>
+				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">开始时间:</label>
 			<div class="controls">
-				<form:input id="startTime" path="startTime" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
+				<form:input id="startTime" path="startTime" type="text" readonly="readonly" maxlength="20" class="input-small Wdate required"
 							onclick="WdatePicker({dateFmt:'HH:mm:ss',isShowClear:false});"/>
+				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">开始时间:</label>
 			<div class="controls">
-				<form:input id="endTime" path="endTime" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
+				<form:input id="endTime" path="endTime" type="text" readonly="readonly" maxlength="20" class="input-small Wdate required"
 							onclick="WdatePicker({dateFmt:'HH:mm:ss',isShowClear:false});"/>
+				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">内容:</label>
 			<div class="controls">
-				<form:textarea class="input" path="content" id="content" name="content" style="width: 400px ;height: 80px" value="${vo.content}"></form:textarea>
+				<form:textarea class="required" path="content" id="content" name="content"  style="width: 400px ;height: 80px" value="${vo.content}"></form:textarea>
 			</div>
+			<span class="help-inline"><font color="red">*</font> </span>
 		</div>
 
 		<div class="form-actions">

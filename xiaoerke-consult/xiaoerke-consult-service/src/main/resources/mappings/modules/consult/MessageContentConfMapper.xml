@@ -22,6 +22,9 @@
     <if test="id != null and id != ''">
       and id = #{id}
     </if>
+    <if test="scene != null and scene != ''">
+      and scene = #{scene}
+    </if>
   </select>
 
   <insert id="saveMessageContentConf" parameterType="com.cxqm.xiaoerke.modules.consult.entity.MessageContentConfVo" useGeneratedKeys="true"
@@ -31,7 +34,7 @@
   </insert>
 
   <delete id="deleteMessageContentConf" parameterType="com.cxqm.xiaoerke.modules.consult.entity.MessageContentConfVo">
-    delete from message_content_conf where roleid=#{roleId}
+    delete from message_content_conf where id=#{id}
   </delete>
   
   <update id="updateMessageContentConf">
