@@ -76,6 +76,7 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
 
         var countdown = 60;
         $scope.NonTimeDoctorLoginInit=function(){
+            $(".tips").css("margin-top",screen.height-327-screen.width*0.25+"px")
         }
 
     }]);
