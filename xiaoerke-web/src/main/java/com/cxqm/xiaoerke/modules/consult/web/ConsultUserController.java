@@ -593,7 +593,7 @@ public class ConsultUserController extends BaseController {
                     if(StringUtils.isNotNull(String.valueOf(params.get("remoteUrl")))){
                         remoteUrl = String.valueOf(params.get("remoteUrl"));
                     }else{
-                        remoteUrl = "http://wxsp-dev.ykbenefit.com/customer_info";
+                        remoteUrl = "https://wxsp.ykhys.com/thirdparty/baodaifu/customer_info";
                     }
                     String method = "POST";
                     String content_type = "json";
