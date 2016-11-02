@@ -84,14 +84,14 @@ public class NonRealTimeConsultDoctorContorller {
         Map<String, Object> response = new HashMap<String, Object>();
         //根据openid查询当前医生
         Map param = new HashMap();
-        String openId = WechatUtil.getOpenId(session,request);//"8ab94e95afe448dab66403fc5407d0ca"
+        String openId = WechatUtil.getOpenId(session, request);//"8ab94e95afe448dab66403fc5407d0ca"
         param.put("openId", openId);
         response.put("status", "failure");
         if (StringUtils.isNotNull(openId)) {
             List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
             if (consultDoctorInfoVos != null && consultDoctorInfoVos.size() > 0 && StringUtils.isNotBlank(consultDoctorInfoVos.get(0).getUserId())) {
                 response.put("status", "success");
-                if("0".equals(consultDoctorInfoVos.get(0).getNonrealtimeStatus())){
+                if ("0".equals(consultDoctorInfoVos.get(0).getNonrealtimeStatus())) {
                     response.put("status", "backendClose");
                 }
             }
@@ -116,7 +116,7 @@ public class NonRealTimeConsultDoctorContorller {
     public Map doctorBinding(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) throws Exception {
         Map<String, Object> response = new HashMap<String, Object>();
         String username = String.valueOf(params.get("username"));
-        String openid = WechatUtil.getOpenId(session,request);//"oogbDwD_2BTQpftPu9QClr-mCw7U"
+        String openid = WechatUtil.getOpenId(session, request);//"oogbDwD_2BTQpftPu9QClr-mCw7U"
         String passeord = String.valueOf(params.get("password"));
         String status = utilService.bindUser4ConsultDoctor(username, passeord, openid);
         response.put("status", "failure");
@@ -128,17 +128,17 @@ public class NonRealTimeConsultDoctorContorller {
             consultDoctorInfoVo.setOpenId(openid);
             consultDoctorInfoVo.setUserId(user.getId());
             consultDoctorInfoVo.setNonrealtimeStatus("1");
-            consultDoctorInfoService.updateByphone(consultDoctorInfoVo);
-            response.put("status", "success");
+            int updateFlag = consultDoctorInfoService.updateByphone(consultDoctorInfoVo);
+            response.put("status", (updateFlag > 0) ? "success" : "notConsultDoctor");
         }
         return response;
     }
 
     /**
      * 获取医生的服务（当前服务和全部服务）
-     * <p/>
+     * <p>
      * params:{"serviceType":"current","openId":"123sdfsf"}  //serviceType  currentService 当前服务 allService 全部服务
-     * <p/>
+     * <p>
      * response:S
      * {
      * "status":"success"
@@ -211,13 +211,13 @@ public class NonRealTimeConsultDoctorContorller {
                     String babyName = babyBaseInfoVo.getName();
                     if (StringUtils.isNotNull(babyName)) {
                         babyName = babyBaseInfoVo.getName() + ",";
-                    }else {
-                        babyName="";
+                    } else {
+                        babyName = "";
                     }
 
                     babyInfo = sex + babyName + (nowDateYear - babyBirthdayYear) + "岁" + chaDate + "个月";
                 }
-                babyInfo = StringUtils.isNull(babyInfo)?"暂无数据":babyInfo;
+                babyInfo = StringUtils.isNull(babyInfo) ? "暂无数据" : babyInfo;
 
                 nonRealTimeConsultSessionVo.setBabyInfo(babyInfo);
             }
@@ -230,30 +230,30 @@ public class NonRealTimeConsultDoctorContorller {
     @RequestMapping(value = "/conversationDoctorInfo", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String,Object> conversationDoctorInfo(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params){
-        Map<String,Object> resultMap = new HashMap<String, Object>();
+    Map<String, Object> conversationDoctorInfo(HttpSession session, HttpServletRequest request, @RequestBody Map<String, Object> params) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session, request);
         Integer sessionid = Integer.parseInt((String) params.get("sessionId"));
-        if(!StringUtils.isNotNull(openid)){
-            resultMap.put("state","error");
-            resultMap.put("result_info","请重新打开页面");
+        if (!StringUtils.isNotNull(openid)) {
+            resultMap.put("state", "error");
+            resultMap.put("result_info", "请重新打开页面");
             return resultMap;
         }
         String csUserId = "";
         NonRealTimeConsultSessionVo sessionVo = new NonRealTimeConsultSessionVo();
         sessionVo.setId(sessionid);
         List<NonRealTimeConsultSessionVo> sessionInfo = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(sessionVo);
-        if(sessionInfo.size()>0){
+        if (sessionInfo.size() > 0) {
             sessionVo = sessionInfo.get(0);
-            resultMap.put("doctorName",sessionVo.getCsUserName());
-            resultMap.put("doctorId",sessionVo.getCsUserId());
-            resultMap.put("professor",sessionVo.getDoctorProfessor());
-            resultMap.put("department",sessionVo.getDoctorDepartmentName());
-            resultMap.put("sessionStatus",sessionVo.getStatus());
+            resultMap.put("doctorName", sessionVo.getCsUserName());
+            resultMap.put("doctorId", sessionVo.getCsUserId());
+            resultMap.put("professor", sessionVo.getDoctorProfessor());
+            resultMap.put("department", sessionVo.getDoctorDepartmentName());
+            resultMap.put("sessionStatus", sessionVo.getStatus());
             csUserId = sessionVo.getCsUserId();
-        }else{
-            resultMap.put("state","error");
-            resultMap.put("result_info","未找到相应的会话");
+        } else {
+            resultMap.put("state", "error");
+            resultMap.put("result_info", "未找到相应的会话");
             return resultMap;
         }
 
@@ -263,32 +263,33 @@ public class NonRealTimeConsultDoctorContorller {
         List<NonRealTimeConsultRecordVo> recodevoList = nonRealTimeConsultUserService.selectSessionRecordByVo(recordVo);
         //开始组装数据
         List<Map> messageList = new ArrayList<Map>();
-        if(recodevoList!=null && recodevoList.size()>0){
-            for(NonRealTimeConsultRecordVo vo:recodevoList){
-                Map<String ,Object> recordMap = new HashMap<String, Object>();
-                if(csUserId.equals(vo.getSenderId())){
-                    recordMap.put("source","doctor");
-                }else{
-                    recordMap.put("source","user");
-                };
+        if (recodevoList != null && recodevoList.size() > 0) {
+            for (NonRealTimeConsultRecordVo vo : recodevoList) {
+                Map<String, Object> recordMap = new HashMap<String, Object>();
+                if (csUserId.equals(vo.getSenderId())) {
+                    recordMap.put("source", "doctor");
+                } else {
+                    recordMap.put("source", "user");
+                }
+                ;
                 String messageType = vo.getMessageType();
-                recordMap.put("messageType",messageType);
-                if(ConsultSessionStatus.CREATE_SESSION.getVariable().equals(messageType)){
+                recordMap.put("messageType", messageType);
+                if (ConsultSessionStatus.CREATE_SESSION.getVariable().equals(messageType)) {
                     String[] messageInfo = vo.getMessage().split("\\#");
-                    recordMap.put("babyBaseInfo",messageInfo[0] == "0"?"女":"男"+"  "+messageInfo[1]);
-                    recordMap.put("message",messageInfo[2]);
+                    recordMap.put("babyBaseInfo", messageInfo[0] == "0" ? "女" : "男" + "  " + messageInfo[1]);
+                    recordMap.put("message", messageInfo[2]);
 
-                    if(messageInfo.length>3){
-                        List<String > imgList = new ArrayList<String>();
-                        for(int i=3;i<messageInfo.length;i++){
+                    if (messageInfo.length > 3) {
+                        List<String> imgList = new ArrayList<String>();
+                        for (int i = 3; i < messageInfo.length; i++) {
                             imgList.add(messageInfo[i]);
                         }
-                        recordMap.put("imgPath",imgList);
+                        recordMap.put("imgPath", imgList);
                     }
-                }else{
-                    recordMap.put("message",vo.getMessage());
+                } else {
+                    recordMap.put("message", vo.getMessage());
                 }
-                recordMap.put("messageTime",DateUtils.formatDateToStr(vo.getCreateTime(),"MM月dd日 HH:mm"));
+                recordMap.put("messageTime", DateUtils.formatDateToStr(vo.getCreateTime(), "MM月dd日 HH:mm"));
                 messageList.add(recordMap);
             }
         }
@@ -298,16 +299,16 @@ public class NonRealTimeConsultDoctorContorller {
         Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
         WechatBean wechatInfo = WechatUtil.getWechatName(token, openid);
-        resultMap.put("wechatImg",wechatInfo.getHeadimgurl());
-        resultMap.put("messageList",messageList);
+        resultMap.put("wechatImg", wechatInfo.getHeadimgurl());
+        resultMap.put("messageList", messageList);
         return resultMap;
     }
 
     /**
      * 获取当前医生与用户的聊天记录
-     * <p/>
+     * <p>
      * params:{"csUserId":"sdfsdfsdfsdfsdf","userId":"123sdfsf"}
-     * <p/>
+     * <p>
      *
      * @param session
      * @param request
