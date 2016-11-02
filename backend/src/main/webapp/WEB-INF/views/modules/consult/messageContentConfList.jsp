@@ -44,7 +44,7 @@
 					<td>${u.id}</td>
 					<td>${u.scene}</td>
 					<td>${u.week}</td>
-					<td>${u.startTime}</td>
+					<td>${u.startTime}-${u.endTime}</td>
 					<td>${u.priority}</td>
 					<td>${u.content}</td>
 					<td>
