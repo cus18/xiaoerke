@@ -1,7 +1,9 @@
 angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
     '$scope', '$state', '$timeout', '$http', 'doctorBinding',
     function ($scope, $state, $timeout, $http, doctorBinding) {
-        $scope.doctorLock = false;
+        $scope.doctorLock = false;//非系统医生提示开关
+        $scope.errorLock = false;//错误提示开关
+        $scope.errorRemindText ="";//错误提示内容
         $scope.info = {};
         //关闭提示
         $scope.close = function () {
@@ -9,11 +11,10 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
         };
 
         $scope.doctorBindingAction = function () {
-            $scope.username = $('#username').val();
-            $scope.password = $('#password').val();
-            doctorBinding.save({username: $scope.username, password: $scope.password}, function (data) {
+            doctorBinding.save({username: $scope.info.phoneNum, password: $scope.info.password}, function (data) {
                 if (data.status == "failure") {
-                    alert("验证码错误！");
+                    $scope.errorLock = true;
+                    $scope.errorRemindText ="验证码错误"
                 }
                 else if(data.status == "notConsultDoctor"){
                     $scope.doctorLock = true;
@@ -30,13 +31,14 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
             }
             else {
                 var partner = /^1[34578]\d{9}$/;
-                if (!partner.exec($('#username').val())) {
-                    $('#info').html("手机号格式不对");
+                if (!partner.exec($scope.info.phoneNum)) {
+                    $scope.errorLock = true;
+                    $scope.errorRemindText ="手机号格式不对"
                     return;
                 }
                 else {
                     var mydata = '{"userPhone":"'
-                        + $('#username').val() + '"}';
+                        + $scope.info.phoneNum + '"}';
                     $.ajax({
                         url: "util/user/getCode",
                         async: true,
