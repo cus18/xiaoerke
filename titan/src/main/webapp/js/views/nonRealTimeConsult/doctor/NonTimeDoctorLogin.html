@@ -17,12 +17,12 @@
             <div ng-if="errorLock" class="error-remind  tc c2 f2" >{{errorRemindText}}</div>
             <button  class="button foot-btn" ng-click = "doctorBindingAction()"  ng-disabled="(info.phoneNum.length<11||info.phoneNum==null)||(info.password.length<6 || info.password==null)" >确认开通</button>
         </div>
-        <div class="tips tc">
+       <!-- <div class="tips tc">
             <div class="line fl bg1"></div>
             <div class="line fr bg1"></div>
             <div class="hd f6 c0">温馨提示</div>
             <p class="f4 c0">开通成功之后，尽量在四小时内回复</p>
-        </div>
+        </div>-->
     </div>
     <!--非宝大夫系统医生提示-->
     <div ng-if="doctorLock" class="c-shadow"></div>
