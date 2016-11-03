@@ -407,4 +407,14 @@ WHERE
     );
 </update>
 
+  <select id="getTimeOutSessionInfo" parameterType="java.util.Map">
+    SELECT
+	cdi.open_id openid,ncs.id sessonId
+    FROM
+	non_real_time_consult_session ncs
+    left join consult_doctor_info cdi
+    on ncs.cs_user_id = cdi.sys_user_id
+    WHERE NOW() > DATE_ADD(create_time, INTERVAL 36 HOUR);
+  </select>
+
 </mapper>

@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 
 import java.util.List;
+import java.util.Map;
 
 @MyBatisDao
 public interface NonRealTimeConsultSessionDao {
@@ -29,4 +30,6 @@ public interface NonRealTimeConsultSessionDao {
     void updateConsultNumEarchDay();
 
     void sessinTimeOut();
+
+    List<Map<String,String>> getTimeOutSessionInfo();
 }
