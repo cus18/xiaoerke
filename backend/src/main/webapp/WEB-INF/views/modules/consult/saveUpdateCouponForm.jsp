@@ -21,10 +21,6 @@
 					}
 				}
 			});
-			$("#deleteConf").click(function(){
-				$("#inputForm").attr("action","${ctx}/messageContentConf/deleteMessageContentConf");
-				$("#inputForm").submit();
-			});
 		});
 
 	</script>

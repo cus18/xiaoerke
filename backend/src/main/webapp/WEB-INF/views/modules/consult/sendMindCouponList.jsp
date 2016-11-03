@@ -16,10 +16,14 @@
 <body>
 	<ul class="nav nav-tabs">
 	</ul>
-	<form:form id="searchForm" modelAttribute="vo" action="${ctx}/sendMindCoupon/messageContentConfList?" method="post" class="breadcrumb form-search ">
+	<form:form id="searchForm" modelAttribute="vo" action="${ctx}/sendMindCoupon/sendMindCouponList?" method="post" class="breadcrumb form-search ">
 		<sys:message content="${message}"/>
 		<ul class="ul-form">
+			<li><label>名称：</label>
+				<form:input name="name" path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
+			</li>
 			<li class="btns">
+				<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询" />
 				<input id="save" class="btn btn-primary" type="button" value="添加"/>
 			</li>
 			<li class="clearfix"></li>
