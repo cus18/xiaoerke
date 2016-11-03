@@ -1,6 +1,6 @@
 angular.module('controllers', [])
-    .controller('patientConsultInvitePageCtrl',['$scope','GetAttentionInfo','GetUserOpenId','GetBabyCoinInfo','BabyCoinInit','inviteUrlData',
-        function ($scope,GetAttentionInfo,GetUserOpenId,GetBabyCoinInfo,BabyCoinInit,inviteUrlData) {
+    .controller('patientConsultInvitePageCtrl',['$scope','GetAttentionInfo','GetUserOpenId','GetBabyCoinInfo','BabyCoinInit','inviteUrlData','$ionicScrollDelegate',
+        function ($scope,GetAttentionInfo,GetUserOpenId,GetBabyCoinInfo,BabyCoinInit,inviteUrlData,$ionicScrollDelegate) {
             $scope.minename = '您的朋友';
             $scope.openid = '';
             $scope.marketer = '';
@@ -15,6 +15,7 @@ angular.module('controllers', [])
                     loadShare();
                 })
                 $('#invitePageContent').click(function(){
+                    $ionicScrollDelegate.scrollTop();
                     $('#invitePageShade').show();
                 });
                 recordLogs("ZXYQ_YQY");
