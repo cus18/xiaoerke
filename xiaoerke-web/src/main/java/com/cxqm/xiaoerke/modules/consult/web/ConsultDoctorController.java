@@ -452,9 +452,9 @@ public class ConsultDoctorController extends BaseController {
                                 noReadMsg.put("doctorId",richConsultSession.getCsUserId());
                                 noReadMsg.put("sessionId",sessionId);
                                 noReadMsg.put("uid",richConsultSession.getUserId());
-                                String currentUrl = sysPropertyVoWithBLOBsVo.getCoopYkdlUrl();
+                                String currentUrl = sysPropertyVoWithBLOBsVo.getCoopYkdlUrl() +"/consult_over";
                                 if(StringUtils.isNull(currentUrl)){
-                                    currentUrl = "http://wxsp-dev.ykbenefit.com/consult_over";
+                                    currentUrl = "https://wxsp.ykhys.com/thirdparty/baodaifu/consult_over";
                                 }
                                 String method = "POST";
                                 String dataType="json";
@@ -494,9 +494,9 @@ public class ConsultDoctorController extends BaseController {
                             noReadMsg.put("doctorName",richConsultSession.getCsUserName());
                             noReadMsg.put("sessionId",sessionId);
                             noReadMsg.put("uid",richConsultSession.getUserId());
-                            String currentUrl = sysPropertyVoWithBLOBsVo.getCoopYkdlUrl();
+                            String currentUrl = sysPropertyVoWithBLOBsVo.getCoopYkdlUrl()+"/consult_over";
                             if(StringUtils.isNull(currentUrl)){
-                                currentUrl = "http://wxsp-dev.ykbenefit.com/consult_over";
+                                currentUrl = "https://wxsp.ykhys.com/thirdparty/baodaifu/consult_over";
                             }
                             String method = "POST";
                             String dataType="json";

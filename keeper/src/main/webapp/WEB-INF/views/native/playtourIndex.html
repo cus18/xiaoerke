@@ -10,167 +10,159 @@
     <script src="js/libs/jquery-2.1.3.min.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script src="js/playtourIndex.js"></script>
+    <link rel="stylesheet" href="/keeper/styles/nativeCommon.less" type="text/css" />
     <link rel="stylesheet" href="/keeper/styles/playtour/playtourIndex.less" type="text/css" />
 </head>
-<body onload="doRefresh()">
-<!--<div class="playtourdoctor">
-    <div class="playtourdoctorimg">
-        <img id="headImage" src="images/a1.png" width="62.5px" height="62.5px">
-    </div>
-    <div class="playtourdoctorright">
-        <div class="playtourdoctorright_1">
-            <img    src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fgeren.png" width="13px" height="14px"/>
-            <span id="doctorName">梁平</span>
+<body class="sendHeart" onload="sendHeartInit()" >
+<div class="main-box">
+    <!--头部医生信息-->
+    <div class="doctor-info tc f5 c0">
+        <div class="name  fl">
+            <img class="radius" id="headImage" src="images/a1.png" width="54" height="54" onerror="$('#headImage').attr('src','images/a1.png')"/>
+            <div id="doctorName" class="doctorName">梁平</div>
         </div>
-        <div class="playtourdoctorright_2">
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fchengjiu.png" width="10.5px" height="14px"/>
-            <span class="xinyi">收到心意<span id="redPacket">32</span></span>
-            <span class="haoping">好评率<span id="starInfo">100%</span></span>
+        <div class="heart info-box fl">
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_liwu.png" width="30" height="29"/>
+            <div class="text">收到心意：<span id="redPacket">32</span></div>
         </div>
-    </div>
-</div>-->
-<div class="tourdoctor">
-    <div class="td_1">
-        <div>
-            <img id="headImage" src="images/a1.png" width="54px" height="54px" onerror="$('#headImage').attr('src','images/a1.png')"/>
-        </div>
-        <div><span id="doctorName">梁平</span></div>
-    </div>
-    <div class="td_2 td_com">
-        <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_liwu.png" width="30px" height="29px"/>
-        <div>收到心意：<span id="redPacket">32</span></div>
-    </div>
-    <div class="td_3 td_com">
-        <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_haoping03.png" width="27px" height="30px"/>
-        <div>好评率：<span id="starInfo">100%</span></div>
-    </div>
-</div>
-<div class="tourinit">
-    <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_font.png" width="204px" height="18px"/>
-    <ul>
-        <li class="init_com" onclick="setEvaluate(0)">
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fbumanyi_weixuanzhong.png" width="37px" height="37px"/>
-            <div class="ti_com">不满意</div>
-        </li>
-        <li class="init_com_1" onclick="setEvaluate(1)">
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fmanyiweixuanzhong.png" width="37px" height="37px"/>
-            <div class="ti_com">满意</div>
-        </li>
-        <li class="init_com" onclick="setEvaluate(2)">
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Ffeichangmanyiweixuanzhong.png" width="37px" height="37px"/>
-            <div class="ti_com">非常满意</div>
-        </li>
-    </ul>
-</div>
-<div class="playtourpingjie">
-    <div class="playtourpj_1" onclick="setEvaluate(0)">
-        <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fbumanyi_weixuanzhong.png" width="37px" height="37px"/>
-        <div>
-            不满意
+        <div class="good-evaluate info-box fr">
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_haoping03.png" width="27" height="30"/>
+            <div class="text">好评率：<span id="starInfo">100%</span></div>
         </div>
     </div>
-    <div class="playtourpj_2" onclick="setEvaluate(1)">
-        <!--<div class="line left1"></div>-->
-        <div class="center1">
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fmanyiweixuanzhong.png" width="37px" height="37px"/>
-            <div class="manyi">
-                满意
+    <!--图片 ‘放心评价，宝大夫信任您’-->
+    <div class="evaluation-remind tc">
+        <img class="my-img2" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_font.png" width="204" height="18"/>
+    </div>
+    <!--不满意 满意 非常满意 选择模块 -->
+    <div class="evaluate-select">
+        <ul class="evaluate-item f5 c3 tc">
+            <li class="item1 fl" onclick="setEvaluate(0)">
+                <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy1_no.png" width="37" height="37"/>
+                <div class="">不满意</div>
+            </li>
+            <li class="item2 fl " onclick="setEvaluate(1)">
+                <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy2_no.png" width="37" height="37"/>
+                <div class="">满意</div>
+            </li>
+            <li class="item1 fl" onclick="setEvaluate(2)">
+                <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy3_no.png" width="37" height="37"/>
+                <div class="">非常满意</div>
+            </li>
+        </ul>
+    </div>
+    <div class="main-under " hidden>
+        <!--用户选择 不满意 模块-->
+        <div class="no-satisfy select-content">
+            <div class="headline f5 tc">
+                <span class="line line-l"></span>
+                <span class="line line-r"></span>
+                <span class="text">哪里不满意?</span>
+            </div>
+            <ul class="noSatisfy-item">
+                <li class="fl tc f4">
+                    <span class="" onclick="setNo(0)">服务态度不好</span>
+                </li>
+                <li class="fl tc f4">
+                    <span class="" onclick="setNo(1)">专业水平不高</span>
+                </li>
+                <li class="fl tc f4">
+                    <span class="" onclick="setNo(2)">响应速度太慢</span>
+                </li>
+                <li class="fl tc f4">
+                    <span class="" onclick="setNo(3)">其它</span>
+                </li>
+            </ul>
+        </div>
+        <!--用户选择 满意 模块-->
+        <div class="satisfy-box select-content">
+            <div class="headline f5 tc">
+                <span class="line line-l"></span>
+                <span class="line line-r"></span>
+            <span class="text">
+                <span class="doctorName">梁平</span>:
+                <span class="doctorWord">宝宝在长大，医生会变老</span>
+            </span>
+            </div>
+            <ul class="money-item ">
+                <li class="fl tc" onclick="selectMoneyItem(0,5)">
+                    <a class="radius f2"><span class="f5 bold num">5</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(1,8)">
+                    <a class="radius f2"><span class="f5 bold num">8</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(2,12)">
+                    <a class="radius f2"><span class="f5 bold num">12</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(3,20)">
+                    <a class="radius f2"><span class="f5 bold num">20</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(4,52)">
+                    <a class="radius f2"><span class="f5 bold num">52</span>元</a>
+                </li>
+            </ul>
+            <div class="random-money tc">
+                <a class="randomSelectMoney f5" onclick="getRandomMoney()">随机</a>
             </div>
         </div>
-        <!--<div class="line right1"></div>-->
-    </div>
-    <div class="playtourpj_3" onclick="setEvaluate(2)">
-        <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Ffeichangmanyiweixuanzhong.png" width="37px" height="37px"/>
-        <div>
-            非常满意
-        </div>
-    </div>
-</div>
-<div class="playtourmoney">
-    <!--<div class="ptmdoc" >
-        &lt;!&ndash;<img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fxinyi_png.png" width="144px" height="17px"/>&ndash;&gt;
-        <span class="ptmdoc_com"></span>
-        <span>给医生的一点心意</span>
-        <span class="ptmdoc_com"></span>
-    </div>-->
-    <!--<div class="ptm">
-        <img onclick="setMoney(0)" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png" width="43px" height="44px">
-
-        <input  type="number" maxlength="4" id="getMoney" placeholder="0元" onfocus="this.type='number'" onblur="this.type='text'" oninput="moreMoney()"/>
-
-        <img onclick="setMoney(1)" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjia_xuanzhong.png" width="43px" height="44px">
-    </div>-->
-    <div class="ptmdoc2">
-        <div class="doc2">
-            <div id="doctitle">
-                <span>梁平</span>:<span>宝宝在长大，医生会变老</span>
+        <!--用户 非常满意 模块-->
+        <div class="satisfy-box select-content">
+            <div class="headline f5 tc">
+                <span class="line line-l"></span>
+                <span class="line line-r"></span>
+            <span class="text">
+                <span class="doctorName">梁平</span>:
+                <span class="doctorWord">宝宝在长大，医生会变老</span>
+            </span>
+            </div>
+            <ul class="money-item ">
+                <li class="fl tc " onclick="selectMoneyItem(5,10)">
+                    <a class="radius f2"><span class="f5 bold num">10</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(6,20)">
+                    <a class="radius f2"><span class="f5 bold num">20</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(7,50)">
+                    <a class="radius f2"><span class="f5 bold num">50</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(8,100)">
+                    <a class="radius f2"><span class="f5 bold num">100</span>元</a>
+                </li>
+                <li class="fl tc" onclick="selectMoneyItem(9,200)">
+                    <a class="radius f2"><span class="f5 bold num">200</span>元</a>
+                </li>
+            </ul>
+            <div class="random-money tc">
+                <a class="randomSelectMoney f5" onclick="getRandomMoney()" >随机</a>
             </div>
         </div>
-    </div>
-    <ul class="ptm2">
-        <li class="money_com" onclick="getPtm2(0)">
-            <span>8元</span>
-        </li>
-        <li class="money_com ptm2_m" onclick="getPtm2(1)">
-            <span>12元</span>
-        </li>
-        <li class="money_com" onclick="getPtm2(2)">
-            <span>20元</span>
-        </li>
-        <li class="money_com ptm2_m2" onclick="getPtm2(3)">
-            <span>26元</span>
-        </li>
-        <li class="money_com ptm2_m ptm2_m2" onclick="getPtm2(4)">
-            <span>52元</span>
-        </li>
-        <li class="money_com ptm2_m2" onclick="getPtm2(5)">
-            <span>98元</span>
-        </li>
-    </ul>
-    <div class="ptm3">
-        <div class="ptm3_but" onclick="getPtm3()">
-            <div>其它金额</div>
-            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/index2_money.png" width="13px" height="13px" />
+        <!-- 随机 生成钱数 模块-->
+
+        <!--留言框-->
+        <div class="leave-word ">
+            <textarea class="f13 bg1" placeholder="更多留言..." maxlength="100" id="content"></textarea>
+            <div class="heart-remind tc f2 c5">
+                申明：您的心意会转入相应的医生账户，作为服务和科研经费
+            </div>
         </div>
-        <div class="ptm3_input">
-            <input type="number" maxlength="3" id="getMoney" placeholder="可输入1-200元" oninput="moreMoney2()" ONBLUR="cheackInput()"/>
+        <!--支付错误提示-->
+        <div class="pay-problem tc f3" hidden>
+            亲，支付出现问题哦~
         </div>
+        <br/><br/><br/><br/><br/><br/>
+        <button  class="bottom-btn" id="but" onclick="updateCustomerInfo()" >提交评价</button>
     </div>
-    <div id="moneyDiff" class="ptmfu">
-        <span>金额不可以为负哦~</span>
-    </div>
 </div>
-<div class="playtourno">
-    <div class="ptntitle">
-        <span class="ptntitle_com"></span>
-        <span>哪里不满意?</span>
-        <span class="ptntitle_com"></span>
-    </div>
-    <ul class="ptn_1">
-        <li>
-            <span class="com ptn_1_1" onclick="setNo(0)">服务态度不好</span>
-        </li>
-        <li>
-            <span class="com ptn_1_1" onclick="setNo(1)">专业水平不高</span>
-        </li>
-        <li>
-            <span class="com ptn_1_1" onclick="setNo(2)">响应速度太慢</span>
-        </li>
-        <li>
-            <span class="com ptn_1_1" onclick="setNo(3)">其它</span>
-        </li>
-    </ul>
+<!--随机生成钱数浮层 模块-->
+<div class="c-shadow" hidden> </div>
+<div class="shadow-content random-content bg1 tc" hidden>
+    <img onclick="closeRandomMoney()" class="close" width="22" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/icon_close.png">
+   <div class="random-info">
+       <img width="200" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/heart1_1.1.png">
+       <div class="bold f3 money">1.1元</div>
+   </div>
+    <a class="f3 changeMoney" onclick="changeMoney()">换一波</a>
+    <div class="finish f6 c0" onclick="finishRandomMoney()">完成</div>
 </div>
-<div class="playtourjianyi">
-    <textarea placeholder="更多留言..." maxlength="100" id="content"></textarea>
-</div>
-<div class="playtourshenming">
-    您的心意会转入相应的医生账户，作为服务和科研经费
-</div>
-<div class="playtourwenti" style="display:none">
-    亲，支付出现问题哦~
-</div>
-<br/><br/><br/><br/><br/><br/>
-<button id="but" onclick="updateCustomerInfo()" >提交评价</button>
 </body>
 </html>

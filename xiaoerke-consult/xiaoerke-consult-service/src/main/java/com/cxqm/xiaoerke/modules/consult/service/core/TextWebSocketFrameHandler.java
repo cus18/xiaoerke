@@ -225,9 +225,9 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                                     noReadMsg.put("messageType",msgType);
                                     noReadMsg.put("messageContent",newContent);
                                     noReadMsg.put("doctorId",csUserId);
-                                    String currentUrl = sysPropertyVoWithBLOBsVo.getCoopYkdlUrl();
+                                    String currentUrl = sysPropertyVoWithBLOBsVo.getCoopYkdlUrl() + "/consult_interrupted";
                                     if(StringUtils.isNull(currentUrl)){
-                                        currentUrl = "http://wxsp-dev.ykbenefit.com/consult_interrupted";
+                                        currentUrl = "https://wxsp.ykhys.com/thirdparty/baodaifu/consult_interrupted";
                                     }
                                     String method = "POST";
                                     String dataType="json";
@@ -279,9 +279,9 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             noReadMsg.put("messageType",msgType);
                             noReadMsg.put("messageContent",newContent);
                             noReadMsg.put("doctorId",csUserId);
-                            String currentUrl = sysPropertyVoWithBLOBsVo.getCoopYkdlUrl();
+                            String currentUrl = sysPropertyVoWithBLOBsVo.getCoopYkdlUrl()+"/consult_interrupted";
                             if(StringUtils.isNull(currentUrl)){
-                                currentUrl = "http://wxsp-dev.ykbenefit.com/consult_interrupted";
+                                currentUrl = "https://wxsp.ykhys.com/thirdparty/baodaifu/consult_interrupted";
                             }
                             String method = "POST";
                             String dataType="json";
