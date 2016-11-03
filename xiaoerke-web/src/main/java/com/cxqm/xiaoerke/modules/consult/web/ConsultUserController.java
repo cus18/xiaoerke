@@ -560,6 +560,9 @@ public class ConsultUserController extends BaseController {
                 source = "WJY";
                 userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone"))) ? String.valueOf(params.get("patientPhone")) : "";
                 userName = StringUtils.isNotNull(String.valueOf(params.get("patientName"))) ? String.valueOf(params.get("patientName")) : "";
+                if(StringUtils.isNotNull(userName)){
+                    userName = EmojiFilter.coverEmoji(userName);
+                }
                 if (params.get("patientSex") != null && params.get("patientSex") != "") {
                     userSex = Integer.valueOf(String.valueOf(params.get("patientSex")));
                 }
@@ -578,6 +581,9 @@ public class ConsultUserController extends BaseController {
                 source = "COOP_BHQ";
                 userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone"))) ? String.valueOf(params.get("patientPhone")) : "";
                 userName = StringUtils.isNotNull(String.valueOf(params.get("patientName"))) ? String.valueOf(params.get("patientName")) : "";
+                if(StringUtils.isNotNull(userName)){
+                    userName = EmojiFilter.coverEmoji(userName);
+                }
                 thirdId = String.valueOf(params.get("thirdId"));
                 request.put("userPhone", userPhone);
                 request.put("userName", userName);
@@ -604,6 +610,9 @@ public class ConsultUserController extends BaseController {
                         if(jsonObject.containsKey("error_msg") && "success".equalsIgnoreCase(String.valueOf(jsonObject.get("error_msg")))){
                             headimgurl = StringUtils.isNotNull(String.valueOf(jsonObject.get("headimgurl"))) ? String.valueOf(jsonObject.get("headimgurl")) : "";
                             userName = StringUtils.isNotNull(String.valueOf(jsonObject.get("nickname"))) ? String.valueOf(jsonObject.get("nickname")) : "";
+                            if(StringUtils.isNotNull(userName)){
+                                userName = EmojiFilter.coverEmoji(userName);
+                            }
                             if (jsonObject.get("sex") != null && jsonObject.get("sex") != "") {
                                 userSex = Integer.valueOf(String.valueOf(jsonObject.get("sex")));
                             }
