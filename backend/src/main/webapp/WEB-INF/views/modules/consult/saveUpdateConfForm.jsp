@@ -33,7 +33,6 @@
 			}else{
 				var week = '${vo.week}';
 				var weeks = week.split(",");
-				alert(weeks);
 				for(var temp in weeks){
 					alert(weeks[temp]);
 					$('#week'+weeks[temp]).attr('checked',true);
