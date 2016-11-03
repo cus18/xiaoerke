@@ -15,8 +15,11 @@ import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRec
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.BabyBaseInfoService;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +63,10 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 
     @Autowired
     private SystemService systemService;
+
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
 
     @Override
@@ -245,28 +252,35 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 
     @Override
     public void sendRemindDoctor(String doctorId,String userName) {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map parameter = systemService.getDoctorWechatParameter();
         String token = (String) parameter.get("token");
         ConsultDoctorInfoVo doctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(doctorId);
 //        WechatUtil.sendMsgToWechat(token,doctorInfoVo.getOpenId(),"你有问题了 ,赶快去回到吧");
        if(doctorInfoVo!=null){
-           String data = "{ \"first\": {\"value\":代办事项\n\",\"color\":\"#173177\"},\"keynote1\":{\"value\":"+null==doctorInfoVo.getName()?"":doctorInfoVo.getName()+"医生您好， 您有新消息\n"
-                   +",\"color\":\"#173177\"}, \"keynote2\": {\"value\":"+userName+"向您咨询，请尽快回复。\", \"color\":\"#173177\"}, \"remark\":{ \"value\":\"优先级很高哦！\", \"color\":\"#173177\" }";
-           WechatUtil.sendTemplateMsgToUser(token,doctorInfoVo.getOpenId(),"APZhFvwnuhFL9TA-ufQo5xJxG4y1bM2J9anNsmnzvXM",data);
+//           String data = "{ \"first\": {\"value\":代办事项\n\",\"color\":\"#173177\"},\"keynote1\":{\"value\":"+null==doctorInfoVo.getName()?"":"\""+doctorInfoVo.getName()+"医生您好， 您有新消息\"\n"
+//                   +",\"color\":\"#173177\"}, \"keynote2\": {\"value\":"+userName+"向您咨询，请尽快回复。\", \"color\":\"#173177\"}, \"remark\":{ \"value\":\"优先级很高哦！\", \"color\":\"#173177\" }";
+
+//           data = "\"keynote1\": {\"value\":\"崔晓琳医生您好，您有新消息\"\n" +
+//                   "                    ,\"color\":\"#173177\"}, \"keynote2\": {\"value\":\"a赵得良向您咨询，请尽快回复。\", \"color\":\"#173177\"}, \"remark\":{ \"value\":\"优先级很高哦！\", \"color\":\"#173177\" }    }}";
+//           WechatUtil.sendTemplateMsgToUser(token,doctorInfoVo.getOpenId(),"APZhFvwnuhFL9TA-ufQo5xJxG4y1bM2J9anNsmnzvXM",data);
+           String title = null==doctorInfoVo.getName()?"":doctorInfoVo.getName()+"医生您好， 您有新消息";
+           WechatMessageUtil.templateModel(title, userName+"向您咨询，请尽快回复。", "", "", "", "", token, "", doctorInfoVo.getOpenId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
 
        }
-
 
     }
 
     @Override
     public void sendRemindUser(NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo) {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map parameter = systemService.getDoctorWechatParameter();
         String token = (String) parameter.get("token");
 //        WechatUtil.sendMsgToWechat(token,doctorInfoVo.getOpenId(),"你有问题了 ,赶快去回到吧");
-        String data = "{ \"first\": {\"value\":代办事项\n\",\"color\":\"#173177\"},\"keynote1\":{\"value\":"+null==nonRealTimeConsultSessionVo.getUserName()?"":nonRealTimeConsultSessionVo.getUserName()+"您好， 您有新消息\n"
-                +",\"color\":\"#173177\"}, \"keynote2\": {\"value\":"+null==nonRealTimeConsultSessionVo.getCsUserName()?"医生":nonRealTimeConsultSessionVo.getUserName()+"回复你的消息啦，赶紧查看吧。\", \"color\":\"#173177\"}, \"remark\":{ \"value\":\"优先级很高哦！\", \"color\":\"#173177\" }";
-        WechatUtil.sendTemplateMsgToUser(token,nonRealTimeConsultSessionVo.getUserId(),"APZhFvwnuhFL9TA-ufQo5xJxG4y1bM2J9anNsmnzvXM",data);
+//        String data = "{ \"first\": {\"value\":代办事项\n\",\"color\":\"#173177\"},\"keynote1\":{\"value\":"+null==nonRealTimeConsultSessionVo.getUserName()?"":nonRealTimeConsultSessionVo.getUserName()+"您好， 您有新消息\n"
+//                +",\"color\":\"#173177\"}, \"keynote2\": {\"value\":"+null==nonRealTimeConsultSessionVo.getCsUserName()?"医生":nonRealTimeConsultSessionVo.getUserName()+"回复你的消息啦，赶紧查看吧。\", \"color\":\"#173177\"}, \"remark\":{ \"value\":\"优先级很高哦！\", \"color\":\"#173177\" }";
+        String title = null==nonRealTimeConsultSessionVo.getUserName()?"":nonRealTimeConsultSessionVo.getUserName() +" 您好， 您有新消息";
+        WechatMessageUtil.templateModel(title, null==nonRealTimeConsultSessionVo.getCsUserName()?"医生":nonRealTimeConsultSessionVo.getUserName()+"回复你的消息啦，赶紧查看吧。", "", "", "", "", token, "", nonRealTimeConsultSessionVo.getUserId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
     }
 
     ;
