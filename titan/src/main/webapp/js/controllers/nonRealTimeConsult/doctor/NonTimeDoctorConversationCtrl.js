@@ -2,6 +2,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
     '$scope', '$state', '$stateParams', '$timeout', '$http', '$upload', 'ConversationDoctorInfo', 'GetDoctorLoginStatus', 'UpdateReCode',
     function ($scope, $state, $stateParams, $timeout, $http, $upload, ConversationDoctorInfo, GetDoctorLoginStatus, UpdateReCode) {
         $scope.info = {};
+        $scope.info.content = "";
         $scope.msgType = "text";
         $scope.sendLock = false;
 
