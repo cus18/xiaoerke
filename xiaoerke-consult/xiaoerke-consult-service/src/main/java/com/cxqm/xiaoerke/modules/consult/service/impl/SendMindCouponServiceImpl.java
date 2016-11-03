@@ -20,21 +20,21 @@ import java.util.List;
 public class SendMindCouponServiceImpl implements SendMindCouponService {
 
     @Autowired
-    SendMindCouponDao messageContentConfDao;
+    SendMindCouponDao sendMindCouponDao;
 
     @Override
     public List<SendMindCouponVo> findSendMindCouponByInfo(SendMindCouponVo vo) {
-        return messageContentConfDao.findSendMindCouponByInfo(vo);
+        return sendMindCouponDao.findSendMindCouponByInfo(vo);
     }
 
     @Override
     public String saveSendMindCoupon(SendMindCouponVo vo) {
         if(StringUtils.isNotNull(vo.getId()+"")){
-            messageContentConfDao.updateSendMindCoupon(vo);
+            sendMindCouponDao.updateSendMindCoupon(vo);
             return "修改成功";
 
         }else{
-            messageContentConfDao.saveSendMindCoupon(vo);
+            sendMindCouponDao.saveSendMindCoupon(vo);
             return "保存成功";
         }
     }
@@ -42,6 +42,6 @@ public class SendMindCouponServiceImpl implements SendMindCouponService {
 
     @Override
     public void deleteSendMindCoupon(SendMindCouponVo vo) {
-        messageContentConfDao.deleteSendMindCoupon(vo);
+        sendMindCouponDao.deleteSendMindCoupon(vo);
     }
 }

@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.consult.entity.MessageContentConfVo;
 import com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,4 +22,6 @@ public interface MessageContentConfDao {
     void updateMessageContentConf(MessageContentConfVo vo);
 
     void deleteMessageContentConf(MessageContentConfVo vo);
+
+    MessageContentConfVo messageConfInfo(String msgType);
 }

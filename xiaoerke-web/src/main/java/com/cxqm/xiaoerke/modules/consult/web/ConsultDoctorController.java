@@ -77,6 +77,9 @@ public class ConsultDoctorController extends BaseController {
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
 
+    @Autowired
+    private MessageContentConfService messageContentConfService;
+
     @RequestMapping(value = "/getCurrentUserHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
@@ -394,6 +397,13 @@ public class ConsultDoctorController extends BaseController {
                                     "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_3_backend'>>>邀请好友赚机会</a>";
                             WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                             LogUtils.saveLog("ZXYQ_RK_TS_N3",userId);
+
+                            //根据场景和日期查询是否有匹配的文案推送
+                            MessageContentConfVo messageContentConfVo = messageContentConfService.messageConfInfo("送心意");
+                            if(null != messageContentConfVo){
+                                String msgContent = messageContentConfVo.getContent();
+                                WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, msgContent);
+                            }
                         }
                         //分享的代码
 //                    patientRegisterPraiseService.sendRemindMsgToUser(userId,sessionId);

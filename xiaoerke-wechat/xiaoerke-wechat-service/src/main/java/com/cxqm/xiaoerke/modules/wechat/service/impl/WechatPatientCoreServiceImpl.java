@@ -227,12 +227,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 traceElementsVo = new TraceElementsVo();
                 traceElementsVo.setOpenid(openId);
                 traceElementsVo.setUserNo(userNo);
+                traceElementsVo.setCreateTime(new Date());
                 traceElementsService.insertSelective(traceElementsVo);
 //                traceElementsVo.setUserNo(userNo+" "+traceElementsVo.getId());
 //                traceElementsService.updateByPrimaryKeySelective(traceElementsVo);
             }
 //            推送相关文案
-            WechatUtil.sendMsgToWechat(token, openId, "检测编码:" + userNo + " " + String.format("%04d", traceElementsVo.getId()) + "\n\n此编码是检测您宝宝微量元素的唯一编码，请将编码标注在检测样本上，以便您能即时接收到检测结果！[爱心]");
+            WechatUtil.sendMsgToWechat(token, openId, "检测编码:" + DateUtils.formatDateToStr(traceElementsVo.getCreateTime(), "yyyy MMdd") + " " + String.format("%04d", traceElementsVo.getId()) + "\n\n此编码是检测您宝宝微量元素的唯一编码，请将编码标注在检测样本上，以便您能即时接收到检测结果！[爱心]");
         }
     }
 

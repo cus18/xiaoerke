@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,11 +23,16 @@ import java.util.List;
 public class MessageContentConfServiceImpl implements MessageContentConfService {
 
     @Autowired
-    MessageContentConfDao messageContentConfDao;
+    private MessageContentConfDao messageContentConfDao;
 
     @Override
     public List<MessageContentConfVo> findMessageContentConfByInfo(MessageContentConfVo vo) {
         return messageContentConfDao.findMessageContentConfByInfo(vo);
+    }
+
+    @Override
+    public MessageContentConfVo messageConfInfo(String msgType) {
+        return messageContentConfDao.messageConfInfo(msgType);
     }
 
     @Override

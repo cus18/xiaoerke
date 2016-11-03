@@ -21,10 +21,6 @@
 					}
 				}
 			});
-			$("#deleteConf").click(function(){
-				$("#inputForm").attr("action","${ctx}/messageContentConf/deleteMessageContentConf");
-				$("#inputForm").submit();
-			});
 			if('${vo.priority}' == '0' || '${vo.priority}' == ''){
 				$("#startTime").attr("value",'00:00');
 				$("#endTime").attr("value",'24:00');
@@ -37,7 +33,6 @@
 			}else{
 				var week = '${vo.week}';
 				var weeks = week.split(",");
-				alert(weeks);
 				for(var temp in weeks){
 					alert(weeks[temp]);
 					$('#week'+weeks[temp]).attr('checked',true);
@@ -167,7 +162,6 @@
 
 		<div class="form-actions">
 			<input id="saveConf" class="btn btn-primary" type="submit" value="保存"/>
-			<input id="deleteConf" class="btn btn-primary" type="button" value="删除"/>
 			<input id="btnCancel" class="btn" type="button" value="返回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

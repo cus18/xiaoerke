@@ -207,6 +207,14 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 
     @Override
     public void sessinTimeOut() {
+        Map parameter = systemService.getWechatParameter();
+        String token = (String) parameter.get("token");
+        List<Map<String,String>> sessionOutList = nonRealTimeConsultSessionDao.getTimeOutSessionInfo();
+        for(Map<String,String> sessionInfo:sessionOutList){
+            String openid = sessionInfo.get("openid");
+            String content = "您好，您和皮肤科梁平医生的会话已达到最大会话时长（36小时）\n系统将自动关闭。您对医生的回复还满意吗？\n<a href=''>评价送心意</a> |  <a href=''>查看详情</a> \n";
+            WechatUtil.sendMsgToWechat(token,openid,content);
+        }
         nonRealTimeConsultSessionDao.sessinTimeOut();
     }
 
@@ -249,6 +257,16 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
        }
 
 
+    }
+
+    @Override
+    public void sendRemindUser(NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo) {
+        Map parameter = systemService.getDoctorWechatParameter();
+        String token = (String) parameter.get("token");
+//        WechatUtil.sendMsgToWechat(token,doctorInfoVo.getOpenId(),"你有问题了 ,赶快去回到吧");
+        String data = "{ \"first\": {\"value\":代办事项\n\",\"color\":\"#173177\"},\"keynote1\":{\"value\":"+null==nonRealTimeConsultSessionVo.getUserName()?"":nonRealTimeConsultSessionVo.getUserName()+"您好， 您有新消息\n"
+                +",\"color\":\"#173177\"}, \"keynote2\": {\"value\":"+null==nonRealTimeConsultSessionVo.getCsUserName()?"医生":nonRealTimeConsultSessionVo.getUserName()+"回复你的消息啦，赶紧查看吧。\", \"color\":\"#173177\"}, \"remark\":{ \"value\":\"优先级很高哦！\", \"color\":\"#173177\" }";
+        WechatUtil.sendTemplateMsgToUser(token,nonRealTimeConsultSessionVo.getUserId(),"APZhFvwnuhFL9TA-ufQo5xJxG4y1bM2J9anNsmnzvXM",data);
     }
 
     ;
