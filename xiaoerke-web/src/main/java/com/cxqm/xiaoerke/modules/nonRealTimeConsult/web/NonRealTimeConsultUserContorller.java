@@ -341,11 +341,16 @@ public class NonRealTimeConsultUserContorller {
         }
         List<NonRealTimeConsultSessionVo> sessionInfo = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(sessionVo);
         if(sessionInfo.size()>0){
-            if(StringUtils.isNotNull(doctorId)){
+            if(StringUtils.isNotNull(doctorId)){//医生回复消息
+                NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo = sessionInfo.get(0);
                 nonRealTimeConsultUserService.savenConsultRecord(sessionid,doctorId, source, content,msgType);
-            }else{
+                nonRealTimeConsultUserService.sendRemindUser(nonRealTimeConsultSessionVo);
+
+            }else{//用户回复消息
                 nonRealTimeConsultUserService.savenConsultRecord(sessionid,openid, source, content,msgType);
-                doctorId = sessionInfo.get(0).getCsUserId();
+                NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo = sessionInfo.get(0);
+                //通知相关医生来回答--模板消息
+                nonRealTimeConsultUserService.sendRemindDoctor(doctorId,nonRealTimeConsultSessionVo.getUserName(),String.valueOf(nonRealTimeConsultSessionVo.getId()));
             }
             resultMap.put("state","success");
         }else{
@@ -353,8 +358,7 @@ public class NonRealTimeConsultUserContorller {
             resultMap.put("result_info","未找到相应的会话");
         }
 
-        //通知相关医生来回答--模板消息
-        nonRealTimeConsultUserService.sendRemindDoctor(doctorId,sessionVo.getUserName());
+
 
         //通知前台更新聊天记录
         Map<String,Object> conversationData = new HashMap<String, Object>();

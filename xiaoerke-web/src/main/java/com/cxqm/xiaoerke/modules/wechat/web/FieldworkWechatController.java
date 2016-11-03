@@ -70,7 +70,7 @@ public class FieldworkWechatController {
             WechatBean wechat = JsonUtil.getObjFromJsonStr(json, WechatBean.class);
             openid = wechat.getOpenid();
             session.setAttribute("openId", openid);
-            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30, ".baodf.com");
+            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30, sysPropertyVoWithBLOBsVo.getBaodfDomainValue());
         }
         if ("1".equals(url)) {
             //每日清单
