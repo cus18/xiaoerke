@@ -259,6 +259,16 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 
     }
 
+    @Override
+    public void sendRemindUser(NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo) {
+        Map parameter = systemService.getDoctorWechatParameter();
+        String token = (String) parameter.get("token");
+//        WechatUtil.sendMsgToWechat(token,doctorInfoVo.getOpenId(),"你有问题了 ,赶快去回到吧");
+        String data = "{ \"first\": {\"value\":代办事项\n\",\"color\":\"#173177\"},\"keynote1\":{\"value\":"+null==nonRealTimeConsultSessionVo.getUserName()?"":nonRealTimeConsultSessionVo.getUserName()+"您好， 您有新消息\n"
+                +",\"color\":\"#173177\"}, \"keynote2\": {\"value\":"+null==nonRealTimeConsultSessionVo.getCsUserName()?"医生":nonRealTimeConsultSessionVo.getUserName()+"回复你的消息啦，赶紧查看吧。\", \"color\":\"#173177\"}, \"remark\":{ \"value\":\"优先级很高哦！\", \"color\":\"#173177\" }";
+        WechatUtil.sendTemplateMsgToUser(token,nonRealTimeConsultSessionVo.getUserId(),"APZhFvwnuhFL9TA-ufQo5xJxG4y1bM2J9anNsmnzvXM",data);
+    }
+
     ;
 
 }
