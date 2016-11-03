@@ -15,26 +15,16 @@
 }
 .invitePageBox {
     text-align: center;
-    padding-top: 30px;
+    padding: 30px 0;
     background: #fff url("http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fbg_png%20(1)%20(1).png") 0 0 no-repeat;
     background-size: 100% 100%;
 }
-
-/*.invitePageBox .invitePageTop {
-    margin-top: 24px;
-    width: 90%;
+#invitePageContent {
+    margin-bottom: 40px;
 }
-
-.invitePageBox .invitePageContent {
-    margin-top: -20px;
-    width: 90%;
+.invitePageBox img:nth-child(last){
+    margin-bottom: 20px;
 }
-
-.invitePageBox .invitePageBottom {
-    margin-bottom: 25px;
-    width: 90%;
-}*/
-
 .invitePageShade {
     position: absolute;
     top: 0;
