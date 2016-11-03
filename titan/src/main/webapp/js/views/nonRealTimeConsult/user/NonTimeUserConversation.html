@@ -52,7 +52,7 @@
                         <div ng-bind-html="item.message|emotionReceive:item.messageType"></div>
                     </div>
                     <div ng-style="item.messageType=='img'?{'display':'block'}:{'display':'none'}" class="content fl w70 b-box bgf">
-                            <img ng-src="{{item.message}}" alt=""/>
+                            <img  width="100%" height="auto"  ng-src="{{item.message}}" alt=""/>
                     </div>
                 </div>
             </div>
