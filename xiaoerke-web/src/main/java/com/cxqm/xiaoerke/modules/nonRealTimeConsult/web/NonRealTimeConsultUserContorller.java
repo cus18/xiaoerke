@@ -348,9 +348,9 @@ public class NonRealTimeConsultUserContorller {
 
             }else{//用户回复消息
                 nonRealTimeConsultUserService.savenConsultRecord(sessionid,openid, source, content,msgType);
-                doctorId = sessionInfo.get(0).getCsUserId();
+                NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo = sessionInfo.get(0);
                 //通知相关医生来回答--模板消息
-                nonRealTimeConsultUserService.sendRemindDoctor(doctorId,sessionVo.getUserName());
+                nonRealTimeConsultUserService.sendRemindDoctor(doctorId,nonRealTimeConsultSessionVo.getUserName(),String.valueOf(nonRealTimeConsultSessionVo.getId()));
             }
             resultMap.put("state","success");
         }else{
