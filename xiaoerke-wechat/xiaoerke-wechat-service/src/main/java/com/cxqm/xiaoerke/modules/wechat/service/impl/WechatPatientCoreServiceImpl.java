@@ -577,13 +577,14 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //            WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6fe41AjIlPrqLyUz5-S99mCls", 1);
 //        }
 
-//        else if (EventKey.indexOf("doc") > -1) {
-//            Map<String, Object> map = wechatInfoDao.getDoctorInfo(EventKey.replace("doc", ""));
-//            article.setTitle("您已经成功关注" + map.get("hospitalName") + map.get("name") + "医生，点击即可预约");
-//            article.setDescription("");
-//            article.setPicUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/images/attentionDoc.jpg");
-//            article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/doctorAppointment/" + map.get("id") + ",,,,,doctorShare,,");
-//            articleList.add(article);
+        if (EventKey.indexOf("doc") > -1) {
+            Map<String, Object> map = wechatInfoDao.getDoctorInfo(EventKey.replace("doc", ""));
+            article.setTitle("您已经成功关注" + map.get("hospitalName") + map.get("name") + "医生，点击即可预约");
+            article.setDescription("");
+            article.setPicUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/images/attentionDoc.jpg");
+            article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/doctorAppointment/" + map.get("id") + ",,,,,doctorShare,,");
+            articleList.add(article);
+        }
 //        } else if (EventKey.indexOf("267") > -1) {
 //            article.setTitle("恭喜您,通过‘糖盒儿(tanghe2)’关注宝大夫,不仅可以随时免费咨询儿科专家,还可获赠一次预约名医的机会。");
 //            article.setDescription("");
