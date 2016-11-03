@@ -27,6 +27,21 @@
     </if>
   </select>
 
+  <select id="messageConfInfo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.MessageContentConfVo">
+    select id, scene,week,starttime, endtime,priority,content
+    from message_content_conf
+    where 1=1
+    <if test="id != null and id != ''">
+      and week in(0,DAYOFMONTH(NOW()))
+    </if>
+    <if test="scene != null and scene != ''">
+      and scene = #{scene}
+    </if>
+    order by priority,week
+    limit 1
+  </select>
+
+
   <insert id="saveMessageContentConf" parameterType="com.cxqm.xiaoerke.modules.consult.entity.MessageContentConfVo" useGeneratedKeys="true"
           keyProperty="id">
     insert into message_content_conf(scene,week,starttime, endtime,priority,content)

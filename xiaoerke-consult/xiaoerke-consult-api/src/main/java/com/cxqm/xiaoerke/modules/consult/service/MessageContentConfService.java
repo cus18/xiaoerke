@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.consult.service;
 
 import com.cxqm.xiaoerke.modules.consult.entity.MessageContentConfVo;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,8 @@ import java.util.Map;
 public interface MessageContentConfService {
 
     List<MessageContentConfVo> findMessageContentConfByInfo(MessageContentConfVo vo);
+
+    MessageContentConfVo messageConfInfo(String msgType);
 
     String saveMessageContentConf(MessageContentConfVo vo);
 
