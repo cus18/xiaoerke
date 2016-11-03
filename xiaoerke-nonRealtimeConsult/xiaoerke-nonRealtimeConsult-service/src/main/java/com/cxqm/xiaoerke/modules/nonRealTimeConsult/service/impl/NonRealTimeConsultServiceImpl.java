@@ -272,7 +272,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         String token = (String) parameter.get("token");
         String title = null==nonRealTimeConsultSessionVo.getUserName()?"":nonRealTimeConsultSessionVo.getUserName() +" 您好， 您有新消息";
         String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeUserConversation/"+nonRealTimeConsultSessionVo.getId();
-        WechatMessageUtil.templateModel(title, null==nonRealTimeConsultSessionVo.getCsUserName()?"医生":nonRealTimeConsultSessionVo.getUserName()+"回复你的消息啦，赶紧查看吧。", "", "", "", "很高哦^_^", token, "", nonRealTimeConsultSessionVo.getUserId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
+        WechatMessageUtil.templateModel(title, null==nonRealTimeConsultSessionVo.getCsUserName()?"医生":nonRealTimeConsultSessionVo.getUserName()+"回复你的消息啦，赶紧查看吧。", "", "", "", "很高哦^_^", token, url, nonRealTimeConsultSessionVo.getUserId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
     }
 
     ;
