@@ -1636,17 +1636,17 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         if((propertyVo.getPermTimes()+propertyVo.getMonthTimes()) == 0){
             String content = "问题不着急？\n来试试“点名咨询”。您可指定专家医生或曾咨询过的医生，医生会在24小时内尽快对您的提问进行答复\n" +
                     "<a href='"+path+"'>>>点名咨询医生<a/>";
-            WechatUtil.sendMsgToWechat(openid,token,content);
+            WechatUtil.sendMsgToWechat(token,openid,content);
             LogUtils.saveLog("FSS_YHD_RK1_TS",openid);
 
             return true;
         }
         ConsultSession  consultInfo = consultConversationService.selectByOpenid(openid);
 //        首次
-        if((propertyVo.getPermTimes() == 4 && propertyVo.getPermTimes()==0 && consultInfo.getConsultNumber() > 26)){
+        if((propertyVo.getMonthTimes() == 4 && propertyVo.getPermTimes()==0 && consultInfo.getConsultNumber() > 26)){
             String content = "不想掏钱？\n来试试“点名咨询”。你可指定专家医生或曾咨询过的医生， 医生会在24h 内尽快对您的提问进行答复哦~\n（如有疑问，可直接拨打400-6237-120）\n" +
                     "<a href='"+path+"'>>>点名咨询医生<a/>";
-            WechatUtil.sendMsgToWechat(openid,token,content);
+            WechatUtil.sendMsgToWechat(token,openid,content);
             LogUtils.saveLog("FSS_YHD_RK3_TS",openid);
             return true;
         }
