@@ -146,7 +146,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         resultMap.put("sessionId",sessionVo.getId());
 
         //通知相关医生来回答--模板消息
-        sendRemindDoctor(csUserId,sessionVo.getUserName());
+        sendRemindDoctor(csUserId,sessionVo.getUserName(),String.valueOf(sessionVo.getId()));
         return resultMap;
     }
 
@@ -251,14 +251,15 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
     }
 
     @Override
-    public void sendRemindDoctor(String doctorId,String userName) {
+    public void sendRemindDoctor(String doctorId, String userName, String sessionId) {
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map parameter = systemService.getDoctorWechatParameter();
         String token = (String) parameter.get("token");
         ConsultDoctorInfoVo doctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(doctorId);
        if(doctorInfoVo!=null){
            String title = null==doctorInfoVo.getName()?"":doctorInfoVo.getName()+"医生您好， 您有新消息";
-           WechatMessageUtil.templateModel(title, userName+"向您咨询，请尽快回复。", "", "", "", "很高哦^_^", token, "", doctorInfoVo.getOpenId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
+           String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/nonRealTimeConsult#/NonTimeDoctorConversation/"+sessionId;
+           WechatMessageUtil.templateModel(title, userName+"向您咨询，请尽快回复。", "", "", "", "很高哦^_^", token, url, doctorInfoVo.getOpenId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
 
        }
 
@@ -270,6 +271,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         Map parameter = systemService.getDoctorWechatParameter();
         String token = (String) parameter.get("token");
         String title = null==nonRealTimeConsultSessionVo.getUserName()?"":nonRealTimeConsultSessionVo.getUserName() +" 您好， 您有新消息";
+        String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/nonRealTimeConsult#/NonTimeUserConversation/"+nonRealTimeConsultSessionVo.getId();
         WechatMessageUtil.templateModel(title, null==nonRealTimeConsultSessionVo.getCsUserName()?"医生":nonRealTimeConsultSessionVo.getUserName()+"回复你的消息啦，赶紧查看吧。", "", "", "", "很高哦^_^", token, "", nonRealTimeConsultSessionVo.getUserId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
     }
 

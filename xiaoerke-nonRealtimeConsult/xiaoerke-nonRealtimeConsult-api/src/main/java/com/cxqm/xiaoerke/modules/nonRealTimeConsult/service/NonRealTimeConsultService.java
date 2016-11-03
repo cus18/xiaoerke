@@ -84,7 +84,8 @@ public interface NonRealTimeConsultService {
 
     String getNonRealtimeCustomerId(Integer sessionid);
 
-    void sendRemindDoctor(String doctorId ,String userName);
+
+    void sendRemindDoctor(String doctorId, String userName, String sessionId);
 
     void sendRemindUser(NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo);
 }
