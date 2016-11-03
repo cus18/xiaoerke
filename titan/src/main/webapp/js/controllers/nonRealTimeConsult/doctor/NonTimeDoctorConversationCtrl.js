@@ -78,6 +78,11 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
             });
         };
 
+        //发送文本消息
+        $scope.sendTextMsg = function(){
+            $scope.info.content =  $('#saytext').val();
+            $scope.sendMsg("text",$scope.info.content);
+        };
         //发送消息
         $scope.sendMsg = function (messageType, content) {
             $scope.sendLock = true;
