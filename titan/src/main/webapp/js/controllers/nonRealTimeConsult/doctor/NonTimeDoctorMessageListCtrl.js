@@ -8,7 +8,7 @@ angular.module('controllers', []).controller('NonTimeDoctorMessageListCtrl', [
         };
         $scope.goConversationPage = function (sessionid){
             $state.go('NonTimeDoctorConversation',{"sessionId":sessionid});
-        }
+        }//http://s201.xiaork.com/titan/nonRealTimeConsult#/NonTimeDoctorConversation,95
         //页面初始化
         $scope.NonTimeDoctorMessageListInit = function () {
             //校验是否登陆

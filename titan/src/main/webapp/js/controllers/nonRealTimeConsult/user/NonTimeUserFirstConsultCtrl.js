@@ -21,13 +21,13 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             $scope.info = {
                 describeIllness:""
             };
-            $scope.showPhotoList = []
+            $scope.showPhotoList = [];
             $scope.photoList = [];
             $scope.sexItem = 0;
             $scope.isSelectedB = true;
             $scope.isSelectedG = false;
             $scope.babyId = "";
-            $scope.sexItem == 0;
+            $scope.sexItem = 0;
 
             //微信js-sdk 初始化接口
             $scope.doRefresh = function(){
@@ -68,7 +68,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                     error : function() {
                     }
                 });
-            }
+            };
 
 
 
@@ -115,7 +115,6 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                 }
             };
 
-
             $scope.showInput = function() {
                 var date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
                 $("#babyBirthday").mobiscroll().date();
@@ -144,7 +143,6 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                 $("#babyBirthday").mobiscroll(opt);
                 $("#babyBirthday").mobiscroll("show");
             };
-
 
             //提交图片
             $scope.uploadFiles = function() {
