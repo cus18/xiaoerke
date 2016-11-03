@@ -18,6 +18,9 @@
     <if test="id != null and id != ''">
       and id = #{id}
     </if>
+    <if test="name != null and name != ''">
+      and name = #{name}
+    </if>
   </select>
 
   <insert id="saveSendMindCoupon" parameterType="com.cxqm.xiaoerke.modules.consult.entity.SendMindCouponVo" useGeneratedKeys="true"
@@ -30,13 +33,13 @@
     delete from send_mind_coupon where id=#{id}
   </delete>
   
-  <update id="updateMessageContentConf">
+  <update id="updateSendMindCoupon">
     update send_mind_coupon
     <set>
-      <if test="scene != null and scene != ''">
+      <if test="name != null and name != ''">
         name = #{name},
       </if>
-      <if test="week != null and week != ''">
+      <if test="link != null and link != ''">
         link = #{link},
       </if>
     </set>

@@ -21,10 +21,6 @@
 					}
 				}
 			});
-			$("#deleteConf").click(function(){
-				$("#inputForm").attr("action","${ctx}/messageContentConf/deleteMessageContentConf");
-				$("#inputForm").submit();
-			});
 			if('${vo.priority}' == '0' || '${vo.priority}' == ''){
 				$("#startTime").attr("value",'00:00');
 				$("#endTime").attr("value",'24:00');
@@ -167,7 +163,6 @@
 
 		<div class="form-actions">
 			<input id="saveConf" class="btn btn-primary" type="submit" value="保存"/>
-			<input id="deleteConf" class="btn btn-primary" type="button" value="删除"/>
 			<input id="btnCancel" class="btn" type="button" value="返回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
