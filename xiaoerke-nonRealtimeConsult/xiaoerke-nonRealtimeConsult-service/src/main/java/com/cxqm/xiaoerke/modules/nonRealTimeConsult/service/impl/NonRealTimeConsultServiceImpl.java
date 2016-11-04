@@ -273,7 +273,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
     @Override
     public void sendRemindUser(NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo) {
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-        Map parameter = systemService.getDoctorWechatParameter();
+        Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
         String title = null==nonRealTimeConsultSessionVo.getUserName()?"":nonRealTimeConsultSessionVo.getUserName() +" 您好， 您有新消息";
         String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeUserConversation/"+nonRealTimeConsultSessionVo.getId();
