@@ -86,7 +86,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
         };
         //发送消息
         $scope.sendMsg = function (messageType, content) {
-            if(content = ""){
+            if(content == ""){
                 return;
             }
             $scope.sendLock = true;

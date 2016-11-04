@@ -82,7 +82,7 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
             };
             //发送消息
             $scope.sendMsg = function(messageType,content){
-                if(content = ""){
+                if(content == ""){
                     return;
                 }
                 var information = {
