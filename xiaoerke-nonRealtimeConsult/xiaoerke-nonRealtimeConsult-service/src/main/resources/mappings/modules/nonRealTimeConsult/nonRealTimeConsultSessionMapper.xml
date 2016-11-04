@@ -402,19 +402,23 @@ WHERE
   <update id="sessinTimeOut">
     UPDATE non_real_time_consult_session
     SET status = 'sessionend'
-    WHERE NOW()>DATE_ADD(create_time,
+    WHERE
+    status = 'ongoing'
+    and NOW()>DATE_ADD(create_time,
     INTERVAL 36 HOUR
     );
 </update>
 
-  <select id="getTimeOutSessionInfo" parameterType="java.util.Map">
+  <select id="getTimeOutSessionInfo" resultType="java.util.Map">
     SELECT
 	cdi.open_id openid,ncs.id sessonId
     FROM
 	non_real_time_consult_session ncs
     left join consult_doctor_info cdi
     on ncs.cs_user_id = cdi.sys_user_id
-    WHERE NOW() > DATE_ADD(create_time, INTERVAL 36 HOUR);
+    WHERE
+    ncs.status = 'ongoing'
+    and NOW() > DATE_ADD(ncs.create_time, INTERVAL 36 HOUR);
   </select>
 
 </mapper>
