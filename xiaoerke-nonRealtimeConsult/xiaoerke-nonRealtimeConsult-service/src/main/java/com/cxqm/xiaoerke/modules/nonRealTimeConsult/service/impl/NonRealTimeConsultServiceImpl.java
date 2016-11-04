@@ -217,12 +217,14 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
-        List<Map<String,String>> sessionOutList = nonRealTimeConsultSessionDao.getTimeOutSessionInfo();
-        for(Map<String,String> sessionInfo:sessionOutList){
-            String openid = sessionInfo.get("openid");
+        List<Map<String,Object>> sessionOutList = nonRealTimeConsultSessionDao.getTimeOutSessionInfo();
+        for(Map<String,Object> sessionInfo:sessionOutList){
+            String openid = (String) sessionInfo.get("openid");
             String infoPath = sysPropertyVoWithBLOBsVo.getTitanWebUrl()+"/titan/nonRealTimeConsult#/NonTimeUserConversation/"+sessionInfo.get("sessonId");
             String evalPath = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() +"keeper/wxPay/patientPay.do?serviceType=customerPay&customerId="+sessionInfo.get("customerId")+"&sessionId="+sessionInfo.get("sessonId");
-            String content = "您好，您和皮肤科梁平医生的会话已达到最大会话时长（36小时）\n系统将自动关闭。您对医生的回复还满意吗？\n<a href='"+evalPath+"'>评价送心意</a> |  <a href='"+infoPath+"'>查看详情</a> \n";
+            String doctorInfo =(String)sessionInfo.get("department")+sessionInfo.get("name");
+
+            String content = "您好，您和"+doctorInfo+"医生的会话已达到最大会话时长（36小时）\n系统将自动关闭。您对医生的回复还满意吗？\n<a href='"+evalPath+"'>评价送心意</a> |  <a href='"+infoPath+"'>查看详情</a> \n";
             WechatUtil.sendMsgToWechat(token,openid,content);
         }
         nonRealTimeConsultSessionDao.sessinTimeOut();

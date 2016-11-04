@@ -31,5 +31,5 @@ public interface NonRealTimeConsultSessionDao {
 
     void sessinTimeOut();
 
-    List<Map<String,String>> getTimeOutSessionInfo();
+    List<Map<String,Object>> getTimeOutSessionInfo();
 }
