@@ -214,12 +214,17 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 
     @Override
     public void sessinTimeOut() {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
-        List<Map<String,String>> sessionOutList = nonRealTimeConsultSessionDao.getTimeOutSessionInfo();
-        for(Map<String,String> sessionInfo:sessionOutList){
-            String openid = sessionInfo.get("openid");
-            String content = "您好，您和皮肤科梁平医生的会话已达到最大会话时长（36小时）\n系统将自动关闭。您对医生的回复还满意吗？\n<a href=''>评价送心意</a> |  <a href=''>查看详情</a> \n";
+        List<Map<String,Object>> sessionOutList = nonRealTimeConsultSessionDao.getTimeOutSessionInfo();
+        for(Map<String,Object> sessionInfo:sessionOutList){
+            String openid = (String) sessionInfo.get("openid");
+            String infoPath = sysPropertyVoWithBLOBsVo.getTitanWebUrl()+"/titan/nonRealTimeConsult#/NonTimeUserConversation/"+sessionInfo.get("sessonId");
+            String evalPath = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() +"keeper/wxPay/patientPay.do?serviceType=customerPay&customerId="+sessionInfo.get("customerId")+"&sessionId="+sessionInfo.get("sessonId");
+            String doctorInfo =(String)sessionInfo.get("department")+sessionInfo.get("name");
+
+            String content = "您好，您和"+doctorInfo+"医生的会话已达到最大会话时长（36小时）\n系统将自动关闭。您对医生的回复还满意吗？\n<a href='"+evalPath+"'>评价送心意</a> |  <a href='"+infoPath+"'>查看详情</a> \n";
             WechatUtil.sendMsgToWechat(token,openid,content);
         }
         nonRealTimeConsultSessionDao.sessinTimeOut();
@@ -259,7 +264,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
        if(doctorInfoVo!=null){
            String title = null==doctorInfoVo.getName()?"":doctorInfoVo.getName()+"医生您好， 您有新消息";
            String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeDoctorConversation/"+sessionId;
-           WechatMessageUtil.templateModel(title, userName+"向您咨询，请尽快回复。", "", "", "", "很高哦^_^", token, url, doctorInfoVo.getOpenId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
+           WechatMessageUtil.templateModel(title, userName+"向您咨询，请尽快回复。", "", "", "", "   很高哦^_^", token, url, doctorInfoVo.getOpenId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
 
        }
 
@@ -268,11 +273,11 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
     @Override
     public void sendRemindUser(NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo) {
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-        Map parameter = systemService.getDoctorWechatParameter();
+        Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
         String title = null==nonRealTimeConsultSessionVo.getUserName()?"":nonRealTimeConsultSessionVo.getUserName() +" 您好， 您有新消息";
         String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeUserConversation/"+nonRealTimeConsultSessionVo.getId();
-        WechatMessageUtil.templateModel(title, null==nonRealTimeConsultSessionVo.getCsUserName()?"医生":nonRealTimeConsultSessionVo.getUserName()+"回复你的消息啦，赶紧查看吧。", "", "", "", "很高哦^_^", token, url, nonRealTimeConsultSessionVo.getUserId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
+        WechatMessageUtil.templateModel(title, null==nonRealTimeConsultSessionVo.getCsUserName()?"医生":nonRealTimeConsultSessionVo.getUserName()+"回复你的消息啦，赶紧查看吧。", "", "", "", "   很高哦^_^", token, url, nonRealTimeConsultSessionVo.getUserId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
     }
 
     ;

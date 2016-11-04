@@ -9,6 +9,8 @@ import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
+import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.DataStatisticService;
 import com.cxqm.xiaoerke.modules.operation.service.OperationsComprehensiveService;
@@ -30,7 +32,6 @@ import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
-import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -113,6 +114,9 @@ public class ScheduledTask {
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
+
+    @Autowired
+    private NonRealTimeConsultService nonRealTimeConsultService;
 
 
     //将所有任务放到一个定时器里，减少并发
@@ -992,75 +996,76 @@ public class ScheduledTask {
 
     //建立患者与医生之间的通讯
     public synchronized void getConnection4doctorAndPatient() {
-        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-        //再建立通讯的五分钟前发消息给用户
-        Map<String, Object> parameter = systemService.getWechatParameter();
-        String token = (String) parameter.get("token");
-
-        Date date = new Date();
-        date.setTime(date.getTime() + 5 * 60 * 1000);
-        String dateStr = DateUtils.DateToStr(date, "datetime");
-        List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1", date);
-        for (HashMap<String, Object> map : orderMsgList) {
-            List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
-            if (null == messageMap || messageMap.size() == 0) {
-                String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) map.get("date"), "yyyy/MM/dd"));
-                String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl()  + "/titan/phoneConsult#/orderDetail" + (String) map.get("doctorId") + "," + (Integer) map.get("id") + ",phone";
-                PatientMsgTemplate.consultPhoneWaring2Wechat((String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("endTime"), (String) map.get("userPhone"), (String) map.get("orderNo"), (String) map.get("openid"), token, url);
-                PatientMsgTemplate.consultPhoneWaring2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("userPhone"), (String) map.get("orderNo"));
-                insertMonitor((Integer) map.get("id") + "", "2", "7");
-            }
-        }
-
-//建立通讯
-        List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1", new Date());
-        for (HashMap map : consultOrderList) {
-            String doctorPhone = (String) map.get("doctorPhone");
-            String doctorName = (String) map.get("doctorName");
-            String babyName = (String) map.get("babyName");
-            String userPhone = (String) map.get("userPhone");
-            Integer orderId = (Integer) map.get("id");
-            List<ConsultPhoneRecordVo> list = consultPhoneService.getConsultRecordInfo(orderId + "", "CallAuth");
-            if (list.size() < 1) {
-
-                Integer conversationLength = (Integer) map.get("conversationLength") * 60;
-                HashMap<String, Object> result = CCPRestSDK.callback(userPhone, doctorPhone,
-                        "01057115120", "01057115120", null,
-                        "true", null, orderId + "",
-                        conversationLength + "", null, "0",
-                        "1", "60", null);
-                System.out.println("发起电话咨询:" + result);
-                if ("000000".equals((String) result.get("statusCode"))) {
-                    HashMap<String, Object> dataMap = (HashMap) result.get("data");
-                    HashMap<String, Object> callBackMap = (HashMap) dataMap.get("CallBack");
-                    String callSid = (String) callBackMap.get("callSid");
-
-                    System.out.println(result);
-                    ConsultPhoneRegisterServiceVo vo = new ConsultPhoneRegisterServiceVo();
-                    vo.setId(orderId);
-                    vo.setUpdateTime(new Date());
-                    vo.setCallSid(callSid);
-                    consultPhonePatientService.updateOrderInfoBySelect(vo);
-                }
-            }
-        }
-
-        //将钱退还给用户
-        HashMap<String, Object> response = new HashMap<String, Object>();
-        List<HashMap<String, Object>> returnPayList = consultPhoneOrderService.getReturnPayConsultList();
-        for (HashMap<String, Object> map : returnPayList) {
-            accountService.updateAccount(0F, (Integer) map.get("id") + "", response, false, (String) map.get("userId"), "电话咨询超时取消退款");
-            Map<String, Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo((Integer) map.get("id"));
-            String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/phoneConsult#/orderDetail" + (String) consultOrder.get("doctorId") + "," + (Integer) consultOrder.get("orderId") + ",phone";
-            PatientMsgTemplate.returnPayPhoneRefund2Msg((String) consultOrder.get("babyName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("phone"));
-            String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) consultOrder.get("date"), "yyyy/MM/dd"));
-            String dateTime = (String) consultOrder.get("date") + " " + week + " " + (String) consultOrder.get("beginTime");
-            PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), dateTime, (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("openid"), token, url);
-//          LogUtils.saveLog(Servlets.getRequest(), "00000108", "电话咨询-退费" + map);//用户发起微信支付
-        }
-
-        //将半小时钱的未支付的订单释放
-        consultPhonePatientService.CancelAppointNoPay();
+//        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+//        //再建立通讯的五分钟前发消息给用户
+//        Map<String, Object> parameter = systemService.getWechatParameter();
+//        String token = (String) parameter.get("token");
+//
+//        Date date = new Date();
+//        date.setTime(date.getTime() + 5 * 60 * 1000);
+//        String dateStr = DateUtils.DateToStr(date, "datetime");
+//        List<HashMap<String, Object>> orderMsgList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1", date);
+//        for (HashMap<String, Object> map : orderMsgList) {
+//            List<Map> messageMap = messageService.consultPhoneMsgRemind((Integer) map.get("id") + "");
+//            if (null == messageMap || messageMap.size() == 0) {
+//                String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) map.get("date"), "yyyy/MM/dd"));
+//                String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl()  + "/titan/phoneConsult#/orderDetail" + (String) map.get("doctorId") + "," + (Integer) map.get("id") + ",phone";
+//                PatientMsgTemplate.consultPhoneWaring2Wechat((String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("endTime"), (String) map.get("userPhone"), (String) map.get("orderNo"), (String) map.get("openid"), token, url);
+//                PatientMsgTemplate.consultPhoneWaring2Msg((String) map.get("babyName"), (String) map.get("doctorName"), (String) map.get("date"), week, (String) map.get("beginTime"), (String) map.get("userPhone"), (String) map.get("orderNo"));
+//                insertMonitor((Integer) map.get("id") + "", "2", "7");
+//            }
+//        }
+//
+////建立通讯
+//        List<HashMap<String, Object>> consultOrderList = consultPhoneOrderService.getOrderPhoneConsultListByTime("1", new Date());
+//        for (HashMap map : consultOrderList) {
+//            String doctorPhone = (String) map.get("doctorPhone");
+//            String doctorName = (String) map.get("doctorName");
+//            String babyName = (String) map.get("babyName");
+//            String userPhone = (String) map.get("userPhone");
+//            Integer orderId = (Integer) map.get("id");
+//            List<ConsultPhoneRecordVo> list = consultPhoneService.getConsultRecordInfo(orderId + "", "CallAuth");
+//            if (list.size() < 1) {
+//
+//                Integer conversationLength = (Integer) map.get("conversationLength") * 60;
+//                HashMap<String, Object> result = CCPRestSDK.callback(userPhone, doctorPhone,
+//                        "01057115120", "01057115120", null,
+//                        "true", null, orderId + "",
+//                        conversationLength + "", null, "0",
+//                        "1", "60", null);
+//                System.out.println("发起电话咨询:" + result);
+//                if ("000000".equals((String) result.get("statusCode"))) {
+//                    HashMap<String, Object> dataMap = (HashMap) result.get("data");
+//                    HashMap<String, Object> callBackMap = (HashMap) dataMap.get("CallBack");
+//                    String callSid = (String) callBackMap.get("callSid");
+//
+//                    System.out.println(result);
+//                    ConsultPhoneRegisterServiceVo vo = new ConsultPhoneRegisterServiceVo();
+//                    vo.setId(orderId);
+//                    vo.setUpdateTime(new Date());
+//                    vo.setCallSid(callSid);
+//                    consultPhonePatientService.updateOrderInfoBySelect(vo);
+//                }
+//            }
+//        }
+//
+//        //将钱退还给用户
+//        HashMap<String, Object> response = new HashMap<String, Object>();
+//        List<HashMap<String, Object>> returnPayList = consultPhoneOrderService.getReturnPayConsultList();
+//        for (HashMap<String, Object> map : returnPayList) {
+//            accountService.updateAccount(0F, (Integer) map.get("id") + "", response, false, (String) map.get("userId"), "电话咨询超时取消退款");
+//            Map<String, Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo((Integer) map.get("id"));
+//            String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/phoneConsult#/orderDetail" + (String) consultOrder.get("doctorId") + "," + (Integer) consultOrder.get("orderId") + ",phone";
+//            PatientMsgTemplate.returnPayPhoneRefund2Msg((String) consultOrder.get("babyName"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("phone"));
+//            String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) consultOrder.get("date"), "yyyy/MM/dd"));
+//            String dateTime = (String) consultOrder.get("date") + " " + week + " " + (String) consultOrder.get("beginTime");
+//            PatientMsgTemplate.returnPayPhoneRefund2Wechat((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), dateTime, (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"), (Float) consultOrder.get("price") + "", (String) consultOrder.get("openid"), token, url);
+////          LogUtils.saveLog(Servlets.getRequest(), "00000108", "电话咨询-退费" + map);//用户发起微信支付
+//        }
+//
+//        //将半小时钱的未支付的订单释放
+//        consultPhonePatientService.CancelAppointNoPay();
+        System.out.println(new Date());
     }
 
     /**
@@ -1529,6 +1534,10 @@ public class ScheduledTask {
     //每个月赠送给用户四次咨询机会
     public void updateMonthTime() {
         consultSessionPropertyService.updateMonthTime();
+    }
+
+    public void nonRealtimeSessinTimeOut(){
+        nonRealTimeConsultService.sessinTimeOut();
     }
 
 }
