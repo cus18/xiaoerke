@@ -350,7 +350,7 @@ public class NonRealTimeConsultUserContorller {
                 nonRealTimeConsultUserService.savenConsultRecord(sessionid,openid, source, content,msgType);
                 NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo = sessionInfo.get(0);
                 //通知相关医生来回答--模板消息
-                nonRealTimeConsultUserService.sendRemindDoctor(doctorId,nonRealTimeConsultSessionVo.getUserName(),String.valueOf(nonRealTimeConsultSessionVo.getId()));
+                nonRealTimeConsultUserService.sendRemindDoctor(nonRealTimeConsultSessionVo.getCsUserId(),nonRealTimeConsultSessionVo.getUserName(),String.valueOf(nonRealTimeConsultSessionVo.getId()));
             }
             resultMap.put("state","success");
         }else{
