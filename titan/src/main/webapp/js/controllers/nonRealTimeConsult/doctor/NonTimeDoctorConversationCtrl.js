@@ -5,8 +5,13 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
         $scope.info.content = "";
         $scope.msgType = "text";
         $scope.sendLock = false;
-
-
+        var picList=[];
+        $scope.previewImage=function(curSrc){
+            wx.previewImage({
+                current:curSrc, // 当前显示图片的http链接
+                urls: picList // 需要预览的图片http链接列表
+            });
+        };
         //微信js-sdk 初始化接口
         $scope.doRefresh = function(){
             var timestamp;//时间戳
@@ -132,6 +137,10 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
                         $scope.pageData = data;
                         $scope.messageList = data.messageList;
                         $scope.doctorId = $scope.pageData.doctorId;
+                        $('.pic-talk').each(function(){
+                            picList.push($(this).attr('src'));
+                        });
+                        console.log("点击要放大聊天图片",picList);
                     })
                 } else {
                     alert("非系统咨询医生，请联系接诊员！");
