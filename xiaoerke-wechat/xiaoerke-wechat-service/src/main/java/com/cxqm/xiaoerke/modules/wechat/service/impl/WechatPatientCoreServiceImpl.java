@@ -194,7 +194,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String token = (String) userWechatParam.get("token");
             try {
                 //关键字回复功能
-                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)||nonRealTimeCheck(xmlEntity, token)) {
+                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)||nonRealTimeCheck(sysPropertyVoWithBLOBsVo.getWhitelist(),xmlEntity, token)) {
                     return "success";
                 }
             } catch (Exception e) {
@@ -1628,8 +1628,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
      * 1、用户的免费机会是否用完
      * 2、没有购买的机会、本月首次，咨询次数是否超过26次
      * */
-    public boolean nonRealTimeCheck(ReceiveXmlEntity xmlEntity, String token){
+    public boolean nonRealTimeCheck(String whitelist, ReceiveXmlEntity xmlEntity, String token){
         String openid = xmlEntity.getFromUserName();
+        if(StringUtils.isNotNull(whitelist)&&openid.indexOf(whitelist)==-1){
+            return false;
+        }
         ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
 
         String path = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=40";
