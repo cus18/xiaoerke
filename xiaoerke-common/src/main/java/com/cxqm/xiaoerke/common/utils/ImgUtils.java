@@ -1,12 +1,14 @@
 package com.cxqm.xiaoerke.common.utils;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGEncodeParam;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
@@ -180,15 +182,16 @@ public class ImgUtils {
     }
 
     public static void main(String args[]) {
-        Long star = System.currentTimeMillis();
+//        Long star = System.currentTimeMillis();
+//
+//        String img1 = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2Fliangp.png";//头像、
+//        img1 = "http://wx.qlogo.cn/mmopen/tqRiaNianNl1kJWsfxu2EwSCbuViaXB5NSpKS7YBHDdVBeRD64LiamibjVKvtvBBNaNn2KfVbAicG91oJL7nK0t48CU952Rr4Z9lpY/0";
+//        String img2 = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/%25E6%2580%258E%25E4%25B9%2588%25E8%25A1%25A5%25E9%2593%2581%25E6%259C%2580%25E5%25AE%2589%25E5%2585%25A8%281%29.jpg";//二维码
+//        img2="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQGS8DoAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL3ZrVTZmWXJsMm0yalNaUDhFV3MyAAIEOk2gVwMEgDoJAA==";
+//        String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\image\\xxx.png";
+//        ImgUtils.composePic(img1,img2, outPath, 71, 231,185,500);
 
-        String img1 = "http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/other%2Fliangp.png";//头像、
-        img1 = "http://wx.qlogo.cn/mmopen/tqRiaNianNl1kJWsfxu2EwSCbuViaXB5NSpKS7YBHDdVBeRD64LiamibjVKvtvBBNaNn2KfVbAicG91oJL7nK0t48CU952Rr4Z9lpY/0";
-        String img2 = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/%25E6%2580%258E%25E4%25B9%2588%25E8%25A1%25A5%25E9%2593%2581%25E6%259C%2580%25E5%25AE%2589%25E5%2585%25A8%281%29.jpg";//二维码
-        img2="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQGS8DoAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL3ZrVTZmWXJsMm0yalNaUDhFV3MyAAIEOk2gVwMEgDoJAA==";
-        String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\image\\xxx.png";
-        ImgUtils.composePic(img1,img2, outPath, 71, 231,185,500);
-
+        createStringMark("/Users/wangbaowei/Downloads/bao_master.png", "宝\r大\rg",Color.white, 100,"/Users/wangbaowei/Downloads/bao_1.png");
 //        try {
 //            ImgUtils.uploadImage("olympicBaby_inviteBaseImg.png", "C:\\Users\\Administrator\\Desktop\\showqrcode.jpg");
 //        } catch (Exception e) {
@@ -204,8 +207,40 @@ public class ImgUtils {
 //        }
 
 
-        Long end =System.currentTimeMillis();
-        System.out.print("time====:"+(end-star));
+//        Long end =System.currentTimeMillis();
+//        System.out.print("time====:"+(end-star));
+    }
+
+    public static boolean createStringMark(String filePath,String markContent,Color markContentColor,float qualNum ,String outPath){
+        ImageIcon imgIcon=new ImageIcon(filePath);
+        Image theImg =imgIcon.getImage();
+        int width=theImg.getWidth(null)==-1?200:theImg.getWidth(null);
+        int height= theImg.getHeight(null)==-1?200:theImg.getHeight(null);
+        System.out.println(width);
+        System.out.println(height);
+        System.out.println(theImg);
+        BufferedImage bimage = new BufferedImage(width,height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g=bimage.createGraphics();
+        g.setColor(markContentColor);
+        g.setBackground(Color.red);
+        g.drawImage(theImg, 0, 0, null );
+        g.setFont(new Font(null,Font.BOLD,146)); //字体、字型、字号
+        g.drawString(markContent,420,466); //画文字
+        g.dispose();
+
+
+        try
+        {
+            FileOutputStream out=new FileOutputStream(outPath); //先用一个特定的输出文件名
+            JPEGImageEncoder encoder =JPEGCodec.createJPEGEncoder(out);
+            JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(bimage);
+            param.setQuality(qualNum, true);
+            encoder.encode(bimage, param);
+            out.close();
+        }
+        catch(Exception e)
+        { return false; }
+        return true;
     }
 
 }

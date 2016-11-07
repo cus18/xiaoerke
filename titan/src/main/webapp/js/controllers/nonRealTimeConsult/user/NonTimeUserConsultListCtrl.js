@@ -8,6 +8,11 @@ angular.module('controllers', []).controller('NonTimeUserConsultListCtrl', [
             $scope.NonTimeUserConsultListInit = function(){
                 //获取当前用户会话列表
                 UserSessionList.save({},function (data) {
+                    if('error'==data.status ){
+                        alert("请重新打开页面");
+                        return;
+                    }
+
                     $scope.curMessageList = data.sessionVoList;
                 })
 

@@ -4,7 +4,7 @@
             <div class="service bg1 tc">
                 <div class="line"></div>
                 <div class="service-item f6 fl" ng-click="selectService('cur')" ng-class="{'select':selectItem=='cur'}">当前服务</div>
-                <div class="service-item f6 fr" ng-click="selectService('all')" ng-class="{'select':selectItem=='all'}">全部</div>
+                <div class="service-item f6 fr" ng-click="selectService('all')" ng-class="{'select':selectItem=='all'}">全部服务</div>
             </div>
             <div class="message-list" >
                 <ul class="cur" ng-if="selectItem=='cur'">
@@ -19,6 +19,10 @@
                             <div class="message f2 c3" ng-bind-html="item.message|emotionReceive:'text'"></div>
                         </div>
                     </li>
+                    <div class="noService tc" ng-if="curMessageList.length==0">
+                        <img class="" width="89" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/UserNoService.png">
+                        <p class="f5 c5">您还没有制定医生咨询过问题哦~</p>
+                    </div>
                 </ul>
                 <ul class="all" ng-if="selectItem=='all'">
                     <li class="bg1" ng-repeat="item in curMessageList  | orderBy:'sortDate':true" ng-click="conversationPage(item.sessionId)">
@@ -32,11 +36,11 @@
                             <div class="message f2 c3" ng-bind-html="item.message|emotionReceive:'text'"></div>
                         </div>
                     </li>
+                    <div class="noService tc" ng-if="curMessageList.length==0">
+                        <img class="" width="89" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/UserNoService.png">
+                        <p class="f5 c5">您还没有制定医生咨询过问题哦~</p>
+                    </div>
                 </ul>
-                <div class="noService tc" ng-if="curMessageList.length==0">
-                    <img class="" width="89" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/UserNoService.png">
-                    <p class="f5 c5">您还没有制定医生咨询过问题哦~</p>
-                </div>
             </div>
         </ion-scroll>
     </ion-content>

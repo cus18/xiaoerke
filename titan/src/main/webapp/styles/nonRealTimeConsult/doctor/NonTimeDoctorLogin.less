@@ -1,15 +1,12 @@
 .NonTimeDoctorLogin{
   width:100%;
   height:100%;
-  background: url("http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/bg_login.png") no-repeat top left;
+  background: url("http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/bg_login.png") no-repeat bottom left;
   background-size: 100% 100%;
   position: relative;
 }
 .NonTimeDoctorLogin .fillInfo-wrap{
-  position: absolute;
-  width:100%;
-  top:50%;
-  margin-top:-120px;
+  padding-top: 25%;
 }
 .NonTimeDoctorLogin .fillInfo {
   position: relative;
@@ -43,9 +40,9 @@
   margin-left:60px;
   display: inline-block;
   height:49px;
-  line-height: 49px;
+  padding:14px 0;
   width:78%;
-  padding-top:0;
+  line-height:21px;
 }
 .NonTimeDoctorLogin .fillInfo .code input{
   width:60%;
@@ -67,9 +64,7 @@
   box-shadow: 0 1px 1px #e16e81;
 }
 .NonTimeDoctorLogin .tips{
-  position: absolute;
-  bottom:0;
-  width:100%;
+  position: relative;
 }
 .NonTimeDoctorLogin .tips .line{
   width:36%;
@@ -81,7 +76,34 @@
   left:50%;
   margin-left:-32px;
   padding:10px 0;
+  margin-bottom: 20px;
 }
 .NonTimeDoctorLogin .tips p{
-  margin: 35px 0 30px;
+  padding: 25px 0;
+}
+.NonTimeDoctorLogin .error-remind{
+  margin-top:15px;
+  position: absolute;
+  width:100%;
+  top:210px;
+}
+.shadow-remind{
+  position: absolute;
+  z-index:5;
+  width:80%;
+  top:20%;
+  left:10%;
+  border-radius: 10px;
+  padding:20px 15px;
+}
+.shadow-remind p{
+  margin:15px 0;
+}
+.shadow-remind button{
+  border:none;
+  background-color: #88d9dd;
+  border-radius: 5px;
+  width:100px;
+  line-height: 30px;
+  margin-top:15px;
 }

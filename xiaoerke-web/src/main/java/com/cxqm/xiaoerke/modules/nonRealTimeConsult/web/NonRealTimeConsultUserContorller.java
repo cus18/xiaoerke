@@ -12,7 +12,9 @@ import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRec
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -46,6 +51,9 @@ public class NonRealTimeConsultUserContorller {
 
     @Autowired
     private ConsultDoctorInfoService consultDoctorInfoService;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
 
     @RequestMapping(value = "/getDepartmentList", method = {RequestMethod.POST, RequestMethod.GET})
@@ -88,6 +96,7 @@ public class NonRealTimeConsultUserContorller {
             return reusltMap;
         }
         BabyBaseInfoVo babyBaseInfoVo = nonRealTimeConsultUserService.babyBaseInfo(openid);
+        reusltMap.put("babyId",babyBaseInfoVo.getId());
         reusltMap.put("babySex",babyBaseInfoVo.getSex());
         reusltMap.put("babyBirthDay", DateUtils.DateToStr(babyBaseInfoVo.getBirthday(),"date"));
         return reusltMap;
@@ -111,21 +120,44 @@ public class NonRealTimeConsultUserContorller {
     @ResponseBody
     public Map<String,Object> createSession(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
         String openid = WechatUtil.getOpenId(session,request);
-        String csUserId = (String )params.get("csUserId");
-        String content =  (String) params.get("sex")+"#"+(String )params.get("birthday")+"#"+(String )params.get("describeIllness");
-        List<String> imgList = (List)params.get("imgList");
-        if(imgList.size()>0){
-            for(String str:imgList){
-                content +="#"+str;
-            }
-        }
         if(!StringUtils.isNotNull(openid)){
             Map<String,Object> resultMap = new HashMap<String, Object>();
             resultMap.put("status","error");
             resultMap.put("msg","未获取到用户的先关信息,请重新打开页面");
             return resultMap;
         }
-        return nonRealTimeConsultUserService.createSession(csUserId,openid,content);
+        String csUserId = (String )params.get("csUserId");
+        String content =  (String) params.get("sex")+"#"+(String )params.get("birthday")+"#"+(String )params.get("describeIllness");
+        List<String> imgList = (List)params.get("imgList");
+        if(imgList.size()>0){
+            for(String str:imgList){
+                Map parameter = systemService.getWechatParameter();
+                String token = (String) parameter.get("token");
+                try {
+                    String mediaURL = WechatUtil.downloadMediaFromWx(token,str, "image",null);
+                    content +="#"+mediaURL;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if(null ==params.get("babyId")){
+            BabyBaseInfoVo vo = new BabyBaseInfoVo();
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date dfa =sdf.parse((String )params.get("birthday"));
+                vo.setBirthday(dfa);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            vo.setSex((String) params.get("sex"));
+            vo.setOpenid(openid);
+            nonRealTimeConsultUserService.saveBabyBaseInfo(vo);
+//            创建评价记录
+        }
+        HashMap<String, Object>  sessionMap = nonRealTimeConsultUserService.createSession(csUserId,openid,content);
+        nonRealTimeConsultUserService.saveCustomerEvaluation(openid,csUserId,(Integer) sessionMap.get("sessionId")+"");
+        return sessionMap;
     }
 
 
@@ -144,6 +176,13 @@ public class NonRealTimeConsultUserContorller {
     public Map<String,Object> sessionList(HttpSession session, HttpServletRequest request) {
         Map<String,Object> resultMap = new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session,request);
+        if(!StringUtils.isNotNull(openid)){
+            resultMap.put("status","error");
+            resultMap.put("msg","未获取到用户的先关信息,请重新打开页面");
+            return resultMap;
+        }
+
+
         NonRealTimeConsultSessionVo vo = new NonRealTimeConsultSessionVo();
         vo.setUserId(openid);
         List<NonRealTimeConsultSessionVo> sessionVoList = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(vo);
@@ -210,6 +249,19 @@ public class NonRealTimeConsultUserContorller {
             resultMap.put("professor",sessionVo.getDoctorProfessor());
             resultMap.put("department",sessionVo.getDoctorDepartmentName());
             resultMap.put("sessionStatus",sessionVo.getStatus());
+
+//            送心意地址
+            if("sessionend".equals(sessionVo.getStatus())){
+                String customerId = nonRealTimeConsultUserService.getNonRealtimeCustomerId(sessionid);
+                SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(sysPropertyVoWithBLOBsVo.getKeeperWebUrl() +"keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
+                stringBuilder.append(customerId);
+                stringBuilder.append("&sessionId=");
+                stringBuilder.append(sessionid);
+                stringBuilder.append("&evaluateSource=nonRealtimeConsult");
+                resultMap.put("mindPath",stringBuilder.toString());
+            }
         }else{
             resultMap.put("state","error");
             resultMap.put("result_info","未找到相应的会话");
@@ -251,7 +303,7 @@ public class NonRealTimeConsultUserContorller {
         }
 
         //用户微信头像的信息
-        Map parameter = systemService.getWechatParameter();
+            Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
         WechatBean wechatInfo = WechatUtil.getWechatName(token,openid);
         resultMap.put("wechatImg",wechatInfo.getHeadimgurl());
@@ -272,6 +324,16 @@ public class NonRealTimeConsultUserContorller {
         String msgType = (String)params.get("msgType");
         String source = (String)params.get("source");
         String doctorId = (String)params.get("doctorId");
+        if("img".equals(msgType)){
+            Map parameter = systemService.getWechatParameter();
+            String token = (String) parameter.get("token");
+            try {
+                content = WechatUtil.downloadMediaFromWx(token,content, "image",null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         if(!StringUtils.isNotNull(openid)){
             resultMap.put("state","error");
             resultMap.put("result_info","请重新打开页面");
@@ -286,10 +348,16 @@ public class NonRealTimeConsultUserContorller {
         }
         List<NonRealTimeConsultSessionVo> sessionInfo = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(sessionVo);
         if(sessionInfo.size()>0){
-            if(StringUtils.isNotNull(doctorId)){
+            if(StringUtils.isNotNull(doctorId)){//医生回复消息
+                NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo = sessionInfo.get(0);
                 nonRealTimeConsultUserService.savenConsultRecord(sessionid,doctorId, source, content,msgType);
-            }else{
-                nonRealTimeConsultUserService.savenConsultRecord(sessionid,doctorId, source, content,msgType);
+                nonRealTimeConsultUserService.sendRemindUser(nonRealTimeConsultSessionVo);
+
+            }else{//用户回复消息
+                nonRealTimeConsultUserService.savenConsultRecord(sessionid,openid, source, content,msgType);
+                NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo = sessionInfo.get(0);
+                //通知相关医生来回答--模板消息
+                nonRealTimeConsultUserService.sendRemindDoctor(nonRealTimeConsultSessionVo.getCsUserId(),nonRealTimeConsultSessionVo.getUserName(),String.valueOf(nonRealTimeConsultSessionVo.getId()));
             }
             resultMap.put("state","success");
         }else{
@@ -297,12 +365,6 @@ public class NonRealTimeConsultUserContorller {
             resultMap.put("result_info","未找到相应的会话");
         }
 
-        //通知相关医生来回答--模板消息
-        Map parameter = systemService.getDoctorWechatParameter();
-        String token = (String) parameter.get("token");
-        ConsultDoctorInfoVo doctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(sessionVo.getUserId());
-//        WechatUtil.sendMsgToWechat(token,doctorInfoVo.getOpenId(),"你有问题了 ,赶快去回到吧");
-        WechatUtil.sendTemplateMsgToUser(token,openid,"temid","temconten");
 
 
         //通知前台更新聊天记录

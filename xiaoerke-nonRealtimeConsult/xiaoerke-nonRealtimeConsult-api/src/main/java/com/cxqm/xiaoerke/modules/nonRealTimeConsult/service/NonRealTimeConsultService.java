@@ -43,6 +43,11 @@ public interface NonRealTimeConsultService {
     BabyBaseInfoVo babyBaseInfo(String openid);
 
     /**
+     * 获取用户宝宝信息
+     * */
+    void saveBabyBaseInfo(BabyBaseInfoVo babyBaseInfoVo);
+
+    /**
      * 创建会话。保存宝宝问诊信息
      * */
     HashMap<String, Object> createSession(String csUserId,String openid,String content);
@@ -73,4 +78,14 @@ public interface NonRealTimeConsultService {
      * 将36小时后的会话关闭
      * */
     void sessinTimeOut();
+
+    //记录评价信息
+    void saveCustomerEvaluation(String openid, String doctorid, String sessionid);
+
+    String getNonRealtimeCustomerId(Integer sessionid);
+
+
+    void sendRemindDoctor(String doctorId, String userName, String sessionId);
+
+    void sendRemindUser(NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo);
 }

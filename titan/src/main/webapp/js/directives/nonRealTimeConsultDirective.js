@@ -60,5 +60,31 @@ define(['appNonRealTimeConsult','jquery'], function (app,$) {
                 }
             }
         })
+    //.directive('wxImg', ['$scope',function($scope) {
+    //    return {
+    //        restrict:'E',
+    //        replace :true,
+    //        template:'<img src="">',
+    //        link: function(scope, elem, attr) {
+    //            $scope.$watch('per',function(nowVal){
+    //                //elem.attr('src',nowVal);
+    //            })
+    //        }
+    //    };
+    //}]);
+
+        .directive('wxImg', [
+            function (scope) {
+                return {
+                    restrict: 'E',
+                    replace: true,
+                    template: '<img class="pos" width="100%" src=""/>',
+                    link: function(scope,ele,attrs) {
+                        scope.$watch('per',function(nowVal){
+                                            ele.attr('src',nowVal);
+                                        })
+                    }
+                }
+            }])
 
 })

@@ -44,7 +44,7 @@
     select
     <include refid="Base_Column_List" />
     from sys_baby_baseInfo
-    where openid = #{openId,jdbcType=VARCHAR}
+    where openid = #{openId,jdbcType=VARCHAR} and birthday is not null and birthday != ""
     ORDER BY createTime DESC
 <!--     and state!=6 -->
   </select>

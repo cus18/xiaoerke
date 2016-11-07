@@ -72,7 +72,7 @@ angular.module('controllers', [])
                             wx.ready(function () {
                                 // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                 wx.onMenuShareTimeline({
-                                    title: '在这里可以免费咨询三甲医院儿科专家', // 分享标题
+                                    title:  $scope.minename+'送你39.6元，和三甲医院儿科专家】来次一对一专业咨询吧！', // 分享标题
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                     success: function (res) {
@@ -82,8 +82,8 @@ angular.module('controllers', [])
                                     }
                                 });
                                 wx.onMenuShareAppMessage({
-                                    title: $scope.minename  + '向你推荐', // 分享标题
-                                    desc: '在这里可以免费咨询三甲医院儿科专家', // 分享描述
+                                    title: $scope.minename  + '送给你39.6元，收好', // 分享标题
+                                    desc: '和三甲医院儿科专家来一对一专业咨询吧！', // 分享描述
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                     success: function (res) {

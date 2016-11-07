@@ -155,6 +155,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 
 	@Override
     public void saveCustomerEvaluation(Map<String, Object> params) {
+//		params.put("evaluateSource", "realtimeConsult");
     	patientRegisterPraiseDao.saveCustomerEvaluation(params);
     }
 
@@ -185,6 +186,7 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
         params.put("openid", openId);
 		System.out.print("----------------分享----------------");
         params.put("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
+		params.put("evaluateSource", "realtimeConsult");
         try {
         	patientRegisterPraiseDao.saveCustomerEvaluation(params);;
         	String st = "您已评价成功，为了让更多的宝爸宝妈体验到我们真诚的服务，您可将此次体验分享给您的朋友。【" +
@@ -484,5 +486,10 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 	@Override
 	public List<Map<String, Object>> findDoctorAllEvaluationByInfo(Map<String, Object> map) {
 		return patientRegisterPraiseDao.findDoctorAllEvaluationById(map);
+	}
+
+	@Override
+	public String getNonRealtimeCustomerId(Integer sessionid) {
+		return patientRegisterPraiseDao.getNonRealtimeCustomerId(sessionid);
 	}
 }

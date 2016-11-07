@@ -87,4 +87,6 @@ public interface PatientRegisterPraiseService {
     List<Map<String,Object>> findDoctorEvaluationById(Map<String,Object> map);
 
     List<Map<String,Object>> findDoctorAllEvaluationByInfo(Map<String,Object> map);
+
+    String getNonRealtimeCustomerId(Integer sessionid);
 }

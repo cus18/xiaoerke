@@ -5,16 +5,16 @@
                 <div class="doctor-information" ng-repeat="item in doctorList" ng-click="checkDoctorInformation($index)">
                     <div class="top">
                 <span class="head-portrait">
-                    <img width="100%" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.id}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
+                    <img width="100%" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.userId}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
                 </span>
                         <span>{{item.name}}</span>
                         <span>{{item.department}}</span>
                         <span>{{item.title}}</span>
                         <span><nobr>擅长:{{item.skill}}</nobr></span>
                     </div>
-                    <div class="has-consult" ng-show="consulted">
-                        <img width="40px" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fdd_03.png" alt=""/>
-                    </div>
+                    <!--<div class="has-consult" ng-show="consulted">-->
+                        <!--<img width="40px" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fdd_03.png" alt=""/>-->
+                    <!--</div>-->
                     <div class="line"></div>
                     <div class="bottom">
                         <span><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_10.png" alt=""/>已帮助{{item.consult_num}}人</span>

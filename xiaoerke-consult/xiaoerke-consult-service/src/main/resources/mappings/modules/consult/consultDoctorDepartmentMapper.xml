@@ -17,6 +17,14 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
+  <select id="getShowDepartmentList" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from consult_doctor_department
+    where isShow = '1'
+    order by sorting,name asc
+  </select>
+
   <select id="getConsultDoctorDepartmentByInfo" resultMap="BaseResultMap" parameterType="java.util.Map" >
     select * from consult_doctor_department
   </select>

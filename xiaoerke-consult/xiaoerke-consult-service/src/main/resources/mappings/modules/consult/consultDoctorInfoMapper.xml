@@ -24,12 +24,14 @@
     <result column="consult_num" property="consult_num" jdbcType="VARCHAR" />
     <result column="evaluate" property="evaluate" jdbcType="VARCHAR" />
     <result column="nonrealtime_status" property="nonrealtimeStatus" jdbcType="VARCHAR" />
+    <result column="star_doctor" property="starDoctor" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="VARCHAR" />
 
 
   </resultMap>
   <sql id="Base_Column_List" >
     id, sys_user_id, password,gender,name, title, hospital, department,practitionerCertificateNo, skill, description, grab_session, send_message, receive_differential_notification,
-    create_date, update_date,type,open_id,consult_num,evaluate,nonrealtime_status
+    create_date, update_date,type,open_id,consult_num,evaluate,nonrealtime_status,star_doctor,sort
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -140,6 +142,12 @@
       <if test="type != null" >
         type,
       </if>
+      <if test="starDoctor != null" >
+        star_doctor,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -193,6 +201,12 @@
       <if test="type != null" >
         #{type,jdbcType=VARCHAR},
       </if>
+      <if test="starDoctor != null" >
+        #{starDoctor,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" >
@@ -245,6 +259,12 @@
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=TIMESTAMP},
+      </if>
+      <if test="starDoctor != null" >
+        star_doctor = #{starDoctor,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
