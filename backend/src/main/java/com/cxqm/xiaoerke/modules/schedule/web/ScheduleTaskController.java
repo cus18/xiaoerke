@@ -6,6 +6,7 @@ import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.operation.service.ConsultStatisticService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.LogMongoDBServiceImpl;
@@ -48,6 +49,9 @@ public class ScheduleTaskController extends BaseController {
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
+
+    @Autowired
+    private NonRealTimeConsultService nonRealTimeConsultService;
 
 
     /**
@@ -414,6 +418,10 @@ public class ScheduleTaskController extends BaseController {
 
     public void updateOlyGames() {
         olyGamesService.updateLevelCurrentTimes(new OlyBabyGamesVo());
+    }
+
+    public void updateConsultDoctorInfo() {
+        nonRealTimeConsultService.updateConsultDoctorInfo();
     }
 
 
