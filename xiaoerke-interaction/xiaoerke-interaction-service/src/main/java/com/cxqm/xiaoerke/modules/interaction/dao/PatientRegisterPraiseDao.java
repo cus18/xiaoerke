@@ -99,4 +99,6 @@ public interface PatientRegisterPraiseDao {
 
     List<Map<String, Object>> findDoctorAllEvaluationById(Map<String, Object> map);
 
+    String getNonRealtimeCustomerId(Integer sessionid);
+
 }

@@ -23,6 +23,14 @@
 <!--     and state!=6 -->
   </select>
 
+  <select id="selectLastBabyInfo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_baby_baseInfo
+    where openid = #{openid,jdbcType=VARCHAR}
+    limit 1
+  </select>
+
   <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
@@ -36,7 +44,7 @@
     select
     <include refid="Base_Column_List" />
     from sys_baby_baseInfo
-    where openid = #{openId,jdbcType=VARCHAR}
+    where openid = #{openId,jdbcType=VARCHAR} and birthday is not null and birthday != ""
     ORDER BY createTime DESC
 <!--     and state!=6 -->
   </select>

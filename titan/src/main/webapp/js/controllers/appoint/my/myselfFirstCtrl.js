@@ -30,9 +30,26 @@
             $scope.toBeShared = function(){
                 resolveUserLoginStatus.events("toBeShared","","","","notGo");
             }
+            // $scope.bindUserPhone = function(){
+            //     resolveUserLoginStatus.events("myselfFirst",",",{userPhoneNum:$stateParams.userPhoneNum},"","go");
+            // }
+
+
+            /*去绑定*/
             $scope.bindUserPhone = function(){
-                resolveUserLoginStatus.events("myselfFirst",",",{userPhoneNum:$stateParams.userPhoneNum},"","go");
+                //resolveUserLoginStatus.events("selfCenter",",",{userPhoneNum:$stateParams.userPhoneNum},"","notGo");
+                var routePath = "/phoneConsultBBBBBB" + $location.path();
+                GetUserLoginStatus.save({routePath:routePath},function(data){
+                    if(data.status=="9") {
+                        window.location.href = data.redirectURL;
+                    } else if(data.status=="8"){
+                        window.location.href = data.redirectURL+"?targeturl="+routePath;
+                    }else {
+
+                    }
+                })
             }
+
 
             $scope.$on('$ionicView.enter', function(){
                 $scope.title = "个人中心"

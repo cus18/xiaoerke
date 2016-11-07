@@ -12,6 +12,8 @@ import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaMongoDBVo;
+import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
@@ -19,8 +21,6 @@ import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
-import com.cxqm.xiaoerke.modules.umbrella.entity.UmbrellaMongoDBVo;
-import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +76,9 @@ public class ConsultDoctorController extends BaseController {
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
+
+    @Autowired
+    private MessageContentConfService messageContentConfService;
 
     @RequestMapping(value = "/getCurrentUserHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -309,6 +312,7 @@ public class ConsultDoctorController extends BaseController {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         System.out.println("close session========" + sessionId + "==========userId========" + userId);
+        LogUtils.saveLog(sessionId,userId);
         Map<String, Object> params = new HashMap<String, Object>();
         Map<String, Object> response = new HashMap<String, Object>();
         params.put("openid", userId);
@@ -320,6 +324,7 @@ public class ConsultDoctorController extends BaseController {
         params.put("content", "");
         params.put("dissatisfied", null);
         params.put("redPacket", null);
+        params.put("evaluateSource", "realtimeConsult");
         if(StringUtils.isNotNull(sessionId)){
             params.put("consultSessionId",Integer.valueOf(sessionId));
         }
@@ -392,6 +397,13 @@ public class ConsultDoctorController extends BaseController {
                                     "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_3_backend'>>>邀请好友赚机会</a>";
                             WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                             LogUtils.saveLog("ZXYQ_RK_TS_N3",userId);
+
+                            //根据场景和日期查询是否有匹配的文案推送
+                            MessageContentConfVo messageContentConfVo = messageContentConfService.messageConfInfo("送心意");
+                            if(null != messageContentConfVo){
+                                String msgContent = messageContentConfVo.getContent();
+                                WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, msgContent);
+                            }
                         }
                         //分享的代码
 //                    patientRegisterPraiseService.sendRemindMsgToUser(userId,sessionId);
@@ -577,7 +589,7 @@ public class ConsultDoctorController extends BaseController {
     }
 
     /**
-     * 获取咨询医生主页信息
+     * 获取咨询医生主页的信息
      */
     @RequestMapping(value = "/findDoctorAllEvaluation", method = {RequestMethod.POST, RequestMethod.GET})
     public

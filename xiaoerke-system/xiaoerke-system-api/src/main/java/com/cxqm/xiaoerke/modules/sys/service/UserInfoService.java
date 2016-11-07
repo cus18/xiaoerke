@@ -27,7 +27,7 @@ public interface UserInfoService {
 	//分页查询用户列表sunxiao
 	Page<User> findUserList(Page<User> page,User user);
 
-	void doctorOper(User user) throws Exception;
+	User doctorOper(User user) throws Exception;
 
 	//根据条件查询用户信息sunxiao
 	List<User> getUserListByInfo(User user);

@@ -2,15 +2,14 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.OSSObjectTool;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.modules.consult.dao.ConsultDoctorDepartmentDao;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultDoctorInfoDao;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultDoctorTimeGiftDao;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionPropertyDao;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorTimeGiftVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
@@ -19,12 +18,16 @@ import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
+import com.cxqm.xiaoerke.modules.sys.utils.UUIDUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -63,6 +66,9 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
 
     @Autowired
     SysPropertyDao sysPropertyDao;
+
+    @Autowired
+    ConsultDoctorDepartmentDao consultDoctorDepartmentDao;
 
     @Override
     public int saveConsultDoctorInfo(ConsultDoctorInfoVo vo) {
@@ -119,7 +125,9 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         Map lectureMap = new HashMap();
         lectureMap.put("userId", user.getId());
         List<ConsultDoctorInfoVo> lectureList = getConsultLecture(lectureMap);
-        map.put("lectureList",lectureList);
+        map.put("lectureList", lectureList);
+        List<ConsultDoctorDepartmentVo> departmentList = consultDoctorDepartmentDao.findDepartmentListByInfo(new ConsultDoctorDepartmentVo());
+        map.put("departmentList", departmentList);
         return map;
     }
 
@@ -149,6 +157,12 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         }
         return count;
     }
+
+    @Override
+    public int updateByphone(ConsultDoctorInfoVo record){
+        return consultDoctorInfoDao.updateByphone(record);
+    }
+
 
     /**
      * 获取咨询医生所有科室
@@ -292,6 +306,41 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         return returnMap;
     }
 
+    @Override
+    public List<ConsultDoctorDepartmentVo> findDepartmentList(ConsultDoctorDepartmentVo vo) {
+        return consultDoctorDepartmentDao.findDepartmentListByInfo(vo);
+    }
+
+    @Override
+    public void consultDoctorDepartmentOper(ConsultDoctorDepartmentVo vo) {
+        if(StringUtils.isNotNull(vo.getId())){
+            consultDoctorDepartmentDao.updateDepartment(vo);
+        }else{
+            vo.setId(UUIDUtil.getUUID());
+            consultDoctorDepartmentDao.saveDepartment(vo);
+        }
+        if(StringUtils.isNotNull(vo.getImage())){
+            uploadArticleImage(vo.getId(),vo.getImage());
+        }
+    }
+
+    @Override
+    public void deleteDepartment(ConsultDoctorDepartmentVo vo) {
+        consultDoctorDepartmentDao.deleteDepartment(vo);
+    }
+
+    private void uploadArticleImage(String id , String src) {
+        try {
+            File file = new File(System.getProperty("user.dir").replace("bin", "webapps") + URLDecoder.decode(src, "utf-8"));
+            FileInputStream inputStream = new FileInputStream(file);
+            long length = file.length();
+            //上传图片至阿里云
+            OSSObjectTool.uploadFileInputStream(id, length, inputStream, OSSObjectTool.BUCKET_ARTICLE_PIC);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     private Map<String, Object> getWechatMessage(String openId){
         Map<String,Object> parameter = systemService.getWechatParameter();
         String token = (String)parameter.get("token");
@@ -303,6 +352,12 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         Map<String, Object> jsonMap = (Map) jasonObject;
 
         return jsonMap;
+    }
+
+    @Override
+    public List<ConsultDoctorInfoVo> getStarDoctorList( ) {
+        List<ConsultDoctorInfoVo> result = consultDoctorInfoDao.getStarDoctorList();
+        return result;
     }
 
 }

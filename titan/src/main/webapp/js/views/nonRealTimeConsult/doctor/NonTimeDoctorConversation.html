@@ -1,0 +1,39 @@
+<ion-view view-title="医生会话页面" class="NonTimeDoctorConversation" ng-init="NonTimeDoctorConversationInit()">
+    <div class="conversation"  scroll-glue-bottom="glued">
+        <div class="dialog" ng-repeat="item in messageList" ng-if="item.message!=''" ng-class="{'user fl':item.source=='user','doctor fr':item.source=='doctor'}">
+            <div class="date">{{item.messageTime}}</div>
+            <div class="content" >
+                <img ng-if="item.source=='user'" class="radius" width="43" height="43" ng-src="{{pageData.wechatImg}}"  err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png">
+                <img ng-if="item.source=='doctor'" class="radius" width="43" height="43"  ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{pageData.doctorId}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png" alt="" />
+                 <span class="word ">
+                     <img class="triangle" width="12" height="17" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/{{item.source=='user' ? 'triangle1.png':'triangle2.png'}}" />
+                     <span ng-if="item.messageType=='createSession'">{{item.babyBaseInfo}}<br></span>
+                     <a ng-if="item.messageType=='createSession'||item.messageType=='text'" ng-bind-html="item.message|emotionReceive:item.messageType"></a>
+                     <img ng-click="previewImage(prop)" ng-if="item.messageType=='createSession'" class="pic-talk" ng-if="item.imgPath.length>0" width="50" height="50" ng-repeat="prop in item.imgPath" ng-src="{{prop}}" />
+                     <img ng-click="previewImage(item.message)" ng-if="item.messageType=='img'" class="pic-talk"  width="100%" height="auto" ng-src="{{item.message}}" />
+                </span>
+            </div>
+        </div>
+
+    </div>
+    <div class="down">
+        <!--36小时内可回复-->
+        <div class="send-wrap " ng-if="pageData.sessionStatus=='ongoing'">
+            <div class="enter bg1">
+                <textarea class="input" id="saytext" name="saytext" ng-model="info.content" placeholder="输入消息内容" ></textarea>
+            </div>
+            <div class="add bg1">
+                <img class="face" id="face" ng-click="getQQExpression()"  width="21" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/icon_expression.png">
+                <img class="pic" width="20" height="auto" type="file" ng-click="uploadFiles()" accept="image/*" ng-file-max-height="2000" ng-file-max-size="10MB" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/icon_addPic.png">
+                <button class="btn-send tc f3 c0 fr" ng-click="sendTextMsg()">发 送</button>
+            </div>
+        </div>
+        <!--36小时外会话关闭-->
+        <div class="close" ng-if="pageData.sessionStatus=='sessionend'">
+            <div class="f3 c0 fr">该问题提出已超过36小时，系统自动关闭</div>
+            <div class="tc bg1 fl f5 c4">当前咨询已结束</div>
+        </div>
+
+    </div>
+</ion-view>
+

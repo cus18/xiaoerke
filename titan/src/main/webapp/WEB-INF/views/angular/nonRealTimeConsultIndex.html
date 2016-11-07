@@ -1,0 +1,33 @@
+<!doctype html>
+<html style="height: 100%">
+<head>
+    <base href="/titan/"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <title>宝大夫</title>
+    <link rel="stylesheet" href="styles/lib/ionic.min.css"/>
+    <link rel="stylesheet" href="styles/lib/ionicons.min.css"/>
+    <link rel="stylesheet" href="styles/lib/animate.min.css"/>
+    <link rel="stylesheet" href="styles/commonMain.less"/>
+</head>
+<body>
+<ion-nav-view></ion-nav-view>
+</body>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="js/libs/ionic.bundle.min.js"></script>
+<script>
+    "use strict";
+    var require = {
+        waitSeconds: 15,
+        urlArgs: "ver=1.0.4",  //防止读取缓存，调试用
+        deps : ['js/mainNonRealTimeConsult']
+    };
+    var nonRealTimeConsultVersion = "1.0.2";
+    var picVersion = "1.0.2";
+    var appName = 'appNonRealTimeConsult';
+</script>
+<script type="text/javascript" src="js/libs/require.min.js"></script>
+</html>
+
