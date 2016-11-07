@@ -176,6 +176,13 @@ public class NonRealTimeConsultUserContorller {
     public Map<String,Object> sessionList(HttpSession session, HttpServletRequest request) {
         Map<String,Object> resultMap = new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session,request);
+        if(!StringUtils.isNotNull(openid)){
+            resultMap.put("status","error");
+            resultMap.put("msg","未获取到用户的先关信息,请重新打开页面");
+            return resultMap;
+        }
+
+
         NonRealTimeConsultSessionVo vo = new NonRealTimeConsultSessionVo();
         vo.setUserId(openid);
         List<NonRealTimeConsultSessionVo> sessionVoList = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(vo);
