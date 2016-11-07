@@ -279,7 +279,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         Map param = new HashMap();
         param.put("userId",nonRealTimeConsultSessionVo.getCsUserId());
         List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
-        String title = "您好，("+consultDoctorInfoVos.get(0).getDepartment()+")("+nonRealTimeConsultSessionVo.getCsUserName()+" )回复了你的提问，"+ "<a href='"+url+"'>点击查看详细回复</a>";
+        String title = "您好，("+consultDoctorInfoVos.get(0).getDepartment()+")("+nonRealTimeConsultSessionVo.getCsUserName()+" )回复了你的提问。\n"+ "<a href='"+url+"'>点击查看详细回复</a>";
         WechatUtil.sendMsgToWechat(token,nonRealTimeConsultSessionVo.getUserId(),title);
 
     }
