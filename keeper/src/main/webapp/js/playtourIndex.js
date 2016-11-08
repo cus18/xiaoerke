@@ -49,7 +49,6 @@ function setEvaluate(index) {
     $(".evaluation-remind").hide();// 隐藏 图片 ‘放心评价，宝大夫信任您’
     $(".main-under").show();
     $(".select-content").hide().eq(index).show();
-    starNum1=index;
     if(index==0){
         $(".evaluate-item img").eq(1).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy2_no.png");
         $(".evaluate-item img").eq(2).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy3_no.png");
