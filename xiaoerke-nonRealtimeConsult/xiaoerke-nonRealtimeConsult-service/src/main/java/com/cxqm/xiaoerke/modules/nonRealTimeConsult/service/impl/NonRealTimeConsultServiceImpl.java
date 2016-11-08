@@ -275,9 +275,13 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
-        String title = null==nonRealTimeConsultSessionVo.getUserName()?"":nonRealTimeConsultSessionVo.getUserName() +" 您好， 您有新消息";
         String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeUserConversation/"+nonRealTimeConsultSessionVo.getId();
-        WechatMessageUtil.templateModel(title, null==nonRealTimeConsultSessionVo.getCsUserName()?"医生":nonRealTimeConsultSessionVo.getUserName()+"回复你的消息啦，赶紧查看吧。", "", "", "", "   很高哦^_^", token, url, nonRealTimeConsultSessionVo.getUserId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
+        Map param = new HashMap();
+        param.put("userId",nonRealTimeConsultSessionVo.getCsUserId());
+        List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
+        String title = "您好，("+consultDoctorInfoVos.get(0).getDepartment()+")("+nonRealTimeConsultSessionVo.getCsUserName()+" )回复了你的提问。\n"+ "<a href='"+url+"'>点击查看详细回复</a>";
+        WechatUtil.sendMsgToWechat(token,nonRealTimeConsultSessionVo.getUserId(),title);
+
     }
 
     ;
