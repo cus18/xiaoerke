@@ -1,7 +1,7 @@
 //全局变量
 var  customerId;//此次咨询会话的ID
 var sessionId ; //咨询ID
-var starNum1=3;
+var starNum1=3;//对医生的评价，0无评价 1不满意 3满意 5非常满意
 var noManYi = [];
 //医生提示语数组
 var showDocList = ["他们说我收到心意后开心得像个小孩子","宝宝在长大，医生会变老","谢谢妈妈们的好评和心意","让宝宝更健康是宝大夫团队的信仰"];
@@ -49,6 +49,7 @@ function setEvaluate(index) {
     $(".evaluation-remind").hide();// 隐藏 图片 ‘放心评价，宝大夫信任您’
     $(".main-under").show();
     $(".select-content").hide().eq(index).show();
+    starNum1=index;
     if(index==0){
         $(".evaluate-item img").eq(1).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy2_no.png");
         $(".evaluate-item img").eq(2).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy3_no.png");
