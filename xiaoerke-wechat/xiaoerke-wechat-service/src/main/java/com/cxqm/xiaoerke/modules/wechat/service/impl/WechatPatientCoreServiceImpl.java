@@ -1635,7 +1635,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         }
         ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
 
-        String path = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=40";
+        String path = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com.com/keeper/wechatInfo/getUserWechatMenId?url=40";
         //所有机会都用完
         if((propertyVo.getPermTimes()+propertyVo.getMonthTimes()) == 0){
             String content = "问题不着急？\n来试试“点名咨询”。您可指定专家医生或曾咨询过的医生，医生会在24小时内尽快对您的提问进行答复\n" +
