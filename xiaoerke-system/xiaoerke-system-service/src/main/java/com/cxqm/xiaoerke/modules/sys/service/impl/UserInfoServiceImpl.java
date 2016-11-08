@@ -79,7 +79,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     //添加修改用户信息
     @Override
-    public void doctorOper(User user) throws Exception {
+    public User doctorOper(User user) throws Exception {
         HashMap param = new HashMap();
         param.put("phone", user.getPhone());
         List<User> list = userdao.getUserListByInfo(param);
@@ -101,7 +101,9 @@ public class UserInfoServiceImpl implements UserInfoService {
             user.setId(list.get(0).getId());
             user.setUpdateDate(new Date());
             userdao.updateUserElementsExecute(user);
+            user = list.get(0);
         }
+        return user;
     }
 
     @Override

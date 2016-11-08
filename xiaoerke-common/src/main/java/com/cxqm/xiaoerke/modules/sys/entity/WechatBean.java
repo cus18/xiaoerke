@@ -11,6 +11,8 @@ public class WechatBean {
     private String scope;
     private String nickname;
 
+    private String headimgurl;
+
     public String getOpenid() {
         return openid;
     }
@@ -52,5 +54,13 @@ public class WechatBean {
 
     public void setnickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getHeadimgurl() {
+        return headimgurl;
+    }
+
+    public void setHeadimgurl(String headimgurl) {
+        this.headimgurl = headimgurl;
     }
 }

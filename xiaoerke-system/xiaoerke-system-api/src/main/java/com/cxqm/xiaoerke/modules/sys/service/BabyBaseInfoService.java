@@ -40,4 +40,6 @@ public interface BabyBaseInfoService {
      * 根据userId更新宝宝信息(openId)
      */
     int updateBabyInfoByUserId(BabyBaseInfoVo vo);
+
+    BabyBaseInfoVo selectLastBabyInfo(String  openid);
 }

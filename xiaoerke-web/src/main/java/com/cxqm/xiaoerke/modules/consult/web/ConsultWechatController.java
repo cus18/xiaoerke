@@ -44,7 +44,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 
 /**
- * 会员Controller
+ * 微信咨询Controller
  *
  * @author deliang
  * @version 2015-11-04
@@ -364,9 +364,9 @@ public class ConsultWechatController extends BaseController {
                     if (consultSessionPropertyVo != null && messageFlag == 0) {
                         String content;
                         if (consultSessionPropertyVo.getMonthTimes() > 0) {
-                            content = "嗨，亲爱的~你本月还可享受" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务哦^-^" ;
+                            content = "亲爱的，你本月还有" + consultSessionPropertyVo.getMonthTimes() + "24小时咨询服务就开始付费了？" ;
                             if(consultSessionPropertyVo.getMonthTimes() == 1){
-                                content += "\n-----------\n" + "下次咨询要付费了肿么办？\n戳戳手指，邀请好友加入宝大夫，免费机会就来咯！\n"+ "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
+                                content += "\n-----------\n" + "别怕！邀请个好友加入宝大夫，免费机会立刻有！\n"+ "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
                             }
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
@@ -385,15 +385,10 @@ public class ConsultWechatController extends BaseController {
                             boolean flag = consultSessionService.cheakInstantConsultation(sysUserId);
 
                             richConsultSession.setPayStatus(ConstantUtil.NO_PAY.getVariable());
-                            content = "嗨，亲爱的，你本月咨询次数已用完，本次咨询医生需要支付9.9元，享受24小时咨询时间\n" +
+                            content = "亲爱的~你本月免费机会已用完，请医生喝杯茶，继续咨询\n\n" +
                                     "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>付费</a>" ;
-//                            if(flag){
-//                                richConsultSession.setPayStatus(ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable());
-//                                LogUtils.saveLog("feishishizixunfasong", openId);
-//                                content +="\n-----------\n问题不急？欢迎体验<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=39"+"'>24h免费咨询>></a>";
-//                            }
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
-                            content = "不想掏钱？？ 还可以\n戳戳手指，邀请好友加入宝大夫，免费机会就来咯！\n" + "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_2_backend'>>>邀请好友赚机会</a>";
+                            content = "什么？咨询要收费？\n 不怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_2_backend'>>>邀请好友赚机会</a>";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             LogUtils.saveLog("consult_charge_twice_information", sysUserId);
                             LogUtils.saveLog("ZXYQ_RK_TS_N2", sysUserId);

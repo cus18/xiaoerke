@@ -42,4 +42,6 @@ public interface ConsultSessionService {
     Map<String,Object> getDoctorInfoByMarketer(String marketer);
 
     boolean cheakInstantConsultation(String openid);
+
+    ConsultSession selectByOpenid(String openid);
 }

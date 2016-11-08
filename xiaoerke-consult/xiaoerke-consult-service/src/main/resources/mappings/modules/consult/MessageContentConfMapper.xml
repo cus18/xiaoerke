@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.MessageContentConfDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.MessageContentConfVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="scene" property="scene" jdbcType="VARCHAR" />
+    <result column="week" property="week" jdbcType="VARCHAR" />
+    <result column="starttime" property="startTime" jdbcType="VARCHAR" />
+    <result column="endtime" property="endTime" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, scene,week,starttime, endtime,priority,content
+  </sql>
+
+  <select id="findMessageContentConfByInfo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.MessageContentConfVo">
+    select id, scene,week,starttime, endtime,priority,content
+      from message_content_conf
+    where 1=1
+    <if test="id != null and id != ''">
+      and id = #{id}
+    </if>
+    <if test="scene != null and scene != ''">
+      and scene = #{scene}
+    </if>
+  </select>
+
+  <select id="messageConfInfo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.MessageContentConfVo">
+    select id, scene,week,starttime, endtime,priority,content
+    from message_content_conf
+    where 1=1
+    <if test="id != null and id != ''">
+      and week in(0,DAYOFMONTH(NOW()))
+    </if>
+    <if test="scene != null and scene != ''">
+      and scene = #{scene}
+    </if>
+    order by priority,week
+    limit 1
+  </select>
+
+
+  <insert id="saveMessageContentConf" parameterType="com.cxqm.xiaoerke.modules.consult.entity.MessageContentConfVo" useGeneratedKeys="true"
+          keyProperty="id">
+    insert into message_content_conf(scene,week,starttime, endtime,priority,content)
+    values (#{scene},#{week},#{startTime},#{endTime},#{priority},#{content})
+  </insert>
+
+  <delete id="deleteMessageContentConf" parameterType="com.cxqm.xiaoerke.modules.consult.entity.MessageContentConfVo">
+    delete from message_content_conf where id=#{id}
+  </delete>
+  
+  <update id="updateMessageContentConf">
+    update message_content_conf
+    <set>
+      <if test="scene != null and scene != ''">
+        scene = #{scene},
+      </if>
+      <if test="week != null and week != ''">
+        week = #{week},
+      </if>
+      <if test="startTime != null and startTime != ''">
+        starttime = #{startTime},
+      </if>
+      <if test="endTime != null and endTime != ''">
+        endtime = #{endTime},
+      </if>
+      <if test="priority != null and priority != ''">
+        priority = #{priority},
+      </if>
+      <if test="content != null and content != ''">
+        content = #{content},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+</mapper>

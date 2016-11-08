@@ -15,6 +15,8 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String coopYkdlUrl;
 
+    private String whitelist;
+
     public String getCoopYkdlUrl() {
         return coopYkdlUrl;
     }
@@ -109,5 +111,13 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     public void setBak20(String bak20) {
         this.bak20 = bak20;
+    }
+
+    public String getWhitelist() {
+        return whitelist;
+    }
+
+    public void setWhitelist(String whitelist) {
+        this.whitelist = whitelist;
     }
 }
