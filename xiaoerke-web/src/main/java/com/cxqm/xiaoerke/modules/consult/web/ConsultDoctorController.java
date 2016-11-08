@@ -399,11 +399,11 @@ public class ConsultDoctorController extends BaseController {
                             LogUtils.saveLog("ZXYQ_RK_TS_N3",userId);
 
                             //根据场景和日期查询是否有匹配的文案推送
-                            MessageContentConfVo messageContentConfVo = messageContentConfService.messageConfInfo("送心意");
-                            if(null != messageContentConfVo){
-                                String msgContent = messageContentConfVo.getContent();
-                                WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, msgContent);
-                            }
+//                            MessageContentConfVo messageContentConfVo = messageContentConfService.messageConfInfo("送心意");
+//                            if(null != messageContentConfVo){
+//                                String msgContent = messageContentConfVo.getContent();
+//                                WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, msgContent);
+//                            }
                         }
                         //分享的代码
 //                    patientRegisterPraiseService.sendRemindMsgToUser(userId,sessionId);
