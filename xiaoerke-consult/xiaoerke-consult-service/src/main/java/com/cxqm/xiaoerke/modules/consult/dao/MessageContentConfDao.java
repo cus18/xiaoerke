@@ -23,5 +23,5 @@ public interface MessageContentConfDao {
 
     void deleteMessageContentConf(MessageContentConfVo vo);
 
-    MessageContentConfVo messageConfInfo(String msgType);
+    MessageContentConfVo messageConfInfo(String scene);
 }
