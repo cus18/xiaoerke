@@ -1630,17 +1630,25 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
      * */
     public boolean nonRealTimeCheck(String whitelist, ReceiveXmlEntity xmlEntity, String token){
         String openid = xmlEntity.getFromUserName();
-        if(StringUtils.isNotNull(whitelist)&&openid.indexOf(whitelist)==-1){
+
+        System.out.println("白名单:"+whitelist);
+        System.out.println(whitelist.indexOf(openid)==-1);
+        if(StringUtils.isNotNull(whitelist)&&whitelist.indexOf(openid)==-1){
             return false;
         }
         ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
 
-        String path = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com.com/keeper/wechatInfo/getUserWechatMenId?url=40";
+        String path = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=40";
         //所有机会都用完
         if((propertyVo.getPermTimes()+propertyVo.getMonthTimes()) == 0){
             String content = "问题不着急？\n来试试“点名咨询”。您可指定专家医生或曾咨询过的医生，医生会在24小时内尽快对您的提问进行答复\n" +
                     "<a href='"+path+"'>>>点名咨询医生</a>";
             WechatUtil.sendMsgToWechat(token,openid,content);
+
+            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+            String payContent = "嗨，亲爱的~你本月免费咨询次数已用完。 本次咨询医生需支付9.9元，享受24小时的咨询时间。\n\n"+
+                    "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>付费</a>" ;
+            WechatUtil.sendMsgToWechat(token,openid,payContent);
             LogUtils.saveLog("FSS_YHD_RK1_TS",openid);
 
             return true;
