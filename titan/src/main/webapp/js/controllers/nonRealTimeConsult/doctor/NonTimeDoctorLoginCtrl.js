@@ -19,7 +19,7 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
                 else if(data.status == "notConsultDoctor"){
                     $scope.doctorLock = true;
                 }else {
-                    window.location.href = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getDoctorWechatMenId?url=6";
+                    window.location.href = "http://s68.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getDoctorWechatMenId?url=6";
                 }
             });
         }
