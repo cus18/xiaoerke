@@ -1659,6 +1659,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String content = "不想掏钱？\n来试试“点名咨询”。你可指定专家医生或曾咨询过的医生， 医生会在24h 内尽快对您的提问进行答复哦~\n（如有疑问，可直接拨打400-6237-120）\n" +
                     "<a href='"+path+"'>>>点名咨询医生</a>";
             WechatUtil.sendMsgToWechat(token,openid,content);
+            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+            String payContent = "嗨，亲爱的~你本月免费咨询次数已用完。 本次咨询医生需支付9.9元，享受24小时的咨询时间。\n\n"+
+                    "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>付费</a>" ;
+            WechatUtil.sendMsgToWechat(token,openid,payContent);
             LogUtils.saveLog("FSS_YHD_RK3_TS",openid);
             return true;
         }
