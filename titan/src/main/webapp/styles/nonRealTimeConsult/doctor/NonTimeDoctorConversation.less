@@ -1,0 +1,134 @@
+.NonTimeDoctorConversation{
+  background-color: #f5f5f5;
+  height:100%;
+}
+.NonTimeDoctorConversation .conversation{
+  height:76%;
+  overflow-y: scroll;
+  margin:21px 10px;
+}
+.NonTimeDoctorConversation .dialog{
+  min-width:51%;
+  max-width:85%;
+  margin-bottom: 27px;
+}
+.NonTimeDoctorConversation .dialog.doctor{
+ text-align: right;
+  margin-right: 10px
+}
+.NonTimeDoctorConversation .dialog .date{
+  margin-bottom: 10px;
+}
+
+.NonTimeDoctorConversation  .content{
+  position: relative;
+}
+.NonTimeDoctorConversation .user .content{
+  padding-left:67px;
+}
+.NonTimeDoctorConversation .doctor .content{
+  padding-right:67px;
+}
+.NonTimeDoctorConversation .content .radius{
+  position: absolute;
+  top:0;
+}
+.NonTimeDoctorConversation .user .content .radius{
+  left:0;
+  border:1px solid #9b9bec;
+}
+.NonTimeDoctorConversation .doctor .content .radius{
+  right:0;
+  border:1px solid #37a8ff;
+}
+.NonTimeDoctorConversation .content .word{
+  position: relative;
+  display: inline-block;
+  border-radius: 5px;
+  padding:12px 15px;
+}
+.NonTimeDoctorConversation .content .word.img{
+  border-radius: 5px;
+  padding:0;
+}
+.NonTimeDoctorConversation .content .word.img img{
+  display: block;
+}
+.NonTimeDoctorConversation .user .content .word{
+  background-color:#fff;
+  border:1px solid #ccc;
+}
+.NonTimeDoctorConversation .doctor .content .word{
+  background-color:#9eea6a;
+  border:1px solid #74d82f;
+}
+.NonTimeDoctorConversation .word .triangle{
+  position: absolute;
+  top:10px;
+}
+.NonTimeDoctorConversation .word .pic-talk{
+  margin-right:10px;
+  margin-top:10px;
+}
+.NonTimeDoctorConversation .user .word .triangle{
+  left:-12px;
+}
+.NonTimeDoctorConversation .doctor .word .triangle{
+  right:-12px;
+}
+.NonTimeDoctorConversation .down{
+  position: fixed;
+  width:100%;
+  box-sizing: border-box;
+  bottom:0;
+}
+.NonTimeDoctorConversation .send-wrap{
+  position: relative;
+  background-color: #f5f5f5;
+  margin-bottom:10px;
+}
+.NonTimeDoctorConversation .send-wrap .enter{
+  margin:0 10px;
+  box-shadow: 0 -3px 8px #ddd;
+}
+.NonTimeDoctorConversation .send-wrap textarea{
+  width:100%;
+  display: block;
+  min-height:60px;
+  resize: none;
+  padding:15px;
+}
+.NonTimeDoctorConversation .send-wrap .add{
+  position: relative;
+  margin:0 10px;
+  padding: 0 15px 15px 0;
+}
+.NonTimeDoctorConversation .send-wrap .add .face{
+  margin-left:15px;
+}
+.NonTimeDoctorConversation .send-wrap .add .pic{
+   margin-left:25px;
+}
+.NonTimeDoctorConversation .send-wrap .btn-send{
+  width:60px;
+  height:25px;
+  line-height:25px;
+  background-color: #5cb8ff;
+  border-radius: 3px;
+  border:none;
+}
+.NonTimeDoctorConversation .close div:first-of-type{
+  border-radius: 30px;
+  padding:5px 13px;
+  background-color: #5cb8ff;
+  margin-right:10px;
+  margin-bottom:10px;
+}
+.NonTimeDoctorConversation .close div:last-of-type{
+  width:100%;
+  padding:10px 0;
+}
+[scroll-glue-bottom], {
+  overflow-y: scroll;
+}
+

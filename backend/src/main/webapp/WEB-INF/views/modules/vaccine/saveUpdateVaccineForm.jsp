@@ -28,6 +28,18 @@
 				})
 			});
 		});
+		function saveVaccine(){
+			if($("#miniumAge").val()%30!=0){
+				alertx("最小月龄必须是30的倍数！");
+				return;
+			}
+			if($("#lastTimeInterval").val()%30!=0){
+				alertx("周期必须是30的倍数！");
+				return;
+			}
+			$("#inputForm").attr("action","${ctx}/vaccine/saveUpdateVaccineInfo");
+			$("#inputForm").submit();
+		}
 	</script>
 </head>
 <body>
@@ -54,14 +66,14 @@
 			<label class="control-label">接种最小月龄:</label>
 			<div class="controls">
 				<form:input id="miniumAge" path="miniumAge" htmlEscape="false" maxlength="50"  class="required number" value="${vo.miniumAge}"/>
-				<span class="help-inline"><font color="red">*单位是天，每月按30天计算</font> </span>
+				<span class="help-inline"><font color="red">*单位是天，必须为30的倍数</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">周期:</label>
 			<div class="controls">
 				<form:input id="lastTimeInterval" path="lastTimeInterval" htmlEscape="false" maxlength="50"  class="required number" value="${vo.lastTimeInterval}"/>
-				<span class="help-inline"><font color="red">*单位是天，每月按30天计算</font> </span>
+				<span class="help-inline"><font color="red">*单位是天，必须为30的倍数</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
@@ -79,7 +91,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<input id="saveRole" class="btn btn-primary" type="submit" value="保存"/>
+			<input id="saveRole" class="btn btn-primary" type="button" onclick="saveVaccine()" value="保存"/>
 			<input id="deleteVaccine" class="btn btn-primary" type="button" value="删除"/>
 			<input id="btnCancel" class="btn" type="button" value="返回" onclick="history.go(-1)"/>
 		</div>

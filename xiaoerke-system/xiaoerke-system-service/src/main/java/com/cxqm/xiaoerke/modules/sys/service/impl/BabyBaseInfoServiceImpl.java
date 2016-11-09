@@ -86,4 +86,9 @@ public class BabyBaseInfoServiceImpl implements BabyBaseInfoService {
     public int updateBabyInfoByUserId(BabyBaseInfoVo record){
         return babyBaseInfoDao.updateBabyInfoByUserId(record);
     }
+
+    @Override
+    public BabyBaseInfoVo selectLastBabyInfo(String openid) {
+        return babyBaseInfoDao.selectLastBabyInfo(openid);
+    }
 }

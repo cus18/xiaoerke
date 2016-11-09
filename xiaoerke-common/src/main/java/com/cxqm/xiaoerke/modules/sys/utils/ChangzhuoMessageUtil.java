@@ -302,7 +302,7 @@ public class ChangzhuoMessageUtil {
 
 	public static String sendIdentifying(String phoneNum){
 		if(phoneNum!=""){
-			String identify = createRandom(true, 6);
+			String identify = createRandom(true, 4);
 			String content = "验证码：" + identify + ",欢迎使用宝大夫，为宝宝的健康保驾护航";
 			content = content+"【宝大夫】";
 			String msgSendUrl_utf = "http://sms.chanzor.com:8001/sms.aspx";

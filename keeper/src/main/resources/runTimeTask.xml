@@ -299,7 +299,7 @@
 	</bean>
 	<bean id="consultPhoneCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="consultPhoneQuarzTask"/>
-		<property name="cronExpression" value="0 */2 * * * ?"/>
+		<property name="cronExpression" value="0 */1 * * * ?"/>
 	</bean>
 
 	<!--运维电话咨询定时拨打任务 sunxiao-->
@@ -362,11 +362,22 @@
 		<property name="cronExpression" value="00 00 14 * * ?"/>
 	</bean>
 
+	<!--每小时执行一次,非及时咨询过期  -->
+	<bean id="nonRealtimeTimeoutQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduledQuarz"/>
+		<property name="targetMethod" value="nonRealtimeSessinTimeOut"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	<bean id="nonRealtimeTimeoutTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="nonRealtimeTimeoutQuarzTask"/>
+		<!--<property name="cronExpression" value="0 0 */1 * * ?"/>-->
+		<property name="cronExpression" value="0 */1 * * * ?"/>
+	</bean>
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
- 				<ref bean="updateWechatInfoQuarzCronTrigger"/>
+ 				<!--<ref bean="updateWechatInfoQuarzCronTrigger"/>-->
  				<!--<ref bean="getWechatRecoderTrigger"/>-->
 				<!--<ref bean="letsGoReminderCronTrigger"/>-->
 				<!--<ref bean="updateSrSerStatusCronTrigger"/>-->
@@ -388,6 +399,7 @@
                 <!--<ref bean="phoneConsultReminder2DocCronTrigger"/>-->
 				<!--<ref bean="umbrellaMessageCronTrigger"/>-->
 				<!--<ref bean="olympicShareRemindCronTrigger"/>-->
+				<ref bean="nonRealtimeTimeoutTrigger"/>
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

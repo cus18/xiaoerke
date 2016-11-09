@@ -94,6 +94,14 @@ public class NgRouteController extends BaseController {
         return "angular/olympicBabyIndex";
     }
     /**
+     * nonRealTimeConsult 非及时咨询
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/nonRealTimeConsult",method = {RequestMethod.POST, RequestMethod.GET})
+    public String nonRealTimeConsultIndex() {
+        return "angular/nonRealTimeConsultIndex";
+    }
+    /**
      * consultDoctorHome 在线咨询医生主页
      */
     @SystemControllerLog(description = "00000079")

@@ -76,6 +76,7 @@
 			$("#gender").val('${doctor.gender}');
 			$("#type").val('${doctor.type}');
 			$("input[type='radio'][name=grabSession][value='${doctor.grabSession}']").attr("checked",true);
+			$("input[type='radio'][name=starDoctor][value='${doctor.starDoctor}']").attr("checked",true);
 			$("input[type='radio'][name=sendMessage][value='${doctor.sendMessage}']").attr("checked",true);
 			$("input[type='radio'][name=receiveDifferentialNotification][value='${doctor.receiveDifferentialNotification}']").attr("checked",true);
 			$("#imgSubmit").click(function () {
@@ -96,10 +97,14 @@
 				alertx("请填写科室！");
 				return;
 			}
+			if($("#skill").val()==""){
+				alertx("请填写擅长！");
+				return;
+			}
 			$.ajax({
 	             type: "post",
 	             url: "${ctx}/consult/doctorInfoOper",
-	             data: {userId:"${user.id}",password:$("#password").val(),name:"${user.name}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),practitionerCertificateNo:$("#practitionerCertificateNo").val(),skill:$("#skill").val(),description:$("#description").val()},
+	             data: {userId:"${user.id}",password:$("#password").val(),name:"${user.name}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),practitionerCertificateNo:$("#practitionerCertificateNo").val(),skill:$("#skill").val(),description:$("#description").val(),sort:$("#sort").val(),starDoctor:$('input:radio[name="starDoctor"]:checked').val()},
 	             dataType: "json",
 	             success: function(data){
 	             	if("suc"==data.result){
@@ -313,7 +318,11 @@
 			<div class="control-group">
 				<label class="control-label">科室:</label>
 				<div class="controls">
-					<input id="department" value="${doctor.department}" htmlEscape="false" maxlength="50" class="input-medium"/>
+					<form:select path="department">
+						<c:forEach items="${departmentList}" var="department">
+							<form:option value="${department.name}" label="${department.name}"/>
+						</c:forEach>
+					</form:select>
 					<span class="help-inline"><font color="red">*</font> </span>
 				</div>
 			</div>
@@ -327,7 +336,7 @@
 				<label class="control-label">擅长:</label>
 				<div class="controls">
 					<textarea id="skill" rows="4" maxlength="250" class="required" style="width:200px;">${doctor.skill}</textarea>
-					<span class="help-inline">每个词尽量控制在8个字以内，以'空格'隔开，<br/><font color="red" size="4">例如：咳嗽 发烧 不吃饭</font></span>
+					<span class="help-inline"><font color="red">*</font>每个词尽量控制在8个字以内，以'空格'隔开，<br/><font color="red" size="4">例如：咳嗽 发烧 不吃饭</font></span>
 				</div>
 			</div>
 			<div class="control-group">
@@ -337,6 +346,21 @@
 					<span class="help-inline">每个词尽量控制在8个字以内，以'空格'隔开，<br/><font color="red" size="4">例如：北京大学博士生导师 美国进修 朝阳医院</font></span>
 				</div>
 			</div>
+			<div class="control-group">
+				<label class="control-label">明星医生:</label>
+				<div class="controls">
+					<input id="starDoctoryes" name="starDoctor" value="1" type="radio" checked="checked"><label for="starDoctoryes">是</label>
+					<input id="starDoctorno" name="starDoctor" value="0" type="radio"><label for="starDoctorno">否</label>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">排序:</label>
+				<div class="controls">
+					<input id="sort" value="${doctor.sort}" htmlEscape="false" maxlength="50" class="input-medium"/>
+					<span class="help-inline">序号相同时，按姓名排序</span>
+				</div>
+			</div>
+
 
 			讲座：
 			<c:forEach items="${lectureList}" var="lecture">

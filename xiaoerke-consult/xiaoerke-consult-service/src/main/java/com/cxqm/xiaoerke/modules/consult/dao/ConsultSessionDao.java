@@ -18,6 +18,8 @@ public interface ConsultSessionDao {
 
     ConsultSession selectByPrimaryKey(Integer id);
 
+    ConsultSession selectByOpenid(String openid);
+
     int updateByPrimaryKeySelective(ConsultSession consultSession);
 
     int updateSessionInfoByUserId(ConsultSession consultSession);

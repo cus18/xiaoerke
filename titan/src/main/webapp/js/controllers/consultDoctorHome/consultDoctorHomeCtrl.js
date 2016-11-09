@@ -104,6 +104,10 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
             $state.go("consultDoctorCommentDetails",{"id":$stateParams.id,"name":$scope.doctorName,"gender":$scope.gender});
         }
 
+        //跳转首次咨询
+        $scope.goConsultDoctor = function () {
+            location.href="nonRealTimeConsult#/NonTimeUserFirstConsult/"+$stateParams.id
 
+        }
     }]);
 

@@ -3,11 +3,9 @@ package com.cxqm.xiaoerke.modules.consult.dao;
 
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultPhoneRecordVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +21,8 @@ public interface ConsultDoctorInfoDao {
     List<ConsultDoctorInfoVo> getConsultDoctorByInfo(Map map);
 
     int updateByPrimaryKeySelective(ConsultDoctorInfoVo record);
+
+    int updateByphone(ConsultDoctorInfoVo record);
 
     int updateByPrimaryKey(ConsultDoctorInfoVo record);
 
@@ -43,4 +43,6 @@ public interface ConsultDoctorInfoDao {
     void saveLecture (ConsultDoctorInfoVo consultDoctorInfoVo);
 
     List<ConsultDoctorInfoVo> getConsultLecture(Map param);
+
+    List<ConsultDoctorInfoVo> getStarDoctorList();
 }
