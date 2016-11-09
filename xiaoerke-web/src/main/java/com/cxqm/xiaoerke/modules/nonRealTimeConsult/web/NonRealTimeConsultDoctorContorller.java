@@ -217,6 +217,7 @@ public class NonRealTimeConsultDoctorContorller {
                     } else {
                         babyName = "";
                     }
+                    sex = babyBaseInfoVo.getSex().equals("1") ? "男" : "女";
 
                     babyInfo = sex + babyName + (nowDateYear - babyBirthdayYear) + "岁" + chaDate + "个月";
                 }

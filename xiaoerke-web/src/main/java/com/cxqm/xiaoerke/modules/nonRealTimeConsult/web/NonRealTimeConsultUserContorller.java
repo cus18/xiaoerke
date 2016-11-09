@@ -280,7 +280,13 @@ public class NonRealTimeConsultUserContorller {
             if(ConsultSessionStatus.CREATE_SESSION.getVariable().equals(messageType)){
                 String[] messageInfo = vo.getMessage().split("\\#");
                 recordMap.put("babyBaseInfo",messageInfo[0] == "0"?"女":"男"+"  "+messageInfo[1]);
-                recordMap.put("message",messageInfo[2]);
+                if(openid.equals(vo.getSenderId())){
+                    recordMap.put("source","user");
+                    recordMap.put("message",messageInfo[2]);
+                }else{
+                    recordMap.put("source","doctor");
+                    recordMap.put("message",recordMap.get("babyBaseInfo")+messageInfo[2]);
+                };
 
                 if(messageInfo.length>3){
                     List<String > imgList = new ArrayList<String>();
