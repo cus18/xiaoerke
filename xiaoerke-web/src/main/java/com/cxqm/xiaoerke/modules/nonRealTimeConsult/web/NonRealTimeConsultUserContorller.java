@@ -240,7 +240,6 @@ public class NonRealTimeConsultUserContorller {
 
         NonRealTimeConsultSessionVo sessionVo = new NonRealTimeConsultSessionVo();
         sessionVo.setId(sessionid);
-        sessionVo.setUserId(openid);
         List<NonRealTimeConsultSessionVo> sessionInfo = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(sessionVo);
         if(sessionInfo.size()>0){
             sessionVo = sessionInfo.get(0);
