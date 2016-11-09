@@ -1,7 +1,7 @@
 //全局变量
 var  customerId;//此次咨询会话的ID
 var sessionId ; //咨询ID
-var starNum1=3;
+var starNum1=3;//对医生的评价，0无评价 1不满意 3满意 5非常满意
 var noManYi = [];
 //医生提示语数组
 var showDocList = ["他们说我收到心意后开心得像个小孩子","宝宝在长大，医生会变老","谢谢妈妈们的好评和心意","让宝宝更健康是宝大夫团队的信仰"];
@@ -34,7 +34,7 @@ var randomMoneyList = [
 ];
 var randomMoney ;//随机钱数和图片数组 下标值
 var randomMoneyItem;// 随机生成钱数和图片选项
-var redPacket ; // 最终支付钱数
+var redPacket =0; // 最终支付钱数
 
 var sendHeartInit= function (){
     getCustomerInfo();//获取当前会话中医生的信息
@@ -44,7 +44,8 @@ var sendHeartInit= function (){
 
 }
 //点击选择是否满意
-var setEvaluate = function (index) {
+function setEvaluate(index) {
+    console.log("setEvaluate 被调用");
     $(".evaluation-remind").hide();// 隐藏 图片 ‘放心评价，宝大夫信任您’
     $(".main-under").show();
     $(".select-content").hide().eq(index).show();
@@ -52,6 +53,8 @@ var setEvaluate = function (index) {
         $(".evaluate-item img").eq(1).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy2_no.png");
         $(".evaluate-item img").eq(2).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy3_no.png");
         $(".evaluate-item img").eq(index).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy1_yes.png");
+        starNum1=1;
+        redPacket=0;
         recordLogs("ZXPJSXY_BMY");
     }
     else if(index==1){
@@ -59,6 +62,7 @@ var setEvaluate = function (index) {
         $(".evaluate-item img").eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy1_no.png");
         $(".evaluate-item img").eq(2).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy3_no.png");
         $(".evaluate-item img").eq(index).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy2_yes.png");
+        starNum1=3;
         recordLogs("ZXPJSXY_MY");
     }
     else if(index==2){
@@ -66,6 +70,7 @@ var setEvaluate = function (index) {
         $(".evaluate-item img").eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy1_no.png");
         $(".evaluate-item img").eq(1).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy2_no.png");
         $(".evaluate-item img").eq(index).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy3_yes.png");
+        starNum1=5;
         recordLogs("ZXPJSXY_FCMY");
     }
 }
@@ -106,6 +111,9 @@ function selectMoneyItem(index,selectMoney){
     $(".money-item li").children('a').removeClass("select");
     $(".money-item li").eq(index).children('a').addClass("select");
     $(".randomSelectMoney").html("随机").removeClass("select");
+    if(redPacket != "" && redPacket >0 ){
+        $(".commit").attr('disabled',false);
+    }
 }
 //点击页面 随机 按钮
 function getRandomMoney(){
@@ -114,10 +122,15 @@ function getRandomMoney(){
     /* $(".c-shadow").height();*/
     console.log( " height",$(".c-shadow").height())
     /* pageHeight=document.body.clientHeight-200;//获取页面高度*/
+    if(  $(".randomSelectMoney").html()=='随机'){
+        randomMoney = parseInt(6*Math.random());
+        console.log("随机产生的")
+    }
     changeRandomInfo();
 }
 //点击浮层 换一波 按钮
 function changeMoney(){
+    randomMoney = parseInt(6*Math.random());
     changeRandomInfo();
 }
 //点击浮层 关闭 按钮
@@ -136,9 +149,8 @@ function finishRandomMoney(){
 }
 //切换浮层里面随机图片和钱数
 function changeRandomInfo(){
-    randomMoney = parseInt(6*Math.random());
     randomMoneyItem= ' <img width="200" height="auto" src='+randomMoneyList[randomMoney].pic+'>' +
-        '<div class="bold f3 money"> '+ randomMoneyList[randomMoney].money+ '元'+'</div>';
+        '<div class="bold f8 money"> '+ randomMoneyList[randomMoney].money+ '元'+'</div>';
     $(".random-info").html(randomMoneyItem);
 }
 //校验输入框输入的钱数
@@ -207,24 +219,64 @@ function getCustomerInfo(){
             var evaluation=data.evaluation;
             var starInfo=data.starInfo;
             var doctorInfo=data.doctorHeadImage;
-            if(evaluation.serviceAttitude!=0){
-                window.location.href = "wxPay/patientPay.do?serviceType=playtourPay&customerId="+customerId;
-            }else{
-                var star=starInfo.startNum+"";
-                $("#redPacket").html(starInfo.redPacket);
-                if(star=="1.00"){
-                    $("#starInfo").html("100%");
-                }else {
-                    $("#starInfo").html(star.split(".")[1] + "%");
-                }
-                $("#doctorName").html(doctorInfo.doctor_name);
-                $("#doctitle span:first-child").html(doctorInfo.doctor_name);
-                $("#headImage").attr("src",doctorInfo.doctor_pic_url);
+            console.log("evaluation.serviceAttitude 的值 ",evaluation.serviceAttitude);
+            var star=starInfo.startNum+"";
+            $("#redPacket").html(starInfo.redPacket);
+            $(".doctorName").html(doctorInfo.doctor_name);
+            $("#headImage").attr("src",doctorInfo.doctor_pic_url);
+            if(star=="1.00"){
+                $("#starInfo").html("100%");
+            }else {
+                $("#starInfo").html(star.split(".")[1] + "%");
             }
+
+            //根据用户评价情况 判断 显示页面
+            $(".evaluate-select").show();
+            if(evaluation.serviceAttitude==0){
+                $(".evaluation-remind").show();
+             }
+            else{
+                $(".finish-evaluate").show();
+                $(".main-under").show();
+                $(".headline").hide();
+                $(".leave-word").hide();
+               if(evaluation.serviceAttitude==1){
+                   $(".evaluate-item li").hide().eq(0).show();
+                   $(".evaluate-item img").eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy1_yes.png");
+                   $(".select-content").hide()
+                   $(".suggest").show();
+                   $("#suggestContent").html(evaluation.content);
+                   $(".go-share").show();
+                   $(".commit").hide();
+
+                }
+              if(evaluation.serviceAttitude==3){
+                  $(".evaluate-item li").hide().eq(1).show();
+                  setEvaluate(1);
+                  if(redPacket==undefined){
+                      $(".commit").attr('disabled',true);
+                  };
+                  $(".commit").html("我要送心意");
+                }
+                if(evaluation.serviceAttitude==5){
+                    $(".evaluate-item li").hide().eq(2).show();
+                    setEvaluate(2);
+                    console.log("redPacket",redPacket);
+                    if(redPacket==undefined){
+                        $(".commit").attr('disabled',true);
+                    };
+                    $(".commit").html("我要送心意");
+                }
+            }
+
         },
         error : function() {
         }
     }, 'json');
+}
+/*分享给更多的宝妈*/
+function goShare(){
+    window.location.href="../keeper/playtour#/playtourShare/6";
 }
 //提交评价
 function updateCustomerInfo(){

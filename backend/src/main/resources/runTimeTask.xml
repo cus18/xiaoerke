@@ -44,14 +44,14 @@
 		<property name="cronExpression" value="0 0 8 * * ?"/>
 	</bean>
 
-	<bean id="updateBabyCoinInviteNumberCronTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<bean id="updateConsultDoctorInfoQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="scheduledQuarz"/>
-		<property name="targetMethod" value="updateBabyCoinInviteNumber"/>
+		<property name="targetMethod" value="updateConsultDoctorInfo"/>
 		<property name="concurrent" value="false"/>
 	</bean>
-	<bean id="updateBabyCoinInviteNumberCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="updateBabyCoinInviteNumberCronTask"/>
-		<property name="cronExpression" value="0 0 1 1 * ?"/>
+	<bean id="updateConsultDoctorInfoTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="updateConsultDoctorInfoQuarzTask"/>
+		<property name="cronExpression" value="0 0 8 * * ?"/>
 	</bean>
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -60,7 +60,7 @@
 				<ref bean="consultStatisticCronTrigger"/>
 				<ref bean="babyVaccineRemindCronTrigger"/>
 				<ref bean="updateOlyGamesCronTrigger"/>
-				<ref bean="updateBabyCoinInviteNumberCronTrigger"/>
+				<ref bean="updateConsultDoctorInfoTrigger"/>
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

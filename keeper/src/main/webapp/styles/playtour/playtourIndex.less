@@ -1,7 +1,9 @@
 .sendHeart{
   background-color: #fff;
+  position: relative;
 }
 .sendHeart .main-box{
+  min-height:100%;
 }
 .sendHeart .doctor-info{
   background-image: url("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_headback.png");
@@ -35,9 +37,17 @@
 .sendHeart .evaluation-remind{
   margin-top:75px;
 }
+.sendHeart .finish-evaluate{
+  margin-top:35px;
+  color:#030303;
+}
 .sendHeart .evaluate-item{
   overflow: hidden;
   margin-top: 25px;
+  font-size:0;
+}
+.sendHeart .evaluate-item li{
+  display: inline-block;
 }
 .sendHeart .evaluate-item div {
   margin-top:11px;
@@ -147,6 +157,16 @@
   box-sizing: border-box;
   margin-bottom: 10px;
 }
+.sendHeart  .suggest{
+  margin:60px 15px 0;
+  position: relative;
+  padding-left:70px;
+}
+.sendHeart .suggest span{
+  position: absolute;
+  top:0;
+  left:0;
+}
 .sendHeart .pay-problem{
   color:#fe717b;
   width:100%;
@@ -183,7 +203,7 @@
   line-height: 30px;
   border:1px solid #37a8ff;
   color:#37a8ff;
-  margin:15px 0;
+  margin:25px 0 20px;
   border-radius: 50px;
 }
 .sendHeart .random-content .finish{
@@ -193,4 +213,8 @@
   line-height:45px;
   background-color: #fe717b;
   border-radius: 0 0 25px 25px;
+}
+.sendHeart .go-share{
+  position: fixed;
+  bottom:0;
 }

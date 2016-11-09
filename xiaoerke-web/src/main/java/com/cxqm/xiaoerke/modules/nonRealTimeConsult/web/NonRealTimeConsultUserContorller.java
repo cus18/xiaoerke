@@ -96,9 +96,12 @@ public class NonRealTimeConsultUserContorller {
             return reusltMap;
         }
         BabyBaseInfoVo babyBaseInfoVo = nonRealTimeConsultUserService.babyBaseInfo(openid);
-        reusltMap.put("babyId",babyBaseInfoVo.getId());
-        reusltMap.put("babySex",babyBaseInfoVo.getSex());
-        reusltMap.put("babyBirthDay", DateUtils.DateToStr(babyBaseInfoVo.getBirthday(),"date"));
+        if(null != babyBaseInfoVo && babyBaseInfoVo.getId() !=null){
+            reusltMap.put("babyId",babyBaseInfoVo.getId());
+            reusltMap.put("babySex",babyBaseInfoVo.getSex());
+            reusltMap.put("babyBirthDay", DateUtils.DateToStr(babyBaseInfoVo.getBirthday(),"date"));
+        }
+
         return reusltMap;
     }
 
@@ -232,15 +235,9 @@ public class NonRealTimeConsultUserContorller {
         Map<String,Object> resultMap = new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session,request);
         Integer sessionid = Integer.parseInt((String)params.get("sessionId"));
-        if(!StringUtils.isNotNull(openid)){
-            resultMap.put("state","error");
-            resultMap.put("result_info","请重新打开页面");
-            return resultMap;
-        }
 
         NonRealTimeConsultSessionVo sessionVo = new NonRealTimeConsultSessionVo();
         sessionVo.setId(sessionid);
-        sessionVo.setUserId(openid);
         List<NonRealTimeConsultSessionVo> sessionInfo = nonRealTimeConsultUserService.selectByNonRealTimeConsultSessionVo(sessionVo);
         if(sessionInfo.size()>0){
             sessionVo = sessionInfo.get(0);
@@ -286,7 +283,13 @@ public class NonRealTimeConsultUserContorller {
             if(ConsultSessionStatus.CREATE_SESSION.getVariable().equals(messageType)){
                 String[] messageInfo = vo.getMessage().split("\\#");
                 recordMap.put("babyBaseInfo",messageInfo[0] == "0"?"女":"男"+"  "+messageInfo[1]);
-                recordMap.put("message",messageInfo[2]);
+                if(openid.equals(vo.getSenderId())){
+                    recordMap.put("source","user");
+                    recordMap.put("message",messageInfo[2]);
+                }else{
+                    recordMap.put("source","doctor");
+                    recordMap.put("message",recordMap.get("babyBaseInfo")+messageInfo[2]);
+                };
 
                 if(messageInfo.length>3){
                     List<String > imgList = new ArrayList<String>();
@@ -342,6 +345,11 @@ public class NonRealTimeConsultUserContorller {
         NonRealTimeConsultSessionVo sessionVo = new NonRealTimeConsultSessionVo();
         sessionVo.setId(sessionid);
         if("user".equals(source)){
+            if(!StringUtils.isNotNull(openid)){
+                resultMap.put("state","error");
+                resultMap.put("result_info","请重新打开页面");
+                return resultMap;
+            }
             sessionVo.setUserId(openid);
         }else{
             sessionVo.setCsUserId(doctorId);

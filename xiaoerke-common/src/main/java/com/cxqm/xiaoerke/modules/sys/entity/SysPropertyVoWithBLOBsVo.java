@@ -13,6 +13,8 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String templateIdDBRWTX;
 
+    private String templateIdForDoc;
+
     private String coopYkdlUrl;
 
     private String whitelist;
@@ -119,5 +121,13 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     public void setWhitelist(String whitelist) {
         this.whitelist = whitelist;
+    }
+
+    public String getTemplateIdForDoc() {
+        return templateIdForDoc;
+    }
+
+    public void setTemplateIdForDoc(String templateIdForDoc) {
+        this.templateIdForDoc = templateIdForDoc;
     }
 }

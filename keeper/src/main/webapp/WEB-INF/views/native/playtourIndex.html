@@ -9,9 +9,9 @@
     <title>咨询评价</title>
     <script src="js/libs/jquery-2.1.3.min.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-    <script src="js/playtourIndex.js"></script>
+    <script src="js/playtourIndex.js?ver=1.0"></script>
     <link rel="stylesheet" href="/keeper/styles/nativeCommon.less" type="text/css" />
-    <link rel="stylesheet" href="/keeper/styles/playtour/playtourIndex.less" type="text/css" />
+    <link rel="stylesheet" href="/keeper/styles/playtour/playtourIndex.less?ver=1.0" type="text/css" />
 </head>
 <body class="sendHeart" onload="sendHeartInit()" >
 <div class="main-box">
@@ -31,23 +31,24 @@
         </div>
     </div>
     <!--图片 ‘放心评价，宝大夫信任您’-->
-    <div class="evaluation-remind tc">
+    <div class="evaluation-remind tc" hidden>
         <img class="my-img2" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_font.png" width="204" height="18"/>
     </div>
+    <div class="finish-evaluate f8 tc" hidden>您已完成此次评价</div>
     <!--不满意 满意 非常满意 选择模块 -->
-    <div class="evaluate-select">
-        <ul class="evaluate-item f5 c3 tc">
-            <li class="item1 fl" onclick="setEvaluate(0)">
+    <div class="evaluate-select" hidden>
+        <ul class="evaluate-item tc">
+            <li class="item1 " onclick="setEvaluate(0)">
                 <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy1_no.png" width="37" height="37"/>
-                <div class="">不满意</div>
+                <div class="f5 c3 ">不满意</div>
             </li>
-            <li class="item2 fl " onclick="setEvaluate(1)">
+            <li class="item2  " onclick="setEvaluate(1)">
                 <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy2_no.png" width="37" height="37"/>
-                <div class="">满意</div>
+                <div class="f5 c3 ">满意</div>
             </li>
-            <li class="item1 fl" onclick="setEvaluate(2)">
+            <li class="item1 " onclick="setEvaluate(2)">
                 <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy3_no.png" width="37" height="37"/>
-                <div class="">非常满意</div>
+                <div class="f5 c3 ">非常满意</div>
             </li>
         </ul>
     </div>
@@ -79,10 +80,10 @@
             <div class="headline f5 tc">
                 <span class="line line-l"></span>
                 <span class="line line-r"></span>
-            <span class="text">
-                <span class="doctorName">梁平</span>:
-                <span class="doctorWord">宝宝在长大，医生会变老</span>
-            </span>
+                <span class="text">
+                    <span class="doctorName">梁平</span>:
+                    <span class="doctorWord">宝宝在长大，医生会变老</span>
+                </span>
             </div>
             <ul class="money-item ">
                 <li class="fl tc" onclick="selectMoneyItem(0,5)">
@@ -110,10 +111,10 @@
             <div class="headline f5 tc">
                 <span class="line line-l"></span>
                 <span class="line line-r"></span>
-            <span class="text">
-                <span class="doctorName">梁平</span>:
-                <span class="doctorWord">宝宝在长大，医生会变老</span>
-            </span>
+                <span class="text">
+                    <span class="doctorName">梁平</span>:
+                    <span class="doctorWord">宝宝在长大，医生会变老</span>
+                </span>
             </div>
             <ul class="money-item ">
                 <li class="fl tc " onclick="selectMoneyItem(5,10)">
@@ -145,12 +146,17 @@
                 申明：您的心意会转入相应的医生账户，作为服务和科研经费
             </div>
         </div>
+        <div class="suggest" hidden>
+            <span class="f4 c3 bold">您的建议：</span>
+            <p id="suggestContent" class="f4 c4"></p>
+        </div>
         <!--支付错误提示-->
         <div class="pay-problem tc f3" hidden>
             亲，支付出现问题哦~
         </div>
         <br/><br/><br/><br/><br/><br/>
-        <button  class="bottom-btn" id="but" onclick="updateCustomerInfo()" >提交评价</button>
+        <button class="button foot-btn go-share" hidden style="background-color: #fe717b;" onclick="goShare()">分享给更多宝妈</button>
+        <button  class="bottom-btn commit" id="commit"  onclick="updateCustomerInfo()" >提交评价</button>
     </div>
 </div>
 <!--随机生成钱数浮层 模块-->
@@ -159,7 +165,7 @@
     <img onclick="closeRandomMoney()" class="close" width="22" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/icon_close.png">
    <div class="random-info">
        <img width="200" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/heart1_1.1.png">
-       <div class="bold f3 money">1.1元</div>
+       <div class="bold f8 money">1.1元</div>
    </div>
     <a class="f3 changeMoney" onclick="changeMoney()">换一波</a>
     <div class="finish f6 c0" onclick="finishRandomMoney()">完成</div>
