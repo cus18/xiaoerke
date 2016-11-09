@@ -324,7 +324,21 @@ public class FieldworkWechatController {
     public String Oauth2API(HttpServletRequest request) {
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         String backUrl = request.getParameter("url");
-        String oauth2Url = WechatUtil.getOauth2Url(backUrl,sysPropertyVoWithBLOBsVo);
+        String oauth2Url = WechatUtil.getOauth2Url("user",backUrl,sysPropertyVoWithBLOBsVo);
+        return "redirect:" + oauth2Url;
+    }
+
+    /**
+     * 验证主入口
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/fieldwork/wechat/doctorAuthor", method = RequestMethod.GET)
+    public String doctorAuthor(HttpServletRequest request) {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        String backUrl = request.getParameter("url");
+        String oauth2Url = WechatUtil.getOauth2Url("doctor",backUrl,sysPropertyVoWithBLOBsVo);
         return "redirect:" + oauth2Url;
     }
 

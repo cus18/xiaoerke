@@ -1,21 +1,5 @@
 package com.cxqm.xiaoerke.modules.sys.web;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import net.sf.json.JSONObject;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
@@ -26,6 +10,19 @@ import com.cxqm.xiaoerke.modules.search.entity.SearchKeyword;
 import com.cxqm.xiaoerke.modules.search.service.util.RdsDataSourceJDBC;
 import com.cxqm.xiaoerke.modules.sys.entity.DoctorIllnessRelationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.IllnessVo;
+import net.sf.json.JSONObject;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 用户Controller
@@ -87,7 +84,7 @@ public class keyWordController extends BaseController {
             List<SearchKeyword> lists = rdsDataSourceJDBC.findAllKeyWord(keyword, "notlike");
             if (lists.size() == 0) {
                 //保存热词
-                rdsDataSourceJDBC.saveKeyWord(keyword);
+//                rdsDataSourceJDBC.saveKeyWord(keyword);
                 model.addAttribute("message", "热词保存成功！");
             } else {
                 model.addAttribute("message", "热词已存在，请勿重复添加！");
@@ -109,7 +106,7 @@ public class keyWordController extends BaseController {
     @RequiresPermissions("sys:user:view")
     @RequestMapping(value = "deletekeyword")
     public String deletekeyword(String id,Model model,RedirectAttributes redirectAttributes){
-        rdsDataSourceJDBC.deletekeyword(id);
+//        rdsDataSourceJDBC.deletekeyword(id);
         List<SearchKeyword> lists = rdsDataSourceJDBC.findAllKeyWord("", "all");//查询所有热词
         model.addAttribute("list", lists);
         model.addAttribute("SearchKeyword", new SearchKeyword());
@@ -170,14 +167,14 @@ public class keyWordController extends BaseController {
                 stringBuffer.append(",");
             }
             //保存疾病与热词关系
-            rdsDataSourceJDBC.deleteAndSaveKeyWordAndIllnessRelation(stringBuffer.toString(),keyWordId);
+//            rdsDataSourceJDBC.deleteAndSaveKeyWordAndIllnessRelation(stringBuffer.toString(),keyWordId);
 
 
         } else {//界面初始化（加载当前医生与疾病关联数据）
             JSONObject resultMap = new JSONObject();
             //查询与该热词有关联的疾病主键
-            List<String> arrayList = rdsDataSourceJDBC.findAllillnessKeyByKeyword(keyWordId);
-            resultMap.put("list", arrayList);
+//            List<String> arrayList = rdsDataSourceJDBC.findAllillnessKeyByKeyword(keyWordId);
+//            resultMap.put("list", arrayList);
             return resultMap.toString();
         }
         return null;

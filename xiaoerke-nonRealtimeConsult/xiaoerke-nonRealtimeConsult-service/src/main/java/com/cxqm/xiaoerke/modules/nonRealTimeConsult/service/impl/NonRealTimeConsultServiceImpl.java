@@ -122,7 +122,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         sessionVo.setUpdateTime(nowTime);
         sessionVo.setSource("weixin");
         sessionVo.setLastMessageContent(content);
-        sessionVo.setLastMessageType("user");
+        sessionVo.setLastMessageType(ConsultSessionStatus.CREATE_SESSION.getVariable());
         sessionVo.setDoctorDepartmentName(doctorvo.getDepartment());
         sessionVo.setDoctorProfessor(doctorvo.getSkill());
         sessionVo.setCsUserId(csUserId);
@@ -264,7 +264,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
        if(doctorInfoVo!=null){
            String title = null==doctorInfoVo.getName()?"":doctorInfoVo.getName()+"医生您好， 您有新消息";
            String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeDoctorConversation/"+sessionId;
-           WechatMessageUtil.templateModel(title, userName+"向您咨询，请尽快回复。", "", "", "", "   很高哦^_^", token, url, doctorInfoVo.getOpenId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
+           WechatMessageUtil.templateModel(title, userName+"向您咨询，请尽快回复。", "", "", "", "   很高哦^_^", token, url, doctorInfoVo.getOpenId(), sysPropertyVoWithBLOBsVo.getTemplateIdForDoc());
 
        }
 

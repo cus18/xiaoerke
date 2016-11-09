@@ -11,14 +11,15 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.sessionId = "";
             $scope.socketServer = "";
             $scope.glued = true;
-            $scope.source = "h5bhqUser";
+            $scope.source = "h5ykdlUser";
             $scope.loseConnectionFlag = false;
             var heartBeatNum = 0;
             $scope.lookMore = false;//查看更多
-            var patientImg ;
-            $scope.fucengLock = true;//第一次进入页面的浮层
+            $scope.patientImg = "";
+            $scope.patientName= "" ;
+            $scope.fucengLock = false;//第一次进入页面的浮层
             $scope.alertFlag = false;
-            $scope.remoteBabyUrl = "http://rest.ihiss.com:9000/user/children";
+            $scope.remoteUrl = "https://wxsp.ykhys.com/thirdparty/baodaifu/customer_info";
             $scope.imgBarFlag = false;
 
 
@@ -39,45 +40,75 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                 $scope.getQQExpression();
 
                 //
-                var id = $stateParams.id;
 
-                    if($stateParams.image == null){
+                /*$http.post(
+                    'http://wxsp-dev.ykbenefit.com/customer_info',
+                    {
+                        'user_uuid': id
+                    },
+                    {
+                        'Content-Type':'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                )*/
+                var id = $stateParams.id;
+                /*$http({
+                    method:"POST",
+                    url:"http://wxsp-dev.ykbenefit.com/customer_info",
+                    params:{
+                        "user_uuid":id
+                    },
+                    headers:{
+                        'Content-Type':'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                }).success(function(data) {
+                    if(data.headimgurl == null || data.headimgurl == ''){
                         patientImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
                     }else{
-                        patientImg = $stateParams.image;
+                        patientImg = data.headimgurl;
                     }
-                    $scope.patientName = $stateParams.name==null?$stateParams.id:$stateParams.name;
+                    patientName = data.nickname == null?"":data.nickname ;
+                    patientSex = data.sex == null ? "" : data.sex;*/
                     CreateOrUpdateWJYPatientInfo.save({
-                        patientName:$scope.patientName,source:$scope.source,thirdId:id},function(data){
-                        $scope.patientId = data.patientId;
-                        GetSessionId.get({"userId":$scope.patientId},function(data){
-                            console.log("data",data);
-                            if(data.status=="0"){
-                                $scope.sessionId = data.sessionId;
-                                $scope.lookMore = true;
-                                $scope.fucengLock = false;
-                            }else if(data.status=="1"){
-                                $scope.sessionId = "";
-                                /*var val = {
-                                 "type": 4,
-                                 "notifyType": "0000"
-                                 }
-                                 $scope.consultContent.push(val);*/
-                                var now = moment().format("YYYY-MM-DD HH:mm:ss");
-                                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,
-                                    "pageSize":10,"token":""},function (data) {
-                                    if(data.consultDataList.length!=0){
-                                        $scope.lookMore = true;
-                                        $scope.fucengLock = false;
-                                    }else{
-                                        $scope.lookMore = false;
-                                    }
-                                });
+                        source:$scope.source,thirdId:id,remoteUrl:$scope.remoteUrl},function(data){
+                        if(data.status == "success"){
+                            $scope.patientId = data.patientId;
+                            if(data.headimgurl == null || data.headimgurl == ''){
+                                $scope.patientImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
+                            }else{
+                                $scope.patientImg = data.headimgurl;
                             }
-                        });
-                        $scope.initConsultSocket();
+                            $scope.patientName = data.userName == null?$scope.patientId:data.userName;
+                            GetSessionId.get({"userId":$scope.patientId},function(data){
+                                console.log("data",data);
+                                if(data.status=="0"){
+                                    $scope.sessionId = data.sessionId;
+                                    $scope.lookMore = true;
+                                    $scope.fucengLock = false;
+                                }else if(data.status=="1"){
+                                    $scope.sessionId = "";
+                                    /*var val = {
+                                     "type": 4,
+                                     "notifyType": "0000"
+                                     }
+                                     $scope.consultContent.push(val);*/
+                                    var now = moment().format("YYYY-MM-DD HH:mm:ss");
+                                    GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,
+                                        "pageSize":10,"ykdlToken":$stateParams.id,"remoteUrl":$scope.remoteUrl},function (data) {
+                                        if(data.consultDataList.length!=0){
+                                            $scope.lookMore = true;
+                                            $scope.fucengLock = false;
+                                        }else{
+                                            $scope.lookMore = false;
+                                        }
+                                    });
+                                }
+                            });
+                            $scope.initConsultSocket();
+                        }
                     });
-            };
+                }
 
             //初始化接口
             $scope.initConsultSocket = function(){
@@ -90,7 +121,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     //ws://s201.xiaork.com:2048;
                     $scope.socketServer = new WebSocket("ws://s132.baodf.com/wsbackend/ws&user&"
-                        + $scope.patientId +"&h5bhq");//cs,user,distributor*/
+                        + $scope.patientId +"&h5ykdl");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {
                         var consultData = JSON.parse(event.data);
@@ -158,7 +189,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                 if($scope.consultContent[0]!=undefined){
                     now = $scope.consultContent[0].dateTime;
                 }
-                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":10,"token":""},function (data) {
+                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":10,"ykdlToken":$stateParams.id,"remoteUrl":$scope.remoteUrl},function (data) {
                     $.each(data.consultDataList,function (index,value) {
                         filterMediaData(value);
                         $scope.consultContent.splice(0,0,value);
@@ -253,9 +284,9 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                             "content": data.showFile,
                             "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                             "senderId": $scope.patientId,
-                            "senderName": "保护圈"+$scope.patientName,
+                            "senderName": "YKDL-"+$scope.patientName,
                             "sessionId": parseInt($scope.sessionId),
-                            "avatar":patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
+                            "avatar":$scope.patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                         };
                         if (!window.WebSocket) {
                             return;
@@ -288,10 +319,10 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                         "content": $("#saytext").val(),
                         "dateTime": moment().format("YYYY-MM-DD HH:mm:ss"),
                         "senderId":$scope.patientId,
-                        "senderName":"保护圈"+$scope.patientName,
+                        "senderName":"YKDL-"+$scope.patientName,
                         "sessionId":parseInt($scope.sessionId),
                         "source":$scope.source,
-                        "avatar":patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
+                        "avatar":$scope.patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                     };
                     if (!window.WebSocket) {
                         return;

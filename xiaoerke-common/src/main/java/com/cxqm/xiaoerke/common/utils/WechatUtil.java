@@ -54,10 +54,16 @@ public class WechatUtil {
      * @return
      * @throws IOException
      */
-    public static String getOauth2Url(String backUrl,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
+    public static String getOauth2Url(String type,String backUrl,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
         backUrl = urlEncodeUTF8(backUrl);
-        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
-                sysPropertyVoWithBLOBsVo.getUserCorpid() + "&redirect_uri=" + backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
+        if(type.equals("user")){
+            return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
+                    sysPropertyVoWithBLOBsVo.getUserCorpid() + "&redirect_uri=" + backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
+        }else if(type.equals("doctor")){
+            return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
+                    sysPropertyVoWithBLOBsVo.getDoctorCorpid() + "&redirect_uri=" + backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
+        }
+        return null;
     }
 
 

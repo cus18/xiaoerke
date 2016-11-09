@@ -337,6 +337,11 @@ public class NonRealTimeConsultUserContorller {
             }
         }
 
+        if(!StringUtils.isNotNull(openid)){
+            resultMap.put("state","error");
+            resultMap.put("result_info","请重新打开页面");
+            return resultMap;
+        }
         NonRealTimeConsultSessionVo sessionVo = new NonRealTimeConsultSessionVo();
         sessionVo.setId(sessionid);
         if("user".equals(source)){

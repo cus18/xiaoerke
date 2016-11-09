@@ -13,6 +13,20 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String templateIdDBRWTX;
 
+    private String templateIdForDoc;
+
+    private String coopYkdlUrl;
+
+    private String whitelist;
+
+    public String getCoopYkdlUrl() {
+        return coopYkdlUrl;
+    }
+
+    public void setCoopYkdlUrl(String coopYkdlUrl) {
+        this.coopYkdlUrl = coopYkdlUrl;
+    }
+
     private String bak17;
 
     private String bak18;
@@ -99,5 +113,21 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     public void setBak20(String bak20) {
         this.bak20 = bak20;
+    }
+
+    public String getWhitelist() {
+        return whitelist;
+    }
+
+    public void setWhitelist(String whitelist) {
+        this.whitelist = whitelist;
+    }
+
+    public String getTemplateIdForDoc() {
+        return templateIdForDoc;
+    }
+
+    public void setTemplateIdForDoc(String templateIdForDoc) {
+        this.templateIdForDoc = templateIdForDoc;
     }
 }

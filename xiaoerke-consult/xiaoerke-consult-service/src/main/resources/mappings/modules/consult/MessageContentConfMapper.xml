@@ -27,13 +27,11 @@
     </if>
   </select>
 
-  <select id="messageConfInfo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.MessageContentConfVo">
+  <select id="messageConfInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
     select id, scene,week,starttime, endtime,priority,content
     from message_content_conf
     where 1=1
-    <if test="id != null and id != ''">
       and week in(0,DAYOFMONTH(NOW()))
-    </if>
     <if test="scene != null and scene != ''">
       and scene = #{scene}
     </if>

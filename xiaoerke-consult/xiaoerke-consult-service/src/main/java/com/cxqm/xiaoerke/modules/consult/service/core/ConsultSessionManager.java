@@ -11,6 +11,7 @@ import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultVoiceRecordMongoSer
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
@@ -93,6 +94,9 @@ public enum ConsultSessionManager {
     //jiangzg add
     private ConsultSessionPropertyServiceImpl consultSessionPropertyService = SpringContextHolder.getBean("consultSessionPropertyServiceImpl");
 
+    private SysPropertyServiceImpl sysPropertyService = SpringContextHolder.getBean("sysPropertyServiceImpl");
+
+
     private ConsultSessionManager() {
         User user = new User();
         user.setUserType("distributor");
@@ -159,6 +163,7 @@ public enum ConsultSessionManager {
 
     public RichConsultSession createUserH5ConsultSession(String userId, Channel channel, String source) {
 
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
         RichConsultSession consultSession = null;
         Channel distributorChannel = null;
@@ -259,7 +264,7 @@ public enum ConsultSessionManager {
              * 当用户来自宝护圈时，给宝护圈发送接入成功提示
              */
             if(source != null && "h5bhq".equalsIgnoreCase(source)){
-                String currentUrl = Global.getConfig("COOP_BHQ_URL");
+                String currentUrl = sysPropertyVoWithBLOBsVo.getCoopBhqUrl();
                 if(StringUtils.isNull(currentUrl)){
                     currentUrl = "http://coapi.baohuquan.com/baodaifu";
                 }
@@ -1140,7 +1145,7 @@ public enum ConsultSessionManager {
                         doctorManagerStr = sysPropertyVoWithBLOBsVo.getDoctormanagerList();  //增加抢断会话功能doctorManager.list；createConsult.list
                     }
                     String csUserId = UserUtils.getUser().getId();
-                    if (doctorManagerStr.indexOf(csUserId) != -1) {
+                    if (StringUtils.isNotNull(doctorManagerStr) && doctorManagerStr.indexOf(csUserId) != -1) {
                         //此医生为管理员医生，有权限抢过会话，将会话抢过来
                         richConsultSession.setCsUserId(csUserId);
                         richConsultSession.setCsUserName(UserUtils.getUser().getName());

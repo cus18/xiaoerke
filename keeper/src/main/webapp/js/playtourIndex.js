@@ -1,73 +1,84 @@
 //全局变量
 var  customerId;//此次咨询会话的ID
-var starNum1=3;
-var noManYi = [];
-var moneyNum = 0;
-var ptm3Flag = 1;//显示输入其它金额
-var showDocList = ["他们说我收到心意后开心得像个小孩子","宝宝在长大，医生会变老","谢谢妈妈们的好评和心意","让宝宝更健康是宝大夫团队的信仰"];
-var indexFlag = 0;
 var sessionId ; //咨询ID
+var starNum1=3;//对医生的评价，0无评价 1不满意 3满意 5非常满意
+var noManYi = [];
+//医生提示语数组
+var showDocList = ["他们说我收到心意后开心得像个小孩子","宝宝在长大，医生会变老","谢谢妈妈们的好评和心意","让宝宝更健康是宝大夫团队的信仰"];
+//随机钱数和图片数组
+var randomMoneyList = [
+    {
+        pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/heart1_1.1.png",
+        money:1.1
+    },
+    {
+        pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/heart2_2.8.png",
+        money:2.8
+    },
+    {
+        pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/heart3_5.2.png",
+        money:5.2
+    },
+    {
+        pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/heart4_6.6.png",
+        money:6.6
+    },
+    {
+        pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/heart5_8.8.png",
+        money:8.8
+    },
+    {
+        pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/heart6_26.6.png",
+        money:26.6
+    },
+];
+var randomMoney ;//随机钱数和图片数组 下标值
+var randomMoneyItem;// 随机生成钱数和图片选项
+var redPacket =0; // 最终支付钱数
 
+var sendHeartInit= function (){
+    getCustomerInfo();//获取当前会话中医生的信息
+    weChatInit();// 初始化微信配置信息
+    customerId=GetQueryString("customerId");
+    sessionId=GetQueryString("sessionId");
+
+}
 //点击选择是否满意
-var setEvaluate = function (index) {
-    $(".tourinit").hide();
-    $(".playtourpingjie").show();
-    $(".playtourmoney").show();
-    $(".playtourno").show();
-    $(".playtourjianyi").show();
-    $(".playtourpingjie").show();
-    $('#but').show();
+function setEvaluate(index) {
+    console.log("setEvaluate 被调用");
+    $(".evaluation-remind").hide();// 隐藏 图片 ‘放心评价，宝大夫信任您’
+    $(".main-under").show();
+    $(".select-content").hide().eq(index).show();
     if(index==0){
-        $(".ptm2 span").removeClass("action");
-        $(".ptm3_but img").attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/index2_money.png");
-        $(".ptm3_input").hide();
-        ptm3Flag = 1;
-        moneyNum = 0;
-        $("#getMoney").val("");
+        $(".evaluate-item img").eq(1).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy2_no.png");
+        $(".evaluate-item img").eq(2).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy3_no.png");
+        $(".evaluate-item img").eq(index).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy1_yes.png");
         starNum1=1;
-        $(".playtourshenming").hide();
-        $('.playtourpj_1 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fbumanyi_xuanzhong_01.png");
-        $('.center1 div').removeClass("c1");
-        $('.playtourpj_2 div').removeClass("c1");
-        $('.playtourpj_1 div').addClass("c1");
-        $('.playtourmoney').hide();
-        $('.playtourno').show();
-        $('.center1 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fmanyiweixuanzhong.png");
-        $('.playtourpj_3 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Ffeichangmanyiweixuanzhong.png");
+        redPacket=0;
         recordLogs("ZXPJSXY_BMY");
-    }else if(index==1){
+    }
+    else if(index==1){
+        changeDocTitle();
+        $(".evaluate-item img").eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy1_no.png");
+        $(".evaluate-item img").eq(2).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy3_no.png");
+        $(".evaluate-item img").eq(index).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy2_yes.png");
         starNum1=3;
-        $(".playtourshenming").show();
-        changeDocTitle();
-        $('.playtourmoney').show();
-        $('.playtourno').hide();
-        $('.center1 div').addClass("c1");
-        $('.playtourpj_2 div').removeClass("c1");
-        $('.playtourpj_1 div').removeClass("c1");
-        $('.playtourpj_1 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fbumanyi_weixuanzhong.png");
-        $('.center1 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fmanyixuanzhong_01.png");
-        $('.playtourpj_3 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Ffeichangmanyiweixuanzhong.png");
         recordLogs("ZXPJSXY_MY");
-    }else if(index==2){
-        starNum1=5;
-        $(".playtourshenming").show();
+    }
+    else if(index==2){
         changeDocTitle();
-        $('.playtourmoney').show();
-        $('.playtourno').hide();
-        $('.center1 div').removeClass("c1");
-        $('.playtourpj_1 div').removeClass("c1");
-        $('.playtourpj_2 div').addClass("c1");
-        $('.playtourpj_1 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fbumanyi_weixuanzhong.png");
-        $('.center1 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fmanyiweixuanzhong.png");
-        $('.playtourpj_3 img').attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Ffeichangmanyiyixuanzhogn01.png");
+        $(".evaluate-item img").eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy1_no.png");
+        $(".evaluate-item img").eq(1).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy2_no.png");
+        $(".evaluate-item img").eq(index).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy3_yes.png");
+        starNum1=5;
         recordLogs("ZXPJSXY_FCMY");
     }
 }
 
-//医生心意标题改变
+//医生提示语 标题改变
 var changeDocTitle = function () {
-    var ind = parseInt(4*Math.random());
-    $("#doctitle span:last-child").html(showDocList[ind]);
+    var randomNum = parseInt(4*Math.random());
+    $(".doctorWord").html(showDocList[randomNum]);
 }
 
 //不满意的选项
@@ -75,115 +86,74 @@ var setNo = function(index){
     var flag = 0;
     if(noManYi.length==0){
         noManYi.push(index);
-        $('.com').eq(index).addClass("dianji");
-    }else{
-        $.each(noManYi, function (inde,value) {
+        $('.noSatisfy-item span').eq(index).addClass("select");
+    }
+    else{
+        $.each(noManYi, function (num,value) {
             if(value==index){
-                $('.com').eq(index).removeClass("dianji");
-                noManYi.splice(inde,1);
+                $('.noSatisfy-item  span').eq(index).removeClass("select");
+                noManYi.splice(num,1);
                 flag = 1;
                 return;
             }
         });
         if(flag!=1){
             noManYi.push(index);
-            $('.com').eq(index).addClass("dianji");
+            $('.noSatisfy-item  span').eq(index).addClass("select");
         }
     }
 }
 
-//点击选择心意金额
-var getPtm2 = function (index) {
-    //收起输入其它金额
-    $(".ptm3_but img").attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/index2_money.png");
-    $(".ptm3_input").hide();
-    ptm3Flag = 1;
-    $('#getMoney').val("");
-
-    if(moneyNum == 0){
-        $(".ptm2 span").eq(index).addClass("action");
-        if(index == 0){
-            indexFlag = 0;
-            recordLogs("ZXPJSXY_one");
-            moneyNum = 8;
-        }else if(index==1){
-            indexFlag = 1;
-            recordLogs("ZXPJSXY_two");
-            moneyNum = 12;
-        }else if(index==2){
-            indexFlag = 2;
-            recordLogs("ZXPJSXY_three");
-            moneyNum = 20;
-        }else if(index==3){
-            indexFlag = 3;
-            recordLogs("ZXPJSXY_four");
-            moneyNum = 26;
-        }else if(index==4){
-            indexFlag = 4;
-            recordLogs("ZXPJSXY_five");
-            moneyNum = 52;
-        }else if(index==5){
-            indexFlag = 5;
-            recordLogs("ZXPJSXY_six");
-            moneyNum = 98;
-        }
-    }else{
-        if(indexFlag == index){
-            $(".ptm2 span").eq(index).removeClass("action");
-            moneyNum = 0;
-        }else{
-            $(".ptm2 span").removeClass("action");
-            $(".ptm2 span").eq(index).addClass("action");
-            if(index == 0){
-                indexFlag = 0;
-                recordLogs("ZXPJSXY_one");
-                moneyNum = 8;
-            }else if(index==1){
-                indexFlag = 1;
-                recordLogs("ZXPJSXY_two");
-                moneyNum = 12;
-            }else if(index==2){
-                indexFlag = 2;
-                recordLogs("ZXPJSXY_three");
-                moneyNum = 20;
-            }else if(index==3){
-                indexFlag = 3;
-                recordLogs("ZXPJSXY_four");
-                moneyNum = 26;
-            }else if(index==4){
-                indexFlag = 4;
-                recordLogs("ZXPJSXY_five");
-                moneyNum = 52;
-            }else if(index==5){
-                indexFlag = 5;
-                recordLogs("ZXPJSXY_six");
-                moneyNum = 98;
-            }
-        }
-
+//点击 列出的钱数选项
+function selectMoneyItem(index,selectMoney){
+    redPacket=selectMoney;
+    console.log("选择的钱数",redPacket);
+    $(".money-item li").children('a').removeClass("select");
+    $(".money-item li").eq(index).children('a').addClass("select");
+    $(".randomSelectMoney").html("随机").removeClass("select");
+    if(redPacket != "" && redPacket >0 ){
+        $(".commit").attr('disabled',false);
     }
 }
-
-//输入其它金额
-var getPtm3 = function () {
-    recordLogs("ZXPJSXY_other");
-    $(".ptm2 span").removeClass("action");
-    moneyNum = 0;
-    if(ptm3Flag == 1){
-        $(".ptm3_but img").attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/index2_money2.png");
-        $(".ptm3_input").show();
-        ptm3Flag = 0;
-    }else{
-        $(".ptm3_but img").attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour/index2_money.png");
-        $(".ptm3_input").hide();
-        ptm3Flag = 1;
-        $('#getMoney').val("");
+//点击页面 随机 按钮
+function getRandomMoney(){
+    $(".c-shadow").show();
+    $(".shadow-content").show();
+    /* $(".c-shadow").height();*/
+    console.log( " height",$(".c-shadow").height())
+    /* pageHeight=document.body.clientHeight-200;//获取页面高度*/
+    if(  $(".randomSelectMoney").html()=='随机'){
+        randomMoney = parseInt(6*Math.random());
+        console.log("随机产生的")
     }
+    changeRandomInfo();
 }
-
-var moreMoney2 = function () {
-    recordLogs("ZXPJSXY_input");
+//点击浮层 换一波 按钮
+function changeMoney(){
+    randomMoney = parseInt(6*Math.random());
+    changeRandomInfo();
 }
+//点击浮层 关闭 按钮
+function closeRandomMoney(){
+    $(".c-shadow").hide();
+    $(".shadow-content").hide();
+}
+//点击浮层 完成按钮
+function finishRandomMoney(){
+    $(".c-shadow").hide();
+    $(".shadow-content").hide();
+    $(".randomSelectMoney").html(randomMoneyList[randomMoney].money+"元").addClass("select");
+    $(".money-item li").children('a').removeClass("select");
+    redPacket=randomMoneyList[randomMoney].money;
+    console.log("选择的钱数",redPacket);
+}
+//切换浮层里面随机图片和钱数
+function changeRandomInfo(){
+    randomMoneyItem= ' <img width="200" height="auto" src='+randomMoneyList[randomMoney].pic+'>' +
+        '<div class="bold f8 money"> '+ randomMoneyList[randomMoney].money+ '元'+'</div>';
+    $(".random-info").html(randomMoneyItem);
+}
+//校验输入框输入的钱数
 $(document).on('keypress', '#getMoney', function (e) {
     // 在 keypress 事件中拦截错误输入
 
@@ -226,94 +196,17 @@ $(document).on('keypress', '#getMoney', function (e) {
     }
 });
 
-//判断输入心意钱
-/*var moreMoney = function () {
-    // recordLogs("ZXPJSXY_JE");
 
-    if($('#getMoney').val()>0){
-
-        $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
-    }else{
-
-        $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
-    }
-}*/
-
-//心意钱数
-/*var setMoney = function (index) {
-    moneyNum = $('#getMoney').val();
-    if(index==0){
-
-        if(moneyNum<=0){
-            $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_bukedian.png");
-        }else{
-            $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
-            if(moneyNum.indexOf(".")>0){
-                $("#but").removeAttr('disable');
-                $("#but").attr("style","background-color:#fe717b");
-                // moneyNum=parseInt(moneyNum);
-            }else {
-                $("#but").removeAttr('disable');
-                $("#but").attr("style","background-color:#fe717b");
-                // moneyNum--;
-            }
-
-            var a=parseInt(moneyNum)/5;
-            var b=parseInt(moneyNum)%5;
-            if(a<1){
-                a=0;
-            }else {
-                if(b==0){
-                    a--;
-                }else {
-                    a = parseInt(a);
-                }
-            }
-            moneyNum=5*(a);
-            
-            $('#getMoney').val(moneyNum);
-        }
-    }else if(index==1){
-
-        if(moneyNum==""){
-            moneyNum=0;
-        }
-        var a=parseInt(moneyNum)/5;
-        a=parseInt(a);
-        moneyNum=5*(a+1);
-        $('#getMoney').val(moneyNum);
-        $('.ptm img').eq(1).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjia_xuanzhong.png");
-        $('.ptm img').eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Fjian_xuanzhong.png");
-    }
-}*/
-
-
-
-$(function(){
-    getCustomerInfo();
-    $("#moneyDiff").hide();
-    $(".tourinit").show();
-    $(".playtourpingjie").hide();
-    $(".playtourmoney").hide();
-    $(".playtourno").hide();
-    $(".playtourjianyi").hide();
-    $(".playtourpingjie").hide();
-    $(".playtourwenti").hide();
-    $('#but').hide();
-    $(".playtourshenming").hide();
-    $(".ptm3_input").hide();
-});
-
-
-var GetQueryString = function(name)
+//获取页面参数值
+function GetQueryString(name)
 {
     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
     if(r!=null)return  unescape(r[2]); return null;
 }
-
+// 根据页面参数获取医生信息
 function getCustomerInfo(){
-    recordLogs("ZXPJXX_PJ");
+    recordLogs("ZXPJXX_PJ");000
     customerId=GetQueryString("customerId");
     $.ajax({
         url:"interaction/user/findCustomerEvaluation",// 跳转到 action
@@ -326,43 +219,69 @@ function getCustomerInfo(){
             var evaluation=data.evaluation;
             var starInfo=data.starInfo;
             var doctorInfo=data.doctorHeadImage;
-            if(evaluation.serviceAttitude!=0){
-                window.location.href = "wxPay/patientPay.do?serviceType=playtourPay&customerId="+customerId;
-            }else{
-                var star=starInfo.startNum+"";
-                $("#redPacket").html(starInfo.redPacket);
-                if(star=="1.00"){
-                    $("#starInfo").html("100%");
-                }else {
-                    $("#starInfo").html(star.split(".")[1] + "%");
-                }
-                $("#doctorName").html(doctorInfo.doctor_name);
-                $("#doctitle span:first-child").html(doctorInfo.doctor_name);
-                $("#headImage").attr("src",doctorInfo.doctor_pic_url);
+            console.log("evaluation.serviceAttitude 的值 ",evaluation.serviceAttitude);
+            var star=starInfo.startNum+"";
+            $("#redPacket").html(starInfo.redPacket);
+            $(".doctorName").html(doctorInfo.doctor_name);
+            $("#headImage").attr("src",doctorInfo.doctor_pic_url);
+            if(star=="1.00"){
+                $("#starInfo").html("100%");
+            }else {
+                $("#starInfo").html(star.split(".")[1] + "%");
             }
+
+            //根据用户评价情况 判断 显示页面
+            $(".evaluate-select").show();
+            if(evaluation.serviceAttitude==0){
+                $(".evaluation-remind").show();
+             }
+            else{
+                $(".finish-evaluate").show();
+                $(".main-under").show();
+                $(".headline").hide();
+                $(".leave-word").hide();
+               if(evaluation.serviceAttitude==1){
+                   $(".evaluate-item li").hide().eq(0).show();
+                   $(".evaluate-item img").eq(0).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy1_yes.png");
+                   $(".select-content").hide()
+                   $(".suggest").show();
+                   $("#suggestContent").html(evaluation.content);
+                   $(".go-share").show();
+                   $(".commit").hide();
+
+                }
+              if(evaluation.serviceAttitude==3){
+                  $(".evaluate-item li").hide().eq(1).show();
+                  setEvaluate(1);
+                  if(redPacket==undefined){
+                      $(".commit").attr('disabled',true);
+                  };
+                  $(".commit").html("我要送心意");
+                }
+                if(evaluation.serviceAttitude==5){
+                    $(".evaluate-item li").hide().eq(2).show();
+                    setEvaluate(2);
+                    console.log("redPacket",redPacket);
+                    if(redPacket==undefined){
+                        $(".commit").attr('disabled',true);
+                    };
+                    $(".commit").html("我要送心意");
+                }
+            }
+
         },
         error : function() {
         }
     }, 'json');
 }
+/*分享给更多的宝妈*/
+function goShare(){
+    window.location.href="../keeper/playtour#/playtourShare/6";
+}
 //提交评价
 function updateCustomerInfo(){
-    customerId=GetQueryString("customerId");
-    sessionId=GetQueryString("sessionId");
-    var redPacket;
     var content=$("#content").val();
-    if(moneyNum == 0){
-        redPacket = $("#getMoney").val();
-    }else{
-        redPacket = moneyNum;
-    }
     if (redPacket != "" && redPacket > 0  ) {
-        if(redPacket>200){
-            alert("感谢您的支持,目前最大金额为200哦!");
-            return;
-        }
-        var num = new Number(Math.round(redPacket*10)/10);
-        redPacket = num.toFixed(1);
         recordLogs("ZXPJSXY_JE");
         $.ajax({
             url:"account/user/customerPay",// 跳转到 action
@@ -419,7 +338,8 @@ function updateCustomerInfo(){
                 recordLogs("PAY_ERROR4:"+res.errMsg);
             }
         });
-    }else{
+    }
+    else{
         $.ajax({
             url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
             async:false,
@@ -438,13 +358,9 @@ function updateCustomerInfo(){
         }, 'json');
     }
 }
-/*
- 以前支付代码
- */
-//订单单价,账户余额,订单id,微信需支付
-//var chargePrice,patient_register_service_id,needPayMoney;
-//页面初始化执行,用户初始化页面参数信息以及微信的支付接口
-var doRefresh = function(){
+
+//初始化微信的支付接口
+var weChatInit = function(){
     var timestamp;//时间戳
     var nonceStr;//随机字符串
     var signature;//得到的签名

@@ -1,23 +1,5 @@
 package com.cxqm.xiaoerke.modules.sys.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.cxqm.xiaoerke.modules.sys.entity.DoctorIllnessRelationVo;
-import net.sf.json.JSONObject;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
@@ -26,9 +8,24 @@ import com.cxqm.xiaoerke.modules.bankend.service.impl.DoctorIllnessRelationServi
 import com.cxqm.xiaoerke.modules.bankend.service.impl.IllnessServiceImpl;
 import com.cxqm.xiaoerke.modules.operation.service.OperationHandleService;
 import com.cxqm.xiaoerke.modules.search.service.util.RdsDataSourceJDBC;
+import com.cxqm.xiaoerke.modules.sys.entity.DoctorIllnessRelationVo;
 import com.cxqm.xiaoerke.modules.sys.entity.IllnessVo;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.google.common.collect.Lists;
+import net.sf.json.JSONObject;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户Controller
@@ -228,7 +225,7 @@ public class DoctorIllnessRelationController extends BaseController {
 
             stringBuffer.deleteCharAt(stringBuffer.length()-1);//去掉最后一个,
             //生成并保存医生与热词关系
-            RdsDataSourceJDBC.insertDoctorAndHotWordsRelationToRds(stringBuffer.toString(),doctorId);
+//            RdsDataSourceJDBC.insertDoctorAndHotWordsRelationToRds(stringBuffer.toString(),doctorId);
             }
         } else {//界面初始化（加载当前医生与疾病关联数据）
             JSONObject resultMap = new JSONObject();

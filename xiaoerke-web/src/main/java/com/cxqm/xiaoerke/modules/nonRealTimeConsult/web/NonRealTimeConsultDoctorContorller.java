@@ -191,7 +191,7 @@ public class NonRealTimeConsultDoctorContorller {
                 if (lastMessageContent.indexOf("#") != -1) {
                     sex = lastMessageContent.split("#")[0];
                     lastMessageContent = lastMessageContent.split("#")[2];
-                    sex = sex.equals("1") ? "男" : "女";
+                    sex = sex.equals("0") ? "男" : "女";
                 }
                 nonRealTimeConsultSessionVo.setLastMessageContent(lastMessageContent);
 
