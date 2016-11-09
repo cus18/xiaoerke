@@ -96,9 +96,12 @@ public class NonRealTimeConsultUserContorller {
             return reusltMap;
         }
         BabyBaseInfoVo babyBaseInfoVo = nonRealTimeConsultUserService.babyBaseInfo(openid);
-        reusltMap.put("babyId",babyBaseInfoVo.getId());
-        reusltMap.put("babySex",babyBaseInfoVo.getSex());
-        reusltMap.put("babyBirthDay", DateUtils.DateToStr(babyBaseInfoVo.getBirthday(),"date"));
+        if(null != babyBaseInfoVo && babyBaseInfoVo.getId() !=null){
+            reusltMap.put("babyId",babyBaseInfoVo.getId());
+            reusltMap.put("babySex",babyBaseInfoVo.getSex());
+            reusltMap.put("babyBirthDay", DateUtils.DateToStr(babyBaseInfoVo.getBirthday(),"date"));
+        }
+
         return reusltMap;
     }
 
