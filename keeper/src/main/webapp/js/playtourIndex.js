@@ -34,7 +34,7 @@ var randomMoneyList = [
 ];
 var randomMoney ;//随机钱数和图片数组 下标值
 var randomMoneyItem;// 随机生成钱数和图片选项
-var redPacket ; // 最终支付钱数
+var redPacket =0; // 最终支付钱数
 
 var sendHeartInit= function (){
     getCustomerInfo();//获取当前会话中医生的信息
