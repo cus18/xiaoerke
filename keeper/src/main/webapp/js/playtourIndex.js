@@ -54,6 +54,7 @@ function setEvaluate(index) {
         $(".evaluate-item img").eq(2).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy3_no.png");
         $(".evaluate-item img").eq(index).attr("src","http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/sendHeart/satisfy1_yes.png");
         starNum1=1;
+        redPacket=0;
         recordLogs("ZXPJSXY_BMY");
     }
     else if(index==1){
