@@ -7,8 +7,10 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionTemplateVo;
 import com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo;
 import com.cxqm.xiaoerke.modules.consult.service.OperationPromotionService;
+import com.cxqm.xiaoerke.modules.consult.service.OperationPromotionTemplateService;
 import com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo;
 import com.cxqm.xiaoerke.modules.operation.service.ChannelService;
 import com.cxqm.xiaoerke.modules.order.entity.RegisterServiceVo;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
@@ -36,6 +39,9 @@ public class OperationPromotionController extends BaseController {
 
     @Autowired
     OperationPromotionService operationPromotionService;
+
+    @Autowired
+    OperationPromotionTemplateService operationPromotionTemplateService;
 
     /**
      * 关键字规则列表
@@ -106,5 +112,76 @@ public class OperationPromotionController extends BaseController {
             e.printStackTrace();
         }
         return "redirect:" + adminPath + "/operationPromotion/operationPromotionKeywordList";
+    }
+
+    /**
+     * 咨询的医生科室列表
+     * sunxiao
+     * @param
+     * @param model
+     */
+    @RequestMapping(value = "operationPromotionTemplateList")
+    public String operationPromotionTemplateList(OperationPromotionTemplateVo vo,HttpServletRequest request, Model model) {
+        List<OperationPromotionTemplateVo> departmentList = operationPromotionTemplateService.findOperationPromotionTemplateList(vo);
+        model.addAttribute("vo", vo);
+        model.addAttribute("departmentList", departmentList);
+        return "modules/consult/departmentList";
+    }
+
+    /**
+     * 咨询医生操作页面
+     * sunxiao
+     * @param
+     * @param model
+     */
+    @RequestMapping(value = "departmentOperForm")
+    public String departmentOperForm(OperationPromotionTemplateVo vo, Model model) {
+        OperationPromotionTemplateVo cddvo = new OperationPromotionTemplateVo();
+        if(StringUtils.isNotNull(vo.getId()+"")){
+            List<OperationPromotionTemplateVo> list = operationPromotionTemplateService.findOperationPromotionTemplateList(vo);//consultDoctorInfoService.findDepartmentList(vo);
+            cddvo = list.get(0);
+            cddvo.setImage("http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/"+vo.getId());
+        }
+        model.addAttribute("vo", cddvo);
+        return "modules/consult/departmentOperForm";
+    }
+
+    /**
+     * 添加修改医生信息
+     * @param
+     * @param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "departmentOper")
+    public String departmentOper(OperationPromotionTemplateVo vo) {
+        net.sf.json.JSONObject result = new net.sf.json.JSONObject();
+        try {
+            operationPromotionTemplateService.operationPromotionTemplateOper(vo);
+            result.put("result","suc");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("result","fail");
+        }
+        return result.toString();
+    }
+
+    /**
+     * 添加修改医生信息
+     * @param
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "deleteOperationPromotionTemplate")
+    public String deleteOperationPromotionTemplate(OperationPromotionTemplateVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+        net.sf.json.JSONObject result = new net.sf.json.JSONObject();
+        try {
+            operationPromotionTemplateService.deleteOperationPromotionTemplate(vo);
+            result.put("result", "suc");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("result", "fail");
+        }
+        return "redirect:" + adminPath + "/consult/consultDoctorDepartmentList?repage";
     }
 }
