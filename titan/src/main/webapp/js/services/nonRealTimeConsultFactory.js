@@ -56,5 +56,13 @@ define(['appNonRealTimeConsult'], function (app) {
             return $resource(path_user + 'upadateRecorde');
         }])
 
+        //登陆地址地址
+        .factory('LoginUrl', function() {
+            return "http://s68.baodf.com/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
+        })
+        //登陆绑定地址
+        .factory('DoctorBindingUrl', function() {
+            return "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getDoctorWechatMenId?url=6";
+        });
 
 })

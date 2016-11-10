@@ -1,6 +1,6 @@
 angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
-    '$scope', '$state', '$timeout', '$http', 'doctorBinding',
-    function ($scope, $state, $timeout, $http, doctorBinding) {
+    '$scope', '$state', '$timeout', '$http', 'doctorBinding','DoctorBindingUrl',
+    function ($scope, $state, $timeout, $http, doctorBinding,DoctorBindingUrl) {
         $scope.doctorLock = false;//非系统医生提示开关
         $scope.errorLock = false;//错误提示开关
         $scope.errorRemindText ="";//错误提示内容
@@ -19,7 +19,7 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
                 else if(data.status == "notConsultDoctor"){
                     $scope.doctorLock = true;
                 }else {
-                    window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getDoctorWechatMenId?url=6";
+                    window.location.href = DoctorBindingUrl;
                 }
             });
         }

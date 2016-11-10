@@ -1,6 +1,6 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConversationCtrl', [
-    '$scope', '$state', '$stateParams', '$timeout', '$http', '$upload', 'ConversationDoctorInfo', 'GetDoctorLoginStatus', 'UpdateReCode',
-    function ($scope, $state, $stateParams, $timeout, $http, $upload, ConversationDoctorInfo, GetDoctorLoginStatus, UpdateReCode) {
+    '$scope', '$state', '$stateParams', '$timeout', '$http', '$upload', 'ConversationDoctorInfo', 'GetDoctorLoginStatus', 'UpdateReCode','LoginUrl',
+    function ($scope, $state, $stateParams, $timeout, $http, $upload, ConversationDoctorInfo, GetDoctorLoginStatus, UpdateReCode,LoginUrl) {
         $scope.info = {};
         $scope.info.content = "";
         $scope.msgType = "text";
@@ -127,7 +127,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
             GetDoctorLoginStatus.save({}, function (data) {
                 $scope.pageLoading = false;
                 if (data.status == "failure") {
-                    window.location.href = "http://s68.baodf.com/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
+                    window.location.href = LoginUrl;
                 } else if (data.status == "success") {
                     ConversationDoctorInfo.save({
                         sessionId: $stateParams.sessionId,

@@ -32,8 +32,8 @@ angular.module('controllers', ['luegg.directives'])
             $scope.loadingFlag = false;
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
-            $scope.firstAddress = "123.57.45.33";
-            $scope.secondAddress = "120.25.161.33";
+            $scope.firstAddress = "101.200.192.33";
+            $scope.secondAddress= "123.102.3.214";
             $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中 乱码
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
@@ -1128,8 +1128,6 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.addGroupFlag = true;
                         $scope.addContentFlag = false;
                     } else {
-                        $scope.addWordFlag = true;
-                        $scope.addImgFlag = false;
                         $scope.addGroupFlag = false;
                         $scope.addContentFlag = true;
                     }
@@ -1139,8 +1137,6 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.addGroupFlag = true;
                         $scope.addContentFlag = false;
                     } else {
-                        $scope.addWordFlag = true;
-                        $scope.addImgFlag = false;
                         $scope.addGroupFlag = false;
                         $scope.addContentFlag = true;
                     }
@@ -1168,54 +1164,6 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 }
             };
-            /*$scope.add = function (showflag,replayIndex) {
-                $scope.info.addGroup = '';
-                $scope.info.addContent = '';
-                if ($scope.showFlag) {
-                    if ($scope.myReplyIndex == -1 || $scope.myReplyIndex == undefined) {
-                        $scope.addGroupFlag = true;
-                        $scope.addContentFlag = false;
-                    } else {
-                        $scope.addWordFlag = true;
-                        $scope.addImgFlag = false;
-                        $scope.addGroupFlag = false;
-                        $scope.addContentFlag = true;
-                    }
-                }
-                if ($scope.showFlag.publicReplyList) {
-                    if ($scope.publicReplyIndex == -1 || $scope.publicReplyIndex == undefined) {
-                        $scope.addGroupFlag = true;
-                        $scope.addContentFlag = false;
-                    } else {
-                        $scope.addWordFlag = true;
-                        $scope.addImgFlag = false;
-                        $scope.addGroupFlag = false;
-                        $scope.addContentFlag = true;
-                    }
-                }
-                if ($scope.showFlag.diagnosisReplyList) {
-                    if ($scope.diagnosisReplyIndex == -1 || $scope.diagnosisReplyIndex == undefined) {
-                        $scope.addGroupFlag = true;
-                        $scope.addContentFlag = false;
-                    } else {
-                        $scope.addWordFlag = true;
-                        $scope.addImgFlag = false;
-                        $scope.addGroupFlag = false;
-                        $scope.addContentFlag = true;
-                    }
-                }
-                if ($scope.showFlag.diagnosticImgReplyList) {
-                    if ($scope.diagnosticImgReplyIndex == -1 || $scope.diagnosticImgReplyIndex == undefined) {
-                        $scope.addGroupFlag = true;
-                        $scope.addContentFlag = false;
-                    } else {
-                        $scope.addWordFlag = false;
-                        $scope.addImgFlag = true;
-                        $scope.addGroupFlag = false;
-                        $scope.addContentFlag = true;
-                    }
-                }
-            };*/
             $scope.closeAddGroup = function () {
                 $scope.info.addGroup = '';
                 $scope.info.addContent = '';
@@ -1242,27 +1190,6 @@ angular.module('controllers', ['luegg.directives'])
                     saveDiagnosticImg();
                 }
                 $scope.addGroupFlag = false;
-            };
-            //添加图片
-            //向用户发送咨询图片
-            $scope.uploadFiles = function ($files, fileType) {
-                var dataValue = {
-                    "fileType": fileType,
-                    "senderId": $scope.doctorId,
-                    "sessionId": angular.copy($scope.currentUserConversation.sessionId)
-                };
-                var dataJsonValue = JSON.stringify(dataValue);
-                for (var i = 0; i < $files.length; i++) {
-                    var file = $files[i];
-                    $scope.upload = $upload.upload({
-                        url: 'consult/h5/uploadMediaFile',
-                        data: encodeURI(dataJsonValue),
-                        file: file
-                    }).progress(function (evt) {
-                    }).success(function (data, status, headers, config) {
-
-                    });
-                }
             };
             //添加内容
             $scope.closeAddContent = function () {
@@ -1740,16 +1667,16 @@ angular.module('controllers', ['luegg.directives'])
             };
             //启动一个监控消息状态的定时器
             /*var setIntervalTimers = function () {
-                $.each($scope.alreadyJoinPatientConversation, function (index, value) {
-                    var flag = moment().subtract(5, 'minute').isAfter(value.dateTime);
-                    if (value.notifyType == 1002 && flag) {
-                        value.notifyType = 1003;
-                    }
-                });
-            };
-            var heartBeatCheckPay = function () {
-                $scope.heartBeatPay = setInterval(setIntervalTimers, 6000);
-            };*/
+             $.each($scope.alreadyJoinPatientConversation, function (index, value) {
+             var flag = moment().subtract(5, 'minute').isAfter(value.dateTime);
+             if (value.notifyType == 1002 && flag) {
+             value.notifyType = 1003;
+             }
+             });
+             };
+             var heartBeatCheckPay = function () {
+             $scope.heartBeatPay = setInterval(setIntervalTimers, 6000);
+             };*/
             //病人会话的内容的发送
             var updateAlreadyJoinPatientConversationFromPatient = function (conversationData) {
                 var updateFlag = false;
@@ -2454,7 +2381,7 @@ angular.module('controllers', ['luegg.directives'])
             $scope.helpDocsListInit = function () {
                 document.title="帮助文档列表页"; //修改页面title
                 //获取左边分类
-                GetCategoryList.save({"categoryId":"164bf4c85d824776b2b2d4f94d6726bd"},function(data){
+                GetCategoryList.save({"categoryId":"bc802fafd6db4f3e91894c9932cbf6f6"},function(data){
                     $scope.helpDocsClassify=data.categoryList;
                     $scope.classifyId = $scope.helpDocsClassify[0].categoryId;
                     //初始化第一个分类下的文章
@@ -2474,7 +2401,7 @@ angular.module('controllers', ['luegg.directives'])
                 document.title="帮助文档详情页"; //修改页面title
                 $scope.articleId =$stateParams.articleId;//文章id
                 //获取左边分类
-                GetCategoryList.save({"categoryId":"164bf4c85d824776b2b2d4f94d6726bd"},function(data){
+                GetCategoryList.save({"categoryId":"bc802fafd6db4f3e91894c9932cbf6f6"},function(data){
                     $scope.helpDocsClassify=data.categoryList;
                 });
                 //获取文章详情

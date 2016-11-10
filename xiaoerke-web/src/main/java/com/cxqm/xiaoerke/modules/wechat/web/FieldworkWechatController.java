@@ -227,6 +227,9 @@ public class FieldworkWechatController {
         }else if("40".equals(url)){
             //非及时咨询
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeUserFindDoctor";
+        }else if("43".equals(url)){
+            String doctorId  = URLEncoder.encode(url.replace("doctorId",""), "UTF-8");
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/consultDoctorHome/"+doctorId;
         }
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +

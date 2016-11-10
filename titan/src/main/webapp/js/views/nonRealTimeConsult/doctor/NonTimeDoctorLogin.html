@@ -15,7 +15,7 @@
                 <button  ng-disabled="( info.phoneNum.length<11 || info.phoneNum==null)" class="getCode f6 c0 tc" id="validateCode" ng-click="getValidateCode()">获取验证码</button>
             </div>
             <div ng-if="errorLock" class="error-remind  tc c2 f2" >{{errorRemindText}}</div>
-            <button  class="button foot-btn" ng-click = "doctorBindingAction()"  ng-disabled="(info.phoneNum.length<11||info.phoneNum==null)||(info.password.length<6 || info.password==null)" >确认开通</button>
+            <button  class="button foot-btn" ng-click = "doctorBindingAction()"  ng-disabled="(info.phoneNum.length<11||info.phoneNum==null)||(info.password.length<4 || info.password==null)" >确认开通</button>
         </div>
         <div class="tips tc">
             <div class="line fl bg1"></div>

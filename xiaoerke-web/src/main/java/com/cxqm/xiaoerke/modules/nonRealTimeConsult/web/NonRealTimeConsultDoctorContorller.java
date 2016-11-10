@@ -217,6 +217,7 @@ public class NonRealTimeConsultDoctorContorller {
                     } else {
                         babyName = "";
                     }
+                    sex = babyBaseInfoVo.getSex().equals("1") ? "男" : "女";
 
                     babyInfo = sex + babyName + (nowDateYear - babyBirthdayYear) + "岁" + chaDate + "个月";
                 }
@@ -266,44 +267,46 @@ public class NonRealTimeConsultDoctorContorller {
         List<NonRealTimeConsultRecordVo> recodevoList = nonRealTimeConsultUserService.selectSessionRecordByVo(recordVo);
         //开始组装数据
         List<Map> messageList = new ArrayList<Map>();
-        if (recodevoList != null && recodevoList.size() > 0) {
-            for (NonRealTimeConsultRecordVo vo : recodevoList) {
-                Map<String, Object> recordMap = new HashMap<String, Object>();
-                if (csUserId.equals(vo.getSenderId())) {
-                    recordMap.put("source", "doctor");
-                } else {
-                    recordMap.put("source", "user");
-                }
-                ;
-                String messageType = vo.getMessageType();
-                recordMap.put("messageType", messageType);
-                if (ConsultSessionStatus.CREATE_SESSION.getVariable().equals(messageType)) {
-                    String[] messageInfo = vo.getMessage().split("\\#");
-                    recordMap.put("babyBaseInfo", messageInfo[0] == "0" ? "女" : "男" + "  " + messageInfo[1]);
-                    recordMap.put("message", messageInfo[2]);
+        for(NonRealTimeConsultRecordVo vo:recodevoList){
+            Map<String ,Object> recordMap = new HashMap<String, Object>();
+            if(openid.equals(vo.getSenderId())){
+                recordMap.put("source","user");
+            }else{
+                recordMap.put("source","doctor");
+            };
+            String messageType = vo.getMessageType();
+            recordMap.put("messageType",messageType);
+            if(ConsultSessionStatus.CREATE_SESSION.getVariable().equals(messageType)){
+                String[] messageInfo = vo.getMessage().split("\\#");
+                recordMap.put("babyBaseInfo",messageInfo[0] == "0"?"女":"男"+","+messageInfo[1]+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+                if(openid.equals(vo.getSenderId())){
+                    recordMap.put("source","user");
+                    recordMap.put("message",messageInfo[2]);
+                }else{
+                    recordMap.put("source","doctor");
+                    recordMap.put("message",recordMap.get("babyBaseInfo")+messageInfo[2]);
+                };
 
-                    if (messageInfo.length > 3) {
-                        List<String> imgList = new ArrayList<String>();
-                        for (int i = 3; i < messageInfo.length; i++) {
-                            imgList.add(messageInfo[i]);
-                        }
-                        recordMap.put("imgPath", imgList);
+                if(messageInfo.length>3){
+                    List<String > imgList = new ArrayList<String>();
+                    for(int i=3;i<messageInfo.length;i++){
+                        imgList.add(messageInfo[i]);
                     }
-                } else {
-                    recordMap.put("message", vo.getMessage());
+                    recordMap.put("imgPath",imgList);
                 }
-                recordMap.put("messageTime", DateUtils.formatDateToStr(vo.getCreateTime(), "MM月dd日 HH:mm"));
-                messageList.add(recordMap);
+            }else{
+                recordMap.put("message",vo.getMessage());
             }
+            recordMap.put("messageTime",DateUtils.formatDateToStr(vo.getCreateTime(),"MM月dd日 HH:mm"));
+            messageList.add(recordMap);
         }
-
 
         //用户微信头像的信息
         Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
-        WechatBean wechatInfo = WechatUtil.getWechatName(token, openid);
-        resultMap.put("wechatImg", wechatInfo.getHeadimgurl());
-        resultMap.put("messageList", messageList);
+        WechatBean wechatInfo = WechatUtil.getWechatName(token,openid);
+        resultMap.put("wechatImg",wechatInfo.getHeadimgurl());
+        resultMap.put("messageList",messageList);
         return resultMap;
     }
 
