@@ -273,10 +273,12 @@ public class ScheduleTaskController extends BaseController {
         if (dayNumber != 0) {
             evaluateClickDegree = String.valueOf((float) evaluateClickNumber / (float) dayNumber * 100) + "%";
         }
+        System.out.println("开始查询时间===================================="+System.currentTimeMillis());
         //分享点击量
         Query queryShare = new Query().addCriteria(Criteria.where("title").is("ZXFX")).addCriteria(Criteria.where("create_date").gte(startDate).andOperator(Criteria.where("create_date").lte(endDate)));
 
         int shareClickNumber = (int) logMongoDBService.queryCount(queryShare);
+        System.out.println("结束查询时间===================================="+System.currentTimeMillis());
         //分享占比
         /**
          *分享数/当天咨询数
