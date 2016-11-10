@@ -204,6 +204,15 @@ public class NgRouteController extends BaseController {
         return "angular/appUmbrellaIndex";
     }
 
+    /**
+     *  Activity 活动（运营小活动）
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/activity",method = {RequestMethod.POST, RequestMethod.GET})
+    public String appActivityIndex() {
+        return "angular/activityIndex";
+    }
+
      /*
         doctor 项目
     */
