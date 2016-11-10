@@ -9,9 +9,11 @@ public class OperationPromotionTemplateVo {
 
     private Integer id;
 
+    private String type;
+
     private String info1;
 
-    private Short info2;
+    private String info2;
 
     private String image;
 
@@ -27,6 +29,14 @@ public class OperationPromotionTemplateVo {
         return id;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -39,11 +49,11 @@ public class OperationPromotionTemplateVo {
         this.info1 = info1;
     }
 
-    public Short getInfo2() {
+    public String getInfo2() {
         return info2;
     }
 
-    public void setInfo2(Short info2) {
+    public void setInfo2(String info2) {
         this.info2 = info2;
     }
 }

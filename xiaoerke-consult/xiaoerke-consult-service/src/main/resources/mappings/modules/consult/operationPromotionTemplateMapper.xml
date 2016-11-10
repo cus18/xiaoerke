@@ -10,7 +10,7 @@
     id, info1, info2
   </sql>
 
-  <select id="findTemplateListByInfo" resultMap="BaseResultMap" parameterType="java.util.Map" >
+  <select id="findTemplateListByInfo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionTemplateVo" >
     select * from operation_promotion_template
     where 1=1
     <if test="info1 != null and info1 !=''">
@@ -25,7 +25,8 @@
   where id = #{id}
 </delete>
 
-<insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionTemplateVo" >
+<insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionTemplateVo" useGeneratedKeys="true"
+        keyProperty="id">
   insert into operation_promotion_template
   <trim prefix="(" suffix=")" suffixOverrides="," >
     <if test="info1 != null" >

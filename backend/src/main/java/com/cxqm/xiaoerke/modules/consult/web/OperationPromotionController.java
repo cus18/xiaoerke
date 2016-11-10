@@ -1,9 +1,5 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
-import com.alibaba.fastjson.JSONObject;
-import com.cxqm.xiaoerke.common.config.Global;
-import com.cxqm.xiaoerke.common.persistence.Page;
-import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
@@ -11,11 +7,6 @@ import com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionTemplateVo;
 import com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo;
 import com.cxqm.xiaoerke.modules.consult.service.OperationPromotionService;
 import com.cxqm.xiaoerke.modules.consult.service.OperationPromotionTemplateService;
-import com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo;
-import com.cxqm.xiaoerke.modules.operation.service.ChannelService;
-import com.cxqm.xiaoerke.modules.order.entity.RegisterServiceVo;
-import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -115,47 +105,49 @@ public class OperationPromotionController extends BaseController {
     }
 
     /**
-     * 咨询的医生科室列表
+     * 运营推广列表
      * sunxiao
      * @param
      * @param model
      */
     @RequestMapping(value = "operationPromotionTemplateList")
     public String operationPromotionTemplateList(OperationPromotionTemplateVo vo,HttpServletRequest request, Model model) {
-        List<OperationPromotionTemplateVo> departmentList = operationPromotionTemplateService.findOperationPromotionTemplateList(vo);
+        List<OperationPromotionTemplateVo> templateList = operationPromotionTemplateService.findOperationPromotionTemplateList(vo);
         model.addAttribute("vo", vo);
-        model.addAttribute("departmentList", departmentList);
-        return "modules/consult/departmentList";
+        model.addAttribute("templateList", templateList);
+        return "modules/consult/operationPromotionTemplateList";
     }
 
     /**
-     * 咨询医生操作页面
+     * 运营推广操作页面
      * sunxiao
      * @param
      * @param model
      */
-    @RequestMapping(value = "departmentOperForm")
-    public String departmentOperForm(OperationPromotionTemplateVo vo, Model model) {
+    @RequestMapping(value = "operationPromotionTemplateOperForm")
+    public String operationPromotionTemplateOperForm(OperationPromotionTemplateVo vo, Model model) {
         OperationPromotionTemplateVo cddvo = new OperationPromotionTemplateVo();
         if(StringUtils.isNotNull(vo.getId()+"")){
             List<OperationPromotionTemplateVo> list = operationPromotionTemplateService.findOperationPromotionTemplateList(vo);//consultDoctorInfoService.findDepartmentList(vo);
             cddvo = list.get(0);
-            cddvo.setImage("http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/"+vo.getId());
+            cddvo.setImage("http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/pictureTransmission"+vo.getId());
         }
         model.addAttribute("vo", cddvo);
-        return "modules/consult/departmentOperForm";
+        return "modules/consult/operationPromotionTemplateOperForm";
     }
 
     /**
-     * 添加修改医生信息
+     * 添加修改运营推广信息
      * @param
      * @param
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "departmentOper")
-    public String departmentOper(OperationPromotionTemplateVo vo) {
+    @RequestMapping(value = "operationPromotionTemplateOper")
+    public String operationPromotionTemplateOper(OperationPromotionTemplateVo vo,HttpServletRequest request) {
         net.sf.json.JSONObject result = new net.sf.json.JSONObject();
+        vo.setInfo1(request.getParameter("info11") + "," + request.getParameter("info12"));
+        vo.setInfo2(request.getParameter("info21") + "," + request.getParameter("info22"));
         try {
             operationPromotionTemplateService.operationPromotionTemplateOper(vo);
             result.put("result","suc");
@@ -167,7 +159,7 @@ public class OperationPromotionController extends BaseController {
     }
 
     /**
-     * 添加修改医生信息
+     * 添加修改运营推广
      * @param
      * @param
      * @return
@@ -182,6 +174,6 @@ public class OperationPromotionController extends BaseController {
             e.printStackTrace();
             result.put("result", "fail");
         }
-        return "redirect:" + adminPath + "/consult/consultDoctorDepartmentList?repage";
+        return "redirect:" + adminPath + "/operationPromotion/operationPromotionTemplateList?repage";
     }
 }

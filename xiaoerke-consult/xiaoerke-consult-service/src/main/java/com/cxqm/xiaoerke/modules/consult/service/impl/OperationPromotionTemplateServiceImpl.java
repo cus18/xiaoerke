@@ -39,16 +39,36 @@ public class OperationPromotionTemplateServiceImpl implements OperationPromotion
 
     @Override
     public List<OperationPromotionTemplateVo> findOperationPromotionTemplateList(OperationPromotionTemplateVo vo) {
-        return null;
+        return operationPromotionTemplateDao.findTemplateListByInfo(vo);
     }
 
     @Override
     public void operationPromotionTemplateOper(OperationPromotionTemplateVo vo) {
-
+        if(StringUtils.isNotNull(vo.getId()+"")){
+            operationPromotionTemplateDao.updateByPrimaryKeySelective(vo);
+        }else{
+            vo.setType("pictureTransmission");
+            operationPromotionTemplateDao.insertSelective(vo);
+        }
+        if(StringUtils.isNotNull(vo.getImage())){
+            uploadArticleImage("pictureTransmission"+vo.getId(),vo.getImage());
+        }
     }
 
     @Override
     public void deleteOperationPromotionTemplate(OperationPromotionTemplateVo vo) {
+        operationPromotionTemplateDao.deleteByPrimaryKey(vo.getId()+"");
+    }
 
+    private void uploadArticleImage(String id , String src) {
+        try {
+            File file = new File(System.getProperty("user.dir").replace("bin", "webapps") + URLDecoder.decode(src, "utf-8"));
+            FileInputStream inputStream = new FileInputStream(file);
+            long length = file.length();
+            //上传图片至阿里云
+            OSSObjectTool.uploadFileInputStream(id, length, inputStream, OSSObjectTool.BUCKET_ARTICLE_PIC);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
