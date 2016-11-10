@@ -2,7 +2,6 @@ package com.cxqm.xiaoerke.modules.wechat.service.impl;
 
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
-import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
@@ -1646,14 +1645,16 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>付费</a>" ;
             WechatUtil.sendMsgToWechat(token,openid,payContent);
 
-            String content = "问题不着急？\n来试试“点名咨询”。您可指定专家医生或曾咨询过的医生，医生会在24小时内尽快对您的提问进行答复\n" +
-                    "<a href='"+path+"'>>>点名咨询医生</a>";
-            WechatUtil.sendMsgToWechat(token,openid,content);
+
 
             String invatUrl = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD";
             String bayContent = "什么？咨询要收费？\n不怕！邀请个好友加入宝大夫，免费机会立刻有！\n" +
                     "<a href='"+invatUrl+"'>>>邀请好友赚机会</a>";
             WechatUtil.sendMsgToWechat(token,openid,bayContent);
+
+            String content = "问题不着急？\n来试试“点名咨询”。您可指定专家医生或曾咨询过的医生，医生会在24小时内尽快对您的提问进行答复\n" +
+                    "<a href='"+path+"'>>>点名咨询医生</a>";
+            WechatUtil.sendMsgToWechat(token,openid,content);
 
 
 
