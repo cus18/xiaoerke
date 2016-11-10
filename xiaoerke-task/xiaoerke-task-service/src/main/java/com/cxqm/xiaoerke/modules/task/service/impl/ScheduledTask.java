@@ -1540,4 +1540,11 @@ public class ScheduledTask {
         nonRealTimeConsultService.sessinTimeOut();
     }
 
+
+    //更新医生的资料
+    public void nonRealtimeDoctorInfo() {
+        //微信推送
+        nonRealTimeConsultService.updateConsultDoctorInfo();
+    }
+
 }
