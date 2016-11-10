@@ -364,7 +364,7 @@ public class ConsultWechatController extends BaseController {
                     if (consultSessionPropertyVo != null && messageFlag == 0) {
                         String content;
                         if (consultSessionPropertyVo.getMonthTimes() > 0) {
-                            content = "亲爱的，你本月还有" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务就开始付费了？" ;
+                            content = "亲爱的，你本月还有" + consultSessionPropertyVo.getMonthTimes() + "次24小时咨询服务就开始付费了" ;
                             if(consultSessionPropertyVo.getMonthTimes() == 1){
                                 content += "\n-----------\n" + "别怕！邀请个好友加入宝大夫，免费机会立刻有！\n"+ "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
                             }

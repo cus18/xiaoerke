@@ -1645,6 +1645,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     "<a href='"+path+"'>>>点名咨询医生</a>";
             WechatUtil.sendMsgToWechat(token,openid,content);
 
+            String invatUrl = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD";
+            String bayContent = "什么？咨询要收费？\n不怕！邀请个好友加入宝大夫，免费机会立刻有！\n" +
+                    "<a href='"+invatUrl+"'>>>邀请好友赚机会</a>";
+            WechatUtil.sendMsgToWechat(token,openid,bayContent);
+
             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
             String payContent = "嗨，亲爱的~你本月免费咨询次数已用完。 本次咨询医生需支付9.9元，享受24小时的咨询时间。\n\n"+
                     "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>付费</a>" ;
