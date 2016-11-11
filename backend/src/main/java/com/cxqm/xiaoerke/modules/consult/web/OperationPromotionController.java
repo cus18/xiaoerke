@@ -1,19 +1,12 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
-import com.alibaba.fastjson.JSONObject;
-import com.cxqm.xiaoerke.common.config.Global;
-import com.cxqm.xiaoerke.common.persistence.Page;
-import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
+import com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionTemplateVo;
 import com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo;
 import com.cxqm.xiaoerke.modules.consult.service.OperationPromotionService;
-import com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo;
-import com.cxqm.xiaoerke.modules.operation.service.ChannelService;
-import com.cxqm.xiaoerke.modules.order.entity.RegisterServiceVo;
-import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.cxqm.xiaoerke.modules.consult.service.OperationPromotionTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -36,6 +29,9 @@ public class OperationPromotionController extends BaseController {
 
     @Autowired
     OperationPromotionService operationPromotionService;
+
+    @Autowired
+    OperationPromotionTemplateService operationPromotionTemplateService;
 
     /**
      * 关键字规则列表
@@ -106,5 +102,78 @@ public class OperationPromotionController extends BaseController {
             e.printStackTrace();
         }
         return "redirect:" + adminPath + "/operationPromotion/operationPromotionKeywordList";
+    }
+
+    /**
+     * 运营推广列表
+     * sunxiao
+     * @param
+     * @param model
+     */
+    @RequestMapping(value = "operationPromotionTemplateList")
+    public String operationPromotionTemplateList(OperationPromotionTemplateVo vo,HttpServletRequest request, Model model) {
+        List<OperationPromotionTemplateVo> templateList = operationPromotionTemplateService.findOperationPromotionTemplateList(vo);
+        model.addAttribute("vo", vo);
+        model.addAttribute("templateList", templateList);
+        return "modules/consult/operationPromotionTemplateList";
+    }
+
+    /**
+     * 运营推广操作页面
+     * sunxiao
+     * @param
+     * @param model
+     */
+    @RequestMapping(value = "operationPromotionTemplateOperForm")
+    public String operationPromotionTemplateOperForm(OperationPromotionTemplateVo vo, Model model) {
+        OperationPromotionTemplateVo cddvo = new OperationPromotionTemplateVo();
+        if(StringUtils.isNotNull(vo.getId()+"")){
+            List<OperationPromotionTemplateVo> list = operationPromotionTemplateService.findOperationPromotionTemplateList(vo);//consultDoctorInfoService.findDepartmentList(vo);
+            cddvo = list.get(0);
+            cddvo.setImage("http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/pictureTransmission"+vo.getId());
+        }
+        model.addAttribute("vo", cddvo);
+        return "modules/consult/operationPromotionTemplateOperForm";
+    }
+
+    /**
+     * 添加修改运营推广信息
+     * @param
+     * @param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "operationPromotionTemplateOper")
+    public String operationPromotionTemplateOper(OperationPromotionTemplateVo vo,HttpServletRequest request) {
+        net.sf.json.JSONObject result = new net.sf.json.JSONObject();
+        vo.setInfo1(request.getParameter("info11") + "," + request.getParameter("info12"));
+        vo.setInfo2(request.getParameter("info21") + "," + request.getParameter("info22"));
+        try {
+            operationPromotionTemplateService.operationPromotionTemplateOper(vo);
+            result.put("result","suc");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("result","fail");
+        }
+        return result.toString();
+    }
+
+    /**
+     * 添加修改运营推广
+     * @param
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "deleteOperationPromotionTemplate")
+    public String deleteOperationPromotionTemplate(OperationPromotionTemplateVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+        net.sf.json.JSONObject result = new net.sf.json.JSONObject();
+        try {
+            operationPromotionTemplateService.deleteOperationPromotionTemplate(vo);
+            result.put("result", "suc");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("result", "fail");
+        }
+        return "redirect:" + adminPath + "/operationPromotion/operationPromotionTemplateList?repage";
     }
 }

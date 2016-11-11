@@ -1,0 +1,16 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="{{title}}" >
+    <ion-content class="picSpreadIndex bg1" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="main-wrap">
+                <div class="main tc">
+                    <img class="my-img1" width="80%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/activity/picSpread/leadWord.png">
+                    <input class="name tc f4 c5" type="text" ng-model="info.name" maxlength="4" placeholder="请输入...">
+                    <img class=" my-img1" width="80%" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/activity/picSpread/parent_child.png">
+                    <img ng-click="makePic()" class="btn  my-img1" width="135" height="auto" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/activity/picSpread/btn_makePic.png">
+                </div>
+            </div>
+        </ion-scroll>
+    </ion-content>
+
+</ion-view>
