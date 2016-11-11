@@ -9,8 +9,8 @@
                 </span>
                 <span></span>
                 <span>（{{doctorName}}），宝大夫欢迎您！！</span>
-                <span ng-if="loseConnectionFirstFlag||loseConnectionSecondFlag">您已与平台断开了连接，请检查您的网络情况，谢谢！</span>
-                <span ng-if="!loseConnectionFirstFlag&&!loseConnectionSecondFlag">您目前与平台连接正常！</span>
+                <span ng-if="loseConnectionFirstFlag&&loseConnectionSecondFlag">您已与平台断开了连接，请检查您的网络情况，谢谢！</span>
+                <span ng-if="!loseConnectionFirstFlag||!loseConnectionSecondFlag">您目前与平台连接正常！</span>
                 <div class="bdf-dkf-content-right">
                     <a class="support" href="/angel/doctor/consult#/helpDocsList" target="_blank">
                         帮助文档
