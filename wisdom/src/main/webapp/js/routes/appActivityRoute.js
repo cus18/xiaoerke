@@ -22,7 +22,7 @@ define(['appActivity'], function(app){
                 };
 
                 $stateProvider
-                   /* 营养管理*/
+                   /* 图片传播*/
                     .state('picSpreadIndex', {
                         url: '/picSpreadIndex',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -40,12 +40,29 @@ define(['appActivity'], function(app){
                             public: true
                         }
                     })
+                    .state('picSpreadResult', {
+                        url: '/picSpreadResult',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'picSpreadResultCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.picSpreadResultCtrl',
+                                    ['js/controllers/activity/picSpread/picSpreadResultCtrl.js?ver='+activityVersion,
+                                        'styles/activity/picSpread/picSpreadResult.less?ver='+activityVersion
+                                    ],
+                                    'js/views/activity/picSpread/picSpreadResult.html?ver='+activityVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
 
 
                 $urlRouterProvider.otherwise('nutritionIndex');
             }])
         .run(function ($rootScope){
             $rootScope.unBindUserPhoneNum = '';
-            $rootScope.picVer = picVersion;;
+            $rootScope.picVer = picVersion;
         })
 })
