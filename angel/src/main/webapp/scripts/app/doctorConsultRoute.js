@@ -14,6 +14,12 @@ angular.module('doctorConsultApp', ['angularFileUpload', 'ui.router','controller
                 controller: 'messageListCtrl',
                 title: '消息列表'
             })
+            .state('doctorConsultLogin',{
+                url:'/doctorConsultLogin',
+                templateUrl: root + '/doctorDoctorLogin.html',
+                controller: 'doctorConsultLogin',
+                title: '医生登陆'
+            })
             .state('helpDocsList',{
                 url:'/helpDocsList',
                 templateUrl: root + '/helpDocsList.html',

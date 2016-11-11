@@ -6,6 +6,14 @@ angular.module('services', ['ngResource'])
     .factory('GetTodayRankingList', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/rankList');
     }])
+    //用户登陆状态
+    .factory('DoctorBinding', ['$resource', function ($resource) {
+        return $resource(public + 'consult/doctor/login/doctorBinding');
+    }])
+    //用户绑定
+    .factory('GetDoctorLoginStatus', ['$resource', function ($resource) {
+        return $resource(public + 'consult/doctor/login/GetDoctorLoginStatus');
+    }])
     //获取用户登陆状态
     .factory('GetUserLoginStatus', ['$resource', function ($resource) {
         return $resource(public + 'auth/info/loginStatus');
