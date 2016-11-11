@@ -1,13 +1,13 @@
 angular.module('controllers', ['luegg.directives'])
     .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window', '$stateParams', 'GetTodayRankingList',
-        'GetOnlineDoctorList', 'GetAnswerValueList', 'GetDoctorLoginStatus',
+        'GetOnlineDoctorList', 'GetAnswerValueList', 'GetDoctorLoginStatus','GetUserLoginStatus',
         '$location', 'GetCurrentUserHistoryRecord', 'GetMyAnswerModify', 'GetCurrentUserConsultListInfo',
         'TransferToOtherCsUser', 'SessionEnd', 'GetWaitJoinList', 'React2Transfer', 'CancelTransfer', '$upload',
         'GetFindTransferSpecialist', 'GetRemoveTransferSpecialist', 'GetAddTransferSpecialist', 'GetFindAllTransferSpecialist',
         'CreateTransferSpecialist', '$state', 'GetSystemTime', 'GetUserSessionTimesByUserId', 'GetCustomerLogByOpenID', 'SaveCustomerLog',
         'SearchIllnessList', 'ModifyUserConsultNum', 'SearchBabyInfo', 'SaveReturnService',
         function ($scope, $sce, $window, $stateParams, GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
-                  GetDoctorLoginStatus, $location, GetCurrentUserHistoryRecord, GetMyAnswerModify,
+                  GetDoctorLoginStatus,GetUserLoginStatus, $location, GetCurrentUserHistoryRecord, GetMyAnswerModify,
                   GetCurrentUserConsultListInfo, TransferToOtherCsUser, SessionEnd, GetWaitJoinList, React2Transfer, CancelTransfer, $upload,
                   GetFindTransferSpecialist, GetRemoveTransferSpecialist, GetAddTransferSpecialist, GetFindAllTransferSpecialist,
                   CreateTransferSpecialist, $state, GetSystemTime, GetUserSessionTimesByUserId, GetCustomerLogByOpenID, SaveCustomerLog,
@@ -77,8 +77,9 @@ angular.module('controllers', ['luegg.directives'])
             $scope.doctorConsultInit = function () {
                 // heartBeatCheckPay();
                 $scope.getQQExpression();
-                var routePath = "/doctor/consultBBBBBB" + $location.path();
-                GetDoctorLoginStatus.save({routePath: routePath}, function (data) {
+                //var routePath = "/doctor/consultBBBBBB" + $location.path();
+                //GetDoctorLoginStatus.save({routePath: routePath}, function (data) {
+                GetDoctorLoginStatus.save({}, function (data) {
                     $scope.pageLoading = false;
                     if (data.status == "failure") {
                         $state.go("doctorConsultLogin");
