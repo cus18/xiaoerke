@@ -10,7 +10,7 @@ import java.util.Map;
 @MyBatisDao
 public interface OperationPromotionTemplateDao {
 
-    List<OperationPromotionTemplateVo> findTemplateListByInfo(Map map);
+    List<OperationPromotionTemplateVo> findTemplateListByInfo(OperationPromotionTemplateVo vo);
 
     int deleteByPrimaryKey(String id);
 
