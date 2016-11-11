@@ -1,4 +1,4 @@
-angular.module('controllers', []).controller('doctorConsultLogin', [
+angular.module('controllers', ['luegg.directives']).controller('doctorConsultLogin', [
     '$scope', '$state', '$timeout', '$http', 'doctorBinding','DoctorBindingUrl',
     function ($scope, $state, $timeout, $http, doctorBinding,DoctorBindingUrl) {
         $scope.doctorLock = false;//非系统医生提示开关
