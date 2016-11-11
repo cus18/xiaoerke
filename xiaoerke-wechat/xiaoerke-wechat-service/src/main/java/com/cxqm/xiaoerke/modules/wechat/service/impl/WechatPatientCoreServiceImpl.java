@@ -1652,11 +1652,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     "<a href='"+invatUrl+"'>>>邀请好友赚机会</a>";
             WechatUtil.sendMsgToWechat(token,openid,bayContent);
 
-            String content = "问题不着急？\n来试试“点名咨询”。您可指定专家医生或曾咨询过的医生，医生会在24小时内尽快对您的提问进行答复\n" +
+            String content = "问题不着急？\n试试给医生留言咨询吧， 医生会尽快回复哦\n" +
                     "<a href='"+path+"'>>>点名咨询医生</a>";
             WechatUtil.sendMsgToWechat(token,openid,content);
-
-
 
             LogUtils.saveLog("FSS_YHD_RK1_TS",openid);
 
