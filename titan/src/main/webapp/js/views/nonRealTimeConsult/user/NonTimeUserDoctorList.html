@@ -5,12 +5,12 @@
                 <div class="doctor-information" ng-repeat="item in doctorList" ng-click="checkDoctorInformation($index)">
                     <div class="top">
                 <span class="head-portrait">
-                    <img width="100%" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.userId}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
+                    <img ng-width="100%" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.userId}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
                 </span>
                         <span>{{item.name}}</span>
-                        <span>{{item.department}}</span>
+                        <span style="min-width:60px;">{{item.department}}</span>
                         <span>{{item.title}}</span>
-                        <span><nobr>擅长:{{item.skill}}</nobr></span>
+                        <span style="float: none;"><nobr>擅长:{{item.skill}}</nobr></span>
                     </div>
                     <!--<div class="has-consult" ng-show="consulted">-->
                         <!--<img width="40px" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fdd_03.png" alt=""/>-->
