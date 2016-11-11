@@ -4,12 +4,12 @@ angular.module('controllers', ['ionic']).controller('picSpreadIndexCtrl', [
 
         $scope.title ="图片传播";
 
-        $scope.transformDate = function(){
-
+        $scope.makePic = function(){
+            $state.go("picSpreadResult");
         };
 
         $scope.$on('$ionicView.enter', function() {
-
+            $(".main-wrap").css("height",screen.height+"px")
 
         });
     }]);
