@@ -240,8 +240,8 @@
   </select>
   
   <select id="getDoctorInfoMoreByUserId" parameterType="java.lang.String" resultType="java.util.Map">
-    SELECT cdi.sys_user_id AS userId,su.name,su.login_name AS userLoginName,su.user_type AS userType,cdi.department,cdi.type,su.login_flag AS loginFlag,su.del_flag AS delFlag from consult_doctor_info cdi
-    INNER JOIN sys_user su on su.id = cdi.sys_user_id
+    SELECT su.id  AS userId,su.name,su.login_name AS userLoginName,su.user_type AS userType,cdi.department,cdi.type,su.login_flag AS loginFlag,su.del_flag AS delFlag from consult_doctor_info cdi
+    RIGHT JOIN sys_user su on su.id = cdi.sys_user_id
     where 1=1
     <if test="userId != null and userId != '' ">
         and cdi.sys_user_id = #{userId,jdbcType=VARCHAR}
