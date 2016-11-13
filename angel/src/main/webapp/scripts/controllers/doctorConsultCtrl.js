@@ -96,7 +96,7 @@ angular.module('controllers', ['luegg.directives'])
                         }
 
                         getIframeSrc();
-                        getHistoryConsultContent();
+                        //getHistoryConsultContent();
 
                         //获取通用回复列表
                         GetAnswerValueList.save({"type": "commonAnswer"}, function (data) {
@@ -288,6 +288,8 @@ angular.module('controllers', ['luegg.directives'])
                             $scope.refreshWaitJoinUserList();
                             $scope.chooseAlreadyJoinConsultPatient($scope.alreadyJoinPatientConversation[0].patientId,
                                 $scope.alreadyJoinPatientConversation[0].patientName);
+
+                            seeMoreConversationMessage(5)
                         }
                     });
                 }
@@ -931,7 +933,7 @@ angular.module('controllers', ['luegg.directives'])
                 return str;
             };
             //查看更多的用户历史消息
-            $scope.seeMoreConversationMessage = function(){
+            $scope.seeMoreConversationMessage = function(size){
                 var mostFarCurrentConversationDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
                 if($scope.currentUserConversation.consultValue[0]!=undefined){
                     mostFarCurrentConversationDateTime = $scope.currentUserConversation.consultValue[0].dateTime;
@@ -939,7 +941,7 @@ angular.module('controllers', ['luegg.directives'])
                 GetCurrentUserHistoryRecord.save({
                     userId:$scope.currentUserConversation.patientId,
                     dateTime:mostFarCurrentConversationDateTime,
-                    pageSize:10},function(data){
+                    pageSize:size},function(data){
                     if(data.consultDataList!=""){
                         $.each(data.consultDataList,function(index,value){
                             filterMediaData(value);
