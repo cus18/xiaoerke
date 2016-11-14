@@ -1663,13 +1663,16 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         ConsultSession  consultInfo = consultConversationService.selectByOpenid(openid);
 //        首次
         if((propertyVo.getMonthTimes() == 4 && propertyVo.getPermTimes()==0 && consultInfo.getConsultNumber() > 26)){
-            String content = "不想掏钱？\n来试试“点名咨询”。你可指定专家医生或曾咨询过的医生， 医生会在24h 内尽快对您的提问进行答复哦~\n（如有疑问，可直接拨打400-6237-120）\n" +
-                    "<a href='"+path+"'>>>点名咨询医生</a>";
-            WechatUtil.sendMsgToWechat(token,openid,content);
             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
             String payContent = "亲爱的~你本月免费机会已用完，请医生喝杯茶，继续咨询\n\n"+
                     "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>付费</a>" ;
             WechatUtil.sendMsgToWechat(token,openid,payContent);
+
+
+            String content = "不想掏钱？\n来试试“点名咨询”。你可指定专家医生或曾咨询过的医生， 医生会在24h 内尽快对您的提问进行答复哦~\n（如有疑问，可直接拨打400-6237-120）\n" +
+                    "<a href='"+path+"'>>>点名咨询医生</a>";
+            WechatUtil.sendMsgToWechat(token,openid,content);
+
             LogUtils.saveLog("FSS_YHD_RK3_TS",openid);
             return true;
         }
