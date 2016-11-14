@@ -13,17 +13,19 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
+import java.net.*;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 合成图片
  * Created by Administrator on 2016/8/1 0001.
  */
 public class ImgUtils {
+
+    private static String zhPattern = "[\u4E00-\u9FA5]";
 
     /**
      * 合成邀请卡图片
@@ -191,7 +193,7 @@ public class ImgUtils {
 //        String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"\\image\\xxx.png";
 //        ImgUtils.composePic(img1,img2, outPath, 71, 231,185,500);
 
-        createStringMark("/Users/wangbaowei/Downloads/bao_master.png", "宝\r大\rg",Color.white, 100,"/Users/wangbaowei/Downloads/bao_1.png");
+//        createStringMark("/Users/wangbaowei/Downloads/bao_master.png", "宝\r大\rg",Color.white, 100,"/Users/wangbaowei/Downloads/bao_1.png");
 //        try {
 //            ImgUtils.uploadImage("olympicBaby_inviteBaseImg.png", "C:\\Users\\Administrator\\Desktop\\showqrcode.jpg");
 //        } catch (Exception e) {
@@ -211,36 +213,80 @@ public class ImgUtils {
 //        System.out.print("time====:"+(end-star));
     }
 
-    public static boolean createStringMark(String filePath,String markContent,Color markContentColor,float qualNum ,String outPath){
-        ImageIcon imgIcon=new ImageIcon(filePath);
-        Image theImg =imgIcon.getImage();
-        int width=theImg.getWidth(null)==-1?200:theImg.getWidth(null);
-        int height= theImg.getHeight(null)==-1?200:theImg.getHeight(null);
-        System.out.println(width);
-        System.out.println(height);
-        System.out.println(theImg);
-        BufferedImage bimage = new BufferedImage(width,height, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g=bimage.createGraphics();
-        g.setColor(markContentColor);
-        g.setBackground(Color.red);
-        g.drawImage(theImg, 0, 0, null );
-        g.setFont(new Font(null,Font.BOLD,146)); //字体、字型、字号
-        g.drawString(markContent,420,466); //画文字
-        g.dispose();
-
-
-        try
-        {
-            FileOutputStream out=new FileOutputStream(outPath); //先用一个特定的输出文件名
-            JPEGImageEncoder encoder =JPEGCodec.createJPEGEncoder(out);
-            JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(bimage);
-            param.setQuality(qualNum, true);
-            encoder.encode(bimage, param);
-            out.close();
+    public static String createStringMark(String babyName,String fileSrc,String picCoordinate){
+//
+        Integer fontSize = 0;
+        if(babyName.length()<3){
+            fontSize =  160;
+        }else if(babyName.length()<4){
+            fontSize =  146;
+        }else{
+            fontSize =  110;
         }
-        catch(Exception e)
-        { return false; }
-        return true;
+        String[] coordinateList = picCoordinate.split(";");
+        for(String coordinate:coordinateList){
+            String[] coordinateInfo = coordinate.split(",");
+            Integer x =Integer.parseInt(coordinateInfo[0]);
+            Integer y =Integer.parseInt(coordinateInfo[1]);
+
+            String dataTime = DateUtils.DateToStr(new Date(),"yyyyMMddHHmmss");
+            File file =new File(System.getProperty("user.dir").replace("bin", "uploadImg"));
+            //如果文件夹不存在则创建
+            if  (!file .exists()  && !file .isDirectory()){
+                System.out.println("//不存在");
+                file .mkdir();
+            } else{
+                System.out.println("//目录存在");
+            }
+            String outPath = System.getProperty("user.dir").replace("bin", "uploadImg")+"/"+dataTime+babyName+".png";
+            URL url = null;
+            try {
+                url = new URL(encode(fileSrc, "UTF-8"));
+                HttpURLConnection httpUrl = (HttpURLConnection) url.openConnection();
+                Image theImg = javax.imageio.ImageIO.read(httpUrl.getInputStream());
+                int width=theImg.getWidth(null)==-1?200:theImg.getWidth(null);
+                int height= theImg.getHeight(null)==-1?200:theImg.getHeight(null);
+                System.out.println(width);
+                System.out.println(height);
+                System.out.println(theImg);
+                BufferedImage bimage = new BufferedImage(width,height, BufferedImage.TYPE_INT_RGB);
+                Graphics2D g=bimage.createGraphics();
+                g.setColor(Color.white);
+                g.setBackground(Color.red);
+                g.drawImage(theImg, 0, 0, null );
+                g.setFont(new Font(null,Font.BOLD,fontSize)); //字体、字型、字号
+                g.drawString(babyName,x,y); //画文字
+                g.dispose();
+                FileOutputStream out=new FileOutputStream(outPath); //先用一个特定的输出文件名
+                JPEGImageEncoder encoder =JPEGCodec.createJPEGEncoder(out);
+                JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(bimage);
+                param.setQuality(100, true);
+                encoder.encode(bimage, param);
+                out.close();
+                uploadImage(dataTime+babyName+".png", outPath);
+
+                File imgFile = new File(outPath);
+                if(imgFile.exists()){
+                    imgFile.delete();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            fileSrc = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/"+dataTime+babyName+".png";
+
+        }
+
+        return fileSrc;
     }
 
+    public static String encode(String str, String charset) throws UnsupportedEncodingException {
+        Pattern p = Pattern.compile(zhPattern);
+        Matcher m = p.matcher(str);
+        StringBuffer b = new StringBuffer();
+        while (m.find()) {
+            m.appendReplacement(b, URLEncoder.encode(m.group(0), charset));
+        }
+        m.appendTail(b);
+        return b.toString();
+    }
 }
