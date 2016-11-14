@@ -2438,11 +2438,10 @@ angular.module('controllers', ['luegg.directives'])
                     if (data.status == "failure") {
                         $scope.errorLock = true;
                         $scope.errorRemindText ="验证码错误"
-                    }
-                    else if(data.status == "notConsultDoctor"){
+                    }else if(data.status == "notConsultDoctor"){
                         $scope.doctorLock = true;
                     }else {
-                        //window.location.href = DoctorBindingUrl;
+                        $state.go("doctorConsultFirst");
                     }
                 });
             }
