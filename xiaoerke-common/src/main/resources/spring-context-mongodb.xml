@@ -14,7 +14,7 @@
 	<description>Mongodb Configuration</description>
 
 	<!-- 加载mongodb的属性配置文件 -->
-    <context:property-placeholder location="classpath:mongodb.properties" />
+    <context:property-placeholder location="classpath:dataBase.properties" />
     
     <!-- 定义mongo对象，对应的是mongodb官方jar包中的Mongo，replica-set设置集群副本的ip地址和端口 -->
     <mongo:mongo id="mongo" replica-set="${mongo.hostport}">
