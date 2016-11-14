@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="scripts/styles/commonAngel.css?ver=1.1.3" type="text/css"/>
 <link rel="stylesheet" href="scripts/styles/doctorConsultLogin.css?ver=1.1.3" type="text/css"/>
 <ion-view view-title="医生登录"   ng-init="doctorConsultLoginInit()">
-    <div class="doctorConsultLogin">
+    <div class="doctorConsultLogin tc">
         <div class="fillInfo-wrap">
-            <img class="headline" width="631" height="100" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/doctorConsultLogin/pic_headline.png">
+            <img class="" width="631" height="100" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/doctorConsultLogin/pic_headline.png">
             <img class="injector" width="88" height="93" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/doctorConsultLogin/pic_injector.png">
             <img class="medicalKit" width="50" height="51" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/doctorConsultLogin/pic_medicalKit.png">
             <div class="fillInfo">
@@ -13,12 +13,12 @@
                 </label>
                 <label class="code " for="password" >
                     <img class="icon" width="21" height="27" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/icon_lock.png">
-                    <input  class="tc c3 " type="tel" id="password" placeholder="请输入验证码"  maxlength="6" ng-model="info.password"  >
-                    <button  ng-disabled="true" class="getCode f6 c0 tc" id="validateCode" ng-click="getValidateCode()">获取验证码</button>
+                    <input  class="tc c3 " type="tel" id="password" placeholder="请输入验证码"  maxlength="4" ng-model="info.password"  >
+                    <button  ng-disabled="( info.phoneNum.length<11 || info.phoneNum==null)" class="getCode f6 c0 tc" id="validateCode" ng-click="getValidateCode()">获取验证码</button>
                 </label>
 
                 <div ng-if="errorLock" class="error-remind  tc c2 f2" >{{errorRemindText}}</div>
-                <button  class="button btn-login" ng-click = "doctorBindingAction()"  ng-disabled="(info.phoneNum.length<11||info.phoneNum==null)||(info.password.length<4 || info.password==null)" ></button>
+                <button  class="button btn-login f2 c0" ng-click = "doctorBindingAction()"  ng-disabled="(info.phoneNum.length<11||info.phoneNum==null)||(info.password.length<4 || info.password==null)" >登陆</button>
             </div>
 
 
