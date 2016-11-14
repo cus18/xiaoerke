@@ -62,7 +62,7 @@ public class ConsultDoctorLoginServiceImpl implements ConsultDoctorLoginService 
         String status = utilService.bindUser4ConsultDoctor(username, passeord, openid);
         result.put("status", "failure");
         if (status.equals("1") && StringUtils.isNotNull(passeord) && StringUtils.isNotNull(username)) {
-            CookieUtils.setCookie(response,"phone",passeord,86400);//两天重新登陆
+            CookieUtils.setCookie(response,"phone",username,86400);//两天重新登陆
             result.put("status","success");
         }
         return result;

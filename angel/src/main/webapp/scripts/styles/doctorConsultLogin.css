@@ -1,0 +1,127 @@
+.doctorConsultLogin{
+    position: relative;
+    height:100%;
+
+}
+.doctorConsultLogin .fillInfo-wrap{
+    width:631px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    margin-top:-300px;
+    margin-left:-315.5px;
+
+}
+.doctorConsultLogin .fillInfo-wrap .injector{
+    position: absolute;
+    top:-90px;
+    left:80px;
+}
+.doctorConsultLogin .fillInfo-wrap .medicalKit{
+    position: absolute;
+    bottom:-7px;
+    left:-23px;
+}
+.doctorConsultLogin .fillInfo-wrap .headline{
+    display: block;
+}
+.doctorConsultLogin .fillInfo {
+    height:390px;
+    background: url("http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/doctorConsultLogin/bg_login.png") no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    padding:0 15px;
+
+}
+.doctorConsultLogin .fillInfo label{
+    position: relative;
+    display: block;
+    height:58px;
+    border-bottom:1px solid #ccc;
+    margin:0 70px;
+    padding-top:34px;
+    padding-bottom:4px;
+    vertical-align:bottom;
+}
+.doctorConsultLogin .fillInfo .code{
+    width:280px;
+    position: relative;
+}
+.doctorConsultLogin .fillInfo .icon{
+    position: absolute;
+    left:10px;
+    bottom:4px;
+}
+.doctorConsultLogin .fillInfo input{
+    margin-left:60px;
+    width:78%;
+    font-size: 20px;
+    padding-top:29px;
+
+}
+
+input:-ms-input-placeholder,input::-webkit-input-placeholder{
+    color: #ccc;
+    font-size: 18px;
+}
+.doctorConsultLogin .fillInfo .code input{
+    width:220px;
+}
+.doctorConsultLogin .fillInfo .getCode {
+    position: absolute;
+    right:-185px;
+    bottom:0;
+    width:156px;
+    height:46px;
+    line-height:46px;
+    border:none;
+    background-color: #77a7ef;
+    border-radius: 46px;
+}
+.doctorConsultLogin .btn-login{
+    display: block;
+    margin:40px auto 0;
+    width:448px;
+    height:56px;
+    background-color: #77a7ef;
+    border-radius: 56px;
+    box-shadow: 2px 1px 2px 0 #5a8fe0;
+
+}
+.doctorConsultLogin .button.disabled, .doctorConsultLogin button[disabled] {
+    box-shadow:none!important;
+}
+.doctorConsultLogin .error-remind{
+    position: absolute;
+    width:100%;
+    top:205px;
+}
+.bg-out{
+    position: fixed;
+    width:100%;
+    bottom:0;
+}
+.bg-out img {
+
+}
+
+.shadow-remind{
+    position: absolute;
+    z-index:5;
+    width:80%;
+    top:20%;
+    left:10%;
+    border-radius: 10px;
+    padding:20px 15px;
+}
+.shadow-remind p{
+    margin:15px 0;
+}
+.shadow-remind button{
+    border:none;
+    background-color: #88d9dd;
+    border-radius: 5px;
+    width:100px;
+    line-height: 30px;
+    margin-top:15px;
+}
