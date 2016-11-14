@@ -27,13 +27,9 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
         this.coopYkdlUrl = coopYkdlUrl;
     }
 
-    private String bak17;
+    private String firstAddress;
 
-    private String bak18;
-
-    private String bak19;
-
-    private String bak20;
+    private String secondAddress;
 
     public String getDoctormanagerList() {
         return doctormanagerList;
@@ -83,36 +79,20 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
         this.templateIdDBRWTX = templateIdDBRWTX;
     }
 
-    public String getBak17() {
-        return bak17;
+    public String getFirstAddress() {
+        return firstAddress;
     }
 
-    public void setBak17(String bak17) {
-        this.bak17 = bak17;
+    public void setFirstAddress(String firstAddress) {
+        this.firstAddress = firstAddress;
     }
 
-    public String getBak18() {
-        return bak18;
+    public String getSecondAddress() {
+        return secondAddress;
     }
 
-    public void setBak18(String bak18) {
-        this.bak18 = bak18;
-    }
-
-    public String getBak19() {
-        return bak19;
-    }
-
-    public void setBak19(String bak19) {
-        this.bak19 = bak19;
-    }
-
-    public String getBak20() {
-        return bak20;
-    }
-
-    public void setBak20(String bak20) {
-        this.bak20 = bak20;
+    public void setSecondAddress(String secondAddress) {
+        this.secondAddress = secondAddress;
     }
 
     public String getWhitelist() {
