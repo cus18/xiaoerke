@@ -65,7 +65,7 @@ define(['appNonRealTimeConsult'], function (app) {
             return "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getDoctorWechatMenId?url=6";
         })
         .factory('GetConfig',['$resource',function ($resource){
-            return $resource(public + 'util/getConfig');
+            return $resource('util/getConfig');
         }]);
 
 })

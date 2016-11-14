@@ -54,7 +54,7 @@ define(['appPatientConsult'], function (app) {
             return inviteUrl;
         })
         .factory('GetConfig',['$resource',function ($resource){
-            return $resource(public + 'util/getConfig');
+            return $resource('util/getConfig');
         }]);
 
 })

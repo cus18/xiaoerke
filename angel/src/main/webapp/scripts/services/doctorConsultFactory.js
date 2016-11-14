@@ -172,7 +172,7 @@ angular.module('services', ['ngResource'])
         return $resource(public + 'knowledge/article/articleDetail');
     }])
     .factory('GetConfig',['$resource',function ($resource){
-        return $resource(public + 'util/getConfig');
+        return $resource('util/getConfig');
     }])
 
 
