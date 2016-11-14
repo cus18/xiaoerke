@@ -155,7 +155,8 @@
 		<div class="control-group">
 			<label class="control-label">内容:</label>
 			<div class="controls">
-				<form:textarea class="required" path="content" id="content" name="content"  style="width: 400px ;height: 80px" value="${vo.content}"></form:textarea>
+				<form:textarea id="confContent" htmlEscape="true" path="content" rows="4" maxlength="200" class="input-xxlarge"/>
+				<sys:ckeditor replace="confContent"/>
 			</div>
 			<span class="help-inline"><font color="red">*</font> </span>
 		</div>
