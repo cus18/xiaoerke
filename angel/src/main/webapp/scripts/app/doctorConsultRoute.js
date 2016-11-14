@@ -16,7 +16,7 @@ angular.module('doctorConsultApp', ['angularFileUpload', 'ui.router','controller
             })
             .state('doctorConsultLogin',{
                 url:'/doctorConsultLogin',
-                templateUrl: root + '/doctorDoctorLogin.html',
+                templateUrl: root + '/doctorConsultLogin.html',
                 controller: 'doctorConsultLogin',
                 title: '医生登陆'
             })
