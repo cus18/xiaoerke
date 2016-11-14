@@ -377,7 +377,7 @@
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
- 				<!--<ref bean="updateWechatInfoQuarzCronTrigger"/>-->
+ 				<ref bean="updateWechatInfoQuarzCronTrigger"/>
  				<!--<ref bean="getWechatRecoderTrigger"/>-->
 				<!--<ref bean="letsGoReminderCronTrigger"/>-->
 				<!--<ref bean="updateSrSerStatusCronTrigger"/>-->
@@ -399,7 +399,7 @@
                 <!--<ref bean="phoneConsultReminder2DocCronTrigger"/>-->
 				<!--<ref bean="umbrellaMessageCronTrigger"/>-->
 				<!--<ref bean="olympicShareRemindCronTrigger"/>-->
-				<ref bean="nonRealtimeTimeoutTrigger"/>
+				<!--<ref bean="nonRealtimeTimeoutTrigger"/>-->
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>
