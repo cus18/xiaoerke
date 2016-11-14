@@ -213,7 +213,6 @@ public class WechatUtil {
     }
 
     public static String getOpenId(HttpSession session, HttpServletRequest request) {
-        session.setAttribute("openId","o8gDqvuWN4gqSI89L_t3UMbFGAt0");
         String openId = (String) session.getAttribute("openId");
         if (!StringUtils.isNotNull(openId)) {
             openId = CookieUtils.getCookie(request, "openId");
