@@ -1629,7 +1629,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
      * */
     public boolean nonRealTimeCheck(String whitelist, ReceiveXmlEntity xmlEntity, String token){
         String openid = xmlEntity.getFromUserName();
-
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         System.out.println("白名单:"+whitelist);
         System.out.println(whitelist.indexOf(openid)==-1);
         if(StringUtils.isNotNull(whitelist)&&whitelist.indexOf(openid)==-1){
@@ -1637,17 +1637,16 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         }
         ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
 
-        String path = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=40";
+        String path = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=40";
         //所有机会都用完
         if((propertyVo.getPermTimes()+propertyVo.getMonthTimes()) == 0){
-            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
             String payContent = "亲爱的~你本月免费机会已用完，请医生喝杯茶，继续咨询\n\n"+
                     "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>付费</a>" ;
             WechatUtil.sendMsgToWechat(token,openid,payContent);
 
+            String invatUrl = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD";
 
-
-            String invatUrl = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD";
             String bayContent = "什么？咨询要收费？\n不怕！邀请个好友加入宝大夫，免费机会立刻有！\n" +
                     "<a href='"+invatUrl+"'>>>邀请好友赚机会</a>";
             WechatUtil.sendMsgToWechat(token,openid,bayContent);
@@ -1663,7 +1662,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         ConsultSession  consultInfo = consultConversationService.selectByOpenid(openid);
 //        首次
         if((propertyVo.getMonthTimes() == 4 && propertyVo.getPermTimes()==0 && consultInfo.getConsultNumber() > 26)){
-            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
             String payContent = "亲爱的~你本月免费机会已用完，请医生喝杯茶，继续咨询\n\n"+
                     "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>付费</a>" ;
             WechatUtil.sendMsgToWechat(token,openid,payContent);
