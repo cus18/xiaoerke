@@ -2449,6 +2449,7 @@ angular.module('controllers', ['luegg.directives'])
 
 
             $scope.getValidateCode = function () {
+                alert(countdown);
                 if (countdown < 60) {
                     return;
                 }
