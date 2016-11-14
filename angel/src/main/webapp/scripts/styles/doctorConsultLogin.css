@@ -83,15 +83,18 @@ input:-ms-input-placeholder,input::-webkit-input-placeholder{
     margin:40px auto 0;
     width:448px;
     height:56px;
-    background: url("http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/doctorConsultLogin/btn_login.png") transparent;
-    background-size:100% 100%;
+    background-color: #77a7ef;
+    border-radius: 56px;
+    box-shadow: 2px 1px 2px 0 #5a8fe0;
 
 }
+.doctorConsultLogin .button.disabled, .doctorConsultLogin button[disabled] {
+    box-shadow:none!important;
+}
 .doctorConsultLogin .error-remind{
-    margin-top:15px;
     position: absolute;
     width:100%;
-    top:210px;
+    top:205px;
 }
 .bg-out{
     position: fixed;
