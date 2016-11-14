@@ -192,15 +192,15 @@ angular.module('controllers', ['luegg.directives'])
 
             //每20秒，检测一次医生跟平台的会话是否失效
             var sessionCheck = function () {
-                var routePath = "/doctor/consultBBBBBB" + $location.path();
-                GetUserLoginStatus.save({routePath: routePath}, function (data) {
-                    $scope.pageLoading = false;
-                    if (data.status == "9") {
-                        window.location.href = data.redirectURL;
-                    } else if (data.status == "8") {
-                        window.location.href = data.redirectURL + "?targeturl=" + routePath;
-                    }
-                })
+                //var routePath = "/doctor/consultBBBBBB" + $location.path();
+                //GetUserLoginStatus.save({routePath: routePath}, function (data) {
+                //    $scope.pageLoading = false;
+                //    if (data.status == "9") {
+                //        window.location.href = data.redirectURL;
+                //    } else if (data.status == "8") {
+                //        window.location.href = data.redirectURL + "?targeturl=" + routePath;
+                //    }
+                //})
             };
 
             //公共点击按钮，用来触发弹出对应的子窗口
@@ -2041,9 +2041,9 @@ angular.module('controllers', ['luegg.directives'])
         }])
 
     .controller('messageListCtrl', ['$scope', '$log', '$state', '$sce', 'GetUserConsultListInfo',
-        'GetUserRecordDetail', 'GetCSDoctorList', 'GetMessageRecordInfo', 'GetUserLoginStatus', '$location', 'CreateDoctorConsultSession',
+        'GetUserRecordDetail', 'GetCSDoctorList', 'GetMessageRecordInfo', 'GetDoctorLoginStatus', '$location', 'CreateDoctorConsultSession',
         function ($scope, $log, $state, $sce, GetUserConsultListInfo, GetUserRecordDetail,
-                  GetCSDoctorList, GetMessageRecordInfo, GetUserLoginStatus, $location, CreateDoctorConsultSession) {
+                  GetCSDoctorList, GetMessageRecordInfo, GetDoctorLoginStatus, $location, CreateDoctorConsultSession) {
 
             $scope.info = {};
 
@@ -2093,13 +2093,12 @@ angular.module('controllers', ['luegg.directives'])
             $scope.recordType = "all";
 
             $scope.messageListInit = function () {
-                var routePath = "/doctor/consultBBBBBB" + $location.path();
-                GetUserLoginStatus.save({routePath: routePath}, function (data) {
-                    if (data.status == "9") {
-                        window.location.href = data.redirectURL;
-                    } else if (data.status == "8") {
-                        window.location.href = data.redirectURL + "?targeturl=" + routePath;
-                    } else if (data.status == "20") {
+                GetDoctorLoginStatus.save({}, function (data) {
+                    $scope.pageLoading = false;
+                    if (data.status == "failure") {
+                        $state.go("doctorConsultLogin");
+                        //window.location.href = "localhost";
+                    } else if (data.status == "success") {
                         //获取会话客户列表（含会话转接过程中，经历过几个客服）
                         $scope.selectedDate = $scope.searchDate[0];
                         $scope.selectedMessage = $scope.searchMessageType[0];
