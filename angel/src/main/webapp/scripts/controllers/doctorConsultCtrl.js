@@ -1015,7 +1015,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.info.onLineCsUserList = data.onLineCsUserList;
                 });
             };
-            //获取待接入会话用户列表
+            //获取待接入会话用户列表t
             $scope.refreshWaitJoinUserList = function () {
                 GetWaitJoinList.save({csUserId: $scope.doctorId}, function (data) {
                     $scope.waitJoinNum = data.waitJoinNum;

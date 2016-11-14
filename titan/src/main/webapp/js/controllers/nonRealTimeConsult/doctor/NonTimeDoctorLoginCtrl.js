@@ -1,6 +1,6 @@
 angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
-    '$scope', '$state', '$timeout', '$http', 'doctorBinding','DoctorBindingUrl',
-    function ($scope, $state, $timeout, $http, doctorBinding,DoctorBindingUrl) {
+    '$scope', '$state', '$timeout', '$http', 'doctorBinding','GetConfig',
+    function ($scope, $state, $timeout, $http, doctorBinding,GetConfig) {
         $scope.doctorLock = false;//非系统医生提示开关
         $scope.errorLock = false;//错误提示开关
         $scope.errorRemindText ="";//错误提示内容
@@ -19,7 +19,9 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
                 else if(data.status == "notConsultDoctor"){
                     $scope.doctorLock = true;
                 }else {
-                    window.location.href = DoctorBindingUrl;
+                    GetConfig.save({}, function (data) {
+                        window.location.href = data.publicSystemInfo.doctorBindingUrl;
+                    })
                 }
             });
         }

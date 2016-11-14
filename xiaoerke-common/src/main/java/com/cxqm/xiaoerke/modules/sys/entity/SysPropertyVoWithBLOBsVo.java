@@ -23,6 +23,26 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String inviteUrl;
 
+    private String nonRealtimeLoginUrl;
+
+    private String nonRealtimeDoctorBindingUrl;
+
+    public String getNonRealtimeLoginUrl() {
+        return nonRealtimeLoginUrl;
+    }
+
+    public void setNonRealtimeLoginUrl(String nonRealtimeLoginUrl) {
+        this.nonRealtimeLoginUrl = nonRealtimeLoginUrl;
+    }
+
+    public String getNonRealtimeDoctorBindingUrl() {
+        return nonRealtimeDoctorBindingUrl;
+    }
+
+    public void setNonRealtimeDoctorBindingUrl(String nonRealtimeDoctorBindingUrl) {
+        this.nonRealtimeDoctorBindingUrl = nonRealtimeDoctorBindingUrl;
+    }
+
     public String getInviteUrl() {
         return inviteUrl;
     }
