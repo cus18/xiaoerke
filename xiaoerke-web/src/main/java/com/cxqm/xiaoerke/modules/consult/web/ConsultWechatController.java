@@ -3,10 +3,7 @@ package com.cxqm.xiaoerke.modules.consult.web;
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
-import com.cxqm.xiaoerke.common.utils.ConstantUtil;
-import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
@@ -35,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.SocketException;
 import java.net.URLDecoder;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -98,7 +96,13 @@ public class ConsultWechatController extends BaseController {
         if (messageType.contains("voice") || messageType.contains("video") || messageType.contains("image")) {
             paramMap.put("mediaId", mediaId);
         }
-        paramMap.put("serverAddress", ConstantUtil.SERVER_ADDRESS.getVariable());
+        try {
+            String locaHostIp = HttpUtils.getRealIp();
+            LogUtils.saveLog("ip",locaHostIp);
+            paramMap.put("serverAddress",locaHostIp);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
         Runnable thread = new processUserMessageThread(paramMap);
         threadExecutor.execute(thread);
 
