@@ -266,7 +266,7 @@ public class UtilController extends BaseController {
     }
 
     /**
-     * 读取系统配置参数
+     * 读取系统配置参数 delang
      */
     @RequestMapping(value = "/getConfig", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -274,7 +274,12 @@ public class UtilController extends BaseController {
     Map<String, Object> getConfig(HttpServletRequest request,HttpSession session){
         Map<String, Object> resultMap = new HashMap<String, Object>();
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-        resultMap.put("sysPropertyVoWithBLOBs",sysPropertyVoWithBLOBsVo);
+        //可以公开的系统参数
+        SysPropertyVoWithBLOBsVo publicSystemInfo = new SysPropertyVoWithBLOBsVo();
+        publicSystemInfo.setFirstAddress(sysPropertyVoWithBLOBsVo.getFirstAddress());
+        publicSystemInfo.setSecondAddress(sysPropertyVoWithBLOBsVo.getSecondAddress());
+        publicSystemInfo.setInviteUrl(sysPropertyVoWithBLOBsVo.getInviteUrl());
+        resultMap.put("publicSystemInfo",publicSystemInfo);
         return resultMap;
     }
 

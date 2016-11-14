@@ -19,6 +19,26 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String whitelist;
 
+    private String customerssUrl;
+
+    private String inviteUrl;
+
+    public String getInviteUrl() {
+        return inviteUrl;
+    }
+
+    public void setInviteUrl(String inviteUrl) {
+        this.inviteUrl = inviteUrl;
+    }
+
+    public String getCustomerssUrl() {
+        return customerssUrl;
+    }
+
+    public void setCustomerssUrl(String customerssUrl) {
+        this.customerssUrl = customerssUrl;
+    }
+
     public String getCoopYkdlUrl() {
         return coopYkdlUrl;
     }
