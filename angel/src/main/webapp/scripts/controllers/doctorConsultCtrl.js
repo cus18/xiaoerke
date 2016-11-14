@@ -2421,19 +2421,20 @@ angular.module('controllers', ['luegg.directives'])
 
     //登陆controller
     .controller('doctorConsultLogin', [
-        '$scope', '$state', '$timeout', '$http', 'doctorBinding','DoctorBindingUrl',
-        function ($scope, $state, $timeout, $http, doctorBinding,DoctorBindingUrl) {
+        '$scope', '$state', '$timeout', '$http', 'DoctorBinding',
+        function ($scope, $state, $timeout, $http, DoctorBinding) {
             $scope.doctorLock = false;//非系统医生提示开关
             $scope.errorLock = false;//错误提示开关
             $scope.errorRemindText ="";//错误提示内容
             $scope.info = {};
+            var countdown = 60;
             //关闭提示
             $scope.close = function () {
                 $scope.doctorLock = false;
             };
 
             $scope.doctorBindingAction = function () {
-                doctorBinding.save({username: $scope.info.phoneNum, password: $scope.info.password}, function (data) {
+                DoctorBinding.save({username: $scope.info.phoneNum, password: $scope.info.password}, function (data) {
                     if (data.status == "failure") {
                         $scope.errorLock = true;
                         $scope.errorRemindText ="验证码错误"
@@ -2441,7 +2442,7 @@ angular.module('controllers', ['luegg.directives'])
                     else if(data.status == "notConsultDoctor"){
                         $scope.doctorLock = true;
                     }else {
-                        window.location.href = DoctorBindingUrl;
+                        //window.location.href = DoctorBindingUrl;
                     }
                 });
             }
@@ -2496,7 +2497,6 @@ angular.module('controllers', ['luegg.directives'])
                     , 1000)
             };
 
-            var countdown = 60;
             $scope.doctorConsultLoginInit=function(){
                 $(".tips").css("margin-top",screen.height-380-screen.width*0.25+"px")
             }
