@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.MessageContentConfVo;
 import com.cxqm.xiaoerke.modules.consult.service.MessageContentConfService;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,6 +78,7 @@ public class MessageContentConfController extends BaseController {
             }
         }
         vo.setWeek(weeks.substring(0,weeks.length()-1));
+        vo.setContent(StringEscapeUtils.unescapeHtml4(vo.getContent()));
         String retString = messageContentConfService.saveMessageContentConf(vo);
         model.addAttribute("vo", new MessageContentConfVo());
         addMessage(redirectAttributes, retString);
@@ -92,7 +94,7 @@ public class MessageContentConfController extends BaseController {
     @RequestMapping(value = "deleteMessageContentConf")
     public String deleteMessageContentConf(MessageContentConfVo vo,HttpServletRequest request, Model model) {
         messageContentConfService.deleteMessageContentConf(vo);
-        return "redirect:" + adminPath + "/operationPromotion/operationPromotionKeywordList";
+        return "redirect:" + adminPath + "/messageContentConf/messageContentConfList";
     }
 
 }

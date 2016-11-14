@@ -13,10 +13,16 @@
       <module fileurl="file://$PROJECT_DIR$/wisdom/wisdom.iml" filepath="$PROJECT_DIR$/wisdom/wisdom.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke.iml" filepath="$PROJECT_DIR$/xiaoerke.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity.iml" filepath="$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity.iml" filepath="$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity-api/xiaoerke-activity-api.iml" filepath="$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity-api/xiaoerke-activity-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity-api/xiaoerke-activity-api.iml" filepath="$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity-api/xiaoerke-activity-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity-service/xiaoerke-activity-service.iml" filepath="$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity-service/xiaoerke-activity-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity-service/xiaoerke-activity-service.iml" filepath="$PROJECT_DIR$/xiaoerke-activity/xiaoerke-activity-service/xiaoerke-activity-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay.iml" filepath="$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay.iml" filepath="$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay-api/xiaoerke-alipay-api.iml" filepath="$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay-api/xiaoerke-alipay-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay-api/xiaoerke-alipay-api.iml" filepath="$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay-api/xiaoerke-alipay-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay-service/xiaoerke-alipay-service.iml" filepath="$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay-service/xiaoerke-alipay-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay-service/xiaoerke-alipay-service.iml" filepath="$PROJECT_DIR$/xiaoerke-alipay/xiaoerke-alipay-service/xiaoerke-alipay-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-cms/xiaoerke-cms.iml" filepath="$PROJECT_DIR$/xiaoerke-cms/xiaoerke-cms.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-cms/xiaoerke-cms-api/xiaoerke-cms-api.iml" filepath="$PROJECT_DIR$/xiaoerke-cms/xiaoerke-cms-api/xiaoerke-cms-api.iml" />
@@ -47,8 +53,11 @@
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-mutualHelp/xiaoerke-mutualHelp-service/xiaoerke-mutualHelp-service.iml" filepath="$PROJECT_DIR$/xiaoerke-mutualHelp/xiaoerke-mutualHelp-service/xiaoerke-mutualHelp-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult.iml" filepath="$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult.iml" filepath="$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult.iml" filepath="$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-api/xiaoerke-nonRealtimeConsult-api.iml" filepath="$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-api/xiaoerke-nonRealtimeConsult-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-api/xiaoerke-nonRealtimeConsult-api.iml" filepath="$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-api/xiaoerke-nonRealtimeConsult-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-api/xiaoerke-nonRealtimeConsult-api.iml" filepath="$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-api/xiaoerke-nonRealtimeConsult-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-service/xiaoerke-nonRealtimeConsult-service.iml" filepath="$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-service/xiaoerke-nonRealtimeConsult-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-service/xiaoerke-nonRealtimeConsult-service.iml" filepath="$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-service/xiaoerke-nonRealtimeConsult-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-service/xiaoerke-nonRealtimeConsult-service.iml" filepath="$PROJECT_DIR$/xiaoerke-nonRealtimeConsult/xiaoerke-nonRealtimeConsult-service/xiaoerke-nonRealtimeConsult-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-operation/xiaoerke-operation.iml" filepath="$PROJECT_DIR$/xiaoerke-operation/xiaoerke-operation.iml" />
@@ -79,7 +88,10 @@
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-user/xiaoerke-user-api/xiaoerke-user-api.iml" filepath="$PROJECT_DIR$/xiaoerke-user/xiaoerke-user-api/xiaoerke-user-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-user/xiaoerke-user-service/xiaoerke-user-service.iml" filepath="$PROJECT_DIR$/xiaoerke-user/xiaoerke-user-service/xiaoerke-user-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-vaccine/xiaoerke-vaccine.iml" filepath="$PROJECT_DIR$/xiaoerke-vaccine/xiaoerke-vaccine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-vaccine/xiaoerke-vaccine.iml" filepath="$PROJECT_DIR$/xiaoerke-vaccine/xiaoerke-vaccine.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-vaccine/xiaoerke-vaccine-api/xiaoerke-vaccine-api.iml" filepath="$PROJECT_DIR$/xiaoerke-vaccine/xiaoerke-vaccine-api/xiaoerke-vaccine-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-vaccine/xiaoerke-vaccine-api/xiaoerke-vaccine-api.iml" filepath="$PROJECT_DIR$/xiaoerke-vaccine/xiaoerke-vaccine-api/xiaoerke-vaccine-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoerke-vaccine/xiaoerke-vaccine-service/xiaoerke-vaccine-service.iml" filepath="$PROJECT_DIR$/xiaoerke-vaccine/xiaoerke-vaccine-service/xiaoerke-vaccine-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-vaccine/xiaoerke-vaccine-service/xiaoerke-vaccine-service.iml" filepath="$PROJECT_DIR$/xiaoerke-vaccine/xiaoerke-vaccine-service/xiaoerke-vaccine-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-web/xiaoerke-web.iml" filepath="$PROJECT_DIR$/xiaoerke-web/xiaoerke-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/xiaoerke-wechat/xiaoerke-wechat.iml" filepath="$PROJECT_DIR$/xiaoerke-wechat/xiaoerke-wechat.iml" />

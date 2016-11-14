@@ -22,6 +22,10 @@ CKEDITOR.editorConfig = function( config ) {
 		config.toolbar_default = [
 			['Image']
 		];
+	}else if(config.toolbar_default == 'confContent'){
+		config.toolbar_default = [
+			['Link','Unlink']
+		];
 	}else{
 		config.toolbar_default = [
 			['Source','-','Templates','Preview'],

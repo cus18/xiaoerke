@@ -1,6 +1,6 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConversationCtrl', [
-    '$scope', '$state', '$stateParams', '$timeout', '$http', '$upload', 'ConversationDoctorInfo', 'GetDoctorLoginStatus', 'UpdateReCode','LoginUrl',
-    function ($scope, $state, $stateParams, $timeout, $http, $upload, ConversationDoctorInfo, GetDoctorLoginStatus, UpdateReCode,LoginUrl) {
+    '$scope', '$state', '$stateParams', '$timeout', '$http', '$upload', 'ConversationDoctorInfo', 'GetDoctorLoginStatus', 'UpdateReCode','GetConfig',
+    function ($scope, $state, $stateParams, $timeout, $http, $upload, ConversationDoctorInfo, GetDoctorLoginStatus, UpdateReCode,GetConfig) {
         $scope.info = {};
         $scope.info.content = "";
         $scope.msgType = "text";
@@ -127,7 +127,9 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
             GetDoctorLoginStatus.save({}, function (data) {
                 $scope.pageLoading = false;
                 if (data.status == "failure") {
-                    window.location.href = LoginUrl;
+                    GetConfig.save({}, function (data) {
+                        window.location.href = data.publicSystemInfo.nonRealtimeLoginUrl;
+                    })
                 } else if (data.status == "success") {
                     ConversationDoctorInfo.save({
                         sessionId: $stateParams.sessionId,

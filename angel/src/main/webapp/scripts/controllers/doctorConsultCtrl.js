@@ -5,13 +5,13 @@ angular.module('controllers', ['luegg.directives'])
         'TransferToOtherCsUser', 'SessionEnd', 'GetWaitJoinList', 'React2Transfer', 'CancelTransfer', '$upload',
         'GetFindTransferSpecialist', 'GetRemoveTransferSpecialist', 'GetAddTransferSpecialist', 'GetFindAllTransferSpecialist',
         'CreateTransferSpecialist', '$state', 'GetSystemTime', 'GetUserSessionTimesByUserId', 'GetCustomerLogByOpenID', 'SaveCustomerLog',
-        'SearchIllnessList', 'ModifyUserConsultNum', 'SearchBabyInfo', 'SaveReturnService',
+        'SearchIllnessList', 'ModifyUserConsultNum', 'SearchBabyInfo', 'SaveReturnService','GetConfig',
         function ($scope, $sce, $window, $stateParams, GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetDoctorLoginStatus,GetUserLoginStatus, $location, GetCurrentUserHistoryRecord, GetMyAnswerModify,
                   GetCurrentUserConsultListInfo, TransferToOtherCsUser, SessionEnd, GetWaitJoinList, React2Transfer, CancelTransfer, $upload,
                   GetFindTransferSpecialist, GetRemoveTransferSpecialist, GetAddTransferSpecialist, GetFindAllTransferSpecialist,
                   CreateTransferSpecialist, $state, GetSystemTime, GetUserSessionTimesByUserId, GetCustomerLogByOpenID, SaveCustomerLog,
-                  SearchIllnessList, ModifyUserConsultNum, SearchBabyInfo, SaveReturnService) {
+                  SearchIllnessList, ModifyUserConsultNum, SearchBabyInfo, SaveReturnService,GetConfig) {
             //初始化info参数
             $scope.info = {
                 effect: "true",
@@ -29,11 +29,16 @@ angular.module('controllers', ['luegg.directives'])
                     "consultDoctor": "专业医生"
                 }
             };
+            $scope.customerssUrl="";
+            $scope.systemInfo = {};
             $scope.loadingFlag = false;
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
-            $scope.firstAddress = "101.200.192.33";
-            $scope.secondAddress= "123.102.3.214";
+            GetConfig.save({}, function (data) {
+                $scope.systemInfo = data.publicSystemInfo;
+                $scope.firstAddress = $scope.systemInfo.firstAddress;
+                $scope.secondAddress= $scope.systemInfo.secondAddress;
+            })
             $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中 乱码
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
@@ -1010,7 +1015,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.info.onLineCsUserList = data.onLineCsUserList;
                 });
             };
-            //获取待接入会话用户列表
+            //获取待接入会话用户列表t
             $scope.refreshWaitJoinUserList = function () {
                 GetWaitJoinList.save({csUserId: $scope.doctorId}, function (data) {
                     $scope.waitJoinNum = data.waitJoinNum;

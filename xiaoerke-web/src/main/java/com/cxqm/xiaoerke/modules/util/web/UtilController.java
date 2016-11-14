@@ -20,8 +20,10 @@ import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.plan.entity.HealthPlanAddItemVo;
 import com.cxqm.xiaoerke.modules.plan.service.PlanMessageService;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.interceptor.SystemControllerLog;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.UtilService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +69,9 @@ public class UtilController extends BaseController {
 
     @Autowired
     private ConsultSessionService consultSessionService ;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
     // jiangzhongge add
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
@@ -257,6 +262,26 @@ public class UtilController extends BaseController {
             return resultMap;
         }
         resultMap.put("openid", openid);
+        return resultMap;
+    }
+
+    /**
+     * 读取系统配置参数 delang
+     */
+    @RequestMapping(value = "/getConfig", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> getConfig(HttpServletRequest request,HttpSession session){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        //可以公开的系统参数
+        SysPropertyVoWithBLOBsVo publicSystemInfo = new SysPropertyVoWithBLOBsVo();
+        publicSystemInfo.setFirstAddress(sysPropertyVoWithBLOBsVo.getFirstAddress());
+        publicSystemInfo.setSecondAddress(sysPropertyVoWithBLOBsVo.getSecondAddress());
+        publicSystemInfo.setInviteUrl(sysPropertyVoWithBLOBsVo.getInviteUrl());
+        publicSystemInfo.setNonRealtimeLoginUrl(sysPropertyVoWithBLOBsVo.getNonRealtimeLoginUrl());
+        publicSystemInfo.setNonRealtimeDoctorBindingUrl(sysPropertyVoWithBLOBsVo.getNonRealtimeDoctorBindingUrl());
+        resultMap.put("publicSystemInfo",publicSystemInfo);
         return resultMap;
     }
 

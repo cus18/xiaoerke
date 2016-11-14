@@ -1,6 +1,6 @@
 angular.module('controllers', []).controller('NonTimeDoctorMessageListCtrl', [
-    '$scope', '$state', '$timeout', '$http', 'GetDoctorLoginStatus','GetDoctorService','LoginUrl',
-    function ($scope, $state, $timeout, $http, GetDoctorLoginStatus,GetDoctorService,LoginUrl) {
+    '$scope', '$state', '$timeout', '$http', 'GetDoctorLoginStatus','GetDoctorService','GetConfig',
+    function ($scope, $state, $timeout, $http, GetDoctorLoginStatus,GetDoctorService,GetConfig) {
         $scope.selectItem = "cur";
         // 选择 头部的当前服务和全部服务
         $scope.selectService = function (item) {
@@ -15,7 +15,9 @@ angular.module('controllers', []).controller('NonTimeDoctorMessageListCtrl', [
             GetDoctorLoginStatus.save({}, function (data) {
                 $scope.pageLoading = false;
                 if (data.status == "failure") {
-                    window.location.href = LoginUrl;
+                    GetConfig.save({}, function (data) {
+                        window.location.href = data.publicSystemInfo.nonRealtimeLoginUrl;
+                    })
                 }else if(data.status == "success"){
                     GetDoctorService.save({serviceType:"currentService",csUserId:data.csUserId}, function (data) {
                         $scope.curServiceList = data.ListInfo;

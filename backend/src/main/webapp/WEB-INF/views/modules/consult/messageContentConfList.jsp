@@ -49,7 +49,9 @@
 					<td>${u.content}</td>
 					<td>
 						<a href="${ctx}/messageContentConf/saveUpdateMessageContentConfForm?id=${u.id}">修改</a>
-						<a href="${ctx}/messageContentConf/deleteMessageContentConf?id=${u.id}" onclick="return confirmx('确认删除？', this.href)">删除</a>
+						<c:if test="${u.priority ne 0}">
+							<a href="${ctx}/messageContentConf/deleteMessageContentConf?id=${u.id}" onclick="return confirmx('确认删除？', this.href)">删除</a>
+						</c:if>
 					</td>
 				</tr>
 			</c:forEach>

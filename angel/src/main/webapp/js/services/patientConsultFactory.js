@@ -48,12 +48,13 @@ define(['appPatientConsult'], function (app) {
             return $resource('babyCoin/babyCoinInit');
         }])
 
-
-
         //公用数据邀请分享地址
         .factory('inviteUrlData', function() {
             var inviteUrl = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=41,";
             return inviteUrl;
-        });
+        })
+        .factory('GetConfig',['$resource',function ($resource){
+            return $resource('util/getConfig');
+        }]);
 
 })

@@ -1,24 +1,47 @@
 package com.cxqm.xiaoerke.modules.operation.service;
 
-import java.util.Date;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 public class Test {
-    public static void main(String[] args) {
-//        String t = "ary||bfgdfg||cfdghdfgh||fghdhgd";
-//
-//        String[] temp = t.split("\\|\\|");
-        Date date = new Date();
-        date.setYear(2016);
-        date.setMonth(1);
-        date.setDate(1);
 
-        Date date1 = new Date();
-        date1.setYear(2016);
-        date1.setMonth(10);
-        date1.setDate(1);
+    public static void main(String[] args) throws SocketException {
+        System.out.println(Test.getRealIp());
+    }
 
+    public static String getRealIp() throws SocketException {
+        String localip = null;// 本地IP，如果没有配置外网IP则返回它
+        String netip = null;// 外网IP
 
-        System.out.println("==========" + (date1.getTime() - date.getTime()));
-        System.out.println("=========="+365l*24*60*60*1000);
+        Enumeration<NetworkInterface> netInterfaces =
+                NetworkInterface.getNetworkInterfaces();
+        InetAddress ip = null;
+        boolean finded = false;// 是否找到外网IP
+        while (netInterfaces.hasMoreElements() && !finded) {
+            NetworkInterface ni = netInterfaces.nextElement();
+            Enumeration<InetAddress> address = ni.getInetAddresses();
+            while (address.hasMoreElements()) {
+                ip = address.nextElement();
+                if (!ip.isSiteLocalAddress()
+                        && !ip.isLoopbackAddress()
+                        && ip.getHostAddress().indexOf(":") == -1) {// 外网IP
+                    netip = ip.getHostAddress();
+                    finded = true;
+                    break;
+                } else if (ip.isSiteLocalAddress()
+                        && !ip.isLoopbackAddress()
+                        && ip.getHostAddress().indexOf(":") == -1) {// 内网IP
+                    localip = ip.getHostAddress();
+                }
+            }
+        }
+
+        if (netip != null && !"".equals(netip)) {
+            return netip;
+        } else {
+            return localip;
+        }
     }
 }
