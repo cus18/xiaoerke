@@ -12,7 +12,7 @@ angular.module('services', ['ngResource'])
     }])
     //用户绑定
     .factory('GetDoctorLoginStatus', ['$resource', function ($resource) {
-        return $resource(public + 'consult/doctor/login/GetDoctorLoginStatus');
+        return $resource(public + 'consult/doctor/login/getDoctorLoginStatus');
     }])
     //获取用户登陆状态
     .factory('GetUserLoginStatus', ['$resource', function ($resource) {

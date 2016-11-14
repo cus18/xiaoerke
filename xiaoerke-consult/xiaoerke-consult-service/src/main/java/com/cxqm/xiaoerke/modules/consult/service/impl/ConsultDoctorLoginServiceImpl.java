@@ -35,12 +35,15 @@ public class ConsultDoctorLoginServiceImpl implements ConsultDoctorLoginService 
     public Map getDoctorLoginStatus(HttpSession session, HttpServletRequest request,HttpServletResponse response) {
         HashMap<String, Object> result = new HashMap<String, Object>();
         String phone = CookieUtils.getCookie(request,response,"phone",false);
-        result.put("status", "20");
+        result.put("status", "failure");
         User user = systemService.getUserByLoginName(phone);
-        result.put("userPhone", user.getPhone());
-        result.put("userId", user.getId());
-        result.put("userName", user.getName());
-        result.put("userType", user.getUserType());
+        if(user!=null && StringUtils.isNotBlank(user.getId())){
+            result.put("userPhone", user.getPhone());
+            result.put("userId", user.getId());
+            result.put("userName", user.getName());
+            result.put("userType", user.getUserType());
+            result.put("status","success");
+        }
         String openId = WechatUtil.getOpenId(session, request);
         if (StringUtils.isNotNull(openId)) {
             result.put("openId", openId);
