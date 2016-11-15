@@ -854,7 +854,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             //有名片的医生扫码用户,推送文字消息.(扫码有名片医生二维码.)
             Runnable thread = new sendHasCardDoctorWechatMessage(EventKey, xmlEntity);
             threadExecutor.execute(thread);
-        }else if (EventKey.indexOf("tupianchuanbo") > -1) {
+        }else if (EventKey.indexOf("PD_TPCB") > -1) {
 //             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
              String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=44";
              Map parameter = systemService.getWechatParameter();
