@@ -850,11 +850,17 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //                        "<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37'>赶紧玩起来吧！</a>";
 //                WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
             }
-        } else if (EventKey.indexOf("yufangjiezhong") > -1) {//gzg
+        } else if (EventKey.indexOf("yufangjiezhong") > -1) {
             //有名片的医生扫码用户,推送文字消息.(扫码有名片医生二维码.)
             Runnable thread = new sendHasCardDoctorWechatMessage(EventKey, xmlEntity);
             threadExecutor.execute(thread);
-        }
+        }else if (EventKey.indexOf("tupianchuanbo") > -1) {
+//             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+             String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=44";
+             Map parameter = systemService.getWechatParameter();
+             String token = (String) parameter.get("token");
+             WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),"2016年年末你和宝宝会发生什么？？\n哈哈哈，好搞笑\n\n<a href='"+url+"'>来搞事情吧>></a>");
+         }
 
         String toOpenId = xmlEntity.getFromUserName();//扫码者openid
         Map<String, Object> param1 = new HashMap<String, Object>();
