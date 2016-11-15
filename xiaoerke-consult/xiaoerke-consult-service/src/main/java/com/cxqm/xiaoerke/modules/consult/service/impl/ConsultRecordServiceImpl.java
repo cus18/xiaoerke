@@ -56,7 +56,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService{
     @Autowired
     private ConsultRecordMongoDBServiceImpl consultRecordMongoDBService;
 
-    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+    private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
     @Override
     public int deleteByPrimaryKey(Long id) {
