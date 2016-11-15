@@ -30,12 +30,13 @@ angular.module('controllers', ['ionic']).controller('picSpreadResultCtrl', [
         $scope.tryAgain = function(){
             //后台请求图片地址
             recordLogs('TPCN_ZSYC');
-            $scope.pageLoading =true;// 页面加载是否完成
-            PicSpread.save({babyName:$stateParams.name},function (data) {
-                console.log(data)
-                $scope.picUrl = data.picImg;
-                $scope.pageLoading =false;// 页面加载是否完成
-            });
+            $state.go("picSpreadIndex");
+            // $scope.pageLoading =true;// 页面加载是否完成
+            // PicSpread.save({babyName:$stateParams.name},function (data) {
+            //     console.log(data)
+            //     $scope.picUrl = data.picImg;
+            //     $scope.pageLoading =false;// 页面加载是否完成
+            // });
         };
 
         $scope.$on('$ionicView.enter', function() {
