@@ -230,6 +230,8 @@ public class FieldworkWechatController {
         }else if("43".equals(url)){
             String doctorId  = URLEncoder.encode(url.replace("doctorId",""), "UTF-8");
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/consultDoctorHome/"+doctorId;
+        }else if("44".equals(url)){
+            url = sysPropertyVoWithBLOBsVo.getWisdomWebUrl() + "wisdom/activity#/picSpreadIndex";
         }
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +
