@@ -32,10 +32,10 @@
     from message_content_conf
     where 1=1
       and week in(0,DAYOFMONTH(NOW()))
-    <if test="scene != null and scene != ''">
+      and  now() > starttime
+      and   endtime >now()
       and scene = #{scene}
-    </if>
-    order by priority,week
+    order by priority desc
     limit 1
   </select>
 

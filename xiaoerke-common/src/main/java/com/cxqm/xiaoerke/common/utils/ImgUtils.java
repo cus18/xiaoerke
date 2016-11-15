@@ -255,7 +255,7 @@ public class ImgUtils {
                 g.setBackground(Color.red);
                 g.drawImage(theImg, 0, 0, null );
                 g.setFont(new Font(null,Font.BOLD,fontSize)); //字体、字型、字号
-                g.drawString(babyName,x,y); //画文字
+                g.drawString(babyName,x,y+146); //画文字
                 g.dispose();
                 FileOutputStream out=new FileOutputStream(outPath); //先用一个特定的输出文件名
                 JPEGImageEncoder encoder =JPEGCodec.createJPEGEncoder(out);
