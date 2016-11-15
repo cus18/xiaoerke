@@ -399,8 +399,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 			format = new SimpleDateFormat("MM:dd");
 		}else if("flag1".equals(flag)){
 			format = new SimpleDateFormat("MM-dd HH:mm");
+		}else{
+			format = new SimpleDateFormat(flag);
 		}
-        String dateStr = null;
+		String dateStr = null;
     	dateStr = format.format(date);
         return dateStr;
     }
