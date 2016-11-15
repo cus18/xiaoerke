@@ -266,7 +266,7 @@ public class UtilController extends BaseController {
     }
 
     /**
-     * 读取系统配置参数 delang
+     * 读取系统配置参数
      */
     @RequestMapping(value = "/getConfig", method = {RequestMethod.POST, RequestMethod.GET})
     public
