@@ -22,7 +22,7 @@ angular.module('controllers', ['ionic']).controller('picSpreadResultCtrl', [
         recordLogs('TPCN_SHTP');
 
        //后台请求图片地址
-        PicSpread.get({babyName:$stateParams.name},function (data) {
+        PicSpread.post({babyName:$stateParams.name},function (data) {
             console.log(data)
             $scope.picUrl = data.picImg;
             $scope.pageLoading =false;// 页面加载是否完成
@@ -31,7 +31,7 @@ angular.module('controllers', ['ionic']).controller('picSpreadResultCtrl', [
             //后台请求图片地址
             recordLogs('TPCN_ZSYC');
             $scope.pageLoading =true;// 页面加载是否完成
-            PicSpread.get({babyName:$stateParams.name},function (data) {
+            PicSpread.post({babyName:$stateParams.name},function (data) {
                 console.log(data)
                 $scope.picUrl = data.picImg;
                 $scope.pageLoading =false;// 页面加载是否完成

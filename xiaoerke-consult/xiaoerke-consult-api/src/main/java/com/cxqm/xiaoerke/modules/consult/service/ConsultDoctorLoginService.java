@@ -14,4 +14,6 @@ public interface ConsultDoctorLoginService {
     Map getDoctorLoginStatus(HttpSession session, HttpServletRequest request,HttpServletResponse response);
 
     Map doctorBinding(Map<String, Object> params, HttpSession session, HttpServletRequest request, HttpServletResponse response);
+
+    Map doctorSignOut(Map<String, Object> params, HttpSession session, HttpServletRequest request, HttpServletResponse response);
 }

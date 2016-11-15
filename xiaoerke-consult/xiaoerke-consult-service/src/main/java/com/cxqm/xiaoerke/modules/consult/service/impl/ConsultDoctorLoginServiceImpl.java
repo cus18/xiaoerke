@@ -68,6 +68,21 @@ public class ConsultDoctorLoginServiceImpl implements ConsultDoctorLoginService 
         return result;
     }
 
+    @Override
+    public Map doctorSignOut(Map<String, Object> params, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        String phone = CookieUtils.getCookie(request, response, "phone", false);
+        result.put("status", "failure");
+        if(StringUtils.isNotBlank(phone)){
+            CookieUtils.getCookie(request, response, phone, false);
+            result.put("status", "success");
+        }else{
+            result.put("status", "alreadySignOut");
+        }
+        return result;
+    }
+
+
 
 
 }
