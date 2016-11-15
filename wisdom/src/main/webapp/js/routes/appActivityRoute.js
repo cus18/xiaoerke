@@ -41,7 +41,7 @@ define(['appActivity'], function(app){
                         }
                     })
                     .state('picSpreadResult', {
-                        url: '/picSpreadResult',
+                        url: '/picSpreadResult/:name',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'picSpreadResultCtrl',
                         resolve: {
