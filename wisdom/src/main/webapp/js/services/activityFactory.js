@@ -12,4 +12,9 @@ define(['appActivity'], function (app) {
         .factory('PhotoWall',['$resource',function ($resource){
             return $resource(user_h5 + 'mutualHelp/donation/photoWall');
         }])
+
+        //图片传播地址
+        .factory('PicSpread',['$resource',function ($resource){
+            return $resource(user_h5 + 'picSpread/creaet');
+        }])
 })
