@@ -62,9 +62,7 @@ public class ConsultDoctorLoginController extends BaseController {
     @RequestMapping(value = "/doctorBinding", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map doctorBinding(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Map<String, Object> result = new HashMap<String, Object>();
-        consultDoctorLoginService.doctorBinding(params, session, request, response);
-        return result;
+        return consultDoctorLoginService.doctorBinding(params, session, request, response);
     }
 
     /**
@@ -82,9 +80,7 @@ public class ConsultDoctorLoginController extends BaseController {
     @RequestMapping(value = "/signOut", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map signOut(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Map<String, Object> result = new HashMap<String, Object>();
-        consultDoctorLoginService.doctorSignOut(params, session, request, response);
-        return result;
+        return consultDoctorLoginService.doctorSignOut(params, session, request, response);
     }
 
 

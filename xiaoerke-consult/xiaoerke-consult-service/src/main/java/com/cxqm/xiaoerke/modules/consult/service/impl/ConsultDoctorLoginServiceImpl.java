@@ -74,7 +74,7 @@ public class ConsultDoctorLoginServiceImpl implements ConsultDoctorLoginService 
         String phone = CookieUtils.getCookie(request, response, "phone", false);
         result.put("status", "failure");
         if(StringUtils.isNotBlank(phone)){
-            CookieUtils.getCookie(request, response, phone, false);
+            CookieUtils.getCookie(request, response, "phone", true);
             result.put("status", "success");
         }else{
             result.put("status", "alreadySignOut");

@@ -14,7 +14,7 @@ angular.module('services', ['ngResource'])
     .factory('GetDoctorLoginStatus', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/login/getDoctorLoginStatus');
     }])
-    .factory('SignOut', ['$resource', function ($resource) {
+    .factory('DoctorSignOut', ['$resource', function ($resource) {
         return $resource(public + 'consult/doctor/login/signOut');
     }])
     //获取用户登陆状态

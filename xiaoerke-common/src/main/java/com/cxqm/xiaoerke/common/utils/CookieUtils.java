@@ -131,7 +131,9 @@ public class CookieUtils {
 						e.printStackTrace();
 					}
 					if (isRemove) {
+						cookie.setValue(null);
 						cookie.setMaxAge(0);
+						cookie.setPath("/");
 						response.addCookie(cookie);
 					}
 				}
