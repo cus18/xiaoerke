@@ -53,6 +53,7 @@ public class MessageContentConfController extends BaseController {
         if(StringUtils.isNotNull(vo.getId()+"")){
             List<MessageContentConfVo> list = messageContentConfService.findMessageContentConfByInfo(vo);
             returnVo = list.get(0);
+            returnVo.setContent("<p>\r\n\t"+returnVo.getContent().replace("\r\n","</p>\r\n<p>\r\n\t")+"</p>");
         }
         model.addAttribute("vo", returnVo);
         return "modules/consult/saveUpdateConfForm";
@@ -77,9 +78,13 @@ public class MessageContentConfController extends BaseController {
                 weeks = weeks+temp+",";
             }
         }
-        vo.setWeek(weeks.substring(0,weeks.length()-1));
-        vo.setContent(StringEscapeUtils.unescapeHtml4(vo.getContent()));
-        String retString = messageContentConfService.saveMessageContentConf(vo);
+        vo.setWeek(weeks.substring(0, weeks.length() - 1));
+        String retString = "内容不能为空！";
+        if(StringUtils.isNotNull(vo.getContent())){
+            vo.setContent(StringEscapeUtils.unescapeHtml4(vo.getContent()));
+            vo.setContent(vo.getContent().replace("<p>","").replace("\r\n\t","").replace("</p>","").replace("\"","'"));
+            retString = messageContentConfService.saveMessageContentConf(vo);
+        }
         model.addAttribute("vo", new MessageContentConfVo());
         addMessage(redirectAttributes, retString);
         return "redirect:" + adminPath + "/messageContentConf/messageContentConfList";
