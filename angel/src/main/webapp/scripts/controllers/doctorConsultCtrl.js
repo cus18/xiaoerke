@@ -5,13 +5,13 @@ angular.module('controllers', ['luegg.directives'])
         'TransferToOtherCsUser', 'SessionEnd', 'GetWaitJoinList', 'React2Transfer', 'CancelTransfer', '$upload',
         'GetFindTransferSpecialist', 'GetRemoveTransferSpecialist', 'GetAddTransferSpecialist', 'GetFindAllTransferSpecialist',
         'CreateTransferSpecialist', '$state', 'GetSystemTime', 'GetUserSessionTimesByUserId', 'GetCustomerLogByOpenID', 'SaveCustomerLog',
-        'SearchIllnessList', 'ModifyUserConsultNum', 'SearchBabyInfo', 'SaveReturnService','GetConfig',
+        'SearchIllnessList', 'ModifyUserConsultNum', 'SearchBabyInfo', 'SaveReturnService','GetConfig','SignOut',
         function ($scope, $sce, $window, $stateParams, GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
                   GetDoctorLoginStatus,GetUserLoginStatus, $location, GetCurrentUserHistoryRecord, GetMyAnswerModify,
                   GetCurrentUserConsultListInfo, TransferToOtherCsUser, SessionEnd, GetWaitJoinList, React2Transfer, CancelTransfer, $upload,
                   GetFindTransferSpecialist, GetRemoveTransferSpecialist, GetAddTransferSpecialist, GetFindAllTransferSpecialist,
                   CreateTransferSpecialist, $state, GetSystemTime, GetUserSessionTimesByUserId, GetCustomerLogByOpenID, SaveCustomerLog,
-                  SearchIllnessList, ModifyUserConsultNum, SearchBabyInfo, SaveReturnService,GetConfig) {
+                  SearchIllnessList, ModifyUserConsultNum, SearchBabyInfo, SaveReturnService,GetConfig,SignOut) {
             //初始化info参数
             $scope.info = {
                 effect: "true",
@@ -189,6 +189,17 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 });
             };
+            //退出登录
+            $scope.signOut = function () {
+                SignOut.save({}, function (data) {
+                    if(data.status == "success"){
+                        alert(data.status == "success"?"退出成功":"系统忙！请联系分诊员");
+                        $state.go("doctorConsultLogin");
+                    }else if(data.status == "alreadySignOut"){
+                        alert("你已退出");
+                    }
+                })
+            }
 
             //每20秒，检测一次医生跟平台的会话是否失效
             var sessionCheck = function () {

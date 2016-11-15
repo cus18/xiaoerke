@@ -67,4 +67,26 @@ public class ConsultDoctorLoginController extends BaseController {
         return result;
     }
 
+    /**
+     * 医生退出
+     * response:
+     * {
+     * "status":"success"
+     * }
+     * //success 成功  failure 失败
+     *
+     * @param session
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/signOut", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map signOut(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        consultDoctorLoginService.doctorSignOut(params, session, request, response);
+        return result;
+    }
+
+
+
 }
