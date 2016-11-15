@@ -82,7 +82,7 @@ public class MessageContentConfController extends BaseController {
         String retString = "内容不能为空！";
         if(StringUtils.isNotNull(vo.getContent())){
             vo.setContent(StringEscapeUtils.unescapeHtml4(vo.getContent()));
-            vo.setContent(vo.getContent().replace("<p>","").replace("\r\n\t","").replace("</p>",""));
+            vo.setContent(vo.getContent().replace("<p>","").replace("\r\n\t","").replace("</p>","").replace("\"","'"));
             retString = messageContentConfService.saveMessageContentConf(vo);
         }
         model.addAttribute("vo", new MessageContentConfVo());
