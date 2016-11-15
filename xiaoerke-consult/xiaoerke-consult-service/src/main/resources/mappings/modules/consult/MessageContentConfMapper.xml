@@ -32,9 +32,7 @@
     from message_content_conf
     where 1=1
       and week in(0,DAYOFMONTH(NOW()))
-    <if test="scene != null and scene != ''">
       and scene = #{scene}
-    </if>
     order by priority,week
     limit 1
   </select>
