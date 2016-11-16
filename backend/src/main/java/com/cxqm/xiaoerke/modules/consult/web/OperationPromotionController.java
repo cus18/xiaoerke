@@ -146,8 +146,12 @@ public class OperationPromotionController extends BaseController {
     @RequestMapping(value = "operationPromotionTemplateOper")
     public String operationPromotionTemplateOper(OperationPromotionTemplateVo vo,HttpServletRequest request) {
         net.sf.json.JSONObject result = new net.sf.json.JSONObject();
-        vo.setInfo1(request.getParameter("info11") + "," + request.getParameter("info12"));
-        vo.setInfo2(request.getParameter("info21") + "," + request.getParameter("info22"));
+        if(StringUtils.isNotNull(request.getParameter("info11")) || StringUtils.isNotNull(request.getParameter("info12"))){
+            vo.setInfo1(request.getParameter("info11") + "," + request.getParameter("info12"));
+        }
+        if(StringUtils.isNotNull(request.getParameter("info21")) || StringUtils.isNotNull(request.getParameter("info22"))){
+            vo.setInfo2(request.getParameter("info21") + "," + request.getParameter("info22"));
+        }
         try {
             operationPromotionTemplateService.operationPromotionTemplateOper(vo);
             result.put("result","suc");

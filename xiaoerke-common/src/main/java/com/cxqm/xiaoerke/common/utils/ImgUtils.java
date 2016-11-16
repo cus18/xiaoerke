@@ -254,7 +254,7 @@ public class ImgUtils {
                 g.setColor(Color.white);
                 g.setBackground(Color.red);
                 g.drawImage(theImg, 0, 0, null );
-                g.setFont(new Font(null,Font.BOLD,fontSize)); //字体、字型、字号
+                g.setFont(new Font("文泉驿等宽正黑",Font.BOLD,fontSize)); //字体、字型、字号
                 g.drawString(babyName,x,y+146); //画文字
                 g.dispose();
                 FileOutputStream out=new FileOutputStream(outPath); //先用一个特定的输出文件名
