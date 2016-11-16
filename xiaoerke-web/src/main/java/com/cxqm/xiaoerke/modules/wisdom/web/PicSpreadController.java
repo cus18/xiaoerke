@@ -43,7 +43,7 @@ public class PicSpreadController {
         for(int i =0;i<spreadList.size();i++){
             if(i == ri){
                 picUrl += spreadList.get(i).getId();
-                picImg = ImgUtils.createStringMark(babyName,picUrl+".png",spreadList.get(i).getInfo1()+(spreadList.get(i).getInfo2() == null ?"":";"+spreadList.get(i).getInfo2()));
+                picImg = ImgUtils.createStringMark(babyName,picUrl,spreadList.get(i).getInfo1()+(spreadList.get(i).getInfo2() == null ?"":";"+spreadList.get(i).getInfo2()));
                 break;
             }
         }
