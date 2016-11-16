@@ -10,6 +10,21 @@
         $(document).ready(function () {
             $("#treeTable").treeTable({expandLevel: 1}).show();
         });
+		function transRecord(){
+			alertx("开始同步");
+			$.ajax({
+				type: "post",
+				url: "${ctx}/statistic/getLogInfoByLogContent",
+				data: {},
+				dataType: "json",
+				success: function(data){
+					alertx(data.status);
+					if(data.status == "success"){
+						alertx("咨询记录同步成功，请查询！");
+					}
+				}
+			});
+		}
     </script>
 </head>
 <body>
@@ -31,6 +46,7 @@
 			<form:input id="endDate" path="endDate" type="text" readonly="readonly" maxlength="60" class="input-medium Wdate"
 						onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 		<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+		<input id="btnSubmit" class="btn btn-primary" type="button" onclick="transRecord()" value="同步咨询记录到最新版"/>
     </form:form>
             <table class="table table-striped table-bordered table-condensed">
                 <thead>
