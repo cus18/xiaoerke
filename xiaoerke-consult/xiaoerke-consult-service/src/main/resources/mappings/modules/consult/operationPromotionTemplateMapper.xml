@@ -35,6 +35,9 @@
     <if test="info2 != null" >
       info2,
     </if>
+    <if test="type != null" >
+      type,
+    </if>
   </trim>
   <trim prefix="values (" suffix=")" suffixOverrides="," >
     <if test="info1 != null" >
@@ -42,6 +45,9 @@
     </if>
     <if test="info2 != null" >
       #{info2,jdbcType=VARCHAR},
+    </if>
+    <if test="type != null" >
+      #{type,jdbcType=VARCHAR},
     </if>
   </trim>
 </insert>

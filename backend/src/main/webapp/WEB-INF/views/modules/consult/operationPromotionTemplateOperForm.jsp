@@ -32,7 +32,7 @@
 			$.ajax({
 	             type: "post",
 	             url: "${ctx}/operationPromotion/operationPromotionTemplateOper",
-	             data: {id:"${vo.id}",info11:$("#info11").val(),info12:$("#info12").val(),info21:$("#info21").val(),info22:$("#info22").val(),image:$("#image").val()},
+	             data: {id:"${vo.id}",info11:$("#info11").val(),info12:$("#info12").val(),info21:$("#info21").val(),info22:$("#info22").val(),image:$("#image").val(),type:"pictureTransmission"},
 	             dataType: "json",
 	             success: function(data){
 	             	if("suc"==data.result){
