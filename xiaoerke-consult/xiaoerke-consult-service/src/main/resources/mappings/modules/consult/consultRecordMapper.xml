@@ -19,11 +19,18 @@
     id, sessionId, message, createDate, updateDate, type, senderId, csuserId, userId,
     doctorName, senderName
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByVo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo" >
     select
     <include refid="Base_Column_List" />
     from consult_record
-    where id = #{id,jdbcType=VARCHAR}
+    where 1=1
+    <if test="id != null" >
+      and id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="createDate != null" >
+      ORDER createDate desc limit 1
+    </if>
+
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from consult_record

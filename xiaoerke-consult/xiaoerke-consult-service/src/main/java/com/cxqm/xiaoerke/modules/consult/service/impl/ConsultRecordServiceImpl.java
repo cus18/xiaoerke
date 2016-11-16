@@ -79,8 +79,8 @@ public class ConsultRecordServiceImpl implements ConsultRecordService{
     }
 
     @Override
-    public ConsultRecordVo selectByPrimaryKey(Long id) {
-        return consultRecordDao.selectByPrimaryKey(id);
+    public List<ConsultRecordVo> selectByVo(ConsultRecordVo record) {
+        return consultRecordDao.selectByVo(record);
     }
 
     @Override
