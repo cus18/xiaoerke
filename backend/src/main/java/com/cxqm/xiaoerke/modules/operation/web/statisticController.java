@@ -62,10 +62,20 @@ public class statisticController extends BaseController {
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
         Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.add(Calendar.DATE, -1);
 
         ConsultRecordVo recordVo = new ConsultRecordVo();
+        List<ConsultRecordVo> recordVos = consultRecordService.selectByVo(recordVo);
         recordVo.setCreateDate(date);
-        recordVo = consultRecordService.selectByVo(recordVo).get(0);
+        if(recordVos!=null && recordVos.size()>0){
+            recordVo = recordVos.get(0);
+        }else{
+            recordVo.setCreateDate(calendar.getTime());
+        }
 
         Query query = new Query().addCriteria(Criteria.where("createDate").gte(recordVo.getCreateDate()));
         List<ConsultRecordVo> consultRecordVoList = new ArrayList<ConsultRecordVo>();
