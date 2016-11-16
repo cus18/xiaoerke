@@ -28,7 +28,7 @@
       and id = #{id,jdbcType=VARCHAR}
     </if>
     <if test="createDate != null" >
-      ORDER createDate desc limit 1
+      ORDER by createDate desc limit 1
     </if>
 
   </select>

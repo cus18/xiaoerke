@@ -12,6 +12,7 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.operation.service.OperationHandleService;
 import com.cxqm.xiaoerke.modules.sys.entity.MongoLog;
 import com.cxqm.xiaoerke.modules.sys.service.LogMongoDBServiceImpl;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -31,7 +32,7 @@ import java.util.*;
  * @version 2013-10-17
  */
 @Controller
-@RequestMapping(value = "")
+@RequestMapping(value = "${adminPath}")
 public class statisticController extends BaseController {
 
     @Autowired
@@ -53,11 +54,10 @@ public class statisticController extends BaseController {
 
         return OperationHandleService.getLogInfoByLogContent(params);
     }
-
-    @RequestMapping(value = "/statistic/getLogInfoByLogContent", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/statistic/consultRecordMongoTransMySql", method = {RequestMethod.POST,RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> consultRecordMongoTransMySql(@RequestBody Map<String, Object> params) {
+    Map<String, Object> consultRecordMongoTransMySql(Map<String, Object> params) {
 
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
