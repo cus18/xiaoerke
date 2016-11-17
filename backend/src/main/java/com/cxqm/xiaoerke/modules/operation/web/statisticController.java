@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.ParseException;
 import java.util.*;
 
 
@@ -84,8 +85,12 @@ public class statisticController extends BaseController {
 
         long passDate = DateUtils.pastDays(startDate);
         if (passDate > 0) {
-            for (long i = 0l; i < passDate; i++) {
-                endDate.setDate(startDate.getDate() + 1);
+            for (long i = 1l; i <= passDate; i++) {
+                try {
+                    endDate = DateUtils.addDate(startDate,i);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 transRecordData(startDate, endDate);
             }
         } else {
@@ -97,6 +102,8 @@ public class statisticController extends BaseController {
 
     private void transRecordData(Date startDate, Date endDate) {
         Query query = new Query().addCriteria(Criteria.where("createDate").gte(startDate).andOperator(Criteria.where("createDate").lte(endDate)));
+        System.out.println("==============startDate" + DateUtils.DateToStr(startDate, "datetime"));
+        System.out.println("==============endDate" + DateUtils.DateToStr(endDate, "datetime"));
         List<ConsultRecordVo> consultRecordVoList = new ArrayList<ConsultRecordVo>();
         List<ConsultRecordMongoVo> consultRecordMongoVos = consultRecordService.getCurrentUserHistoryRecord(query);
         Iterator<ConsultRecordMongoVo> iterator = consultRecordMongoVos.iterator();
