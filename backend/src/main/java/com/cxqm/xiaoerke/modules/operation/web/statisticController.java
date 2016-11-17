@@ -121,6 +121,7 @@ public class statisticController extends BaseController {
             consultRecordVo.setCsuserId(consultRecordMongoVo.getCsUserId());
             consultRecordVo.setSenderId(consultRecordMongoVo.getSenderId());
             consultRecordVoList.add(consultRecordVo);
+            consultRecordMongoVo = null;
         }
         int insertFlag = consultRecordService.insertConsultRecordBatch(consultRecordVoList);
         consultRecordVoList = null;
