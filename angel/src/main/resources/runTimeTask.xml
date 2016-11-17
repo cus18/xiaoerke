@@ -115,7 +115,6 @@
 				<ref bean="consultManagementCronTrigger"/>
 				<ref bean="modifyConsultConversationForwardRecordsTrigger"/>
 				<ref bean="deleteTempRecordTrigger"/>
-				<ref bean="consultRecordMongoTransMySqlCronTrigger"/>
 				<ref bean="checkDoctorChannelStatus"/>
 				<ref bean="checkH5UserChannelStatus"/>
 				<ref bean="testMappingTrigger"/>
