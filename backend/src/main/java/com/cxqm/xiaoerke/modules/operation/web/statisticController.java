@@ -72,7 +72,6 @@ public class statisticController extends BaseController {
         calendar.set(Calendar.SECOND, 0);
         calendar.add(Calendar.DATE, -1);
         Date startDate;//同步的开始时间
-        Date endDate = new Date();//同步到结束时间
 
         ConsultRecordVo recordVo = new ConsultRecordVo();
         recordVo.setCreateDate(date);
@@ -82,13 +81,13 @@ public class statisticController extends BaseController {
         } else {
             startDate = calendar.getTime();//如果库里面一条数据都没有那么默认只同步一天的
         }
-
+        Date endDate = startDate;//同步到结束时间
         long passDate = DateUtils.pastDays(startDate);
         if (passDate > 0) {
             for (long i = 1l; i <= passDate; i++) {
                 try {
                     startDate = endDate;
-                    endDate = DateUtils.addDate(startDate,i);
+                    endDate = DateUtils.addDate(startDate,1);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
