@@ -34,7 +34,6 @@
 				var week = '${vo.week}';
 				var weeks = week.split(",");
 				for(var temp in weeks){
-					alert(weeks[temp]);
 					$('#week'+weeks[temp]).attr('checked',true);
 				}
 			}
@@ -119,20 +118,20 @@
 			<div class="controls">
 				<input id="week" name="weekList" class="" type="checkbox" value="0" onclick="kick()">
 				<label for="week">每天</label>
-				<input id="week1" name="weekList" class="" type="checkbox" value="1" onclick="kick()">
-				<label for="week1">周一</label>
 				<input id="week2" name="weekList" class="" type="checkbox" value="2" onclick="kick()">
-				<label for="week2">周二</label>
+				<label for="week2">周一</label>
 				<input id="week3" name="weekList" class="" type="checkbox" value="3" onclick="kick()">
-				<label for="week3">周三</label>
+				<label for="week3">周二</label>
 				<input id="week4" name="weekList" class="" type="checkbox" value="4" onclick="kick()">
-				<label for="week4">周四</label>
+				<label for="week4">周三</label>
 				<input id="week5" name="weekList" class="" type="checkbox" value="5" onclick="kick()">
-				<label for="week5">周五</label>
+				<label for="week5">周四</label>
 				<input id="week6" name="weekList" class="" type="checkbox" value="6" onclick="kick()">
-				<label for="week6">周六</label>
+				<label for="week6">周五</label>
 				<input id="week7" name="weekList" class="" type="checkbox" value="7" onclick="kick()">
-				<label for="week7">周日</label>
+				<label for="week7">周六</label>
+				<input id="week1" name="weekList" class="" type="checkbox" value="1" onclick="kick()">
+				<label for="week1">周日</label>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

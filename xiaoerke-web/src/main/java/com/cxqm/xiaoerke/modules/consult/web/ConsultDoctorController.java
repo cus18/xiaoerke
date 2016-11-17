@@ -381,9 +381,20 @@ public class ConsultDoctorController extends BaseController {
                             if (praiseList != null && praiseList.size() > 0) {
                                 for (Map<String, Object> evaluationMap : praiseList) {
                                     if (Integer.parseInt((String) evaluationMap.get("serviceAttitude")) == 0) {
-                                        st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
-                                                "<a href='"+ sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
-                                                evaluationMap.get("id") + "&sessionId=" + sessionId + "'>点击这里去评价</a>】";
+//                                        st = "医生太棒,要给好评;\n服务不好,留言吐槽. \n ----------\n【" +
+//                                                "<a href='"+ sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=" +
+//                                                evaluationMap.get("id") + "&sessionId=" + sessionId + "'>点击这里去评价</a>】";
+
+
+                                        //根据场景和日期查询是否有匹配的文案推送
+                                        MessageContentConfVo messageContentConfVo = messageContentConfService.messageConfInfo(MessageContentVo.SESSION_END.getVariable());
+                                        if(null != messageContentConfVo){
+                                            st = messageContentConfVo.getContent();
+                                            st = st.replace("CUSTOMERID", (String)evaluationMap.get("id"));
+                                            st = st.replace("SESSIONID",sessionId);
+
+//                                            WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, msgContent);
+                                        }
                                     } else {
                                         st = "嗨，亲爱的,本次咨询已关闭。";
                                         break;
@@ -398,12 +409,6 @@ public class ConsultDoctorController extends BaseController {
                             WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                             LogUtils.saveLog("ZXYQ_RK_TS_N3",userId);
 
-                            //根据场景和日期查询是否有匹配的文案推送
-                            MessageContentConfVo messageContentConfVo = messageContentConfService.messageConfInfo(MessageContentVo.SESSION_END.getVariable());
-                            if(null != messageContentConfVo){
-                                String msgContent = messageContentConfVo.getContent();
-                                WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, msgContent);
-                            }
                         }
                         //分享的代码
 //                    patientRegisterPraiseService.sendRemindMsgToUser(userId,sessionId);
