@@ -54,6 +54,7 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
                     $scope.doctorName=data.doctorHeadImage.doctor_name;
                     $scope.doctorAvatar=data.doctorHeadImage.doctor_pic_url;
                     $scope.redPacket=data.starInfo.redPacket;
+                    $scope.serverNum = data.serverNum;
                     $scope.startNum=parseFloat(data.starInfo.startNum)*100;
 
                 },
