@@ -116,6 +116,8 @@ public class statisticController extends BaseController {
             consultRecordVoList.add(consultRecordVo);
         }
         int insertFlag = consultRecordService.insertConsultRecordBatch(consultRecordVoList);
+        consultRecordVoList = null;
+        consultRecordMongoVos = null;
     }
 
 }
