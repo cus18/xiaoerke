@@ -44,11 +44,9 @@ function getCustomerEvaluation(){
             }
             else{
                 $(".main-box").show();
-
+                $(".commit").show();
 
             }
-
-
 
         },
         error : function() {
@@ -70,7 +68,7 @@ function selectMoney(index,moneyItem){
         $(".picMoney-list li").eq(index).children(".select").show();
         redPacket=moneyItem;
     }
-    console.log("选择钱数",redPacket);
+    /*console.log("选择钱数",redPacket);*/
 
 }
 //提交评价
