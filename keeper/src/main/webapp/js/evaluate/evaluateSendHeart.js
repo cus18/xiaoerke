@@ -74,7 +74,7 @@ function selectMoney(index,moneyItem){
 
 }
 //提交评价
-function updateCustomerInfo(){
+function commitEvaluate(){
     var content=$("#content").val();
     if (redPacket != "" && redPacket > 0  ) {
         recordLogs("ZXPJSXY_JE");
