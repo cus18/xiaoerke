@@ -39,6 +39,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
 /**
  * 测试Controller
  *
@@ -225,8 +227,11 @@ public class PraiseCustomerController extends BaseController {
         float num = (float) sing / count;
         DecimalFormat df = new DecimalFormat("0.00");//格式化小数
         String s = df.format(num);//返回的是String类型
+        Query queryNew = (new Query()).addCriteria(where("csUserId").regex(doctorId));
+        List<ConsultSessionStatusVo> resultList = consultRecordService.getConsultSessionStatusVo(queryNew);
         starInfo.put("startNum", s);
         result.put("starInfo", starInfo);
+        result.put("serverNum", resultList.size());
         result.put("doctorHeadImage", patientRegisterPraiseService.getDoctorHeadImageURIById(doctorId));
         return result;
     }
