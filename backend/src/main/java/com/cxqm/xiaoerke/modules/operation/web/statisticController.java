@@ -3,12 +3,14 @@
  */
 package com.cxqm.xiaoerke.modules.operation.web;
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.EmojiFilter;
 import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
+import com.cxqm.xiaoerke.modules.consult.utils.DateUtil;
 import com.cxqm.xiaoerke.modules.operation.service.OperationHandleService;
 import com.cxqm.xiaoerke.modules.sys.entity.MongoLog;
 import com.cxqm.xiaoerke.modules.sys.service.LogMongoDBServiceImpl;
@@ -54,8 +56,9 @@ public class statisticController extends BaseController {
 
         return OperationHandleService.getLogInfoByLogContent(params);
     }
-    @RequestMapping(value = "/statistic/consultRecordMongoTransMySql", method = {RequestMethod.POST,RequestMethod.GET})
-    public
+
+    @RequestMapping(value = "/statistic/consultRecordMongoTransMySql", method = {RequestMethod.POST, RequestMethod.GET})
+    public synchronized
     @ResponseBody
     Map<String, Object> consultRecordMongoTransMySql(Map<String, Object> params) {
 
@@ -67,17 +70,33 @@ public class statisticController extends BaseController {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.add(Calendar.DATE, -1);
+        Date startDate;//同步的开始时间
+        Date endDate = new Date();//同步到结束时间
 
         ConsultRecordVo recordVo = new ConsultRecordVo();
-        List<ConsultRecordVo> recordVos = consultRecordService.selectByVo(recordVo);
         recordVo.setCreateDate(date);
-        if(recordVos!=null && recordVos.size()>0){
-            recordVo = recordVos.get(0);
-        }else{
-            recordVo.setCreateDate(calendar.getTime());
+        List<ConsultRecordVo> recordVos = consultRecordService.selectByVo(recordVo);
+        if (recordVos != null && recordVos.size() > 0) {
+            startDate = recordVos.get(0).getCreateDate();
+        } else {
+            startDate = calendar.getTime();//如果库里面一条数据都没有那么默认只同步一天的
         }
 
-        Query query = new Query().addCriteria(Criteria.where("createDate").gte(recordVo.getCreateDate()));
+        long passDate = DateUtils.pastDays(startDate);
+        if (passDate > 0) {
+            for (long i = 0l; i < passDate; i++) {
+                endDate.setDate(startDate.getDate() + 1);
+                transRecordData(startDate, endDate);
+            }
+        } else {
+            transRecordData(startDate, endDate);
+        }
+        resultMap.put("status", "success");
+        return resultMap;
+    }
+
+    private void transRecordData(Date startDate, Date endDate) {
+        Query query = new Query().addCriteria(Criteria.where("createDate").gte(startDate).andOperator(Criteria.where("createDate").lte(endDate)));
         List<ConsultRecordVo> consultRecordVoList = new ArrayList<ConsultRecordVo>();
         List<ConsultRecordMongoVo> consultRecordMongoVos = consultRecordService.getCurrentUserHistoryRecord(query);
         Iterator<ConsultRecordMongoVo> iterator = consultRecordMongoVos.iterator();
@@ -97,8 +116,6 @@ public class statisticController extends BaseController {
             consultRecordVoList.add(consultRecordVo);
         }
         int insertFlag = consultRecordService.insertConsultRecordBatch(consultRecordVoList);
-        resultMap.put("status", insertFlag > 0 ? "success" : "falure");
-        return resultMap;
     }
 
 }
