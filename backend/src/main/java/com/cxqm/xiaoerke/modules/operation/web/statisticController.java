@@ -87,6 +87,7 @@ public class statisticController extends BaseController {
         if (passDate > 0) {
             for (long i = 1l; i <= passDate; i++) {
                 try {
+                    startDate = endDate;
                     endDate = DateUtils.addDate(startDate,i);
                 } catch (ParseException e) {
                     e.printStackTrace();
