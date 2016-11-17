@@ -33,7 +33,7 @@ function getCustomerEvaluation(){
             console.log("医生评价信息",data);
             $(".doctorName").html(data.doctorHeadImage.doctor_name);
             $("#headImage").attr("src",data.doctorHeadImage.doctor_pic_url);
-            $("#redPacket").html(data.starInfo.redPacket);
+            $("#redPacket").html(data.serverNum);
             $("#starInfo").html(parseFloat(data.starInfo.startNum)*100+"%");
             starNum1=data.evaluation.serviceAttitude;
             if(data.evaluation.serviceAttitude==1){
