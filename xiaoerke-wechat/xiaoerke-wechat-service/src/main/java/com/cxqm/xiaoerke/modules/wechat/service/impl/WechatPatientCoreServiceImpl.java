@@ -856,6 +856,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             threadExecutor.execute(thread);
         }else if (EventKey.indexOf("PD_TPCB") > -1) {
 //             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+             LogUtils.saveLog("TPCB_GZTS",xmlEntity.getFromUserName());
              String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=44";
              Map parameter = systemService.getWechatParameter();
              String token = (String) parameter.get("token");
