@@ -37,16 +37,17 @@ define(['appPlayTour'], function(app){
                             }
                         }
                     })
-                    .state('playtourEvaluate', {
-                        url: '/playtourEvaluate/:id',
+                    .state('evaluateUnSatisfy', {
+                        url: '/evaluateUnSatisfy/:customerId/:sessionId',
                         templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'playtourEvaluateCtrl',
+                        controller: 'evaluateUnSatisfyCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.playtourEvaluate',
-                                    ['js/controllers/playtour/playtourEvaluateCtrl.js',
-                                     'styles/playtour/playtourEvaluate.less?ver='+wxVersion],
-                                    'js/views/playtour/playtourEvaluate.html?ver='+wxVersion);
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.evaluateUnSatisfy',
+                                    ['js/controllers/playtour/evaluateUnSatisfyCtrl.js',
+                                     'styles/playtour/evaluateCommon.less?ver='+wxVersion,
+                                     'styles/playtour/evaluateUnSatisfy.less?ver='+wxVersion],
+                                    'js/views/playtour/evaluateUnSatisfy.html?ver='+wxVersion);
                             }
                         }
                     })

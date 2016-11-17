@@ -149,10 +149,10 @@ public class PayController {
            return  "orderDetailPay";
         }
         else if(serviceType.equals("customerPay")){
-            return  "native/playtourIndex";
+            return  "native/evaluateSendHeart";
         }
         else if(serviceType.equals("playtourPay")){
-            return  "native/playtourEvaluate";
+            return  "native/evaluateFinish";
         }
         else if("handfootmouth".equals(serviceType)){
             model.addAttribute("payPrice", 26.8);

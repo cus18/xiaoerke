@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/keeper/"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+    <title>咨询评价</title>
+    <script src="js/libs/jquery-2.1.3.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="js/evaluate/evaluateFinish.js?ver=1.0"></script>
+    <link rel="stylesheet" href="/keeper/styles/nativeCommon.less" type="text/css" />
+    <link rel="stylesheet" href="/keeper/styles/playtour/evaluateCommon.less" type="text/css" />
+    <link rel="stylesheet" href="/keeper/styles/playtour/evaluateFinish.less?ver=1.0" type="text/css" />
+</head>
+<body class="evaluateFinish evaluate-common"  >
+<div class="main-box">
+    <!--头部医生信息-->
+    <div class="doctor-info tc f5 c0">
+        <div class="name  fl">
+            <img class="radius" id="headImage" ng-src="{{doctorAvatar}}" width="54" height="54" />
+            <div id="doctorName" class="doctorName">梁平</div>
+        </div>
+        <div class="heart info-box fl">
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_liwu.png" width="30" height="29"/>
+            <div class="text">收到心意：<span id="redPacket">32</span></div>
+        </div>
+        <div class="good-evaluate info-box fr">
+            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_haoping03.png" width="27" height="30"/>
+            <div class="text">好评率：<span id="starInfo">100%</span></div>
+        </div>
+    </div>
+
+
+    <div class="evaluate-result " >
+        <div class="result-show tc">
+            <div class="f8 ">
+                您已完成此次评价
+            </div>
+            <img width="37" height="37" src="">
+            <p class="f5 c3"></p>
+        </div>
+        <ul class="money-item tc " hidden>
+            <li class="  " onclick="selectMoneyItem(0,8)">
+                <a class="radius f2"><span class="f5 bold num">8</span>元</a>
+            </li>
+            <li class=" " onclick="selectMoneyItem(1,12)">
+                <a class="radius f2"><span class="f5 bold num">12</span>元</a>
+            </li>
+            <li class=" " onclick="selectMoneyItem(2,20)">
+                <a class="radius f2"><span class="f5 bold num">20</span>元</a>
+            </li>
+            <li class=" " onclick="selectMoneyItem(3,50)">
+                <a class="radius f2"><span class="f5 bold num">50</span>元</a>
+            </li>
+            <li class=" " onclick="selectMoneyItem(4,100)">
+                <a class="radius f2"><span class="f5 bold num">100</span>元</a>
+            </li>
+            <li class=" " onclick="selectMoneyItem(5,200)">
+                <a class="radius f2"><span class="f5 bold num">200</span>元</a>
+            </li>
+
+        </ul>
+        <!--支付错误提示-->
+        <div class="pay-problem tc f3" hidden>
+            亲，支付出现问题哦~
+        </div>
+        <br/><br/><br/><br/><br/><br/>
+        <button hidden class="bottom-btn commit" id="commit" disabled="true" onclick="commitSendHeart()" >我要送心意</button>
+    </div>
+</div>
+
+</body>
+</html>

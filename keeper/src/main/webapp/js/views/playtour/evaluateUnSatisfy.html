@@ -1,0 +1,47 @@
+<ion-view view-title="咨询评价"  >
+    <ion-content class="evaluateUnSatisfy evaluate-common bg1"  style="top:0;" >
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="doctor-info tc f5 c0 ">
+                <div class="name  fl">
+                    <img class="radius" id="headImage" ng-src="{{doctorAvatar}}" width="54" height="54" />
+                    <div id="doctorName" class="doctorName">{{doctorName}}</div>
+                </div>
+                <div class="heart info-box fl">
+                    <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_liwu.png" width="30" height="29"/>
+                    <div class="text">收到心意：<span id="redPacket">{{redPacket}}</span></div>
+                </div>
+                <div class="good-evaluate info-box fr">
+                    <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/playtour%2Findex_haoping03.png" width="27" height="30"/>
+                    <div class="text">好评率：<span id="starInfo">{{startNum}}%</span></div>
+                </div>
+            </div>
+            <div class="no-satisfy select-content">
+                <div class="headline f5 tc">
+                    <span class="line line-l"></span>
+                    <span class="line line-r"></span>
+                    <span class="text">哪里不满意?</span>
+                </div>
+                <ul class="noSatisfy-item">
+                    <li class="fl tc f4">
+                        <span class="" ng-click="setNo(0)">服务态度不好</span>
+                    </li>
+                    <li class="fl tc f4">
+                        <span class="" ng-click="setNo(1)">专业水平不高</span>
+                    </li>
+                    <li class="fl tc f4">
+                        <span class="" ng-click="setNo(2)">响应速度太慢</span>
+                    </li>
+                    <li class="fl tc f4">
+                        <span class="" ng-click="setNo(3)">其它</span>
+                    </li>
+                </ul>
+            </div>
+            <!--留言框-->
+            <div class="leave-word ">
+                <textarea class="f13 bg1" ng-model="info.content" placeholder="更多留言..." maxlength="100" id="content"></textarea>
+
+            </div>
+        </ion-scroll>
+    </ion-content>
+    <button  class="bottom-btn button commit" id="commit" ng-disabled="commitLock && (info.content==null ||info.content.length==0 ) "  ng-click="commitEvaluate()" >提交评价</button>
+</ion-view>
