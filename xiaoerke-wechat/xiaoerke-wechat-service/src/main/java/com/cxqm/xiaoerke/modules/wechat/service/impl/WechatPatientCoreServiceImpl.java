@@ -265,6 +265,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                                                     textMsg = "推送：亲爱的，请为上次的服务做出评价，评价后才可以继续咨询哦~" ;
                                                 }
                                                 textMsg = textMsg + "\n" +stringBuilder.toString();
+                                                LogUtils.saveLog("ZXPJ_PJYS",openId);
                                                 WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), openId, textMsg);
                                             }
                                         }
@@ -333,6 +334,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                                             }
                                             textMsg = textMsg + "\n" + stringBuilder.toString();
                                             WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), openId, textMsg);
+                                            LogUtils.saveLog("ZXPJ_PJYS", openId);
                                         }
                                     }
                                 }else{

@@ -18,6 +18,7 @@ import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseServic
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -111,6 +112,7 @@ public class PraiseCustomerController extends BaseController {
                     messageToUser = "推送：感谢您的评价，再发下您的问题，咨询医生吧~";
                 }
                 WechatUtil.sendMsgToWechat(tokenId, userId, messageToUser);
+                LogUtils.saveLog("ZXPJ_ZXYS", userId);
             }
             if ("1".equalsIgnoreCase((String)params.get("starNum1")) && result >0) {
                 Runnable thread = new SendBadEvaluationThread((HashMap)params);
