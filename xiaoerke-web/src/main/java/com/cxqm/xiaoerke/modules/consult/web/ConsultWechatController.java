@@ -93,10 +93,15 @@ public class ConsultWechatController extends BaseController {
         paramMap.put("openId", openId);
         paramMap.put("messageType", messageType);
         paramMap.put("messageContent", messageContent);
+
         if (messageType.contains("voice") || messageType.contains("video") || messageType.contains("image")) {
             paramMap.put("mediaId", mediaId);
         }
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+        sysWechatAppintInfoVo.setOpen_id(openId);
+        SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+
         try {
             String locaHostIp = HttpUtils.getRealIp(sysPropertyVoWithBLOBsVo);
             LogUtils.saveLog("ip",locaHostIp);
@@ -105,7 +110,7 @@ public class ConsultWechatController extends BaseController {
             e.printStackTrace();
         }
 
-        Runnable thread = new processUserMessageThread(paramMap,sysPropertyVoWithBLOBsVo);
+        Runnable thread = new processUserMessageThread(paramMap,sysPropertyVoWithBLOBsVo,wechatAttentionVo);
         threadExecutor.execute(thread);
 
         result.put("status", "success");
@@ -115,9 +120,11 @@ public class ConsultWechatController extends BaseController {
     public class processUserMessageThread extends Thread {
         private HashMap<String, Object> param;
         private SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo;
-        public processUserMessageThread(HashMap<String, Object> paramMap,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
+        private SysWechatAppintInfoVo wechatAttentionVo;
+        public processUserMessageThread(HashMap<String, Object> paramMap,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo,SysWechatAppintInfoVo wechatAttentionVo) {
             this.param = paramMap;
             this.sysPropertyVoWithBLOBsVo = sysPropertyVoWithBLOBsVo;
+            this.wechatAttentionVo = wechatAttentionVo;
         }
 
         public void run() {
@@ -127,10 +134,6 @@ public class ConsultWechatController extends BaseController {
             String messageType = (String) this.param.get("messageType");
             String messageContent = (String) this.param.get("messageContent");
             String serverAddress = (String) this.param.get("serverAddress");
-
-            SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
-            sysWechatAppintInfoVo.setOpen_id(openId);
-            SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
 
             String userName = openId;
             String userId = openId;
