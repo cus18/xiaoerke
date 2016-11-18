@@ -96,14 +96,16 @@ public class ConsultWechatController extends BaseController {
         if (messageType.contains("voice") || messageType.contains("video") || messageType.contains("image")) {
             paramMap.put("mediaId", mediaId);
         }
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         try {
-            String locaHostIp = HttpUtils.getRealIp();
+            String locaHostIp = HttpUtils.getRealIp(sysPropertyVoWithBLOBsVo);
             LogUtils.saveLog("ip",locaHostIp);
             paramMap.put("serverAddress",locaHostIp);
         } catch (SocketException e) {
             e.printStackTrace();
         }
-        Runnable thread = new processUserMessageThread(paramMap);
+
+        Runnable thread = new processUserMessageThread(paramMap,sysPropertyVoWithBLOBsVo);
         threadExecutor.execute(thread);
 
         result.put("status", "success");
@@ -112,13 +114,14 @@ public class ConsultWechatController extends BaseController {
 
     public class processUserMessageThread extends Thread {
         private HashMap<String, Object> param;
-
-        public processUserMessageThread(HashMap<String, Object> paramMap) {
+        private SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo;
+        public processUserMessageThread(HashMap<String, Object> paramMap,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
             this.param = paramMap;
+            this.sysPropertyVoWithBLOBsVo = sysPropertyVoWithBLOBsVo;
         }
 
         public void run() {
-            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
             //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
             String openId = (String) this.param.get("openId");
             String messageType = (String) this.param.get("messageType");

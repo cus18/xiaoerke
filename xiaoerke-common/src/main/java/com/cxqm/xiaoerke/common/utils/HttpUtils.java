@@ -6,6 +6,8 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.*;
 
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -244,40 +246,55 @@ public class HttpUtils {
 	}
 
 
-	public static String getRealIp() throws SocketException {
-		String localip = null;// 本地IP，如果没有配置外网IP则返回它
-		String netip = null;// 外网IP
-
-		Enumeration<NetworkInterface> netInterfaces =
-				NetworkInterface.getNetworkInterfaces();
-		InetAddress ip = null;
-		boolean finded = false;// 是否找到外网IP
-		while (netInterfaces.hasMoreElements() && !finded) {
-			NetworkInterface ni = netInterfaces.nextElement();
-			Enumeration<InetAddress> address = ni.getInetAddresses();
-			while (address.hasMoreElements()) {
-				ip = address.nextElement();
-				if (!ip.isSiteLocalAddress()
-						&& !ip.isLoopbackAddress()
-						&& ip.getHostAddress().indexOf(":") == -1) {// 外网IP
-					netip = ip.getHostAddress();
-					finded = true;
-					break;
-				} else if (ip.isSiteLocalAddress()
-						&& !ip.isLoopbackAddress()
-						&& ip.getHostAddress().indexOf(":") == -1) {// 内网IP
-					localip = ip.getHostAddress();
+	public static String getRealIp(SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) throws SocketException {
+			String[] ret = null;
+			try {
+				/**获得主机名*/
+				String hostName = getLocalHostName();
+				if(hostName.length()>0) {
+					/**在给定主机名的情况下，根据系统上配置的名称服务返回其 IP 地址所组成的数组。*/
+					InetAddress[] addrs = InetAddress.getAllByName(hostName);
+					if(addrs.length>0) {
+						ret = new String[addrs.length];
+						for(int i=0 ; i< addrs.length ; i++) {
+							/**.getHostAddress()   返回 IP 地址字符串（以文本表现形式）。*/
+							ret[i] = addrs[i].getHostAddress();
+						}
+					}
 				}
+
+			}catch(Exception ex) {
+				ret = null;
+			}
+		for(String s:ret){
+			if(s.contains(sysPropertyVoWithBLOBsVo.getFirstAddress()) || s.contains(sysPropertyVoWithBLOBsVo.getSecondAddress())){
+				return s;
 			}
 		}
-
-		if (netip != null && !"".equals(netip)) {
-			return netip;
-		} else {
-			return localip;
-		}
+		String s = sysPropertyVoWithBLOBsVo.getFirstAddress();
+		LogUtils.saveLog("ip address",s);
+		return s;
 	}
-    
+
+
+	/**
+	 * 或者主机名：
+	 * @return
+	 */
+	public static String getLocalHostName() {
+		String hostName;
+		try {
+			/**返回本地主机。*/
+			InetAddress addr = InetAddress.getLocalHost();
+			/**获取此 IP 地址的主机名。*/
+			hostName = addr.getHostName();
+		}catch(Exception ex){
+			hostName = "";
+		}
+
+		return hostName;
+	}
+
 	public static void main(String[] args){
 /*		String str = "";
 		try {
