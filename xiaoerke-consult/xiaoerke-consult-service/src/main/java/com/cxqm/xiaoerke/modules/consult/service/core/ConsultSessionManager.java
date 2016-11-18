@@ -25,6 +25,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import java.net.InetSocketAddress;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -788,6 +789,29 @@ public enum ConsultSessionManager {
                                          * 剩余时间计算(暂不需要)
                                          */
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
+                                        responseNews.append("\n");
+                                        if(StringUtils.isNotNull(toCsUserName)){
+                                            responseNews.append(toCsUserName+"医生:");
+                                        }else{
+                                            responseNews.append("宝大夫医生:");
+                                        }
+                                        Query queryNew = (new Query()).addCriteria(where("csUserId").regex(toCsUserId));
+                                        List<ConsultSessionStatusVo> resultList = consultRecordService.getConsultSessionStatusVo(query);
+                                        int serviceNum = 0 ;
+                                        if(resultList != null && resultList.size() > 0){
+                                            serviceNum = resultList.size() ;
+                                        }
+                                        responseNews.append("已服务:"+serviceNum+"人  ");
+                                        Integer sing = Integer.parseInt(patientRegisterPraiseService.getCustomerStarSingById(toCsUserId).get("startNum").toString()) + 200;
+                                        Integer count = Integer.parseInt(patientRegisterPraiseService.getCustomerStarCountById(toCsUserId).get("startNum").toString()) + 200;
+                                        float num = (float) sing / count;
+                                        DecimalFormat df = new DecimalFormat("0.00");//格式化小数
+                                        String s = df.format(num);//返回的是String类型
+                                        responseNews.append("好评"+s+"%  ");
+                                        Random random = new Random();
+                                        int minRandom = 90 ;
+                                        int daShang = random.nextInt(3)+minRandom ;
+                                        responseNews.append("打赏"+daShang+"%  ");
                                         sendMsg = responseNews.toString();
                                         WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
                                         jsonObject.put("notifyType", "1004");
@@ -853,6 +877,29 @@ public enum ConsultSessionManager {
                                             }
                                         }
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
+                                        responseNews.append("\n");
+                                        if(StringUtils.isNotNull(toCsUserName)){
+                                            responseNews.append(toCsUserName+"医生:");
+                                        }else{
+                                            responseNews.append("宝大夫医生:");
+                                        }
+                                        Query queryNew = (new Query()).addCriteria(where("csUserId").regex(toCsUserId));
+                                        List<ConsultSessionStatusVo> resultList = consultRecordService.getConsultSessionStatusVo(queryNew);
+                                        int serviceNum = 0 ;
+                                        if(resultList != null && resultList.size() > 0){
+                                            serviceNum = resultList.size() ;
+                                        }
+                                        responseNews.append("已服务:"+serviceNum+"人  ");
+                                        Integer sing = Integer.parseInt(patientRegisterPraiseService.getCustomerStarSingById(toCsUserId).get("startNum").toString()) + 200;
+                                        Integer count = Integer.parseInt(patientRegisterPraiseService.getCustomerStarCountById(toCsUserId).get("startNum").toString()) + 200;
+                                        float num = (float) sing / count;
+                                        DecimalFormat df = new DecimalFormat("0.00");//格式化小数
+                                        String s = df.format(num);//返回的是String类型
+                                        responseNews.append("好评"+s+"%  ");
+                                        Random random = new Random();
+                                        int minRandom = 90 ;
+                                        int daShang = random.nextInt(3)+minRandom ;
+                                        responseNews.append("打赏"+daShang+"%  ");
                                         sendMsg = responseNews.toString();
                                         WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
                                         if(ConstantUtil.PAY_SUCCESS.getVariable().equals(consultSessionStatusVo.getPayStatus())){

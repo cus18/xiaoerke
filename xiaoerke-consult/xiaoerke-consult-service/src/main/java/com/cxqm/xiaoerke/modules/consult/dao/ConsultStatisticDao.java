@@ -28,4 +28,6 @@ public interface ConsultStatisticDao {
     List<Map<String, Object>> getValidateConsultAndFeedBackCounts(Map<String,Object> map);
 
     List<Map<String, Object>> getSendHeartPersonAndMoneyCounts(Map<String,Object> map);
+
+    List<HashMap<String,Object>> selectConsultStatisticVoByMap(HashMap<String,Object> map);
 }

@@ -513,4 +513,10 @@
     and DATE_FORMAT(c.createtime,'%Y-%m-%d') BETWEEN #{startDate} and #{endDate}
     GROUP BY DATE_FORMAT(c.createtime,'%Y-%m-%d')
   </select>
+
+  <select id="selectConsultStatisticVoByMap" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+    select * from customerEvaluation
+    where consult_session_id = #{sessionId,jdbcType=INTEGER} AND  openid = #{openId,jdbcType=VARCHAR}
+    AND doctorId = #{doctorId,jdbcType=VARCHAR}
+  </select>
 </mapper>

@@ -7,6 +7,7 @@ var moneyNum = 0;
 var ptm3Flag = 1;//显示输入其它金额
 var indexFlag = 0;
 var customerId;
+var consultStatus="";
 
 $(function(){
    // $('.evalhavemoney').hide();//收到心意钱
@@ -246,6 +247,7 @@ var GetQueryString = function(name)
 function getCustomerInfo(){
     recordLogs("ZXPJXX_PJ");
     customerId=GetQueryString("customerId");
+    consultStatus=GetQueryString("consultStatus");
     $.ajax({
         url:"interaction/user/findCustomerEvaluation",// 跳转到 action
         async:false,
@@ -258,7 +260,7 @@ function getCustomerInfo(){
             var starInfo=data.starInfo;
             var doctorInfo=data.doctorHeadImage;
             if(evaluation.serviceAttitude==0){
-                window.location.href = "wxPay/patientPay.do?serviceType=customerPay&customerId="+customerId;
+                window.location.href = "wxPay/patientPay.do?serviceType=customerPay&customerId="+customerId+"&consultStatus="+consultStatus;
             }else if(evaluation.serviceAttitude==1){
                 $("#playtourStar").html("不满意");
                 $(".evalhavemoney").hide();
@@ -422,6 +424,7 @@ var doRefresh = function(){
 
 function updateCustomerInfo() {
     customerId = GetQueryString("customerId");
+    consultStatus=GetQueryString("consultStatus");
     var redPacket;
     if(moneyNum == 0){
         redPacket = $("#getMoney").val();
@@ -463,7 +466,7 @@ function updateCustomerInfo() {
                                 url: "interaction/user/updateCustomerEvaluation",// 跳转到 action
                                 async: false,
                                 type: 'POST',
-                                data: "{'id':'" + customerId + "','redPacket':'" + redPacket + "'}",
+                                data: "{'id':'" + customerId + "','consultStatus':'"+consultStatus+"','redPacket':'" + redPacket + "'}",
                                 contentType: "application/json; charset=utf-8",
                                 dataType: 'json',
                                 success: function (data) {

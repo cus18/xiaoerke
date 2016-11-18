@@ -97,9 +97,30 @@ public class PraiseCustomerController extends BaseController {
     String updateCustomerEvaluation(@RequestBody Map<String, Object> params) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         int result = patientRegisterPraiseService.updateCustomerEvaluation(params);
-        if ("1".equalsIgnoreCase((String)params.get("starNum1")) && result >0) {
-            Runnable thread = new SendBadEvaluationThread((HashMap)params);
-            threadExecutor.execute(thread);
+        String consultStatus = StringUtils.isNotNull(String.valueOf(params.get("consultStatus")))?String.valueOf(params.get("consultStatus")):"";
+        if(StringUtils.isNotNull(consultStatus)){
+            if(result > 0 && "wantConsult".equalsIgnoreCase(consultStatus)){
+                SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                String tokenId = (String) userWechatParam.get("token");
+                String customerId = (String) params.get("id");
+                Map registerPraiseInfo = patientRegisterPraiseService.selectCustomerEvaluation(customerId);
+                String userId = (String) registerPraiseInfo.get("openid");
+                String messageToUser = sysPropertyVoWithBLOBsVo.getPushEvaluateAndConsultToUser();
+                if(StringUtils.isNull(messageToUser)){
+                    messageToUser = "推送：感谢您的评价，再发下您的问题，咨询医生吧~";
+                }
+                WechatUtil.sendMsgToWechat(tokenId, userId, messageToUser);
+            }
+            if ("1".equalsIgnoreCase((String)params.get("starNum1")) && result >0) {
+                Runnable thread = new SendBadEvaluationThread((HashMap)params);
+                threadExecutor.execute(thread);
+            }
+        }else{
+            if ("1".equalsIgnoreCase((String)params.get("starNum1")) && result >0) {
+                Runnable thread = new SendBadEvaluationThread((HashMap)params);
+                threadExecutor.execute(thread);
+            }
         }
         return result + "";
     }

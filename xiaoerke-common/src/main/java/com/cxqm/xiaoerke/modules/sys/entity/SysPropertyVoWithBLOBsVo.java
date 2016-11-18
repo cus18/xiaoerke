@@ -27,6 +27,56 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String nonRealtimeDoctorBindingUrl;
 
+    private String whiteNameList ;
+
+    private String consultLimitNum ;
+
+    private String pushNeedEvaluateMsgToUser ;
+
+    private String distributorList ;
+
+    public String getDistributorList() {
+        return distributorList;
+    }
+
+    public void setDistributorList(String distributorList) {
+        this.distributorList = distributorList;
+    }
+
+    public String getPushEvaluateAndConsultToUser() {
+        return pushEvaluateAndConsultToUser;
+    }
+
+    public void setPushEvaluateAndConsultToUser(String pushEvaluateAndConsultToUser) {
+        this.pushEvaluateAndConsultToUser = pushEvaluateAndConsultToUser;
+    }
+
+    private String pushEvaluateAndConsultToUser ;
+
+    public String getPushNeedEvaluateMsgToUser() {
+        return pushNeedEvaluateMsgToUser;
+    }
+
+    public void setPushNeedEvaluateMsgToUser(String pushNeedEvaluateMsgToUser) {
+        this.pushNeedEvaluateMsgToUser = pushNeedEvaluateMsgToUser;
+    }
+
+    public String getConsultLimitNum() {
+        return consultLimitNum;
+    }
+
+    public void setConsultLimitNum(String consultLimitNum) {
+        this.consultLimitNum = consultLimitNum;
+    }
+
+    public String getWhiteNameList() {
+        return whiteNameList;
+    }
+
+    public void setWhiteNameList(String whiteNameList) {
+        this.whiteNameList = whiteNameList;
+    }
+
     public String getNonRealtimeLoginUrl() {
         return nonRealtimeLoginUrl;
     }
