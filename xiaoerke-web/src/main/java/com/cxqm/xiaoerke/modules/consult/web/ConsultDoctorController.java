@@ -391,6 +391,7 @@ public class ConsultDoctorController extends BaseController {
                                             st = st.replace("CUSTOMERID", (String)evaluationMap.get("id"));
                                             st = st.replace("SESSIONID",sessionId);
                                         }
+                                        break;
                                     } else {
                                         st = "嗨，亲爱的,本次咨询已关闭。";
                                         break;
