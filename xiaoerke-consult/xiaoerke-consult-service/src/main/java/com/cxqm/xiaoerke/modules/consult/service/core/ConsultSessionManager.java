@@ -801,11 +801,11 @@ public enum ConsultSessionManager {
                                         if(resultList != null && resultList.size() > 0){
                                             serviceNum = resultList.size() ;
                                         }
-                                        responseNews.append("已服务:"+serviceNum+"人  ");
+                                        responseNews.append("已服务"+serviceNum+"人  ");
                                         Integer sing = Integer.parseInt(patientRegisterPraiseService.getCustomerStarSingById(toCsUserId).get("startNum").toString()) + 200;
                                         Integer count = Integer.parseInt(patientRegisterPraiseService.getCustomerStarCountById(toCsUserId).get("startNum").toString()) + 200;
-                                        float num = (float) sing / count;
-                                        DecimalFormat df = new DecimalFormat("0.00");//格式化小数
+                                        float num = (float) sing / count*100;
+                                        DecimalFormat df = new DecimalFormat("0");//格式化小数
                                         String s = df.format(num);//返回的是String类型
                                         responseNews.append("好评"+s+"%  ");
                                         Random random = new Random();
@@ -889,11 +889,11 @@ public enum ConsultSessionManager {
                                         if(resultList != null && resultList.size() > 0){
                                             serviceNum = resultList.size() ;
                                         }
-                                        responseNews.append("已服务:"+serviceNum+"人  ");
+                                        responseNews.append("已服务"+serviceNum+"人  ");
                                         Integer sing = Integer.parseInt(patientRegisterPraiseService.getCustomerStarSingById(toCsUserId).get("startNum").toString()) + 200;
                                         Integer count = Integer.parseInt(patientRegisterPraiseService.getCustomerStarCountById(toCsUserId).get("startNum").toString()) + 200;
-                                        float num = (float) sing / count;
-                                        DecimalFormat df = new DecimalFormat("0.00");//格式化小数
+                                        float num = (float) sing / count*100;
+                                        DecimalFormat df = new DecimalFormat("0");//格式化小数
                                         String s = df.format(num);//返回的是String类型
                                         responseNews.append("好评"+s+"%  ");
                                         Random random = new Random();
