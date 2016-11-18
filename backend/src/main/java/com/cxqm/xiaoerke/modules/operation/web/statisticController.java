@@ -94,6 +94,7 @@ public class statisticController extends BaseController {
                 transRecordData(startDate, endDate);
             }
         } else {
+            endDate = new Date();
             transRecordData(startDate, endDate);
         }
         resultMap.put("status", "success");
