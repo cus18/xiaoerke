@@ -1,12 +1,14 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultBadEvaluateRemindUserDao;
+import com.cxqm.xiaoerke.modules.consult.dao.ConsultStatisticDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultBadEvaluateRemindUserVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultBadEvaluateRemindUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,6 +22,9 @@ public class ConsultBadEvaluateRemindUserServiceImpl implements ConsultBadEvalua
         @Autowired
         ConsultBadEvaluateRemindUserDao consultBadEvaluateRemindUserDao;
 
+        @Autowired
+        private ConsultStatisticDao consultStatisticDao ;
+
         @Override
         public List<String> findConsultRemindUserId() {
                 List<String> result = consultBadEvaluateRemindUserDao.getCsUserOpenIds();
@@ -28,6 +33,17 @@ public class ConsultBadEvaluateRemindUserServiceImpl implements ConsultBadEvalua
                 }else{
                         return null;
                 }
+        }
+
+        /**
+         *  jiangzhongge add 2016-11-21 16:45:50
+         *  查询是否患者咨询是否进行过评价
+         * @param map
+         * @return
+         */
+        @Override
+        public List<HashMap<String, Object>> selectConsultStatisticVoByMap(HashMap<String, Object> map) {
+                return consultStatisticDao.selectConsultStatisticVoByMap(map);
         }
 
         @Override
