@@ -12,10 +12,11 @@
         <result column="sys_user_id" property="userId" jdbcType="VARCHAR"/>
         <result column="flag" property="flag" jdbcType="VARCHAR"/>
         <result column="consult_number" property="consultNumber" jdbcType="INTEGER"/>
+        <result column="charge_type" property="chargeType" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, title, create_time, state, update_time,sys_user_id_cs, sys_user_id ,source,flag,consult_number
+        id, title, create_time, state, update_time,sys_user_id_cs, sys_user_id ,source,flag,consult_number,charge_type
     </sql>
     
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -65,10 +66,15 @@
         <if test="flag != null">
             and flag = #{flag,jdbcType=VARCHAR}
         </if>
+        <if test="chargeType != null">
+            and charge_type = #{chargeType,jdbcType=VARCHAR}
+        </if>
         <if test="userId != null">
             and sys_user_id = #{userId,jdbcType=VARCHAR} ORDER BY create_time desc
         </if>
-
+        <if test="chargeType != null">
+            and charge_type = #{chargeType,jdbcType=VARCHAR}
+        </if>
     </select>
 
     <select id="selectConsultSession" resultMap="BaseResultMap"
@@ -103,6 +109,9 @@
         </if>
         <if test="flag != null">
             and flag = #{flag,jdbcType=VARCHAR}
+        </if>
+        <if test="chargeType != null">
+            and charge_type = #{chargeType,jdbcType=VARCHAR}
         </if>
     </select>
 
@@ -150,15 +159,13 @@
     <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession" useGeneratedKeys="true"
             keyProperty="id">
         insert into consult_session (id, title, create_time,
-          state, update_time,sys_user_id_cs, sys_user_id,source,flag
+          state, update_time,sys_user_id_cs, sys_user_id,source,flag,charge_type
           )
         values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
            #{status,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP} ,#{csUserId,jdbcType=VARCHAR}
-          ,#{userId,jdbcType=VARCHAR},#{source,jdbcType=VARCHAR},#{flag,jdbcType=VARCHAR}
+          ,#{userId,jdbcType=VARCHAR},#{source,jdbcType=VARCHAR},#{flag,jdbcType=VARCHAR},#{chargeType,jdbcType=VARCHAR}
           )
    </insert>
-
-
 
     <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession"
             useGeneratedKeys="true" keyProperty="id">
@@ -194,6 +201,9 @@
             <if test="consultNumber != null">
                 consult_number,
             </if>
+            <if test="chargeType != null">
+                charge_type,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -226,6 +236,9 @@
             </if>
             <if test="consultNumber != null">
                #{consultNumber,jdbcType=INTEGER},
+            </if>
+            <if test="chargeType != null">
+                #{charge_type,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -260,10 +273,12 @@
             <if test="consultNumber != null">
                 consult_number = #{consultNumber,jdbcType=INTEGER},
             </if>
+            <if test="chargeType != null">
+                charge_type = #{chargeType,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-
 
     <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
         update consult_session
@@ -274,10 +289,10 @@
           sys_user_id_cs = #{csUserId,jdbcType=VARCHAR},
           sys_user_id = #{userId,jdbcType=VARCHAR},
           source = #{source,jdbcType=VARCHAR},
-          flag = #{flag,jdbcType=VARCHAR}
+          flag = #{flag,jdbcType=VARCHAR},
+          charge_type = #{chargeType,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
-
 
     <select id="getOnlineCsListInfo" resultType="java.util.HashMap">
         SELECT su.*, cdi.department, consultSession.currentCount currentCount
