@@ -34,6 +34,16 @@ public class ConsultSession  implements Serializable {
 
     private Integer consultNumber;
 
+    private String chargeType;
+
+    public String getChargeType() {
+        return chargeType;
+    }
+
+    public void setChargeType(String chargeType) {
+        this.chargeType = chargeType;
+    }
+
     public Integer getConsultNumber() {
         return consultNumber;
     }
