@@ -5,6 +5,8 @@ var starNum1=3;//对医生的评价，0无评价 1不满意 3满意 5非常满�
 
 var redPacket =12; // 最终支付钱数
 
+var consultStatus = "" ;
+
 var sendHeartInit= function (){
     customerId=GetQueryString("customerId");
     sessionId=GetQueryString("sessionId");
@@ -25,7 +27,7 @@ function GetQueryString(name)
 // 根据页面参数获取医生信息
 function getCustomerEvaluation(){
     recordLogs("ZXPJXX_PJ");
-
+    consultStatus=GetQueryString("consultStatus");
     $.ajax({
         url:"interaction/user/findCustomerEvaluation",// 跳转到 action
         async:false,
@@ -41,7 +43,7 @@ function getCustomerEvaluation(){
             $("#evaluateSendHeart").html(data.serverNum);
             $("#starInfo").html(parseFloat(data.starInfo.startNum)*100+"%");
             if(data.evaluation.serviceAttitude!=0){
-                window.location.href = "wxPay/patientPay.do?serviceType=playtourPay&customerId="+customerId;
+                window.location.href = "wxPay/patientPay.do?serviceType=playtourPay&customerId="+customerId+"&consultStatus="+consultStatus;
             }
             else{
                 $(".main-box").show();
@@ -75,6 +77,7 @@ function selectMoney(index,moneyItem){
 //提交评价
 function commitEvaluate(){
     var content=$("#content").val();
+    consultStatus=GetQueryString("consultStatus");
     if (redPacket != "" && redPacket > 0  ) {
         recordLogs("ZXPJSXY_JE");
         $.ajax({
@@ -103,7 +106,7 @@ function commitEvaluate(){
                                 url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
                                 async:false,
                                 type:'POST',
-                                data:"{'id':'"+customerId+"','starNum1':'"+starNum1+"','content':'"+content+"','redPacket':'"+redPacket+"','sessionId':'"+sessionId+"'}",
+                                data:"{'id':'"+customerId+"','consultStatus':'"+consultStatus+"','starNum1':'"+starNum1+"','content':'"+content+"','redPacket':'"+redPacket+"','sessionId':'"+sessionId+"'}",
                                 contentType: "application/json; charset=utf-8",
                                 dataType:'json',
                                 success:function(data) {
@@ -138,7 +141,7 @@ function commitEvaluate(){
             url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
             async:false,
             type:'POST',
-            data:"{'id':'"+customerId+"','starNum1':'"+starNum1+"','content':'"+content+"','redPacket':'"+redPacket+"','sessionId':'"+sessionId+"'}",
+            data:"{'id':'"+customerId+"','consultStatus':'"+consultStatus+"','starNum1':'"+starNum1+"','content':'"+content+"','redPacket':'"+redPacket+"','sessionId':'"+sessionId+"'}",
             contentType: "application/json; charset=utf-8",
             dataType:'json',
             success:function(data) {
