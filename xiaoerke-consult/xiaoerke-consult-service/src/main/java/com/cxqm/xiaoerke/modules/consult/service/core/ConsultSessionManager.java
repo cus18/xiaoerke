@@ -789,14 +789,14 @@ public enum ConsultSessionManager {
                                          * 剩余时间计算(暂不需要)
                                          */
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
-                                        responseNews.append("\n");
+                                        responseNews.append("\n\n");
                                         if(StringUtils.isNotNull(toCsUserName)){
                                             responseNews.append(toCsUserName+"医生:");
                                         }else{
                                             responseNews.append("宝大夫医生:");
                                         }
                                         Query queryNew = (new Query()).addCriteria(where("csUserId").regex(toCsUserId));
-                                        List<ConsultSessionStatusVo> resultList = consultRecordService.getConsultSessionStatusVo(query);
+                                        List<ConsultSessionStatusVo> resultList = consultRecordService.getConsultSessionStatusVo(queryNew);
                                         int serviceNum = 0 ;
                                         if(resultList != null && resultList.size() > 0){
                                             serviceNum = resultList.size() ;

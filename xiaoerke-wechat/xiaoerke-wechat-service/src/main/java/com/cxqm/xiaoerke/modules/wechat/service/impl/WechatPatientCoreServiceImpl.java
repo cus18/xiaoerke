@@ -239,7 +239,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                                         for(int j =0 ;j<csUserIds.length;j++){
                                             praiseParam.put("doctorId", csUserIds[j]);
                                             List<HashMap<String, Object>> praiseList = consultStatisticDao.selectConsultStatisticVoByMap(praiseParam);
-                                            if(praiseList != null && "0".equalsIgnoreCase(String.valueOf(praiseList.get(0).get("serviceAttitude")))){
+                                            if(praiseList != null && !"0".equalsIgnoreCase(String.valueOf(praiseList.get(0).get("serviceAttitude")))){
                                                 status.put("state", "yes");
                                                 break ;
                                             }
@@ -307,7 +307,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                                     for(int j =0 ;j<csUserIds.length;j++){
                                         praiseParam.put("doctorId", csUserIds[j]);
                                         List<HashMap<String, Object>> praiseList = consultStatisticDao.selectConsultStatisticVoByMap(praiseParam);
-                                        if(praiseList != null && "0".equalsIgnoreCase(String.valueOf(praiseList.get(0).get("serviceAttitude")))){
+                                        if(praiseList != null && !"0".equalsIgnoreCase(String.valueOf(praiseList.get(0).get("serviceAttitude")))){
                                             status.put("state", "yes");
                                             break ;
                                         }
