@@ -3,7 +3,7 @@ var  customerId;//此次咨询会话的ID
 var sessionId ; //咨询ID
 var starNum1=3;//对医生的评价，0无评价 1不满意 3满意 5非常满意
 
-var redPacket =12; // 最终支付钱数
+var redPacket =20; // 最终支付钱数
 
 var consultStatus = "" ;
 
