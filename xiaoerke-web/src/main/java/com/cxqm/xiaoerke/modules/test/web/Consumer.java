@@ -3,14 +3,16 @@ package com.cxqm.xiaoerke.modules.test.web;
 /**
  * Created by 赵得良 on 2016/11/21 0021.
  */
+
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
+
 public class Consumer implements Runnable {
 
 
     private BlockingQueue<String> queue;
-    private static final int      DEFAULT_RANGE_FOR_SLEEP = 1000;
+    private static final int DEFAULT_RANGE_FOR_SLEEP = 1000;
 
     public Consumer(BlockingQueue<String> queue) {
         this.queue = queue;
