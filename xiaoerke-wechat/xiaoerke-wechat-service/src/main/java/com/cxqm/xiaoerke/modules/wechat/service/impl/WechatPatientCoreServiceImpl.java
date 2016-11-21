@@ -149,6 +149,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         // xml请求解析
         if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)) {
             // 事件类型
+
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
             String token = (String) userWechatParam.get("token");
             String eventType = xmlEntity.getEvent();

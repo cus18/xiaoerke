@@ -392,7 +392,7 @@ public class ConsultWechatController extends BaseController {
                             messageContent = sbf.toString();
                             System.out.println(messageContent);
                         }
-                        obj.put("content", URLDecoder.decode(messageContent, "utf-8"));
+                        obj.put("content",URLDecoder.decode(messageContent, "utf-8"));
 
                     } else {
                         if (messageType.contains("image")) {

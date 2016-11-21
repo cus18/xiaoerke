@@ -37,7 +37,7 @@ public class ConsultBadEvaluateRemindUserServiceImpl implements ConsultBadEvalua
 
         /**
          *  jiangzhongge add 2016-11-21 16:45:50
-         *  查询是否患者咨询是否进行过评价
+         *  查询患者上次咨询是否进行评价
          * @param map
          * @return
          */
