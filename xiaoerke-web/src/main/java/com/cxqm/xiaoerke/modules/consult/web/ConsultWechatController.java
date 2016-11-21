@@ -264,7 +264,7 @@ public class ConsultWechatController extends BaseController {
                                                 stringBuilder.append("'>评价医生>></a>");
                                                 String textMsg = sysPropertyVoWithBLOBsVo.getPushNeedEvaluateMsgToUser();
                                                 if(StringUtils.isNull(textMsg)){
-                                                    textMsg = "推送：亲爱的，请为上次的服务做出评价，评价后才可以继续咨询哦~" ;
+                                                    textMsg = "亲爱的，请为上次的服务做出评价，评价后才可以继续咨询哦~" ;
                                                 }
                                                 textMsg = textMsg + "\n" +stringBuilder.toString();
                                                 LogUtils.saveLog("ZXPJ_PJYS", openId);
@@ -326,7 +326,7 @@ public class ConsultWechatController extends BaseController {
                                             stringBuilder.append("'>评价医生>></a>");
                                             String textMsg = sysPropertyVoWithBLOBsVo.getPushNeedEvaluateMsgToUser();
                                             if (StringUtils.isNull(textMsg)) {
-                                                textMsg = "推送：亲爱的，请为上次的服务做出评价，评价后才可以继续咨询哦~";
+                                                textMsg = "亲爱的，请为上次的服务做出评价，评价后才可以继续咨询哦~";
                                             }
                                             textMsg = textMsg + "\n" + stringBuilder.toString();
                                             WechatUtil.sendMsgToWechat(token, openId, textMsg);
