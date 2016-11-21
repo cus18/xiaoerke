@@ -12,6 +12,8 @@ public enum ConstantUtil {
     NOT_INSTANT_CONSULTATION("notInstantConsultation"),
     PAY_SUCCESS("paySuccess"),
     USE_TIMES("useTimes"),
+    USE_MONTH_TIMES("monthTimes"),
+    USE_PER_TIMES("perTimes"),
     WITHIN_24HOURS("within24Hours"),
     DISTRIBUTOR("distributor"),
     CONSULTDOCTOR("consultDoctor"),

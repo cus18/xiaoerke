@@ -326,11 +326,12 @@ public class ConsultWechatController extends BaseController {
 
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
             String token = (String) userWechatParam.get("token");
-            //判断上次收费咨询是不是在24个小时以内 zdl
+            //查询最近的一次咨询状态
             Query query = new Query(new Criteria().where("userId").is(openId))
                     .with(new Sort(Sort.Direction.DESC, "firstTransTime")).limit(1);
             List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.queryUserMessageList(query);
             richConsultSession.setPayStatus(ConstantUtil.USE_TIMES.getVariable());
+            String chargeType = ConstantUtil.USE_MONTH_TIMES.getVariable();
             int messageFlag = 0;
             Integer monthTime = 0;
             ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(richConsultSession.getUserId());
@@ -397,6 +398,7 @@ public class ConsultWechatController extends BaseController {
                         } else if (consultSessionPropertyVo.getPermTimes() > 0) {
                             content = "嗨，亲爱的，你还可享受" + consultSessionPropertyVo.getPermTimes() + "次24小时咨询服务哦^-^";
                             richConsultSession.setPayStatus(ConstantUtil.PAY_SUCCESS.getVariable());
+                            chargeType = ConstantUtil.USE_PER_TIMES.getVariable();
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                         } else if (messageFlag == 0) {
@@ -415,6 +417,10 @@ public class ConsultWechatController extends BaseController {
                     }
                 }
             }
+            ConsultSession consultSession = new ConsultSession();
+            consultSession.setId(consultSession.getId());
+            consultSession.setChargeType(chargeType);
+            consultSessionService.updateSessionInfo(consultSession);
             return consultSessionPropertyVo != null ? (consultSessionPropertyVo.getMonthTimes() + consultSessionPropertyVo.getPermTimes()) : null;
         }
 
