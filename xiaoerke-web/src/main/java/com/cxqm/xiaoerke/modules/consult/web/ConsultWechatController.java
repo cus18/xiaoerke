@@ -470,13 +470,13 @@ public class ConsultWechatController extends BaseController {
                     .with(new Sort(Sort.Direction.DESC, "firstTransTime")).limit(1);
             List<ConsultSessionStatusVo> consultSessionStatusVos = consultRecordService.queryUserMessageList(query);
             richConsultSession.setPayStatus(ConstantUtil.USE_TIMES.getVariable());
-            String chargeType = ConstantUtil.NOT_DOC.getVariable();
+            String chargeType = "dis";
             int messageFlag = 0;
             Integer monthTime = 0;
             ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(richConsultSession.getUserId());
             //首次咨询
             if (consultSessionPropertyVo == null) {
-                chargeType = ConstantUtil.USE_MONTH_TIMES.getVariable();
+                chargeType = "mt";
                 consultSessionPropertyVo = new ConsultSessionPropertyVo();
                 consultSessionPropertyVo.setCreateTime(new Date());
                 consultSessionPropertyVo.setMonthTimes(4);
@@ -509,7 +509,7 @@ public class ConsultWechatController extends BaseController {
                     } else if (monthTime == 4) {
                         LogUtils.saveLog("ZXYQ_RK_TS_2", openId);
                     }
-                    chargeType = ConstantUtil.USE_MONTH_TIMES.getVariable();
+                    chargeType = "mt";
                     onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                 }
             } else {
@@ -517,7 +517,7 @@ public class ConsultWechatController extends BaseController {
                 //咨询时间小于20小时
                 if (pastMillisSecond < 24 * 60 * 60 * 1000) {
                     richConsultSession.setPayStatus(ConstantUtil.WITHIN_24HOURS.getVariable());
-                    chargeType = ConstantUtil.WITHIN_24HOURS.getVariable();
+                    chargeType = "24h";
                 } else {
                     String sysUserId = richConsultSession.getUserId();
                     //判断剩余次数,consultSessionStatusVo打标记
@@ -537,11 +537,11 @@ public class ConsultWechatController extends BaseController {
                             } else if (monthTime == 4) {
                                 LogUtils.saveLog("ZXYQ_RK_TS_2", openId);
                             }
-                            chargeType = ConstantUtil.USE_MONTH_TIMES.getVariable();
+                            chargeType = "mt";
                         } else if (consultSessionPropertyVo.getPermTimes() > 0) {
                             content = "嗨，亲爱的，你还可享受" + consultSessionPropertyVo.getPermTimes() + "次24小时咨询服务哦^-^";
                             richConsultSession.setPayStatus(ConstantUtil.PAY_SUCCESS.getVariable());
-                            chargeType = ConstantUtil.USE_PER_TIMES.getVariable();
+                            chargeType = "pt";
                             WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                         } else if (messageFlag == 0) {
