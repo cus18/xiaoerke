@@ -790,7 +790,7 @@ public enum ConsultSessionManager {
                                          */
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
                                         responseNews.append("\n\n");
-                                        responseNews.append("<a href='http://s68.baodf.com/titan/consultDoctorHome#/consultDoctorHome/"+toCsUserId+"'");
+                                        responseNews.append("<a href='http://s68.baodf.com/titan/consultDoctorHome#/consultDoctorHome/"+toCsUserId+"'>");
                                         if(StringUtils.isNotNull(toCsUserName)){
                                             responseNews.append(toCsUserName+"医生:");
                                         }else{
