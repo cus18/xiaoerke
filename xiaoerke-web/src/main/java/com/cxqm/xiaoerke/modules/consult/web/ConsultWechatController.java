@@ -557,7 +557,7 @@ public class ConsultWechatController extends BaseController {
                 }
             }
             ConsultSession consultSession = new ConsultSession();
-            consultSession.setId(consultSession.getId());
+            consultSession.setId(richConsultSession.getId());
             consultSession.setChargeType(chargeType);
             consultSessionService.updateSessionInfo(consultSession);
             return consultSessionPropertyVo != null ? (consultSessionPropertyVo.getMonthTimes() + consultSessionPropertyVo.getPermTimes()) : null;
