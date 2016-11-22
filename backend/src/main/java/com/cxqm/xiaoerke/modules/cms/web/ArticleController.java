@@ -93,12 +93,7 @@ public class ArticleController extends BaseController {
 	public String form(Article article, Model model) {
 		// 如果当前传参有子节点，则选择取消传参选择
 		if (article.getCategory()!=null && StringUtils.isNotBlank(article.getCategory().getId())){
-			List<Category> list = categoryService.findByParentId(article.getCategory().getId(), Site.getCurrentSiteId());
-			if (list.size() > 0){
-				article.setCategory(null);
-			}else{
-				article.setCategory(categoryService.get(article.getCategory().getId()));
-			}
+			article.setCategory(categoryService.get(article.getCategory().getId()));
 		}
 		article.setArticleData(articleDataService.get(article.getId()));
 //		if (article.getCategory()=null && StringUtils.isNotBlank(article.getCategory().getId())){
