@@ -107,34 +107,34 @@ public class ConsultUserController extends BaseController {
     @RequestMapping(value = "/getUserSessionTimesByUserId", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> getUserSessionTimesByUserId(@RequestParam(required=true) String userId) {
+    Map<String, Object> getUserSessionTimesByUserId(@RequestParam(required = true) String userId) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
-        HashMap<String,Object> response = new HashMap<String, Object>();
+        HashMap<String, Object> response = new HashMap<String, Object>();
         ConsultSession consultSession = new ConsultSession();
         consultSession.setUserId(userId);
         List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSession);
-        response.put("userSessionTimes",consultSessions == null ? 1 : consultSessions.size());
+        response.put("userSessionTimes", consultSessions == null ? 1 : consultSessions.size());
         return response;
     }
 
     @RequestMapping(value = "/getCurrentUserByCSId", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> getCurrentUserByCSId(@RequestParam(required=true) String csUserId) {
+    Map<String, Object> getCurrentUserByCSId(@RequestParam(required = true) String csUserId) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
         Map<String, Object> response = new HashMap<String, Object>();
         ConsultSession consultSession = new ConsultSession();
-        if(StringUtils.isNull(csUserId)){
+        if (StringUtils.isNull(csUserId)) {
             csUserId = UserUtils.getUser().getId();
         }
         consultSession.setCsUserId(csUserId);
         consultSession.setStatus(ConsultSession.STATUS_ONGOING);
 
         List<ConsultSession> consultSessions = null;//consultSessionService.getAlreadyAccessUsers(consultSession);
-        if(consultSessions!=null && consultSessions.size()>0){
-            response.put("alreadyAccessUsers",consultSessions);
+        if (consultSessions != null && consultSessions.size() > 0) {
+            response.put("alreadyAccessUsers", consultSessions);
         }
         response.put("status", 0);
         response.put("msg", "OK");
@@ -144,14 +144,15 @@ public class ConsultUserController extends BaseController {
 
     /**
      * 聊天咨询文件上传
+     *
      * @param file
      * @param data
      * @return {"status","success"}
      * @throws UnsupportedEncodingException
      */
-    @RequestMapping(value="/uploadMediaFile",method = {RequestMethod.POST, RequestMethod.GET})
-    public HashMap<String,Object> UploadFile(@RequestParam("file") MultipartFile file,
-                                             @RequestParam("data") String data) throws UnsupportedEncodingException {
+    @RequestMapping(value = "/uploadMediaFile", method = {RequestMethod.POST, RequestMethod.GET})
+    public HashMap<String, Object> UploadFile(@RequestParam("file") MultipartFile file,
+                                              @RequestParam("data") String data) throws UnsupportedEncodingException {
         HashMap<String, Object> response = consultRecordService.uploadMediaFile(file, data);
         return response;
     }
@@ -161,46 +162,48 @@ public class ConsultUserController extends BaseController {
      */
     @RequestMapping(value = "/getUserList", method = {RequestMethod.POST, RequestMethod.GET})
     public
-    @ResponseBody Map<String, Object> getUserList(@RequestBody Map<String, Object> params) {
+    @ResponseBody
+    Map<String, Object> getUserList(@RequestBody Map<String, Object> params) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
-        Map<String,Object> response = new HashMap<String, Object>();
+        Map<String, Object> response = new HashMap<String, Object>();
         Integer pageNo = (Integer) params.get("pageNo");
         Integer pageSize = (Integer) params.get("pageSize");
         Integer dateNum = (Integer) params.get("dateNum");
         String csUserId = String.valueOf(params.get("CSDoctorId"));
         Date date = null;
-        if(dateNum != 10000){
+        if (dateNum != 10000) {
             String dateTemp;
             Calendar ca = Calendar.getInstance();
-            if(dateNum == 0){
+            if (dateNum == 0) {
                 ca.set(Calendar.HOUR, 0);
                 ca.set(Calendar.SECOND, 0);
                 ca.set(Calendar.MINUTE, 0);
-            }else{
+            } else {
                 ca.add(Calendar.DATE, -dateNum);// 30为增加的天数，可以改变的
             }
             dateTemp = DateUtils.DateToStr(ca.getTime(), "datetime");
-            date = DateUtils.StrToDate(dateTemp,"datetime");
+            date = DateUtils.StrToDate(dateTemp, "datetime");
         }
 
         Query query;
-        if(dateNum == 10000){
-            if(csUserId.equals("allCS")){
+        if (dateNum == 10000) {
+            if (csUserId.equals("allCS")) {
                 query = new Query().with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
-            }else {
+            } else {
                 query = new Query().addCriteria(new Criteria().where("csUserId").regex(csUserId)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
             }
-        }else if(!csUserId.equals("allCS")){
+        } else if (!csUserId.equals("allCS")) {
             query = new Query().addCriteria(new Criteria().where("csUserId").regex(csUserId).andOperator(Criteria.where("lastMessageTime").gte(date))).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
         } else {
-            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));;
+            query = new Query().addCriteria(Criteria.where("lastMessageTime").gte(date)).with(new Sort(Sort.Direction.DESC, "lastMessageTime"));
+            ;
         }
 
         PaginationVo<ConsultSessionStatusVo> pagination = consultRecordService.getUserMessageList(pageNo, pageSize, query);
         List<ConsultSessionStatusVo> resultList = new ArrayList<ConsultSessionStatusVo>();
-        if(pagination.getDatas()!=null && pagination.getDatas().size()>0){
-            for(ConsultSessionStatusVo consultSessionStatusVo :pagination.getDatas()){
+        if (pagination.getDatas() != null && pagination.getDatas().size() > 0) {
+            for (ConsultSessionStatusVo consultSessionStatusVo : pagination.getDatas()) {
                 ConsultSessionStatusVo vo = new ConsultSessionStatusVo();
                 vo.setUserName(consultSessionStatusVo.getUserName());
                 vo.setUserId(consultSessionStatusVo.getUserId());
@@ -208,14 +211,14 @@ public class ConsultUserController extends BaseController {
                 vo.setCsUserName(consultSessionStatusVo.getCsUserName());
                 vo.setLastMessageTime(consultSessionStatusVo.getLastMessageTime());
                 //根据userId查询CsUserId
-                ConsultSession consultSession =new ConsultSession();
+                ConsultSession consultSession = new ConsultSession();
                 consultSession.setId(Integer.valueOf(consultSessionStatusVo.getSessionId()));
                 List<ConsultSession> sessionList = consultSessionService.getCsUserByUserId(consultSession);
-                if(sessionList!=null && sessionList.size() > 0){
+                if (sessionList != null && sessionList.size() > 0) {
                     String csUserName = "";
-                    for(ConsultSession session :sessionList){
-                        if(session!=null){
-                            csUserName = csUserName + " " +session.getNickName();
+                    for (ConsultSession session : sessionList) {
+                        if (session != null) {
+                            csUserName = csUserName + " " + session.getNickName();
                         }
                     }
                     vo.setCsUserName(csUserName);
@@ -260,73 +263,73 @@ public class ConsultUserController extends BaseController {
     HashMap<String, Object> getCurrentUserList(@RequestBody Map<String, Object> params) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 
-        HashMap<String,Object> response = new HashMap<String, Object>();
+        HashMap<String, Object> response = new HashMap<String, Object>();
         PaginationVo<ConsultRecordMongoVo> pagination = null;
         String csUserId = String.valueOf(params.get("csUserId"));
-        String csuserType =(String)params.get("userType");
-        ConcurrentHashMap<String,Object> needPayList = new ConcurrentHashMap<String, Object>();
-        LogUtils.saveLog("left list--------------------------start------------------",csUserId);
-        if(StringUtils.isNotNull(csUserId)){
+        String csuserType = (String) params.get("userType");
+        ConcurrentHashMap<String, Object> needPayList = new ConcurrentHashMap<String, Object>();
+        LogUtils.saveLog("left list--------------------------start------------------", csUserId);
+        if (StringUtils.isNotNull(csUserId)) {
             int pageNo = (Integer) params.get("pageNo");
             int pageSize = (Integer) params.get("pageSize");
-            List<HashMap<String,Object>> responseList = new ArrayList<HashMap<String, Object>>();
+            List<HashMap<String, Object>> responseList = new ArrayList<HashMap<String, Object>>();
 
             ConsultSession consultSessionSearch = new ConsultSession();
             consultSessionSearch.setCsUserId(csUserId);
             consultSessionSearch.setStatus(ConsultSession.STATUS_ONGOING);
             List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSessionSearch);
-            LogUtils.saveLog("left list--------------------------min------------------"+consultSessions.size(),csUserId);
-            if(consultSessions!=null && consultSessions.size()>0){
-                for(ConsultSession consultSession :consultSessions){
-                    HashMap<String,Object> searchMap = new HashMap<String, Object>();
+            LogUtils.saveLog("left list--------------------------min------------------" + consultSessions.size(), csUserId);
+            if (consultSessions != null && consultSessions.size() > 0) {
+                for (ConsultSession consultSession : consultSessions) {
+                    HashMap<String, Object> searchMap = new HashMap<String, Object>();
                     RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(consultSession.getId());
-                    LogUtils.saveLog("richConsultSession--------"+richConsultSession,csUserId);
-                    Query sessionquery = (new Query()).addCriteria(where("sessionId").is(""+consultSession.getId()+""));
+                    LogUtils.saveLog("richConsultSession--------" + richConsultSession, csUserId);
+                    Query sessionquery = (new Query()).addCriteria(where("sessionId").is("" + consultSession.getId() + ""));
                     ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(sessionquery);
-                    LogUtils.saveLog("consultSessionStatusVo------------"+consultSessionStatusVo,csUserId);
+                    LogUtils.saveLog("consultSessionStatusVo------------" + consultSessionStatusVo, csUserId);
 
-                    if(richConsultSession !=null && StringUtils.isNotNull(richConsultSession.getUserId())){
+                    if (richConsultSession != null && StringUtils.isNotNull(richConsultSession.getUserId())) {
                         String userId = richConsultSession.getUserId();
                         Query query = new Query(where("userId").is(userId)).with(new Sort(Direction.ASC, "createDate"));
                         pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "temporary");
-                        searchMap.put("patientId",userId);
-                        searchMap.put("source",richConsultSession.getSource());
-                        if(richConsultSession.getSource().contains("ykdl")){
-                            searchMap.put("patientName", "YKDL-"+richConsultSession.getUserName());
-                        }else if(richConsultSession.getSource().contains("wjy")){
-                            searchMap.put("patientName", "微家园-"+richConsultSession.getUserName());
-                        }else if(richConsultSession.getSource().contains("bhq")){
-                            searchMap.put("patientName", "宝护圈-"+richConsultSession.getUserName());
-                        }else{
+                        searchMap.put("patientId", userId);
+                        searchMap.put("source", richConsultSession.getSource());
+                        if (richConsultSession.getSource().contains("ykdl")) {
+                            searchMap.put("patientName", "YKDL-" + richConsultSession.getUserName());
+                        } else if (richConsultSession.getSource().contains("wjy")) {
+                            searchMap.put("patientName", "微家园-" + richConsultSession.getUserName());
+                        } else if (richConsultSession.getSource().contains("bhq")) {
+                            searchMap.put("patientName", "宝护圈-" + richConsultSession.getUserName());
+                        } else {
                             searchMap.put("patientName", richConsultSession.getUserName());
                         }
-                        searchMap.put("serverAddress",richConsultSession.getServerAddress());
-                        searchMap.put("sessionId",richConsultSession.getId());
-                        searchMap.put("isOnline",true);
-                        searchMap.put("messageNotSee",true);
-                        searchMap.put("dateTime",richConsultSession.getCreateTime());
-                        searchMap.put("consultValue",ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
+                        searchMap.put("serverAddress", richConsultSession.getServerAddress());
+                        searchMap.put("sessionId", richConsultSession.getId());
+                        searchMap.put("isOnline", true);
+                        searchMap.put("messageNotSee", true);
+                        searchMap.put("dateTime", richConsultSession.getCreateTime());
+                        searchMap.put("consultValue", ConsultUtil.transformCurrentUserListData(pagination.getDatas()));
                         //新增咨询聊天数量 2016-9-8 18:43:49 jiangzg
-                        if(richConsultSession.getConsultNum() != null){
-                            if(richConsultSession.getConsultNum() < 0){
-                                searchMap.put("consultNum",richConsultSession.getConsultNum());
-                            }else{
-                                searchMap.put("consultNum",0);
+                        if (richConsultSession.getConsultNum() != null) {
+                            if (richConsultSession.getConsultNum() < 0) {
+                                searchMap.put("consultNum", richConsultSession.getConsultNum());
+                            } else {
+                                searchMap.put("consultNum", 0);
                                 richConsultSession.setConsultNum(0);
                                 sessionRedisCache.putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
                             }
-                        }else{
+                        } else {
                             richConsultSession.setConsultNum(0);
                             sessionRedisCache.putSessionIdConsultSessionPair(richConsultSession.getId(), richConsultSession);
                         }
 
-                        if(null !=consultSessionStatusVo && consultSessionStatusVo.getSource().contains("wxcxqm")){
-                            if(StringUtils.isNotNull(consultSessionStatusVo.getPayStatus())){
-                                if (ConstantUtil.PAY_SUCCESS.getVariable().indexOf(consultSessionStatusVo.getPayStatus())>-1) {
+                        if (null != consultSessionStatusVo && consultSessionStatusVo.getSource().contains("wxcxqm")) {
+                            if (StringUtils.isNotNull(consultSessionStatusVo.getPayStatus())) {
+                                if (ConstantUtil.PAY_SUCCESS.getVariable().indexOf(consultSessionStatusVo.getPayStatus()) > -1) {
                                     searchMap.put("notifyType", "1001");
-                                } else if(ConstantUtil.NO_PAY.getVariable().indexOf(consultSessionStatusVo.getPayStatus())>-1){
+                                } else if (ConstantUtil.NO_PAY.getVariable().indexOf(consultSessionStatusVo.getPayStatus()) > -1) {
                                     searchMap.put("notifyType", "1002");
-                                } else if(ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable().indexOf(consultSessionStatusVo.getPayStatus()) > -1) {
+                                } else if (ConstantUtil.NOT_INSTANT_CONSULTATION.getVariable().indexOf(consultSessionStatusVo.getPayStatus()) > -1) {
                                     searchMap.put("notifyType", "1003");
                                 } else {
                                     searchMap.put("notifyType", "1004");
@@ -356,7 +359,7 @@ public class ConsultUserController extends BaseController {
         } else {
             response.put("alreadyJoinPatientConversation", "");
         }
-        LogUtils.saveLog("left list--------------------------end------------------",csUserId);
+        LogUtils.saveLog("left list--------------------------end------------------", csUserId);
 
         return response;
     }
@@ -539,23 +542,23 @@ public class ConsultUserController extends BaseController {
 
         Map<String, Object> response = new HashMap<String, Object>();
         HashMap<String, Object> request = new HashMap<String, Object>();
-        String source = "" ;
-        String thirdId = "" ;
-        String userPhone ="" ;
-        String userName = "" ;
+        String source = "";
+        String thirdId = "";
+        String userPhone = "";
+        String userName = "";
         Integer userSex = 3;            //代表没有传性别信息
         String remoteUrl = "";
         String headimgurl = "";
         if (params.containsKey("source")) {
             source = String.valueOf(params.get("source"));
         }
-        if(StringUtils.isNotNull(source)) {
+        if (StringUtils.isNotNull(source)) {
             if (source.contains("wjy")) {
                 thirdId = String.valueOf(params.get("thirdId"));
                 source = "WJY";
                 userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone"))) ? String.valueOf(params.get("patientPhone")) : "";
                 userName = StringUtils.isNotNull(String.valueOf(params.get("patientName"))) ? String.valueOf(params.get("patientName")) : "";
-                if(StringUtils.isNotNull(userName)){
+                if (StringUtils.isNotNull(userName)) {
                     userName = EmojiFilter.coverEmoji(userName);
                 }
                 if (params.get("patientSex") != null && params.get("patientSex") != "") {
@@ -576,7 +579,7 @@ public class ConsultUserController extends BaseController {
                 source = "COOP_BHQ";
                 userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone"))) ? String.valueOf(params.get("patientPhone")) : "";
                 userName = StringUtils.isNotNull(String.valueOf(params.get("patientName"))) ? String.valueOf(params.get("patientName")) : "";
-                if(StringUtils.isNotNull(userName)){
+                if (StringUtils.isNotNull(userName)) {
                     userName = EmojiFilter.coverEmoji(userName);
                 }
                 thirdId = String.valueOf(params.get("thirdId"));
@@ -590,22 +593,22 @@ public class ConsultUserController extends BaseController {
             } else if (source.contains("ykdl") || source.contains("YKDL")) {
                 source = "COOP_YKDL";
                 thirdId = String.valueOf(params.get("thirdId"));
-                if(StringUtils.isNotNull(thirdId)){
-                    if(StringUtils.isNotNull(String.valueOf(params.get("remoteUrl")))){
+                if (StringUtils.isNotNull(thirdId)) {
+                    if (StringUtils.isNotNull(String.valueOf(params.get("remoteUrl")))) {
                         remoteUrl = String.valueOf(params.get("remoteUrl"));
-                    }else{
+                    } else {
                         remoteUrl = "https://wxsp.ykhys.com/thirdparty/baodaifu/customer_info";
                     }
                     String method = "POST";
                     String content_type = "json";
-                    String data = "{\"user_uuid\":\""+thirdId+"\"}";
+                    String data = "{\"user_uuid\":\"" + thirdId + "\"}";
                     String str = CoopConsultUtil.getCurrentUserInfo(remoteUrl, method, content_type, null, data, 4);
-                    if(StringUtils.isNotNull(str)){
+                    if (StringUtils.isNotNull(str)) {
                         JSONObject jsonObject = JSONObject.fromObject(str);
-                        if(jsonObject.containsKey("error_msg") && "success".equalsIgnoreCase(String.valueOf(jsonObject.get("error_msg")))){
+                        if (jsonObject.containsKey("error_msg") && "success".equalsIgnoreCase(String.valueOf(jsonObject.get("error_msg")))) {
                             headimgurl = StringUtils.isNotNull(String.valueOf(jsonObject.get("headimgurl"))) ? String.valueOf(jsonObject.get("headimgurl")) : "";
                             userName = StringUtils.isNotNull(String.valueOf(jsonObject.get("nickname"))) ? String.valueOf(jsonObject.get("nickname")) : "";
-                            if(StringUtils.isNotNull(userName)){
+                            if (StringUtils.isNotNull(userName)) {
                                 userName = EmojiFilter.coverEmoji(userName);
                             }
                             if (jsonObject.get("sex") != null && jsonObject.get("sex") != "") {
@@ -617,17 +620,17 @@ public class ConsultUserController extends BaseController {
                             request.put("userSex", userSex);
                             request.put("source", source);
                             request.put("thirdId", thirdId);
-                            response.put("headimgurl",headimgurl);
-                            response.put("userName",userName);
-                        }else{
+                            response.put("headimgurl", headimgurl);
+                            response.put("userName", userName);
+                        } else {
                             response.put("status", "failure");
-                            return response ;
+                            return response;
                         }
-                    }else{
+                    } else {
                         response.put("status", "failure");
-                        return response ;
+                        return response;
                     }
-                }else{
+                } else {
                     response.put("status", "failure");
                     return response;
                 }
@@ -644,7 +647,7 @@ public class ConsultUserController extends BaseController {
         }
 //        System.out.println("========================userPhone="+userPhone+"=userName="+userName+"=userSex="+userSex+"=remoteUrl="+remoteUrl+"=source="+source+"=thirdId="+thirdId+"=sys_user_id="+sys_user_id);
         Map result = userInfoService.createOrUpdateThirdPartPatientInfo(request);
-        System.out.println("========================patientId="+result.get("sys_user_id")+"==result=="+result.get("result"));
+        System.out.println("========================patientId=" + result.get("sys_user_id") + "==result==" + result.get("result"));
         if (result != null && result.size() > 0) {
             if (String.valueOf(result.get("result")).equals("1") && "WJY".equalsIgnoreCase(source)) {
                 Runnable thread = new saveCoopThirdBabyInfoThread(request);
@@ -659,17 +662,17 @@ public class ConsultUserController extends BaseController {
     @RequestMapping(value = "/addMePermTimes", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> addMePermTimes2Users(HttpServletRequest request, HttpSession session,@RequestBody Map<String, Object> params){
-        String openid = WechatUtil.getOpenId(session,request);
-        String shareType = (String)params.get("shareType");
-        String nowDate = DateUtils.DateToStr(new Date(),"yyyy-MM");
+    Map<String, Object> addMePermTimes2Users(HttpServletRequest request, HttpSession session, @RequestBody Map<String, Object> params) {
+        String openid = WechatUtil.getOpenId(session, request);
+        String shareType = (String) params.get("shareType");
+        String nowDate = DateUtils.DateToStr(new Date(), "yyyy-MM");
         Query queryInLog = new Query();
         queryInLog.addCriteria(new Criteria("title").is(shareType).andOperator(
                 new Criteria("create_date").gte(nowDate)).andOperator(new Criteria("parameters").in(openid)));
         long pushBaodfNum = mongoDBServiceLog.queryCount(queryInLog);
-        if(pushBaodfNum==0){
+        if (pushBaodfNum == 0) {
             consultSessionPropertyService.addPermTimes(openid);
-            LogUtils.saveLog(shareType,openid);
+            LogUtils.saveLog(shareType, openid);
         }
 
         return null;
@@ -677,6 +680,7 @@ public class ConsultUserController extends BaseController {
 
     public class saveCoopThirdBabyInfoThread implements Runnable {
         private HashMap<String, Object> params;
+
         public saveCoopThirdBabyInfoThread(HashMap<String, Object> params) {
             this.params = params;
         }
@@ -700,16 +704,16 @@ public class ConsultUserController extends BaseController {
                     coopThirdBabyInfoVo.setSource(String.valueOf(params.get("source")));
                     coopThirdBabyInfoVo.setSysUserId(String.valueOf(params.get("sys_user_id")));
                     try {
-                        if(jsonObject.get("birthday") != null && jsonObject.get("birthday") != ""){
+                        if (jsonObject.get("birthday") != null && jsonObject.get("birthday") != "") {
                             coopThirdBabyInfoVo.setBirthday(new SimpleDateFormat("yyyy-mm-DD").parse(String.valueOf(jsonObject.get("birthday"))));
-                        }else{
+                        } else {
                             coopThirdBabyInfoVo.setBirthday(new SimpleDateFormat("yyyy-mm-DD").parse("0000-00-00"));
                         }
                         coopThirdBabyInfoVo.setGender(StringUtils.isNotNull(String.valueOf(jsonObject.get("sex"))) ? String.valueOf(jsonObject.get("sex")) : "");
                         coopThirdBabyInfoVo.setName(StringUtils.isNotNull(String.valueOf(jsonObject.get("name"))) ? String.valueOf(jsonObject.get("name")) : "");
                         coopThirdBabyInfoVo.setStatus(StringUtils.isNotNull(String.valueOf(jsonObject.get("id"))) ? String.valueOf(jsonObject.get("id")) : "");
                         int num = coopThirdBabyInfoService.addCoopThirdBabyInfo(coopThirdBabyInfoVo);
-                        System.out.println("=====第"+i+"次============== num ==="+num);
+                        System.out.println("=====第" + i + "次============== num ===" + num);
                     } catch (Exception e) {
                         e.printStackTrace();
                         System.out.println(e.getCause());
@@ -721,21 +725,20 @@ public class ConsultUserController extends BaseController {
 
     /**
      * jiangzg add 2016-9-8 18:47:33  将redis中consultSession，consultNum重置
-     *
      */
     @RequestMapping(value = "/modifyUserConsultNum", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> modifyUserConsultNum(@RequestBody Map<String, Object> params){
+    Map<String, Object> modifyUserConsultNum(@RequestBody Map<String, Object> params) {
         String conSessionId = String.valueOf(params.get("sessionId"));
-        if(StringUtils.isNotNull(conSessionId)){
+        if (StringUtils.isNotNull(conSessionId)) {
             Integer sessionId = Integer.valueOf(conSessionId);
-            RichConsultSession richConsultSession =  sessionRedisCache.getConsultSessionBySessionId(sessionId);
-            if(richConsultSession != null){
+            RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+            if (richConsultSession != null) {
                 int currentNum = richConsultSession.getConsultNum();
-                if(currentNum != 0){
+                if (currentNum != 0) {
                     richConsultSession.setConsultNum(0);
-                    sessionRedisCache.putSessionIdConsultSessionPair(sessionId,richConsultSession);
+                    sessionRedisCache.putSessionIdConsultSessionPair(sessionId, richConsultSession);
                 }
             }
         }
