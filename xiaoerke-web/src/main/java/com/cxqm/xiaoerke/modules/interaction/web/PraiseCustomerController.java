@@ -109,7 +109,7 @@ public class PraiseCustomerController extends BaseController {
                 String userId = (String) registerPraiseInfo.get("openid");
                 String messageToUser = sysPropertyVoWithBLOBsVo.getPushEvaluateAndConsultToUser();
                 if(StringUtils.isNull(messageToUser)){
-                    messageToUser = "推送：感谢您的评价，再发下您的问题，咨询医生吧~";
+                    messageToUser = "感谢您的评价，再发下您的问题，咨询医生吧~";
                 }
                 WechatUtil.sendMsgToWechat(tokenId, userId, messageToUser);
                 LogUtils.saveLog("ZXPJ_ZXYS", userId);
