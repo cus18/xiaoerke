@@ -1422,7 +1422,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             memberService.sendExtendOldMemberWechatMessage(xmlEntity.getFromUserName());
 
 
-            WechatUtil.sendNoTextMsgToWechat(token,xmlEntity.getFromUserName(),"yqaJ41i1PvSGTduElBSqMVEkIRVK9AQkuGuEFHieqLr7uDPbxMeC7HH-UPTF0AgQ",1);
+            WechatUtil.sendNoTextMsgToWechat(token,xmlEntity.getFromUserName(),"XdHp8YKja_ft7lQr3o6fe8_GYJ0aueoe9pNJekOqnxM",1);
         } else if ("36".equals(xmlEntity.getEventKey())) {
             List<Article> articleList = new ArrayList<Article>();
             // 创建图文消息
