@@ -1409,21 +1409,17 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //			respMessage = MessageUtil.textMessageToXml(textMessage);
             Map parameter = systemService.getWechatParameter();
             String token = (String) parameter.get("token");
-//            List<Article> articleList = new ArrayList<Article>();
-//            Article article = new Article();
-//            article.setTitle("三甲医院妇儿专家    咨询秒回不等待");
-//            article.setDescription("小儿内科:       24小时全天 \n\n小儿皮肤科/保健科:   8:00 ~ 23:00\n\n妇产科:   8:00 ~ 23:00\n" +
-//                    "\n小儿其他专科:   19:00 ~ 21:00\n\n" +
-//                    "(外科、眼科、耳鼻喉科、口腔科、预防接种科、中医科)\n\n点击左下角键盘,输入内容或语音即可咨询");
-//            article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E6%8E%A8%E9%80%81%E6%B6%88%E6%81%AF2.png");
-//            article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR&key=f5c31ae61525f82ed83c573369e70b8f9b853c238066190fb5eb7b8640946e0a090bbdb47e79b6d2e57b615c44bd82c5&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=dG5W6eOP3JU1%2Fo3JXw19SFBAh1DgpSlQrAXTyirZuj970HMU7TYojM4D%2B2LdJI9n");
-//            articleList.add(article);
-//            WechatUtil.senImgMsgToWechat(token, xmlEntity.getFromUserName(), articleList);
+            List<Article> articleList = new ArrayList<Article>();
+            Article article = new Article();
+            article.setTitle("三甲医院妇儿专家    咨询秒回不等待");
+            article.setDescription("小儿内科:       24小时全天 \n\n小儿皮肤科/保健科:   8:00 ~ 23:00\n\n妇产科:   8:00 ~ 23:00\n" +
+                    "\n小儿其他专科:   19:00 ~ 21:00\n\n" +
+                    "(外科、眼科、耳鼻喉科、口腔科、预防接种科、中医科)\n\n点击左下角键盘,输入内容或语音即可咨询");
+            article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E9%A6%96%E9%A1%B5.png");
+            article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR&key=f5c31ae61525f82ed83c573369e70b8f9b853c238066190fb5eb7b8640946e0a090bbdb47e79b6d2e57b615c44bd82c5&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=dG5W6eOP3JU1%2Fo3JXw19SFBAh1DgpSlQrAXTyirZuj970HMU7TYojM4D%2B2LdJI9n");
+            articleList.add(article);
+            WechatUtil.senImgMsgToWechat(token, xmlEntity.getFromUserName(), articleList);
             memberService.sendExtendOldMemberWechatMessage(xmlEntity.getFromUserName());
-
-
-            WechatUtil.sendNoTextMsgToWechat(token,xmlEntity.getFromUserName(),"VqbZoh6NyIk5kmVZ0AVT-P5zYuneY-amd00aMzccsqY",1);
-//            WechatUtil.sendNoTextMsgToWechat(token,xmlEntity.getFromUserName(),"XdHp8YKja_ft7lQr3o6fe8_GYJ0aueoe9pNJekOqnxM",1);
         } else if ("36".equals(xmlEntity.getEventKey())) {
             List<Article> articleList = new ArrayList<Article>();
             // 创建图文消息
