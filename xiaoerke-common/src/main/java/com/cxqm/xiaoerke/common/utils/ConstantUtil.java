@@ -1,13 +1,10 @@
 package com.cxqm.xiaoerke.common.utils;
 
-import com.cxqm.xiaoerke.common.config.Global;
-
 /**
  * modify 得良
  */
 public enum ConstantUtil {
 
-    SERVER_ADDRESS(Global.getConfig("SERVER_ADDRESS")),
     NO_PAY("noPay"),
     NOT_INSTANT_CONSULTATION("notInstantConsultation"),
     PAY_SUCCESS("paySuccess"),
