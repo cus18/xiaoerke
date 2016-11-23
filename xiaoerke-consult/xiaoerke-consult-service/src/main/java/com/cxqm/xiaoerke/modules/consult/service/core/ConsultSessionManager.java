@@ -25,6 +25,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import java.net.InetSocketAddress;
+import java.net.SocketException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.Map.Entry;
@@ -1050,6 +1051,7 @@ public enum ConsultSessionManager {
     }
 
     public void checkDoctorChannelStatus() {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         if (csUserConnectionTimeMapping != null) {
             Iterator<Entry<String, Date>> it2 = csUserConnectionTimeMapping.entrySet().iterator();
             while (it2.hasNext()) {
@@ -1075,7 +1077,11 @@ public enum ConsultSessionManager {
                 JSONObject jsonObj = new JSONObject();
                 jsonObj.put("type", "4");
                 jsonObj.put("notifyType", "0015");
-                jsonObj.put("notifyAddress", ConstantUtil.SERVER_ADDRESS.getVariable());
+                try {
+                    jsonObj.put("notifyAddress", HttpUtils.getRealIp(sysPropertyVoWithBLOBsVo));
+                } catch (SocketException e) {
+                    e.printStackTrace();
+                }
                 TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
                 entry.getValue().writeAndFlush(frame.retain());
                 csUserConnectionTimeMapping.put(entry.getKey(), new Date());
