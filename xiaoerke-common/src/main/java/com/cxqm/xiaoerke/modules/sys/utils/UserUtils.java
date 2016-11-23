@@ -5,6 +5,7 @@ package com.cxqm.xiaoerke.modules.sys.utils;
 
 import java.util.List;
 
+import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
@@ -15,6 +16,7 @@ import com.cxqm.xiaoerke.modules.sys.entity.Office;
 import com.cxqm.xiaoerke.modules.sys.entity.Role;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.security.SystemAuthorizingRealm.Principal;
+import org.springframework.context.ApplicationContext;
 
 /**
  * 用户工具类
@@ -23,8 +25,8 @@ import com.cxqm.xiaoerke.modules.sys.security.SystemAuthorizingRealm.Principal;
  */
 public class UserUtils {
 	
-	private static String appName = Global.getConfig("web.app.name");
-	private static boolean isBackend = "backend".equals(appName);
+	private static String applicationName = SpringContextHolder.getApplicationContext().getApplicationName();
+	private static boolean isBackend = applicationName.split("/")[1].equals("backend")?true:false;//得良 modify
 	
 	public static final String USER_CACHE = "userCache";
 	public static final String USER_CACHE_ID_ = "id_";
