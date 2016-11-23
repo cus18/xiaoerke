@@ -75,6 +75,7 @@ public class UtilServiceImpl implements UtilService {
                 }
             }
             String identify = ChangzhuoMessageUtil.sendIdentifying(num);
+            //如果不是生产环境
             if (sysPropertyVoWithBLOBsVo.getAppId().indexOf("wx0baf90e904df0117") == -1) {
                 identify = "123456";
             }
