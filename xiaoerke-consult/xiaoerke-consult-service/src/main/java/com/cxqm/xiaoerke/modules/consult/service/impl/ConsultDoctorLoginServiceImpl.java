@@ -61,7 +61,7 @@ public class ConsultDoctorLoginServiceImpl implements ConsultDoctorLoginService 
         String openid = WechatUtil.getOpenId(session, request);
         String passeord = String.valueOf(params.get("password"));
         String status = utilService.bindUser4ConsultDoctor(username, passeord, openid);
-        User user = systemService.getUserByLoginName(passeord);
+        User user = systemService.getUserByLoginName(username);
         UserUtils.putCache("user", user);
         result.put("status", "failure");
         if (status.equals("1") && StringUtils.isNotNull(passeord) && StringUtils.isNotNull(username)) {
