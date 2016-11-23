@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.sys.service;
 
 
 import com.cxqm.xiaoerke.modules.sys.entity.PatientVo;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.ValidateBean;
 
 import java.util.Map;
@@ -16,7 +17,7 @@ public interface UtilService {
 
 	int updateValidateCode(ValidateBean validateBean);
 
-	Map<String, Object> sendIdentifying(String num);
+	Map<String, Object> sendIdentifying(String num,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo);
 
 	String bindUser(String num, String code, String openid);
 

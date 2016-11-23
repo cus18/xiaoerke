@@ -154,8 +154,9 @@ public class LoginController extends BaseController{
 	@ResponseBody
 	Map<String, Object> getUserCode(@RequestBody Map<String, Object> params) {
 		System.out.print("getCode()...."+new Date());
+		SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
 		String userPhone = (String) params.get("userPhone");
-		return utilService.sendIdentifying(userPhone);
+		return utilService.sendIdentifying(userPhone,sysPropertyVoWithBLOBsVo);
 	}
     
 }
