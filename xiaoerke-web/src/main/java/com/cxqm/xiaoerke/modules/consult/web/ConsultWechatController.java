@@ -254,7 +254,7 @@ public class ConsultWechatController extends BaseController {
                                             }else{
                                                 praiseParamMap.put("consultSessionId", Integer.valueOf(consultSessionStatusVoList.get(0).getSessionId()));
                                                 List<Map<String, Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParamMap);
-                                                if(sysPropertyVoWithBLOBsVo.getDistributorList().contains(String.valueOf(praiseList.get(0).get("sysDoctorId")))){
+                                                if(sysPropertyVoWithBLOBsVo.getDistributorList().contains(String.valueOf(praiseList.get(0).get("doctorId")))){
                                                     createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
                                                 }else{
                                                     StringBuilder stringBuilder = new StringBuilder();
@@ -320,7 +320,7 @@ public class ConsultWechatController extends BaseController {
                                         }else {
                                             praiseParamMap.put("consultSessionId", Integer.valueOf(consultSessionStatusVoList.get(0).getSessionId()));
                                             List<Map<String, Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParamMap);
-                                            if (sysPropertyVoWithBLOBsVo.getDistributorList().contains(String.valueOf(praiseList.get(0).get("sysDoctorId")))) {
+                                            if (sysPropertyVoWithBLOBsVo.getDistributorList().contains(String.valueOf(praiseList.get(0).get("doctorId")))) {
                                                 createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
                                             } else {
                                                 StringBuilder stringBuilder = new StringBuilder();
