@@ -43,13 +43,13 @@ public class UtilServiceImpl implements UtilService {
     private BabyBaseInfoService babyBaseInfoService;
 
 
-    public void init(){
+    public void init() {
         //在这里加载缓存..
         utilDao.getIdentifying("18510525441");
     }
 
     @Override
-    public int updateValidateCode(ValidateBean validateBean){
+    public int updateValidateCode(ValidateBean validateBean) {
         return utilDao.updateValidateCode(validateBean);
     }
 
@@ -61,8 +61,8 @@ public class UtilServiceImpl implements UtilService {
      * status为1表示获取验证码成功，为0表示获取验证码失败
      */
     @Override
-    public Map<String, Object> sendIdentifying(String num) {
-        System.out.print("sendIdentifying()...."+new Date());
+    public Map<String, Object> sendIdentifying(String num, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
+        System.out.print("sendIdentifying()...." + new Date());
         HashMap<String, Object> response = new HashMap<String, Object>();
         if (num != null) {
             ValidateBean validateBean = utilDao.getIdentifying(num);
@@ -74,12 +74,10 @@ public class UtilServiceImpl implements UtilService {
                     return response;
                 }
             }
-
             String identify = ChangzhuoMessageUtil.sendIdentifying(num);
-
-            //根据手机号查询或创建用户  有则查，没有则创建
-            identify = "123456";
-            //PatientVo PatientVo = CreateUser(num);
+            if (sysPropertyVoWithBLOBsVo.getAppId().indexOf("wx0baf90e904df0117") == -1) {
+                identify = "123456";
+            }
             ValidateBean bean = new ValidateBean();
             bean.setId(UUID.randomUUID().toString().replaceAll("-", ""));
             bean.setUserPhone(num);
@@ -153,7 +151,7 @@ public class UtilServiceImpl implements UtilService {
     }
 
     @Override
-    public String bindUser4ConsultDoctor(String mobile, String verifyCode, String openId){
+    public String bindUser4ConsultDoctor(String mobile, String verifyCode, String openId) {
         String response = null;
         //根据用户的手机号，来判断短信下发的code是否还有效
         ValidateBean validateBean = utilDao.getIdentifying(mobile);
@@ -170,11 +168,10 @@ public class UtilServiceImpl implements UtilService {
                 if (User.USER_TYPE_DISTRIBUTOR.equalsIgnoreCase(userType)) {
                     CreateUser(mobile, openId, "distributor");
                     response = "1";//验证码有效，且完成账户绑定
-                }else if(User.USER_TYPE_CONSULTDOCTOR.equalsIgnoreCase(userType)){
+                } else if (User.USER_TYPE_CONSULTDOCTOR.equalsIgnoreCase(userType)) {
                     CreateUser(mobile, openId, "consultDoctor");
                     response = "1";//验证码有效，且完成账户绑定
-                }
-                else
+                } else
                     response = "2";//客服未认证
             } else {
                 response = "2";//客服未认证
@@ -230,7 +227,7 @@ public class UtilServiceImpl implements UtilService {
                 accountInfo.setUpdatedTime(new Date());
                 accountService.saveOrUpdateAccountInfo(accountInfo);
             }
-        }else if(type.equals("distributor")||type.equals("consultDoctor")){
+        } else if (type.equals("distributor") || type.equals("consultDoctor")) {
             User userSearch = new User();
             userSearch.setLoginName(num);
             Map user = userDao.getUserByLoginName(userSearch);
@@ -267,7 +264,7 @@ public class UtilServiceImpl implements UtilService {
                 accountService.saveOrUpdateAccountInfo(accountInfo);
             }
 
-        }else if (type.equals("patient")) {
+        } else if (type.equals("patient")) {
             User userSearch = new User();
             userSearch.setLoginName(num);
             Map user = userDao.getUserByLoginName(userSearch);
@@ -296,7 +293,7 @@ public class UtilServiceImpl implements UtilService {
                 }
 
                 //绑定后同步宝宝信息到数据库
-                if(StringUtils.isNotNull(openid)){
+                if (StringUtils.isNotNull(openid)) {
                     BabyBaseInfoVo vo = new BabyBaseInfoVo();
                     vo.setUserid(sys_user_id);
                     vo.setState("0");
@@ -357,13 +354,14 @@ public class UtilServiceImpl implements UtilService {
 
     /**
      * 非微信(第三方平台购买宝护伞后通过用户专属临时二维码扫码关注后的用户绑定)
-     * @author guozengguang
-     * @param num 用户手机号
+     *
+     * @param num    用户手机号
      * @param openid 用户openid
      * @return
+     * @author guozengguang
      */
     @Override
-    public PatientVo bindUserForThirdParty(String num, String openid){
+    public PatientVo bindUserForThirdParty(String num, String openid) {
         System.out.print("openid---------------------------------------------" + openid);
         String response = null;
         PatientVo patientVo = CreateUser(num, openid, "patient");//zdl 抽取
