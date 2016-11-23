@@ -143,7 +143,9 @@ public class UtilController extends BaseController {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
         String userPhone = (String) params.get("userPhone");
-        return utilService.sendIdentifying(userPhone);
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
+        return utilService.sendIdentifying(userPhone,sysPropertyVoWithBLOBsVo);
     }
 
     @RequestMapping(value = "/user/recordHealthPlanAddItem", method = {RequestMethod.POST, RequestMethod.GET})
@@ -216,7 +218,8 @@ public class UtilController extends BaseController {
     Map<String, Object> getDoctorCode(@RequestBody Map<String, Object> params) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         String userPhone = String.valueOf(params.get("userPhone"));
-        return utilService.sendIdentifying(userPhone);
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        return utilService.sendIdentifying(userPhone,sysPropertyVoWithBLOBsVo);
     }
 
 
