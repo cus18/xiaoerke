@@ -1,17 +1,17 @@
 angular.module('controllers', ['luegg.directives'])
     .controller('doctorConsultFirstCtrl', ['$scope', '$sce', '$window', '$stateParams', 'GetTodayRankingList',
-        'GetOnlineDoctorList', 'GetAnswerValueList', 'GetDoctorLoginStatus','GetUserLoginStatus',
+        'GetOnlineDoctorList', 'GetAnswerValueList', 'GetDoctorLoginStatus', 'GetUserLoginStatus',
         '$location', 'GetCurrentUserHistoryRecord', 'GetMyAnswerModify', 'GetCurrentUserConsultListInfo',
         'TransferToOtherCsUser', 'SessionEnd', 'GetWaitJoinList', 'React2Transfer', 'CancelTransfer', '$upload',
         'GetFindTransferSpecialist', 'GetRemoveTransferSpecialist', 'GetAddTransferSpecialist', 'GetFindAllTransferSpecialist',
         'CreateTransferSpecialist', '$state', 'GetSystemTime', 'GetUserSessionTimesByUserId', 'GetCustomerLogByOpenID', 'SaveCustomerLog',
-        'SearchIllnessList', 'ModifyUserConsultNum', 'SearchBabyInfo', 'SaveReturnService','GetConfig','DoctorSignOut',
+        'SearchIllnessList', 'ModifyUserConsultNum', 'SearchBabyInfo', 'SaveReturnService', 'GetConfig', 'DoctorSignOut',
         function ($scope, $sce, $window, $stateParams, GetTodayRankingList, GetOnlineDoctorList, GetAnswerValueList,
-                  GetDoctorLoginStatus,GetUserLoginStatus, $location, GetCurrentUserHistoryRecord, GetMyAnswerModify,
+                  GetDoctorLoginStatus, GetUserLoginStatus, $location, GetCurrentUserHistoryRecord, GetMyAnswerModify,
                   GetCurrentUserConsultListInfo, TransferToOtherCsUser, SessionEnd, GetWaitJoinList, React2Transfer, CancelTransfer, $upload,
                   GetFindTransferSpecialist, GetRemoveTransferSpecialist, GetAddTransferSpecialist, GetFindAllTransferSpecialist,
                   CreateTransferSpecialist, $state, GetSystemTime, GetUserSessionTimesByUserId, GetCustomerLogByOpenID, SaveCustomerLog,
-                  SearchIllnessList, ModifyUserConsultNum, SearchBabyInfo, SaveReturnService,GetConfig,DoctorSignOut) {
+                  SearchIllnessList, ModifyUserConsultNum, SearchBabyInfo, SaveReturnService, GetConfig, DoctorSignOut) {
             //初始化info参数
             $scope.info = {
                 effect: "true",
@@ -29,16 +29,14 @@ angular.module('controllers', ['luegg.directives'])
                     "consultDoctor": "专业医生"
                 }
             };
-            $scope.customerssUrl="";
+            $scope.customerssUrl = "";
             $scope.systemInfo = {};
             $scope.loadingFlag = false;
             $scope.socketServerFirst = "";
             $scope.socketServerSecond = "";
-            GetConfig.save({}, function (data) {
-                $scope.systemInfo = data.publicSystemInfo;
-                $scope.firstAddress = $scope.systemInfo.firstAddress;
-                $scope.secondAddress= $scope.systemInfo.secondAddress;
-            })
+            $scope.firstAddress = "";
+            $scope.secondAddress = "";
+
             $scope.alreadyJoinPatientConversation = []; //已经加入会话的用户数据，一个医生可以有多个对话的用户，这些用户的数据，都保存在此集合中 乱码
             $scope.currentUserConversation = {}; //医生与当前正在进行对话用户的聊天数据，医生在切换不同用户时，数据变更到切换的用户上来。
             $scope.waitJoinNum = 0; //医生待接入的用户数，是动态变化的数
@@ -95,13 +93,18 @@ angular.module('controllers', ['luegg.directives'])
                         $scope.doctorPhone = data.userPhone;
                         $scope.userType = data.userType;
 
-                        //创建与平台的socket连接
-                        if ($scope.socketServerFirst == "" || $scope.socketServerFirst.readyState != 1) {
-                            $scope.initConsultSocketFirst();
-                        }
-                        if ($scope.socketServerSecond == "" || $scope.socketServerSecond.readyState != 1) {
-                            $scope.initConsultSocketSecond();
-                        }
+                        GetConfig.save({}, function (data) {
+                            $scope.systemInfo = data.publicSystemInfo;
+                            $scope.firstAddress = $scope.systemInfo.firstAddress;
+                            $scope.secondAddress = $scope.systemInfo.secondAddress;
+                            //创建与平台的socket连接
+                            if ($scope.socketServerFirst == "" || $scope.socketServerFirst.readyState != 1) {
+                                $scope.initConsultSocketFirst();
+                            }
+                            if ($scope.socketServerSecond == "" || $scope.socketServerSecond.readyState != 1) {
+                                $scope.initConsultSocketSecond();
+                            }
+                        })
 
                         getIframeSrc();
                         //getHistoryConsultContent();
@@ -192,30 +195,29 @@ angular.module('controllers', ['luegg.directives'])
             //退出登录
             $scope.signOut = function () {
                 DoctorSignOut.save({}, function (data) {
-                    if(data.status == "success"){
-                        alert(data.status == "success"?"退出成功":"系统忙！请联系分诊员");
+                    if (data.status == "success") {
+                        alert(data.status == "success" ? "退出成功" : "系统忙！请联系分诊员");
                         $state.go("doctorConsultLogin");
-                    }else if(data.status == "alreadySignOut"){
+                    } else if (data.status == "alreadySignOut") {
                         alert("你已退出");
                     }
                 })
             }
 
-            var recordLogs = function(val){
+            var recordLogs = function (val) {
                 $.ajax({
-                    url:"util/recordLogs",// 跳转到 action
-                    async:true,
-                    type:'get',
-                    data:{logContent:encodeURI(val)},
-                    cache:false,
-                    dataType:'json',
-                    success:function(data) {
+                    url: "util/recordLogs",// 跳转到 action
+                    async: true,
+                    type: 'get',
+                    data: {logContent: encodeURI(val)},
+                    cache: false,
+                    dataType: 'json',
+                    success: function (data) {
                     },
-                    error : function() {
+                    error: function () {
                     }
                 });
             };
-
 
 
             //每20秒，检测一次医生跟平台的会话是否失效
@@ -499,9 +501,9 @@ angular.module('controllers', ['luegg.directives'])
                             if (data.alreadyJoinPatientConversation != "" && data.alreadyJoinPatientConversation != undefined) {
                                 $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
-                                    if(value.consultNum == 0){
+                                    if (value.consultNum == 0) {
                                         value.messageNotSee = false;
-                                    }else if(value.consultNum != 0){
+                                    } else if (value.consultNum != 0) {
                                         value.messageNotSee = true;
                                     }
                                     value.number = value.consultNum;
@@ -944,7 +946,7 @@ angular.module('controllers', ['luegg.directives'])
                     $scope.chooseAlreadyJoinConsultPatientSessionTimes = '是' + data.userSessionTimes + '次接入';
                 });
                 /*消息数置零*/
-                ModifyUserConsultNum.save({sessionId:sessionId},function(data){
+                ModifyUserConsultNum.save({sessionId: sessionId}, function (data) {
                     console.log(data.consultNum)
                 });
                 getIframeSrc();
@@ -1640,9 +1642,9 @@ angular.module('controllers', ['luegg.directives'])
                     if (data.alreadyJoinPatientConversation != "" && data.alreadyJoinPatientConversation != undefined) {
                         $scope.alreadyJoinPatientConversation = data.alreadyJoinPatientConversation;
                         $.each($scope.alreadyJoinPatientConversation, function (index, value) {
-                            if(value.consultNum == 0){
+                            if (value.consultNum == 0) {
                                 value.messageNotSee = false;
-                            }else if(value.consultNum != 0){
+                            } else if (value.consultNum != 0) {
                                 value.messageNotSee = true;
                             }
                             value.number = value.consultNum;
@@ -1670,9 +1672,9 @@ angular.module('controllers', ['luegg.directives'])
                     'number': conversationData.consultNum
                 };
                 var messageNotSee;
-                if(conversationData.consultNum == 0){
+                if (conversationData.consultNum == 0) {
                     messageNotSee = false;
-                }else if(conversationData.consultNum != 0){
+                } else if (conversationData.consultNum != 0) {
                     messageNotSee = true;
                 }
                 if (JSON.stringify($scope.currentUserConversation) == '{}') {
@@ -1717,9 +1719,9 @@ angular.module('controllers', ['luegg.directives'])
                     if (value.patientId == conversationData.senderId) {
                         value.dateTime = conversationData.dateTime;
                         value.consultValue.push(conversationData);
-                        if(conversationData.consultNum != 0){
+                        if (conversationData.consultNum != 0) {
                             value.messageNotSee = true;
-                        }else if(conversationData.consultNum == 0){
+                        } else if (conversationData.consultNum == 0) {
                             value.messageNotSee = false;
                         }
                         value.number = conversationData.consultNum;
@@ -1737,9 +1739,9 @@ angular.module('controllers', ['luegg.directives'])
                         'number': conversationData.consultNum
                     };
                     var messageNotSee;
-                    if(conversationData.consultNum != 0){
+                    if (conversationData.consultNum != 0) {
                         messageNotSee = true;
-                    }else if(conversationData.consultNum == 0){
+                    } else if (conversationData.consultNum == 0) {
                         messageNotSee = false;
                     }
                     var conversationContent = {
@@ -1769,7 +1771,7 @@ angular.module('controllers', ['luegg.directives'])
             var updateAlreadyJoinPatientConversationFromDoctor = function (consultValMessage) {
                 $.each($scope.alreadyJoinPatientConversation, function (index, value) {
                     if (value.patientId == $scope.currentUserConversation.patientId) {
-                        ModifyUserConsultNum.save({sessionId:value.sessionId},function(data){
+                        ModifyUserConsultNum.save({sessionId: value.sessionId}, function (data) {
                             console.log(data);
                             value.consultValue.push(consultValMessage);
                             value.messageNotSee = false;
@@ -1823,7 +1825,7 @@ angular.module('controllers', ['luegg.directives'])
                         }
                     });
                 }
-                else if(notifyData.notifyType == "0016"){
+                else if (notifyData.notifyType == "0016") {
                     $window.confirm("您的消息没有发送成功！")
                 }
                 else if (notifyData.notifyType == "0010") {
@@ -2388,59 +2390,59 @@ angular.module('controllers', ['luegg.directives'])
                 $scope.showFlag[key] = !$scope.showFlag[key];
             };
         }])
-    .controller('helpDocsListCtrl', ['$scope', '$log', '$state','GetCategoryList','GetArticleList',
-        function ($scope, $log, $state,GetCategoryList,GetArticleList) {
+    .controller('helpDocsListCtrl', ['$scope', '$log', '$state', 'GetCategoryList', 'GetArticleList',
+        function ($scope, $log, $state, GetCategoryList, GetArticleList) {
             $scope.info = {};
-            $scope.classifyIndex=0;
-            $scope.classifyIndex=0;
-            $scope.helpDocsClassify= {};
-            $scope.helpDocsList={};
+            $scope.classifyIndex = 0;
+            $scope.classifyIndex = 0;
+            $scope.helpDocsClassify = {};
+            $scope.helpDocsList = {};
             // 选择 左边的分类
-            $scope.selectClassify = function (index,id) {
+            $scope.selectClassify = function (index, id) {
                 $scope.classifyIndex = index;
                 $scope.classifyId = id;
                 //获取某一分类下的文章列表
-                GetArticleList.save({"id": $scope.classifyId,"pageNo":1,"pageSize":10},function(data){
-                    $scope.helpDocsList=data.articleList;
+                GetArticleList.save({"id": $scope.classifyId, "pageNo": 1, "pageSize": 10}, function (data) {
+                    $scope.helpDocsList = data.articleList;
 
                 });
 
             };
             // 跳转到 文章详情页
             $scope.goHelpDocsDetail = function (id) {
-                $state.go("helpDocsDetail",{articleId:id});
+                $state.go("helpDocsDetail", {articleId: id});
             };
             $scope.helpDocsListInit = function () {
-                document.title="帮助文档列表页"; //修改页面title
+                document.title = "帮助文档列表页"; //修改页面title
                 //获取左边分类
-                GetCategoryList.save({"categoryId":"bc802fafd6db4f3e91894c9932cbf6f6"},function(data){
-                    $scope.helpDocsClassify=data.categoryList;
+                GetCategoryList.save({"categoryId": "bc802fafd6db4f3e91894c9932cbf6f6"}, function (data) {
+                    $scope.helpDocsClassify = data.categoryList;
                     $scope.classifyId = $scope.helpDocsClassify[0].categoryId;
                     //初始化第一个分类下的文章
-                    GetArticleList.save({"id": $scope.classifyId,"pageNo":1,"pageSize":1000},function(data){
-                        $scope.helpDocsList=data.articleList;
+                    GetArticleList.save({"id": $scope.classifyId, "pageNo": 1, "pageSize": 1000}, function (data) {
+                        $scope.helpDocsList = data.articleList;
                     });
                 });
             };
 
         }])
-    .controller('helpDocsDetailCtrl', ['$scope', '$log', '$state','$stateParams','$sce','GetCategoryList','GetArticleDetail',
-        function ($scope, $log, $state, $stateParams,$sce,GetCategoryList,GetArticleDetail) {
+    .controller('helpDocsDetailCtrl', ['$scope', '$log', '$state', '$stateParams', '$sce', 'GetCategoryList', 'GetArticleDetail',
+        function ($scope, $log, $state, $stateParams, $sce, GetCategoryList, GetArticleDetail) {
             $scope.info = {};
-            $scope.helpDocsClassify= {};
-            $scope.articleDetail={};
+            $scope.helpDocsClassify = {};
+            $scope.articleDetail = {};
             $scope.helpDocsDetailInit = function () {
-                document.title="帮助文档详情页"; //修改页面title
-                $scope.articleId =$stateParams.articleId;//文章id
+                document.title = "帮助文档详情页"; //修改页面title
+                $scope.articleId = $stateParams.articleId;//文章id
                 //获取左边分类
-                GetCategoryList.save({"categoryId":"bc802fafd6db4f3e91894c9932cbf6f6"},function(data){
-                    $scope.helpDocsClassify=data.categoryList;
+                GetCategoryList.save({"categoryId": "bc802fafd6db4f3e91894c9932cbf6f6"}, function (data) {
+                    $scope.helpDocsClassify = data.categoryList;
                 });
                 //获取文章详情
-                GetArticleDetail.save({"id":$stateParams.articleId},function(data){
+                GetArticleDetail.save({"id": $stateParams.articleId}, function (data) {
                     $scope.info.articleContent = $sce.trustAsHtml(angular.copy(data.articleDetail.content));
-                    $scope.articleDetail=data.article;
-                    $scope.articleDetail.name=data.article.category.name
+                    $scope.articleDetail = data.article;
+                    $scope.articleDetail.name = data.article.category.name
                 });
             };
         }])
@@ -2452,7 +2454,7 @@ angular.module('controllers', ['luegg.directives'])
         function ($scope, $state, $timeout, $http, DoctorBinding) {
             $scope.doctorLock = false;//非系统医生提示开关
             $scope.errorLock = false;//错误提示开关
-            $scope.errorRemindText ="";//错误提示内容
+            $scope.errorRemindText = "";//错误提示内容
             $scope.info = {};
             var countdown = 60;
             //关闭提示
@@ -2464,10 +2466,10 @@ angular.module('controllers', ['luegg.directives'])
                 DoctorBinding.save({username: $scope.info.phoneNum, password: $scope.info.password}, function (data) {
                     if (data.status == "failure") {
                         $scope.errorLock = true;
-                        $scope.errorRemindText ="验证码错误"
-                    }else if(data.status == "notConsultDoctor"){
+                        $scope.errorRemindText = "验证码错误"
+                    } else if (data.status == "notConsultDoctor") {
                         $scope.doctorLock = true;
-                    }else {
+                    } else {
                         $state.go("doctorConsultFirst");
                     }
                 });
@@ -2482,7 +2484,7 @@ angular.module('controllers', ['luegg.directives'])
                     var partner = /^1[34578]\d{9}$/;
                     if (!partner.exec($scope.info.phoneNum)) {
                         $scope.errorLock = true;
-                        $scope.errorRemindText ="手机号格式不对"
+                        $scope.errorRemindText = "手机号格式不对"
                         return;
                     }
                     else {
@@ -2523,8 +2525,8 @@ angular.module('controllers', ['luegg.directives'])
                     , 1000)
             };
 
-            $scope.doctorConsultLoginInit=function(){
-                $(".tips").css("margin-top",screen.height-380-screen.width*0.25+"px")
+            $scope.doctorConsultLoginInit = function () {
+                $(".tips").css("margin-top", screen.height - 380 - screen.width * 0.25 + "px")
             }
 
         }]);

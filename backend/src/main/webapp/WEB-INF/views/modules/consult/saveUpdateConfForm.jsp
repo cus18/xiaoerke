@@ -144,7 +144,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">开始时间:</label>
+			<label class="control-label">结束时间:</label>
 			<div class="controls">
 				<form:input id="endTime" path="endTime" type="text" readonly="readonly" maxlength="20" class="input-small Wdate required"
 							onclick="WdatePicker({dateFmt:'HH:mm:ss',isShowClear:false});"/>
