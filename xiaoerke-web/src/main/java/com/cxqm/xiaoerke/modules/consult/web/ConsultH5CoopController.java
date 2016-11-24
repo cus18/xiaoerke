@@ -26,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.io.UnsupportedEncodingException;
+import java.net.SocketException;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,6 +68,7 @@ public class ConsultH5CoopController {
     public
     @ResponseBody
     Map createConsultSessionForCoop(@RequestBody HashMap param) {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map response = new HashMap();
         if (param.containsKey("source")) {
             String source = String.valueOf(param.get("source"));
@@ -76,7 +78,11 @@ public class ConsultH5CoopController {
                 source = "COOP_YKDL";
                 String nickName = String.valueOf(param.get("nickName"));
                 String headImg = String.valueOf(param.get("headImg"));
-                param.put("serverAddress", ConstantUtil.SERVER_ADDRESS);
+                try {
+                    param.put("serverAddress", HttpUtils.getRealIp(sysPropertyVoWithBLOBsVo));
+                } catch (SocketException e) {
+                    e.printStackTrace();
+                }
                 param.put("source", source);
                 Query query = new Query().addCriteria(where("userId").is(userId).and("source").regex("COOP_YKDL"));
                 long count = consultCoopUserInfoMongoDBService.queryCountByCollectionName(query, "consultCoopUserInfoVo");
