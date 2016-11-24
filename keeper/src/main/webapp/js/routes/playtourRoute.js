@@ -51,6 +51,20 @@ define(['appPlayTour'], function(app){
                             }
                         }
                     })
+                    .state('evaluateSuccess', {
+                        url: '/evaluateSuccess',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'evaluateSuccessCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.evaluateSuccess',
+                                    ['js/controllers/playtour/evaluateSuccessCtrl.js',
+                                        'styles/playtour/evaluateCommon.less?ver='+wxVersion,
+                                        'styles/playtour/evaluateSuccess.less?ver='+wxVersion],
+                                    'js/views/playtour/evaluateSuccess.html?ver='+wxVersion);
+                            }
+                        }
+                    })
                     .state('patientConsultNoFee', {
                         url: '/patientConsultNoFee',
                         templateProvider: function() { return lazyDeferred.promise; },
