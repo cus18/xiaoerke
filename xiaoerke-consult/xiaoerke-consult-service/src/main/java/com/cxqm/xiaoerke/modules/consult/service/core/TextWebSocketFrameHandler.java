@@ -67,7 +67,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         try {
             msgMap = (Map<String, Object>) JSON.parse(msgText);
-            messageContentFilter(msgMap);///消息过滤
+
         } catch (JSONException ex) {
             log.info("Parse json error: " + ex.getMessage() + " : " + msgText);
             return;
@@ -129,8 +129,12 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             }
             return;
         }
+        if(messageContentFilter(msgMap).equals("ykdl")){
+            return;
+        }
 
         Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+
         if (sessionId != null) {
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
             if (richConsultSession == null)
@@ -454,15 +458,16 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         }
     }
     //消息过滤
-    private void messageContentFilter(Map<String, Object> msgMap) {
+    private String messageContentFilter(Map<String, Object> msgMap) {
         if(msgMap != null  && msgMap.size() > 0 && msgMap.get("source") != null){
             String source = String.valueOf(msgMap.get("source"));
             String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
             //悦康动力用户
             if(source.indexOf("ykdl") != -1 ? true : false)
                 if (content.indexOf("宝大夫") != -1 || content.indexOf("https://kdt.im") != -1 || content.indexOf("https://h5.koudaitong.com") != -1)
-                    return;
+                    return "ykdl";
         }
+        return "";
     }
 
 
