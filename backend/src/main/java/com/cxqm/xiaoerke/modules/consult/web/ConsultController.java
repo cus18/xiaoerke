@@ -319,7 +319,7 @@ public class ConsultController extends BaseController {
 				for(Map map:list){
 					ReceiveTheMindVo vo = new ReceiveTheMindVo();
 					vo.setContent((String) map.get("content"));
-					vo.setCreatetime(DateUtils.DateToStr((Date) map.get("createtime")));
+					vo.setCreatetime(DateUtils.DateToStr((Date) map.get("update_time")));
 					vo.setDoctorName((String) map.get("doctorName"));
 					vo.setNickname((String)map.get("nickname"));
 					vo.setServiceAttitude("3".equals((String)map.get("serviceAttitude"))?"满意":"非常满意");
@@ -337,7 +337,7 @@ public class ConsultController extends BaseController {
 					vo.setOpenid((String) map.get("openid"));
 					vo.setPhone((String) map.get("phone"));
 					vo.setNickname((String) map.get("nickname"));
-					vo.setCreatetime(DateUtils.DateToStr((Date) map.get("createtime")));
+					vo.setCreatetime(DateUtils.DateToStr((Date) map.get("update_time")));
 					vo.setContent((String) map.get("content"));
 					vo.setDoctorName((String) map.get("doctorName"));
 					if(map.get("dissatisfied")!=null){
