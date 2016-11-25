@@ -33,17 +33,15 @@ public class SendMindCouponServiceImpl implements SendMindCouponService {
 
     @Override
     public String saveSendMindCoupon(SendMindCouponVo vo) {
+        if(StringUtils.isNotNull(vo.getId()+"")){
+            sendMindCouponDao.updateSendMindCoupon(vo);
+        }else{
+            sendMindCouponDao.saveSendMindCoupon(vo);
+        }
         if(StringUtils.isNotNull(vo.getImage())){
             uploadArticleImage("sendMindCoupon" + vo.getId(), vo.getImage());
         }
-        if(StringUtils.isNotNull(vo.getId()+"")){
-            sendMindCouponDao.updateSendMindCoupon(vo);
-            return "修改成功";
-
-        }else{
-            sendMindCouponDao.saveSendMindCoupon(vo);
-            return "保存成功";
-        }
+        return "操作成功";
     }
 
     private void uploadArticleImage(String id , String src) {

@@ -21,6 +21,7 @@ public interface UserFeedbackDao {
 
     int insertSelective(UserFeedbackVo vo);
 
-    Page<UserFeedbackVo> findUserFeedBackList(UserFeedbackVo vo);
+    Page<UserFeedbackVo> findUserFeedBackList(Page<UserFeedbackVo> page,UserFeedbackVo vo);
 
+    void updateUserFeedbackInfo(UserFeedbackVo vo);
 }

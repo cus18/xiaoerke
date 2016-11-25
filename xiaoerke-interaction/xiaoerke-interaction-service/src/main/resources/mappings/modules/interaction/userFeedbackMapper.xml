@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER"/>
     <result column="openid" property="openid" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
-    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="solve" property="solve" jdbcType="VARCHAR" />
   </resultMap>
@@ -58,10 +58,21 @@
     </trim>
   </insert>
 
-    <select id="findUserFeedBackList" resultType="com.cxqm.xiaoerke.modules.interaction.entity.UserFeedbackVo">
-        select *
-        from user_feedback prp
-
+    <select id="findUserFeedBackList" resultMap="BaseResultMap">
+        select * from user_feedback
+        where 1=1
+      <if test="openid != null" >
+        and openid = #{openid}
+      </if>
     </select>
 
+  <update id="updateUserFeedbackInfo" parameterType="com.cxqm.xiaoerke.modules.interaction.entity.UserFeedbackVo">
+    update user_feedback
+    <set>
+      <if test="solve != null and solve != ''">
+        solve = #{solve,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where id = #{id}
+  </update>
 </mapper>

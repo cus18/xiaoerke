@@ -1,8 +1,11 @@
 package com.cxqm.xiaoerke.modules.interaction.service.impl;
 
 
+import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
+import com.cxqm.xiaoerke.modules.interaction.dao.UserFeedbackDao;
+import com.cxqm.xiaoerke.modules.interaction.entity.UserFeedbackVo;
 import com.cxqm.xiaoerke.modules.interaction.service.FeedbackService;
 import com.cxqm.xiaoerke.modules.sys.service.MessageService;
 
@@ -32,6 +35,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Autowired
     private PatientRegisterPraiseDao patientRegisterPraiseDao;
 
+    @Autowired
+    UserFeedbackDao userFeedbackDao;
+
     @Override
     public String questionnaireSurvey(Map<String, Object> params, String openId)
     {
@@ -57,5 +63,15 @@ public class FeedbackServiceImpl implements FeedbackService {
         hashMap.put("id", IdGen.uuid());
         messageService.saveAdvice(hashMap);
         return false;
+    }
+
+    @Override
+    public Page<UserFeedbackVo> findUserFeedbackList(Page<UserFeedbackVo> page, UserFeedbackVo vo) {
+        return userFeedbackDao.findUserFeedBackList(page,vo);
+    }
+
+    @Override
+    public void changeSolve(UserFeedbackVo vo) {
+        userFeedbackDao.updateUserFeedbackInfo(vo);
     }
 }
