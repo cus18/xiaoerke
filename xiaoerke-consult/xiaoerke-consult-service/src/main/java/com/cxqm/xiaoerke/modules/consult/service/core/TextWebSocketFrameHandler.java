@@ -6,8 +6,10 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
@@ -41,6 +43,9 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
     private ScheduleTaskService scheduleTaskService = SpringContextHolder.getBean("scheduleTaskServiceImpl");
 
     private SysPropertyServiceImpl sysPropertyService = SpringContextHolder.getBean("sysPropertyServiceImpl");
+
+    @Autowired
+    private ConsultDoctorInfoService consultDoctorInfoService ;
 
 
     public TextWebSocketFrameHandler() {
@@ -129,9 +134,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             }
             return;
         }
-        if(messageContentFilter(msgMap).equals("ykdl")){
-            return;
-        }
 
         Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
 
@@ -190,9 +192,37 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                                 }
                             }
                             if(flag){
-                                userChannel.writeAndFlush(msg.retain());
+                                if(richConsultSession.getSource().equals("h5ykdl")){
+                                    if("true".equalsIgnoreCase(messageContentFilter(msgMap))){
+                                        Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
+                                        JSONObject jsonObj = new JSONObject();
+                                        jsonObj.put("type", "4");
+                                        jsonObj.put("notifyType", "0016");
+                                        TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+                                        if (csChannel != null && csChannel.isActive()) {
+                                            csChannel.writeAndFlush(frame.retain());
+                                        }
+                                        return ;
+                                    }
+                                }else{
+                                    userChannel.writeAndFlush(msg.retain());
+                                }
                             }else{
-                                userChannel.writeAndFlush(msg.retain());
+                                if(richConsultSession.getSource().equals("h5ykdl")){
+                                    if("true".equalsIgnoreCase(messageContentFilter(msgMap))){
+                                        Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
+                                        JSONObject jsonObj = new JSONObject();
+                                        jsonObj.put("type", "4");
+                                        jsonObj.put("notifyType", "0016");
+                                        TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+                                        if (csChannel != null && csChannel.isActive()) {
+                                            csChannel.writeAndFlush(frame.retain());
+                                        }
+                                        return ;
+                                    }
+                                }else{
+                                    userChannel.writeAndFlush(msg.retain());
+                                }
                                 if(richConsultSession.getSource().equals("h5bhq")){
                                     net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
                                     String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
@@ -330,12 +360,20 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             stringBuilder.append(content.substring(0, nameIndex));
                             stringBuilder.append("</a>|");
 //                            stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
-                            stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl() +"keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
-                            stringBuilder.append(praiseList.get(0).get("id"));
-                            stringBuilder.append("&sessionId=");
-                            stringBuilder.append(sessionId);
-                            stringBuilder.append("'>送心意</a>|");
-                            stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/playtour#/playtourShare/6");
+                            Map param = new HashMap();
+                            param.put("userId", csUserId);
+                            String smartMallAddress = "https://h5.koudaitong.com/v2/showcase/homepage?kdt_id=17783033&redirect_count=1";
+                            List<ConsultDoctorInfoVo> consultDoctorByInfos= consultDoctorInfoService.getConsultDoctorByInfo(param) ;
+                            if(consultDoctorByInfos != null && consultDoctorByInfos.size() > 0){
+                                if(consultDoctorByInfos.get(0) != null){
+                                   if(consultDoctorByInfos.get(0).getMicroMallAddress() != null && StringUtils.isNotNull(consultDoctorByInfos.get(0).getMicroMallAddress())){
+                                       smartMallAddress = consultDoctorByInfos.get(0).getMicroMallAddress() ;
+                                   }
+                                }
+                            }
+                            stringBuilder.append("<a href='"+smartMallAddress);
+                            stringBuilder.append("'>微商城</a>|");
+                            stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD");
                             stringBuilder.append("'>分享</a>");
                             sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
                             //发送消息
@@ -459,16 +497,14 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
     }
     //消息过滤
     private String messageContentFilter(Map<String, Object> msgMap) {
-        if(msgMap != null  && msgMap.size() > 0 && msgMap.get("source") != null){
-            String source = String.valueOf(msgMap.get("source"));
+        if(msgMap != null  && msgMap.size() > 0 ) {
             String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
             //悦康动力用户
-            if(source.indexOf("ykdl") != -1 ? true : false){
-                if (content.indexOf("宝大夫") != -1 || content.indexOf("https://kdt.im") != -1 || content.indexOf("https://h5.koudaitong.com") != -1)
-                    return "ykdl";
+            if (content.contains("宝大夫") ||content.indexOf("https://kdt.im") != -1 || content.indexOf("https://h5.koudaitong.com") != -1){
+                return "true";
             }
         }
-        return "";
+        return "false";
     }
 
 
