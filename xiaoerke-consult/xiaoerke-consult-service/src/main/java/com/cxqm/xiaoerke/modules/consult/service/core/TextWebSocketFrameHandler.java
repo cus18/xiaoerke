@@ -463,9 +463,10 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             String source = String.valueOf(msgMap.get("source"));
             String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
             //悦康动力用户
-            if(source.indexOf("ykdl") != -1 ? true : false)
+            if(source.indexOf("ykdl") != -1 ? true : false){
                 if (content.indexOf("宝大夫") != -1 || content.indexOf("https://kdt.im") != -1 || content.indexOf("https://h5.koudaitong.com") != -1)
                     return "ykdl";
+            }
         }
         return "";
     }
