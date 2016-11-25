@@ -98,12 +98,8 @@ angular.module('controllers', ['luegg.directives'])
                             $scope.firstAddress = $scope.systemInfo.firstAddress;
                             $scope.secondAddress = $scope.systemInfo.secondAddress;
                             //创建与平台的socket连接
-                            if ($scope.socketServerFirst == "" || $scope.socketServerFirst.readyState != 1) {
-                                $scope.initConsultSocketFirst();
-                            }
-                            if ($scope.socketServerSecond == "" || $scope.socketServerSecond.readyState != 1) {
-                                $scope.initConsultSocketSecond();
-                            }
+                            $scope.initConsultSocketFirst();
+                            $scope.initConsultSocketSecond();
                         })
 
                         getIframeSrc();
