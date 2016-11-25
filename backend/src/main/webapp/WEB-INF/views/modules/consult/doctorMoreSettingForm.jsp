@@ -360,6 +360,12 @@
 					<span class="help-inline">序号相同时，按姓名排序</span>
 				</div>
 			</div>
+			<div class="control-group">
+				<label class="control-label">微商城地址:</label>
+				<div class="controls">
+					<input id="microMallAddress" value="${doctor.microMallAddress}" htmlEscape="false" maxlength="50" class="input-medium"/>
+				</div>
+			</div>
 
 
 			讲座：

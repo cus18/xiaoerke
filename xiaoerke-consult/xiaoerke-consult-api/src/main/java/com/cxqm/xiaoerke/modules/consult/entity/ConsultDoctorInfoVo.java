@@ -59,12 +59,22 @@ public class ConsultDoctorInfoVo {
 
     private String consult_num;
 
+    private String microMallAddress;
+
     public String getStarDoctor() {
         return starDoctor;
     }
 
     public void setStarDoctor(String starDoctor) {
         this.starDoctor = starDoctor;
+    }
+
+    public String getMicroMallAddress() {
+        return microMallAddress;
+    }
+
+    public void setMicroMallAddress(String microMallAddress) {
+        this.microMallAddress = microMallAddress;
     }
 
     public String getSort() {

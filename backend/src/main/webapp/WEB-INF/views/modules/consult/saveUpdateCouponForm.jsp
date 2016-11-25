@@ -45,6 +45,13 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
+		<div class="control-group">
+			<label class="control-label">缩略图:</label>
+			<div class="controls">
+				<input type="hidden" id="image" name="image" value="${vo.image}" />
+				<sys:ckfinder input="image" type="thumb" uploadPath="/cms/article" selectMultiple="false"/>
+			</div>
+		</div>
 		<div class="form-actions">
 			<input id="saveConf" class="btn btn-primary" type="submit" value="保存"/>
 			<input id="btnCancel" class="btn" type="button" value="返回" onclick="history.go(-1)"/>
