@@ -32,7 +32,9 @@ public class ConsultDoctorLoginServiceImpl implements ConsultDoctorLoginService 
     private UtilService utilService;
 
     @Override
-    public Map getDoctorLoginStatus(HttpSession session, HttpServletRequest request,HttpServletResponse response) {
+    public Map getDoctorLoginStatus(HttpSession session,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) {
         HashMap<String, Object> result = new HashMap<String, Object>();
         String phone = CookieUtils.getCookie(request,response,"phone",false);
         result.put("status", "failure");

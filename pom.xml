@@ -1091,7 +1091,6 @@
 		<module>keeper</module>
 		<module>titan</module>
 		<module>angel</module>
-		<module>market</module>
 		<module>xiaoerke-common</module>
 		<module>xiaoerke-web</module>
 		<module>xiaoerke-interaction</module>
@@ -1109,15 +1108,6 @@
 		<module>xiaoerke-plan</module>
 		<module>xiaoerke-healthRecords</module>
 		<module>xiaoerke-consult</module>
-		<module>xiaoerke-marketing</module>
-		<module>xiaoerke-insurance</module>
-		<module>xiaoerke-umbrella</module>
-        <module>xiaoerke-mutualHelp</module>
-		<module>xiaoerke-activity</module>
-        <module>bdfApp</module>
-        <module>xiaoerke-alipay</module>
-		<module>xiaoerke-vaccine</module>
-		<module>xiaoerke-nonRealtimeConsult</module>
     </modules>
 
     <distributionManagement>

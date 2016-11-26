@@ -80,15 +80,11 @@ angular.module('controllers', ['luegg.directives'])
 
             //初始化医生端登录，建立socket链接，获取基本信息
             $scope.doctorConsultInit = function () {
-                // heartBeatCheckPay();
                 $scope.getQQExpression();
-                //var routePath = "/doctor/consultBBBBBB" + $location.path();
-                //GetDoctorLoginStatus.save({routePath: routePath}, function (data) {
                 GetDoctorLoginStatus.save({}, function (data) {
                     $scope.pageLoading = false;
                     if (data.status == "failure") {
                         $state.go("doctorConsultLogin");
-                        //window.location.href = "localhost";
                     } else if (data.status == "success") {
                         $scope.doctorId = data.userId;
                         $scope.doctorName = data.userName;
@@ -99,9 +95,10 @@ angular.module('controllers', ['luegg.directives'])
                         if ($scope.socketServerFirst == "" || $scope.socketServerFirst.readyState != 1) {
                             $scope.initConsultSocketFirst();
                         }
-                        if ($scope.socketServerSecond == "" || $scope.socketServerSecond.readyState != 1) {
-                            $scope.initConsultSocketSecond();
-                        }
+                        //一般情况下，无需开启两台机器链路
+                        //if ($scope.socketServerSecond == "" || $scope.socketServerSecond.readyState != 1) {
+                        //    $scope.initConsultSocketSecond();
+                        //}
 
                         getIframeSrc();
                         //getHistoryConsultContent();
@@ -2472,7 +2469,6 @@ angular.module('controllers', ['luegg.directives'])
                     }
                 });
             }
-
 
             $scope.getValidateCode = function () {
                 if (countdown < 60) {
