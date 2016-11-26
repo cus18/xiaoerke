@@ -9,7 +9,6 @@ import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceService;
-import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoService;
 import com.cxqm.xiaoerke.modules.operation.service.BaseDataService;
 import com.cxqm.xiaoerke.modules.operation.service.DataStatisticService;
@@ -114,10 +113,6 @@ public class ScheduledTask {
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
-
-    @Autowired
-    private NonRealTimeConsultService nonRealTimeConsultService;
-
 
     //将所有任务放到一个定时器里，减少并发
     //@Scheduled(cron = "0 */1 * * * ?")
@@ -1534,17 +1529,6 @@ public class ScheduledTask {
     //每个月赠送给用户四次咨询机会
     public void updateMonthTime() {
         consultSessionPropertyService.updateMonthTime();
-    }
-
-    public void nonRealtimeSessinTimeOut(){
-        nonRealTimeConsultService.sessinTimeOut();
-    }
-
-
-    //更新医生的资料
-    public void nonRealtimeDoctorInfo() {
-        //微信推送
-        nonRealTimeConsultService.updateConsultDoctorInfo();
     }
 
 }
