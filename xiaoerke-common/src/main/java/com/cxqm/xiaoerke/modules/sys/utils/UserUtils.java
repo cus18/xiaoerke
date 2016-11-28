@@ -26,7 +26,7 @@ import org.springframework.context.ApplicationContext;
 public class UserUtils {
 	
 	private static String applicationName = SpringContextHolder.getApplicationContext().getApplicationName();
-	private static boolean isBackend = applicationName.split("/")[1].equals("backend")?true:false;//得良 modify
+	private static boolean isBackend = applicationName.indexOf("backend")!=-1?true:false;//得良 modify
 	
 	public static final String USER_CACHE = "userCache";
 	public static final String USER_CACHE_ID_ = "id_";
