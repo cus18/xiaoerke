@@ -18,8 +18,6 @@
 				data: {},
 				dataType: "json",
 				success: function(data){
-					alertx("123，请查询！");
-					alertx(data.status);
 					if(data.status == "success"){
 						alertx("咨询记录同步成功，请查询！");
 					}
