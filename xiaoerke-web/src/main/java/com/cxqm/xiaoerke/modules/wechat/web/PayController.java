@@ -51,7 +51,7 @@ public class PayController {
         }
         CookieUtils.setCookie(response,"patient_register_service_id", patient_register_service_id);
         CookieUtils.setCookie(response, "chargePrice", chargePrice);
-        return "pay";
+        return "pay/pay";
     }
     /**
      *
