@@ -78,6 +78,9 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
                         recordLogs("ZXPJSXY_PJ");
                         window.location.href = "playtour#/playtourShare/"+3;
                     }
+                    if(data=="2"){
+                        window.location.href = "playtour#/evaluateSuccess";
+                    }
                 },
                 error : function() {
                 }
