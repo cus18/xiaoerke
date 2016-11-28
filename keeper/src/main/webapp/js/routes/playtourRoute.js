@@ -38,7 +38,7 @@ define(['appPlayTour'], function(app){
                         }
                     })
                     .state('evaluateUnSatisfy', {
-                        url: '/evaluateUnSatisfy/:customerId/:sessionId',
+                        url: '/evaluateUnSatisfy/:customerId/:sessionId/:consultStatus',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'evaluateUnSatisfyCtrl',
                         resolve: {
