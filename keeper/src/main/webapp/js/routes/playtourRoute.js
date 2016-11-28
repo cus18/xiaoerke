@@ -78,7 +78,33 @@ define(['appPlayTour'], function(app){
                             }
                         }
                     })
-
+                /*宝宝币*/
+                    .state('babyCoinTicketList', {
+                        url: '/babyCoinTicketList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'babyCoinTicketListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.babyCoinTicketList',
+                                    ['js/controllers/babyCoin/babyCoinTicketListCtrl.js?ver='+wxVersion,
+                                        'styles/babyCoin/babyCoinTicketList.less?ver='+wxVersion],
+                                    'js/views/babyCoin/babyCoinTicketList.html?ver='+wxVersion);
+                            }
+                        }
+                    })
+                    .state('babyCoinTicketPay', {
+                        url: '/babyCoinTicketPay',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'babyCoinTicketPayCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.babyCoinTicketPay',
+                                    ['js/controllers/babyCoin/babyCoinTicketPayCtrl.js?ver='+wxVersion,
+                                        'styles/babyCoin/babyCoinTicketPay.less?ver='+wxVersion],
+                                    'js/views/babyCoin/babyCoinTicketPay.html?ver='+wxVersion);
+                            }
+                        }
+                    })
 
                 $urlRouterProvider.otherwise('playtourShare');
             }])
