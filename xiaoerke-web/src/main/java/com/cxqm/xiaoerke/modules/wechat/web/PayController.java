@@ -138,7 +138,7 @@ public class PayController {
             model.addAttribute("ceshi", "");
             model.addAttribute("phoneConDoctorDetail", phoneConDoctorDetail);
             model.addAttribute("doctorId", doctorId);
-            return "phoneConsultPay";
+            return "pay/phoneConsultPay";
         }
         else if(serviceType.equals("appointment")){
             model.addAttribute("payPrice", 200);
@@ -146,7 +146,7 @@ public class PayController {
             return "appointmentPay";
         }
         else if(serviceType.equals("orderDetail")){
-           return  "orderDetailPay";
+           return  "pay/orderDetailPay";
         }
         else if(serviceType.equals("customerPay")){
             return  "native/evaluateSendHeart";
