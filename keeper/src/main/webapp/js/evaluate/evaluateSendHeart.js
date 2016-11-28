@@ -94,7 +94,7 @@ function selectMoney(index,moneyItem){
     else{
         $(".picMoney-list li").eq(index).children(".select").show();
         redPacket=moneyItem;
-        $(".commit").attr('disabled',false);
+      /*  $(".commit").attr('disabled',false);*/
         console.log("选择钱数时，钱数大于0");
     }
     /*console.log("选择钱数",redPacket);*/
