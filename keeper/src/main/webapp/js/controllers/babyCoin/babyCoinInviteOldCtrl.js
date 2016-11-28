@@ -7,6 +7,9 @@ angular.module('controllers', [])
             $scope.minename = '您的朋友';
             $scope.openid = $stateParams.oldOpenId;
             $scope.inviteUrlData = "";
+            $scope.info = {
+                flag:false
+            }
             CreateInviteCard.save({"marketer":$scope.marketer,"oldOpenId":$scope.oldOpenId}, function (data) {
                 $scope.headImgUrl = {
                     'background': 'url(' + data.headImgUrl + ')',
@@ -24,7 +27,9 @@ angular.module('controllers', [])
                 $scope.userQRCode = data.userQRCode;
                 loadShare();
             });
-
+            $scope.showShade = function(){
+                $scope.info.flag = true;
+            };
             var recordLogs = function(val){
                 $.ajax({
                     url:"util/recordLogs",// 跳转到 action
@@ -109,6 +114,5 @@ angular.module('controllers', [])
                 })
 
             };
-
 
         }])
