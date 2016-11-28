@@ -14,24 +14,6 @@ var sendHeartInit= function (){
     weChatInit();// 初始化微信配置信息
 
     console.log("11 customerId ",customerId);
-    /*$('#content').bind('input propertychange',function(){
-        if($('#content').val()==""){
-            if(redPacket>0){
-                $(".commit").attr('disabled',false);
-                console.log("评价为空时，钱数大于0");
-
-            }
-            else{
-                $(".commit").attr('disabled',true);
-                console.log("评价为空时，钱数等于0");
-            }
-        }
-        else{
-            $(".commit").attr('disabled',false);
-            console.log("评价输入中。。。");
-
-        }
-    });*/
 }
 
 
@@ -84,18 +66,10 @@ function selectMoney(index,moneyItem){
     if( redPacket==moneyItem){
         $(".picMoney-list li").eq(index).children(".select").hide();
         redPacket=0;
-        $(".commit").attr('disabled',true);
-       /* if($('#content').val()==""){
-            $(".commit").attr('disabled',true);
-            console.log("选择钱数时。钱数等于0时，评价内容为空");
-        }*/
-
     }
     else{
         $(".picMoney-list li").eq(index).children(".select").show();
         redPacket=moneyItem;
-        $(".commit").attr('disabled',false);
-        console.log("选择钱数时，钱数大于0");
     }
     /*console.log("选择钱数",redPacket);*/
 
@@ -142,9 +116,6 @@ function commitEvaluate(){
                                         recordLogs("ZXPJSXY_PJ");
                                         window.location.href = "playtour#/playtourShare/"+2;
                                     }
-                                   /* if(data=="2"){
-                                        window.location.href = "playtour#/evaluateSuccess";
-                                    }*/
                                 },
                                 error : function(res) {
                                     recordLogs("PAY_ERROR1:"+res.errMsg);
