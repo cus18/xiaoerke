@@ -1,0 +1,33 @@
+
+.bgc {
+    background: #36b7ce;
+}
+
+.inviteOldBox {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+
+.inviteOldBox .inviteTop {
+    width: 90%;
+    margin-top: 80px;
+}
+
+.inviteOldBox .inviteContent {
+    width: 88%;
+    margin-top: 42px;
+}
+
+.inviteOldBox .inviteChild {
+    width: 90%;
+    margin-top: 25px;
+}
+
+.inviteOldBox .inviteBtn {
+    width: 50%;
+    margin-top: 40px;
+}
