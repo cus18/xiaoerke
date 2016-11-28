@@ -105,6 +105,45 @@ define(['appPlayTour'], function(app){
                             }
                         }
                     })
+                    .state('babyCoinInvitePage', {
+                        url: '/babyCoinInvitePage',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'babyCoinInvitePageCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.babyCoinInvitePageCtrl',
+                                    ['js/controllers/babyCoin/babyCoinInvitePageCtrl.js?ver='+wxVersion,
+                                        'styles/babyCoin/babyCoinInvitePage.css?ver='+wxVersion],
+                                    'js/views/babyCoin/babyCoinInvitePage.html?ver='+wxVersion);
+                            }
+                        }
+                    })
+                    .state('babyCoinInviteOld', {
+                        url: '/babyCoinInviteOld',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'babyCoinInviteOldCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.babyCoinInviteOldCtrl',
+                                    ['js/controllers/babyCoin/babyCoinInviteOldCtrl.js?ver='+wxVersion,
+                                        'styles/babyCoin/babyCoinInviteOld.css?ver='+wxVersion],
+                                    'js/views/babyCoin/babyCoinInviteOld.html?ver='+wxVersion);
+                            }
+                        }
+                    })
+                    .state('babyCoinInviteNew', {
+                        url: '/babyCoinInviteNew',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'babyCoinInviteNewCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.babyCoinInviteNewCtrl',
+                                    ['js/controllers/babyCoin/babyCoinInviteNewCtrl.js?ver='+wxVersion,
+                                        'styles/babyCoin/babyCoinInviteNew.css?ver='+wxVersion],
+                                    'js/views/babyCoin/babyCoinInviteNew.html?ver='+wxVersion);
+                            }
+                        }
+                    })
 
                 $urlRouterProvider.otherwise('playtourShare');
             }])

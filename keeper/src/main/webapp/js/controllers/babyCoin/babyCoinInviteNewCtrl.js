@@ -1,32 +1,33 @@
 angular.module('controllers', [])
-    .controller('patientConsultInvitePageCtrl',['$scope','GetAttentionInfo','GetUserOpenId','GetBabyCoinInfo','BabyCoinInit','GetConfig','$ionicScrollDelegate',
-        function ($scope,GetAttentionInfo,GetUserOpenId,GetBabyCoinInfo,BabyCoinInit,GetConfig,$ionicScrollDelegate) {
+    .controller('babyCoinInviteNewCtrl', ['$scope', 'CreateInviteCard','$stateParams','BabyCoinInit','GetConfig',
+        function ($scope, CreateInviteCard,$stateParams,BabyCoinInit,GetConfig) {
+
+            $scope.marketer = $stateParams.marketer;
+            $scope.oldOpenId = $stateParams.oldOpenId;
             $scope.minename = '您的朋友';
-            $scope.openid = '';
-            $scope.marketer = '';
+            $scope.openid = $stateParams.oldOpenId;
             $scope.inviteUrlData = "";
-            $scope.invitePageInit = function(){
-                BabyCoinInit.save({},function(data){
-                    $scope.openid = data.babyCoinVo.openId;
-                    $scope.marketer = data.babyCoinVo.marketer ;
-                    $scope.minename = data.babyCoinVo.nickName;
-                    if($scope.minename == undefined || $scope.minename==''){
-                        $scope.minename = '您的朋友';
-                    }
-                    loadShare();
-                })
-                $('#invitePageContent').click(function(){
-                    $ionicScrollDelegate.scrollTop();
-                    $('#invitePageShade').show();
-                });
-                recordLogs("ZXYQ_YQY");
-            };
-            $scope.goCoupon = function () {
-                console.log('优惠券');
-            };
-            $scope.goStore = function () {
-                console.log('商城');
-            };
+
+            CreateInviteCard.save({"marketer":$scope.marketer,"oldOpenId":$scope.oldOpenId}, function (data) {
+                $scope.headImgUrl = {
+                    'background': 'url(' + data.headImgUrl + ')',
+                    'background-size': '100% 100%'
+                };
+                $scope.headImgNickName = data.babyCoinVo.nickName;
+                /*$scope.userQRCode = {
+                    'background': 'url(' + data.userQRCode + ')',
+                    'background-size': '100% 100%'
+                };*/
+                $scope.minename = $scope.headImgNickName;
+                if($scope.minename == undefined || $scope.minename==''){
+                    $scope.minename = '您的朋友';
+                }
+                $scope.userQRCode = data.userQRCode;
+                loadShare();
+            });
+
+
+
             var recordLogs = function(val){
                 $.ajax({
                     url:"util/recordLogs",// 跳转到 action
@@ -81,22 +82,22 @@ angular.module('controllers', [])
                                 wx.ready(function () {
                                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                     wx.onMenuShareTimeline({
-                                        title: '在这里可以免费咨询三甲医院儿科专家', // 分享标题
+                                        title:  $scope.minename+'送你39.6元，和三甲医院儿科专家】来次一对一专业咨询吧！', // 分享标题
                                         link: share, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                         success: function (res) {
-                                            recordLogs("ZXYQ_YQY_SHARE");
+                                            recordLogs("ZXYQ_YQK_NEW_SHARE");
                                         },
                                         fail: function (res) {
                                         }
                                     });
                                     wx.onMenuShareAppMessage({
-                                        title: $scope.minename  + '向你推荐', // 分享标题
-                                        desc: '在这里可以免费咨询三甲医院儿科专家', // 分享描述
+                                        title: $scope.minename  + '送给你39.6元，收好', // 分享标题
+                                        desc: '和三甲医院儿科专家来一对一专业咨询吧！', // 分享描述
                                         link: share, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                         success: function (res) {
-                                            recordLogs("ZXYQ_YQY_SHARE");
+                                            recordLogs("ZXYQ_YQK_NEW_SHARE");
                                         },
                                         fail: function (res) {
                                         }
@@ -108,7 +109,7 @@ angular.module('controllers', [])
                         error : function() {
                         }
                     });
-                })
+                });
 
             };
         }])
