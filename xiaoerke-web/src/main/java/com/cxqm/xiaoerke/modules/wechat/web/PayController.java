@@ -132,7 +132,7 @@ public class PayController {
         if(serviceType.equals("antiDogPay")){
             model.addAttribute("payPrice", 19.8);
             model.addAttribute("intervalFlag", "1");
-            return "antiDogPay";
+            return "insurance/antiDogPay";
         }
         else if(serviceType.equals("phoneConsult")){
             model.addAttribute("ceshi", "");
@@ -157,7 +157,7 @@ public class PayController {
         else if("handfootmouth".equals(serviceType)){
             model.addAttribute("payPrice", 26.8);
             model.addAttribute("intervalFlag", "1");
-            return "native/handfootmouthPay";
+            return "insurance/handfootmouthPay";
         }
         else if("pneumonia".equals(serviceType)){
             model.addAttribute("payPrice", 68);
