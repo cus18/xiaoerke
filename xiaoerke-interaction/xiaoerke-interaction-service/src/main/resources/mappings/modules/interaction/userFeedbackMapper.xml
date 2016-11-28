@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.interaction.dao.UserFeedbackDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.interaction.entity.UserFeedbackVo" >
+    <id column="id" property="id" jdbcType="INTEGER"/>
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="solve" property="solve" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, openid, content, createTime, type, solve
+  </sql>
+
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.interaction.entity.UserFeedbackVo" >
+    insert into user_feedback
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="openid != null" >
+        openid,
+      </if>
+      <if test="content != null" >
+          content,
+      </if>
+      <if test="createTime != null" >
+          createTime,
+      </if>
+      <if test="type != null" >
+          type,
+      </if>
+      <if test="solve != null" >
+          solve,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="solve != null" >
+        #{solve,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+    <select id="findUserFeedBackList" resultMap="BaseResultMap">
+        select * from user_feedback
+        where 1=1
+      <if test="openid != null" >
+        and openid = #{openid}
+      </if>
+    </select>
+
+  <update id="updateUserFeedbackInfo" parameterType="com.cxqm.xiaoerke.modules.interaction.entity.UserFeedbackVo">
+    update user_feedback
+    <set>
+      <if test="solve != null and solve != ''">
+        solve = #{solve,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+</mapper>

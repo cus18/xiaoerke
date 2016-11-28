@@ -13,8 +13,18 @@ public class SendMindCouponVo {
 
         private String link ;
 
+        private String image;
+
         public Integer getId() {
                 return id;
+        }
+
+        public String getImage() {
+                return image;
+        }
+
+        public void setImage(String image) {
+                this.image = image;
         }
 
         public void setId(Integer id) {

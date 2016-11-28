@@ -14,12 +14,14 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.service.*;
+import com.cxqm.xiaoerke.modules.consult.service.core.HttpRequestHandler;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import org.restlet.engine.adapter.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -29,7 +31,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -118,6 +123,7 @@ public class PraiseCustomerController extends BaseController {
                 Runnable thread = new SendBadEvaluationThread((HashMap)params);
                 threadExecutor.execute(thread);
             }
+            return 2+"";
         }else{
             if ("1".equalsIgnoreCase((String)params.get("starNum1")) && result >0) {
                 Runnable thread = new SendBadEvaluationThread((HashMap)params);

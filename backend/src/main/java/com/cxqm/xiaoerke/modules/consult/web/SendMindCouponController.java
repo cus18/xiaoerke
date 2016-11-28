@@ -52,6 +52,7 @@ public class SendMindCouponController extends BaseController {
         if(StringUtils.isNotNull(vo.getId()+"")){
             List<SendMindCouponVo> list = sendMindCouponService.findSendMindCouponByInfo(vo);
             returnVo = list.get(0);
+            returnVo.setImage("http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/sendMindCoupon"+vo.getId());
         }else{
             //returnVo.setPriority("0");
         }
