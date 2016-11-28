@@ -880,7 +880,8 @@ public enum ConsultSessionManager {
                                             }
                                         }
                                         responseNews.append("医生，希望能帮到你O(∩_∩)O~");
-                                        responseNews.append("\n");
+                                        responseNews.append("\n\n");
+                                        responseNews.append("<a href='http://s68.baodf.com/titan/consultDoctorHome#/consultDoctorHome/"+toCsUserId+"'>");
                                         if(StringUtils.isNotNull(toCsUserName)){
                                             responseNews.append(toCsUserName+"医生:");
                                         }else{
@@ -903,6 +904,7 @@ public enum ConsultSessionManager {
                                         int minRandom = 90 ;
                                         int daShang = random.nextInt(3)+minRandom ;
                                         responseNews.append("打赏"+daShang+"%  ");
+                                        responseNews.append("</a>");
                                         sendMsg = responseNews.toString();
                                         WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), session.getUserId(), sendMsg);
                                         if(ConstantUtil.PAY_SUCCESS.getVariable().equals(consultSessionStatusVo.getPayStatus())){
