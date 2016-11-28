@@ -6,9 +6,10 @@ angular.module('controllers', ['ionic']).controller('babyCoinTicketListCtrl', [
 
 
 
-        //提交评价
-        $scope.startConsult = function () {
-            WeixinJSBridge.call('closeWindow');
+        //点击 立即兑换
+        $scope.goExchange = function () {
+            $state.go("babyCoinTicketPay");
+            console.log("123");
 
         };
         $scope.$on('$ionicView.enter', function(){

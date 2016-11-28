@@ -1,8 +1,20 @@
 <ion-view view-title="咨询评价"  >
     <ion-content class="babyCoinTicketPay bg1"  style="top:0;" >
         <ion-scroll direction="y" has-bouncing="true">
-            <div class="main tc">
-               代金券支付页
+            <div class="ticket ">
+                <img class="my-img2" width="100%"  height="auto" ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/demo2.png">
+            </div>
+            <div class="pay c3 f5">
+                <span>宝宝币：100枚，本次需用99枚</span>
+                <div class="select" ng-click="selectUse()">
+                   <img class="my-img1" width="22.5" height="18" ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/{{surePayLock ? 'select_yes' :'select_no'}}.png" />
+                    使用
+                </div>
+            </div>
+            <div class="btn ">
+                <button class="tc btn-sure fl f8 c0" ng-click="sureExchange()" ng-disabled="!surePayLock" >确认兑换</button>
+                <button class="tc btn-earn fl f6" ng-click="earnBabyCoin()">赚取宝宝币</button>
+
             </div>
 
         </ion-scroll>
