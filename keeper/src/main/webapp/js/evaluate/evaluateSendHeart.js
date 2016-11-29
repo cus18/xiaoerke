@@ -10,6 +10,7 @@ var consultStatus = "" ;
 var sendHeartInit= function (){
     customerId=GetQueryString("customerId");
     sessionId=GetQueryString("sessionId");
+    consultStatus=GetQueryString("consultStatus");
     getCustomerEvaluation();//获取当前会话中医生的信息
     weChatInit();// 初始化微信配置信息
 
@@ -76,7 +77,7 @@ function getCustomerEvaluation(){
 }
 /* 点击服务不好 */
 function unSatisfy(){
-    window.location.href="../keeper/playtour#/evaluateUnSatisfy/"+customerId+"/"+sessionId;
+    window.location.href="../keeper/playtour#/evaluateUnSatisfy/"+customerId+"/"+sessionId+"/"+consultStatus;
 }
 /* 选择心意钱数 */
 function selectMoney(index,moneyItem){

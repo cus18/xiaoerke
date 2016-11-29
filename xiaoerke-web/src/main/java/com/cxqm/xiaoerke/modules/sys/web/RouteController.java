@@ -159,19 +159,19 @@ public class RouteController extends BaseController {
         keeper 项目
     */
 
-    /**
+   /* *//**
      * 咨询打赏
-     */
+     *//*
     @RequestMapping(value ="/playtour",method = {RequestMethod.POST, RequestMethod.GET})
     public String playTour() {
         return "native/playtourIndex";
-    }
+    }*/
 
     /**
      * 咨询打赏评价完成
-     */
+     *//*
     @RequestMapping(value ="/playtourEvaluate",method = {RequestMethod.POST, RequestMethod.GET})
     public String playTourEval() {
         return "native/playtourEvaluate";
-    }
+    }*/
 }

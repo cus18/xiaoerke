@@ -1,5 +1,5 @@
 angular.module('controllers', [])
-    .controller('patientConsultInvitePageCtrl',['$scope','GetAttentionInfo','GetUserOpenId','GetBabyCoinInfo','BabyCoinInit','GetConfig','$ionicScrollDelegate',
+    .controller('babyCoinInvitePageCtrl',['$scope','GetAttentionInfo','GetUserOpenId','GetBabyCoinInfo','BabyCoinInit','GetConfig','$ionicScrollDelegate',
         function ($scope,GetAttentionInfo,GetUserOpenId,GetBabyCoinInfo,BabyCoinInit,GetConfig,$ionicScrollDelegate) {
             $scope.minename = '您的朋友';
             $scope.openid = '';

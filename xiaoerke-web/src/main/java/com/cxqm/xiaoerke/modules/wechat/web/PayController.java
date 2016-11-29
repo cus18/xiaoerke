@@ -51,7 +51,7 @@ public class PayController {
         }
         CookieUtils.setCookie(response,"patient_register_service_id", patient_register_service_id);
         CookieUtils.setCookie(response, "chargePrice", chargePrice);
-        return "pay";
+        return "pay/pay";
     }
     /**
      *
@@ -132,13 +132,13 @@ public class PayController {
         if(serviceType.equals("antiDogPay")){
             model.addAttribute("payPrice", 19.8);
             model.addAttribute("intervalFlag", "1");
-            return "antiDogPay";
+            return "insurance/antiDogPay";
         }
         else if(serviceType.equals("phoneConsult")){
             model.addAttribute("ceshi", "");
             model.addAttribute("phoneConDoctorDetail", phoneConDoctorDetail);
             model.addAttribute("doctorId", doctorId);
-            return "phoneConsultPay";
+            return "pay/phoneConsultPay";
         }
         else if(serviceType.equals("appointment")){
             model.addAttribute("payPrice", 200);
@@ -146,7 +146,7 @@ public class PayController {
             return "appointmentPay";
         }
         else if(serviceType.equals("orderDetail")){
-           return  "orderDetailPay";
+           return  "pay/orderDetailPay";
         }
         else if(serviceType.equals("customerPay")){
             return  "native/evaluateSendHeart";
@@ -157,7 +157,7 @@ public class PayController {
         else if("handfootmouth".equals(serviceType)){
             model.addAttribute("payPrice", 26.8);
             model.addAttribute("intervalFlag", "1");
-            return "native/handfootmouthPay";
+            return "insurance/handfootmouthPay";
         }
         else if("pneumonia".equals(serviceType)){
             model.addAttribute("payPrice", 68);
