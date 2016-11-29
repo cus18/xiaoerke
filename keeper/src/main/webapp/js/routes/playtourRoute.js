@@ -119,7 +119,7 @@ define(['appPlayTour'], function(app){
                         }
                     })
                     .state('babyCoinInviteOld', {
-                        url: '/babyCoinInviteOld',
+                        url: '/babyCoinInviteOld/:oldOpenId,:marketer',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'babyCoinInviteOldCtrl',
                         resolve: {
@@ -132,7 +132,7 @@ define(['appPlayTour'], function(app){
                         }
                     })
                     .state('babyCoinInviteNew', {
-                        url: '/babyCoinInviteNew',
+                        url: '/babyCoinInviteNew/:oldOpenId,:marketer',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'babyCoinInviteNewCtrl',
                         resolve: {

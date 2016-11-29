@@ -1,30 +1,38 @@
 angular.module('controllers', [])
-    .controller('babyCoinInviteOldCtrl',['$scope','CreateInviteCard','$stateParams','GetConfig',
-        function ($scope,CreateInviteCard,$stateParams,GetConfig) {
+    .controller('babyCoinInviteOldCtrl',
+    ['$scope','CreateInviteCard','$stateParams','GetConfig','$ionicScrollDelegate',
+        function ($scope,CreateInviteCard,$stateParams,GetConfig,$ionicScrollDelegate) {
 
             $scope.marketer = $stateParams.marketer;
             $scope.oldOpenId = $stateParams.oldOpenId;
             $scope.minename = '您的朋友';
             $scope.openid = $stateParams.oldOpenId;
             $scope.inviteUrlData = "";
-            CreateInviteCard.save({"marketer":$scope.marketer,"oldOpenId":$scope.oldOpenId}, function (data) {
-                $scope.headImgUrl = {
-                    'background': 'url(' + data.headImgUrl + ')',
-                    'background-size': '100% 100%'
-                };
-                $scope.headImgNickName = data.babyCoinVo.nickName;
-                /*$scope.userQRCode = {
-                 'background': 'url(' + data.userQRCode + ')',
-                 'background-size': '100% 100%'
-                 };*/
-                $scope.minename = $scope.headImgNickName;
-                if($scope.minename == undefined || $scope.minename==''){
-                    $scope.minename = '您的朋友';
-                }
-                $scope.userQRCode = data.userQRCode;
-                loadShare();
-            });
-
+            $scope.invitePageInit = function () {
+                CreateInviteCard.save({"marketer":$scope.marketer,"oldOpenId":$scope.oldOpenId}, function (data) {
+                    $scope.headImgUrl = {
+                        'background': 'url(' + data.headImgUrl + ')',
+                        'background-size': '100% 100%'
+                    };
+                    $scope.headImgNickName = data.babyCoinVo.nickName;
+                    /*$scope.userQRCode = {
+                     'background': 'url(' + data.userQRCode + ')',
+                     'background-size': '100% 100%'
+                     };*/
+                    $scope.minename = $scope.headImgNickName;
+                    if($scope.minename == undefined || $scope.minename==''){
+                        $scope.minename = '您的朋友';
+                    }
+                    $scope.userQRCode = data.userQRCode;
+                    loadShare();
+                });
+            };
+            $scope.showShade = function(){
+                $('#invitePageShade').show();
+            };
+            $scope.showShade1 = function(){
+                $('#invitePageShade1').show();
+            };
             var recordLogs = function(val){
                 $.ajax({
                     url:"util/recordLogs",// 跳转到 action
@@ -109,6 +117,5 @@ angular.module('controllers', [])
                 })
 
             };
-
 
         }])

@@ -14,6 +14,25 @@ define(['appPlayTour'], function (app) {
         .factory('ConfirmInstantConsultation', ['$resource', function ($resource) {
             return $resource('consult/wechat/confirmInstantConsultation');
         }])
+        //邀请页面
+        .factory('GetAttentionInfo', ['$resource', function ($resource) {
+            return $resource('patient/getAttentionInfo');
+        }])
+        .factory('GetUserOpenId', ['$resource', function ($resource) {
+            return $resource('util/getOpenid');
+        }])
+        .factory('GetBabyCoinInfo', ['$resource', function ($resource) {
+            return $resource('babyCoin/getBabyCoin');
+        }])
+        .factory('BabyCoinInit',['$resource',function ($resource){
+            return $resource('babyCoin/babyCoinInit');
+        }])
+        .factory('GetConfig',['$resource',function ($resource){
+            return $resource('util/getConfig');
+        }])
+        .factory('CreateInviteCard', ['$resource', function ($resource) {
+            return $resource('babyCoin/createInviteCard');
+        }])
 
 
 })

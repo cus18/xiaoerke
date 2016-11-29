@@ -2,9 +2,22 @@
     <ion-content class="bgc">
         <div class="inviteOldBox clearfix">
             <img class="inviteTop" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite%2FinviteTop.png" alt="">
-            <img class="inviteContent" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Flao_png_03.png" alt="">
+            <div class="consult">
+                点击&nbsp;→<span ng-click="showShade()">咨询医生</span>立即咨询吧
+            </div>
             <img class="inviteChild" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite%2FinviteChild.png" alt="">
-            <a href="patient/consult#/patientConsultInvitePage"><img class="inviteBtn" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite%2FinviteBtn.png" alt=""></a>
+            <img class="inviteContent" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Flao_png_03.png" alt="">
+            <div class="rule">
+                <a style="color: #084d59;" href="playtour#/babyCoinInvitePage">邀请规则》</a>
+            </div>
+            <img class="inviteBtn" ng-click="showShade1()" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fbutton3_png_03.png" alt="">
+        </div>
+        <div id="invitePageShade" class="invitePageShade">
+            <img class="invitePageShareContent" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fzixun_png_03.png" alt=""/>
+        </div>
+        <div id="invitePageShade1" class="invitePageShade">
+            <img class="invitePageShareContent" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fyaoqing_png_03.png" alt=""/>
+            <img class="invitePageShareMark" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/invitePageShareMark.png" alt=""/>
         </div>
     </ion-content>
 </ion-view>
