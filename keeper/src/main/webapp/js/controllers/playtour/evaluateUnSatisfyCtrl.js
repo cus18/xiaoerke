@@ -69,7 +69,7 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
                 url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
                 async:false,
                 type:'POST',
-                data:"{'id':'"+$scope.customerId+"','starNum1':'"+starNum1+"','content':'"+content+"','dissatisfied':'"+noManYi+"','redPacket':'"+redPacket+"','sessionId':'"+$scope.sessionId+"'}",
+                data:"{'id':'"+$scope.customerId+"','starNum1':'"+starNum1+"','content':'"+content+"','dissatisfied':'"+noManYi+"','redPacket':'"+redPacket+"','sessionId':'"+$scope.sessionId+"','consultStatus':'"+$stateParams.consultStatus+"'}",
                 contentType: "application/json; charset=utf-8",
                 dataType:'json',
                 success:function(data) {

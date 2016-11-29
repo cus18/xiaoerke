@@ -14,7 +14,7 @@ angular.module('controllers', [])
                         $scope.minename = '您的朋友';
                     }
                     loadShare();
-                })
+                });
                 $('#invitePageContent').click(function(){
                     $ionicScrollDelegate.scrollTop();
                     $('#invitePageShade').show();

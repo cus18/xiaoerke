@@ -50,3 +50,27 @@
 .inviteOldBox .inviteBtn {
     width: 50%;
 }
+.invitePageShade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: rgba(0,0,0,.4);
+    display: none;
+}
+
+.invitePageShade .invitePageShareContent {
+    width: 80%;
+    position: absolute;
+    right: 10%;
+    top: 90px;
+}
+
+.invitePageShade .invitePageShareMark {
+    width: 15%;
+    position: absolute;
+    right: 29px;
+    top: 15px;
+}
