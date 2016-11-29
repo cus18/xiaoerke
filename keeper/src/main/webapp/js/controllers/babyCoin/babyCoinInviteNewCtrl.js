@@ -1,5 +1,6 @@
 angular.module('controllers', [])
-    .controller('babyCoinInviteNewCtrl', ['$scope', 'CreateInviteCard','$stateParams','BabyCoinInit','GetConfig',
+    .controller('babyCoinInviteNewCtrl',
+    ['$scope', 'CreateInviteCard','$stateParams','BabyCoinInit','GetConfig',
         function ($scope, CreateInviteCard,$stateParams,BabyCoinInit,GetConfig) {
 
             $scope.marketer = $stateParams.marketer;
