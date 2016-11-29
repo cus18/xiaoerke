@@ -1,25 +1,25 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.cxqm.xiaoerke.common.utils.*;
-import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.impl.PayRecordServiceImpl;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
+import com.cxqm.xiaoerke.modules.consult.entity.SendMindCouponVo;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
+import com.cxqm.xiaoerke.modules.consult.service.SendMindCouponService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
-import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
-import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -62,6 +62,9 @@ public class BabyCoinController {
 
     @Autowired
     private SystemService systemService;
+
+    @Autowired
+    SendMindCouponService sendMindCouponService;
 
     /**
      * 邀请卡生成页面
@@ -262,6 +265,58 @@ public class BabyCoinController {
     public void test(HttpSession session, HttpServletRequest request) {
         babyCoinInit(session, request);
 //        getBabyCoinInfo(session, request);
+    }
+
+
+    /**
+     * 用宝宝币兑换优惠券
+     *
+     * @param request
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/exchangeCoupon", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map<String, Object> exchangeCoupon(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
+
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        Map<String, Object> response = new HashMap<String, Object>();
+        String openId = WechatUtil.getOpenId(session, request);//"oogbDwD_2BTQpftPu9QClr-mCw7U";
+        Integer couponCoin = (Integer)params.get("couponType");
+        //宝宝币余额
+        int flag = 0;
+        BabyCoinVo babyCoinVo = new BabyCoinVo();
+        babyCoinVo.setOpenId(openId);
+        babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
+        if (babyCoinVo.getCash() > couponCoin) {
+            babyCoinVo.setCash(babyCoinVo.getCash() - couponCoin);
+            flag = babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
+        }
+        if (flag > 0) {
+            response.put("status", "success");
+        } else {
+            response.put("status", "failure");
+        }
+        //支付记录
+        LogUtils.saveLog("exchangeCoupon" + WechatUtil.getOpenId(session, request));
+        BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
+        babyCoinRecordVo.setBalance(couponCoin);
+        babyCoinRecordVo.setCreateBy(openId);
+        babyCoinRecordVo.setCreateTime(new Date());
+        babyCoinRecordVo.setSource("exchangeCoupon");
+        babyCoinRecordVo.setOpenId(openId);
+        babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
+        return  response;
+    }
+
+    @RequestMapping(value = "sendMindCouponList")
+    public
+    @ResponseBody
+    Map<String,Object> sendMindCouponList() {
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        List<SendMindCouponVo> list = sendMindCouponService.findSendMindCouponByInfo(null);
+        resultMap.put("mindCoupon",list);
+        return resultMap;
     }
 
 }
