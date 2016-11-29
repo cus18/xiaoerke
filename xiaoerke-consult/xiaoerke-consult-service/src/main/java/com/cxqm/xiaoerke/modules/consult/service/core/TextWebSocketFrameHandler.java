@@ -310,12 +310,14 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                         Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
                         JSONObject jsonObj = new JSONObject();
                         jsonObj.put("type", "4");
-                        jsonObj.put("notifyType", "0016");
+                        jsonObj.put("notifyType", "0017");
                         TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
                         if (csChannel != null && csChannel.isActive()) {
                             csChannel.writeAndFlush(frame.retain());
                         }
                         return true;
+                    }else{
+                        userChannel.writeAndFlush(msg.retain());
                     }
                 }else{
                     userChannel.writeAndFlush(msg.retain());
@@ -326,12 +328,14 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                         Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
                         JSONObject jsonObj = new JSONObject();
                         jsonObj.put("type", "4");
-                        jsonObj.put("notifyType", "0016");
+                        jsonObj.put("notifyType", "0017");
                         TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
                         if (csChannel != null && csChannel.isActive()) {
                             csChannel.writeAndFlush(frame.retain());
                         }
                         return true;
+                    }else{
+                        userChannel.writeAndFlush(msg.retain());
                     }
                 }else{
                     userChannel.writeAndFlush(msg.retain());
