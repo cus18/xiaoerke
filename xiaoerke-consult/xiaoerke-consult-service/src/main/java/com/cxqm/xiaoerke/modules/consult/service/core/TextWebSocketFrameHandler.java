@@ -136,365 +136,319 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         }
 
         Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-
+        //sessionId不为空  得良抽取，有问题随时沟通
         if (sessionId != null) {
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+            LogUtils.saveLog(String.valueOf(sessionId),"doctorId="+richConsultSession.getCsUserId()+"userId="+richConsultSession.getUserId());
             if (richConsultSession == null)
                 return;
             String csUserId = richConsultSession.getCsUserId();
             String userId = richConsultSession.getUserId();
             String senderId = (String) msgMap.get("senderId");
             if (senderId.equals(userId)) {
-                //如果是用户作为发送者，则发给医生接收
-                Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
-                /**
-                 * jiangzg 新增消息数量 2016-9-8 18:28:29
-                 */
-                int currentNum = richConsultSession.getConsultNum() + 1;
-                richConsultSession.setConsultNum(currentNum);
-                sessionRedisCache.putSessionIdConsultSessionPair(sessionId , richConsultSession);
-                if (csChannel != null && csChannel.isActive()) {
-                    Map newConsultMap = msgMap ;
-                    newConsultMap.put("consultNum", richConsultSession.getConsultNum());
-                    TextWebSocketFrame frame =  new TextWebSocketFrame(JSONUtils.toJSONString(newConsultMap));
-                    csChannel.writeAndFlush(frame.retain());
-                    //保存聊天记录
-                    consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), richConsultSession);
-                }
+                //用户发给医生
+                userSendToDoctor(msgMap, sessionId, msgType, richConsultSession, csUserId, userId);
+
             } else if (senderId.equals(csUserId)) {
-                //如果是医生作为发送者，则用户接收
-                if (richConsultSession.getSource().equals("h5cxqm")||richConsultSession.getSource().equals("h5wjy") || richConsultSession.getSource().equals("h5bhq") || richConsultSession.getSource().equals("h5ykdl")) {
-                    Channel userChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(userId);
-                    if (userChannel != null && userChannel.isActive()) {
-                        if(richConsultSession.getSource().equals("h5bhq") || richConsultSession.getSource().equals("h5ykdl")){
-                            Map<String, Date> userConnectionTimeMapping = ConsultSessionManager.INSTANCE.getUserConnectionTimeMapping();
-                            Date oldDate = null;
-                            if(userConnectionTimeMapping.containsKey(richConsultSession.getUserId())){
-                                oldDate = userConnectionTimeMapping.get(richConsultSession.getUserId());
-                            }else{
-                                oldDate = new Date();
-                                userConnectionTimeMapping.put(richConsultSession.getUserId(),oldDate);
-                            }
-                            Boolean flag = false ;
-                            for(int i= 0 ; i<= 1;i++){
-                                JSONObject jsonObj = new JSONObject();
-                                jsonObj.put("type", "4");
-                                jsonObj.put("notifyType", "0100");
-                                TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
-                                userChannel.writeAndFlush(frame.retain());
-                                if(i == 1){
-                                   Date nowDate =  userConnectionTimeMapping.get(richConsultSession.getUserId());
-                                   if(nowDate != null && nowDate != oldDate){
-                                       flag = true;
-                                   }
-                                }else{
-                                    userConnectionTimeMapping.put(richConsultSession.getUserId(), new Date());
-                                }
-                            }
-                            if(flag){
-                                if(richConsultSession.getSource().equals("h5ykdl")){
-                                    if("true".equalsIgnoreCase(messageContentFilter(msgMap))){
-                                        Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
-                                        JSONObject jsonObj = new JSONObject();
-                                        jsonObj.put("type", "4");
-                                        jsonObj.put("notifyType", "0016");
-                                        TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
-                                        if (csChannel != null && csChannel.isActive()) {
-                                            csChannel.writeAndFlush(frame.retain());
-                                        }
-                                        return ;
-                                    }
-                                }else{
-                                    userChannel.writeAndFlush(msg.retain());
-                                }
-                            }else{
-                                if(richConsultSession.getSource().equals("h5ykdl")){
-                                    if("true".equalsIgnoreCase(messageContentFilter(msgMap))){
-                                        Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
-                                        JSONObject jsonObj = new JSONObject();
-                                        jsonObj.put("type", "4");
-                                        jsonObj.put("notifyType", "0016");
-                                        TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
-                                        if (csChannel != null && csChannel.isActive()) {
-                                            csChannel.writeAndFlush(frame.retain());
-                                        }
-                                        return ;
-                                    }
-                                }else{
-                                    userChannel.writeAndFlush(msg.retain());
-                                }
-                                if(richConsultSession.getSource().equals("h5bhq")){
-                                    net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
-                                    String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
-                                    int nameIndex = content.indexOf("：");
-                                    String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
-                                    noReadMsg.put("action","doctorMessage");
-                                    noReadMsg.put("uid",userId);
-                                    noReadMsg.put("messageType",msgType);
-                                    noReadMsg.put("messageContent",newContent);
-                                    noReadMsg.put("doctorId",csUserId);
-                                    String currentUrl = sysPropertyVoWithBLOBsVo.getCoopBhqUrl();
-                                    if(StringUtils.isNull(currentUrl)){
-                                        currentUrl = "http://coapi.baohuquan.com/baodaifu";
-                                    }
-                                    String method = "POST";
-                                    String dataType="json";
-                                    String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
-                                    net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
-                                    if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
-                                        CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
-                                    }
-                                }else if(richConsultSession.getSource().equals("h5ykdl")){
-                                    net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
-                                    String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
-                                    int nameIndex = content.indexOf("：");
-                                    String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
-                                //    noReadMsg.put("action","doctorMessage");
-                                    /*if(content.substring(0,nameIndex).contains("宝大夫")){
-                                        noReadMsg.put("doctorName",content.substring(0,nameIndex));
-                                    }else{
-                                        noReadMsg.put("doctorName","宝大夫"+content.substring(0,nameIndex));
-                                    }*/
-                                    noReadMsg.put("doctorName",content.substring(0,nameIndex));
-                                    noReadMsg.put("uid",userId);
-                                    noReadMsg.put("messageType",msgType);
-                                    noReadMsg.put("messageContent",newContent);
-                                    noReadMsg.put("doctorId",csUserId);
-                                    String currentUrl = sysPropertyVoWithBLOBsVo.getCoopYkdlUrl() + "/consult_interrupted";
-                                    if(StringUtils.isNull(currentUrl)){
-                                        currentUrl = "https://wxsp.ykhys.com/thirdparty/baodaifu/consult_interrupted";
-                                    }
-                                    String method = "POST";
-                                    String dataType="json";
-                                    String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
-                                    net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
-                                    if(jsonObject.containsKey("error_msg") && !"success".equals(jsonObject.get("error_msg"))){
-                                        CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
-                                    }
-                                }
-                            }
-                        }else{
-                            userChannel.writeAndFlush(msg.retain());
-                        }
-                    }else{
-                        if(richConsultSession.getSource().equals("h5bhq")){
-                            net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
-                            String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
-                            int nameIndex = content.indexOf("：");
-                            String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
-                            noReadMsg.put("action","doctorMessage");
-                            noReadMsg.put("uid",userId);
-                            noReadMsg.put("messageType",msgType);
-                            noReadMsg.put("messageContent",newContent);
-                            noReadMsg.put("doctorId",csUserId);
-                            String currentUrl = sysPropertyVoWithBLOBsVo.getCoopBhqUrl();
-                            if(StringUtils.isNull(currentUrl)){
-                                currentUrl = "http://coapi.baohuquan.com/baodaifu";
-                            }
-                            String method = "POST";
-                            String dataType="json";
-                            String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
-                            net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
-                            if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
-                                CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
-                            }
-                        }else if(richConsultSession.getSource().equals("h5ykdl")){
-                            net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
-                            String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
-                            int nameIndex = content.indexOf("：");
-                            String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
-                            //    noReadMsg.put("action","doctorMessage");
-                            /*if(content.substring(0,nameIndex).contains("宝大夫")){
-                                noReadMsg.put("doctorName",content.substring(0,nameIndex));
-                            }else{
-                                noReadMsg.put("doctorName","宝大夫"+content.substring(0,nameIndex));
-                            }*/
-                            noReadMsg.put("doctorName",content.substring(0,nameIndex));
-                            noReadMsg.put("uid",userId);
-                            noReadMsg.put("messageType",msgType);
-                            noReadMsg.put("messageContent",newContent);
-                            noReadMsg.put("doctorId",csUserId);
-                            String currentUrl = sysPropertyVoWithBLOBsVo.getCoopYkdlUrl()+"/consult_interrupted";
-                            if(StringUtils.isNull(currentUrl)){
-                                currentUrl = "https://wxsp.ykhys.com/thirdparty/baodaifu/consult_interrupted";
-                            }
-                            String method = "POST";
-                            String dataType="json";
-                            String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
-                            net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
-                            if(jsonObject.containsKey("error_msg") && !"success".equals(jsonObject.get("error_msg"))){
-                                CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
-                            }
-                        }
-                    }
-                }
-                if (richConsultSession.getSource().equals("wxcxqm")) {
-                    String sendResult = "";
-                    if (msgType == 0) {
-                        String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
-                        StringBuilder stringBuilder = new StringBuilder();
-                        //根据sessionId查询Evaluation表id
-                        //jiangzg 暂时注掉，发消息带评价信息
-                        Map praiseParam = new HashMap();
-                        praiseParam.put("consultSessionId", richConsultSession.getId());
-                        praiseParam.put("doctorId", csUserId);
-                        List<Map<String, Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
-                        if (praiseList != null && praiseList.size() > 0) {
-                            int nameIndex = content.indexOf("：");
-                            String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
-                            if (StringUtils.isNotNull(newContent) && !"\n".equalsIgnoreCase(newContent)) {
-                                if (newContent.endsWith("\n")) {
-                                    //newContent = newContent.substring(0,newContent.lastIndexOf("\n"));
-                                    stringBuilder.append(newContent);
-                                } else {
-                                    stringBuilder.append(newContent + "\n");
-                                    //stringBuilder.append(newContent);
-                                }
-                            } else {
-                                return;
-                            }
-                            stringBuilder.append("------------------\n");
-
-//                            http://localhost/titan/consultDoctorHome#/consultDoctorHome/00034ads0d764sdsa66a2d6esd0e8ddf
-                            stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getTitanWebUrl() +"titan/consultDoctorHome#/consultDoctorHome/"+richConsultSession.getCsUserId()+"'>");
-                            stringBuilder.append(content.substring(0, nameIndex));
-                            stringBuilder.append("</a>|");
-//                            stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
-                            Map param = new HashMap();
-                            param.put("userId", csUserId);
-                            String smartMallAddress = "https://h5.koudaitong.com/v2/showcase/homepage?kdt_id=17783033&redirect_count=1";
-                            List<ConsultDoctorInfoVo> consultDoctorByInfos= consultDoctorInfoService.getConsultDoctorByInfo(param) ;
-                            if(consultDoctorByInfos != null && consultDoctorByInfos.size() > 0){
-                                if(consultDoctorByInfos.get(0) != null){
-                                   if(consultDoctorByInfos.get(0).getMicroMallAddress() != null && StringUtils.isNotNull(consultDoctorByInfos.get(0).getMicroMallAddress())){
-                                       smartMallAddress = consultDoctorByInfos.get(0).getMicroMallAddress() ;
-                                   }
-                                }
-                            }
-                            stringBuilder.append("<a href='"+smartMallAddress);
-                            stringBuilder.append("'>微商城</a>|");
-                            stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD");
-                            stringBuilder.append("'>分享</a>");
-                            sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
-                            //发送消息
-                            /*if(StringUtils.isNotNull(content) && !"\n".equalsIgnoreCase(content)){
-                                if (content.endsWith("\n")) {
-                                    content = content.substring(0,content.lastIndexOf("\n"));
-                                    stringBuilder.append(content);
-                                } else {
-                                    // stringBuilder.append(newContent + "\n");
-                                    stringBuilder.append(content);
-                                }
-                            }else{
-                                return ;
-                            }
-                            sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());*/
-                            if(!sendResult.equals("messageOk")){
-                                if (sendResult.equals("tokenIsInvalid")) {
-                                    updateWechatParameter();
-                                }
-                                Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
-                                JSONObject jsonObj = new JSONObject();
-                                jsonObj.put("type", "4");
-                                jsonObj.put("notifyType", "0016");
-                                TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
-                                if (csChannel != null && csChannel.isActive()) {
-                                    csChannel.writeAndFlush(frame.retain());
-                                }
-                            }
-                        }
-                    } else if (msgType != 0) {
-                        //发送多媒体消息
-                        String noTextMsg = (String) msgMap.get("wscontent");
-                        WechatUtil.sendNoTextMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), noTextMsg, msgType);
-                    }
-                }
-                //保存聊天记录
-                consultRecordService.buildRecordMongoVo(csUserId, String.valueOf(msgType), (String) msgMap.get("content"), richConsultSession);
-
-                if (!(msgMap.get("consultFlag").equals("noFlag"))) {
-                    System.out.print("sessionId===" + msgMap.get("sessionId"));
-                    ConsultSession consultSessionVO = new ConsultSession();
-                    consultSessionVO.setId((Integer) msgMap.get("sessionId"));
-                    consultSessionVO.setFlag((String) msgMap.get("consultFlag"));
-                    consultSessionService.updateSessionInfo(consultSessionVO);
-                }
+                //医生发给用户
+                if (doctorSendToUser(msg, msgMap, sysPropertyVoWithBLOBsVo, msgType, userWechatParam, richConsultSession, csUserId, userId))
+                    return;
             }
-
             //更新会话操作时间
             consultRecordService.saveConsultSessionStatus(richConsultSession);
-        } else if (sessionId == null) {
-            //如果sessionId为空，首先看，消息，是不是从一个用户的H5channel过来的
+        }
+        //如果sessionId为空，首先看，消息，是不是从一个用户的H5channel过来的
+        else if (sessionId == null) {
+            LogUtils.saveLog("sessionIdNull",String.valueOf(msgMap.get("source")));
+            RichConsultSession consultSession = new RichConsultSession();
             if (msgMap.get("source").equals("h5cxqmUser") && msgMap.get("senderId") != null) {
-                RichConsultSession consultSession = ConsultSessionManager.INSTANCE.
-                        createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5cxqm");
-
-                //保存聊天记录
-                if (consultSession != null) {
-                    //将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
-                    msgMap.put("sessionId", consultSession.getId());
-                    msgMap.put("serverAddress", consultSession.getServerAddress());
-                    /**
-                     * jiangzg 2016-9-8 18:23:58 增加新消息数量
-                     */
-                    msgMap.put("consultNum", consultSession.getConsultNum());
-                    Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
-                    TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
-                    csChannel.writeAndFlush(csUserMsg.retain());
-                    consultRecordService.buildRecordMongoVo((String) msgMap.get("senderId"), String.valueOf(msgType),
-                            (String) msgMap.get("content"), consultSession);
-                }
+                consultSession = ConsultSessionManager.INSTANCE.createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5cxqm");
             }else if(msgMap.get("source").equals("h5wjyUser") && msgMap.get("senderId") != null){
-                RichConsultSession consultSession = ConsultSessionManager.INSTANCE.
-                        createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5wjy");
-
-                //保存聊天记录
-                if (consultSession != null) {
-                    //将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
-                    msgMap.put("sessionId", consultSession.getId());
-                    msgMap.put("serverAddress", consultSession.getServerAddress());
-                    msgMap.put("consultNum", consultSession.getConsultNum());
-                    Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
-                    TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
-                    csChannel.writeAndFlush(csUserMsg.retain());
-                    consultRecordService.buildRecordMongoVo((String) msgMap.get("senderId"), String.valueOf(msgType),
-                            (String) msgMap.get("content"), consultSession);
-                }
+                consultSession = ConsultSessionManager.INSTANCE.createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5wjy");
             }else if(msgMap.get("source").equals("h5bhqUser") && msgMap.get("senderId") != null){
-                RichConsultSession consultSession = ConsultSessionManager.INSTANCE.
-                        createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5bhq");
-
-                //保存聊天记录
-                if (consultSession != null) {
-                    //将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
-                    msgMap.put("sessionId", consultSession.getId());
-                    msgMap.put("serverAddress", consultSession.getServerAddress());
-                    msgMap.put("consultNum", consultSession.getConsultNum());
-                    Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
-                    TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
-                    csChannel.writeAndFlush(csUserMsg.retain());
-                    consultRecordService.buildRecordMongoVo((String) msgMap.get("senderId"), String.valueOf(msgType),
-                            (String) msgMap.get("content"), consultSession);
-                }
+                consultSession = ConsultSessionManager.INSTANCE.createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5bhq");
             }else if(msgMap.get("source").equals("h5ykdlUser") && msgMap.get("senderId") != null){
-                RichConsultSession consultSession = ConsultSessionManager.INSTANCE.
-                        createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5ykdl");
-
-                //保存聊天记录
-                if (consultSession != null) {
-                    //将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
-                    msgMap.put("sessionId", consultSession.getId());
-                    msgMap.put("serverAddress", consultSession.getServerAddress());
-                    msgMap.put("consultNum", consultSession.getConsultNum());
-                    Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
-                    TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
-                    csChannel.writeAndFlush(csUserMsg.retain());
-                    consultRecordService.buildRecordMongoVo((String) msgMap.get("senderId"), String.valueOf(msgType),
-                            (String) msgMap.get("content"), consultSession);
-                }
+                consultSession = ConsultSessionManager.INSTANCE.createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5ykdl");
+            }
+            //保存聊天记录
+            if (consultSession != null) {
+                //将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
+                saveAndSendMessage(msgMap, msgType, consultSession);
             }
         }
     }
+
+    private void saveAndSendMessage(Map<String, Object> msgMap, int msgType, RichConsultSession consultSession) {
+        //将用户发过来的第一条消息，推送给分配好的接诊员，或者医生
+        msgMap.put("sessionId", consultSession.getId());
+        msgMap.put("serverAddress", consultSession.getServerAddress());
+        /**
+         * jiangzg 2016-9-8 18:23:58 增加新消息数量
+         */
+        msgMap.put("consultNum", consultSession.getConsultNum());
+        Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
+        TextWebSocketFrame csUserMsg = new TextWebSocketFrame(JSONUtils.toJSONString(msgMap));
+        csChannel.writeAndFlush(csUserMsg.retain());
+        consultRecordService.buildRecordMongoVo((String) msgMap.get("senderId"), String.valueOf(msgType),
+                (String) msgMap.get("content"), consultSession);
+    }
+
+    private boolean doctorSendToUser(TextWebSocketFrame msg, Map<String, Object> msgMap, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo, int msgType, Map userWechatParam, RichConsultSession richConsultSession, String csUserId, String userId) {
+        //渠道来源H5
+        if (richConsultSession.getSource().equals("h5cxqm")||richConsultSession.getSource().equals("h5wjy") || richConsultSession.getSource().equals("h5bhq") || richConsultSession.getSource().equals("h5ykdl")) {
+            Channel userChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(userId);
+            //channel是活跃的状态
+            if (userChannel != null && userChannel.isActive()) {
+                if (channelAlive(msg, msgMap, sysPropertyVoWithBLOBsVo, msgType, richConsultSession, csUserId, userId, userChannel))
+                    return true;
+            }
+            //channel不是活跃的状态
+            else{
+                channelDead(msgMap, sysPropertyVoWithBLOBsVo, msgType, richConsultSession, csUserId, userId);
+            }
+        }
+        //渠道来源WX
+        if (richConsultSession.getSource().equals("wxcxqm")) {
+            if (sourceFromWX(msgMap, sysPropertyVoWithBLOBsVo, msgType, userWechatParam, richConsultSession, csUserId))
+                return true;
+        }
+        //保存聊天记录
+        consultRecordService.buildRecordMongoVo(csUserId, String.valueOf(msgType), (String) msgMap.get("content"), richConsultSession);
+
+        if (!(msgMap.get("consultFlag").equals("noFlag"))) {
+            System.out.print("sessionId===" + msgMap.get("sessionId"));
+            ConsultSession consultSessionVO = new ConsultSession();
+            consultSessionVO.setId((Integer) msgMap.get("sessionId"));
+            consultSessionVO.setFlag((String) msgMap.get("consultFlag"));
+            consultSessionService.updateSessionInfo(consultSessionVO);
+        }
+        return false;
+    }
+
+    private void channelDead(Map<String, Object> msgMap, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo, int msgType, RichConsultSession richConsultSession, String csUserId, String userId) {
+        if(richConsultSession.getSource().equals("h5bhq")){
+            net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
+            String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
+            int nameIndex = content.indexOf("：");
+            String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
+            noReadMsg.put("action","doctorMessage");
+            noReadMsg.put("uid",userId);
+            noReadMsg.put("messageType",msgType);
+            noReadMsg.put("messageContent",newContent);
+            noReadMsg.put("doctorId",csUserId);
+            String currentUrl = sysPropertyVoWithBLOBsVo.getCoopBhqUrl();
+            if(StringUtils.isNull(currentUrl)){
+                currentUrl = "http://coapi.baohuquan.com/baodaifu";
+            }
+            String method = "POST";
+            String dataType="json";
+            String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
+            net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
+            if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
+                CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
+            }
+        }else if(richConsultSession.getSource().equals("h5ykdl")){
+            net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
+            String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
+            int nameIndex = content.indexOf("：");
+            String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
+            //    noReadMsg.put("action","doctorMessage");
+            /*if(content.substring(0,nameIndex).contains("宝大夫")){
+                noReadMsg.put("doctorName",content.substring(0,nameIndex));
+            }else{
+                noReadMsg.put("doctorName","宝大夫"+content.substring(0,nameIndex));
+            }*/
+            noReadMsg.put("doctorName",content.substring(0,nameIndex));
+            noReadMsg.put("uid",userId);
+            noReadMsg.put("messageType",msgType);
+            noReadMsg.put("messageContent",newContent);
+            noReadMsg.put("doctorId",csUserId);
+            String currentUrl = sysPropertyVoWithBLOBsVo.getCoopYkdlUrl()+"/consult_interrupted";
+            if(StringUtils.isNull(currentUrl)){
+                currentUrl = "https://wxsp.ykhys.com/thirdparty/baodaifu/consult_interrupted";
+            }
+            String method = "POST";
+            String dataType="json";
+            String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
+            net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
+            if(jsonObject.containsKey("error_msg") && !"success".equals(jsonObject.get("error_msg"))){
+                CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);    //一次推送失败后，再推一次
+            }
+        }
+    }
+
+    private boolean channelAlive(TextWebSocketFrame msg, Map<String, Object> msgMap, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo, int msgType, RichConsultSession richConsultSession, String csUserId, String userId, Channel userChannel) {
+        if(richConsultSession.getSource().equals("h5bhq") || richConsultSession.getSource().equals("h5ykdl")){
+            Map<String, Date> userConnectionTimeMapping = ConsultSessionManager.INSTANCE.getUserConnectionTimeMapping();
+            Date oldDate = null;
+            if(userConnectionTimeMapping.containsKey(richConsultSession.getUserId())){
+                oldDate = userConnectionTimeMapping.get(richConsultSession.getUserId());
+            }else{
+                oldDate = new Date();
+                userConnectionTimeMapping.put(richConsultSession.getUserId(),oldDate);
+            }
+            Boolean flag = false ;
+            for(int i= 0 ; i<= 1;i++){
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("type", "4");
+                jsonObj.put("notifyType", "0100");
+                TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+                userChannel.writeAndFlush(frame.retain());
+                if(i == 1){
+                   Date nowDate =  userConnectionTimeMapping.get(richConsultSession.getUserId());
+                   if(nowDate != null && nowDate != oldDate){
+                       flag = true;
+                   }
+                }else{
+                    userConnectionTimeMapping.put(richConsultSession.getUserId(), new Date());
+                }
+            }
+            if(flag){
+                if(richConsultSession.getSource().equals("h5ykdl")){
+                    if("true".equalsIgnoreCase(messageContentFilter(msgMap))){
+                        Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
+                        JSONObject jsonObj = new JSONObject();
+                        jsonObj.put("type", "4");
+                        jsonObj.put("notifyType", "0017");
+                        TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+                        if (csChannel != null && csChannel.isActive()) {
+                            csChannel.writeAndFlush(frame.retain());
+                        }
+                        return true;
+                    }else{
+                        userChannel.writeAndFlush(msg.retain());
+                    }
+                }else{
+                    userChannel.writeAndFlush(msg.retain());
+                }
+            }else{
+                if(richConsultSession.getSource().equals("h5ykdl")){
+                    if("true".equalsIgnoreCase(messageContentFilter(msgMap))){
+                        Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
+                        JSONObject jsonObj = new JSONObject();
+                        jsonObj.put("type", "4");
+                        jsonObj.put("notifyType", "0017");
+                        TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+                        if (csChannel != null && csChannel.isActive()) {
+                            csChannel.writeAndFlush(frame.retain());
+                        }
+                        return true;
+                    }else{
+                        userChannel.writeAndFlush(msg.retain());
+                    }
+                }else{
+                    userChannel.writeAndFlush(msg.retain());
+                }
+                channelDead(msgMap, sysPropertyVoWithBLOBsVo, msgType, richConsultSession, csUserId, userId);
+            }
+        }else{
+            userChannel.writeAndFlush(msg.retain());
+        }
+        return false;
+    }
+
+    private boolean sourceFromWX(Map<String, Object> msgMap, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo, int msgType, Map userWechatParam, RichConsultSession richConsultSession, String csUserId) {
+        String sendResult = "";
+        if (msgType == 0) {
+            String content = (String) msgMap.get(ConsultSessionManager.KEY_CONSULT_CONTENT);
+            StringBuilder stringBuilder = new StringBuilder();
+            //根据sessionId查询Evaluation表id
+            //jiangzg 暂时注掉，发消息带评价信息
+            Map praiseParam = new HashMap();
+            praiseParam.put("consultSessionId", richConsultSession.getId());
+            praiseParam.put("doctorId", csUserId);
+            List<Map<String, Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParam);
+            if (praiseList != null && praiseList.size() > 0) {
+                int nameIndex = content.indexOf("：");
+                String newContent = content.substring(nameIndex + 1, content.toCharArray().length);
+                if (StringUtils.isNotNull(newContent) && !"\n".equalsIgnoreCase(newContent)) {
+                    if (newContent.endsWith("\n")) {
+                        //newContent = newContent.substring(0,newContent.lastIndexOf("\n"));
+                        stringBuilder.append(newContent);
+                    } else {
+                        stringBuilder.append(newContent + "\n");
+                        //stringBuilder.append(newContent);
+                    }
+                } else {
+                    return true;
+                }
+                stringBuilder.append("------------------\n");
+
+//                            http://localhost/titan/consultDoctorHome#/consultDoctorHome/00034ads0d764sdsa66a2d6esd0e8ddf
+                stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getTitanWebUrl() +"titan/consultDoctorHome#/consultDoctorHome/"+richConsultSession.getCsUserId()+"'>");
+                stringBuilder.append(content.substring(0, nameIndex));
+                stringBuilder.append("</a>|");
+//                            stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
+                Map param = new HashMap();
+                param.put("userId", csUserId);
+                String smartMallAddress = "https://h5.koudaitong.com/v2/showcase/homepage?kdt_id=17783033&redirect_count=1";
+                List<ConsultDoctorInfoVo> consultDoctorByInfos= consultDoctorInfoService.getConsultDoctorByInfo(param) ;
+                if(consultDoctorByInfos != null && consultDoctorByInfos.size() > 0){
+                    if(consultDoctorByInfos.get(0) != null){
+                       if(consultDoctorByInfos.get(0).getMicroMallAddress() != null && StringUtils.isNotNull(consultDoctorByInfos.get(0).getMicroMallAddress())){
+                           smartMallAddress = consultDoctorByInfos.get(0).getMicroMallAddress() ;
+                       }
+                    }
+                }
+                stringBuilder.append("<a href='"+smartMallAddress);
+                stringBuilder.append("'>微商城</a>|");
+                stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD");
+                stringBuilder.append("'>分享</a>");
+                sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
+                //发送消息
+                /*if(StringUtils.isNotNull(content) && !"\n".equalsIgnoreCase(content)){
+                    if (content.endsWith("\n")) {
+                        content = content.substring(0,content.lastIndexOf("\n"));
+                        stringBuilder.append(content);
+                    } else {
+                        // stringBuilder.append(newContent + "\n");
+                        stringBuilder.append(content);
+                    }
+                }else{
+                    return ;
+                }
+                sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());*/
+                if(!sendResult.equals("messageOk")){
+                    if (sendResult.equals("tokenIsInvalid")) {
+                        updateWechatParameter();
+                    }
+                    Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
+                    JSONObject jsonObj = new JSONObject();
+                    jsonObj.put("type", "4");
+                    jsonObj.put("notifyType", "0016");
+                    TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
+                    if (csChannel != null && csChannel.isActive()) {
+                        csChannel.writeAndFlush(frame.retain());
+                    }
+                }
+            }
+        } else if (msgType != 0) {
+            //发送多媒体消息
+            String noTextMsg = (String) msgMap.get("wscontent");
+            WechatUtil.sendNoTextMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), noTextMsg, msgType);
+        }
+        return false;
+    }
+
+    private void userSendToDoctor(Map<String, Object> msgMap, Integer sessionId, int msgType, RichConsultSession richConsultSession, String csUserId, String userId) {
+        //如果是用户作为发送者，则发给医生接收
+        Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
+        /**
+         * jiangzg 新增消息数量 2016-9-8 18:28:29
+         */
+        int currentNum = richConsultSession.getConsultNum() + 1;
+        richConsultSession.setConsultNum(currentNum);
+        sessionRedisCache.putSessionIdConsultSessionPair(sessionId , richConsultSession);
+        if (csChannel != null && csChannel.isActive()) {
+            Map newConsultMap = msgMap ;
+            newConsultMap.put("consultNum", richConsultSession.getConsultNum());
+            TextWebSocketFrame frame =  new TextWebSocketFrame(JSONUtils.toJSONString(newConsultMap));
+            csChannel.writeAndFlush(frame.retain());
+            //保存聊天记录
+            consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), richConsultSession);
+        }
+    }
+
     //消息过滤
     private String messageContentFilter(Map<String, Object> msgMap) {
         if(msgMap != null  && msgMap.size() > 0 ) {
