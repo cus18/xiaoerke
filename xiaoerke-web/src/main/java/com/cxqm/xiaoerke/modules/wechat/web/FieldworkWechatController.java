@@ -290,10 +290,10 @@ public class FieldworkWechatController {
             marketer = marketer.split("&")[0];
         }
         if(attention == null || attention.getDate() == null){//新用户
-            url = sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/patient/consult#/patientConsultInviteNew/"+oldOpenId+","+marketer;
+            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInvitePage/"+oldOpenId+","+marketer;
             LogUtils.saveLog("ZXYQ_YQK_NEW","oldOpenId="+oldOpenId+"openid="+openid+"marketer"+marketer);
         }else {//老用户
-            url = sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/patient/consult#/patientConsultInviteOld/"+oldOpenId+","+marketer;
+            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/consult#/babyCoinInviteOld/"+oldOpenId+","+marketer;
             LogUtils.saveLog("ZXYQ_YQK_OLD","openid="+openid);
         }
         return url;
