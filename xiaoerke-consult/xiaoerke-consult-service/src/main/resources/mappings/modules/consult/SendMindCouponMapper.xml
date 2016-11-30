@@ -23,6 +23,13 @@
     </if>
   </select>
 
+  <select id="getSendMindCouponInof" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.SendMindCouponVo">
+    select id, name,link
+    from send_mind_coupon
+    where 1=1
+      and id = #{id}
+  </select>
+
   <insert id="saveSendMindCoupon" parameterType="com.cxqm.xiaoerke.modules.consult.entity.SendMindCouponVo" useGeneratedKeys="true"
           keyProperty="id">
     insert into send_mind_coupon( name,link)

@@ -14,6 +14,8 @@ public interface SendMindCouponService {
 
     List<SendMindCouponVo> findSendMindCouponByInfo(SendMindCouponVo vo);
 
+    SendMindCouponVo getSendMindCouponInof(Integer id);
+
     String saveSendMindCoupon(SendMindCouponVo vo);
 
     void deleteSendMindCoupon(SendMindCouponVo vo);

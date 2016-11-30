@@ -32,6 +32,11 @@ public class SendMindCouponServiceImpl implements SendMindCouponService {
     }
 
     @Override
+    public SendMindCouponVo getSendMindCouponInof(Integer id) {
+        return sendMindCouponDao.getSendMindCouponInof(id);
+    }
+
+    @Override
     public String saveSendMindCoupon(SendMindCouponVo vo) {
         if(StringUtils.isNotNull(vo.getId()+"")){
             sendMindCouponDao.updateSendMindCoupon(vo);
