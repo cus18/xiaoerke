@@ -206,49 +206,50 @@ public class BabyCoinController {
         }
         if(flag > 0){
             response.put("status", "success");
+            LogUtils.saveLog("insertBabyCoinRecord",openId);
+            //支付记录
+            Integer sessionId = sessionRedisCache.getSessionIdByUserId(WechatUtil.getOpenId(session, request));
+            BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
+            babyCoinRecordVo.setBalance(-99);
+            babyCoinRecordVo.setCreateBy(openId);
+            babyCoinRecordVo.setCreateTime(new Date());
+            babyCoinRecordVo.setSource("consultPay");
+            babyCoinRecordVo.setSessionId(sessionId);
+            babyCoinRecordVo.setOpenId(openId);
+            babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
+            LogUtils.saveLog("insertBabyCoinRecord sessionId=" + sessionId);
+
+            consultSessionPropertyService.addPermTimes(openId);
+            Map parameter = systemService.getWechatParameter();
+            String token = (String) parameter.get("token");
+            WechatUtil.sendMsgToWechat(token, openId, "【支付成功通知】你已在宝大夫成功支付24小时咨询服务费，感谢你的信任和支持！\n----------------\n把您的问题发送给医生，立即开始咨询吧");
+
+
+            PayRecord payRecord = new PayRecord();
+            payRecord.setUserId(openId);
+            String payRecordId = IdGen.uuid();
+            payRecord.setId(payRecordId);
+            payRecord.setOpenId(openId);
+            payRecord.setOrderId(String.valueOf(sessionId));
+            payRecord.setAmount(990f);
+            payRecord.setPayType("selfAccount");
+            payRecord.setStatus("success");
+            payRecord.setFeeType("doctorConsultPay_babyCoin");
+            payRecord.setPayDate(new Date());
+            payRecord.setReceiveDate(new Date());
+            payRecord.setCreatedBy(openId);
+            LogUtils.saveLog("babyCoinPay:" + payRecordId);//用户自身余额支付
+            payRecordService.insertPayInfo(payRecord);
+
+
+            //更改支付状态
+            LogUtils.saveLog("宝宝币支付 sessionId = " + sessionId, openId);
+            HttpRequestUtil.wechatpost("http://s132.baodf.com/angel/consult/wechat/notifyPayInfo2Distributor?openId=" + openId,
+                    "openId=" + openId);
         }else{
             response.put("status", "failure");
         }
-        LogUtils.saveLog("insertBabyCoinRecord",openId);
-        //支付记录
-        Integer sessionId = sessionRedisCache.getSessionIdByUserId(WechatUtil.getOpenId(session, request));
-        BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
-        babyCoinRecordVo.setBalance(-99);
-        babyCoinRecordVo.setCreateBy(openId);
-        babyCoinRecordVo.setCreateTime(new Date());
-        babyCoinRecordVo.setSource("consultPay");
-        babyCoinRecordVo.setSessionId(sessionId);
-        babyCoinRecordVo.setOpenId(openId);
-        babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
-        LogUtils.saveLog("insertBabyCoinRecord sessionId=" + sessionId);
 
-        consultSessionPropertyService.addPermTimes(openId);
-        Map parameter = systemService.getWechatParameter();
-        String token = (String) parameter.get("token");
-        WechatUtil.sendMsgToWechat(token, openId, "【支付成功通知】你已在宝大夫成功支付24小时咨询服务费，感谢你的信任和支持！\n----------------\n把您的问题发送给医生，立即开始咨询吧");
-
-
-        PayRecord payRecord = new PayRecord();
-        payRecord.setUserId(openId);
-        String payRecordId = IdGen.uuid();
-        payRecord.setId(payRecordId);
-        payRecord.setOpenId(openId);
-        payRecord.setOrderId(String.valueOf(sessionId));
-        payRecord.setAmount(990f);
-        payRecord.setPayType("selfAccount");
-        payRecord.setStatus("success");
-        payRecord.setFeeType("doctorConsultPay_babyCoin");
-        payRecord.setPayDate(new Date());
-        payRecord.setReceiveDate(new Date());
-        payRecord.setCreatedBy(openId);
-        LogUtils.saveLog("babyCoinPay:" + payRecordId);//用户自身余额支付
-        payRecordService.insertPayInfo(payRecord);
-
-
-        //更改支付状态
-        LogUtils.saveLog("宝宝币支付 sessionId = " + sessionId, openId);
-        HttpRequestUtil.wechatpost("http://s132.baodf.com/angel/consult/wechat/notifyPayInfo2Distributor?openId=" + openId,
-                "openId=" + openId);
         return response;
     }
 
