@@ -5,7 +5,9 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
+import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
+import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.operation.service.ConsultStatisticService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
@@ -52,6 +54,9 @@ public class ScheduleTaskController extends BaseController {
 
     @Autowired
     private NonRealTimeConsultService nonRealTimeConsultService;
+
+    @Autowired
+    private BabyCoinService babyCoinService;
 
 
     /**
@@ -424,6 +429,12 @@ public class ScheduleTaskController extends BaseController {
 
     public void updateConsultDoctorInfo() {
         nonRealTimeConsultService.updateConsultDoctorInfo();
+    }
+
+    public void updateBabyCoinInviteNumber(){
+        BabyCoinVo babyCoinVo = new BabyCoinVo();
+        babyCoinVo.setInviteNumberMonth(0);
+        babyCoinService.updateBabyCoinInviteNumber(babyCoinVo);
     }
 
 
