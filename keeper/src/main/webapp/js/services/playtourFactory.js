@@ -33,6 +33,7 @@ define(['appPlayTour'], function (app) {
         .factory('CreateInviteCard', ['$resource', function ($resource) {
             return $resource('babyCoin/createInviteCard');
         }])
-
-
+        .factory('sendMindCouponList',['$resource',function ($resource){
+            return $resource(user_h5 + 'babyCoin/sendMindCouponList');
+        }]);
 })

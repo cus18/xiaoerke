@@ -120,7 +120,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     //$scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     //ws://s201.xiaork.com:2048;
-                    $scope.socketServer = new WebSocket("ws://s132.baodf.com/wsbackend/ws&user&"
+                    $scope.socketServer = new WebSocket("ws://s201.xiaork.com/wsbackend/ws&user&"
                         + $scope.patientId +"&h5ykdl");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {
