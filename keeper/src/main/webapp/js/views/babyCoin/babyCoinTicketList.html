@@ -3,7 +3,7 @@
         <ion-scroll direction="y" has-bouncing="true">
             <div class="ticket-list ">
                 <ul class="">
-                    <li ng-repeat="item in couponList" ng-click="goExchange(item.id)">
+                    <li ng-repeat="item in couponList" ng-click="goExchange(item.id,item.name)">
                         <img class="fl ticket" width="69%" height="auto" ng-src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/sendMindCoupon{{item.id}}" />
                         <img class="pic2" width="31%" height="auto" ng-src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/exchange.png" />
 

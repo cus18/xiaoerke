@@ -279,10 +279,14 @@ public class BabyCoinController {
     @ResponseBody
     public Map<String, Object> exchangeCoupon(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
 
-        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map<String, Object> response = new HashMap<String, Object>();
-        String openId = WechatUtil.getOpenId(session, request);//"oogbDwD_2BTQpftPu9QClr-mCw7U";
-        Integer couponCoin = (Integer)params.get("couponType");
+        String openId = WechatUtil.getOpenId(session, request);
+        if(null == openId){
+            response.put("status", "openidLoss");
+        }
+        Integer id = (Integer)params.get("id");
+        SendMindCouponVo sendMindInfo = sendMindCouponService.getSendMindCouponInof(id);
+        Integer couponCoin = Integer.parseInt(sendMindInfo.getName())*10;
         //宝宝币余额
         int flag = 0;
         BabyCoinVo babyCoinVo = new BabyCoinVo();
@@ -293,6 +297,7 @@ public class BabyCoinController {
             flag = babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
         }
         if (flag > 0) {
+            response.put("link",  sendMindInfo.getLink());
             response.put("status", "success");
         } else {
             response.put("status", "failure");

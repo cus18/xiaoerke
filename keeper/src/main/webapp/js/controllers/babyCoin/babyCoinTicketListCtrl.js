@@ -10,8 +10,8 @@ angular.module('controllers', ['ionic']).controller('babyCoinTicketListCtrl', [
 
 
         //点击 立即兑换
-        $scope.goExchange = function (id) {
-            $state.go("babyCoinTicketPay",{'id':id});
+        $scope.goExchange = function (id,name) {
+            $state.go("babyCoinTicketPay",{'id':id,"name":name});
         };
         $scope.$on('$ionicView.enter', function(){
 
