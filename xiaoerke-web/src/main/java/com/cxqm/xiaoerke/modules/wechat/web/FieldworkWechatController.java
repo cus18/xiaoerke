@@ -264,11 +264,11 @@ public class FieldworkWechatController {
             url = getBabyCoinURL(request, openid,sysPropertyVoWithBLOBsVo);
         }else if(url.startsWith("42")){
             if(url.equals("42")){
-                url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#/patientConsultInvitePage";
+                url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/playtour#/babyCoinInvitePage";
             }else{
                 String logstr = url.split(",")[1];
                 LogUtils.saveLog(logstr,openid);
-                url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#/patientConsultInvitePage";
+                url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/playtour#/babyCoinInvitePage";
             }
         }else if(url.startsWith("46")){
             if(StringUtils.isNull(openid)){
