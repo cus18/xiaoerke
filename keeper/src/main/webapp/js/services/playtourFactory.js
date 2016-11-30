@@ -22,7 +22,7 @@ define(['appPlayTour'], function (app) {
             return $resource('util/getOpenid');
         }])
         .factory('GetBabyCoinInfo', ['$resource', function ($resource) {
-            return $resource('babyCoin/getBabyCoin');
+            return $resource('babyCoin/getBabyCoinInfo');
         }])
         .factory('BabyCoinInit',['$resource',function ($resource){
             return $resource('babyCoin/babyCoinInit');
@@ -35,5 +35,11 @@ define(['appPlayTour'], function (app) {
         }])
         .factory('sendMindCouponList',['$resource',function ($resource){
             return $resource(user_h5 + 'babyCoin/sendMindCouponList');
+        }])
+
+        .factory('exchangeCoupon',['$resource',function ($resource){
+            return $resource(user_h5 + 'babyCoin/exchangeCoupon');
         }]);
+
+
 })
