@@ -13,10 +13,10 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultDoctorInfoServiceImpl;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
-import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -45,8 +45,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
     private SysPropertyServiceImpl sysPropertyService = SpringContextHolder.getBean("sysPropertyServiceImpl");
 
-    @Autowired
-    private ConsultDoctorInfoService consultDoctorInfoService ;
+    private ConsultDoctorInfoServiceImpl consultDoctorInfoService  = SpringContextHolder.getBean("consultDoctorInfoServiceImpl");
 
 
     public TextWebSocketFrameHandler() {
