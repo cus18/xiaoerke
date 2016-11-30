@@ -24,10 +24,9 @@
            $scope.submitAdvice = function () {
                $scope.lock='true';
                SendAdvice.save({advice: $scope.info.feedback, contact: $scope.info.contact}, function (data) {
-                   $timeout(function() {
                        $scope.lock='false';
-                       history.back();
-                }, 2000);
+                       wx.closeWindow();
+
             })
         };
     }]);
