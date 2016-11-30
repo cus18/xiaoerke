@@ -93,7 +93,7 @@ define(['appPlayTour'], function(app){
                         }
                     })
                     .state('babyCoinTicketPay', {
-                        url: '/babyCoinTicketPay',
+                        url: '/babyCoinTicketPay/:id,:name',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'babyCoinTicketPayCtrl',
                         resolve: {

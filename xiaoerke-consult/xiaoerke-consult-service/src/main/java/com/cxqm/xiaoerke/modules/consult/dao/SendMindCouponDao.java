@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.consult.dao;
 
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.consult.entity.SendMindCouponVo;
+import com.cxqm.xiaoerke.modules.consult.service.SendMindCouponService;
 
 import java.util.List;
 
@@ -14,6 +15,8 @@ import java.util.List;
 public interface SendMindCouponDao {
 
     List<SendMindCouponVo> findSendMindCouponByInfo(SendMindCouponVo vo);
+
+    SendMindCouponVo getSendMindCouponInof(Integer id);
 
     void saveSendMindCoupon(SendMindCouponVo vo);
 

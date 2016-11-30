@@ -1,16 +1,18 @@
 angular.module('controllers', ['ionic']).controller('babyCoinTicketListCtrl', [
-    '$scope','$state','$stateParams',
-    function ($scope,$state,$stateParams) {
+    '$scope','$state','$stateParams','sendMindCouponList',
+    function ($scope,$state,$stateParams,sendMindCouponList) {
 
         $scope.commitLock=true;
 
+        sendMindCouponList.save({},function (data) {
+            $scope.couponList=data.mindCoupon;
+        })
 
 
         //点击 立即兑换
-        $scope.goExchange = function () {
-            $state.go("babyCoinTicketPay");
-            console.log("123");
-
+        $scope.goExchange = function (id,name) {
+            recordLogs("WSC_YHQ"+id);
+            $state.go("babyCoinTicketPay",{'id':id,"name":name});
         };
         $scope.$on('$ionicView.enter', function(){
 

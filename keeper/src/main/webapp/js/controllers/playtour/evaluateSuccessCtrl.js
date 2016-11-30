@@ -8,6 +8,7 @@ angular.module('controllers', ['ionic']).controller('evaluateSuccessCtrl', [
 
         //提交评价
         $scope.startConsult = function () {
+            recordLogs("ZXPJ_DJZU");
             WeixinJSBridge.call('closeWindow');
 
         };

@@ -1,7 +1,7 @@
 angular.module('controllers', [])
     .controller('babyCoinInviteOldCtrl',
-    ['$scope','CreateInviteCard','$stateParams','GetConfig','$ionicScrollDelegate',
-        function ($scope,CreateInviteCard,$stateParams,GetConfig,$ionicScrollDelegate) {
+    ['$scope','$state','CreateInviteCard','$stateParams','GetConfig','$ionicScrollDelegate',
+        function ($scope,$state,CreateInviteCard,$stateParams,GetConfig,$ionicScrollDelegate) {
 
             $scope.marketer = $stateParams.marketer;
             $scope.oldOpenId = $stateParams.oldOpenId;
@@ -28,8 +28,14 @@ angular.module('controllers', [])
                 });
             };
             $scope.showShade = function(){
+                recordLogs("ZXYQ_YQK_ZXYS");
                 $('#invitePageShade').show();
             };
+
+            $scope.linkInvitePage = function () {
+                recordLogs("ZXYQ_YQK_YQGZ");
+                $state.go("babyCoinInvitePage");
+            }
             $scope.showShade1 = function(){
                 $('#invitePageShade1').show();
             };
