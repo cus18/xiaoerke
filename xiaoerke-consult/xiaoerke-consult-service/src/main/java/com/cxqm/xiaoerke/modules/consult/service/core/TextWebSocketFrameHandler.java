@@ -391,7 +391,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                     }
                 }
                 stringBuilder.append("<a href='"+smartMallAddress);
-                stringBuilder.append("'>微商城</a>|");
+                stringBuilder.append("'>我的推荐</a>|");
                 stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD");
                 stringBuilder.append("'>分享</a>");
                 sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
