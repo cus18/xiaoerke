@@ -6,10 +6,10 @@ angular.module('controllers', ['ionic']).controller('babyCoinTicketPayCtrl', [
         $scope.imgUrl = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/sendMindCoupon"+$stateParams.id;
         $scope.needCoin = parseInt($stateParams.name) *10
 
+
         //点击 赚取宝宝币
         $scope.earnBabyCoin = function () {
-
-
+            $state.go("babyCoinInvitePage");
         };
         //点击 使用
         $scope.selectUse = function () {
@@ -18,6 +18,7 @@ angular.module('controllers', ['ionic']).controller('babyCoinTicketPayCtrl', [
         };
         //点击 确认兑换
         $scope.sureExchange = function () {
+            recordLogs("WSC_LJDH");
             exchangeCoupon.save({"id":parseInt($stateParams.id)},function (date) {
                 if("success" == date.status){
                     window.location.href = date.link;
@@ -32,6 +33,9 @@ angular.module('controllers', ['ionic']).controller('babyCoinTicketPayCtrl', [
         $scope.$on('$ionicView.enter', function(){
             GetBabyCoinInfo.save({},function (date) {
                 $scope.babyCoinCash=date.babyCoinCash;
+                if($scope.needCoin>$scope.babyCoinCash){
+                    $scope.surePayLock=false;
+                }
             })
         });
 

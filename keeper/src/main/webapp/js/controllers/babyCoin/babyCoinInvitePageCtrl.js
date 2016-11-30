@@ -22,11 +22,11 @@ angular.module('controllers', [])
                 recordLogs("ZXYQ_YQY");
             };
             $scope.goCoupon = function () {
-                console.log('优惠券');
+                recordLogs("ZUYQ_YQY_YHQDH");
                 $state.go("babyCoinTicketList");
             };
             $scope.goStore = function () {
-                console.log('商城');
+                recordLogs("ZXYQ_YQY_QWSC");
                 window.location.href = "https://h5.koudaitong.com/v2/showcase/homepage?kdt_id=17783033&redirect_count=1";
             };
             var recordLogs = function(val){
