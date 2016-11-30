@@ -264,11 +264,11 @@ public class FieldworkWechatController {
             url = getBabyCoinURL(request, openid,sysPropertyVoWithBLOBsVo);
         }else if(url.startsWith("42")){
             if(url.equals("42")){
-                url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/playtour#/babyCoinInvitePage";
+                url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#/patientConsultInvitePage";
             }else{
                 String logstr = url.split(",")[1];
                 LogUtils.saveLog(logstr,openid);
-                url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/playtour#/babyCoinInvitePage";
+                url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#/patientConsultInvitePage";
             }
         }else if(url.startsWith("46")){
             if(StringUtils.isNull(openid)){
@@ -293,7 +293,7 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInvitePage/"+oldOpenId+","+marketer;
             LogUtils.saveLog("ZXYQ_YQK_NEW","oldOpenId="+oldOpenId+"openid="+openid+"marketer"+marketer);
         }else {//老用户
-            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/consult#/babyCoinInviteOld/"+oldOpenId+","+marketer;
+            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteOld/"+oldOpenId+","+marketer;
             LogUtils.saveLog("ZXYQ_YQK_OLD","openid="+openid);
         }
         return url;
