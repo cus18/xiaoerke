@@ -1,14 +1,14 @@
 
-.inviteNewBox {
+.babyCoinInviteNew .inviteNewBox {
     position: relative;
     text-align: center;
 }
 
-.inviteNewBox img {
+.babyCoinInviteNew .inviteNewBox img {
     width: 100%;
 }
 
-.inviteNewBox .inviteNewPortrait {
+.babyCoinInviteNew .inviteNewBox .inviteNewPortrait {
     position: absolute;
     top: 10%;
     left: 37%;
@@ -17,7 +17,7 @@
     z-index: -1;
 }
 
-.inviteNewBox .inviteNewName {
+.babyCoinInviteNew .inviteNewBox .inviteNewName {
     font: 600 21px/21px "Microsoft YaHei";
     color: #ffe6d7;
     width: 90%;
@@ -27,7 +27,7 @@
     left: 5%;
 }
 
-.inviteNewBox .inviteNewCode {
+.babyCoinInviteNew .inviteNewBox .inviteNewCode {
     position: absolute;
     top: 35%;
     left: 25.5%;
@@ -36,7 +36,7 @@
     z-index: 2;
 }
 
-.inviteNewBox .inviteNewCode img {
+.babyCoinInviteNew .inviteNewBox .inviteNewCode img {
     width: 100%;
     height: 100%;
 }

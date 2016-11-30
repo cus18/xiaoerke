@@ -16,7 +16,7 @@
     float: right !important;
     margin-top: 30px;
 }
-.invitePageBox {
+.babyCoinInvitePage .invitePageBox {
     text-align: center;
     padding: 30px 0;
     /*"http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fdi_png_01.png"*/
@@ -24,14 +24,14 @@
     /*background: #fff url("http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fbg_png%20(1)%20(1).png") 0 0 no-repeat;*/
     background-size: 100%;
 }
-#invitePageContent {
+.babyCoinInvitePage #invitePageContent {
     margin: 20px 0 16px;
 }
-.invitePageBox img:nth-child(last){
+.babyCoinInvitePage .invitePageBox img:nth-child(last){
     margin-bottom: 20px;
 }
 
-.store-btn{
+.babyCoinInvitePage .store-btn{
     border: 1px solid #000;
     border-radius: 2px;
     text-align: center;
@@ -43,14 +43,14 @@
     margin: 0 auto 34px;
     font-size: 16px;
 }
-.store-btn div{
+.babyCoinInvitePage .store-btn div{
     width: 50%;
     float: left;
 }
-.store-btn .coupon{
+.babyCoinInvitePage .store-btn .coupon{
     border-right: 1px solid #000;
 }
-.invitePageShade {
+.babyCoinInvitePage .invitePageShade {
     position: absolute;
     top: 0;
     left: 0;
@@ -61,14 +61,14 @@
     display: none;
 }
 
-.invitePageShade .invitePageShareContent {
+.babyCoinInvitePage .invitePageShade .invitePageShareContent {
     width: 80%;
     position: absolute;
     right: 10%;
     top: 100px;
 }
 
-.invitePageShade .invitePageShareMark {
+.babyCoinInvitePage .invitePageShade .invitePageShareMark {
     width: 15%;
     position: absolute;
     right: 25px;
