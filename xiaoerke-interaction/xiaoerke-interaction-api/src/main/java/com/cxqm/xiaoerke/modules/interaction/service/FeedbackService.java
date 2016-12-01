@@ -18,6 +18,8 @@ public interface FeedbackService {
 	
     Boolean sendAdvice(Map<String, Object> hashMap);
 
+    Boolean saveFeedBack(UserFeedbackVo vo);
+
 	String questionnaireSurvey(Map<String, Object> params, String openId);
 
     Page<UserFeedbackVo> findUserFeedbackList(Page<UserFeedbackVo> page,UserFeedbackVo vo);
