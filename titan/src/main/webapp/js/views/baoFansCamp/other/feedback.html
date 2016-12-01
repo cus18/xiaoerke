@@ -16,7 +16,8 @@
 			</div>
 		</div>
 		<div class="input">
-			<textarea  ng-model="info.feedback"  ng-minlength="1" maxlength="200" placeholder="我们期待听到您的声音，您的宝贵意见是我们不断进步的源泉！"></textarea>
+			<textarea ng-show="info.produce" ng-model="info.feedback"  ng-minlength="1" maxlength="200" placeholder="给我们提出您的宝贵建议吧。有哪些方面比较顺利？有哪些需要改进？"></textarea>
+			<textarea ng-show="info.error" ng-model="info.feedback"  ng-minlength="1" maxlength="200" placeholder="发生了什么？请按步骤描述您遇到的问题，我们将进一步完善，更好地服务您，谢咯~"></textarea>
 		</div>
 		<div class="btn">
 			<button class="button foot-btn" ng-disabled="(info.feedback==null)||(info.feedback.length==0)" ng-click="submitAdvice()">提交反馈</button>
