@@ -10,6 +10,7 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.common.web.Servlets;
+import com.cxqm.xiaoerke.modules.interaction.entity.UserFeedbackVo;
 import com.cxqm.xiaoerke.modules.interaction.service.FeedbackService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +53,26 @@ public class FeedBackUserController extends BaseController {
         params.put("user",openId);
         params.put("project", "web-app");
         feedbackService.sendAdvice(params);
+        return null;
+    }
+
+    /**
+     * 意见反馈
+     */
+    @RequestMapping(value = "/user/saveFeedBack", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    Map<String, Object> saveFeedBack(@RequestBody Map<String, Object> params,HttpSession session,HttpServletRequest request) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+        String openId = WechatUtil.getOpenId(session, request);
+        params.put("user",openId);
+        UserFeedbackVo feedbackVo =  new UserFeedbackVo();
+        feedbackVo.setOpenid(openId);
+        feedbackVo.setContent((String) params.get("contact"));
+        feedbackVo.setCreateTime(new Date());
+        feedbackVo.setType((String) params.get("advice"));
+        feedbackVo.setSolve("未解决");
+        feedbackService.saveFeedBack(feedbackVo);
         return null;
     }
 
