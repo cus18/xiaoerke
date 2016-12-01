@@ -8,6 +8,10 @@ angular.module('controllers', [])
             $scope.minename = '您的朋友';
             $scope.openid = $stateParams.oldOpenId;
             $scope.inviteUrlData = "";
+            $scope.info = {
+                share:false,
+                goConsult:false
+            };
             $scope.invitePageInit = function () {
                 CreateInviteCard.save({"marketer":$scope.marketer,"oldOpenId":$scope.oldOpenId}, function (data) {
                     $scope.headImgUrl = {
@@ -27,17 +31,23 @@ angular.module('controllers', [])
                     loadShare();
                 });
             };
-            $scope.showShade = function(){
+            $scope.showGoConsult = function(){
                 recordLogs("ZXYQ_YQK_ZXYS");
-                $('#invitePageShade').show();
+                $scope.info.goConsult = true;
             };
-
+            $scope.hideGoConsult = function () {
+                $scope.info.goConsult = false;
+            };
+            $scope.showShare = function(){
+                recordLogs("ZXYQ_YQK_ZXYS");
+                $scope.info.share = true;
+            };
+            $scope.hideShare = function () {
+                $scope.info.share = false;
+            };
             $scope.linkInvitePage = function () {
                 recordLogs("ZXYQ_YQK_YQGZ");
                 $state.go("babyCoinInvitePage");
-            }
-            $scope.showShade1 = function(){
-                $('#invitePageShade1').show();
             };
             var recordLogs = function(val){
                 $.ajax({
@@ -93,7 +103,7 @@ angular.module('controllers', [])
                                 wx.ready(function () {
                                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                     wx.onMenuShareTimeline({
-                                        title:  $scope.minename+'送你39.6元，和三甲医院儿科专家】来次一对一专业咨询吧！', // 分享标题
+                                        title:  '在这里可以免费咨询三甲医院儿科专家', // 分享标题
                                         link: share, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                         success: function (res) {
@@ -103,8 +113,8 @@ angular.module('controllers', [])
                                         }
                                     });
                                     wx.onMenuShareAppMessage({
-                                        title: $scope.minename  + '送给你39.6元，收好', // 分享标题
-                                        desc: '和三甲医院儿科专家来一对一专业咨询吧！', // 分享描述
+                                        title: $scope.minename  + '向你推荐', // 分享标题
+                                        desc: '在这里可以免费咨询三甲医院儿科专家', // 分享描述
                                         link: share, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                         success: function (res) {

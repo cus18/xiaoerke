@@ -5,6 +5,9 @@ angular.module('controllers', [])
             $scope.openid = '';
             $scope.marketer = '';
             $scope.inviteUrlData = "";
+            $scope.info = {
+                flag:false
+            };
             $scope.invitePageInit = function(){
                 BabyCoinInit.save({},function(data){
                     $scope.openid = data.babyCoinVo.openId;
@@ -15,11 +18,14 @@ angular.module('controllers', [])
                     }
                     loadShare();
                 });
-                $('#invitePageContent').click(function(){
-                    $ionicScrollDelegate.scrollTop();
-                    $('#invitePageShade').show();
-                });
                 recordLogs("ZXYQ_YQY");
+            };
+            $scope.showFlag = function () {
+                $ionicScrollDelegate.scrollTop();
+                $scope.info.flag = true;
+            };
+            $scope.hideFlag = function () {
+                $scope.info.flag = false;
             };
             $scope.goCoupon = function () {
                 recordLogs("ZUYQ_YQY_YHQDH");

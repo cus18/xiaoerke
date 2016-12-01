@@ -4,7 +4,8 @@
             $scope.title = "意见反馈";
             $scope.info = {
                 produce:true,
-                error:false
+                error:false,
+                contact : "提供产品反馈"
             };
             $scope.lock='false';
 
@@ -12,9 +13,11 @@
                 if(flag == 'produce'){
                     $scope.info.produce = true;
                     $scope.info.error = false;
+                    $scope.info.contact = "提供产品反馈"
                 }else{
                     $scope.info.produce = false;
                     $scope.info.error = true;
+                    $scope.info.contact = "错误报告"
                 }
             };
             $scope.appointmentFirst = function () {

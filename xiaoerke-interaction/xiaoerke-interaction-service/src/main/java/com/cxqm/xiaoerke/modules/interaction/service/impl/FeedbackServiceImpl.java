@@ -69,7 +69,6 @@ public class FeedbackServiceImpl implements FeedbackService {
     //意见反馈
     @Override
     public Boolean saveFeedBack(UserFeedbackVo vo) {
-        userFeedbackDao.insertSelective(vo);
         return userFeedbackDao.insertSelective(vo)>-1;
     }
 

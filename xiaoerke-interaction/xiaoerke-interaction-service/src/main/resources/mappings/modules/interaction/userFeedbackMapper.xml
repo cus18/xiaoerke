@@ -27,7 +27,7 @@
           content,
       </if>
       <if test="createTime != null" >
-          createTime,
+          create_time,
       </if>
       <if test="type != null" >
           type,

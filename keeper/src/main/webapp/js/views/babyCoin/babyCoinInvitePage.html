@@ -9,14 +9,14 @@
             <img class="fl" width="90%" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fthree_png_02.png" alt=""/>
             <img class="fr" width="90%" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fseven_png_03.png" alt=""/>
             <img class="fl" width="90%" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Ffour_png_02.png" alt=""/>
-            <img id="invitePageContent" width="90%" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fbutton1_png_03.png" alt=""/>
+            <img id="invitePageContent" ng-click="showFlag()" width="90%" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fbutton1_png_03.png" alt=""/>
             <div class="store-btn">
                 <div ng-click="goCoupon()" class="coupon">兑换优惠券</div>
                 <div ng-click="goStore()" class="store">前往商城</div>
             </div>
             <img width="80%" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fwenzi_png_03.png" alt=""/>
         </div>
-        <div id="invitePageShade" class="invitePageShade">
+        <div id="invitePageShade" class="invitePageShade" ng-show="info.flag" ng-click="hideFlag()">
             <img class="invitePageShareContent" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fyaoqing_png_03.png" alt=""/>
             <img class="invitePageShareMark" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/invitePageShareMark.png" alt=""/>
         </div>

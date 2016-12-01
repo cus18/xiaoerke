@@ -525,11 +525,11 @@ public class ConsultDoctorController extends BaseController {
             }
             String result = consultSessionService.clearSession(sessionId, userId);
             response.put("result", result);
-            try{
+            /*try{
                 sendUmbrellaWechatMessage(userId,sysPropertyVoWithBLOBsVo);//咨询完毕发送保护伞消息，每个用户只发一次
             }catch (Exception e){
                 System.out.println("咨询关闭发送保护伞消息"+e);
-            }
+            }*/
             return response;
         } else {
             return null;
