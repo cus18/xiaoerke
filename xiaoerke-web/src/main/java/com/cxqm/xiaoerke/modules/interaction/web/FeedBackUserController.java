@@ -68,9 +68,9 @@ public class FeedBackUserController extends BaseController {
         params.put("user",openId);
         UserFeedbackVo feedbackVo =  new UserFeedbackVo();
         feedbackVo.setOpenid(openId);
-        feedbackVo.setContent((String) params.get("contact"));
+        feedbackVo.setContent((String) params.get("advice"));
         feedbackVo.setCreateTime(new Date());
-        feedbackVo.setType((String) params.get("advice"));
+        feedbackVo.setType((String) params.get("contact"));
         feedbackVo.setSolve("未解决");
         feedbackService.saveFeedBack(feedbackVo);
         return null;
