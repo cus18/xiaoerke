@@ -15,8 +15,9 @@ var sendHeartInit= function (){
     weChatInit();// 初始化微信配置信息
 
     console.log("11 customerId ",customerId);
-    /*$('#content').bind('input propertychange',function(){
-        if($('#content').val()==""){
+    $('#content').bind('input propertychange',function(){
+        $(".commit").attr('disabled',false);
+        /*if($('#content').val()==""){
             if(redPacket>0){
                 $(".commit").attr('disabled',false);
                 console.log("评价为空时，钱数大于0");
@@ -31,8 +32,8 @@ var sendHeartInit= function (){
             $(".commit").attr('disabled',false);
             console.log("评价输入中。。。");
 
-        }
-    });*/
+        }*/
+    });
 }
 
 
@@ -81,6 +82,7 @@ function unSatisfy(){
 }
 /* 选择心意钱数 */
 function selectMoney(index,moneyItem){
+    $(".commit").attr('disabled',false);
     $(".picMoney-list li").children(".select").hide();
     if( redPacket==moneyItem){
         $(".picMoney-list li").eq(index).children(".select").hide();
@@ -103,7 +105,7 @@ function selectMoney(index,moneyItem){
 }
 //提交评价
 function commitEvaluate(){
-    $(".commit").hide();
+    $(".commit").attr('disabled',true);
     var content=$("#content").val();
     consultStatus=GetQueryString("consultStatus");
     if (redPacket != "" && redPacket > 0  ) {
