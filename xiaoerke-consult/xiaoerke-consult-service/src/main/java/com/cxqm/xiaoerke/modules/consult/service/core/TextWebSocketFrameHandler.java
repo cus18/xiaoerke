@@ -17,6 +17,7 @@ import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultDoctorInfoServiceIm
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.task.service.ScheduleTaskService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -392,7 +393,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                 }
                 stringBuilder.append("<a href='"+smartMallAddress);
                 stringBuilder.append("'>我的推荐</a>|");
-                stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD");
+                stringBuilder.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD");
                 stringBuilder.append("'>分享</a>");
                 sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
                 //发送消息
