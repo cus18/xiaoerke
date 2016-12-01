@@ -292,7 +292,7 @@ public class FieldworkWechatController {
             marketer = marketer.split("&")[0];
         }
         if(attention == null || attention.getDate() == null){//新用户
-            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInvitePage/"+oldOpenId+","+marketer;
+            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteNew/"+oldOpenId+","+marketer;
             LogUtils.saveLog("ZXYQ_YQK_NEW","oldOpenId="+oldOpenId+"openid="+openid+"marketer"+marketer);
         }else {//老用户
             url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteOld/"+oldOpenId+","+marketer;
