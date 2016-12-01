@@ -10,6 +10,9 @@ define(['appPlayTour'], function (app) {
          .factory('findCustomerEvaluation',['$resource',function ($resource){
             return $resource(user_h5 + 'interaction/user/findCustomerEvaluation');
         }])
+        .factory('updateCustomerEvaluation',['$resource',function ($resource){
+            return $resource(user_h5 + 'interaction/user/updateCustomerEvaluation');
+        }])
         //非实时咨询确认
         .factory('ConfirmInstantConsultation', ['$resource', function ($resource) {
             return $resource('consult/wechat/confirmInstantConsultation');

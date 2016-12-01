@@ -1,6 +1,6 @@
 angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
-    '$scope','$state','$stateParams',
-    function ($scope,$state,$stateParams) {
+    '$scope','$state','$stateParams','updateCustomerEvaluation',
+    function ($scope,$state,$stateParams,updateCustomerEvaluation) {
         var starNum1=1;//对医生的评价，0无评价 1不满意 3满意 5非常满意
         var redPacket;//支付前述
         var noManYi=[];
@@ -90,7 +90,17 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
         $(".commit").click(function(){
             var content=$("#content").val();
             $scope.commitLock=true;
-            $.ajax({
+            updateCustomerEvaluation.save({'id':$scope.customerId,'starNum1':starNum1,'content':content,'dissatisfied':noManYi,'redPacket':redPacket,'sessionId':$scope.sessionId,'consultStatus':$stateParams.consultStatus},function (data) {
+                console.log("提交评价",data);
+                if(data=="1"){
+                    recordLogs("ZXPJSXY_PJ");
+                    window.location.href = "playtour#/playtourShare/"+3;
+                }
+                if(data=="2"){
+                    window.location.href = "playtour#/evaluateSuccess";
+                }
+            });
+           /* $.ajax({
                 url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
                 async:false,
                 type:'POST',
@@ -109,7 +119,7 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
                 },
                 error : function() {
                 }
-            }, 'json');
+            }, 'json');*/
         });
         $scope.$on('$ionicView.enter', function(){
             $scope.customerId=$stateParams.customerId;
