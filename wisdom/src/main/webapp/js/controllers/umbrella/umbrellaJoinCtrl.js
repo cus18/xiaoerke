@@ -153,7 +153,7 @@
 
                                 var day = compareDate(moment().format("YYYY-MM-DD"),last);
                                 console.log("targetDateUTC",day);
-                                $scope.minusDays = day>=0?day.toString():0;
+                                $scope.minusDays = day>=0?day.toString():"0";
                                 $scope.minusDays1 =  $scope.minusDays.substring(0,1);
                                 $scope.minusDays2 = $scope.minusDays.substring(1,2);
                                 $scope.minusDays3 = $scope.minusDays.substring(2,3);
