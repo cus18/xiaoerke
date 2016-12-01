@@ -64,6 +64,7 @@
       <if test="openid != null" >
         and openid = #{openid}
       </if>
+      order by create_time desc
     </select>
 
   <update id="updateUserFeedbackInfo" parameterType="com.cxqm.xiaoerke.modules.interaction.entity.UserFeedbackVo">

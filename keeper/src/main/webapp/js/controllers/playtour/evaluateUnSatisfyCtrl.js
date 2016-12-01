@@ -62,8 +62,7 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
                 }
             }, 'json');
         }
-        //提交评价
-        $scope.commitEvaluateUnSatisfy = function () {
+       /* $scope.commitEvaluateUnSatisfy = function () {
             var content=$("#content").val();
             $.ajax({
                 url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
@@ -86,11 +85,36 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
                 }
             }, 'json');
 
-        };
+        };*/
         $scope.$on('$ionicView.enter', function(){
             $scope.customerId=$stateParams.customerId;
             $scope.sessionId=$stateParams.sessionId;
             getCustomerEvaluationInfo();
+            //提交评价
+            $(".commit").click(function(){
+                var content=$("#content").val();
+                $scope.commitLock=true;
+                $.ajax({
+                    url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
+                    async:false,
+                    type:'POST',
+                    data:"{'id':'"+$scope.customerId+"','starNum1':'"+starNum1+"','content':'"+content+"','dissatisfied':'"+noManYi+"','redPacket':'"+redPacket+"','sessionId':'"+$scope.sessionId+"','consultStatus':'"+$stateParams.consultStatus+"'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType:'json',
+                    success:function(data) {
+                        console.log("提交评价",data);
+                        if(data=="1"){
+                            recordLogs("ZXPJSXY_PJ");
+                            window.location.href = "playtour#/playtourShare/"+3;
+                        }
+                        if(data=="2"){
+                            window.location.href = "playtour#/evaluateSuccess";
+                        }
+                    },
+                    error : function() {
+                    }
+                }, 'json');
+            });
 
         });
 
