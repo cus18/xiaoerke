@@ -237,6 +237,9 @@ define(['appBaoFansCamp'], function (app) {
         .factory('SendAdvice',['$resource',function ($resource){
             return $resource(user_h5 + 'feedback/user/sendAdvice');
         }])
+        .factory('saveFeedBack',['$resource',function ($resource){
+            return $resource(user_h5 + 'feedback/user/saveFeedBack');
+        }])
         .factory('WxPayAdvice',['$resource',function ($resource){
             return $resource(user_h5 + 'feedback/user/wxpayAdvice');
         }])
