@@ -8,6 +8,10 @@ angular.module('controllers', [])
             $scope.minename = '您的朋友';
             $scope.openid = $stateParams.oldOpenId;
             $scope.inviteUrlData = "";
+            $scope.info = {
+                share:false,
+                goConsult:false
+            };
             $scope.invitePageInit = function () {
                 CreateInviteCard.save({"marketer":$scope.marketer,"oldOpenId":$scope.oldOpenId}, function (data) {
                     $scope.headImgUrl = {
@@ -27,17 +31,23 @@ angular.module('controllers', [])
                     loadShare();
                 });
             };
-            $scope.showShade = function(){
+            $scope.showGoConsult = function(){
                 recordLogs("ZXYQ_YQK_ZXYS");
-                $('#invitePageShade').show();
+                $scope.info.goConsult = true;
             };
-
+            $scope.hideGoConsult = function () {
+                $scope.info.goConsult = false;
+            };
+            $scope.showShare = function(){
+                recordLogs("ZXYQ_YQK_ZXYS");
+                $scope.info.share = true;
+            };
+            $scope.hideShare = function () {
+                $scope.info.share = false;
+            };
             $scope.linkInvitePage = function () {
                 recordLogs("ZXYQ_YQK_YQGZ");
                 $state.go("babyCoinInvitePage");
-            }
-            $scope.showShade1 = function(){
-                $('#invitePageShade1').show();
             };
             var recordLogs = function(val){
                 $.ajax({
