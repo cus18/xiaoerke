@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', ['ionic']).controller('feedbackCtrl', [
-        '$scope','$state','$stateParams','$timeout','SendAdvice',
-        function ($scope,$state,$stateParams,$timeout,SendAdvice) {
+        '$scope','$state','$stateParams','$timeout','saveFeedBack',
+        function ($scope,$state,$stateParams,$timeout,saveFeedBack) {
             $scope.title = "意见反馈";
             $scope.info = {
                 produce:true,
@@ -23,7 +23,7 @@
 
            $scope.submitAdvice = function () {
                $scope.lock='true';
-               SendAdvice.save({advice: $scope.info.feedback, contact: $scope.info.contact}, function (data) {
+               saveFeedBack.save({advice: $scope.info.feedback, contact: $scope.info.contact}, function (data) {
                        $scope.lock='false';
                        wx.closeWindow();
 
