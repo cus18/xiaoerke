@@ -856,7 +856,16 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
              Map parameter = systemService.getWechatParameter();
              String token = (String) parameter.get("token");
              WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),"2016年年末你和宝宝会发生什么？？\n哈哈哈，好搞笑\n\n<a href='"+url+"'>来搞事情吧>></a>");
+         }else if (EventKey.indexOf("PD_YQKFC") > -1) {
+//             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+             LogUtils.saveLog("TPCB_GZTS",xmlEntity.getFromUserName());
+             String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=44";
+             Map parameter = systemService.getWechatParameter();
+             String token = (String) parameter.get("token");
+             WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),"点击左下角小键盘，赶快咨询吧~");
          }
+
+
 
         String toOpenId = xmlEntity.getFromUserName();//扫码者openid
         Map<String, Object> param1 = new HashMap<String, Object>();
