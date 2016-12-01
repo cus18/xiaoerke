@@ -65,6 +65,14 @@ public class FeedbackServiceImpl implements FeedbackService {
         return false;
     }
 
+
+    //意见反馈
+    @Override
+    public Boolean saveFeedBack(UserFeedbackVo vo) {
+        userFeedbackDao.insertSelective(vo);
+        return userFeedbackDao.insertSelective(vo)>-1;
+    }
+
     @Override
     public Page<UserFeedbackVo> findUserFeedbackList(Page<UserFeedbackVo> page, UserFeedbackVo vo) {
         return userFeedbackDao.findUserFeedBackList(page,vo);
