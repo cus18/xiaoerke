@@ -63,7 +63,7 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
             }, 'json');
         }
         //提交评价
-        $scope.commitEvaluate = function () {
+        $scope.commitEvaluateUnSatisfy = function () {
             var content=$("#content").val();
             $.ajax({
                 url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
