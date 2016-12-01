@@ -103,7 +103,7 @@ function selectMoney(index,moneyItem){
 }
 //提交评价
 function commitEvaluate(){
-    $(".commit").attr('disabled',true);
+    $(".commit").hide();
     var content=$("#content").val();
     consultStatus=GetQueryString("consultStatus");
     if (redPacket != "" && redPacket > 0  ) {

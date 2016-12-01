@@ -39,13 +39,21 @@
                 <img class="my-img2"  width="100%" height="160" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/join_bg.png" >
                 <div class="main tc">
                     <div class="order f4 c3">你是第<span class="c11">{{num}}</span>个加入的家庭</div>
-                    <div class="state f5 c13">你正处于<span class="c11">观察期</span></div>
-                    <div class="day tc">
-                        <img width="39" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/countdowm{{minusDays1}}.png">
-                        <img width="39" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/countdowm{{minusDays2}}.png">
-                        <img width="39" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/countdowm{{minusDays3}}.png">
+                   <div ng-if="minusDays!='0'">
+                       <div class="state f5 c13">你正处于<span class="c11">观察期</span></div>
+                       <div class="day tc">
+                           <img width="39" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/countdowm{{minusDays1}}.png">
+                           <img width="39" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/countdowm{{minusDays2}}.png">
+                           <img width="39" height="auto" ng-src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/countdowm{{minusDays3}}.png">
+                       </div>
+                       <div class="remind">天后即可享受保障</div>
+                   </div>
+                    <div ng-if="minusDays=='0'">
+                        <div class="state f5 c13">你正处于<span class="c11">保障期</span></div>
+                        <div class="day tc">
+                            <img width="84" height="84" src="http://xiaoerke-healthplan-pic.oss-cn-beijing.aliyuncs.com/umbrella/icon_baozhangqi.png">
+                        </div>
                     </div>
-                    <div class="remind">天后即可享受保障</div>
                 </div>
             </div>
 
