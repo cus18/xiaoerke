@@ -9,6 +9,22 @@
             };
             $scope.lock='false';
 
+            var recordLogs = function(val){
+                $.ajax({
+                    url:"util/recordLogs",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{logContent:encodeURI(val)},
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                    },
+                    error : function() {
+                    }
+                });
+            }
+            recordLogs("YJFK_YMDK");
+
             $scope.checked = function (flag) {
                 if(flag == 'produce'){
                     $scope.info.produce = true;
@@ -25,6 +41,7 @@
             };
 
            $scope.submitAdvice = function () {
+               recordLogs("YJFK_ANDJ");
                $scope.lock='true';
                saveFeedBack.save({advice: $scope.info.feedback, contact: $scope.info.contact}, function (data) {
                        $scope.lock='false';
