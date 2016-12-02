@@ -2,7 +2,7 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
     '$scope','$state','$stateParams','updateCustomerEvaluation',
     function ($scope,$state,$stateParams,updateCustomerEvaluation) {
         var starNum1=1;//对医生的评价，0无评价 1不满意 3满意 5非常满意
-        var redPacket;//支付前述
+        var redPacket;//支付钱数
         var noManYi=[];
         $scope.info={};
         $scope.customerId="";
