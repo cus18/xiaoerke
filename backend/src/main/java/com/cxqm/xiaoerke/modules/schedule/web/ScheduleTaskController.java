@@ -354,8 +354,8 @@ public class ScheduleTaskController extends BaseController {
         vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
         List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
         for (VaccineSendMessageVo vo :vaccineSendMessageVos){
-            String[] sendContent = vo.getContent().split("||");
-            WechatMessageUtil.templateModel(sendContent[0], sendContent[1], sendContent[2], "", "",sendContent[3] ,token, "", vo.getSysUserId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
+            String[] sendContent = vo.getContent().split("\\|\\|");
+            WechatMessageUtil.templateModel(sendContent[0], sendContent[1].replace("0000-00-00",DateUtils.DateToStr(vo.getInoculationTime(),"date")), sendContent[2], "", "",sendContent[3] ,token, "", vo.getSysUserId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
             //将疫苗的发送时间往后延迟三十天，消息失效按照用户扫描为准，扫码后与当前码有关的消息失效
             vo.setId(vo.getId());
             Calendar calendar = Calendar.getInstance();

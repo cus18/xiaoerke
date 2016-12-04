@@ -298,7 +298,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                             StringBuffer sendContent7 = new StringBuffer();
                             sendContent7.append("宝宝该打疫苗了！！");
                             sendContent7.append("||");
-                            sendContent7.append("宝宝在"+DateUtils.formatDate(remindContentDate)+"后需要接种" +map.get("willVaccineName")+"疫苗");
+                            sendContent7.append("宝宝在0000-00-00后需要接种" +map.get("willVaccineName")+"疫苗");
                             sendContent7.append("||");
                             sendContent7.append("很高哦！");
                             sendContent7.append("||");
