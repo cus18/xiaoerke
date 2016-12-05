@@ -29,6 +29,12 @@ public class BabyCoinServiceImpl implements BabyCoinService {
     }
 
     @Override
+    public List<BabyCoinVo> selectListByBabyCoinVo(BabyCoinVo babyCoinVo){
+        return babyCoinDao.selectListByBabyCoinVo(babyCoinVo);
+    }
+
+
+    @Override
     public List<BabyCoinRecordVo> selectByBabyCoinRecordVo(BabyCoinRecordVo babyCoinRecordVo){
         return babyCoinRecordDao.selectByBabyCoinRecordVo(babyCoinRecordVo);
     }

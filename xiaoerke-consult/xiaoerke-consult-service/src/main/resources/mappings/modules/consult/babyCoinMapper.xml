@@ -30,12 +30,36 @@
     <if test="marketer != null" >
       and marketer = #{marketer,jdbcType=VARCHAR}
     </if>
+    <if test="cash != null" >
+      and  cash >= 100 order by create_time asc
+    </if>
     GROUP by marketer
     <if test="createTime != null" >
       order by create_time desc limit 1
     </if>
   </select>
 
+  <select id="selectListByBabyCoinVo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
+    select
+    <include refid="Base_Column_List" />
+    from baby_coin
+    where 1=1
+    <if test="id != null" >
+      and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="openId != null" >
+      and open_id = #{openId,jdbcType=VARCHAR}
+    </if>
+    <if test="marketer != null" >
+      and marketer = #{marketer,jdbcType=VARCHAR}
+    </if>
+    <if test="cash != null" >
+      and  cash >= 100
+    </if>
+    <if test="createTime != null" >
+      order by create_time asc
+    </if>
+  </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from baby_coin

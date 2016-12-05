@@ -35,6 +35,16 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String distributorList ;
 
+    private String templateIdYWFWTX;
+
+    public String getTemplateIdYWFWTX() {
+        return templateIdYWFWTX;
+    }
+
+    public void setTemplateIdYWFWTX(String templateIdYWFWTX) {
+        this.templateIdYWFWTX = templateIdYWFWTX;
+    }
+
     public String getDistributorList() {
         return distributorList;
     }
