@@ -574,6 +574,8 @@ angular.module('controllers', ['luegg.directives'])
                     };
 
                     $scope.socketServerFirst.onclose = function (event) {
+                        $scope.initConsultSocketFirst();
+                        $scope.initConsultSocketSecond();
                         console.log("onclose", event.data);
                     };
 
@@ -704,8 +706,6 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.currentUserConversation.serverAddress = $scope.secondAddress;
                                 if ($scope.socketServerSecond.readyState != WebSocket.OPEN) {
                                     alert("请将错误带代码001！反馈给接诊医生，以便定位出错原因");
-                                    $scope.initConsultSocketFirst();
-                                    $scope.initConsultSocketSecond();
                                 }
                             }
                         }
@@ -751,8 +751,6 @@ angular.module('controllers', ['luegg.directives'])
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
                                 alert("请将错误带代码002！反馈给接诊医生，以便定位出错原因");
-                                $scope.initConsultSocketFirst();
-                                $scope.initConsultSocketSecond();
                             }
                         }
                         else if ($scope.currentUserConversation.serverAddress == $scope.secondAddress) {
@@ -798,8 +796,6 @@ angular.module('controllers', ['luegg.directives'])
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
                                 alert("请将错误带代码003！反馈给接诊医生，以便定位出错原因");
-                                $scope.initConsultSocketFirst();
-                                $scope.initConsultSocketSecond();
                             }
                         }
                         else {
@@ -872,8 +868,6 @@ angular.module('controllers', ['luegg.directives'])
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
                                 alert("请将错误带代码004！反馈给接诊医生，以便定位出错原因");
-                                $scope.initConsultSocketFirst();
-                                $scope.initConsultSocketSecond();
                             }
                         } else if ($scope.currentUserConversation.serverAddress == $scope.secondAddress) {
                             if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
@@ -882,8 +876,6 @@ angular.module('controllers', ['luegg.directives'])
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
                                 alert("请将错误带代码005！反馈给接诊医生，以便定位出错原因");
-                                $scope.initConsultSocketFirst();
-                                $scope.initConsultSocketSecond();
                             }
                         } else {
                             if ($scope.currentUserConversation.serverAddress == "" || $scope.currentUserConversation.serverAddress == null) {
@@ -893,8 +885,6 @@ angular.module('controllers', ['luegg.directives'])
                                         updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                                     } else {
                                         alert("请将错误带代码006！反馈给接诊医生，以便定位出错原因");
-                                        $scope.initConsultSocketFirst();
-                                        $scope.initConsultSocketSecond();
                                     }
                                 } else if ($scope.socketServerSecond != "") {
                                     if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
@@ -902,15 +892,12 @@ angular.module('controllers', ['luegg.directives'])
                                         updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                                     } else {
                                         alert("请将错误带代码007！反馈给接诊医生，以便定位出错原因");
-                                        $scope.initConsultSocketFirst();
-                                        $scope.initConsultSocketSecond();
                                     }
                                 }
                             }
                         }
 
                     });
-
                 }
             };
             //关闭跟某个用户的会话
