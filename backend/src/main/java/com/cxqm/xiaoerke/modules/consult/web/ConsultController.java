@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.BaseController;
@@ -305,6 +307,7 @@ public class ConsultController extends BaseController {
 	 */
 	@RequestMapping(value = "dataExport", method= RequestMethod.POST)
 	public String dataExport(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
 		try {
 			String fromDate = request.getParameter("fromDate");
 			String toDate = request.getParameter("toDate");

@@ -33,7 +33,7 @@
 		<div class="control-group">
 			<label class="control-label">优惠券名称:</label>
 			<div class="controls">
-				<form:input id="name" path="name" htmlEscape="false" maxlength="50"  class="required" value="${vo.name}"/>
+				<form:input id="name" path="name" htmlEscape="false" maxlength="50"  class="required number" value="${vo.name}"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -41,7 +41,7 @@
 		<div class="control-group">
 			<label class="control-label">链接地址:</label>
 			<div class="controls">
-				<form:input id="link" path="link" htmlEscape="false" maxlength="50"  class="required" value="${vo.link}"/>
+				<form:input id="link" path="link" htmlEscape="false" class="required" value="${vo.link}"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
