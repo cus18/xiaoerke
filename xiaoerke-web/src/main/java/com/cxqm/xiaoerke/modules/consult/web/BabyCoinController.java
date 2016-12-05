@@ -265,8 +265,9 @@ public class BabyCoinController {
     @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public void test(HttpSession session, HttpServletRequest request) {
-        babyCoinInit(session, request);
+//        babyCoinInit(session, request);
 //        getBabyCoinInfo(session, request);
+        sendMindBabyCoinUser();
     }
 
 
