@@ -387,7 +387,7 @@ angular.module('controllers', ['luegg.directives'])
                         //转接请求成功后，在接诊员侧，保留了此会话，只到被转接的医生收到为止，
                         // 才将会话拆除，在此过程中，允许接诊员，取消转接。
                     } else if (data.result == "failure") {
-                        alert("转接会话给" + $scope.csTransferUserName + "失败，请转接给其他医生");
+                        alert("抱歉"+$scope.csTransferUserName +"断开链接，快去提醒一下他吧^_^");
                     } else if (data.result == "transferring") {
                         alert("与用户" + $scope.transferUserName + "的会话正在被转接中，不能再次转接");
                     }
