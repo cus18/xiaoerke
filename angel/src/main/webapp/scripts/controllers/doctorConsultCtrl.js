@@ -940,7 +940,7 @@ angular.module('controllers', ['luegg.directives'])
                                 $scope.currentUserConversation = {};
                             }
                         } else {
-                            alert("会话关闭失败，请重试");
+                            alert("发生错误，错误代码0010"+data.result+$scope.currentUserConversation.sessionId+$scope.currentUserConversation.patientId);
                         }
                     })
                 } else {
