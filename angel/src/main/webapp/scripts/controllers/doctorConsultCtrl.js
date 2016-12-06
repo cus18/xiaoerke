@@ -543,7 +543,7 @@ angular.module('controllers', ['luegg.directives'])
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
                 }
-                if (window.WebSocket && $scope.socketServerFirst.readyState != 1) {
+                if (window.WebSocket) {
                     if ($scope.userType == "distributor") {
                         $scope.socketServerFirst = new WebSocket("ws://" + $scope.firstAddress + ":2048/ws&" +
                             "distributor&" + $scope.doctorId);//cs,user,distributor
@@ -568,7 +568,7 @@ angular.module('controllers', ['luegg.directives'])
                     };
 
                     $scope.socketServerFirst.onopen = function (event) {
-                        console.log("onopen", event.data);
+                        console.log("ServerFirstOnOpen", event.data);
                         //启动心跳监测
                         heartBeatCheckFirst();
                     };
@@ -577,7 +577,7 @@ angular.module('controllers', ['luegg.directives'])
                         if (window.WebSocket && $scope.socketServerFirst.readyState != 1) {
                             $scope.initConsultSocketFirst();
                         }
-                        console.log("onclose", event.data);
+                        console.log("ServerFirstOnClose", event.data);
                     };
 
                 } else {
@@ -588,7 +588,7 @@ angular.module('controllers', ['luegg.directives'])
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
                 }
-                if (window.WebSocket && $scope.socketServerSecond.readyState != 1) {
+                if (window.WebSocket) {
                     if ($scope.userType == "distributor") {
                         $scope.socketServerSecond = new WebSocket("ws://" + $scope.secondAddress + ":2048/ws&" +
                             "distributor&" + $scope.doctorId);//cs,user,distributor
@@ -637,6 +637,7 @@ angular.module('controllers', ['luegg.directives'])
             //心跳
             var heartBeatCheckFirst = function () {
                 //启动定时器，周期性的发送心跳信息
+                console.log("heartBeatCheckFirst");
                 $scope.heartBeatFirstId = setInterval(sendHeartBeatFirst, 2000);
             };
             var sendHeartBeatFirst = function () {
@@ -660,6 +661,7 @@ angular.module('controllers', ['luegg.directives'])
             };
             var heartBeatCheckSecond = function () {
                 //启动定时器，周期性的发送心跳信息
+                console.log("heartBeatCheckSecond");
                 $scope.heartBeatSecondId = setInterval(sendHeartBeatSecond, 2000);
             };
             var sendHeartBeatSecond = function () {
