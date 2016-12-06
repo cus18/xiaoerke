@@ -1920,8 +1920,8 @@ angular.module('controllers', ['luegg.directives'])
                 val = val.replace(/\/::~/g, '[em_2]');
                 val = val.replace(/\/::B/g, '[em_3]');
                 val = val.replace(/\/::\|/g, '[em_4]');
-                val = val.replace(/\/:8-\)/g, '[em_5]');
-                val = val.replace(/\/::</g, '[em_6]');
+                val = val.replace(/\/::</g, '[em_5]');
+                val = val.replace(/\/::$\)/g, '[em_6]');
                 val = val.replace(/\/::X/g, '[em_7]');
                 val = val.replace(/\/::Z/g, '[em_8]');
                 val = val.replace(/\/::</g, '[em_9]');
@@ -1998,8 +1998,8 @@ angular.module('controllers', ['luegg.directives'])
                 val = val.replace(/\[em_2\]/g, '/::~');
                 val = val.replace(/\[em_3\]/g, '/::B');
                 val = val.replace(/\[em_4\]/g, '/::|');
-                val = val.replace(/\[em_5\]/g, '/:8-)');
-                val = val.replace(/\[em_6\]/g, '/::<');
+                val = val.replace(/\[em_5\]/g, '/::<');
+                val = val.replace(/\[em_6\]/g, '/::$');
                 val = val.replace(/\[em_7\]/g, '/::X');
                 val = val.replace(/\[em_8\]/g, '/::Z');
                 val = val.replace(/\[em_9\]/g, '/::<');
