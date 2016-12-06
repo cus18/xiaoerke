@@ -543,7 +543,7 @@ angular.module('controllers', ['luegg.directives'])
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
                 }
-                if (window.WebSocket) {
+                if (window.WebSocket && $scope.socketServerFirst.readyState != 1) {
                     if ($scope.userType == "distributor") {
                         $scope.socketServerFirst = new WebSocket("ws://" + $scope.firstAddress + ":2048/ws&" +
                             "distributor&" + $scope.doctorId);//cs,user,distributor
@@ -574,8 +574,9 @@ angular.module('controllers', ['luegg.directives'])
                     };
 
                     $scope.socketServerFirst.onclose = function (event) {
-                        $scope.initConsultSocketFirst();
-                        $scope.initConsultSocketSecond();
+                        if (window.WebSocket && $scope.socketServerFirst.readyState != 1) {
+                            $scope.initConsultSocketFirst();
+                        }
                         console.log("onclose", event.data);
                     };
 
@@ -587,7 +588,7 @@ angular.module('controllers', ['luegg.directives'])
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
                 }
-                if (window.WebSocket) {
+                if (window.WebSocket && $scope.socketServerSecond.readyState != 1) {
                     if ($scope.userType == "distributor") {
                         $scope.socketServerSecond = new WebSocket("ws://" + $scope.secondAddress + ":2048/ws&" +
                             "distributor&" + $scope.doctorId);//cs,user,distributor
@@ -612,12 +613,16 @@ angular.module('controllers', ['luegg.directives'])
                     };
 
                     $scope.socketServerSecond.onopen = function (event) {
-                        console.log("onopen", event.data);
+                        console.log("ServerSecondOnOpen", event.data);
                         //启动心跳监测
                         heartBeatCheckSecond();
                     };
 
                     $scope.socketServerSecond.onclose = function (event) {
+                        if (window.WebSocket && $scope.socketServerSecond.readyState != 1) {
+                            $scope.initConsultSocketSecond();
+                        }
+                        console.log("ServerSecondOnClose", event.data);
                     };
 
                 } else {
