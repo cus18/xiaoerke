@@ -577,7 +577,7 @@ angular.module('controllers', ['luegg.directives'])
                         if (window.WebSocket && $scope.socketServerFirst.readyState != 1) {
                             $scope.initConsultSocketFirst();
                         }
-                        console.log("ServerFirstOnClose", event.data);
+                        console.log("ServerFirstOnClose", event.code+"  "+event.reason+"  "+event.wasClean);
                     };
 
                 } else {
@@ -622,7 +622,7 @@ angular.module('controllers', ['luegg.directives'])
                         if (window.WebSocket && $scope.socketServerSecond.readyState != 1) {
                             $scope.initConsultSocketSecond();
                         }
-                        console.log("ServerSecondOnClose", event.data);
+                        console.log("ServerSecondOnClose", event.code+"  "+event.reason+"  "+event.wasClean);
                     };
 
                 } else {
