@@ -574,10 +574,10 @@ angular.module('controllers', ['luegg.directives'])
                     };
 
                     $scope.socketServerFirst.onclose = function (event) {
-                        if (window.WebSocket && $scope.socketServerFirst.readyState != 1) {
+                        if ($scope.socketServerFirst.readyState == WebSocket.CLOSED) {
+                            console.log("ServerFirstOnClose", event.code+"  "+event.reason+"  "+event.wasClean);
                             $scope.initConsultSocketFirst();
                         }
-                        console.log("ServerFirstOnClose", event.code+"  "+event.reason+"  "+event.wasClean);
                     };
 
                 } else {
@@ -619,10 +619,10 @@ angular.module('controllers', ['luegg.directives'])
                     };
 
                     $scope.socketServerSecond.onclose = function (event) {
-                        if (window.WebSocket && $scope.socketServerSecond.readyState != 1) {
+                        if ($scope.socketServerSecond.readyState == WebSocket.CLOSED) {
+                            console.log("ServerSecondOnClose", event.code+"  "+event.reason+"  "+event.wasClean);
                             $scope.initConsultSocketSecond();
                         }
-                        console.log("ServerSecondOnClose", event.code+"  "+event.reason+"  "+event.wasClean);
                     };
 
                 } else {
