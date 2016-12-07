@@ -345,7 +345,7 @@ public class BabyCoinController {
         String keyword2 = "亲爱的，寒冬来袭， 为感谢您对宝大夫的支持，奉上4张价值不等的优惠券，点击即可兑换。";
         String keyword3 = "2016年12月12日";
         String remark = "数量有限，快来点击兑换吧！";
-        String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD";
+        String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com//keeper/wechatInfo/getUserWechatMenId?url=48";
         if(babyCoinVos!=null && babyCoinVos.size()>0){
             for(int i = 0;i<=100;i++){
                 if(babyCoinVos.get(i)!=null){

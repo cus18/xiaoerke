@@ -540,6 +540,7 @@ angular.module('controllers', ['luegg.directives'])
 
                 //初始化socket链接
             $scope.initConsultSocketFirst = function () {
+                console.log("initConsultSocketFirst");
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
                 }
@@ -568,15 +569,16 @@ angular.module('controllers', ['luegg.directives'])
                     };
 
                     $scope.socketServerFirst.onopen = function (event) {
-                        console.log("onopen", event.data);
+                        console.log("ServerFirstOnOpen", event.data);
                         //启动心跳监测
                         heartBeatCheckFirst();
                     };
 
                     $scope.socketServerFirst.onclose = function (event) {
-                        $scope.initConsultSocketFirst();
-                        $scope.initConsultSocketSecond();
-                        console.log("onclose", event.data);
+                        if ($scope.socketServerFirst.readyState == WebSocket.CLOSED) {
+                            console.log("ServerFirstOnClose", event.code+"  "+event.reason+"  "+event.wasClean);
+                            $scope.initConsultSocketFirst();
+                        }
                     };
 
                 } else {
@@ -584,6 +586,7 @@ angular.module('controllers', ['luegg.directives'])
                 }
             };
             $scope.initConsultSocketSecond = function () {
+                console.log("initConsultSocketSecond");
                 if (!window.WebSocket) {
                     window.WebSocket = window.MozWebSocket;
                 }
@@ -612,12 +615,16 @@ angular.module('controllers', ['luegg.directives'])
                     };
 
                     $scope.socketServerSecond.onopen = function (event) {
-                        console.log("onopen", event.data);
+                        console.log("ServerSecondOnOpen", event.data);
                         //启动心跳监测
                         heartBeatCheckSecond();
                     };
 
                     $scope.socketServerSecond.onclose = function (event) {
+                        if ($scope.socketServerSecond.readyState == WebSocket.CLOSED) {
+                            console.log("ServerSecondOnClose", event.code+"  "+event.reason+"  "+event.wasClean);
+                            $scope.initConsultSocketSecond();
+                        }
                     };
 
                 } else {
@@ -632,6 +639,7 @@ angular.module('controllers', ['luegg.directives'])
             //心跳
             var heartBeatCheckFirst = function () {
                 //启动定时器，周期性的发送心跳信息
+                console.log("heartBeatCheckFirst");
                 $scope.heartBeatFirstId = setInterval(sendHeartBeatFirst, 2000);
             };
             var sendHeartBeatFirst = function () {
@@ -644,6 +652,7 @@ angular.module('controllers', ['luegg.directives'])
                 if (heartBeatFirstNum < 0) {
                     heartBeatFirstNum = 3;
                     $scope.loseConnectionFirstFlag = true;
+                    console.log("HeartInitSocketFirst", event.code+"  "+event.reason+"  "+event.wasClean);
                     $scope.initConsultSocketFirst();
                 } else {
                     $scope.loseConnectionFirstFlag = false;
@@ -655,6 +664,7 @@ angular.module('controllers', ['luegg.directives'])
             };
             var heartBeatCheckSecond = function () {
                 //启动定时器，周期性的发送心跳信息
+                console.log("heartBeatCheckSecond");
                 $scope.heartBeatSecondId = setInterval(sendHeartBeatSecond, 2000);
             };
             var sendHeartBeatSecond = function () {
@@ -705,7 +715,7 @@ angular.module('controllers', ['luegg.directives'])
                             if ($scope.socketServerFirst.readyState != WebSocket.OPEN) {
                                 $scope.currentUserConversation.serverAddress = $scope.secondAddress;
                                 if ($scope.socketServerSecond.readyState != WebSocket.OPEN) {
-                                    alert("请将错误带代码001！反馈给接诊医生，以便定位出错原因");
+                                    alert("发生错误001！");
                                 }
                             }
                         }
@@ -750,7 +760,7 @@ angular.module('controllers', ['luegg.directives'])
                                 $("#saytext").val('');
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
-                                alert("请将错误带代码002！反馈给接诊医生，以便定位出错原因");
+                                alert("发生错误002！");
                             }
                         }
                         else if ($scope.currentUserConversation.serverAddress == $scope.secondAddress) {
@@ -795,7 +805,7 @@ angular.module('controllers', ['luegg.directives'])
                                 $("#saytext").val('');
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
-                                alert("请将错误带代码003！反馈给接诊医生，以便定位出错原因");
+                                alert("发生错误003！");
                             }
                         }
                         else {
@@ -864,18 +874,16 @@ angular.module('controllers', ['luegg.directives'])
                         if ($scope.currentUserConversation.serverAddress == $scope.firstAddress) {
                             if ($scope.socketServerFirst.readyState == WebSocket.OPEN) {
                                 $scope.socketServerFirst.send(JSON.stringify(consultValMessage));
-                                $scope.initConsultSocketFirst();
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
-                                alert("请将错误带代码004！反馈给接诊医生，以便定位出错原因");
+                                alert("发生错误004！");
                             }
                         } else if ($scope.currentUserConversation.serverAddress == $scope.secondAddress) {
                             if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
                                 $scope.socketServerSecond.send(JSON.stringify(consultValMessage));
-                                $scope.initConsultSocketSecond();
                                 updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                             } else {
-                                alert("请将错误带代码005！反馈给接诊医生，以便定位出错原因");
+                                alert("发生错误005！");
                             }
                         } else {
                             if ($scope.currentUserConversation.serverAddress == "" || $scope.currentUserConversation.serverAddress == null) {
@@ -884,15 +892,14 @@ angular.module('controllers', ['luegg.directives'])
                                         $scope.socketServerFirst.send(JSON.stringify(consultValMessage));
                                         updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                                     } else {
-                                        alert("请将错误带代码006！反馈给接诊医生，以便定位出错原因");
+                                        alert("发生错误006！");
                                     }
                                 } else if ($scope.socketServerSecond != "") {
                                     if ($scope.socketServerSecond.readyState == WebSocket.OPEN) {
                                         $scope.socketServerSecond.send(JSON.stringify(consultValMessage));
                                         updateAlreadyJoinPatientConversationFromDoctor(consultValMessage);
                                     } else {
-                                        alert("请将错误带代码007！反馈给接诊医生，以便定位出错原因");
-                                    }
+                                        alert("发生错误007！");                                    }
                                 }
                             }
                         }
@@ -1913,8 +1920,8 @@ angular.module('controllers', ['luegg.directives'])
                 val = val.replace(/\/::~/g, '[em_2]');
                 val = val.replace(/\/::B/g, '[em_3]');
                 val = val.replace(/\/::\|/g, '[em_4]');
-                val = val.replace(/\/:8-\)/g, '[em_5]');
-                val = val.replace(/\/::</g, '[em_6]');
+                val = val.replace(/\/::</g, '[em_5]');
+                val = val.replace(/\/::$\)/g, '[em_6]');
                 val = val.replace(/\/::X/g, '[em_7]');
                 val = val.replace(/\/::Z/g, '[em_8]');
                 val = val.replace(/\/::</g, '[em_9]');
@@ -1991,8 +1998,8 @@ angular.module('controllers', ['luegg.directives'])
                 val = val.replace(/\[em_2\]/g, '/::~');
                 val = val.replace(/\[em_3\]/g, '/::B');
                 val = val.replace(/\[em_4\]/g, '/::|');
-                val = val.replace(/\[em_5\]/g, '/:8-)');
-                val = val.replace(/\[em_6\]/g, '/::<');
+                val = val.replace(/\[em_5\]/g, '/::<');
+                val = val.replace(/\[em_6\]/g, '/::$');
                 val = val.replace(/\[em_7\]/g, '/::X');
                 val = val.replace(/\[em_8\]/g, '/::Z');
                 val = val.replace(/\[em_9\]/g, '/::<');
