@@ -234,6 +234,8 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getWisdomWebUrl() + "wisdom/activity#/picSpreadIndex";
         }else if("47".equals(url)){
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/baoFansCamp#/feedback";
+        }else if("48".equals(url)){
+            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinTicketList";
         }
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +
@@ -270,7 +272,7 @@ public class FieldworkWechatController {
             }else{
                 String logstr = url.split(",")[1];
                 LogUtils.saveLog(logstr,openid);
-                url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"keeper/playtour#/babyCoinInvitePage";
+                url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/playtour#/babyCoinInvitePage";
             }
         }else if(url.startsWith("46")){
             if(StringUtils.isNull(openid)){
