@@ -1707,7 +1707,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         Date nowDate = new Date();
         //检测当前用户会员是否过期(没有会员按未过期处理)
         String memberEndTime = consultMemberRedsiCacheService.getConsultMember(openid+memberRedisCachVo.MEMBER_END_DATE);
-        if(null == memberEndTime||DateUtils.StrToDate(memberEndTime,"xiangang").getTime()<nowDate.getTime()){
+        if(null == memberEndTime||DateUtils.StrToDate(memberEndTime,"datetime").getTime()<nowDate.getTime()){
 //            说明是新用户或者是用户的会员已过期,要检测是否是今日 首次咨询以及是否有机会
                 String datetime = DateUtils.DateToStr(nowDate,"date");
                 String latestConsultTime = consultMemberRedsiCacheService.getConsultMember(openid+memberRedisCachVo.LATEST_CONSULT_TIME);
