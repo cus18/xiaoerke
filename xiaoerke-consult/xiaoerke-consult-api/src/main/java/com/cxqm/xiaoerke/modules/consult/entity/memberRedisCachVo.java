@@ -9,5 +9,6 @@ public enum  memberRedisCachVo {
     HEAD_URL,
     MARKET,
     ATTENTION_DATE,
+    LATEST_CONSULT_TIME,
     MEMBER_END_DATE
 }
