@@ -19,29 +19,27 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
     private RedisTemplate<String, Object> redisTemplate = SpringContextHolder.getBean("redisTemplate");
 
-    private static final String CONUSLT_BASEIBFO = "consult.baseInfo";
-
 
     @Override
-    public long saveConsultMember(String... value) {
-        return  redisTemplate.opsForSet().add(CONUSLT_BASEIBFO,value) ;
+    public long saveConsultMember(String key,String value) {
+        return  redisTemplate.opsForValue().append(key,value) ;
     }
 
     @Override
     public String getConsultMember(String match) {
-        String key = null;
-        ScanOptions.ScanOptionsBuilder b =  new ScanOptions.ScanOptionsBuilder();
-        b.match(match);
-        ScanOptions ops = b.build();
-        Cursor<Object> memberInfo =  redisTemplate.opsForSet().scan(CONUSLT_BASEIBFO,ops);
-        while (memberInfo.hasNext()) {
-            key = (String) memberInfo.next();
-        }
-        return key;
+//        String key = null;
+//        ScanOptions.ScanOptionsBuilder b =  new ScanOptions.ScanOptionsBuilder();
+//        b.match(match);
+//        ScanOptions ops = b.build();
+//        Cursor<Object> memberInfo =  redisTemplate.opsForValue().(CONUSLT_BASEIBFO,ops);
+//        while (memberInfo.hasNext()) {
+//            key = (String) memberInfo.next();
+//        }
+        return (String) redisTemplate.opsForValue().get(match);
     }
 
     @Override
     public boolean cheackConsultMember(String key) {
-        return redisTemplate.opsForSet().isMember(CONUSLT_BASEIBFO,key);
+        return redisTemplate.opsForValue().get(key)==null? false:true;
     }
 }
