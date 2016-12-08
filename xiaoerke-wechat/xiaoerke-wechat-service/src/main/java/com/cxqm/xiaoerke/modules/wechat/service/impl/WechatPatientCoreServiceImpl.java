@@ -1710,7 +1710,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         if(null == memberEndTime||DateUtils.StrToDate(memberEndTime,"xiangang").getTime()<nowDate.getTime()){
 //            说明是新用户或者是用户的会员已过期,要检测是否是今日 首次咨询以及是否有机会
                 String datetime = DateUtils.DateToStr(nowDate,"date");
-                if(!consultMemberRedsiCacheService.cheackConsultMember(openid+memberRedisCachVo.MEMBER_END_DATE+datetime)){
+                String latestConsultTime = consultMemberRedsiCacheService.getConsultMember(openid+memberRedisCachVo.LATEST_CONSULT_TIME);
+                if(null == latestConsultTime ||!datetime.equals(latestConsultTime)){
 //                    用户是首次咨询
                     ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
                     if(null != propertyVo && (propertyVo.getPermTimes()+propertyVo.getMonthTimes()) > 0){
