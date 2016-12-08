@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultMemberRedsiCacheService;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
+import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +36,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 //        while (memberInfo.hasNext()) {
 //            key = (String) memberInfo.next();
 //        }
+        redisTemplate.setValueSerializer(new GenericToStringSerializer<String>(String.class));
         return (String) redisTemplate.opsForValue().get(match);
     }
 
