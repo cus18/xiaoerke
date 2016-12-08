@@ -193,7 +193,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String token = (String) userWechatParam.get("token");
             try {
                 //关键字回复功能
-                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)||consultChargingCheck(xmlEntity, token)) {
+                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)||!consultChargingCheck(xmlEntity, token)) {
                     return "success";
                 }
             } catch (Exception e) {
@@ -1709,7 +1709,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         String memberEndTime = consultMemberRedsiCacheService.getConsultMember(openid+memberRedisCachVo.MEMBER_END_DATE);
         if(null == memberEndTime||DateUtils.StrToDate(memberEndTime,"xiangang").getTime()<nowDate.getTime()){
 //            说明是新用户或者是用户的会员已过期,要检测是否是今日 首次咨询以及是否有机会
-                String datetime = DateUtils.DateToStr(nowDate);
+                String datetime = DateUtils.DateToStr(nowDate,"date");
                 if(!consultMemberRedsiCacheService.cheackConsultMember(openid+memberRedisCachVo.MEMBER_END_DATE+datetime)){
 //                    用户是首次咨询
                     ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
