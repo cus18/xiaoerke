@@ -121,6 +121,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     @Autowired
     private ConsultSessionPropertyService consultSessionPropertyService;
 
+    @Autowired
+    private ConsultMemberRedsiCacheService consultMemberRedsiCacheService;
+
     private Map<String, OperationPromotionVo> keywordMap;
 
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -1695,5 +1698,19 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     public void updateKeywordRecovery() {
         //从数据库重新查一次
         keywordMap = operationPromotionService.getAllRoleListByKeyword();
+    }
+
+
+    public boolean consultChargingCheck(ReceiveXmlEntity xmlEntity, String token){
+        String openid = xmlEntity.getFromUserName();
+//        检测当前用户会员是否过期(没有会员按未过期处理)
+        String memberEndTime = consultMemberRedsiCacheService.getConsultMember(openid+memberRedisCachVo.MEMBER_END_DATE);
+        if(null != memberEndTime){
+            if(DateUtils.StrToDate(memberEndTime,"datetime").getTime()>new Date().getTime()){
+                //再会员服务期内,检测是否是当天首次咨询以及是否有咨询机会
+
+            };
+        }
+        return false;
     }
 }
