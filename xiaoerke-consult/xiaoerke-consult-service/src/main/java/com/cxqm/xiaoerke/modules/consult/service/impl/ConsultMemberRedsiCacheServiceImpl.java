@@ -2,9 +2,12 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
+import com.cxqm.xiaoerke.modules.consult.dao.ConsultMemberDao;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultMemberVo;
 import com.cxqm.xiaoerke.modules.consult.entity.memberRedisCachVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultMemberRedsiCacheService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
@@ -25,6 +28,24 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
     private RedisTemplate<String, Object> redisTemplate = SpringContextHolder.getBean("redisTemplate");
 
+    @Autowired
+    private ConsultMemberDao consultMemberDao;
+
+
+    @Override
+    public void saveConsultMemberInfo(ConsultMemberVo vo) {
+
+    }
+
+    @Override
+    public void updateConsultMemberInfo(ConsultMemberVo vo) {
+
+    }
+
+    @Override
+    public ConsultMemberVo getConsultMemberInfo(String openid) {
+        return null;
+    }
 
     @Override
     public void saveConsultMember(String key,String value) {
