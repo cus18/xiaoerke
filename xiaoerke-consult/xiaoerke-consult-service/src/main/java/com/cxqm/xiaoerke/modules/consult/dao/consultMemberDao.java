@@ -1,16 +1,18 @@
 package com.cxqm.xiaoerke.modules.consult.dao;
 
 
+import com.cxqm.xiaoerke.modules.consult.entity.consultMemberVo;
+
 public interface consultMemberDao {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(consultMemberDao record);
+    int insert(consultMemberVo record);
 
-    int insertSelective(consultMemberDao record);
+    int insertSelective(consultMemberVo record);
 
-    consultMemberDao selectByPrimaryKey(Integer id);
+    consultMemberVo selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(consultMemberDao record);
+    int updateByPrimaryKeySelective(consultMemberVo record);
 
-    int updateByPrimaryKey(consultMemberDao record);
+    int updateByPrimaryKey(consultMemberVo record);
 }
