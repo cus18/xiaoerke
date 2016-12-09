@@ -11,4 +11,6 @@ public interface ConsultMemberRedsiCacheService {
     String getConsultMember(String match);
 
     boolean cheackConsultMember(String key);
+
+    boolean useFreeChance(String openid,String timeLength);
 }

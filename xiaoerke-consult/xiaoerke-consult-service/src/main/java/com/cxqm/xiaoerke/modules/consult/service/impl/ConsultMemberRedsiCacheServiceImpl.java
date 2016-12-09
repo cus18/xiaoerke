@@ -1,13 +1,18 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
+import com.cxqm.xiaoerke.modules.consult.entity.memberRedisCachVo;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultMemberRedsiCacheService;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 
 /**
@@ -43,5 +48,19 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
     @Override
     public boolean cheackConsultMember(String key) {
         return redisTemplate.opsForValue().get(key)==null? false:true;
+    }
+
+    @Override
+    public boolean useFreeChance(String openid,String timeLength) {
+        //检测该用户是否当天首次咨询,如果是则增加会员时间 并记录
+        String latestConsultTime = getConsultMember(openid+ memberRedisCachVo.LATEST_CONSULT_TIME);
+        Date nowDate = new Date();
+        String datetime = DateUtils.DateToStr(nowDate,"date");
+        Date afterDate = new Date(nowDate.getTime() + Integer.parseInt(timeLength)*1000*60);
+        if(null == latestConsultTime ||!datetime.equals(latestConsultTime)){
+            saveConsultMember(openid+ memberRedisCachVo.LATEST_CONSULT_TIME,datetime);
+            saveConsultMember(openid+ memberRedisCachVo.MEMBER_END_DATE,DateUtils.DateToStr(afterDate,"datetime"));
+        }
+        return  false;
     }
 }
