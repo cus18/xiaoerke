@@ -2,7 +2,7 @@ package com.cxqm.xiaoerke.modules.consult.entity;
 
 import java.util.Date;
 
-public class consultMemberDao {
+public class consultMemberVo {
     private Integer id;
 
     private String nickname;
