@@ -7,6 +7,8 @@ public class consultMemberVo {
 
     private String nickname;
 
+    private String openid;
+
     private Date createDate;
 
     private String payAcount;
@@ -61,5 +63,13 @@ public class consultMemberVo {
 
     public void setMemberType(String memberType) {
         this.memberType = memberType;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
     }
 }
