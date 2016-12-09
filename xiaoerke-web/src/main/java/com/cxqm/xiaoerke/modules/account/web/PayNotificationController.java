@@ -8,10 +8,9 @@ import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
-import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
-import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
-import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultMemberRedsiCacheService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService;
@@ -103,6 +102,9 @@ public class PayNotificationController {
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
+
+    @Autowired
+    private ConsultMemberRedsiCacheService consultMemberRedsiCacheService;
 
     private static Lock lock = new ReentrantLock();
 
@@ -548,6 +550,22 @@ public class PayNotificationController {
                         babyCoinRecordVo.setSource("consultPay");
                         babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
                     }
+
+//                   mysql 增加会员记录,延长redis的时间
+                    ConsultMemberVo consultMemberVo = consultMemberRedsiCacheService.getConsultMemberInfo(openid);
+                    Integer memberEndTime = Integer.parseInt(sysPropertyVoWithBLOBsVo.getConsultMemberTime());
+                    if(null ==consultMemberVo){
+                        consultMemberVo = new ConsultMemberVo();
+                        consultMemberVo.setOpenid(openid);
+                        consultMemberVo.setMemberType("day");
+                        consultMemberVo.setNickname("");
+                        consultMemberVo.setPayAcount((String) map.get("total_fee"));
+                        consultMemberVo.setEndTime(new Date(new Date().getTime()+memberEndTime*1000*60));
+                    }else{
+                        consultMemberVo.setEndTime(new Date(consultMemberVo.getEndTime().getTime()+memberEndTime*1000*60));
+                    }
+                    consultMemberRedsiCacheService.saveConsultMemberInfo(consultMemberVo);
+                    consultMemberRedsiCacheService.saveConsultMember(openid+ memberRedisCachVo.MEMBER_END_DATE,DateUtils.DateToStr(consultMemberVo.getEndTime(),"datetime"));
                 }
             }
             return XMLUtil.setXML("SUCCESS", "");
