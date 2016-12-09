@@ -13,6 +13,8 @@ public class consultMemberVo {
 
     private Date endTime;
 
+    private String memberType;
+
     public Integer getId() {
         return id;
     }
@@ -51,5 +53,13 @@ public class consultMemberVo {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public String getMemberType() {
+        return memberType;
+    }
+
+    public void setMemberType(String memberType) {
+        this.memberType = memberType;
     }
 }

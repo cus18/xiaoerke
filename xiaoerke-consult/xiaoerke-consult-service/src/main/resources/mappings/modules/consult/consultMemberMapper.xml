@@ -7,9 +7,10 @@
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="pay_acount" property="payAcount" jdbcType="VARCHAR" />
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="member_type" property="memberType" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, nickname, create_date, pay_acount, end_time
+    id, nickname, create_date, pay_acount, end_time,member_type
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -23,9 +24,9 @@
   </delete>
   <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.consult.entity.consultMemberVo" >
     insert into consult_member (id, nickname, create_date, 
-      pay_acount, end_time)
+      pay_acount, end_time,member_type)
     values (#{id,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{payAcount,jdbcType=VARCHAR}, #{endTime,jdbcType=TIMESTAMP})
+      #{payAcount,jdbcType=VARCHAR}, #{endTime,jdbcType=TIMESTAMP}, #{memberType,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.consultMemberVo" >
     insert into consult_member
@@ -45,6 +46,9 @@
       <if test="endTime != null" >
         end_time,
       </if>
+      <if test="memberType != null" >
+        member_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -61,6 +65,9 @@
       </if>
       <if test="endTime != null" >
         #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memberType != null" >
+        #{member_type,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
