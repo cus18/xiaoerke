@@ -6,7 +6,7 @@ package com.cxqm.xiaoerke.modules.consult.service;
 public interface ConsultMemberRedsiCacheService {
 
 
-    long saveConsultMember(String key,String value);
+    void saveConsultMember(String key,String value);
 
     String getConsultMember(String match);
 

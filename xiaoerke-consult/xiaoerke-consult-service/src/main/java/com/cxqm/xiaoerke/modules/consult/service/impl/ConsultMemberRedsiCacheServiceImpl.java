@@ -27,8 +27,8 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
 
     @Override
-    public long saveConsultMember(String key,String value) {
-        return  redisTemplate.opsForValue().append(key,value) ;
+    public void saveConsultMember(String key,String value) {
+          redisTemplate.opsForValue().set(key,value) ;
     }
 
     @Override
