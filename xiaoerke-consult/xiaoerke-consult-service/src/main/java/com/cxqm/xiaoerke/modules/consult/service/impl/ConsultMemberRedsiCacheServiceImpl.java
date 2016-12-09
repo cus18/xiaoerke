@@ -34,17 +34,17 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
     @Override
     public void saveConsultMemberInfo(ConsultMemberVo vo) {
-
+        consultMemberDao.insertSelective(vo);
     }
 
     @Override
     public void updateConsultMemberInfo(ConsultMemberVo vo) {
-
+        consultMemberDao.updateByPrimaryKeySelective(vo);
     }
 
     @Override
     public ConsultMemberVo getConsultMemberInfo(String openid) {
-        return null;
+        return consultMemberDao.selectByopenid(openid);
     }
 
     @Override

@@ -19,6 +19,12 @@
     from consult_member
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByopenid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from consult_member
+    where openid = #{openid,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from consult_member
     where id = #{id,jdbcType=INTEGER}
