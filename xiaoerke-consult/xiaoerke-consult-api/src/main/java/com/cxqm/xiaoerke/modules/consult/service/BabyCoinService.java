@@ -13,6 +13,8 @@ public interface BabyCoinService {
 
     BabyCoinVo selectByBabyCoinVo(BabyCoinVo babyCoinVo);
 
+    List<BabyCoinVo> selectListByBabyCoinVo(BabyCoinVo babyCoinVo);
+
     List<BabyCoinRecordVo> selectByBabyCoinRecordVo(BabyCoinRecordVo babyCoinRecordVo);
 
     int insertBabyCoinRecord(BabyCoinRecordVo record);

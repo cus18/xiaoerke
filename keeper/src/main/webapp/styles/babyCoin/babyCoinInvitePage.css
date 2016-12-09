@@ -2,22 +2,25 @@
     overflow: scroll;
 }
 
-
 * {
     margin: 0;
     padding: 0;
 }
+
 .tac {
     text-align: center !important;
 }
+
 .fl {
     float: left !important;
     margin-top: 33px;
 }
+
 .fr {
     float: right !important;
     margin-top: 30px;
 }
+
 .babyCoinInvitePage .invitePageBox {
     text-align: center;
     padding: 30px 0;
@@ -26,9 +29,11 @@
     /*background: #fff url("http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fbg_png%20(1)%20(1).png") 0 0 no-repeat;*/
     background-size: 100%;
 }
+
 .babyCoinInvitePage #invitePageContent {
     margin: 20px 0 16px;
 }
+
 .babyCoinInvitePage .invitePageBox img:nth-child(last){
     margin-bottom: 20px;
 }
@@ -45,13 +50,16 @@
     margin: 0 auto 34px;
     font-size: 16px;
 }
+
 .babyCoinInvitePage .store-btn div{
     width: 50%;
     float: left;
 }
+
 .babyCoinInvitePage .store-btn .coupon{
     border-right: 1px solid #000;
 }
+
 .babyCoinInvitePage .invitePageShade {
     position: absolute;
     top: 0;

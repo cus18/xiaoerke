@@ -363,7 +363,7 @@
 			<div class="control-group">
 				<label class="control-label">微商城地址:</label>
 				<div class="controls">
-					<input id="microMallAddress" value="${doctor.microMallAddress}" htmlEscape="false" maxlength="50" class="input-medium"/>
+					<input id="microMallAddress" value="${doctor.microMallAddress}" htmlEscape="false" class="input-medium"/>
 				</div>
 			</div>
 

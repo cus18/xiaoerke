@@ -21,7 +21,10 @@
 				}
 			});
 		});
-		
+		function exportData(){
+			$("#btnSubmit").attr("disabled", true);
+			$("#inputForm").submit();
+		}
 	</script>
 </head>
 <body>
@@ -40,7 +43,7 @@
 			</div>
 		</div>
 		<div class="form-actions" >
-			<input id="btnSubmit" class="btn btn-primary" type="submit" value="确认"/>
+			<input id="btnSubmit" onclick="exportData()" class="btn btn-primary" type="button" value="确认"/>
 		</div>
 	</form:form>
 </body>
