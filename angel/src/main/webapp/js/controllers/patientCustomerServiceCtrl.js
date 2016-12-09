@@ -14,7 +14,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.patientConsultFirst = function(){
                 var num = randomString(32);
                 $scope.patientId = num.substring(0,6);
-                $scope.patientName = "保护伞"+num.substring(0,1);
+                $scope.patientName = "帮助"+num.substring(0,1);
                 $scope.initConsultSocket();
             };
             //初始化接口
@@ -23,7 +23,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                     window.WebSocket = window.MozWebSocket;
                 }
                 if (window.WebSocket) {
-                    $scope.socketServer = new ReconnectingWebSocket("ws://s251.baodf.com/wsbackend/ws&user&"
+                    $scope.socketServer = new ReconnectingWebSocket("ws://s201.xiaork.com/wsbackend/ws&user&"
                         + $scope.patientId +"&h5cxqm");//cs,user,distributor
 
                     /*$scope.socketServer = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&user&"
