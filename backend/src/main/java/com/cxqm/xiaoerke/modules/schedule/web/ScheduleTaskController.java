@@ -50,7 +50,6 @@ public class ScheduleTaskController extends BaseController {
     private SysPropertyServiceImpl sysPropertyService;
 
 
-
     /**
      * 咨询统计信息
      */
@@ -349,35 +348,73 @@ public class ScheduleTaskController extends BaseController {
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
-        VaccineSendMessageVo vaccineSendMessageVo = new VaccineSendMessageVo();
-        vaccineSendMessageVo.setSearchTime(DateUtils.DateToStr(new Date(), "date"));
-        vaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
-        List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectByVaccineSendMessageInfo(vaccineSendMessageVo);
+        VaccineSendMessageVo searchVaccineSendMessageVo = new VaccineSendMessageVo();
+        searchVaccineSendMessageVo.setSearchTime(DateUtils.DateToStr(new Date(), "date"));
+        searchVaccineSendMessageVo.setValidFlag(ConstantUtil.VACCINEVALID.getVariable());
 
-        for (VaccineSendMessageVo vo :vaccineSendMessageVos){
-            String[] sendContent = vo.getContent().split("\\|\\|");
+        //今天要发消息的人
+        List<VaccineSendMessageVo> vaccineSendMessageVos = vaccineService.selectSendMessageInfo(searchVaccineSendMessageVo);
 
-            WechatMessageUtil.templateModel(sendContent[0], sendContent[1].replace("0000-00-00",DateUtils.DateToStr(vo.getInoculationTime(),"date")), sendContent[2], "", "",sendContent[3] ,token, "", vo.getSysUserId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
-            //将疫苗的发送时间往后延迟三十天，消息失效按照用户扫描为准，扫码后与当前码有关的消息失效
-            vo.setId(vo.getId());
-            Calendar sendTimeAdd30 = Calendar.getInstance();
-            sendTimeAdd30.setTime(vo.getSendTime());
-            sendTimeAdd30.add(Calendar.DAY_OF_MONTH, 30);
-            vo.setSendTime(sendTimeAdd30.getTime());
+        for (VaccineSendMessageVo sendMessageVo : vaccineSendMessageVos) {
+            searchVaccineSendMessageVo.setSysUserId(sendMessageVo.getSysUserId());
+            List<VaccineSendMessageVo> messageVos = vaccineService.selectByVaccineSendMessageInfo(searchVaccineSendMessageVo);
+            if (messageVos != null && messageVos.size() > 0) {
+                if (messageVos.size() == 1) {
+                    VaccineSendMessageVo vo = messageVos.get(0);
+                    String[] sendContent = vo.getContent().split("\\|\\|");
 
-            Calendar inoculationTimeAdd30 = Calendar.getInstance();
-            inoculationTimeAdd30.setTime(vo.getInoculationTime());
-            inoculationTimeAdd30.add(Calendar.DAY_OF_MONTH,30);
-            vo.setInoculationTime(inoculationTimeAdd30.getTime());
+                    WechatMessageUtil.templateModel(sendContent[0], sendContent[1].replace("0000-00-00", DateUtils.DateToStr(vo.getInoculationTime(), "date")), sendContent[2], "", "", sendContent[3], token, "", vo.getSysUserId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
+                    //将疫苗的发送时间往后延迟三十天，消息失效按照用户扫描为准，扫码后与当前码有关的消息失效
+                    vo.setId(vo.getId());
+                    Calendar sendTimeAdd30 = Calendar.getInstance();
+                    sendTimeAdd30.setTime(vo.getSendTime());
+                    sendTimeAdd30.add(Calendar.DAY_OF_MONTH, 30);
+                    vo.setSendTime(sendTimeAdd30.getTime());
 
-            vaccineService.updateByPrimaryKeyWithBLOBs(vo);
+                    Calendar inoculationTimeAdd30 = Calendar.getInstance();
+                    inoculationTimeAdd30.setTime(vo.getInoculationTime());
+                    inoculationTimeAdd30.add(Calendar.DAY_OF_MONTH, 30);
+                    vo.setInoculationTime(inoculationTimeAdd30.getTime());
+
+                    vaccineService.updateByPrimaryKeyWithBLOBs(vo);
+                } else {
+                    String symbol = "和";
+                    VaccineSendMessageVo vo = messageVos.get(0);
+                    String[] sendContent = vo.getContent().split("\\|\\|");
+                    String title = sendContent[0];
+                    String keyword1 = sendContent[1];
+                    String keyword2 = sendContent[2];
+                    String keyword3 = sendContent[3];
+                    if (messageVos.size() == 2) {
+                        for (int i = 1; i < messageVos.size(); i++) {
+                            String temp = messageVos.get(i).getContent().split("\\|\\|")[1];
+                            keyword1 = keyword1 + symbol + temp.substring(temp.indexOf("种")+1, temp.length());
+                            keyword1 = keyword1.replace("0000-00-00", DateUtils.DateToStr(messageVos.get(i).getInoculationTime(), "date"));
+                        }
+                    }else{
+                        for (int i = 1; i < messageVos.size(); i++) {
+
+                            String temp = messageVos.get(i).getContent().split("\\|\\|")[1];
+                            if(i != messageVos.size()-1){
+                                symbol = "、";
+                            }
+                            keyword1 = keyword1 + symbol + temp.substring(temp.indexOf("种")+1, temp.length());
+                            keyword1 = keyword1.replace("0000-00-00", DateUtils.DateToStr(messageVos.get(i).getInoculationTime(), "date"));
+                        }
+                    }
+
+
+                    WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", keyword3, token, "", vo.getSysUserId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
+
+                }
+            }
+
         }
     }
 
     public void updateOlyGames() {
         olyGamesService.updateLevelCurrentTimes(new OlyBabyGamesVo());
     }
-
 
 
 }

@@ -6,6 +6,7 @@
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
     <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
     <result column="valid_flag" property="validFlag" jdbcType="VARCHAR" />
+    <result column="text" property="text" jdbcType="VARCHAR" />
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
@@ -69,6 +70,15 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{vaccineId,jdbcType=INTEGER}, #{inoculationTime,jdbcType=VARCHAR},
       #{msgType,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR})
   </insert>
+
+  <select id="selectSendMessageInfo" resultMap="ResultMapWithBLOBs" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo" >
+    SELECT * from vaccine_send_message
+    WHERE
+        send_time LIKE #{sendTime}
+    AND valid_flag =  #{validFlag}
+    GROUP BY sys_user_id
+  </select>
+
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo" >
     insert into vaccine_send_message
     <trim prefix="(" suffix=")" suffixOverrides="," >

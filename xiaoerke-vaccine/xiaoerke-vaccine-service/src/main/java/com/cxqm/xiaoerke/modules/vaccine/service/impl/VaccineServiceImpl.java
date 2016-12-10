@@ -78,6 +78,11 @@ public class VaccineServiceImpl implements VaccineService {
     }
 
     @Override
+    public List<VaccineSendMessageVo> selectSendMessageInfo(VaccineSendMessageVo record){
+        return vaccineSendMessageDao.selectSendMessageInfo(record);
+    }
+
+    @Override
     public int updateByPrimaryKeyWithBLOBs(VaccineSendMessageVo record){
         return vaccineSendMessageDao.updateByPrimaryKeyWithBLOBs(record);
     }

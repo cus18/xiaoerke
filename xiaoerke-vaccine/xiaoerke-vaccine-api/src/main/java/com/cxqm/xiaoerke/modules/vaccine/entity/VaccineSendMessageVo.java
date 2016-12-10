@@ -33,6 +33,16 @@ public class VaccineSendMessageVo {
 
     private Date endSearchDate;
 
+    private String text;
+
+    public String getCount() {
+        return text;
+    }
+
+    public void setCount(String count) {
+        this.text = count;
+    }
+
     public Integer getId() {
         return id;
     }
