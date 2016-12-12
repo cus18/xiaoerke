@@ -193,7 +193,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String token = (String) userWechatParam.get("token");
             try {
                 //关键字回复功能
-                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)||!consultChargingCheck(xmlEntity, token)) {
+                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)||!consultChargingCheck(xmlEntity.getFromUserName(), token)) {
                     return "success";
                 }
             } catch (Exception e) {
@@ -1702,8 +1702,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     }
 
 
-    public boolean consultChargingCheck(ReceiveXmlEntity xmlEntity, String token){
-        String openid = xmlEntity.getFromUserName();
+    @Override
+    public boolean consultChargingCheck(String openid, String token){
+//        String openid = xmlEntity.getFromUserName();
         Date nowDate = new Date();
         //检测当前用户会员是否过期(没有会员按未过期处理)
         String memberEndTime = consultMemberRedsiCacheService.getConsultMember(openid+memberRedisCachVo.MEMBER_END_DATE);
@@ -1717,7 +1718,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
                     if(null != propertyVo && (propertyVo.getPermTimes()+propertyVo.getMonthTimes()) > 0){
 //                        用户有咨询机会
-                        consultMemberRedsiCacheService.useFreeChance(openid,sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
+//                        consultMemberRedsiCacheService.useFreeChance(openid,sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
                         return true;
                     }else{
                         //没有机会,推送购买链接
