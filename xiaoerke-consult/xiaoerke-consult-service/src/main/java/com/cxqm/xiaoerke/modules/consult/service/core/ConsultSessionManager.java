@@ -15,13 +15,11 @@ import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.service.impl.UserInfoServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
-import com.cxqm.xiaoerke.modules.wechat.service.WechatPatientCoreService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -100,9 +98,6 @@ public enum ConsultSessionManager {
 
     private SysPropertyServiceImpl sysPropertyService = SpringContextHolder.getBean("sysPropertyServiceImpl");
 
-    private WechatPatientCoreService wechatPatientCoreService = SpringContextHolder.getBean("WechatPatientCoreServiceImpl");
-
-    private ConsultMemberRedsiCacheService consultMemberRedsiCacheService = SpringContextHolder.getBean("ConsultMemberRedsiCacheServiceImpl");
 
     private ConsultSessionManager() {
         User user = new User();
@@ -470,21 +465,6 @@ public enum ConsultSessionManager {
                         consultSession.setUserType(ConstantUtil.CONSULTDOCTOR.getVariable());
                         consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
                         csChannel = nowChannel;
-
-                        try{
-                            //咨询会员
-                            Map parameter = systemService.getWechatParameter();
-                            String token = (String) parameter.get("token");
-                            //根据接入的是否为医生来判断
-                            if(wechatPatientCoreService.consultChargingCheck(consultSession.getCsUserId(),token)){
-//                        增加机会
-                                SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-                                consultMemberRedsiCacheService.useFreeChance(consultSession.getCsUserId(),sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
-                            };
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-
                         break;
                     } else {
                         csUserChannelMapping.remove(csUserId);
