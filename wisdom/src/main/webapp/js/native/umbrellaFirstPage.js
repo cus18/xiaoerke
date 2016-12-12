@@ -26,8 +26,8 @@ $(document).ready(function() {
         dataType:'json',
         success:function(data) {
             if(data.openid=="none"){
-                window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?" +
-                    "url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+ shareUmbrellaId;
+                window.location.href = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?" +
+                    "url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella"+version+"_"+ shareUmbrellaId;
             }
             else{
                 openid=data.openid;

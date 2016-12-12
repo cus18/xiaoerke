@@ -347,7 +347,7 @@ public class BabyCoinController {
         String remark = "数量有限，快来点击兑换吧！";
         String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com//keeper/wechatInfo/getUserWechatMenId?url=48";
         if(babyCoinVos!=null && babyCoinVos.size()>0){
-            for(int i = 0;i<=100;i++){
+            for(int i = 100;i<=200;i++){
                 if(babyCoinVos.get(i)!=null){
                     BabyCoinVo vo = babyCoinVos.get(i);
                     if(StringUtils.isNotNull(vo.getOpenId())){

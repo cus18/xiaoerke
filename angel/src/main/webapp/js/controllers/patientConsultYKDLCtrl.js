@@ -19,7 +19,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.patientName= "" ;
             $scope.fucengLock = false;//第一次进入页面的浮层
             $scope.alertFlag = false;
-            $scope.remoteUrl = "https://wxsp.ykhys.com/thirdparty/baodaifu/customer_info";
+            $scope.remoteUrl = "http://wxsp-dev.ykbenefit.com/thirdparty/baodaifu/customer_info";
             $scope.imgBarFlag = false;
 
 
@@ -120,7 +120,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     //$scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     //ws://s201.xiaork.com:2048;
-                    $scope.socketServer = new WebSocket("ws://s201.xiaork.com/wsbackend/ws&user&"
+                    $scope.socketServer = new WebSocket("ws://101.201.154.201:2048/ws&user&"
                         + $scope.patientId +"&h5ykdl");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {

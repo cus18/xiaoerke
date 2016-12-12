@@ -9,8 +9,8 @@
         /*立即加入*/
         $scope.goJoin=function(){
             recordLogs("BHS_H5_LJJR_5");
-            window.location.href="http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/" +
-                "author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=" +
+            window.location.href="http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/" +
+                "author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=" +
                 "umbrellaa_"+ $stateParams.id;
         };
         var recordLogs = function(val){
@@ -55,7 +55,7 @@
                  success:function(data) {
                      if(data.openid=="none"){
                          // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-                         window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                         window.location.href = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
                      }
                      else{
                          $scope.openid=data.openid;

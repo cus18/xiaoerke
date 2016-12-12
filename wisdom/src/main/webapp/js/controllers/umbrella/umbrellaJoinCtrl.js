@@ -91,7 +91,7 @@
                 success:function(data) {
                     if(data.openid=="none"){
                         // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
-                        window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa_"+$stateParams.id;
+                        window.location.href = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa_"+$stateParams.id;
                     }else{
                         $scope.openid=data.openid;
                         console.log("my scope.openid", $scope.openid);
@@ -110,7 +110,7 @@
                                 //alert("ifExistOrder");
                                 window.location.href = "../wisdom/firstPage/umbrella?id=" + $stateParams.id;
                             }else if(data.umbrella.pay_result=="fail"){
-                                window.location.href = "http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+$stateParams.id;
+                                window.location.href = "http://s201.xiaork.com/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId="+$stateParams.id;
                             }
                             if(data.result==2 || data.umbrella.activation_time==null) {
                                 $scope.umbrellaMoney = 200000;
