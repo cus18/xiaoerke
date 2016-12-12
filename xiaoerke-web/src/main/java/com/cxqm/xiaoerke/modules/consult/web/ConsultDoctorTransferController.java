@@ -211,16 +211,20 @@ public class ConsultDoctorTransferController extends BaseController {
                     param.put("operation", operation);
                     consultSessionForwardRecordsService.react2Transfer(param);
 
-                    //咨询会员
-                    Map parameter = systemService.getWechatParameter();
-                    String token = (String) parameter.get("token");
-                    ConsultSession consultSession =consultSessionService.selectByPrimaryKey(consultSessionForwardRecordsVo.getConversationId().intValue());
-                    //根据接入的是否为医生来判断
-                    if("consultDoctor".equals(user.getUserType())&&wechatPatientCoreService.consultChargingCheck(consultSession.getCsUserId(),token)){
+                    try{
+                        //咨询会员
+                        Map parameter = systemService.getWechatParameter();
+                        String token = (String) parameter.get("token");
+                        ConsultSession consultSession =consultSessionService.selectByPrimaryKey(consultSessionForwardRecordsVo.getConversationId().intValue());
+                        //根据接入的是否为医生来判断
+                        if("consultDoctor".equals(user.getUserType())&&wechatPatientCoreService.consultChargingCheck(consultSession.getCsUserId(),token)){
 //                        增加机会
-                        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-                        consultMemberRedsiCacheService.useFreeChance(consultSession.getCsUserId(),sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
-                    };
+                            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+                            consultMemberRedsiCacheService.useFreeChance(consultSession.getCsUserId(),sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
+                        };
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         }
