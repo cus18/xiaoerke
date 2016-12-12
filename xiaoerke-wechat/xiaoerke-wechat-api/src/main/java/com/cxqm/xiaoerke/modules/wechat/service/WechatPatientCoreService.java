@@ -20,5 +20,5 @@ public interface WechatPatientCoreService {
 
     void updateKeywordRecovery();
 
-    boolean consultChargingCheck(String openid, String token);
+//    boolean consultChargingCheck(String openid, String token);
 }

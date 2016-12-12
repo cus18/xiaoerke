@@ -2,10 +2,10 @@ package com.cxqm.xiaoerke.modules.consult.service.core;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSONObject;
-import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
+import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultMemberRedsiCacheServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultSessionPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultVoiceRecordMongoServiceImpl;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
@@ -97,6 +97,8 @@ public enum ConsultSessionManager {
     private ConsultSessionPropertyServiceImpl consultSessionPropertyService = SpringContextHolder.getBean("consultSessionPropertyServiceImpl");
 
     private SysPropertyServiceImpl sysPropertyService = SpringContextHolder.getBean("sysPropertyServiceImpl");
+
+    private ConsultMemberRedsiCacheServiceImpl consultMemberRedsiCacheService = SpringContextHolder.getBean("consultMemberRedsiCacheServiceImpl");
 
 
     private ConsultSessionManager() {
@@ -465,6 +467,22 @@ public enum ConsultSessionManager {
                         consultSession.setUserType(ConstantUtil.CONSULTDOCTOR.getVariable());
                         consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
                         csChannel = nowChannel;
+
+
+                        //咨询会员
+                        Map parameter = systemService.getWechatParameter();
+                        String token = (String) parameter.get("token");
+                        //根据接入的是否为医生来判断
+                        try{
+                            if(consultMemberRedsiCacheService.consultChargingCheck(consultSession.getCsUserId(),token)){
+                                SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+                                consultMemberRedsiCacheService.useFreeChance(consultSession.getCsUserId(),sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+
                         break;
                     } else {
                         csUserChannelMapping.remove(csUserId);

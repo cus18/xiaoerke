@@ -217,7 +217,7 @@ public class ConsultDoctorTransferController extends BaseController {
                         String token = (String) parameter.get("token");
                         ConsultSession consultSession =consultSessionService.selectByPrimaryKey(consultSessionForwardRecordsVo.getConversationId().intValue());
                         //根据接入的是否为医生来判断
-                        if("consultDoctor".equals(user.getUserType())&&wechatPatientCoreService.consultChargingCheck(consultSession.getCsUserId(),token)){
+                        if("consultDoctor".equals(user.getUserType())&&consultMemberRedsiCacheService.consultChargingCheck(consultSession.getCsUserId(),token)){
 //                        增加机会
                             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
                             consultMemberRedsiCacheService.useFreeChance(consultSession.getCsUserId(),sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
