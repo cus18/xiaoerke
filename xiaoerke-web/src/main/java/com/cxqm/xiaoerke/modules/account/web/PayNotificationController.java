@@ -552,20 +552,7 @@ public class PayNotificationController {
                     }
 
 //                   mysql 增加会员记录,延长redis的时间
-                    ConsultMemberVo consultMemberVo = consultMemberRedsiCacheService.getConsultMemberInfo(openid);
-                    Integer memberEndTime = Integer.parseInt(sysPropertyVoWithBLOBsVo.getConsultMemberTime());
-                    if(null ==consultMemberVo){
-                        consultMemberVo = new ConsultMemberVo();
-                        consultMemberVo.setOpenid(openid);
-                        consultMemberVo.setMemberType("day");
-                        consultMemberVo.setNickname("");
-                        consultMemberVo.setPayAcount((String) map.get("total_fee"));
-                        consultMemberVo.setEndTime(new Date(new Date().getTime()+memberEndTime*1000*60));
-                    }else{
-                        consultMemberVo.setEndTime(new Date(consultMemberVo.getEndTime().getTime()+memberEndTime*1000*60));
-                    }
-                    consultMemberRedsiCacheService.saveConsultMemberInfo(consultMemberVo);
-                    consultMemberRedsiCacheService.saveConsultMember(openid+ memberRedisCachVo.MEMBER_END_DATE,DateUtils.DateToStr(consultMemberVo.getEndTime(),"datetime"));
+                    consultMemberRedsiCacheService.payConsultMember(openid,sysPropertyVoWithBLOBsVo.getConsultMemberTime(),(String) map.get("total_fee"));
                 }
             }
             return XMLUtil.setXML("SUCCESS", "");
