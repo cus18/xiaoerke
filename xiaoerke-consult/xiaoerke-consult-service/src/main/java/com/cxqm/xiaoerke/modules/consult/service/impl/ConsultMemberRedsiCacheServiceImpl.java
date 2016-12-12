@@ -134,19 +134,26 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                 if(null != propertyVo && (propertyVo.getPermTimes()+propertyVo.getMonthTimes()) > 0){
 //                        用户有咨询机会
 //                        consultMemberRedsiCacheService.useFreeChance(openid,sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
+                    String content = "亲爱的，你今天的'"+sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime()+"'分钟免费咨询还未启用\n为减少其他生病宝宝的焦急等待，从医生接入时开始计时";
+                    WechatUtil.sendMsgToWechat(token,openid,content);
                     return true;
                 }else{
                     //没有机会,推送购买链接
-                    String content = "求助客服请直接向分诊说明，不需付费\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/angel/patient/consult#/patientCustomerService'>h5页面的入口</a>" +
-                            "\n\n您好，由于本月的咨询机会已经用完，为了给你更好更快的服务，需要购买咨询服务\n-----------\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询服务</a>";
+                    String content = "求求助客服点击这里欧！\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/angel/patient/consult#/patientCustomerService'>H5咨询入口</a>";
+                    WechatUtil.sendMsgToWechat(token,openid,content);
+
+                    content = "时间真快，您本月的免费咨询机会已用完\n更多咨询机会请\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>猛戳这里购买吧！</a>";
                     WechatUtil.sendMsgToWechat(token,openid,content);
                     return  false;
                 }
             }
             //会员时间超时,推送购买链接
-            String content = "求助客服请直接向分诊说明，不需付费\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/angel/patient/consult#/patientCustomerService'>h5页面的入口</a>" +
-                    "\n\n您好，由于本月的咨询机会已经用完，为了给你更好更快的服务，需要购买咨询服务\n-----------\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询服务</a>";
+            String content = "求求助客服点击这里欧！\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/angel/patient/consult#/patientCustomerService'>H5咨询入口</a>";
             WechatUtil.sendMsgToWechat(token,openid,content);
+
+            content = "亲爱的，您本次30分钟的免费咨询时间已到，其他宝妈还在焦急排队中……\n24h后您可开启新一天30分钟免费机会。如果您着急，可以 \n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>猛戳这里购买吧！</a>";
+            WechatUtil.sendMsgToWechat(token,openid,content);
+
             return false;
         }
         return true;
