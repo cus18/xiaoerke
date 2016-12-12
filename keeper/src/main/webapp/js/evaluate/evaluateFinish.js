@@ -114,8 +114,8 @@ function commitSendHeart(){
                                 success:function(data) {
                                     if(data=="1"){
                                         recordLogs("ZXPJSXY_SXY");
-                                        recordLogs("ZXPJSXY_PJ");
-                                        window.location.href = "playtour#/playtourShare/"+2;
+                                        /* window.location.href = "playtour#/playtourShare/"+3;*/
+                                        window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD";
                                     }
                                 },
                                 error : function(res) {
