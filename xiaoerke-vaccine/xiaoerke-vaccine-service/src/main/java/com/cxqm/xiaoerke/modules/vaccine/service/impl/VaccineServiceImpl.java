@@ -37,6 +37,9 @@ public class VaccineServiceImpl implements VaccineService {
     @Autowired
     VaccineInfoDao vaccineInfoDao;
 
+    @Autowired
+    private VaccineScanCodeDao vaccineScanCodeDao;
+
     @Override
     public VaccineBabyInfoVo selectByVaccineBabyInfoVo(VaccineBabyInfoVo vaccineBabyInfoVo){
         return vaccineBabyInfoDao.selectByVaccineBabyInfoVo(vaccineBabyInfoVo);
@@ -155,5 +158,33 @@ public class VaccineServiceImpl implements VaccineService {
         VaccineStationRelVo relVo = new VaccineStationRelVo();
         relVo.setVaccineStationId(vo.getId());
         vaccineStationRelDao.deleteVaccineStationRel(relVo);
+    }
+
+    @Override
+    public List<VaccineScanCodeVo> findVaccineScanCodeList(VaccineScanCodeVo vo) {
+        return vaccineScanCodeDao.findVaccineScanCodeList(vo);
+    }
+
+    @Override
+    public VaccineScanCodeVo getVaccineScanCodeByInfo(VaccineScanCodeVo vo) {
+        List<VaccineScanCodeVo> list = vaccineScanCodeDao.findVaccineScanCodeList(vo);
+        if(list.size()!=0){
+            return list.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public void updateVaccineScanCodeInfo(VaccineScanCodeVo vo) {
+        if(StringUtils.isNotNull(vo.getId()+"")){
+            vaccineScanCodeDao.updateByPrimaryKeySelective(vo);
+        }else{
+            vaccineScanCodeDao.insertSelective(vo);
+        }
+    }
+
+    @Override
+    public void deleteVaccineScanCodeById(Integer id) {
+        vaccineScanCodeDao.deleteByPrimaryKey(id);
     }
 }

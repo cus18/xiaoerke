@@ -45,4 +45,12 @@ public interface VaccineService {
     List<VaccineSendMessageVo> selectByVaccineSendMessageInfo(VaccineSendMessageVo record);
 
     void deleteVaccineStation(VaccineStationVo vo);
+
+    List<VaccineScanCodeVo> findVaccineScanCodeList(VaccineScanCodeVo vo);
+
+    VaccineScanCodeVo getVaccineScanCodeByInfo(VaccineScanCodeVo vo);
+
+    void updateVaccineScanCodeInfo(VaccineScanCodeVo vo);
+
+    void deleteVaccineScanCodeById(Integer id);
 }
