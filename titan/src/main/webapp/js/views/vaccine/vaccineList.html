@@ -1,5 +1,13 @@
 <ion-view view-title={{title}} >
-    <ion-content class="vaccineList" overflow-scroll="true"  style="top:90px;">
-        我是列表页
+    <ion-content class="vaccineList" overflow-scroll="true"  style="top:0;">
+        <ul>
+            <li ng-repeat="item in vaccineList">
+                <span>{{item.vaccine}}</span>
+                <span>{{item.num}}</span>
+                <span>{{item.age}}</span><br>
+                <span ng-show="info.showFree" class="free">免费</span>
+                <span ng-show="info.showCharge" class="free charge">自费</span>
+            </li>
+        </ul>
     </ion-content>
 </ion-view>
