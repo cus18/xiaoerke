@@ -23,6 +23,8 @@ angular.module('controllers', ['ionic']).controller('vaccineListCtrl', [
                 num:'第1/3针'
             }
         ];
+        $scope.doRefresh = function(){
 
+        }
     }]);
 
