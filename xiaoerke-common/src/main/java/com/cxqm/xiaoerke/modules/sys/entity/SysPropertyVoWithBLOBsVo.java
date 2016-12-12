@@ -39,6 +39,8 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String consultMemberTime;
 
+    private String freeConsultMemberTime;
+
     public String getTemplateIdYWFWTX() {
         return templateIdYWFWTX;
     }
@@ -219,5 +221,13 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     public void setConsultMemberTime(String consultMemberTime) {
         this.consultMemberTime = consultMemberTime;
+    }
+
+    public String getFreeConsultMemberTime() {
+        return freeConsultMemberTime;
+    }
+
+    public void setFreeConsultMemberTime(String freeConsultMemberTime) {
+        this.freeConsultMemberTime = freeConsultMemberTime;
     }
 }
