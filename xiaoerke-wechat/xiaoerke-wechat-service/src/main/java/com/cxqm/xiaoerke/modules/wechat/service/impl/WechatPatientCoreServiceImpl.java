@@ -1717,7 +1717,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
                     if(null != propertyVo && (propertyVo.getPermTimes()+propertyVo.getMonthTimes()) > 0){
 //                        用户有咨询机会
-                        consultMemberRedsiCacheService.useFreeChance(openid,sysPropertyVoWithBLOBsVo.getConsultMemberTime());
+                        consultMemberRedsiCacheService.useFreeChance(openid,sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
                         return true;
                     }else{
                         //没有机会,推送购买链接
