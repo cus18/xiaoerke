@@ -7,10 +7,7 @@ import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.entity.SendMindCouponVo;
-import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
-import com.cxqm.xiaoerke.modules.consult.service.SendMindCouponService;
-import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
@@ -66,6 +63,9 @@ public class BabyCoinController {
 
     @Autowired
     SendMindCouponService sendMindCouponService;
+
+    @Autowired
+    private ConsultMemberRedsiCacheService consultMemberRedsiCacheService;
 
     /**
      * 邀请卡生成页面
@@ -242,6 +242,9 @@ public class BabyCoinController {
             LogUtils.saveLog("babyCoinPay:" + payRecordId);//用户自身余额支付
             payRecordService.insertPayInfo(payRecord);
 
+//            限时咨询增加会员时长
+//                   mysql 增加会员记录,延长redis的时间
+            consultMemberRedsiCacheService.payConsultMember(openId,sysPropertyVoWithBLOBsVo.getConsultMemberTime(),"0");
 
             //更改支付状态
             LogUtils.saveLog("宝宝币支付 sessionId = " + sessionId, openId);
