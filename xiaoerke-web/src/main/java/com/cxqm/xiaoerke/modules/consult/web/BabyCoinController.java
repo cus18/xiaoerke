@@ -223,7 +223,7 @@ public class BabyCoinController {
             consultSessionPropertyService.addPermTimes(openId);
             Map parameter = systemService.getWechatParameter();
             String token = (String) parameter.get("token");
-            WechatUtil.sendMsgToWechat(token, openId, "【支付成功通知】你已在宝大夫成功支付24小时咨询服务费，感谢你的信任和支持！\n----------------\n把您的问题发送给医生，立即开始咨询吧");
+//            WechatUtil.sendMsgToWechat(token, openId, "【支付成功通知】你已在宝大夫成功支付24小时咨询服务费，感谢你的信任和支持！\n----------------\n把您的问题发送给医生，立即开始咨询吧");
 
 
             PayRecord payRecord = new PayRecord();
