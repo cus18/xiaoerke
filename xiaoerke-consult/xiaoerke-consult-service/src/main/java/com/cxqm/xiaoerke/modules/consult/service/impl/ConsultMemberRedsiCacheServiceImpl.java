@@ -97,10 +97,12 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             consultMemberVo.setNickname("");
             consultMemberVo.setPayAcount(totalFee);
             consultMemberVo.setEndTime(new Date(new Date().getTime()+memberEndTime*1000*60));
+            saveConsultMemberInfo(consultMemberVo);
         }else{
             consultMemberVo.setEndTime(new Date(consultMemberVo.getEndTime().getTime()+memberEndTime*1000*60));
+            updateConsultMemberInfo(consultMemberVo);
         }
-        saveConsultMemberInfo(consultMemberVo);
+
         saveConsultMember(openid+ memberRedisCachVo.MEMBER_END_DATE,DateUtils.DateToStr(consultMemberVo.getEndTime(),"datetime"));
 
     }
