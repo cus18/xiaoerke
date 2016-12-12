@@ -340,10 +340,10 @@ public class BabyCoinController {
         babyCoinVo.setCash(100l);
         babyCoinVo.setCreateTime(new Date());
         List<BabyCoinVo> babyCoinVos = babyCoinService.selectListByBabyCoinVo(babyCoinVo);
-        String title = "哇哦~宝宝币可以兑换优惠券啦！快进门抢！";
-        String keyword1 = "优惠券兑换提醒";
-        String keyword2 = "亲爱的，寒冬来袭， 为感谢您对宝大夫的支持，奉上4张价值不等的优惠券，点击即可兑换。";
-        String keyword3 = "2016年12月12日";
+        String title = "天降红包啦！！ 快进门抢！";
+        String keyword1 = "双12宝宝币限量兑换优惠券";
+        String keyword2 = "亲爱的，感谢您对宝大夫的支持，奉上4张价值不等的优惠券，点击即可兑换。\n";
+        String keyword3 = "2016年12月25日";
         String remark = "数量有限，快来点击兑换吧！";
         String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com//keeper/wechatInfo/getUserWechatMenId?url=48";
         if(babyCoinVos!=null && babyCoinVos.size()>0){
