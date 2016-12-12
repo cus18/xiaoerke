@@ -1,8 +1,10 @@
 package com.cxqm.xiaoerke.modules.consult.dao;
 
 
+import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultMemberVo;
 
+@MyBatisDao
 public interface ConsultMemberDao {
     int deleteByPrimaryKey(Integer id);
 
