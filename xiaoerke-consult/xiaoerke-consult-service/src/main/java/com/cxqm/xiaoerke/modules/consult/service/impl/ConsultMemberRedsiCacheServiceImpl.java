@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Map;
 
 
 /**
@@ -96,7 +97,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
     }
 
     @Override
-    public void payConsultMember(String openid,String timeLength,String totalFee) {
+    public void payConsultMember(String openid,String timeLength,String totalFee,String token) {
         //                   mysql 增加会员记录,延长redis的时间
         ConsultMemberVo consultMemberVo = getConsultMemberInfo(openid);
         Integer memberEndTime = Integer.parseInt(timeLength);
@@ -114,6 +115,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
         }
 
         saveConsultMember(openid+ memberRedisCachVo.MEMBER_END_DATE,DateUtils.DateToStr(consultMemberVo.getEndTime(),"datetime"));
+        WechatUtil.sendMsgToWechat(token, openid, " 购买成功啦！\n亲爱的，现在可以开始咨询啦，赶紧和医生对话吧~\n会员有效期:"+DateUtils.DateToStr(new Date(),"yyyy年MM月dd日 HH时mm分")+"至"+DateUtils.DateToStr(consultMemberVo.getEndTime(),"yyyy年MM月dd日 HH时mm分"));
 
     }
 
