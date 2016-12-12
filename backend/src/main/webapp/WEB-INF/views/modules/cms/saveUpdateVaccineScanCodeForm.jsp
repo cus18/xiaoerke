@@ -54,7 +54,7 @@
 		<div class="control-group">
 			<label class="control-label">预防疾病:</label>
 			<div class="controls">
-				<form:input id="diseasePrevention" path="diseasePrevention" htmlEscape="false" maxlength="50"  class="required number" value="${vo.diseasePrevention}"/>
+				<form:input id="diseasePrevention" path="diseasePrevention" htmlEscape="false" maxlength="50"  class="required" value="${vo.diseasePrevention}"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

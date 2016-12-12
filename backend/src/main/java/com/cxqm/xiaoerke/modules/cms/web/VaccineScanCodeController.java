@@ -77,7 +77,7 @@ public class VaccineScanCodeController {
 	public String saveUpdateVaccineScanCode(VaccineScanCodeVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
 		vaccineService.updateVaccineScanCodeInfo(vo);
 		model.addAttribute("vo", vo);
-		return "redirect:" + adminPath + "/cms/vaccineScanCodeForm";
+		return "redirect:" + adminPath + "/cms/vaccineScanCode/vaccineScanCodeList";
 	}
 
 	/**
@@ -91,6 +91,6 @@ public class VaccineScanCodeController {
 	public String deleteVaccineScanCode(VaccineScanCodeVo vo , Model model) {
 		vaccineService.deleteVaccineScanCodeById(vo.getId());
 		model.addAttribute("vo", vo);
-		return "redirect:" + adminPath + "/cms/vaccineScanCodeForm";
+		return "redirect:" + adminPath + "/cms/vaccineScanCode/vaccineScanCodeList";
 	}
 }
