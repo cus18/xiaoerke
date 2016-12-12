@@ -244,7 +244,7 @@ public class BabyCoinController {
 
 //            限时咨询增加会员时长
 //                   mysql 增加会员记录,延长redis的时间
-            consultMemberRedsiCacheService.payConsultMember(openId,sysPropertyVoWithBLOBsVo.getConsultMemberTime(),"0");
+            consultMemberRedsiCacheService.payConsultMember(openId,sysPropertyVoWithBLOBsVo.getConsultMemberTime(),"0",token);
 
             //更改支付状态
             LogUtils.saveLog("宝宝币支付 sessionId = " + sessionId, openId);
