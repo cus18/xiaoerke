@@ -135,8 +135,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                 ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
                 if(null != propertyVo && (propertyVo.getPermTimes()+propertyVo.getMonthTimes()) > 0){
 //                        用户有咨询机会
-//                        consultMemberRedsiCacheService.useFreeChance(openid,sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
-                    String content = "亲爱的，你今天的'"+sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime()+"'分钟免费咨询还未启用\n为减少其他生病宝宝的焦急等待，从医生接入时开始计时";
+                    String content = "亲爱的，你今天的"+sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime()+"分钟免费咨询还未启用\n为减少其他生病宝宝的焦急等待，从医生接入时开始计时";
                     if(prompt)WechatUtil.sendMsgToWechat(token,openid,content);
                     return true;
                 }else{
