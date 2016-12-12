@@ -193,7 +193,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String token = (String) userWechatParam.get("token");
             try {
                 //关键字回复功能
-                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)||!consultMemberRedsiCacheService.consultChargingCheck(xmlEntity.getFromUserName(), token)) {
+                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)||!consultMemberRedsiCacheService.consultChargingCheck(xmlEntity.getFromUserName(), token,true)) {
                     return "success";
                 }
             } catch (Exception e) {

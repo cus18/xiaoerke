@@ -120,7 +120,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
     }
 
     @Override
-    public boolean consultChargingCheck(String openid, String token){
+    public boolean consultChargingCheck(String openid, String token,boolean prompt){
 //        String openid = xmlEntity.getFromUserName();
         Date nowDate = new Date();
         //检测当前用户会员是否过期(没有会员按未过期处理)
@@ -137,7 +137,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 //                        用户有咨询机会
 //                        consultMemberRedsiCacheService.useFreeChance(openid,sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
                     String content = "亲爱的，你今天的'"+sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime()+"'分钟免费咨询还未启用\n为减少其他生病宝宝的焦急等待，从医生接入时开始计时";
-                    WechatUtil.sendMsgToWechat(token,openid,content);
+                    if(prompt)WechatUtil.sendMsgToWechat(token,openid,content);
                     return true;
                 }else{
                     //没有机会,推送购买链接

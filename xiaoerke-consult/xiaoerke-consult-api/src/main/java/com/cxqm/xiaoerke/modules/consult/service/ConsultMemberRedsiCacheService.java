@@ -24,5 +24,5 @@ public interface ConsultMemberRedsiCacheService {
 
     void payConsultMember(String openid,String timeLength,String totalFee,String token);
 
-    boolean consultChargingCheck(String openid, String token);
+    boolean consultChargingCheck(String openid, String token,boolean prompt);
 }

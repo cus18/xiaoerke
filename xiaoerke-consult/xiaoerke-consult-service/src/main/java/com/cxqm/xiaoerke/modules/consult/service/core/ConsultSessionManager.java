@@ -474,7 +474,7 @@ public enum ConsultSessionManager {
                         String token = (String) parameter.get("token");
                         //根据接入的是否为医生来判断
                         try{
-                            if(consultMemberRedsiCacheService.consultChargingCheck(consultSession.getUserId(),token)){
+                            if(consultMemberRedsiCacheService.consultChargingCheck(consultSession.getUserId(),token,true)){
                                 SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
                                 consultMemberRedsiCacheService.useFreeChance(consultSession.getUserId(),sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
                             }
