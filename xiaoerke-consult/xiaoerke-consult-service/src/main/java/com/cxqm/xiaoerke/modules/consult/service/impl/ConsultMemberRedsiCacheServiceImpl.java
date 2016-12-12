@@ -84,4 +84,24 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
         }
         return  false;
     }
+
+    @Override
+    public void payConsultMember(String openid,String timeLength,String totalFee) {
+        //                   mysql 增加会员记录,延长redis的时间
+        ConsultMemberVo consultMemberVo = getConsultMemberInfo(openid);
+        Integer memberEndTime = Integer.parseInt(timeLength);
+        if(null ==consultMemberVo){
+            consultMemberVo = new ConsultMemberVo();
+            consultMemberVo.setOpenid(openid);
+            consultMemberVo.setMemberType("day");
+            consultMemberVo.setNickname("");
+            consultMemberVo.setPayAcount(totalFee);
+            consultMemberVo.setEndTime(new Date(new Date().getTime()+memberEndTime*1000*60));
+        }else{
+            consultMemberVo.setEndTime(new Date(consultMemberVo.getEndTime().getTime()+memberEndTime*1000*60));
+        }
+        saveConsultMemberInfo(consultMemberVo);
+        saveConsultMember(openid+ memberRedisCachVo.MEMBER_END_DATE,DateUtils.DateToStr(consultMemberVo.getEndTime(),"datetime"));
+
+    }
 }
