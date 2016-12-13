@@ -7,19 +7,18 @@ import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
-import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyInfoVo;
-import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineBabyRecordVo;
-import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
-import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineStationVo;
+import com.cxqm.xiaoerke.modules.vaccine.entity.*;
 import com.cxqm.xiaoerke.modules.vaccine.service.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -244,5 +243,77 @@ public class VaccineUserController {
         return response;
     }
 
+    /**
+     * 2016-12-12 15:24:16 jiangzg add
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/getVaccineNameList", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public HashMap getVaccineNameList(HttpServletRequest request , HttpServletResponse response) {
+        HashMap<String,Object> resultMap = new HashMap<String,Object>();
+        VaccineScanCodeVo vaccineScanCodeVo = new VaccineScanCodeVo();
+//        List<VaccineScanCodeVo> vaccineScanList =  vaccineService.findVaccineScanCodeList(vaccineScanCodeVo);
+        vaccineScanCodeVo.setId(1111);
+        vaccineScanCodeVo.setAge("12");
+        vaccineScanCodeVo.setIsfree("free");
+        vaccineScanCodeVo.setName("test");
+        List<VaccineScanCodeVo> vaccineScanList = new ArrayList<VaccineScanCodeVo>();
+        vaccineScanList.add(vaccineScanCodeVo);
+        if(vaccineScanList != null && vaccineScanList.size() > 0){
+            List dataList = new ArrayList();
+            for(VaccineScanCodeVo vo : vaccineScanList){
+                Map<String,Object> map = new HashMap<String, Object>();
+                map.put("id",vo.getId());
+                if(vo.getIsfree().equalsIgnoreCase("免费")){
+                    map.put("isFree","0");
+                }else{
+                    map.put("isFree","1");
+                }
+                map.put("age",vo.getAge());
+                map.put("name",vo.getName());
+                /*map.put("attention",vo.getAttention());
+                map.put("diseasePrevention",vo.getDiseasePrevention());
+                map.put("informedForm",vo.getInformedForm());*/
+                dataList.add(map);
+            }
+            resultMap.put("dataList",dataList);
+            resultMap.put("status","success");
+        }else{
+            resultMap.put("status","failure");
+        }
+        return  resultMap ;
+    }
 
+
+    @RequestMapping(value = "/getVaccineInfoList", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public HashMap getVaccineInfoList(HttpServletRequest request , HttpServletResponse response) {
+        HashMap<String,Object> resultMap = new HashMap<String,Object>();
+        VaccineScanCodeVo vaccineScanCodeVo = new VaccineScanCodeVo();
+        vaccineScanCodeVo.setId(Integer.valueOf(String.valueOf(request.getParameter("id"))));
+        List<VaccineScanCodeVo> vaccineScanList =  vaccineService.findVaccineScanCodeList(vaccineScanCodeVo);
+        if(vaccineScanList != null && vaccineScanList.size() > 0){
+            List dataList = new ArrayList();
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("id", vaccineScanList.get(0).getId());
+            if(vaccineScanList.get(0).getIsfree().equalsIgnoreCase("免费")){
+                map.put("isFree","0");
+            }else{
+                map.put("isFree","1");
+            }
+            map.put("age",vaccineScanList.get(0).getAge());
+            map.put("name",vaccineScanList.get(0).getName());
+            map.put("attention",vaccineScanList.get(0).getAttention());
+            map.put("diseasePrevention",vaccineScanList.get(0).getDiseasePrevention());
+            map.put("informedForm",vaccineScanList.get(0).getInformedForm());
+            dataList.add(map);
+            resultMap.put("dataList", dataList);
+            resultMap.put("failure", "success");
+        }else{
+            resultMap.put("failure", "failure");
+        }
+        return  resultMap ;
+    }
 }

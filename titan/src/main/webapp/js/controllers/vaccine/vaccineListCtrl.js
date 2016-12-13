@@ -1,30 +1,19 @@
 
 angular.module('controllers', ['ionic']).controller('vaccineListCtrl', [
-    '$scope',
-    function ($scope) {
+    '$scope','GetVaccineCodeList',
+    function ($scope,GetVaccineCodeList) {
         $scope.info = {
             shoeFree:false,
             showCharge:true
         };
-        $scope.vaccineList = [
-            {
-                vaccine:'乙肝疫苗',
-                age:'月龄',
-                num:'第1/3针'
-            },
-            {
-                vaccine:'甲肝疫苗',
-                age:'月龄',
-                num:'第1/3针'
-            },
-            {
-                vaccine:'乙肝疫苗',
-                age:'月龄',
-                num:'第1/3针'
-            }
-        ];
+        $scope.vaccineList = [];
         $scope.doRefresh = function(){
-
+            GetVaccineCodeList.save({},function(data){
+                console.log(data.dataList);
+                if(data.status == "success"){
+                    $scope.vaccineList.push(data.dataList);
+                }
+            });
         }
     }]);
 
