@@ -1,7 +1,7 @@
 
 angular.module('controllers', ['ionic']).controller('vaccineListCtrl', [
-    '$scope','GetVaccineCodeList',
-    function ($scope,GetVaccineCodeList) {
+    '$scope','GetVaccineCodeList','$state',
+    function ($scope,GetVaccineCodeList,$state) {
         $scope.info = {
             shoeFree:false,
             showCharge:true
@@ -9,11 +9,14 @@ angular.module('controllers', ['ionic']).controller('vaccineListCtrl', [
         $scope.vaccineList = [];
         $scope.doRefresh = function(){
             GetVaccineCodeList.save({},function(data){
-                console.log(data.dataList);
                 if(data.status == "success"){
-                    $scope.vaccineList.push(data.dataList);
+                    $scope.vaccineList = data.dataList;
+                    console.log($scope.vaccineList);
                 }
             });
-        }
+        };
+        $scope.goInformation = function(id){
+            $state.go('vaccineInformation', {id: $scope.id});
+        };
     }]);
 

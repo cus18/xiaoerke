@@ -1,11 +1,11 @@
 <ion-view view-title={{title}} ng-init="doRefresh()">
     <ion-content class="vaccineList" overflow-scroll="true"  style="top:0;">
         <ul>
-            <li ng-repeat="item in vaccineList">
+            <li ng-repeat="item in vaccineList" ng-click="goInformation(item.id)">
                 <span>{{item.name}}</span>
                 <span>{{item.age}}</span><br>
-                <span ng-show="info.showFree"  class="free">免费</span>
-                <span ng-show="info.showCharge" class="free charge">自费</span>
+                <span ng-show="item.isFree == 1"  class="free">免费</span>
+                <span ng-show="item.isFree == 0" class="free charge">自费</span>
             </li>
         </ul>
     </ion-content>
