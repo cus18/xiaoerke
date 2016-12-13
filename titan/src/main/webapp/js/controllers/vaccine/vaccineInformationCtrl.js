@@ -1,10 +1,9 @@
 
 angular.module('controllers', ['ionic']).controller('vaccineInformationCtrl', [
-    '$scope','$stateParams','$state','GetVaccineCodeList',
-    function ($scope,$stateParams,$state,GetVaccineCodeList) {
-        $scope.id = $stateParams.id;
+    '$scope','$stateParams','$state','GetOneVaccineInfoList',
+    function ($scope,$stateParams,$state,GetOneVaccineInfoList) {
         $scope.doRefresh = function () {
-            GetVaccineCodeList.save({id:$scope.id},function(data){
+            GetOneVaccineInfoList.save({id:$stateParams.id},function(data){
                 if(data.status == "success"){
                     $scope.vaccine = data.dataList[0];
                     console.log($scope.vaccine);
@@ -13,7 +12,7 @@ angular.module('controllers', ['ionic']).controller('vaccineInformationCtrl', [
         };
         $scope.goNotify = function () {
             //$scope.notify = $scope.vaccineList[index];
-            $state.go('vaccineNotify', {id: $scope.id});
+            $state.go('vaccineNotify', {id: $stateParams.id});
         };
     }]);
 

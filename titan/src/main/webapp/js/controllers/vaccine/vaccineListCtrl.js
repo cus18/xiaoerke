@@ -16,7 +16,7 @@ angular.module('controllers', ['ionic']).controller('vaccineListCtrl', [
             });
         };
         $scope.goInformation = function(id){
-            $state.go('vaccineInformation', {id: $scope.id});
+            $state.go('vaccineInformation', {id:id});
         };
     }]);
 
