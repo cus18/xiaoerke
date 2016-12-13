@@ -280,10 +280,10 @@ public class VaccineUserController {
 
     @RequestMapping(value = "/getVaccineInfoList", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public HashMap getVaccineInfoList(HttpServletRequest request , HttpServletResponse response) {
+    public HashMap getVaccineInfoList(HttpServletRequest request , HttpServletResponse response ,  @RequestBody HashMap params) {
         HashMap<String,Object> resultMap = new HashMap<String,Object>();
         VaccineScanCodeVo vaccineScanCodeVo = new VaccineScanCodeVo();
-        vaccineScanCodeVo.setId(Integer.valueOf(String.valueOf(request.getParameter("id"))));
+        vaccineScanCodeVo.setId(Integer.valueOf(String.valueOf(params.get("id"))));
         List<VaccineScanCodeVo> vaccineScanList =  vaccineService.findVaccineScanCodeList(vaccineScanCodeVo);
         if(vaccineScanList != null && vaccineScanList.size() > 0){
             List dataList = new ArrayList();
@@ -305,6 +305,7 @@ public class VaccineUserController {
         }else{
             resultMap.put("failure", "failure");
         }
+        System.out.println(request.getParameterMap().get("id"));
         return  resultMap ;
     }
 }
