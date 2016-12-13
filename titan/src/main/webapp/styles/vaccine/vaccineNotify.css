@@ -1,3 +1,16 @@
 .vaccineNotify{
-
+    background-color: #fff;
+    padding: 16px 15px;
+    height: 100%;
+}
+.vaccineNotify .title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.vaccineNotify .content {
+    font-size: 14px;
+    color: #333;
 }

@@ -24,7 +24,7 @@
     padding: 0 5px;
     border-radius: 10px;
 }
-.vaccineList ul li span:nth-child(3) {
+.vaccineList ul li span:nth-child(2) {
     float: right;
     margin-top: 9px;
     font-weight: 400;

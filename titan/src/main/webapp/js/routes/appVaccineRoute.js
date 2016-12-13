@@ -59,7 +59,7 @@ define(['appVaccine'], function(app){
                         }
                     })
                     .state('vaccineInformation', {
-                        url: '/vaccineInformation',
+                        url: '/vaccineInformation/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'vaccineInformationCtrl',
                         resolve: {
@@ -76,7 +76,7 @@ define(['appVaccine'], function(app){
                         }
                     })
                     .state('vaccineNotify', {
-                        url: '/vaccineNotify',
+                        url: '/vaccineNotify/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'vaccineInformationCtrl',
                         resolve: {

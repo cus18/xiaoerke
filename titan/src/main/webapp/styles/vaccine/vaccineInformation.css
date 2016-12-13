@@ -1,3 +1,29 @@
 .vaccineInformation{
-
+    background-color: #fff;
+    padding: 15px 18px;
+    height: 100%;
+}
+.vaccineInformation .title{
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 14px;
+}
+.vaccineInformation .title span{
+    font-size: 14px;
+    color: #77a7ef;
+    font-weight: 400;
+    padding-left: 8px;
+}
+.vaccineInformation .prevent .title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 9px;
+}
+.vaccineInformation .prevent .content {
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    margin-bottom: 20px;
 }
