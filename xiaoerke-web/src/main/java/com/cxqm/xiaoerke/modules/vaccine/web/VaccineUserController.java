@@ -301,9 +301,9 @@ public class VaccineUserController {
             map.put("informedForm",vaccineScanList.get(0).getInformedForm());
             dataList.add(map);
             resultMap.put("dataList", dataList);
-            resultMap.put("failure", "success");
+            resultMap.put("status", "success");
         }else{
-            resultMap.put("failure", "failure");
+            resultMap.put("status", "failure");
         }
         System.out.println(request.getParameterMap().get("id"));
         return  resultMap ;
