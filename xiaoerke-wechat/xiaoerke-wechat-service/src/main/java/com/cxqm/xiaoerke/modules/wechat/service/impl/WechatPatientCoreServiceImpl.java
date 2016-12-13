@@ -140,7 +140,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         ReceiveXmlEntity xmlEntity = new ReceiveXmlProcess().getMsgEntity(getXmlDataFromWechat(request));
         String msgType = xmlEntity.getMsgType();
         String openId = xmlEntity.getFromUserName();
-
+        String eventKey = xmlEntity.getEventKey();
         // xml请求解析
         if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)) {
             // 事件类型
@@ -158,6 +158,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //                babyVaccineRemind(xmlEntity, token, sysPropertyVoWithBLOBsVo);
                 //微量元素检测
 //                traceElementsDetection(xmlEntity, token);
+
+                /**
+                 *  疫苗站关注提醒 2016年12月12日11:23:52 jiangzg
+                 */
+                if(eventKey.contains("YMJZ_AH_")){
+                    attentionByThirdPlace(eventKey,openId ,token);
+                }
 
             } else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
                 //扫描关注公众号或者搜索关注公众号都在其中
@@ -205,6 +212,43 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             }
         }
         return respMessage;
+    }
+
+    /**
+     *  2016年12月12日11:24:59 jiangzg
+     */
+    private void attentionByThirdPlace(String eventKey , String fromUserId ,String token){
+        if(StringUtils.isNotNull(eventKey) && eventKey.contains("YMJZ_AH_")){
+            StringBuilder sb = new StringBuilder();
+            sb.append("点击领取：");
+            sb.append("<a href=''>");
+            sb.append("疫苗接种告知单及相关知识>>");
+            sb.append("</a>");
+            sb.append("\n\n");
+            sb.append("如有疼痛发热等症状及其他育儿问题，点击左下角");
+            sb.append("\n");
+            sb.append("\"小键盘\"，即可咨询儿科专家医生");
+            sb.append("\n");
+            sb.append("预防接种科咨询时间：19：00—21：00");
+            WechatUtil.sendMsgToWechat(token, fromUserId,sb.toString());
+            /* 暂时注掉
+            String marketer = "";
+            if(eventKey.contains("qrscene_")){
+                marketer = eventKey.replace("qrscene_", "").trim();
+            }else{
+                marketer = eventKey.trim();
+            }
+            marketer = marketer.substring(marketer.lastIndexOf("_")+1,marketer.length());
+            int marketerId = 0 ;
+            if(marketer.startsWith("0")){
+                marketerId = Integer.valueOf(marketer.substring(1));
+            }else{
+                marketerId = Integer.valueOf(marketer);
+            }
+            switch (marketerId){
+
+            }*/
+        }
     }
 
     private void traceElementsDetection(ReceiveXmlEntity xmlEntity, String token) {
