@@ -654,7 +654,7 @@ public class ConsultController extends BaseController {
 		if(consultSessions !=null && consultSessions.size()>0){
 			for(Object consultSessionObject:consultSessions){
 				if(consultSessionObject != null) {
-					RichConsultSession consultSessionValue = ConsultUtil.transferMapToRichConsultSession((HashMap<String, Object>) consultSessionObject);
+					RichConsultSession consultSessionValue = ConsultUtil.transferMapToRichConsultSession((Map<Object, Object>) consultSessionObject);
 					if(consultSessionValue != null && consultSessionValue.getCreateTime() != null && (nowDate.getTime() - consultSessionValue.getCreateTime().getTime() > 6*60*60*1000)){
 						if("ongoing".equalsIgnoreCase(consultSessionValue.getStatus())){
 							sessionRedisCache.removeConsultSessionBySessionId(consultSessionValue.getId());

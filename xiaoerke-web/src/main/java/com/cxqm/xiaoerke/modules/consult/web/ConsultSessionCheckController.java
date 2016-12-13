@@ -25,6 +25,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "consult")
@@ -87,7 +88,7 @@ public class ConsultSessionCheckController extends BaseController{
         List<Object> consultSessions = sessionRedisCache.getConsultSessionsByKey();
         if(consultSessions.size()>0){
             for(Object consultSessionObject:consultSessions){
-                RichConsultSession consultSessionValue = ConsultUtil.transferMapToRichConsultSession((HashMap<String, Object>) consultSessionObject);
+                RichConsultSession consultSessionValue = ConsultUtil.transferMapToRichConsultSession((Map<Object, Object>) consultSessionObject);
                 Query queryAgain = new Query(where("sessionId").is(String.valueOf(consultSessionValue.getId())));
                 List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
                 if(consultSessionStatusAgainVos.size()>0){

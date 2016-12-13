@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import javax.websocket.Session;
 import java.net.InetSocketAddress;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public interface SessionRedisCache {
 
 	Map getWeChatParamFromRedis(String paramType);
 
-	void putWeChatParamToRedis(Map wechatParam);
+	void putWeChatParamToRedis(HashMap<String, Object> wechatParam);
 
 	void removeSessionIdConsultSessionPair(Integer sessionId);
 

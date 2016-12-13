@@ -7,19 +7,23 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
+import org.apache.shiro.crypto.hash.Hash;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+
 
 @Service
 @Transactional(readOnly = false)
 public class SessionRedisCacheImpl implements SessionRedisCache {
 
-	private RedisTemplate<String, Object> redisTemplate = SpringContextHolder.getBean("redisTemplate");
-	
+//	private RedisTemplate<String, Object> redisTemplate = SpringContextHolder.getBean("redisTemplate");
+	@Resource(name = "redisTemplate")
+	private RedisTemplate<String, Object> redisTemplate;
 	private static final String SESSIONID_CONSULTSESSION_KEY = "consult.sessionIdConsultSessionMapping";
 	
 	private static final String USER_SESSIONID_KEY = "consult.userSessionID";
@@ -34,7 +38,7 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	
 	@Override
 	public RichConsultSession getConsultSessionBySessionId(Integer sessionId) {
-		HashMap<String,Object> sessionMap = (HashMap<String,Object>) redisTemplate.opsForHash().get(SESSIONID_CONSULTSESSION_KEY, sessionId);
+		Map<Object,Object> sessionMap = redisTemplate.opsForHash().entries(SESSIONID_CONSULTSESSION_KEY);
 		return sessionMap == null ? null : ConsultUtil.transferMapToRichConsultSession(sessionMap);
 	}
 
@@ -42,8 +46,7 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	public void putSessionIdConsultSessionPair(Integer sessionId,
 											   RichConsultSession consultSession) {
 		if(sessionId!=null||consultSession!=null){
-			redisTemplate.opsForHash().put(SESSIONID_CONSULTSESSION_KEY,
-					sessionId, ConsultUtil.transferRichConsultSessionToMap(consultSession));
+			redisTemplate.opsForHash().putAll(String.valueOf(sessionId),ConsultUtil.transferRichConsultSessionToMap(consultSession));
 		}
 	}
 
@@ -124,12 +127,12 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	}
 
 	@Override
-	public void putWeChatParamToRedis(Map wechatParam){
+	public void putWeChatParamToRedis(HashMap<String, Object> wechatParam){
 		if(wechatParam!=null){
 			if(wechatParam.get("id").equals("1")){
-				redisTemplate.opsForHash().put(WECHAT_USER_PARAM, "wechatUserParam", wechatParam);
+				redisTemplate.opsForHash().putAll(WECHAT_USER_PARAM, wechatParam);
 			}else if(wechatParam.get("id").equals("2")){
-				redisTemplate.opsForHash().put(WECHAT_DOCTOR_PARAM, "wechatDoctorParam", wechatParam);
+				redisTemplate.opsForHash().putAll(WECHAT_DOCTOR_PARAM, wechatParam);
 			}
 
 		}
