@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultMemberDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultMemberVo;
@@ -11,16 +12,15 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultMemberRedsiCacheService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
+import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
+import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.Map;
 
 
 /**
@@ -41,6 +41,9 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
     @Autowired
     private ConsultSessionPropertyService consultSessionPropertyService;
+
+    @Autowired
+    private WechatAttentionService wechatAttentionService;
 
 
     @Override
@@ -102,10 +105,13 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
         ConsultMemberVo consultMemberVo = getConsultMemberInfo(openid);
         Integer memberEndTime = Integer.parseInt(timeLength);
         if(null ==consultMemberVo){
+            WechatAttention wa = wechatAttentionService.getAttentionByOpenId(openid);
+            if(null !=openid&& StringUtils.isNotNull(wa.getNickname())){
+                consultMemberVo.setNickname(wa.getNickname());
+            }
             consultMemberVo = new ConsultMemberVo();
             consultMemberVo.setOpenid(openid);
             consultMemberVo.setMemberType("day");
-            consultMemberVo.setNickname("");
             consultMemberVo.setPayAcount(totalFee);
             consultMemberVo.setEndTime(new Date(new Date().getTime()+memberEndTime*1000*60));
             saveConsultMemberInfo(consultMemberVo);
