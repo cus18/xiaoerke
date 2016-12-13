@@ -110,4 +110,13 @@
       end_time = #{endTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="findConsultMemberList" resultType="com.cxqm.xiaoerke.modules.consult.entity.ConsultMemberVo">
+    select * from consult_member where 1=1
+    <if test="openid != null and openid != ''">
+      AND openid=#{openid}
+    </if>
+    <if test="nickname != null and nickname != ''">
+      AND nickname=#{nickname}
+    </if>
+  </select>
 </mapper>

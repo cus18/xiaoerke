@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
+import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
@@ -165,5 +166,10 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Page<ConsultMemberVo> findConsultMemberList(ConsultMemberVo vo, Page<ConsultMemberVo> page) {
+        return consultMemberDao.findConsultMemberList(vo,page);
     }
 }

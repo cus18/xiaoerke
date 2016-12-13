@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.service;
 
+import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultMemberVo;
 
 /**
@@ -25,4 +26,6 @@ public interface ConsultMemberRedsiCacheService {
     void payConsultMember(String openid,String timeLength,String totalFee,String token);
 
     boolean consultChargingCheck(String openid, String token,boolean prompt);
+
+    Page<ConsultMemberVo> findConsultMemberList(ConsultMemberVo vo,Page<ConsultMemberVo> page);
 }
