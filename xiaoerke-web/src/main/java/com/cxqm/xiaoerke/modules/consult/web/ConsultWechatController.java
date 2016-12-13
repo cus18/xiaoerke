@@ -493,9 +493,9 @@ public class ConsultWechatController extends BaseController {
                 consultSessionPropertyVo.setCreateBy(openId);
                 consultSessionPropertyService.insertUserConsultSessionProperty(consultSessionPropertyVo);
                 monthTime = consultSessionPropertyVo.getMonthTimes();
-                String content = "嗨，亲爱的，你本月还可享受" + monthTime + "次24小时咨询服务哦^-^";
+//                String content = "嗨，亲爱的，你本月还可享受" + monthTime + "次24小时咨询服务哦^-^";
                 messageFlag = 1;
-                WechatUtil.sendMsgToWechat(token, openId, content);
+//                WechatUtil.sendMsgToWechat(token, openId, content);
                 onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                 if (monthTime == 1) {
                     LogUtils.saveLog("ZXYQ_RK_TS_1", openId);
@@ -511,7 +511,7 @@ public class ConsultWechatController extends BaseController {
                     if (monthTime == 1) {
                         content += "\n-----------\n" + "下次咨询要付费了肿么办？\n戳戳手指，邀请好友加入宝大夫，免费机会就来咯！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
                     }
-                    WechatUtil.sendMsgToWechat(token, openId, content);
+//                    WechatUtil.sendMsgToWechat(token, openId, content);
                     if (monthTime == 1) {
                         LogUtils.saveLog("ZXYQ_RK_TS_N1", openId);
                     } else if (monthTime == 4) {
@@ -538,7 +538,7 @@ public class ConsultWechatController extends BaseController {
                             if (consultSessionPropertyVo.getMonthTimes() == 1) {
                                 content += "\n-----------\n" + "别怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
                             }
-                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
+//                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                             if (monthTime == 1) {
                                 LogUtils.saveLog("ZXYQ_RK_TS_N1", openId);
@@ -550,7 +550,7 @@ public class ConsultWechatController extends BaseController {
                             content = "嗨，亲爱的，你还可享受" + consultSessionPropertyVo.getPermTimes() + "次24小时咨询服务哦^-^";
                             richConsultSession.setPayStatus(ConstantUtil.PAY_SUCCESS.getVariable());
                             chargeType = "pt";
-                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
+//                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                         } else if (messageFlag == 0) {
 
@@ -559,9 +559,9 @@ public class ConsultWechatController extends BaseController {
                             richConsultSession.setPayStatus(ConstantUtil.NO_PAY.getVariable());
                             content = "亲爱的~你本月免费机会已用完，请医生喝杯茶，继续咨询\n\n" +
                                     "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=35'>>>付费</a>";
-                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
+//                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             content = "什么？咨询要收费？\n 不怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_2_backend'>>>邀请好友赚机会</a>";
-                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
+//                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             LogUtils.saveLog("consult_charge_twice_information", sysUserId);
                             LogUtils.saveLog("ZXYQ_RK_TS_N2", sysUserId);
                         }
