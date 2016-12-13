@@ -254,13 +254,7 @@ public class VaccineUserController {
     public HashMap getVaccineNameList(HttpServletRequest request , HttpServletResponse response) {
         HashMap<String,Object> resultMap = new HashMap<String,Object>();
         VaccineScanCodeVo vaccineScanCodeVo = new VaccineScanCodeVo();
-//        List<VaccineScanCodeVo> vaccineScanList =  vaccineService.findVaccineScanCodeList(vaccineScanCodeVo);
-        vaccineScanCodeVo.setId(1111);
-        vaccineScanCodeVo.setAge("12");
-        vaccineScanCodeVo.setIsfree("free");
-        vaccineScanCodeVo.setName("test");
-        List<VaccineScanCodeVo> vaccineScanList = new ArrayList<VaccineScanCodeVo>();
-        vaccineScanList.add(vaccineScanCodeVo);
+        List<VaccineScanCodeVo> vaccineScanList =  vaccineService.findVaccineScanCodeList(vaccineScanCodeVo);
         if(vaccineScanList != null && vaccineScanList.size() > 0){
             List dataList = new ArrayList();
             for(VaccineScanCodeVo vo : vaccineScanList){
@@ -273,9 +267,6 @@ public class VaccineUserController {
                 }
                 map.put("age",vo.getAge());
                 map.put("name",vo.getName());
-                /*map.put("attention",vo.getAttention());
-                map.put("diseasePrevention",vo.getDiseasePrevention());
-                map.put("informedForm",vo.getInformedForm());*/
                 dataList.add(map);
             }
             resultMap.put("dataList",dataList);
