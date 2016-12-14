@@ -220,7 +220,9 @@ public class ConsultDoctorTransferController extends BaseController {
                         if("consultDoctor".equals(user.getUserType())&&consultMemberRedsiCacheService.consultChargingCheck(consultSession.getUserId(),token,false)){
 //                        增加机会
                             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-                            consultMemberRedsiCacheService.useFreeChance(consultSession.getUserId(),sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
+                            if(consultMemberRedsiCacheService.consultChargingCheck(consultSession.getUserId(),token,true)) {
+                                consultMemberRedsiCacheService.useFreeChance(consultSession.getUserId(), sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
+                            }
                         };
                     }catch (Exception e){
                         e.printStackTrace();
