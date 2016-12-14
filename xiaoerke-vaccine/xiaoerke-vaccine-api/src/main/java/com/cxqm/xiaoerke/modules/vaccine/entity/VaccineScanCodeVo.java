@@ -19,6 +19,8 @@ public class VaccineScanCodeVo {
 
     private String informedForm;
 
+    private String informedFormTitle;
+
     public Integer getId() {
         return id;
     }
@@ -33,6 +35,14 @@ public class VaccineScanCodeVo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getInformedFormTitle() {
+        return informedFormTitle;
+    }
+
+    public void setInformedFormTitle(String informedFormTitle) {
+        this.informedFormTitle = informedFormTitle;
     }
 
     public String getAge() {

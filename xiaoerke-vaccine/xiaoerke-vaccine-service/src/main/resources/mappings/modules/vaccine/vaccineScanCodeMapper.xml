@@ -9,10 +9,11 @@
     <result column="disease_prevention" property="diseasePrevention" jdbcType="VARCHAR" />
     <result column="attention" property="attention" jdbcType="VARCHAR" />
     <result column="informed_form" property="informedForm" jdbcType="VARCHAR" />
+    <result column="informed_form_title" property="informedFormTitle" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, name, age, isfree,  disease_prevention, 
-      attention, informed_form
+      attention, informed_form,informed_form_title
   </sql>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from vaccine_scancode
@@ -42,6 +43,9 @@
       <if test="informedForm != null" >
         informed_form,
       </if>
+      <if test="informedFormTitle != null" >
+        informed_form_title,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -65,6 +69,9 @@
       <if test="informedForm != null" >
         #{informedForm,jdbcType=VARCHAR},
       </if>
+      <if test="informedFormTitle != null" >
+        #{informedFormTitle,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineScanCodeVo" >
@@ -87,6 +94,9 @@
       </if>
       <if test="informedForm != null" >
         informed_form = #{informedForm,jdbcType=VARCHAR},
+      </if>
+      <if test="informedFormTitle != null" >
+        informed_form_title = #{informedFormTitle,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

@@ -59,6 +59,13 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">告知单标题:</label>
+			<div class="controls">
+				<form:input id="informedFormTitle" path="informedFormTitle" htmlEscape="false" maxlength="50"  class="required" value="${vo.informedFormTitle}"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">注意事项:</label>
 			<div class="controls">
 				<form:textarea path="attention" id="attention" name="saytext" style="width: 400px ;height: 80px" value="${vo.attention}"></form:textarea>
@@ -70,6 +77,7 @@
 			<label class="control-label">告知单:</label>
 			<div class="controls">
 				<form:textarea id="informedForm" htmlEscape="true" path="informedForm" rows="4" maxlength="200" class="input-xxlarge" value="${vo.informedForm}"/>
+				<sys:ckeditor replace="informedForm" uploadPath="/cms/article" />
 			</div>
 		</div>
 		<div class="form-actions">
