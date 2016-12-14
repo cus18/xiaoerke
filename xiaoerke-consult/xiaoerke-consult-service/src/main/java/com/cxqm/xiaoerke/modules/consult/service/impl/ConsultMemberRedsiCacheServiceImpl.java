@@ -111,6 +111,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                 consultMemberVo.setNickname(wa.getNickname());
             }
             consultMemberVo = new ConsultMemberVo();
+            consultMemberVo.setCreateDate(new Date());
             consultMemberVo.setOpenid(openid);
             consultMemberVo.setMemberType("day");
             consultMemberVo.setPayAcount(totalFee);
