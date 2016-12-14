@@ -78,7 +78,7 @@ define(['appVaccine'], function(app){
                     .state('vaccineNotify', {
                         url: '/vaccineNotify/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'vaccineInformationCtrl',
+                        controller: 'vaccineNotifyCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.vaccineNotifyCtrl',
