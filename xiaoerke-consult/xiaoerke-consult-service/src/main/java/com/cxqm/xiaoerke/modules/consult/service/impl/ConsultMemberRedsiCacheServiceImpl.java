@@ -143,7 +143,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                 if(null != propertyVo && (propertyVo.getPermTimes()+propertyVo.getMonthTimes()) > 0){
 //                        用户有咨询机会
                     String content = "亲爱的，你今天的"+sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime()+"分钟免费咨询还未启用。\n为减少其他生病宝宝的焦急等待，从医生接入时开始计时";
-                   if((propertyVo.getPermTimes()+propertyVo.getMonthTimes())==1) content += "\n----------\n别怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
+                    if((propertyVo.getPermTimes()+propertyVo.getMonthTimes())==1) content += "\n----------\n别怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
                     if(prompt)WechatUtil.sendMsgToWechat(token,openid,content);
                     return true;
                 }else{
@@ -163,6 +163,15 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             content = "亲爱的，您本次30分钟的免费咨询时间已到，其他宝妈还在焦急排队中……\n24h后您可开启新一天30分钟免费机会。如果您着急，可以 \n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>猛戳这里购买吧！</a>";
             WechatUtil.sendMsgToWechat(token,openid,content);
 
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean cheackMemberTimeOut(String openid){
+        String memberEndTime = getConsultMember(openid+memberRedisCachVo.MEMBER_END_DATE);
+        if(null == memberEndTime||DateUtils.StrToDate(memberEndTime,"datetime").getTime()<new Date().getTime()) {
             return false;
         }
         return true;

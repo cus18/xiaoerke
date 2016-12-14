@@ -27,5 +27,7 @@ public interface ConsultMemberRedsiCacheService {
 
     boolean consultChargingCheck(String openid, String token,boolean prompt);
 
-    Page<ConsultMemberVo> findConsultMemberList(ConsultMemberVo vo,Page<ConsultMemberVo> page);
+    boolean cheackMemberTimeOut(String openid);
+
+    Page<ConsultMemberVo> findConsultMemberList(ConsultMemberVo vo, Page<ConsultMemberVo> page);
 }
