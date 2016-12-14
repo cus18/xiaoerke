@@ -116,7 +116,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
         consultMemberVo.setMemberType("day");
         consultMemberVo.setPayAcount(totalFee);
         WechatAttention wa = wechatAttentionService.getAttentionByOpenId(openid);
-        if(null !=openid&& StringUtils.isNotNull(wa.getNickname())){
+        if(null != wa&&null !=openid&& StringUtils.isNotNull(wa.getNickname())){
             consultMemberVo.setNickname(wa.getNickname());
         }
         saveConsultMemberInfo(consultMemberVo);
