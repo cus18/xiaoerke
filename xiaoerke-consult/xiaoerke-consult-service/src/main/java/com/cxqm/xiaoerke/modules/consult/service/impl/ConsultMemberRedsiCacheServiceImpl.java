@@ -105,7 +105,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
         //                   mysql 增加会员记录,延长redis的时间
         ConsultMemberVo consultMemberVo = getConsultMemberInfo(openid);
         Integer memberEndTime = Integer.parseInt(timeLength);
-        if(null ==consultMemberVo){
+//        if(null ==consultMemberVo){
             WechatAttention wa = wechatAttentionService.getAttentionByOpenId(openid);
             if(null !=openid&& StringUtils.isNotNull(wa.getNickname())){
                 consultMemberVo.setNickname(wa.getNickname());
@@ -116,10 +116,10 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             consultMemberVo.setPayAcount(totalFee);
             consultMemberVo.setEndTime(new Date(new Date().getTime()+memberEndTime*1000*60));
             saveConsultMemberInfo(consultMemberVo);
-        }else{
-            consultMemberVo.setEndTime(new Date(consultMemberVo.getEndTime().getTime()+memberEndTime*1000*60));
-            updateConsultMemberInfo(consultMemberVo);
-        }
+//        }else{
+//            consultMemberVo.setEndTime(new Date(consultMemberVo.getEndTime().getTime()+memberEndTime*1000*60));
+//            updateConsultMemberInfo(consultMemberVo);
+//        }
 
         saveConsultMember(openid+ memberRedisCachVo.MEMBER_END_DATE,DateUtils.DateToStr(consultMemberVo.getEndTime(),"datetime"));
         WechatUtil.sendMsgToWechat(token, openid, " 购买成功啦！\n亲爱的，现在可以开始咨询啦，赶紧和医生对话吧~\n会员有效期:"+DateUtils.DateToStr(new Date(),"yyyy年MM月dd日 HH时mm分")+"至"+DateUtils.DateToStr(consultMemberVo.getEndTime(),"yyyy年MM月dd日 HH时mm分"));
