@@ -299,13 +299,13 @@ public class VaccineUserController {
             map.put("attention",vaccineScanList.get(0).getAttention());
             map.put("diseasePrevention",vaccineScanList.get(0).getDiseasePrevention());
             map.put("informedForm",vaccineScanList.get(0).getInformedForm());
+            map.put("informedFormTitle",vaccineScanList.get(0).getInformedFormTitle());
             dataList.add(map);
             resultMap.put("dataList", dataList);
             resultMap.put("status", "success");
         }else{
             resultMap.put("status", "failure");
         }
-        System.out.println(request.getParameterMap().get("id"));
         return  resultMap ;
     }
 }
