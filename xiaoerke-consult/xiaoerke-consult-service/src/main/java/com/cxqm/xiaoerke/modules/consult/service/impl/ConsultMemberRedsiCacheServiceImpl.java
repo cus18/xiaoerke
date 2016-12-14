@@ -109,7 +109,9 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             consultMemberVo = new ConsultMemberVo();
             consultMemberVo.setEndTime(new Date(new Date().getTime()+memberEndTime*1000*60));
         }else{
-            consultMemberVo.setEndTime(new Date(consultMemberVo.getEndTime().getTime()+memberEndTime*1000*60));
+            Date nowTime = new Date();
+            Date oldMemberTime = consultMemberVo.getEndTime().getTime()>nowTime.getTime()?consultMemberVo.getEndTime():nowTime;
+            consultMemberVo.setEndTime(new Date(oldMemberTime.getTime()+memberEndTime*1000*60));
         }
         consultMemberVo.setId(null);
         consultMemberVo.setCreateDate(new Date());
