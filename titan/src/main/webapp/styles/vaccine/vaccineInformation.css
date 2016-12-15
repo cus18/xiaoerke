@@ -44,10 +44,14 @@
     -webkit-background-size: 100% 100%;
     background-size: 100% 100%;
     width: 100%;
-    line-height: 155px;
+    height: 155px;
+    text-align: center;
+}
+.vaccineInformation .notify span{
     font-size: 23px;
     color: #fff;
-    text-align: center;
     font-weight: 700;
-
+    display: inline-block;
+    width: 100px;
+    margin: auto;
 }
