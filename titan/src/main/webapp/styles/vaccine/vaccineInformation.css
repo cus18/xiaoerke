@@ -44,7 +44,6 @@
     -webkit-background-size: 100% 100%;
     background-size: 100% 100%;
     width: 100%;
-    height: 155px;
     text-align: center;
 }
 .vaccineInformation .notify span{
@@ -54,5 +53,5 @@
     display: inline-block;
     width: 165px;
     line-height: 50px;
-    margin: 30px;
+    margin: 40px 0;
 }
