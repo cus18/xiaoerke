@@ -21,9 +21,9 @@ import javax.annotation.Resource;
 @Transactional(readOnly = false)
 public class SessionRedisCacheImpl implements SessionRedisCache {
 
-//	private RedisTemplate<String, Object> redisTemplate = SpringContextHolder.getBean("redisTemplate");
 	@Resource(name = "redisTemplate")
 	private RedisTemplate<String, Object> redisTemplate;
+
 	private static final String SESSIONID_CONSULTSESSION_KEY = "consult.sessionIdConsultSessionMapping";
 	
 	private static final String USER_SESSIONID_KEY = "consult.userSessionID";
