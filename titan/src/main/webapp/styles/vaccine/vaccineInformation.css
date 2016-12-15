@@ -39,3 +39,19 @@
     color: #333;
     margin-bottom: 20px;
 }
+.vaccineInformation .notify {
+    background: #fff url(http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fyimiao_png_03.png) 0 0 no-repeat;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    width: 100%;
+    text-align: center;
+}
+.vaccineInformation .notify span{
+    font-size: 23px;
+    color: #fff;
+    font-weight: 700;
+    display: inline-block;
+    width: 165px;
+    line-height: 50px;
+    margin: 40px 0;
+}

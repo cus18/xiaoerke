@@ -8,10 +8,9 @@ import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
-import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
-import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
-import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultMemberRedsiCacheService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.insurance.entity.InsuranceRegisterService;
@@ -103,6 +102,9 @@ public class PayNotificationController {
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
+
+    @Autowired
+    private ConsultMemberRedsiCacheService consultMemberRedsiCacheService;
 
     private static Lock lock = new ReentrantLock();
 
@@ -512,9 +514,7 @@ public class PayNotificationController {
 
 //					RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
 
-                    Map parameter = systemService.getWechatParameter();
-                    String token = (String) parameter.get("token");
-                    WechatUtil.sendMsgToWechat(token, openid, "【支付成功通知】你已在宝大夫成功支付24小时咨询服务费，感谢你的信任和支持！\n----------------\n把您的问题发送给医生，立即开始咨询吧");
+
 
 //					String notifyStatus = consultPayUserService.getChargeInfo(sessionId);
 //					if(!ConstantUtil.CONSULTDOCTOR.equals(consultSession.getUserType())&& StringUtils.isNotNull(notifyStatus)){
@@ -548,6 +548,12 @@ public class PayNotificationController {
                         babyCoinRecordVo.setSource("consultPay");
                         babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
                     }
+                    Map parameter = systemService.getWechatParameter();
+                    String token = (String) parameter.get("token");
+                    consultMemberRedsiCacheService.payConsultMember(openid,sysPropertyVoWithBLOBsVo.getConsultMemberTime(),(String) map.get("total_fee"),token);
+//                   mysql 增加会员记录,延长redis的时间
+
+
                 }
             }
             return XMLUtil.setXML("SUCCESS", "");
