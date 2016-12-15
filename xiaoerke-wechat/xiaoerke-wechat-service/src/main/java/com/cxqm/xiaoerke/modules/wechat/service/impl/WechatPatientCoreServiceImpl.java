@@ -234,8 +234,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             WechatUtil.sendMsgToWechat(token, fromUserId, sb.toString());
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("如有疼痛发热等症状及其他育儿问题，点击左下角");
-            stringBuilder.append("\n");
-            stringBuilder.append("'\"小键盘\"'，即可咨询儿科专家医生");
+            stringBuilder.append("\'"+"小键盘"+"\'，即可咨询儿科专家医生");
             stringBuilder.append("\n");
             stringBuilder.append("预防接种科咨询时间：19：00—21：00");
             WechatUtil.sendMsgToWechat(token, fromUserId, stringBuilder.toString());
