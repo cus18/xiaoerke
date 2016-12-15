@@ -163,7 +163,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                  *  疫苗站关注提醒 2016年12月12日11:23:52 jiangzg
                  */
                 if(eventKey.contains("YMJZ_AH_")){
-                    attentionByThirdPlace(eventKey,openId ,token);
+                    attentionByThirdPlace(eventKey,openId ,token,sysPropertyVoWithBLOBsVo);
                 }
 
             } else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
@@ -174,6 +174,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
                 //微量元素检测
                 traceElementsDetection(xmlEntity, token);
+
+                /**
+                 *  疫苗站关注提醒 2016年12月12日11:23:52 jiangzg
+                 */
+                if(eventKey.contains("YMJZ_AH_")){
+                    attentionByThirdPlace(eventKey,openId ,token,sysPropertyVoWithBLOBsVo);
+                }
             }
             // 取消订阅
             else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
@@ -217,20 +224,21 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     /**
      *  2016年12月12日11:24:59 jiangzg
      */
-    private void attentionByThirdPlace(String eventKey , String fromUserId ,String token){
+    private void attentionByThirdPlace(String eventKey , String fromUserId ,String token , SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo){
         if(StringUtils.isNotNull(eventKey) && eventKey.contains("YMJZ_AH_")){
             StringBuilder sb = new StringBuilder();
             sb.append("点击领取：");
-            sb.append("<a href=''>");
+            sb.append("<a href='" + sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/vaccine#/vaccineList" + "'>");
             sb.append("疫苗接种告知单及相关知识>>");
             sb.append("</a>");
-            sb.append("\n\n");
-            sb.append("如有疼痛发热等症状及其他育儿问题，点击左下角");
-            sb.append("\n");
-            sb.append("\"小键盘\"，即可咨询儿科专家医生");
-            sb.append("\n");
-            sb.append("预防接种科咨询时间：19：00—21：00");
-            WechatUtil.sendMsgToWechat(token, fromUserId,sb.toString());
+            WechatUtil.sendMsgToWechat(token, fromUserId, sb.toString());
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("如有疼痛发热等症状及其他育儿问题，点击左下角");
+            stringBuilder.append("\n");
+            stringBuilder.append("'\"小键盘\"'，即可咨询儿科专家医生");
+            stringBuilder.append("\n");
+            stringBuilder.append("预防接种科咨询时间：19：00—21：00");
+            WechatUtil.sendMsgToWechat(token, fromUserId, stringBuilder.toString());
             /* 暂时注掉
             String marketer = "";
             if(eventKey.contains("qrscene_")){
