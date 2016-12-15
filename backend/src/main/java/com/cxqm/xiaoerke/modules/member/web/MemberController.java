@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultMemberVo;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultMemberRedsiCacheService;
 import net.sf.json.JSONObject;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -38,6 +40,9 @@ public class MemberController extends BaseController {
 
 	@Autowired
 	private MemberService memberService;
+
+	@Autowired
+	private ConsultMemberRedsiCacheService consultMemberRedsiCacheService;
 	
 	/**
 	 * 会员列表
@@ -102,7 +107,7 @@ public class MemberController extends BaseController {
 	@RequestMapping(value = "refundMembershipFeeForm")
 	public String refundMembershipFeeForm(MemberservicerelItemservicerelRelationVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
 		try {
-			vo.setNickName(URLDecoder.decode(request.getParameter("nickName") , "utf-8"));
+			vo.setNickName(URLDecoder.decode(request.getParameter("nickName"), "utf-8"));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -175,5 +180,28 @@ public class MemberController extends BaseController {
 		memberService.giftMember(vo);
 		return "redirect:" + adminPath + "/member/memberList?repage";
 	}
-	
+
+	/**
+	 * 赠送会员
+	 * @param
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "consultMemberList")
+	public String consultMemberList(ConsultMemberVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+		String temp = ((String)request.getParameter("pageNo"));
+		Page<ConsultMemberVo> pagess = null;
+		if(temp==null){
+			pagess = new Page<ConsultMemberVo>();
+		}else{
+			Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+			Integer pageSize = Integer.parseInt(request.getParameter("pageSize"));
+			pagess = new Page<ConsultMemberVo>(pageNo,pageSize);
+		}
+		Page<ConsultMemberVo> page = consultMemberRedsiCacheService.findConsultMemberList(vo, pagess);
+		model.addAttribute("page", page);
+		model.addAttribute("ConsultMemberVo", vo);
+		return "modules/member/consultMemberList";
+	}
+
 }

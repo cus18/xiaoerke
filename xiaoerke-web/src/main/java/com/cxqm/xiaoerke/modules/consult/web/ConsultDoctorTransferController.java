@@ -5,17 +5,17 @@ import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionForwardRecordsVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
-import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultSessionServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.sys.entity.PaginationVo;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.wechat.service.WechatPatientCoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -62,6 +62,15 @@ public class ConsultDoctorTransferController extends BaseController {
 
     @Autowired
     private ConsultPayUserService consultPayUserService;
+
+    @Autowired
+    private WechatPatientCoreService wechatPatientCoreService;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
+
+    @Autowired
+    private ConsultMemberRedsiCacheService consultMemberRedsiCacheService;
 
     /***
      * 获取在线医生列表（分页）
@@ -201,6 +210,23 @@ public class ConsultDoctorTransferController extends BaseController {
                     param.put("toCsUserName",user.getName());
                     param.put("operation", operation);
                     consultSessionForwardRecordsService.react2Transfer(param);
+
+                    try{
+                        //咨询会员
+                        Map parameter = systemService.getWechatParameter();
+                        String token = (String) parameter.get("token");
+                        ConsultSession consultSession =consultSessionService.selectByPrimaryKey(consultSessionForwardRecordsVo.getConversationId().intValue());
+                        //根据接入的是否为医生来判断
+                        if("consultDoctor".equals(user.getUserType())&&consultMemberRedsiCacheService.consultChargingCheck(consultSession.getUserId(),token,false)){
+//                        增加机会
+                            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+                            if(!consultMemberRedsiCacheService.cheackMemberTimeOut(consultSession.getUserId())) {
+                                consultMemberRedsiCacheService.useFreeChance(consultSession.getUserId(), sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
+                            }
+                        };
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         }

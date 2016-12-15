@@ -59,6 +59,24 @@ define(['appPatientConsult'], function(app){
                             public: true
                         }
                     })
+                    .state('patientCustomerService', {
+                        url: '/patientCustomerService',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'patientCustomerServiceCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientCustomerServiceCtrl',
+                                    ['js/controllers/patientCustomerServiceCtrl.js',
+                                        'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                        'js/libs/jquery.qqFace.js',"js/libs/jquery.browser.min.js",
+                                        'js/styles/patientCustomerService.css'],
+                                    'js/views/patientCustomerService.html?ver='+patientConsultVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
                     .state('customerService', {
                         url: '/customerService',
                         templateProvider: function() { return lazyDeferred.promise; },
