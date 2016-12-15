@@ -12,7 +12,10 @@
                 <div class="title">注意事项</div>
                 <div class="content">{{vaccine.attention}}</div>
             </div>
-            <img width="100%" ng-click="goNotify()" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/vaccine%2Fyimiao_png_03.png" alt=""/>
+            <div class="notify" ng-click="goNotify()">
+                {{vaccine.informedFormTitle}}
+            </div>
+            <!--<img width="100%" ng-click="goNotify()" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/vaccine%2Fyimiao_png_03.png" alt=""/>-->
         </div>
     </ion-content>
 </ion-view>

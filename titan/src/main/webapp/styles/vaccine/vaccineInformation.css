@@ -39,3 +39,15 @@
     color: #333;
     margin-bottom: 20px;
 }
+.vaccineInformation .notify {
+    background: #fff url(http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/vaccine%2Fyimiao_png_03.png) 0 0 no-repeat;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    width: 100%;
+    line-height: 155px;
+    font-size: 23px;
+    color: #fff;
+    text-align: center;
+    font-weight: 700;
+
+}
