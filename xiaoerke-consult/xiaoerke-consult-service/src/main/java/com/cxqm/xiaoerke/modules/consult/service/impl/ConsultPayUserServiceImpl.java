@@ -146,9 +146,9 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
     }
 
     @Override
-    public String getChargeInfo(Integer sessionid) {
+        public String getChargeInfo(Integer sessionid) {
         if(null != sessionid){
-            String sessionMap = (String) redisTemplate.opsForHash().get(MESSAGE_CONSULTSESSION_KEY, sessionid);
+            String sessionMap = (String) redisTemplate.opsForHash().get(MESSAGE_CONSULTSESSION_KEY, sessionid+"");
             return sessionMap;
         }
         return null;

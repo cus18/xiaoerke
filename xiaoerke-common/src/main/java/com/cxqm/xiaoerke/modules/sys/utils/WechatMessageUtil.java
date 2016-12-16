@@ -81,7 +81,7 @@ public class WechatMessageUtil {
         Map<String,TemplateData> m = new HashMap<String,TemplateData>();
 
         TemplateData templateData = new TemplateData();
-        templateData.setColor(COLOR);
+        templateData.setColor("FF0000");
         templateData.setValue(first);
         m.put("first", templateData);
 

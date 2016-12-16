@@ -102,6 +102,7 @@ public class PraiseCustomerController extends BaseController {
     @ResponseBody
     String updateCustomerEvaluation(@RequestBody Map<String, Object> params) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+        System.out.println("发送了评价1"+params.keySet()+"====="+params.values());
         int result = patientRegisterPraiseService.updateCustomerEvaluation(params);
         String consultStatus = StringUtils.isNotNull(String.valueOf(params.get("consultStatus")))?String.valueOf(params.get("consultStatus")):"";
         if(StringUtils.isNotNull(consultStatus)){
@@ -113,10 +114,12 @@ public class PraiseCustomerController extends BaseController {
                 Map registerPraiseInfo = patientRegisterPraiseService.selectCustomerEvaluation(customerId);
                 String userId = (String) registerPraiseInfo.get("openid");
                 String messageToUser = sysPropertyVoWithBLOBsVo.getPushEvaluateAndConsultToUser();
+                System.out.println("发送了评价2 ！！！！");
                 if(StringUtils.isNull(messageToUser)){
                     messageToUser = "感谢您的评价，再发下您的问题，咨询医生吧~";
                 }
                 WechatUtil.sendMsgToWechat(tokenId, userId, messageToUser);
+                System.out.println("发送了评价3 ！！！！");
                 LogUtils.saveLog("ZXPJ_ZXYS", userId);
             }
             if ("1".equalsIgnoreCase((String)params.get("starNum1")) && result >0) {

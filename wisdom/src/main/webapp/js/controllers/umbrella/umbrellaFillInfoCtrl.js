@@ -320,7 +320,7 @@
                             if ($scope.ifExist) {
                                 window.location.href = "umbrella#/umbrellaJoin/" + new Date().getTime() + "/" + $stateParams.id;
                             } else {
-                                window.location.href = "http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId=" + $stateParams.id;
+                                window.location.href = "http://s201.xiaork.com/keeper/wxPay/patientPay.do?serviceType=umbrellaPay&shareId=" + $stateParams.id;
                             }
                         } else if (data.result == '3') {
                             alert("验证码无效");
@@ -390,7 +390,7 @@
                     dataType:'json',
                     success:function(data) {
                         if(data.openid=="none"){
-                            window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
+                            window.location.href = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
                             // window.location.href = "http://s2.xiaork.cn/keeper/wechatInfo/fieldwork/wechat/author?url=http://s2.xiaork.cn/keeper/wechatInfo/getUserWechatMenId?url=umbrellaa";
                         }
                     },
