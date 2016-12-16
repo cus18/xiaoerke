@@ -653,7 +653,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //            //更新二维码拥有者善款
 //            loveMarketingService.updateInviteMan(EventKey, xmlEntity.getFromUserName());
 //        }
-         if (EventKey.indexOf("month") > -1) {
+        if (EventKey.indexOf("month") > -1) {
             if (userType.equals("newUser")) {
                 Boolean value = activityService.judgeActivityValidity(EventKey.replace("qrscene_", ""));
                 if (value == false) {
@@ -906,19 +906,19 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             threadExecutor.execute(thread);
         }else if (EventKey.indexOf("PD_TPCB") > -1) {
 //             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-             LogUtils.saveLog("TPCB_GZTS",xmlEntity.getFromUserName());
-             String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=44";
-             Map parameter = systemService.getWechatParameter();
-             String token = (String) parameter.get("token");
-             WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),"2016年年末你和宝宝会发生什么？？\n哈哈哈，好搞笑\n\n<a href='"+url+"'>来搞事情吧>></a>");
-         }else if (EventKey.indexOf("PD_YQKFC") > -1) {
+            LogUtils.saveLog("TPCB_GZTS",xmlEntity.getFromUserName());
+            String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=44";
+            Map parameter = systemService.getWechatParameter();
+            String token = (String) parameter.get("token");
+            WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),"来吧，各位小宝贝们，一起来接受圣诞老人的祝福吧！\n\n<a href='"+url+"'>接祝福喽>></a>");
+        }else if (EventKey.indexOf("PD_YQKFC") > -1) {
 //             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-             LogUtils.saveLog("TPCB_GZTS",xmlEntity.getFromUserName());
-             String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=44";
-             Map parameter = systemService.getWechatParameter();
-             String token = (String) parameter.get("token");
-             WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),"点击左下角小键盘，赶快咨询吧~");
-         }
+            LogUtils.saveLog("TPCB_GZTS",xmlEntity.getFromUserName());
+            String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=44";
+            Map parameter = systemService.getWechatParameter();
+            String token = (String) parameter.get("token");
+            WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),"点击左下角小键盘，赶快咨询吧~");
+        }
 
 
 
