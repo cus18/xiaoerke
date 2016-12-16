@@ -48,13 +48,14 @@ function GetQueryString(name)
 function getCustomerEvaluation(){
     recordLogs("ZXPJXX_PJ");
     consultStatus=GetQueryString("consultStatus");
+
+    var data = {'id':customerId};
     $.ajax({
         url:"interaction/user/findCustomerEvaluation",// 跳转到 action
-        async:false,
-        type:'POST',
-        data:"{'id':'"+customerId+"'}",
-        contentType: "application/json; charset=utf-8",
+        type:'POST', //GET
+        data:JSON.stringify(data),
         dataType:'json',
+        contentType: "application/json;charset=UTF-8",
         success:function(data) {
             console.log("医生评价信息",data);
             $(".doctorName").html(data.doctorHeadImage.doctor_name);
