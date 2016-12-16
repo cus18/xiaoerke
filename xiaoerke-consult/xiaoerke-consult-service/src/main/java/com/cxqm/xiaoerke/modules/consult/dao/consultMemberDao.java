@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.consult.dao;
 
 
+import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.persistence.annotation.MyBatisDao;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultMemberVo;
 
@@ -19,4 +20,6 @@ public interface ConsultMemberDao {
     int updateByPrimaryKeySelective(ConsultMemberVo record);
 
     int updateByPrimaryKey(ConsultMemberVo record);
+
+    Page<ConsultMemberVo> findConsultMemberList(ConsultMemberVo vo,Page<ConsultMemberVo> page);
 }
