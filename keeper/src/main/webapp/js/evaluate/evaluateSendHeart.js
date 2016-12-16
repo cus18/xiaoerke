@@ -111,12 +111,13 @@ function commitEvaluate(){
     consultStatus=GetQueryString("consultStatus");
     if (redPacket != "" && redPacket > 0  ) {
         recordLogs("ZXPJSXY_JE");
+        var data = {patientRegisterId:customerId,payPrice:redPacket*100};
         $.ajax({
             url:"account/user/customerPay",// 跳转到 action
-            async:true,
-            type:'get',
-            data:{patientRegisterId:customerId,payPrice:redPacket*100},
-            cache:false,
+            type:'post',
+            data:JSON.stringify(data),
+            dataType:'json',
+            contentType: "application/json;charset=UTF-8",
             success:function(data) {
                 var obj = eval('(' + data + ')');
                 if(parseInt(obj.agent)<5){
@@ -172,13 +173,13 @@ function commitEvaluate(){
         });
     }
     else{
+        var data = {'id':customerId,'consultStatus':consultStatus,'starNum1':starNum1+"",'content':content,'redPacket':redPacket,'sessionId':sessionId};
         $.ajax({
             url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
-            async:false,
             type:'POST',
-            data:"{'id':'"+customerId+"','consultStatus':'"+consultStatus+"','starNum1':'"+starNum1+"','content':'"+content+"','redPacket':'"+redPacket+"','sessionId':'"+sessionId+"'}",
-            contentType: "application/json; charset=utf-8",
-            dataType:'json',
+            data:JSON.stringify(data), 
+            dataType:'json', 
+            contentType: "application/json;charset=UTF-8",
             success:function(data) {
                 if(data=="1"){
                     recordLogs("ZXPJSXY_PJ");
