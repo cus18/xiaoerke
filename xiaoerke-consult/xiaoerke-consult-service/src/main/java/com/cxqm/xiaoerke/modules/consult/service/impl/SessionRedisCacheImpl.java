@@ -44,7 +44,7 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	public void putSessionIdConsultSessionPair(Integer sessionId,
 											   RichConsultSession consultSession) {
 		if(sessionId!=null||consultSession!=null){
-			redisTemplate.opsForHash().putAll(String.valueOf(sessionId),ConsultUtil.transferRichConsultSessionToMap(consultSession));
+			redisTemplate.opsForHash().putAll(sessionId+"",ConsultUtil.transferRichConsultSessionToMap(consultSession));
 		}
 	}
 
@@ -73,7 +73,7 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	@Override
 	public Integer getSessionIdByUserId(String userId) {
 		Object sessionId = redisTemplate.opsForHash().get(USER_SESSIONID_KEY, userId);
-		return sessionId == null ? null : (Integer) sessionId;
+		return sessionId == null ? null : Integer.parseInt(String.valueOf(sessionId)) ;
 	}
 
 	@Override
