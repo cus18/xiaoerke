@@ -36,7 +36,7 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 
 	@Override
 	public RichConsultSession getConsultSessionBySessionId(Integer sessionId) {
-		Map<Object,Object> sessionMap = redisTemplate.opsForHash().entries(SESSIONID_CONSULTSESSION_KEY);
+		Map<Object,Object> sessionMap = redisTemplate.opsForHash().entries(String.valueOf(sessionId));
 		return sessionMap == null ? null : ConsultUtil.transferMapToRichConsultSession(sessionMap);
 	}
 
