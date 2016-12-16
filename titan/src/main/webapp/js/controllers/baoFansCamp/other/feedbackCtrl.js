@@ -5,9 +5,9 @@
             $scope.info = {
                 produce:true,
                 error:false,
+                success:false,
                 contact : "提供产品反馈"
             };
-            $scope.lock='false';
 
             var recordLogs = function(val){
                 $.ajax({
@@ -22,7 +22,7 @@
                     error : function() {
                     }
                 });
-            }
+            };
             recordLogs("YJFK_YMDK");
 
             $scope.checked = function (flag) {
@@ -42,10 +42,13 @@
 
            $scope.submitAdvice = function () {
                recordLogs("YJFK_ANDJ");
-               $scope.lock='true';
                saveFeedBack.save({advice: $scope.info.feedback, contact: $scope.info.contact}, function (data) {
-                       $scope.lock='false';
+                   $scope.info.success=true;
+                   setTimeout(function () {
+                       $scope.info.success = false;
+                       $scope.$apply();
                        wx.closeWindow();
+                   },3000);
 
             })
         };
