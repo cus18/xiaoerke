@@ -50,7 +50,7 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 
 	@Override
 	public void removeConsultSessionBySessionId(Integer sessionId){
-		redisTemplate.opsForHash().delete(SESSIONID_CONSULTSESSION_KEY, sessionId);
+		redisTemplate.opsForHash().delete(SESSIONID_CONSULTSESSION_KEY, sessionId+"");
 	}
 
 	@Override
