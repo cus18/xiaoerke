@@ -6,7 +6,7 @@ var babyID;
 var Ip = "s68.baodf.com";
 
 $(function(){
-    var param = '{routePath:"/wxPay/patientPay.do?serviceType=handfootmouth"}';
+    var param = {routePath:"/wxPay/patientPay.do?serviceType=handfootmouth"};
     $.ajax({
         type: "POST",
         url: "auth/info/loginStatus",

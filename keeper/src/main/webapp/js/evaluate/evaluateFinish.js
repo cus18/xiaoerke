@@ -101,11 +101,12 @@ function commitSendHeart(){
                     paySign:obj.paySign,  // 支付签名
                     success: function (res) {
                         if(res.errMsg == "chooseWXPay:ok" ) {
+                            var  data = {'id':customerId,'starNum1':starNum1+"",'content':content,'redPacket':redPacket,'sessionId':sessionId};
                             $.ajax({
                                 url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
                                 async:false,
                                 type:'POST',
-                                data:"{'id':'"+customerId+"','starNum1':'"+starNum1+"','content':'"+content+"','redPacket':'"+redPacket+"','sessionId':'"+sessionId+"'}",
+                                data:JSON.stringify(data),
                                 contentType: "application/json; charset=utf-8",
                                 dataType:'json',
                                 success:function(data) {

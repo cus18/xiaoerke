@@ -7,7 +7,7 @@ var Ip = "s68.baodf.com";
 //var Ip = "s120.xiaork.com";
 
 $(function(){
-    var param = '{routePath:"/wxPay/patientPay.do?serviceType=pneumonia"}';
+    var param = {routePath:"/wxPay/patientPay.do?serviceType=pneumonia"};
     $.ajax({
         type: "POST",
         url: "auth/info/loginStatus",

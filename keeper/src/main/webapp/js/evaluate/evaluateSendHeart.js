@@ -134,11 +134,12 @@ function commitEvaluate(){
                     paySign:obj.paySign,  // 支付签名
                     success: function (res) {
                         if(res.errMsg == "chooseWXPay:ok" ) {
+                            var data = {'id':$scope.customerId,'starNum1':starNum1+"",'content':content,'dissatisfied':noManYi,'redPacket':redPacket,'sessionId':$scope.sessionId,'consultStatus':$stateParams.consultStatus};
                             $.ajax({
                                 url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
                                 async:false,
                                 type:'POST',
-                                data:"{'id':'"+customerId+"','consultStatus':'"+consultStatus+"','starNum1':'"+starNum1+"','content':'"+content+"','redPacket':'"+redPacket+"','sessionId':'"+sessionId+"'}",
+                                data:JSON.stringify(data), 
                                 contentType: "application/json; charset=utf-8",
                                 dataType:'json',
                                 success:function(data) {

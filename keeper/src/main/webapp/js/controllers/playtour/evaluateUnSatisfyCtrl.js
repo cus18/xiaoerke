@@ -42,11 +42,11 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
 
         // 根据页面参数获取医生信息
         function getCustomerEvaluationInfo(){
+            var data = {'id':$scope.customerId};
             $.ajax({
                 url:"interaction/user/findCustomerEvaluation",// 跳转到 action
-                async:false,
                 type:'POST',
-                data:"{'id':'"+$scope.customerId+"'}",
+                data:JSON.stringify(data),
                 contentType: "application/json; charset=utf-8",
                 dataType:'json',
                 success:function(data) {
@@ -100,11 +100,11 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
                     window.location.href = "playtour#/evaluateSuccess";
                 }
             });*/
+            var data = {'id':$scope.customerId,'starNum1':starNum1+"",'content':content,'dissatisfied':noManYi,'redPacket':redPacket,'sessionId':$scope.sessionId,'consultStatus':$stateParams.consultStatus};
             $.ajax({
                 url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
-                async:false,
                 type:'POST',
-                data:"{'id':'"+$scope.customerId+"','starNum1':'"+starNum1+"','content':'"+content+"','dissatisfied':'"+noManYi+"','redPacket':'"+redPacket+"','sessionId':'"+$scope.sessionId+"','consultStatus':'"+$stateParams.consultStatus+"'}",
+                data:JSON.stringify(data),
                 contentType: "application/json; charset=utf-8",
                 dataType:'json',
                 success:function(data) {
