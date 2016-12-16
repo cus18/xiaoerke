@@ -32,8 +32,6 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 
 	private static final String WECHAT_DOCTOR_PARAM = "wechat.doctor.param";
 
-	private static final String USER_ADDRESS = "user.address";
-
 	private static final String INSTANTCONSULT_LIST = "InstantConsult.ationList";
 
 	@Override
@@ -73,28 +71,6 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	}
 
 	@Override
-	public void putUserIdIpAddressPair(InetSocketAddress inetSocketAddress, String userId) {
-		if(StringUtils.isNotNull(userId)||inetSocketAddress!=null){
-			redisTemplate.opsForHash().put(USER_ADDRESS, userId, inetSocketAddress);
-		}
-	}
-
-	@Override
-	public InetSocketAddress getIpAddressByUserId(String userId) {
-		if(StringUtils.isNotNull(userId)){
-			Object userIpAddress = redisTemplate.opsForHash().get(USER_ADDRESS, userId);
-			return userIpAddress == null ? null : (InetSocketAddress) userIpAddress;
-		}else{
-			return null;
-		}
-	}
-
-	@Override
-	public void removeIpAddressByUserId(String userId){
-		redisTemplate.opsForHash().delete(USER_ADDRESS, userId);
-	}
-
-	@Override
 	public Integer getSessionIdByUserId(String userId) {
 		Object sessionId = redisTemplate.opsForHash().get(USER_SESSIONID_KEY, userId);
 		return sessionId == null ? null : (Integer) sessionId;
@@ -109,7 +85,7 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	@Override
 	public void putUserIdSessionIdPair(String userId, Integer sessionId) {
 		if(StringUtils.isNotNull(userId)||sessionId!=null){
-			redisTemplate.opsForHash().put(USER_SESSIONID_KEY, userId, sessionId);
+			redisTemplate.opsForHash().put(USER_SESSIONID_KEY, userId, String.valueOf(sessionId));
 		}
 	}
 

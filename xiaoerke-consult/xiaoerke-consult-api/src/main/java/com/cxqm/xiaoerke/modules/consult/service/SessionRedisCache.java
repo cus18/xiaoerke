@@ -18,11 +18,7 @@ public interface SessionRedisCache {
 	void putUserIdSessionIdPair(String userId, Integer sessionId);
 	
 	RichConsultSession getConsultSessionBySessionId(Integer sessionId);
-
-	InetSocketAddress getIpAddressByUserId(String userId);
-
-	void removeIpAddressByUserId(String userId);
-
+	
 	Integer getSessionIdByUserId(String userId);
 
 	Map getWeChatParamFromRedis(String paramType);
@@ -40,8 +36,6 @@ public interface SessionRedisCache {
 	List<Object> getConsultSessionsBySessionIds(Collection<Object> sessionIds);
 
 	void deleteUserSessionID();
-
-	void putUserIdIpAddressPair(InetSocketAddress inetSocketAddress, String csUserId);
 
 	void clearInstantConsultationList();
 
