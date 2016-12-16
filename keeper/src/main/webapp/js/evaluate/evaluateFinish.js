@@ -22,11 +22,12 @@ function GetQueryString(name)
 function getCustomerEvaluation(){
     recordLogs("ZXPJXX_PJ");
 
+    var data = {'id':customerId};
     $.ajax({
         url:"interaction/user/findCustomerEvaluation",// 跳转到 action
         async:false,
         type:'POST',
-        data:"{'id':'"+customerId+"'}",
+        data:JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType:'json',
         success:function(data) {
@@ -53,10 +54,6 @@ function getCustomerEvaluation(){
                     $(".result-show p").html("非常满意");
                 }
             }
-
-
-
-
         },
         error : function() {
         }
