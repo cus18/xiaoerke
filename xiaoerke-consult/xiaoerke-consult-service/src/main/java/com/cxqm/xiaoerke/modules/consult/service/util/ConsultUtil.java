@@ -39,8 +39,8 @@ public class ConsultUtil {
 		consultSessionMap.put("title", consultSession.getTitle());
 		consultSessionMap.put("payStatus", consultSession.getPayStatus());
 		consultSessionMap.put("nickName", consultSession.getNickName());
-		consultSessionMap.put("id", consultSession.getId());
-		consultSessionMap.put("consultNum", consultSession.getConsultNum());
+		consultSessionMap.put("id", String.valueOf(consultSession.getId()));
+		consultSessionMap.put("consultNum", String.valueOf(consultSession.getConsultNum()));
 		return consultSessionMap;
 	}
 
