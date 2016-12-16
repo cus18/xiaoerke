@@ -25,7 +25,7 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	private RedisTemplate<String, Object> redisTemplate;
 
 	private static final String SESSIONID_CONSULTSESSION_KEY = "consult.sessionIdConsultSessionMapping";
-	
+
 	private static final String USER_SESSIONID_KEY = "consult.userSessionID";
 
 	private static final String WECHAT_USER_PARAM = "wechat.user.param";
@@ -35,7 +35,7 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	private static final String USER_ADDRESS = "user.address";
 
 	private static final String INSTANTCONSULT_LIST = "InstantConsult.ationList";
-	
+
 	@Override
 	public RichConsultSession getConsultSessionBySessionId(Integer sessionId) {
 		Map<Object,Object> sessionMap = redisTemplate.opsForHash().entries(SESSIONID_CONSULTSESSION_KEY);
@@ -104,7 +104,7 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 	public List<Object> getSessionIdByKey() {
 		return redisTemplate.opsForHash().values(USER_SESSIONID_KEY);
 	}
-	
+
 
 	@Override
 	public void putUserIdSessionIdPair(String userId, Integer sessionId) {
