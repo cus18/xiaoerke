@@ -50,4 +50,6 @@ public interface ConsultSessionDao {
 
     //根据医生姓名查询咨询医生次数
     Map<String,Object> getConsultCountsByDoctorName(String marketer);
+    //根据marketer查询医生信息
+    Map<String,Object> getDoctorInfoByMarketer(String marketer);
 }

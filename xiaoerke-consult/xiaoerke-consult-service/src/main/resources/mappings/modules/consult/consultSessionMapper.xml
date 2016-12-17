@@ -330,4 +330,10 @@
         ON cs.sys_user_id_cs=cdi.sys_user_id
         where cdi.marketer = #{marketer} limit 1
     </select>
+    <!--根据marketer查询医生信息-->
+    <select id="getDoctorInfoByMarketer" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT cdi.name doctorName,cdi.hospital hospitalName,cdi.title professional,cdi.skill,0 consultCounts
+        FROM consult_doctor_info cdi
+        where cdi.marketer = #{marketer} limit 1
+    </select>
 </mapper>
