@@ -111,13 +111,12 @@ function commitEvaluate(){
     consultStatus=GetQueryString("consultStatus");
     if (redPacket != "" && redPacket > 0  ) {
         recordLogs("ZXPJSXY_JE");
-        var data = {patientRegisterId:customerId,payPrice:redPacket*100};
         $.ajax({
             url:"account/user/customerPay",// 跳转到 action
-            type:'post',
-            data:JSON.stringify(data),
-            dataType:'json',
-            contentType: "application/json;charset=UTF-8",
+            async:true,
+            type:'get',
+            data:{patientRegisterId:customerId,payPrice:redPacket*100},
+            cache:false,
             success:function(data) {
                 var obj = eval('(' + data + ')');
                 if(parseInt(obj.agent)<5){
@@ -134,10 +133,9 @@ function commitEvaluate(){
                     paySign:obj.paySign,  // 支付签名
                     success: function (res) {
                         if(res.errMsg == "chooseWXPay:ok" ) {
-                            var data = {'id':$scope.customerId,'starNum1':starNum1+"",'content':content,'dissatisfied':noManYi,'redPacket':redPacket,'sessionId':$scope.sessionId,'consultStatus':$stateParams.consultStatus};
+                            var data = {'id':customerId,'consultStatus':consultStatus,'starNum1':starNum1,'content':content,'redPacket':redPacket,'sessionId':sessionId};
                             $.ajax({
                                 url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
-                                async:false,
                                 type:'POST',
                                 data:JSON.stringify(data), 
                                 contentType: "application/json; charset=utf-8",
