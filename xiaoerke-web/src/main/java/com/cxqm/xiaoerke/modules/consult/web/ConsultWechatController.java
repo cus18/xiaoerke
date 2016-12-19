@@ -193,7 +193,7 @@ public class ConsultWechatController extends BaseController {
             }
 
             //会话创建成功，拿到了csChannel,给接诊员(或是医生)发送消息
-            if (csChannel != null && csChannel.isActive()) {
+            if (csChannel != null) {
                 try {
                     JSONObject obj = new JSONObject();
                     obj.put("sessionId", sessionId);
