@@ -90,7 +90,7 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
         $(".commit").click(function(){
             var content=$("#content").val();
             $scope.commitLock=true;
-           updateCustomerEvaluation.save({'id':$scope.customerId,'starNum1':starNum1,'content':content,'dissatisfied':noManYi,'redPacket':redPacket,'sessionId':$scope.sessionId,'consultStatus':$stateParams.consultStatus},function (data) {
+           /* updateCustomerEvaluation.save({'id':$scope.customerId,'starNum1':starNum1,'content':content,'dissatisfied':noManYi,'redPacket':redPacket,'sessionId':$scope.sessionId,'consultStatus':$stateParams.consultStatus},function (data) {
                 console.log("提交评价",data);
                 if(data=="1"){
                     recordLogs("ZXPJSXY_PJ");
@@ -99,8 +99,13 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
                 if(data=="2"){
                     window.location.href = "playtour#/evaluateSuccess";
                 }
-            });
-            var data = {'id':$scope.customerId,'starNum1':starNum1+"",'content':content,'dissatisfied':noManYi,'redPacket':redPacket,'sessionId':$scope.sessionId,'consultStatus':$stateParams.consultStatus};
+            });*/
+            var dissatisfied= "";
+            for(var i=0;i<noManYi.length;i++){
+                dissatisfied +=noManYi[i]+",";
+            }
+
+            var data = {'id':$scope.customerId,'starNum1':starNum1+"",'content':content,'dissatisfied':dissatisfied,'redPacket':redPacket,'sessionId':$scope.sessionId,'consultStatus':$stateParams.consultStatus};
             $.ajax({
                 url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
                 type:'POST',
