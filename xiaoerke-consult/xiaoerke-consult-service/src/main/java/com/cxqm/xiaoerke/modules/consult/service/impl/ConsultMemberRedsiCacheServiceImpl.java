@@ -13,6 +13,7 @@ import com.cxqm.xiaoerke.modules.consult.service.ConsultMemberRedsiCacheService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,7 +132,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
         saveConsultMemberInfo(consultMemberVo);
         saveConsultMember(openid+ memberRedisCachVo.MEMBER_END_DATE,DateUtils.DateToStr(consultMemberVo.getEndTime(),"datetime"));
         WechatUtil.sendMsgToWechat(token, openid, " 购买成功啦！\n亲爱的，现在可以开始咨询啦，赶紧和医生对话吧~\n会员有效期:"+DateUtils.DateToStr(new Date(),"yyyy年MM月dd日 HH时mm分")+"至"+DateUtils.DateToStr(consultMemberVo.getEndTime(),"yyyy年MM月dd日 HH时mm分"));
-
+        LogUtils.saveLog("ZXTS_GMCG",openid);
     }
 
     @Override
@@ -153,6 +154,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                     String content = "亲爱的，你今天的"+sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime()+"分钟免费咨询还未启用。\n为减少其他生病宝宝的焦急等待，从医生接入时开始计时";
                     if((propertyVo.getPermTimes()+propertyVo.getMonthTimes())==1) content += "\n----------\n别怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
                     if(prompt)WechatUtil.sendMsgToWechat(token,openid,content);
+                    LogUtils.saveLog("ZXTS_YMFJH",openid);
                     return true;
                 }else{
                     //没有机会,推送购买链接
@@ -161,6 +163,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
                     content = "时间真快，您本月的免费咨询机会已用完\n更多咨询机会请\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>猛戳这里购买吧！</a>";
                     if(prompt)WechatUtil.sendMsgToWechat(token,openid,content);
+                    LogUtils.saveLog("ZXTS_MYMFJH",openid);
                     return  false;
                 }
             }
