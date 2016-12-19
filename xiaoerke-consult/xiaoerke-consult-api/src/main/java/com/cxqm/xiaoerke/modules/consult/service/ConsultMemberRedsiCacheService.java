@@ -3,6 +3,8 @@ package com.cxqm.xiaoerke.modules.consult.service;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultMemberVo;
 
+import java.util.List;
+
 /**
  * Created by wangbaowei on 16/12/8.
  */
@@ -15,7 +17,9 @@ public interface ConsultMemberRedsiCacheService {
     ConsultMemberVo getConsultMemberInfo(String openid);
 
 
-    void saveConsultMember(String key,String value);
+    List<ConsultMemberVo> getConsultMemberList(ConsultMemberVo vo);
+
+    void saveConsultMember(String key, String value);
 
     String getConsultMember(String match);
 
@@ -31,6 +35,6 @@ public interface ConsultMemberRedsiCacheService {
 
     Page<ConsultMemberVo> findConsultMemberList(ConsultMemberVo vo, Page<ConsultMemberVo> page);
 
-    void updateRedisConsultInfo(String openid);
+    void updateRedisConsultInfo(ConsultMemberVo vo);
 
 }

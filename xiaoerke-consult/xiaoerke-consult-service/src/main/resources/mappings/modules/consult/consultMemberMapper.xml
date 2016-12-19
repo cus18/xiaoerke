@@ -28,6 +28,30 @@
     limit 1
 
   </select>
+
+  <select id="getConsultMemberList"  resultType="com.cxqm.xiaoerke.modules.consult.entity.ConsultMemberVo">
+
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    (
+    SELECT
+    *
+    FROM
+    consult_member
+    <if test="openid != null" >
+      where openid = #{openid,jdbcType=VARCHAR}
+    </if>
+    ORDER BY
+    end_time DESC
+    ) BIAOMING
+    GROUP BY
+    openid
+    ORDER BY
+    end_time DESC
+  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from consult_member
     where id = #{id,jdbcType=INTEGER}

@@ -64,6 +64,11 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
     }
 
     @Override
+    public List<ConsultMemberVo> getConsultMemberList(ConsultMemberVo vo){
+        return consultMemberDao.getConsultMemberList(vo);
+    };
+
+    @Override
     public void saveConsultMember(String key,String value) {
           redisTemplate.opsForValue().set(key,value) ;
     }
@@ -186,21 +191,11 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
     }
 
     @Override
-    public void updateRedisConsultInfo(String openid) {
-//      检查mysql中的数据,然后更新redis
-            Integer pageNo = 1;
-            Integer pageSize =200;
-            Page<ConsultMemberVo> pagess = new Page<ConsultMemberVo>(pageNo,pageSize);
-            ConsultMemberVo vo = new ConsultMemberVo();
-            if(StringUtils.isNotNull(openid)){
-                vo.setOpenid(openid);
-            }
-            Page<ConsultMemberVo> page = consultMemberDao.findConsultMemberList(vo,pagess);
-            List<ConsultMemberVo> voList = page.getList();
-            for(ConsultMemberVo voInfo: voList){
-                if(null != vo){
-                    saveConsultMember(openid+ memberRedisCachVo.MEMBER_END_DATE,DateUtils.DateToStr(  vo.getEndTime(),"datetime"));
-                }
+    public void updateRedisConsultInfo(ConsultMemberVo vo) {
+        List<ConsultMemberVo> volist = getConsultMemberList(vo);
+            for(ConsultMemberVo v:volist){
+                if(null != v.getEndTime())
+                saveConsultMember(v.getNickname()+ memberRedisCachVo.MEMBER_END_DATE,DateUtils.DateToStr(v.getEndTime(),"datetime"));
             }
     }
 }

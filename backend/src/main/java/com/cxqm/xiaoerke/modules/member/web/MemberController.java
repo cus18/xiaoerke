@@ -214,7 +214,8 @@ public class MemberController extends BaseController {
 	@RequestMapping(value = "updateconsultMember")
 	public String updateconsultMemberList(ConsultMemberVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
 		JSONObject result = new JSONObject();
-		consultMemberRedsiCacheService.updateRedisConsultInfo(vo.getOpenid());
+		vo.setOpenid("123");
+		consultMemberRedsiCacheService.updateRedisConsultInfo(vo);
 		return result.toString();
 	}
 
