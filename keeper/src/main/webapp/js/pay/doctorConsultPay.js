@@ -60,6 +60,7 @@ var recordLogs = function(val){
         }
     });
 };
+recordLogs("ZXTS_GMRK")
 function wechatPay() {
     if(useBabyCoin){
         UseBobyCoinPay();
