@@ -30,4 +30,7 @@ public interface ConsultMemberRedsiCacheService {
     boolean cheackMemberTimeOut(String openid);
 
     Page<ConsultMemberVo> findConsultMemberList(ConsultMemberVo vo, Page<ConsultMemberVo> page);
+
+    void updateRedisConsultInfo(String openid);
+
 }

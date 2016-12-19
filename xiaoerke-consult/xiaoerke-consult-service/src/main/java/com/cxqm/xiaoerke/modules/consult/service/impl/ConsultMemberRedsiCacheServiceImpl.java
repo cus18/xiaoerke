@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -182,5 +183,24 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
     @Override
     public Page<ConsultMemberVo> findConsultMemberList(ConsultMemberVo vo, Page<ConsultMemberVo> page) {
         return consultMemberDao.findConsultMemberList(vo,page);
+    }
+
+    @Override
+    public void updateRedisConsultInfo(String openid) {
+//      检查mysql中的数据,然后更新redis
+            Integer pageNo = 1;
+            Integer pageSize =200;
+            Page<ConsultMemberVo> pagess = new Page<ConsultMemberVo>(pageNo,pageSize);
+            ConsultMemberVo vo = new ConsultMemberVo();
+            if(StringUtils.isNotNull(openid)){
+                vo.setOpenid(openid);
+            }
+            Page<ConsultMemberVo> page = consultMemberDao.findConsultMemberList(vo,pagess);
+            List<ConsultMemberVo> voList = page.getList();
+            for(ConsultMemberVo voInfo: voList){
+                if(null != vo){
+                    saveConsultMember(openid+ memberRedisCachVo.MEMBER_END_DATE,DateUtils.DateToStr(  vo.getEndTime(),"datetime"));
+                }
+            }
     }
 }

@@ -204,4 +204,18 @@ public class MemberController extends BaseController {
 		return "modules/member/consultMemberList";
 	}
 
+
+	/**
+	 * 更新会员
+	 * @param
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "updateconsultMember")
+	public String updateconsultMemberList(ConsultMemberVo vo,HttpServletRequest request,HttpServletResponse response, Model model) {
+		JSONObject result = new JSONObject();
+		consultMemberRedsiCacheService.updateRedisConsultInfo(vo.getOpenid());
+		return result.toString();
+	}
+
 }
