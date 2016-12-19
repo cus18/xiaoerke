@@ -10,6 +10,23 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.socketServer = "";
             $scope.glued = true;
             $scope.source = "h5cxqmUser";
+
+
+            var recordLogs = function(val){
+                $.ajax({
+                    url:"util/recordLogs",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{logContent:encodeURI(val)},
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                    },
+                    error : function() {
+                    }
+                });
+            };
+            recordLogs("ZXTS_KFRK");
             //界面的初始化
             $scope.patientConsultFirst = function(){
                 var num = randomString(32);
