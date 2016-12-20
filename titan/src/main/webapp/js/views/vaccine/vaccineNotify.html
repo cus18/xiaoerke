@@ -1,8 +1,12 @@
 <ion-view view-title={{title}} ng-init="doRefresh()" style="overflow: scroll;">
-    <div class="vaccineNotify">
-        <div class="title">{{informedFormTitle}}</div>
-        <div class="content" ng-bind-html="informedForm">
-            <!--{{informedForm}}-->
-        </div>
-    </div>
+    <ion-content class="appointOrder" overflow-scroll="true"  style="top:0px;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="vaccineNotify">
+                <div class="title">{{informedFormTitle}}</div>
+                <div class="content" ng-bind-html="informedForm">
+                    <!--{{informedForm}}-->
+                </div>
+            </div>
+        </ion-scroll>
+    </ion-content>
 </ion-view>
