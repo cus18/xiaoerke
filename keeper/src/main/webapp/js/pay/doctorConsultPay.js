@@ -77,7 +77,6 @@ function wechatPay() {
         if (moneys != "0" && moneys!="") {
             $.ajax({
                 url: "account/user/doctorConsultPay",
-                async: true,
                 type: 'get',
                 data: {payType:"doctorConsultPay",leaveNotes: leaveNotes, payPrice: moneys * 100,useBabyCoinPay:useBabyCoin},
                 cache: false,
