@@ -110,6 +110,10 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
     @Override
     public void payConsultMember(String openid,String timeLength,String totalFee,String token) {
         //                   mysql 增加会员记录,延长redis的时间
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        if(null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList()&&sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid)==-1){
+            return;
+        }
         ConsultMemberVo consultMemberVo = getConsultMemberInfo(openid);
         Integer memberEndTime = Integer.parseInt(timeLength);
         if(null == consultMemberVo){
@@ -137,12 +141,17 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
     @Override
     public boolean consultChargingCheck(String openid, String token,boolean prompt){
+
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        if(null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList()&&sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid)==-1){
+            return true;
+        }
 //        String openid = xmlEntity.getFromUserName();
         Date nowDate = new Date();
         //检测当前用户会员是否过期(没有会员按未过期处理)
         String memberEndTime = getConsultMember(openid+memberRedisCachVo.MEMBER_END_DATE);
         if(null == memberEndTime||DateUtils.StrToDate(memberEndTime,"datetime").getTime()<nowDate.getTime()){
-            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+//            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
 //            说明是新用户或者是用户的会员已过期,要检测是否是今日 首次咨询以及是否有机会
             String datetime = DateUtils.DateToStr(nowDate,"date");
             String latestConsultTime = getConsultMember(openid+memberRedisCachVo.LATEST_CONSULT_TIME);
@@ -181,6 +190,10 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
     @Override
     public boolean cheackMemberTimeOut(String openid){
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        if(null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList()&&sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid)==-1){
+            return false;
+        }
         String memberEndTime = getConsultMember(openid+memberRedisCachVo.MEMBER_END_DATE);
         if(null == memberEndTime||DateUtils.StrToDate(memberEndTime,"datetime").getTime()<new Date().getTime()) {
             return false;
