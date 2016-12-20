@@ -225,7 +225,7 @@ public class ConsultRecordMongoDBServiceImpl extends MongoDBService<ConsultRecor
 		return 0 ;
 	}
 
-	long consultCount(Query query){
+	public long consultCount(Query query){
 		long totalCount = this.mongoTemplate.count(query, ConsultSessionStatusVo.class, "consultSessionStatusVo");
 		return totalCount;
 	}

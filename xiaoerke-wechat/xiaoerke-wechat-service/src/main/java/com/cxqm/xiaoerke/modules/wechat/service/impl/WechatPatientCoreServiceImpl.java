@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultStatisticDao;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
+import com.cxqm.xiaoerke.modules.consult.utils.DateUtil;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.marketing.service.LoveMarketingService;
@@ -121,6 +122,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     @Autowired
     private ConsultSessionPropertyService consultSessionPropertyService;
 
+    @Autowired
+    private ConsultMemberRedsiCacheService consultMemberRedsiCacheService;
+
     private Map<String, OperationPromotionVo> keywordMap;
 
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -140,7 +144,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         ReceiveXmlEntity xmlEntity = new ReceiveXmlProcess().getMsgEntity(getXmlDataFromWechat(request));
         String msgType = xmlEntity.getMsgType();
         String openId = xmlEntity.getFromUserName();
-
+        String eventKey = xmlEntity.getEventKey();
         // xml请求解析
         if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)) {
             // 事件类型
@@ -159,6 +163,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 //微量元素检测
 //                traceElementsDetection(xmlEntity, token);
 
+                /**
+                 *  疫苗站关注提醒 2016年12月12日11:23:52 jiangzg
+                 */
+                if(eventKey.contains("YMJZ_AH_")){
+                    attentionByThirdPlace(eventKey,openId ,token,sysPropertyVoWithBLOBsVo);
+                }
+
             } else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
                 //扫描关注公众号或者搜索关注公众号都在其中
                 respMessage = processSubscribeEvent(xmlEntity, request, response, sysPropertyVoWithBLOBsVo);
@@ -167,6 +178,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
                 //微量元素检测
                 traceElementsDetection(xmlEntity, token);
+
+                /**
+                 *  疫苗站关注提醒 2016年12月12日11:23:52 jiangzg
+                 */
+                if(eventKey.contains("YMJZ_AH_")){
+                    attentionByThirdPlace(eventKey,openId ,token,sysPropertyVoWithBLOBsVo);
+                }
             }
             // 取消订阅
             else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
@@ -189,7 +207,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String token = (String) userWechatParam.get("token");
             try {
                 //关键字回复功能
-                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)||nonRealTimeCheck(sysPropertyVoWithBLOBsVo.getWhitelist(),xmlEntity, token)) {
+                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)||!consultMemberRedsiCacheService.consultChargingCheck(xmlEntity.getFromUserName(), token,true)) {
                     return "success";
                 }
             } catch (Exception e) {
@@ -205,6 +223,43 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             }
         }
         return respMessage;
+    }
+
+    /**
+     *  2016年12月12日11:24:59 jiangzg
+     */
+    private void attentionByThirdPlace(String eventKey , String fromUserId ,String token , SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo){
+        if(StringUtils.isNotNull(eventKey) && eventKey.contains("YMJZ_AH_")){
+            StringBuilder sb = new StringBuilder();
+            sb.append("点击领取：");
+            sb.append("<a href='" + sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/vaccine#/vaccineList" + "'>");
+            sb.append("疫苗接种告知单及相关知识>>");
+            sb.append("</a>");
+            WechatUtil.sendMsgToWechat(token, fromUserId, sb.toString());
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("如有疼痛发热等症状及其他育儿问题，点击左下角");
+            stringBuilder.append("\'"+"小键盘"+"\'，即可咨询儿科专家医生");
+            stringBuilder.append("\n");
+            stringBuilder.append("预防接种科咨询时间：19：00—21：00");
+            WechatUtil.sendMsgToWechat(token, fromUserId, stringBuilder.toString());
+            /* 暂时注掉
+            String marketer = "";
+            if(eventKey.contains("qrscene_")){
+                marketer = eventKey.replace("qrscene_", "").trim();
+            }else{
+                marketer = eventKey.trim();
+            }
+            marketer = marketer.substring(marketer.lastIndexOf("_")+1,marketer.length());
+            int marketerId = 0 ;
+            if(marketer.startsWith("0")){
+                marketerId = Integer.valueOf(marketer.substring(1));
+            }else{
+                marketerId = Integer.valueOf(marketer);
+            }
+            switch (marketerId){
+
+            }*/
+        }
     }
 
     private void traceElementsDetection(ReceiveXmlEntity xmlEntity, String token) {
@@ -1698,37 +1753,38 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     }
 
 
-    public boolean consultChargingCheck(ReceiveXmlEntity xmlEntity, String token){
-        String openid = xmlEntity.getFromUserName();
-        Date nowDate = new Date();
-        //检测当前用户会员是否过期(没有会员按未过期处理)
-        String memberEndTime = consultMemberRedsiCacheService.getConsultMember(openid+memberRedisCachVo.MEMBER_END_DATE);
-        if(null == memberEndTime||DateUtils.StrToDate(memberEndTime,"datetime").getTime()<nowDate.getTime()){
-            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-//            说明是新用户或者是用户的会员已过期,要检测是否是今日 首次咨询以及是否有机会
-                String datetime = DateUtils.DateToStr(nowDate,"date");
-                String latestConsultTime = consultMemberRedsiCacheService.getConsultMember(openid+memberRedisCachVo.LATEST_CONSULT_TIME);
-                if(null == latestConsultTime ||!datetime.equals(latestConsultTime)){
-//                    用户是首4次咨询
-                    ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
-                    if(null != propertyVo && (propertyVo.getPermTimes()+propertyVo.getMonthTimes()) > 0){
-//                        用户有咨询机会
-                        consultMemberRedsiCacheService.useFreeChance(openid,sysPropertyVoWithBLOBsVo.getConsultMemberTime());
-                        return true;
-                    }else{
-                        //没有机会,推送购买链接
-                        String content = "求助客服请直接向分诊说明，不需付费\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/angel/patient/consult#/patientCustomerService'>h5页面的入口</a>" +
-                                "\n\n您好，由于本月的咨询机会已经用完，为了给你更好更快的服务，需要购买咨询服务\n-----------\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询服务</a>";
-                        WechatUtil.sendMsgToWechat(token,openid,content);
-                        return  false;
-                    }
-                }
-            //会员时间超时,推送购买链接
-            String content = "求助客服请直接向分诊说明，不需付费\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/angel/patient/consult#/patientCustomerService'>h5页面的入口</a>" +
-                    "\n\n您好，由于本月的咨询机会已经用完，为了给你更好更快的服务，需要购买咨询服务\n-----------\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询服务</a>";
-            WechatUtil.sendMsgToWechat(token,openid,content);
-            return false;
-        }
-        return true;
-    }
+//    @Override
+//    public boolean consultChargingCheck(String openid, String token){
+////        String openid = xmlEntity.getFromUserName();
+//        Date nowDate = new Date();
+//        //检测当前用户会员是否过期(没有会员按未过期处理)
+//        String memberEndTime = consultMemberRedsiCacheService.getConsultMember(openid+memberRedisCachVo.MEMBER_END_DATE);
+//        if(null == memberEndTime||DateUtils.StrToDate(memberEndTime,"datetime").getTime()<nowDate.getTime()){
+//            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+////            说明是新用户或者是用户的会员已过期,要检测是否是今日 首次咨询以及是否有机会
+//                String datetime = DateUtils.DateToStr(nowDate,"date");
+//                String latestConsultTime = consultMemberRedsiCacheService.getConsultMember(openid+memberRedisCachVo.LATEST_CONSULT_TIME);
+//                if(null == latestConsultTime ||!datetime.equals(latestConsultTime)){
+////                    用户是首次咨询
+//                    ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
+//                    if(null != propertyVo && (propertyVo.getPermTimes()+propertyVo.getMonthTimes()) > 0){
+////                        用户有咨询机会
+////                        consultMemberRedsiCacheService.useFreeChance(openid,sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
+//                        return true;
+//                    }else{
+//                        //没有机会,推送购买链接
+//                        String content = "求助客服请直接向分诊说明，不需付费\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/angel/patient/consult#/patientCustomerService'>h5页面的入口</a>" +
+//                                "\n\n您好，由于本月的咨询机会已经用完，为了给你更好更快的服务，需要购买咨询服务\n-----------\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询服务</a>";
+//                        WechatUtil.sendMsgToWechat(token,openid,content);
+//                        return  false;
+//                    }
+//                }
+//            //会员时间超时,推送购买链接
+//            String content = "求助客服请直接向分诊说明，不需付费\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/angel/patient/consult#/patientCustomerService'>h5页面的入口</a>" +
+//                    "\n\n您好，由于本月的咨询机会已经用完，为了给你更好更快的服务，需要购买咨询服务\n-----------\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询服务</a>";
+//            WechatUtil.sendMsgToWechat(token,openid,content);
+//            return false;
+//        }
+//        return true;
+//    }
 }

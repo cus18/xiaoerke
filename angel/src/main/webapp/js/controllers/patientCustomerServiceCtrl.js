@@ -25,7 +25,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 if (window.WebSocket) {
                     // $scope.socketServer = new ReconnectingWebSocket("ws://s201.xiaork.com/wsbackend/ws&user&"
                     //     + $scope.patientId +"&h5cxqm");//cs,user,distributor
-                    $scope.socketServer = new ReconnectingWebSocket("ws://101.201.154.201:2048/ws&user&"
+                    $scope.socketServer = new ReconnectingWebSocket("ws://101.201.154.201/ws&user&"
                         + $scope.patientId +"&h5cxqm");//cs,user,distributor
 
                     /*$scope.socketServer = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&user&"

@@ -58,11 +58,11 @@ define(['appNonRealTimeConsult'], function (app) {
 
         //登陆地址地址
         .factory('LoginUrl', function() {
-            return "http://s201.xiaork.com/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
+            return "http://s68.baodf.com/titan/nonRealTimeConsult#/NonTimeDoctorLogin";
         })
         //登陆绑定地址
         .factory('DoctorBindingUrl', function() {
-            return "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getDoctorWechatMenId?url=6";
+            return "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getDoctorWechatMenId?url=6";
         })
         .factory('GetConfig',['$resource',function ($resource){
             return $resource('util/getConfig');

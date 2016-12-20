@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxqm.xiaoerke.modules.vaccine.dao.VaccineScanCodeDao" >
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineScanCodeVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="VARCHAR" />
+    <result column="isfree" property="isfree" jdbcType="VARCHAR" />
+    <result column="disease_prevention" property="diseasePrevention" jdbcType="VARCHAR" />
+    <result column="attention" property="attention" jdbcType="VARCHAR" />
+    <result column="informed_form" property="informedForm" jdbcType="VARCHAR" />
+    <result column="informed_form_title" property="informedFormTitle" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, age, isfree,  disease_prevention, 
+      attention, informed_form,informed_form_title
+  </sql>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from vaccine_scancode
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineScanCodeVo" >
+    insert into vaccine_scancode
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="isfree != null" >
+        isfree,
+      </if>
+      <if test="diseasePrevention != null" >
+        disease_prevention,
+      </if>
+      <if test="attention != null" >
+        attention,
+      </if>
+      <if test="informedForm != null" >
+        informed_form,
+      </if>
+      <if test="informedFormTitle != null" >
+        informed_form_title,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=VARCHAR},
+      </if>
+      <if test="isfree != null" >
+        #{isfree,jdbcType=VARCHAR},
+      </if>
+      <if test="diseasePrevention != null" >
+        #{diseasePrevention,jdbcType=VARCHAR},
+      </if>
+      <if test="attention != null" >
+        #{attention,jdbcType=VARCHAR},
+      </if>
+      <if test="informedForm != null" >
+        #{informedForm,jdbcType=VARCHAR},
+      </if>
+      <if test="informedFormTitle != null" >
+        #{informedFormTitle,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineScanCodeVo" >
+    update vaccine_scancode
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=VARCHAR},
+      </if>
+      <if test="isfree != null" >
+        isfree = #{isfree,jdbcType=VARCHAR},
+      </if>
+      <if test="diseasePrevention != null" >
+        disease_prevention = #{diseasePrevention,jdbcType=VARCHAR},
+      </if>
+      <if test="attention != null" >
+        attention = #{attention,jdbcType=VARCHAR},
+      </if>
+      <if test="informedForm != null" >
+        informed_form = #{informedForm,jdbcType=VARCHAR},
+      </if>
+      <if test="informedFormTitle != null" >
+        informed_form_title = #{informedFormTitle,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="findVaccineScanCodeList" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.vaccine.entity.VaccineScanCodeVo" >
+    select
+    <include refid="Base_Column_List" />
+    from vaccine_scancode
+    where 1=1
+    <if test="id != null and id != ''" >
+      and id like CONCAT('%', #{id}, '%')
+    </if>
+    <if test="name != null and name != ''" >
+      and name like CONCAT('%', #{name}, '%')
+    </if>
+  </select>
+</mapper>

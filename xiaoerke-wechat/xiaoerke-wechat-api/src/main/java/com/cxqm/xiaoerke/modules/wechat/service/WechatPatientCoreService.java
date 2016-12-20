@@ -19,4 +19,6 @@ public interface WechatPatientCoreService {
     int insertHealthRecordMsg(HealthRecordMsgVo healthRecordMsgVo);
 
     void updateKeywordRecovery();
+
+//    boolean consultChargingCheck(String openid, String token);
 }

@@ -1,0 +1,21 @@
+<ion-view view-title={{title}} ng-init="doRefresh()">
+    <ion-content overflow-scroll="true"  style="top:0px;">
+        <div class="vaccineInformation">
+            <div class="title">{{vaccine.name}}
+                <span ng-show="vaccine.isFree == 0"  class="free">免费</span>
+                <span ng-show="vaccine.isFree == 1" class="free charge">自费</span></div>
+            <div class="prevent">
+                <div class="title">预防疾病</div>
+                <div class="content">{{vaccine.diseasePrevention}}</div>
+            </div>
+            <div class="prevent">
+                <div class="title">注意事项</div>
+                <div class="content">{{vaccine.attention}}</div>
+            </div>
+            <div class="notify" ng-click="goNotify()">
+                <span>{{vaccine.informedFormTitle}}</span>
+            </div>
+            <!--<img width="100%" ng-click="goNotify()" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/vaccine%2Fyimiao_png_03.png" alt=""/>-->
+        </div>
+    </ion-content>
+</ion-view>

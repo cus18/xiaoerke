@@ -4,6 +4,22 @@ angular.module('controllers', []).controller('microElementCtrl', [
 
             $scope.imgPaht = "http://xiaoerke-common-pic.oss-cn-beijing.aliyuncs.com/"+$stateParams.imgPath;
 
+            var recordLogs = function(val){
+                $.ajax({
+                    url:"util/recordLogs",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{logContent:encodeURI(val)},
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                    },
+                    error : function() {
+                    }
+                });
+            }
+            recordLogs("MICRO_SHOW");
+
             $scope.doRefresh = function(){
                 var timestamp;//时间戳
                 var nonceStr;//随机字符串

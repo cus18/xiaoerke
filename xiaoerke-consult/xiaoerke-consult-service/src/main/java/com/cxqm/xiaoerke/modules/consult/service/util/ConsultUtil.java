@@ -3,14 +3,11 @@ package com.cxqm.xiaoerke.modules.consult.service.util;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ConsultUtil {
 
-	public static RichConsultSession transferMapToRichConsultSession(HashMap<String, Object> consultSessionMap){
+	public static RichConsultSession transferMapToRichConsultSession(Map<Object, Object> consultSessionMap){
 		RichConsultSession consultSession = new RichConsultSession();
 		consultSession.setUserName((String) consultSessionMap.get("userName"));
 		consultSession.setUserId((String) consultSessionMap.get("userId"));

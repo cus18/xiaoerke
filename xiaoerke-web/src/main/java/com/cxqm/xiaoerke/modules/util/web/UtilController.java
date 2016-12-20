@@ -370,7 +370,7 @@ public class UtilController extends BaseController {
         Map noRemoveMap = new HashMap();
         if(consultSessions !=null && consultSessions.size()>0){
             for(Object consultSessionObject:consultSessions){
-                RichConsultSession consultSessionValue = ConsultUtil.transferMapToRichConsultSession((HashMap<String, Object>) consultSessionObject);
+                RichConsultSession consultSessionValue = ConsultUtil.transferMapToRichConsultSession((Map<Object, Object>) consultSessionObject);
                 if(nowDate.getTime() - consultSessionValue.getCreateTime().getTime() > 6*60*60*1000){
                     if("ongoing".equalsIgnoreCase(consultSessionValue.getStatus())){
                         sessionRedisCache.removeConsultSessionBySessionId(consultSessionValue.getId());
