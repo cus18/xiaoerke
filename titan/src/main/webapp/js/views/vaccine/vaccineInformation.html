@@ -1,5 +1,5 @@
-<ion-view view-title={{title}} ng-init="doRefresh()">
-    <ion-content style="top:0px;">
+<ion-view view-title={{title}} ng-init="doRefresh()" style="overflow: scroll;">
+    <ion-content style="top:0px;" overflow-scroll="true">
         <ion-scroll direction="y" has-bouncing="true">
             <div class="vaccineInformation">
                 <div class="title">{{vaccine.name}}
