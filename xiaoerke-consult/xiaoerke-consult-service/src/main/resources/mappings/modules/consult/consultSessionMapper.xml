@@ -49,13 +49,13 @@
             and consult_number = #{consultNumber,jdbcType=INTEGER}
         </if>
         <if test="createTime != null">
-            and create_time BETWEEN #{createTime,jdbcType=TIMESTAMP}
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
         </if>
         <if test="status != null">
             and state = #{status,jdbcType=VARCHAR}
         </if>
         <if test="updateTime != null">
-            and  #{updateTime,jdbcType=TIMESTAMP}
+            and update_time = #{updateTime,jdbcType=TIMESTAMP}
         </if>
         <if test="csUserId != null">
             and sys_user_id_cs = #{csUserId,jdbcType=VARCHAR}
@@ -117,16 +117,13 @@
 
     <select id="getCsUserByUserId" resultMap="BaseResultMap"
             parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
-        select cr1.createDate create_time,cr2.createDate update_time  from (
-        select cr.createDate,cr.csUserId from consult_record cr
-        INNER JOIN sys_user su on su.id = cr.csUserId
-        where su.user_type ='consultDoctor' and cr.sessionId = #{csUserId,jdbcType=INTEGER}
-        ORDER BY createDate ASC LIMIT 1) cr1
-        INNER JOIN
-        (select cr.createDate,cr.csUserId  from consult_record cr
-        INNER JOIN sys_user su on su.id = cr.csUserId
-        where su.user_type ='consultDoctor' and cr.sessionId = #{csUserId,jdbcType=INTEGER}
-        ORDER BY createDate desc LIMIT 1) cr2 on cr1.csUserId = cr2.csUserId
+        SELECT su.name nickname from consult_conversation_forward_records ccfr
+        INNER JOIN sys_user su on su.id = ccfr.from_user_id
+        where ccfr.conversation_id = #{id}
+        UNION
+        SELECT su.name from consult_conversation_forward_records ccfr
+        INNER JOIN sys_user su on su.id = ccfr.to_user_id
+        where ccfr.conversation_id = #{id}
     </select>
 
     <select id="getAlreadyAccessUsers" resultMap="BaseResultMap"
@@ -169,6 +166,8 @@
           ,#{userId,jdbcType=VARCHAR},#{source,jdbcType=VARCHAR},#{flag,jdbcType=VARCHAR},#{chargeType,jdbcType=VARCHAR}
           )
    </insert>
+
+
 
     <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession"
             useGeneratedKeys="true" keyProperty="id">
