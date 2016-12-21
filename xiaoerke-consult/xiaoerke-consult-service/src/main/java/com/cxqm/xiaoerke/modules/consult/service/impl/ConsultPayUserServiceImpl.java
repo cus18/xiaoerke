@@ -141,7 +141,7 @@ public class ConsultPayUserServiceImpl implements ConsultPayUserService {
     public void saveChargeUser(Integer sessionid, String openid) {
         if(null != openid&& null != sessionid){
             redisTemplate.opsForHash().put(MESSAGE_CONSULTSESSION_KEY,
-                    sessionid, openid);
+                    String.valueOf(sessionid), openid);
         }
     }
 
