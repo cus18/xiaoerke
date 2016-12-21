@@ -118,9 +118,9 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 		Object wechatParam = null;
 		if(StringUtils.isNotNull(paramType)){
 			if(paramType.equals("user")){
-				wechatParam = redisTemplate.opsForHash().get(WECHAT_USER_PARAM,"wechatUserParam");
+				wechatParam = redisTemplate.opsForHash().entries(WECHAT_USER_PARAM);
 			}else if(paramType.equals("doctor")){
-				wechatParam = redisTemplate.opsForHash().get(WECHAT_DOCTOR_PARAM,"wechatDoctorParam");
+				wechatParam = redisTemplate.opsForHash().entries(WECHAT_DOCTOR_PARAM);
 			}
 		}
 		return wechatParam == null ? null : (Map) wechatParam;

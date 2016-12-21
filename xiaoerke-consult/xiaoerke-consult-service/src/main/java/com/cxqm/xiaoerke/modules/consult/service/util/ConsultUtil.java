@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.service.util;
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
 
@@ -12,7 +13,7 @@ public class ConsultUtil {
 		consultSession.setUserName((String) consultSessionMap.get("userName"));
 		consultSession.setUserId((String) consultSessionMap.get("userId"));
 		consultSession.setServerAddress((String) consultSessionMap.get("serverAddress"));
-		consultSession.setCreateTime((Date) consultSessionMap.get("createTime"));
+		consultSession.setCreateTime(DateUtils.StrToDate(String.valueOf(consultSessionMap.get("createTime")),"datetime") );
 		consultSession.setCsUserName((String) consultSessionMap.get("csUserName"));
 		consultSession.setSource((String) consultSessionMap.get("source"));
 		consultSession.setCsUserId((String) consultSessionMap.get("csUserId"));
@@ -25,12 +26,12 @@ public class ConsultUtil {
 		return consultSession;
 	}
 
-	public static HashMap<String,Object> transferRichConsultSessionToMap(RichConsultSession consultSession){
-		HashMap<String,Object> consultSessionMap = new HashMap<String, Object>();
+	public static HashMap<Object,Object> transferRichConsultSessionToMap(RichConsultSession consultSession){
+		HashMap<Object,Object> consultSessionMap = new HashMap<Object, Object>();
 		consultSessionMap.put("userName", consultSession.getUserName());
 		consultSessionMap.put("userId", consultSession.getUserId());
 		consultSessionMap.put("serverAddress", consultSession.getServerAddress());
-		consultSessionMap.put("createTime", consultSession.getCreateTime());
+		consultSessionMap.put("createTime", DateUtils.DateToStr(consultSession.getCreateTime(),"datetime"));
 		consultSessionMap.put("csUserName", consultSession.getCsUserName());
 		consultSessionMap.put("source", consultSession.getSource());
 		consultSessionMap.put("csUserId", consultSession.getCsUserId());
