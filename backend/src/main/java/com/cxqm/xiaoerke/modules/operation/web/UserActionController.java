@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.bankend.service.impl.HospitalServiceImpl;
 import com.cxqm.xiaoerke.modules.interaction.entity.UserFeedbackVo;
 import com.cxqm.xiaoerke.modules.interaction.service.FeedbackService;
+import com.cxqm.xiaoerke.modules.order.entity.RegisterServiceVo;
 import com.cxqm.xiaoerke.modules.sys.entity.HospitalVo;
 import net.sf.json.JSONObject;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 用户行为统计 Controller
@@ -49,8 +52,17 @@ public class UserActionController extends BaseController {
      */
     @RequiresPermissions("user")
     @RequestMapping(value = {"userFeedbackList", ""})
-    public String userFeedbackList(UserFeedbackVo vo,Model model) {
-        Page<UserFeedbackVo> page = feedbackService.findUserFeedbackList(new Page<UserFeedbackVo>(), vo);
+    public String userFeedbackList(UserFeedbackVo vo,Model model,HttpServletRequest request) {
+        String temp = ((String)request.getParameter("pageNo"));
+        Page<UserFeedbackVo> pagess = null;
+        if(temp==null){
+            pagess = new Page<UserFeedbackVo>();
+        }else{
+            Integer pageNo = Integer.parseInt(request.getParameter("pageNo"));
+            Integer pageSize = Integer.parseInt(request.getParameter("pageSize"));
+            pagess = new Page<UserFeedbackVo>(pageNo,pageSize);
+        }
+        Page<UserFeedbackVo> page = feedbackService.findUserFeedbackList(pagess, vo);
         model.addAttribute("page", page);
         model.addAttribute("vo", vo);
         return "operation/userFeedbackList";

@@ -61,7 +61,7 @@
     <select id="findUserFeedBackList" resultMap="BaseResultMap">
         select * from user_feedback
         where 1=1
-      <if test="openid != null" >
+      <if test="openid != null and openid !=''" >
         and openid = #{openid}
       </if>
       order by create_time desc

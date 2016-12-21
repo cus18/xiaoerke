@@ -15,6 +15,7 @@
                 return false;
             }
             function searchSub() {
+                $("#pageNo").attr("value",'1');
                 $("#searchForm").attr("action", "${ctx}/sys/UserAction/userFeedbackList?");
                 $("#searchForm").submit();
             }
