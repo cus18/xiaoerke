@@ -141,12 +141,22 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
     @Override
     public boolean consultChargingCheck(String openid, String token,boolean prompt){
-
+//        首次咨询赠送四次免费机会
+        ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
+        //首次咨询
+        if (consultSessionPropertyVo == null) {
+            consultSessionPropertyVo = new ConsultSessionPropertyVo();
+            consultSessionPropertyVo.setCreateTime(new Date());
+            consultSessionPropertyVo.setMonthTimes(4);
+            consultSessionPropertyVo.setPermTimes(0);
+            consultSessionPropertyVo.setSysUserId(openid);
+            consultSessionPropertyVo.setCreateBy(openid);
+            consultSessionPropertyService.insertUserConsultSessionProperty(consultSessionPropertyVo);
+        }
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         if(null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList()&&sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid)==-1){
             return true;
         }
-//        String openid = xmlEntity.getFromUserName();
         Date nowDate = new Date();
         //检测当前用户会员是否过期(没有会员按未过期处理)
         String memberEndTime = getConsultMember(openid+memberRedisCachVo.MEMBER_END_DATE);
@@ -167,7 +177,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                     return true;
                 }else{
                     //没有机会,推送购买链接
-                    String content = "求助客服点击这里欧！\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/angel/patient/consult#/patientCustomerService'>H5咨询入口</a>";
+                    String content = "求助客服点击这里欧！\n<a href='"+sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"/angel/patient/consult#/patientCustomerService'>H5咨询入口</a>";
                     if(prompt)WechatUtil.sendMsgToWechat(token,openid,content);
 
                     content = "时间真快，您本月的免费咨询机会已用完\n更多咨询机会请\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>猛戳这里购买吧！</a>";
@@ -177,12 +187,12 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                 }
             }
             //会员时间超时,推送购买链接
-            String content = "求助客服点击这里欧！\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/angel/patient/consult#/patientCustomerService'>H5咨询入口</a>";
+            String content = "求助客服点击这里欧！\n<a href='"+sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"/angel/patient/consult#/patientCustomerService'>H5咨询入口</a>";
             WechatUtil.sendMsgToWechat(token,openid,content);
 
             content = "亲爱的，您本次30分钟的免费咨询时间已到，其他宝妈还在焦急排队中……\n24h后您可开启新一天30分钟免费机会。如果您着急，可以 \n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>猛戳这里购买吧！</a>";
             WechatUtil.sendMsgToWechat(token,openid,content);
-
+            LogUtils.saveLog("ZXTS_SYMFJH",openid);
             return false;
         }
         return true;
