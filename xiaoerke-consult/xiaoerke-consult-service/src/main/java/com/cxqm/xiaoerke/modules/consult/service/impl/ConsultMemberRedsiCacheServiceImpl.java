@@ -141,6 +141,18 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
     @Override
     public boolean consultChargingCheck(String openid, String token,boolean prompt){
+//        首次咨询赠送四次免费机会
+        ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
+        //首次咨询
+        if (consultSessionPropertyVo == null) {
+            consultSessionPropertyVo = new ConsultSessionPropertyVo();
+            consultSessionPropertyVo.setCreateTime(new Date());
+            consultSessionPropertyVo.setMonthTimes(4);
+            consultSessionPropertyVo.setPermTimes(0);
+            consultSessionPropertyVo.setSysUserId(openid);
+            consultSessionPropertyVo.setCreateBy(openid);
+            consultSessionPropertyService.insertUserConsultSessionProperty(consultSessionPropertyVo);
+        }
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         if(null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList()&&sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid)==-1){
             return true;
