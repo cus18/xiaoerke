@@ -51,7 +51,7 @@
 
   <!--批量插入-->
   <insert id="insertConsultRecordBatch" parameterType="java.util.List">
-    insert into consult_record5 (id, sessionId, message,
+    insert into consult_record (id, sessionId, message,
     createDate, updateDate, type,
     senderId, csuserId, userId,
     doctorName, senderName)
