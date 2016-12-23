@@ -6,10 +6,9 @@ import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultMemberDao;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultMemberVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionPropertyVo;
-import com.cxqm.xiaoerke.modules.consult.entity.memberRedisCachVo;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultMemberRedsiCacheService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
@@ -17,6 +16,8 @@ import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 
 /**
@@ -47,6 +50,9 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
     @Autowired
     private WechatAttentionService wechatAttentionService;
+
+    @Autowired
+    private ConsultRecordService consultRecordService;
 
 
     @Override
@@ -172,13 +178,18 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 //                        用户有咨询机会
                     String content = "亲爱的，你今天的"+sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime()+"分钟免费咨询还未启用。\n为减少其他生病宝宝的焦急等待，从医生接入时开始计时";
                     if((propertyVo.getPermTimes()+propertyVo.getMonthTimes())==1) content += "\n----------\n别怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
-                    if(prompt)WechatUtil.sendMsgToWechat(token,openid,content);
+
+//                 查询用户最后一条记录是否ongoing的状态
+
+                    Query query2 = (new Query()).addCriteria(where("userId").is(openid)).with(new Sort(Sort.Direction.DESC, "createDate"));
+                    ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query2);
+                    if(prompt&&!ConsultSession.STATUS_ONGOING.equals(consultSessionStatusVo2.getStatus()))WechatUtil.sendMsgToWechat(token,openid,content);
                     LogUtils.saveLog("ZXTS_YMFJH",openid);
                     return true;
                 }else{
                     //没有机会,推送购买链接
                     String content = "求助客服点击这里欧！\n<a href='"+sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"/angel/patient/consult#/patientCustomerService'>H5咨询入口</a>";
-                    if(prompt)WechatUtil.sendMsgToWechat(token,openid,content);
+//                    if(prompt)WechatUtil.sendMsgToWechat(token,openid,content);
 
                     content = "时间真快，您本月的免费咨询机会已用完\n更多咨询机会请\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>猛戳这里购买吧！</a>";
                     if(prompt)WechatUtil.sendMsgToWechat(token,openid,content);
@@ -188,9 +199,9 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             }
             //会员时间超时,推送购买链接
             String content = "求助客服点击这里欧！\n<a href='"+sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"/angel/patient/consult#/patientCustomerService'>H5咨询入口</a>";
-            WechatUtil.sendMsgToWechat(token,openid,content);
+//            WechatUtil.sendMsgToWechat(token,openid,content);
 
-            content = "亲爱的，您本次30分钟的免费咨询时间已到，其他宝妈还在焦急排队中……\n24h后您可开启新一天30分钟免费机会。如果您着急，可以 \n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>猛戳这里购买吧！</a>";
+            content = "亲爱的，您本次"+sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime()+"分钟免费咨询时间已到。如需继续咨询，点击下方购买服务即可哦 \n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>猛戳这里购买吧！</a>\n\n不急的麻麻可以等待\n24h后您的下次30分钟免费机会哦~";
             WechatUtil.sendMsgToWechat(token,openid,content);
             LogUtils.saveLog("ZXTS_SYMFJH",openid);
             return false;
