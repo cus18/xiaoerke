@@ -19,7 +19,8 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.patientName= "" ;
             $scope.fucengLock = false;//第一次进入页面的浮层
             $scope.alertFlag = false;
-            $scope.remoteUrl = "http://wxsp-dev.ykbenefit.com/thirdparty/baodaifu/customer_info";
+            // 测试地址： $scope.remoteUrl = "http://wxsp-dev.ykbenefit.com/thirdparty/baodaifu/customer_info";
+            $scope.remoteUrl = "https://wxsp.ykhys.com/thirdparty/baodaifu/customer_info";
             $scope.imgBarFlag = false;
 
 
@@ -120,7 +121,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     //$scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     //ws://s201.xiaork.com:2048;
-                    $scope.socketServer = new WebSocket("ws://101.201.154.201:2048/ws&user&"
+                    $scope.socketServer = new WebSocket("ws://s132.baodf.com/wsbackend/ws&user&"
                         + $scope.patientId +"&h5ykdl");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {
@@ -296,8 +297,9 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                             $scope.socketServer.send(JSON.stringify(patientValMessage));
                             $scope.info.consultInputValue = "";
                         } else {
-                            alert("连接没有开启.");
-                            $scope.initConsultSocket();
+                            do{
+                                $scope.initConsultSocket();
+                            }while($scope.socketServer.readyState != WebSocket.OPEN);
                         }
                     });
                 }
@@ -335,8 +337,16 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                         $("#saytext").val('');
                         $(".wjy_set").attr("src","http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_go.png");
                     } else {
-                        alert("连接没有开启.");
-                        $scope.initConsultSocket();
+                       /* alert("连接没有开启.");
+                        $scope.initConsultSocket();*/
+                        do{
+                            $scope.initConsultSocket();
+                        }while($scope.socketServer.readyState != WebSocket.OPEN);
+                        if($scope.socketServer.readyState == WebSocket.OPEN){
+                            $scope.consultContent.push(patientValMessage);
+                            $scope.socketServer.send(JSON.stringify(patientValMessage));
+                            $scope.info.consultInputValue = "";
+                        }
                         $(".wjy_set").attr("src","http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_go.png");
                     }
                 }
