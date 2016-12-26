@@ -174,24 +174,19 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             if(null == latestConsultTime ||!datetime.equals(latestConsultTime)){
 //                    用户是首次咨询
                 ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
+                Query query2 = (new Query()).addCriteria(where("userId").is(openid)).with(new Sort(Sort.Direction.DESC, "createDate"));
+                ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query2);
                 if(null != propertyVo && (propertyVo.getPermTimes()+propertyVo.getMonthTimes()) > 0){
 //                        用户有咨询机会
                     String content = "亲爱的，你今天的"+sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime()+"分钟免费咨询还未启用。\n为减少其他生病宝宝的焦急等待，从医生接入时开始计时";
                     if((propertyVo.getPermTimes()+propertyVo.getMonthTimes())==1) content += "\n----------\n别怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
-
 //                 查询用户最后一条记录是否ongoing的状态
-
-                    Query query2 = (new Query()).addCriteria(where("userId").is(openid)).with(new Sort(Sort.Direction.DESC, "createDate"));
-                    ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query2);
                     if(prompt&&!ConsultSession.STATUS_ONGOING.equals(consultSessionStatusVo2.getStatus()))WechatUtil.sendMsgToWechat(token,openid,content);
                     LogUtils.saveLog("ZXTS_YMFJH",openid);
                     return true;
                 }else{
                     //没有机会,推送购买链接
-                    String content = "求助客服点击这里欧！\n<a href='"+sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"/angel/patient/consult#/patientCustomerService'>H5咨询入口</a>";
-//                    if(prompt)WechatUtil.sendMsgToWechat(token,openid,content);
-
-                    content = "时间真快，您本月的免费咨询机会已用完\n更多咨询机会请\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>猛戳这里购买吧！</a>";
+                    String content = "时间真快，您本月的免费咨询机会已用完\n更多咨询机会请\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35&from=fdsa'>>>猛戳这里购买吧！</a>";
                     if(prompt)WechatUtil.sendMsgToWechat(token,openid,content);
                     LogUtils.saveLog("ZXTS_MYMFJH",openid);
                     return  false;
@@ -201,7 +196,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             String content = "求助客服点击这里欧！\n<a href='"+sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"/angel/patient/consult#/patientCustomerService'>H5咨询入口</a>";
 //            WechatUtil.sendMsgToWechat(token,openid,content);
 
-            content = "亲爱的，您本次"+sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime()+"分钟免费咨询时间已到。如需继续咨询，点击下方购买服务即可哦 \n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>猛戳这里购买吧！</a>\n\n不急的麻麻可以等待\n24h后您的下次30分钟免费机会哦~";
+            content = "亲爱的，您本次免费咨询时间已到\n" +"还没问完？ 畅享24小时随时提问，专业医生随时候答\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>猛戳这里购买吧！</a>\n\n不急的麻麻可以等待\n24h后您的下次30分钟免费机会哦~";
             WechatUtil.sendMsgToWechat(token,openid,content);
             LogUtils.saveLog("ZXTS_SYMFJH",openid);
             return false;
