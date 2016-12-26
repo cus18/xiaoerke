@@ -23,7 +23,7 @@ public class ConsultUtil {
 		consultSession.setId(Integer.parseInt(String.valueOf(consultSessionMap.get("id"))));
 		consultSession.setPayStatus((String) consultSessionMap.get("payStatus"));
 		consultSession.setNickName((String) consultSessionMap.get("nickName"));
-		consultSession.setConsultNum(Integer.parseInt(String.valueOf(consultSessionMap.get("consultNum"))));
+		consultSession.setConsultNum(StringUtils.isNotNull(String.valueOf(consultSessionMap.get("consultNum")))?Integer.parseInt(String.valueOf(consultSessionMap.get("consultNum"))):0);
 		return consultSession;
 	}
 
