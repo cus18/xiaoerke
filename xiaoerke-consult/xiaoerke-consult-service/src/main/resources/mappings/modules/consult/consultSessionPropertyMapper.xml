@@ -129,6 +129,7 @@
     from consult_session_property
     where 1=1
     and sys_user_id = #{userId,jdbcType=VARCHAR}
+    GROUP BY sys_user_id
   </select>
 
   <update id="updateMonthTime">
