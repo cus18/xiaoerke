@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
+import com.cxqm.xiaoerke.modules.consult.utils.DateUtil;
 
 import java.util.*;
 
@@ -14,7 +15,7 @@ public class ConsultUtil {
 		consultSession.setUserName((String) consultSessionMap.get("userName"));
 		consultSession.setUserId((String) consultSessionMap.get("userId"));
 		consultSession.setServerAddress((String) consultSessionMap.get("serverAddress"));
-		consultSession.setCreateTime(DateUtils.StrToDate(String.valueOf(consultSessionMap.get("createTime")),"datetime") );
+		consultSession.setCreateTime(DateUtils.StrToDate(String.valueOf(consultSessionMap.get("createTime")), "datetime"));
 		consultSession.setCsUserName((String) consultSessionMap.get("csUserName"));
 		consultSession.setSource((String) consultSessionMap.get("source"));
 		consultSession.setCsUserId((String) consultSessionMap.get("csUserId"));
@@ -31,15 +32,17 @@ public class ConsultUtil {
 		HashMap<Object,Object> consultSessionMap = new HashMap<Object, Object>();
 		consultSessionMap.put("userName", consultSession.getUserName());
 		consultSessionMap.put("userId", consultSession.getUserId());
-		consultSessionMap.put("serverAddress", consultSession.getServerAddress());
-		consultSessionMap.put("createTime", DateUtils.DateToStr(consultSession.getCreateTime(), "datetime"));
+		if(StringUtils.isNotBlank(consultSession.getServerAddress())){
+			consultSessionMap.put("serverAddress", consultSession.getServerAddress());
+		}
+		consultSessionMap.put("createTime", consultSession.getCreateTime() != null ? DateUtils.DateToStr(consultSession.getCreateTime(), "datetime") : new Date());
 		consultSessionMap.put("csUserName", consultSession.getCsUserName());
 		consultSessionMap.put("source", consultSession.getSource());
 		consultSessionMap.put("csUserId", consultSession.getCsUserId());
 		consultSessionMap.put("status", consultSession.getStatus());
-		consultSessionMap.put("title", StringUtils.isNotBlank(consultSession.getTitle())?consultSession.getTitle():"");
-		consultSessionMap.put("payStatus", consultSession.getPayStatus());
-		consultSessionMap.put("nickName", StringUtils.isNotBlank(consultSession.getNickName())?consultSession.getNickName():"");
+		consultSessionMap.put("title", StringUtils.isNotBlank(consultSession.getTitle()) ? consultSession.getTitle() : "");
+		consultSessionMap.put("payStatus", StringUtils.isNotNull(consultSession.getPayStatus())?consultSession.getPayStatus():"nopay");
+		consultSessionMap.put("nickName", StringUtils.isNotBlank(consultSession.getNickName()) ? consultSession.getNickName() : "");
 		consultSessionMap.put("id", String.valueOf(consultSession.getId()));
 		consultSessionMap.put("consultNum", String.valueOf(consultSession.getConsultNum()));
 		return consultSessionMap;
