@@ -209,8 +209,6 @@ public class ConsultDoctorTransferController extends BaseController {
                     User user = systemService.getUser(consultSessionForwardRecordsVo.getToUserId());
                     param.put("toCsUserName",user.getName());
                     param.put("operation", operation);
-                    consultSessionForwardRecordsService.react2Transfer(param);
-
                     try{
                         //咨询会员
                         Map parameter = systemService.getWechatParameter();
@@ -227,6 +225,7 @@ public class ConsultDoctorTransferController extends BaseController {
                     }catch (Exception e){
                         e.printStackTrace();
                     }
+                    consultSessionForwardRecordsService.react2Transfer(param);
                 }
             }
         }
