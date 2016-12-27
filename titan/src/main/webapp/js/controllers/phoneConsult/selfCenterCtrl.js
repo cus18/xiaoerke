@@ -49,7 +49,7 @@
             /* 电话咨询订单*/
             $scope.phoneConsultOrder = function(){
                 RecordLogs.get({logContent:encodeURI("FSS_YHD_GRZX_TWZX")},function(){})
-                location.href="nonRealTimeConsult#/NonTimeUserConsultList";
+                location.href="http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=umbrella";
                 //resolveUserLoginStatus.events("phoneConsultOrder","","","","notGo");
             };
 
