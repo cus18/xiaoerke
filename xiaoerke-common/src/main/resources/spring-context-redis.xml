@@ -44,6 +44,19 @@
     </property>
     </bean>
 
+
+    <bean id="springSession" class="org.springframework.session.web.http.SessionRepositoryFilter">
+        <constructor-arg>
+            <bean class="org.springframework.session.data.redis.RedisOperationsSessionRepository">
+                <constructor-arg>
+                    <bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+                          p:port="${redis.port}" p:hostName="${redis.host}"
+                          p:password="${redis.password}"/>
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
+    </bean>
+
     <!-- jedis 集群配置-->
     <!--<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">-->
         <!--<property name="maxTotal" value="${redis.maxTotal}"/>-->
