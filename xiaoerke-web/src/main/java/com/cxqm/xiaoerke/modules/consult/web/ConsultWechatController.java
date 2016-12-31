@@ -97,6 +97,15 @@ public class ConsultWechatController extends BaseController {
         HashMap<String, Object> result = new HashMap<String, Object>();
         System.out.println("openId=" + openId);
         HashMap<String, Object> paramMap = new HashMap<String, Object>();
+        if(openId.indexOf(",")!=-1){
+            openId = openId.split(",")[0];
+        }
+        if(messageType.indexOf(",")!=-1){
+            messageType = messageType.split(",")[0];
+        }
+        if(mediaId!=null && mediaId.indexOf(",")!=-1){
+            mediaId = mediaId.split(",")[0];
+        }
         paramMap.put("openId", openId);
         paramMap.put("messageType", messageType);
         paramMap.put("messageContent", messageContent);
@@ -166,8 +175,8 @@ public class ConsultWechatController extends BaseController {
             Channel csChannel = null;
             //根据用户的openId，判断redis中，是否有用户正在进行的session
             Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
+           HashMap<String, Object> createWechatConsultSessionMap = null;
             System.out.println("sessionId------" + sessionId);
-            HashMap<String, Object> createWechatConsultSessionMap = null;
             RichConsultSession consultSession = new RichConsultSession();
 
             //如果此用户不是第一次发送消息，则sessionId不为空
