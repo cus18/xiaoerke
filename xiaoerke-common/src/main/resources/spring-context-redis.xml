@@ -11,101 +11,124 @@
     <!-- 加载配置属性文件 -->
     <context:property-placeholder ignore-unresolvable="true" location="classpath:dataBase.properties"/>
     <!--原始部分-->
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxIdle" value="300"/>
-        <!-- 最大能够保持idel状态的对象数  -->
-        <property name="maxTotal" value="60000"/>
-        <!-- 最大分配的对象数 -->
-        <property name="testOnBorrow" value="true"/>
-        <!-- 当调用borrow Object方法时，是否进行有效性检查 -->
-    </bean>
+    <!--<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">-->
+    <!--<property name="maxIdle" value="300"/>-->
+    <!--&lt;!&ndash; 最大能够保持idel状态的对象数  &ndash;&gt;-->
+    <!--<property name="maxTotal" value="60000"/>-->
+    <!--&lt;!&ndash; 最大分配的对象数 &ndash;&gt;-->
+    <!--<property name="testOnBorrow" value="true"/>-->
+    <!--&lt;!&ndash; 当调用borrow Object方法时，是否进行有效性检查 &ndash;&gt;-->
+    <!--</bean>-->
 
-    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
-        <constructor-arg index="0" ref="jedisPoolConfig"/>
-        <constructor-arg index="1" value="${redis.host}"/>
-        <constructor-arg index="2" value="${redis.port}" type="int"/>
-        <constructor-arg index="3" value="${redis.timeout}" type="int"/>
-        <constructor-arg index="4" value="${redis.password}"/>
-    </bean>
+    <!--<bean id="jedisPool" class="redis.clients.jedis.JedisPool">-->
+    <!--<constructor-arg index="0" ref="jedisPoolConfig"/>-->
+    <!--<constructor-arg index="1" value="${redis.host}"/>-->
+    <!--<constructor-arg index="2" value="${redis.port}" type="int"/>-->
+    <!--<constructor-arg index="3" value="${redis.timeout}" type="int"/>-->
+    <!--<constructor-arg index="4" value="${redis.password}"/>-->
+    <!--</bean>-->
 
-    <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-        <property name="usePool" value="true"/>
-        <property name="hostName" value="${redis.host}"/>
-        <property name="port" value="${redis.port}"/>
-        <property name="password" value="${redis.password}"/>
-        <property name="timeout" value="${redis.timeout}"/>
-        <property name="poolConfig" ref="jedisPoolConfig"/>
-    </bean>
+    <!--<bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">-->
+    <!--<property name="usePool" value="true"/>-->
+    <!--<property name="hostName" value="${redis.host}"/>-->
+    <!--<property name="port" value="${redis.port}"/>-->
+    <!--<property name="password" value="${redis.password}"/>-->
+    <!--<property name="timeout" value="${redis.timeout}"/>-->
+    <!--<property name="poolConfig" ref="jedisPoolConfig"/>-->
+    <!--</bean>-->
 
-    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
-        <property name="connectionFactory" ref="connectionFactory"/>
-        <property name="keySerializer">
-            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
-        </property>
-        <property name="defaultSerializer" >
-            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
-        </property>
-        <property name="valueSerializer" >
-            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
-        </property>
-        <property name="hashValueSerializer" >
-            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
-        </property>
-
-    </bean>
+    <!--<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">-->
+    <!--<property name="connectionFactory" ref="connectionFactory"/>-->
+    <!--<property name="keySerializer">-->
+    <!--<bean class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>-->
+    <!--</property>-->
+    <!--</bean>-->
 
 
-    <bean id="springSession" class="org.springframework.session.web.http.SessionRepositoryFilter">
-        <constructor-arg>
-            <bean class="org.springframework.session.data.redis.RedisOperationsSessionRepository">
-                <constructor-arg>
-                    <bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
-                          p:port="${redis.port}" p:hostName="${redis.host}"
-                          p:password="${redis.password}"/>
-                </constructor-arg>
-            </bean>
-        </constructor-arg>
-    </bean>
+    <!-- jedis 单台机器-->
+    <!--<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig" >-->
+    <!--<property name="maxIdle" value="${redis.maxIdle}" />-->
+    <!--<property name="maxWaitMillis" value="${redis.maxWait}" />-->
+    <!--<property name="testOnBorrow" value="${redis.testOnBorrow}" />-->
+    <!--</bean>-->
+    <!--&lt;!&ndash; redis服务器中心 &ndash;&gt;-->
+    <!--<bean id="connectionFactory"  class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" >-->
+    <!--<property name="poolConfig" ref="poolConfig" />-->
+    <!--<property name="port" value="${redis.port}" />-->
+    <!--<property name="hostName" value="${redis.host}" />-->
+    <!--&lt;!&ndash;<property name="password" value="${redis.password}" />&ndash;&gt;-->
+    <!--<property name="timeout" value="${redis.timeout}" ></property>-->
+    <!--<property name="database" value="1"></property>-->
+    <!--</bean>-->
+
+    <!--<bean id="commonRedisTemplate" class="org.springframework.data.redis.core.RedisTemplate" >-->
+    <!--<property name="connectionFactory" ref="connectionFactory" />-->
+    <!--<property name="keySerializer" ref="stringRedisSerializer" />-->
+    <!--<property name="hashKeySerializer" ref="stringRedisSerializer" />-->
+    <!--<property name="valueSerializer" ref="stringRedisSerializer" />-->
+    <!--<property name="hashValueSerializer" ref="stringRedisSerializer" />-->
+    <!--</bean>-->
+
+    <!--<bean id="connectionFactory1"  class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" >-->
+    <!--<property name="poolConfig" ref="poolConfig" />-->
+    <!--<property name="port" value="${redis.port}" />-->
+    <!--<property name="hostName" value="${redis.host}" />-->
+    <!--&lt;!&ndash;<property name="password" value="${redis.password}" />&ndash;&gt;-->
+    <!--<property name="timeout" value="${redis.timeout}" ></property>-->
+    <!--<property name="database" value="2"></property>-->
+    <!--</bean>-->
+
+    <!--<bean id="stringRedisSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer" />-->
+    <!--<bean id="cacheRedisTemplate" class="org.springframework.data.redis.core.RedisTemplate" >-->
+    <!--<property name="connectionFactory" ref="connectionFactory1" />-->
+    <!--<property name="keySerializer" ref="stringRedisSerializer" />-->
+    <!--<property name="hashKeySerializer" ref="stringRedisSerializer" />-->
+    <!--<property name="valueSerializer" ref="stringRedisSerializer" />-->
+    <!--<property name="hashValueSerializer" ref="stringRedisSerializer" />-->
+    <!--</bean>-->
+
 
     <!-- jedis 集群配置-->
-    <!--<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">-->
-    <!--<property name="maxTotal" value="${redis.maxTotal}"/>-->
-    <!--<property name="minIdle" value="${redis.minIdle}"/>-->
-    <!--<property name="maxWaitMillis" value="${redis.maxWaitTime}"/>-->
-    <!--<property name="maxIdle" value="${redis.maxIdle}"/>-->
-    <!--<property name="testOnBorrow" value="${redis.testOnBorrow}"/>-->
-    <!--<property name="testOnReturn" value="true"/>-->
-    <!--<property name="testWhileIdle" value="true"/>-->
-    <!--</bean>-->
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${redis.maxTotal}"/>
+        <property name="minIdle" value="${redis.minIdle}"/>
+        <property name="maxWaitMillis" value="${redis.maxWaitTime}"/>
+        <property name="maxIdle" value="${redis.maxIdle}"/>
+        <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
+        <property name="testOnReturn" value="true"/>
+        <property name="testWhileIdle" value="true"/>
+    </bean>
 
-    <!--<bean id="sentinelConfiguration"-->
-    <!--class="org.springframework.data.redis.connection.RedisSentinelConfiguration">-->
-    <!--<property name="master">-->
-    <!--<bean class="org.springframework.data.redis.connection.RedisNode">-->
-    <!--<property name="name" value="${redis.sentinel.masterName}"></property>-->
-    <!--</bean>-->
-    <!--</property>-->
-    <!--<property name="sentinels">-->
-    <!--<set>-->
-    <!--<bean class="org.springframework.data.redis.connection.RedisNode">-->
-    <!--<constructor-arg name="host" value="${redis.sentinel1.host}"></constructor-arg>-->
-    <!--<constructor-arg name="port" value="${redis.sentinel1.port}"></constructor-arg>-->
-    <!--</bean>-->
-    <!--<bean class="org.springframework.data.redis.connection.RedisNode">-->
-    <!--<constructor-arg name="host" value="${redis.sentinel2.host}"></constructor-arg>-->
-    <!--<constructor-arg name="port" value="${redis.sentinel2.port}"></constructor-arg>-->
-    <!--</bean>-->
-    <!--</set>-->
-    <!--</property>-->
-    <!--</bean>-->
-    <!--<bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration"/>-->
-    <!--<bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"-->
-    <!--p:password="${redis.sentinel.password}">-->
-    <!--<constructor-arg name="sentinelConfig" ref="sentinelConfiguration"></constructor-arg>-->
-    <!--<constructor-arg name="poolConfig" ref="poolConfig"></constructor-arg>-->
-    <!--</bean>-->
+    <bean id="sentinelConfiguration"
+          class="org.springframework.data.redis.connection.RedisSentinelConfiguration">
+        <property name="master">
+            <bean class="org.springframework.data.redis.connection.RedisNode">
+                <property name="name" value="${redis.sentinel.masterName}"></property>
+                <constructor-arg name="host" value="${redis.sentinel1.host}"></constructor-arg>
+                <constructor-arg name="port" value="6379"></constructor-arg>
+            </bean>
+        </property>
+        <property name="sentinels">
+            <set>
+                <bean class="org.springframework.data.redis.connection.RedisNode">
+                    <constructor-arg name="host" value="${redis.sentinel1.host}"></constructor-arg>
+                    <constructor-arg name="port" value="${redis.sentinel1.port}"></constructor-arg>
+                </bean>
+                <bean class="org.springframework.data.redis.connection.RedisNode">
+                    <constructor-arg name="host" value="${redis.sentinel2.host}"></constructor-arg>
+                    <constructor-arg name="port" value="${redis.sentinel2.port}"></constructor-arg>
+                </bean>
+            </set>
+        </property>
+    </bean>
 
-    <!--<bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">-->
-    <!--<property name="connectionFactory" ref="connectionFactory"/>-->
-    <!--</bean>-->
+    <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:password="${redis.sentinel.password}">
+        <constructor-arg name="sentinelConfig" ref="sentinelConfiguration"></constructor-arg>
+        <constructor-arg name="poolConfig" ref="poolConfig"></constructor-arg>
+    </bean>
+
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+    </bean>
 </beans>

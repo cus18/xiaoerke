@@ -25,24 +25,6 @@
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>  
 	</listener>
 
-
-
-	<filter>
-		<filter-name>springSessionFilter</filter-name>
-		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-		<init-param>
-			<param-name>targetBeanName</param-name>
-			<param-value>springSession</param-value>
-		</init-param>
-	</filter>
-
-	<filter-mapping>
-		<filter-name>springSessionFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
-
-
 	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
