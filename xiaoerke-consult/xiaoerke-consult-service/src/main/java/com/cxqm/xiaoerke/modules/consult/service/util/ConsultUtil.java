@@ -15,13 +15,17 @@ public class ConsultUtil {
 		consultSession.setUserName((String) consultSessionMap.get("userName"));
 		consultSession.setUserId((String) consultSessionMap.get("userId"));
 		consultSession.setServerAddress((String) consultSessionMap.get("serverAddress"));
-		consultSession.setCreateTime(DateUtils.StrToDate(String.valueOf(consultSessionMap.get("createTime")), "datetime"));
+        if(StringUtils.isNotBlank(String.valueOf(consultSessionMap.get("createTime")))){
+            consultSession.setCreateTime(DateUtils.StrToDate(String.valueOf(consultSessionMap.get("createTime")), "datetime"));
+        }
 		consultSession.setCsUserName((String) consultSessionMap.get("csUserName"));
 		consultSession.setSource((String) consultSessionMap.get("source"));
 		consultSession.setCsUserId((String) consultSessionMap.get("csUserId"));
 		consultSession.setStatus((String) consultSessionMap.get("status"));
 		consultSession.setTitle((String) consultSessionMap.get("title"));
-		consultSession.setId(Integer.parseInt(String.valueOf(consultSessionMap.get("id"))));
+		if(StringUtils.isNotBlank(String.valueOf(consultSessionMap.get("id")))){
+			consultSession.setId(Integer.parseInt(String.valueOf(consultSessionMap.get("id"))));
+		}
 		consultSession.setPayStatus((String) consultSessionMap.get("payStatus"));
 		consultSession.setNickName((String) consultSessionMap.get("nickName"));
 		consultSession.setConsultNum(StringUtils.isNotNull(String.valueOf(consultSessionMap.get("consultNum")))?Integer.parseInt(String.valueOf(consultSessionMap.get("consultNum"))):0);
