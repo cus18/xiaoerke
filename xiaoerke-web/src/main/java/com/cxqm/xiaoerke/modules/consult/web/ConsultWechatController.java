@@ -95,11 +95,16 @@ public class ConsultWechatController extends BaseController {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
         HashMap<String, Object> result = new HashMap<String, Object>();
-        System.out.println("openId=" + openId);
         HashMap<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("openId", openId);
         paramMap.put("messageType", messageType);
         paramMap.put("messageContent", messageContent);
+
+
+        LogUtils.saveLog("conversationopenId", openId);
+        LogUtils.saveLog("conversationmessageType", messageType);
+        LogUtils.saveLog("conversationmessageContent", messageContent);
+
 
         if (messageType.contains("voice") || messageType.contains("video") || messageType.contains("image")) {
             paramMap.put("mediaId", mediaId);
