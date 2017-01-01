@@ -4,7 +4,7 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
-import com.cxqm.xiaoerke.modules.consult.utils.DateUtil;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 
 import java.util.*;
 
@@ -17,7 +17,9 @@ public class ConsultUtil {
 		consultSession.setServerAddress((String) consultSessionMap.get("serverAddress"));
         if(StringUtils.isNotBlank(String.valueOf(consultSessionMap.get("createTime")))){
             consultSession.setCreateTime(DateUtils.StrToDate(String.valueOf(consultSessionMap.get("createTime")), "datetime"));
-        }
+        }else{
+			LogUtils.saveLog("transferMapToRichConsultId",String.valueOf(consultSessionMap.get("id")));
+		}
 		consultSession.setCsUserName((String) consultSessionMap.get("csUserName"));
 		consultSession.setSource((String) consultSessionMap.get("source"));
 		consultSession.setCsUserId((String) consultSessionMap.get("csUserId"));
@@ -25,6 +27,8 @@ public class ConsultUtil {
 		consultSession.setTitle((String) consultSessionMap.get("title"));
 		if(StringUtils.isNotBlank(String.valueOf(consultSessionMap.get("id")))){
 			consultSession.setId(Integer.parseInt(String.valueOf(consultSessionMap.get("id"))));
+		}else{
+			LogUtils.saveLog("transferMapToRichConsultSessioncreateTime",(String) consultSessionMap.get("userId"));
 		}
 		consultSession.setPayStatus((String) consultSessionMap.get("payStatus"));
 		consultSession.setNickName((String) consultSessionMap.get("nickName"));
