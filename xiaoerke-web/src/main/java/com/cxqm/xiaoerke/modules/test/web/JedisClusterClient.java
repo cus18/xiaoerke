@@ -34,18 +34,18 @@ public class JedisClusterClient {
     }
 
     public void SaveRedisCluster() {
-        Set<HostAndPort> jedisClusterNodes = new HashSet<HostAndPort>();
-        jedisClusterNodes.add(new HostAndPort("192.168.31.245", 7000));
-        jedisClusterNodes.add(new HostAndPort("192.168.31.245", 7001));
-        jedisClusterNodes.add(new HostAndPort("192.168.31.245", 7002));
-        jedisClusterNodes.add(new HostAndPort("192.168.31.210", 7003));
-        jedisClusterNodes.add(new HostAndPort("192.168.31.210", 7004));
-        jedisClusterNodes.add(new HostAndPort("192.168.31.210", 7005));
-
-        JedisCluster jc = new JedisCluster(jedisClusterNodes,getPoolConfig());
-        jc.set("cluster", "this is a redis cluster");
-        String result = jc.get("cluster");
-        System.out.println(result);
+//        Set<HostAndPort> jedisClusterNodes = new HashSet<HostAndPort>();
+//        jedisClusterNodes.add(new HostAndPort("192.168.31.245", 7000));
+//        jedisClusterNodes.add(new HostAndPort("192.168.31.245", 7001));
+//        jedisClusterNodes.add(new HostAndPort("192.168.31.245", 7002));
+//        jedisClusterNodes.add(new HostAndPort("192.168.31.210", 7003));
+//        jedisClusterNodes.add(new HostAndPort("192.168.31.210", 7004));
+//        jedisClusterNodes.add(new HostAndPort("192.168.31.210", 7005));
+//
+//        JedisCluster jc = new JedisCluster(jedisClusterNodes,getPoolConfig());
+//        jc.set("cluster", "this is a redis cluster");
+//        String result = jc.get("cluster");
+//        System.out.println(result);
     }
 
     public static void main(String[] args) {

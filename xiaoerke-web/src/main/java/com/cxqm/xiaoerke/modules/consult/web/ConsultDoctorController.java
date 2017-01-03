@@ -34,6 +34,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.*;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -268,37 +275,65 @@ public class ConsultDoctorController extends BaseController {
     @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public void test(HttpSession session, HttpServletRequest request) {
-        //根据日期查询所有的sessionID
-        ConsultSession consultSession = new ConsultSession();
-        consultSession.setCreateTime(DateUtils.StrToDate("2016-11-21 23:59:57","datetime"));//开始时间
-        consultSession.setUpdateTime(DateUtils.StrToDate("2016-12-01 00:00:00","datetime"));//结束时间
-        List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSession);
-        //遍历所有的sessionId咨询医生对应的开始时间，结束时间
-        List<ConsultRecordVo> consultRecordVoList = new ArrayList<ConsultRecordVo>();
-        for(ConsultSession vo : consultSessions){
-            ConsultSession session1 =new ConsultSession();
-            consultSession.setCsUserId(String.valueOf(vo.getId()));
-            List<ConsultSession> sessionList = consultSessionService.getCsUserByUserId(consultSession);
-            if(sessionList!=null && sessionList.size()>0){
-                session1 = sessionList.get(0);
-                ConsultRecordVo consultRecordVo = new ConsultRecordVo();
-                consultRecordVo.setMessage(String.valueOf(DateUtils.getMinuteOfTwoDate(session1.getCreateTime(), session1.getUpdateTime())));
-                consultRecordVo.setUserId(vo.getUserId());
-                consultRecordVo.setCsuserId(vo.getCsUserId());
-                consultRecordVo.setCreateDate(session1.getCreateTime());
-                consultRecordVo.setSenderId(vo.getSource());
-                consultRecordVo.setDoctorName(session1.getUserId());
-                consultRecordVo.setSessionId(String.valueOf(vo.getId()));
-                consultRecordVo.setId(IdGen.uuid());
-                consultRecordVoList.add(consultRecordVo);
-            }else{
-                System.out.println("==============="+vo.getId()+"===============");
+//        String username = "13181557398";
+//        User user = systemService.getUserByLoginName(username);
+//        UserUtils.putCache("user", user);
+//        User user1 = UserUtils.getUser();
+//        System.out.println(user1);
+        this.sendPost("http://s132.baodf.com/angel/consult/wechat/conversation", "openId=" + "123" +
+                        "&messageType=" + "1" +
+                        "&messageContent=" + "asd");
+    }
+
+    public String sendPost(String url, String param) {
+//                HttpRequestUtil.httpPost(param,url);
+
+        PrintWriter out = null;
+        BufferedReader in = null;
+
+        String result = "";
+        try {
+            URL realUrl = new URL(url+"?"+param);
+            // 打开和URL之间的连接
+            URLConnection conn = realUrl.openConnection();
+            // 设置通用的请求属性
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("user-agent",
+                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            // 发送POST请求必须设置如下两行
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            // 获取URLConnection对象对应的输出流
+            out = new PrintWriter(conn.getOutputStream());
+            // 发送请求参数
+            out.print(param);
+            // flush输出流的缓冲
+            out.flush();
+            // 定义BufferedReader输入流来读取URL的响应
+            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result += line;
             }
-
-
+        } catch (Exception e) {
+            System.out.println("发送 POST 请求出现异常！" + e);
+            e.printStackTrace();
         }
-        //批量插入到consult_record5表当中
-        consultRecordService.insertConsultRecordBatch(consultRecordVoList);
+        //使用finally块来关闭输出流、输入流
+        finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return result;
     }
 
     /**
