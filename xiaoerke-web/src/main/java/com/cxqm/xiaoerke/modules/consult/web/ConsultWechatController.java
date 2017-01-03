@@ -92,7 +92,7 @@ public class ConsultWechatController extends BaseController {
         String messageType = (String)json.get("messageType");
         String messageContent = "";
         try {
-            messageContent = URLDecoder.decode((String)json.get("messageContent"), "UTF-8");
+            messageContent =json.get("messageContent")!=null? URLDecoder.decode((String)json.get("messageContent"), "UTF-8"):"";
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
