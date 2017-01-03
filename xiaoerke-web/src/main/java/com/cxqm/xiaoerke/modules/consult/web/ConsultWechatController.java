@@ -24,17 +24,14 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.SocketException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -87,12 +84,19 @@ public class ConsultWechatController extends BaseController {
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> conversation(HttpServletRequest request,
-                                     @RequestParam(required = true) String openId,
-                                     @RequestParam(required = true) String messageType,
-                                     @RequestParam(required = false) String messageContent,
-                                     @RequestParam(required = false) String mediaId) {
+    Map<String, Object> conversation(HttpServletRequest request,@RequestBody String body) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+
+        JSONObject json = JSONObject.parseObject(body);
+        String openId = (String)json.get("openId");
+        String messageType = (String)json.get("messageType");
+        String messageContent = "";
+        try {
+            messageContent = URLDecoder.decode((String)json.get("messageContent"), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String mediaId =  (String)json.get("mediaId");
 
         HashMap<String, Object> result = new HashMap<String, Object>();
         HashMap<String, Object> paramMap = new HashMap<String, Object>();
