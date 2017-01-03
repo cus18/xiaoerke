@@ -275,14 +275,26 @@ public class ConsultDoctorController extends BaseController {
     @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public void test(HttpSession session, HttpServletRequest request) {
-//        String username = "13181557398";
-//        User user = systemService.getUserByLoginName(username);
-//        UserUtils.putCache("user", user);
-//        User user1 = UserUtils.getUser();
-//        System.out.println(user1);
-        this.sendPost("http://s132.baodf.com/angel/consult/wechat/conversation", "openId=" + "123" +
-                        "&messageType=" + "1" +
-                        "&messageContent=" + "asd");
+
+    }
+
+    @RequestMapping(value = "/updateAddress", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public void updateAddress(HttpServletRequest request) {
+
+        //获取正在咨询的会话
+        ConsultSession consultSessionSearch = new ConsultSession();
+        consultSessionSearch.setStatus(ConsultSession.STATUS_ONGOING);
+        List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSessionSearch);
+        //将用户的地址put上
+        for(ConsultSession consultSession :consultSessions){
+            RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(consultSession.getId());
+            if(richConsultSession!=null){
+                richConsultSession.setServerAddress("101.201.197.251");
+                sessionRedisCache.putSessionIdConsultSessionPair(richConsultSession.getId(),richConsultSession);
+            }
+
+        }
     }
 
     @RequestMapping(value = "/updateAddress", method = {RequestMethod.POST, RequestMethod.GET})
