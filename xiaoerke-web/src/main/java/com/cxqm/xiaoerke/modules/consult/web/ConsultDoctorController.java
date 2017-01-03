@@ -285,6 +285,25 @@ public class ConsultDoctorController extends BaseController {
                         "&messageContent=" + "asd");
     }
 
+    @RequestMapping(value = "/updateAddress", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public void updateAddress(HttpSession session, HttpServletRequest request) {
+
+        //获取正在咨询的会话
+        ConsultSession consultSessionSearch = new ConsultSession();
+        consultSessionSearch.setStatus(ConsultSession.STATUS_ONGOING);
+        List<ConsultSession> consultSessions = consultSessionService.selectBySelective(consultSessionSearch);
+        //将用户的地址put上
+        for(ConsultSession consultSession :consultSessions){
+            RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(consultSession.getId());
+            if(richConsultSession!=null){
+                richConsultSession.setServerAddress("101.200.194.68");
+                sessionRedisCache.putSessionIdConsultSessionPair(richConsultSession.getId(),richConsultSession);
+            }
+
+        }
+    }
+
     public String sendPost(String url, String param) {
 //                HttpRequestUtil.httpPost(param,url);
 

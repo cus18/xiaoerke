@@ -12,8 +12,13 @@ public class ConsultUtil {
 
 	public static RichConsultSession transferMapToRichConsultSession(Map<Object, Object> consultSessionMap){
 		RichConsultSession consultSession = new RichConsultSession();
-		consultSession.setUserName((String) consultSessionMap.get("userName"));
-		consultSession.setUserId((String) consultSessionMap.get("userId"));
+		String userName = (String) consultSessionMap.get("userName");
+		String userId = (String) consultSessionMap.get("userId");
+//		if(){
+//
+//		}
+		consultSession.setUserName(userName);
+		consultSession.setUserId(userId);
 		consultSession.setServerAddress((String) consultSessionMap.get("serverAddress"));
         if(StringUtils.isNotBlank(String.valueOf(consultSessionMap.get("createTime")))){
             consultSession.setCreateTime(DateUtils.StrToDate(String.valueOf(consultSessionMap.get("createTime")), "datetime"));
