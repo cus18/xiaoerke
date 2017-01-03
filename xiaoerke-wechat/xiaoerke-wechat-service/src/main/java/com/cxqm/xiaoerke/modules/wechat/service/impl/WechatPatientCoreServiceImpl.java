@@ -502,10 +502,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 jsonObject.put("messageType",xmlEntity.getMsgType());
                 if (xmlEntity.getMsgType().equals("text")) {
                     jsonObject.put("messageContent", URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
-                    this.postByBody(jsonObject.toString());
+                    this.postByBody(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/conversation",jsonObject.toString());
                 } else {
                     jsonObject.put("mediaId",xmlEntity.getMediaId());
-                    this.postByBody(jsonObject.toString());
+                    this.postByBody(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/conversation",jsonObject.toString());
                 }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -567,9 +567,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             return result;
         }
 
-        public void postByBody(String param){
+        public void postByBody(String urlPath ,String param){
             try{
-                URL url = new URL("http://s120.xiaork.com/angel/consult/wechat/conversation");
+                URL url = new URL(urlPath);
                 URLConnection urlConnection = url.openConnection();
                 // 设置doOutput属性为true表示将使用此urlConnection写入数据
                 urlConnection.setDoOutput(true);
@@ -1816,23 +1816,30 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
 
 //    public static void main(String[] args){
-//        String url = "http://s120.xiaork.com/angel/consult/wechat/conversation";
-//    String info = null;
-//        try {
-//            HttpClient httpclient = new HttpClient();
-//            PostMethod post = new PostMethod(url);
-//            post.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
-//            String sTelContent = "{'tel':'15980920215,13696921193','content':'yebinghuai短信猫测试内容'}";
-//            post.setRequestBody(sTelContent);
 //
-//            httpclient.executeMethod(post);
-//            info = new String(post.getResponseBody(), "utf-8");
-//            System.out.println(info);
-//        } catch (Exception e) {
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("openId","fsdaf");
+//        jsonObject.put("messageType","哈哈哈哈哈哈哈哈哈");
+//        try{
+//            URL url = new URL("http://s120.xiaork.com/angel/consult/wechat/conversation");
+//            URLConnection urlConnection = url.openConnection();
+//            // 设置doOutput属性为true表示将使用此urlConnection写入数据
+//            urlConnection.setDoOutput(true);
+//            // 定义待写入数据的内容类型，我们设置为application/x-www-form-urlencoded类型
+//            urlConnection.setRequestProperty("content-type", "text/plain");
+//            urlConnection.setRequestProperty("charset", "UTF-8");
+//            // 得到请求的输出流对象
+//            OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
+//            // 把数据写入请求的Body
+//            out.write(jsonObject.toString());
+//            out.flush();
+//            out.close();
+//            // 从服务器读取响应
+//            InputStream inputStream = urlConnection.getInputStream();
+//            String encoding = urlConnection.getContentEncoding();
+//        }catch(IOException e){
 //            e.printStackTrace();
 //        }
 //    }
-
-
 
 }
