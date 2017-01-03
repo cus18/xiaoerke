@@ -25,12 +25,16 @@ import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatPatientCoreService;
 import com.cxqm.xiaoerke.modules.wechat.service.util.MessageUtil;
 import net.sf.json.JSONObject;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -493,16 +497,15 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             try {
                 System.out.println(xmlEntity.getContent());
                 SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("openId",xmlEntity.getFromUserName());
+                jsonObject.put("messageType",xmlEntity.getMsgType());
                 if (xmlEntity.getMsgType().equals("text")) {
-                    this.sendPost(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/conversation",
-                            "openId=" + xmlEntity.getFromUserName() +
-                                    "&messageType=" + xmlEntity.getMsgType() +
-                                    "&messageContent=" + URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
+                    jsonObject.put("messageContent", URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
+                    this.postByBody(jsonObject.toString());
                 } else {
-                    this.sendPost(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/conversation",
-                            "openId=" + xmlEntity.getFromUserName() +
-                                    "&messageType=" + xmlEntity.getMsgType() +
-                                    "&mediaId=" + xmlEntity.getMediaId());
+                    jsonObject.put("mediaId",xmlEntity.getMediaId());
+                    this.postByBody(jsonObject.toString());
                 }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -562,6 +565,29 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 }
             }
             return result;
+        }
+
+        public void postByBody(String param){
+            try{
+                URL url = new URL("http://s120.xiaork.com/angel/consult/wechat/conversation");
+                URLConnection urlConnection = url.openConnection();
+                // 设置doOutput属性为true表示将使用此urlConnection写入数据
+                urlConnection.setDoOutput(true);
+                // 定义待写入数据的内容类型，我们设置为application/x-www-form-urlencoded类型
+                urlConnection.setRequestProperty("content-type", "text/plain");
+                urlConnection.setRequestProperty("charset", "UTF-8");
+                // 得到请求的输出流对象
+                OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
+                // 把数据写入请求的Body
+                out.write(param);
+                out.flush();
+                out.close();
+                // 从服务器读取响应
+                InputStream inputStream = urlConnection.getInputStream();
+                String encoding = urlConnection.getContentEncoding();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -1787,4 +1813,26 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //        }
 //        return true;
 //    }
+
+
+//    public static void main(String[] args){
+//        String url = "http://s120.xiaork.com/angel/consult/wechat/conversation";
+//    String info = null;
+//        try {
+//            HttpClient httpclient = new HttpClient();
+//            PostMethod post = new PostMethod(url);
+//            post.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
+//            String sTelContent = "{'tel':'15980920215,13696921193','content':'yebinghuai短信猫测试内容'}";
+//            post.setRequestBody(sTelContent);
+//
+//            httpclient.executeMethod(post);
+//            info = new String(post.getResponseBody(), "utf-8");
+//            System.out.println(info);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+
+
 }
