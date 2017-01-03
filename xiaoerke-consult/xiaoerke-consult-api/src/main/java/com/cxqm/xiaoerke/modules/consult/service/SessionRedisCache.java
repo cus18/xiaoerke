@@ -29,6 +29,8 @@ public interface SessionRedisCache {
 
 	void removeUserIdSessionIdPair(String userId);
 
+	void putRedisSessionAddress(Integer sessionId, String ip);
+
 	void removeConsultSessionBySessionId(Integer sessionId);
 
 	List<Object> getConsultSessionsByKey();
