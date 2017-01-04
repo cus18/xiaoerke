@@ -11,12 +11,10 @@ import java.util.*;
 public class ConsultUtil {
 
 	public static RichConsultSession transferMapToRichConsultSession(Map<Object, Object> consultSessionMap){
+		LogUtils.saveLog((String) consultSessionMap.get("userName"),"transferMapToRichConsultSession");
 		RichConsultSession consultSession = new RichConsultSession();
 		String userName = (String) consultSessionMap.get("userName");
 		String userId = (String) consultSessionMap.get("userId");
-//		if(){
-//
-//		}
 		consultSession.setUserName(userName);
 		consultSession.setUserId(userId);
 		consultSession.setServerAddress((String) consultSessionMap.get("serverAddress"));
@@ -37,7 +35,8 @@ public class ConsultUtil {
 		}
 		consultSession.setPayStatus((String) consultSessionMap.get("payStatus"));
 		consultSession.setNickName((String) consultSessionMap.get("nickName"));
-		consultSession.setConsultNum(StringUtils.isNotNull(String.valueOf(consultSessionMap.get("consultNum")))?Integer.parseInt(String.valueOf(consultSessionMap.get("consultNum"))):0);
+		consultSession.setConsultNum(StringUtils.isNotNull(String.valueOf(consultSessionMap.get("consultNum"))) ? Integer.parseInt(String.valueOf(consultSessionMap.get("consultNum"))) : 0);
+		LogUtils.saveLog((String) consultSessionMap.get("userName"), "转换完成");
 		return consultSession;
 	}
 
