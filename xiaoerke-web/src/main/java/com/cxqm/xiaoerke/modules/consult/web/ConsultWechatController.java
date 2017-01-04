@@ -427,7 +427,7 @@ public class ConsultWechatController extends BaseController {
 
                     obj.put("serverAddress", serverAddress);
                     obj.put("source", consultSession.getSource());
-                    LogUtils.saveLog(openId, obj.toJSONString());
+                    LogUtils.saveLog(openId, "发送给医生的消息为："+obj.toJSONString());
                     StringBuffer sbf = new StringBuffer();
                     if (messageType.equals("text")) {
                         obj.put("type", 0);
