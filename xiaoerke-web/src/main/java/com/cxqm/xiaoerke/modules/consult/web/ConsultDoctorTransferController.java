@@ -199,35 +199,38 @@ public class ConsultDoctorTransferController extends BaseController {
         String operation = (String) params.get("operation");
         String[] forwardSessionIdArray = forwardSessionIds.split(";");
         for(int i=0;i<forwardSessionIdArray.length;i++){
-            HashMap<String,Object> param = new HashMap<String, Object>();
-            ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = consultSessionForwardRecordsService.selectByPrimaryKey(Long.parseLong(forwardSessionIdArray[i]));
-            if(consultSessionForwardRecordsVo!=null){
-                if(consultSessionForwardRecordsVo.getStatus().equals(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING)){
-                    param.put("sessionId",consultSessionForwardRecordsVo.getConversationId());
-                    param.put("forwardRecordId",consultSessionForwardRecordsVo.getId());
-                    param.put("toCsUserId",consultSessionForwardRecordsVo.getToUserId());
-                    User user = systemService.getUser(consultSessionForwardRecordsVo.getToUserId());
-                    param.put("toCsUserName",user.getName());
-                    param.put("operation", operation);
-                    try{
-                        //咨询会员
-                        Map parameter = systemService.getWechatParameter();
-                        String token = (String) parameter.get("token");
-                        ConsultSession consultSession =consultSessionService.selectByPrimaryKey(consultSessionForwardRecordsVo.getConversationId().intValue());
-                        //根据接入的是否为医生来判断
-                        if("consultDoctor".equals(user.getUserType())&&consultMemberRedsiCacheService.consultChargingCheck(consultSession.getUserId(),token,false)){
+            if(StringUtils.isNotBlank(forwardSessionIdArray[i])){
+                HashMap<String,Object> param = new HashMap<String, Object>();
+                ConsultSessionForwardRecordsVo consultSessionForwardRecordsVo = consultSessionForwardRecordsService.selectByPrimaryKey(Long.parseLong(forwardSessionIdArray[i]));
+                if(consultSessionForwardRecordsVo!=null){
+                    if(consultSessionForwardRecordsVo.getStatus().equals(ConsultSessionForwardRecordsVo.REACT_TRANSFER_STATUS_WAITING)){
+                        param.put("sessionId",consultSessionForwardRecordsVo.getConversationId());
+                        param.put("forwardRecordId",consultSessionForwardRecordsVo.getId());
+                        param.put("toCsUserId",consultSessionForwardRecordsVo.getToUserId());
+                        User user = systemService.getUser(consultSessionForwardRecordsVo.getToUserId());
+                        param.put("toCsUserName",user.getName());
+                        param.put("operation", operation);
+                        try{
+                            //咨询会员
+                            Map parameter = systemService.getWechatParameter();
+                            String token = (String) parameter.get("token");
+                            ConsultSession consultSession =consultSessionService.selectByPrimaryKey(consultSessionForwardRecordsVo.getConversationId().intValue());
+                            //根据接入的是否为医生来判断
+                            if("consultDoctor".equals(user.getUserType())&&consultMemberRedsiCacheService.consultChargingCheck(consultSession.getUserId(),token,false)){
 //                        增加机会
-                            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-                            if(!consultMemberRedsiCacheService.cheackMemberTimeOut(consultSession.getUserId())) {
-                                consultMemberRedsiCacheService.useFreeChance(consultSession.getUserId(), sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
-                            }
-                        };
-                    }catch (Exception e){
-                        e.printStackTrace();
+                                SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+                                if(!consultMemberRedsiCacheService.cheackMemberTimeOut(consultSession.getUserId())) {
+                                    consultMemberRedsiCacheService.useFreeChance(consultSession.getUserId(), sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
+                                }
+                            };
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        consultSessionForwardRecordsService.react2Transfer(param);
                     }
-                    consultSessionForwardRecordsService.react2Transfer(param);
                 }
             }
+
         }
         response.put("result","success");
         return response;
