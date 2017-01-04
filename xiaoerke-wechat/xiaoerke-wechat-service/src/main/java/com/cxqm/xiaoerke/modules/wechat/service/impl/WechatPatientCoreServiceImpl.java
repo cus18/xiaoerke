@@ -224,7 +224,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String customerService = Global.getConfig("wechat.customservice");
             if ("false".equals(customerService)) {
                 Runnable thread = new processConsultMessageThread(xmlEntity);
-                threadExecutorCash.execute(thread);
+                threadExecutorSingle.execute(thread);
                 return "";
             } else if ("true".equals(customerService)) {
                 respMessage = transferToCustomer(xmlEntity);
