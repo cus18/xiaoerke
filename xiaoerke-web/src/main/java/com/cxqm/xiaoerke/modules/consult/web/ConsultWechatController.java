@@ -400,8 +400,11 @@ public class ConsultWechatController extends BaseController {
                 }
                 //咨询收费处理
                 consultTimes = consultCharge(openId, sessionId, consultSession, sysPropertyVoWithBLOBsVo);
+                LogUtils.saveLog(openId,"咨询收费处理结束");
                 sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
+                LogUtils.saveLog(openId, "putSessionIdConsultSessionPair");
                 sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
+                LogUtils.saveLog(openId, "putUserIdSessionIdPair");
             }
 
             //会话创建成功，拿到了csChannel,给接诊员(或是医生)发送消息
@@ -423,9 +426,8 @@ public class ConsultWechatController extends BaseController {
                     }
 
                     obj.put("serverAddress", serverAddress);
-                    System.out.println("serverAddress------" + serverAddress);
                     obj.put("source", consultSession.getSource());
-
+                    LogUtils.saveLog(openId, obj.toJSONString());
                     StringBuffer sbf = new StringBuffer();
                     if (messageType.equals("text")) {
                         obj.put("type", 0);
@@ -456,10 +458,11 @@ public class ConsultWechatController extends BaseController {
                     /**
                      * jiangzg add 2016-9-8 17:44:45 增加消息数量
                      */
+                    LogUtils.saveLog(openId, "消息数量为"+consultSession.getConsultNum());
                     obj.put("consultNum", consultSession.getConsultNum());
-                    System.out.println("here csChannel is" + csChannel);
                     TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
                     csChannel.writeAndFlush(frame.retain());
+                    LogUtils.saveLog(openId, "消息推送给医生结束");
 
                     //保存聊天记录
                     consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
@@ -470,7 +473,6 @@ public class ConsultWechatController extends BaseController {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                     e.getMessage();
-                    System.out.println("=====sdf=====" + e.getMessage() + "===" + e.getCause());
                 }
             }
 
