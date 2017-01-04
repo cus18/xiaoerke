@@ -224,7 +224,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String customerService = Global.getConfig("wechat.customservice");
             if ("false".equals(customerService)) {
                 Runnable thread = new processConsultMessageThread(xmlEntity);
-                threadExecutor.execute(thread);
+                threadExecutorCash.execute(thread);
                 return "";
             } else if ("true".equals(customerService)) {
                 respMessage = transferToCustomer(xmlEntity);
@@ -589,6 +589,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 out.close();
                 // 从服务器读取响应
                 InputStream inputStream = urlConnection.getInputStream();
+                BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = in.readLine()) != null) {
+                    line += line;
+                }
+                System.out.print(line);
                 String encoding = urlConnection.getContentEncoding();
             }catch(IOException e){
                 e.printStackTrace();
