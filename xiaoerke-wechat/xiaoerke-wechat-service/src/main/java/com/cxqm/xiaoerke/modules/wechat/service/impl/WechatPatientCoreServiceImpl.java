@@ -215,6 +215,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             try {
                 //关键字回复功能
                 if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)||!consultMemberRedsiCacheService.consultChargingCheck(xmlEntity.getFromUserName(), token,true)) {
+                    LogUtils.saveLog(xmlEntity.getFromUserName(),"关键字拦截");
                     return "success";
                 }
             } catch (Exception e) {
@@ -588,6 +589,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 out.close();
                 // 从服务器读取响应
                 InputStream inputStream = urlConnection.getInputStream();
+                BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = in.readLine()) != null) {
+                    line += line;
+                }
+                System.out.print(line);
                 String encoding = urlConnection.getContentEncoding();
             }catch(IOException e){
                 e.printStackTrace();
