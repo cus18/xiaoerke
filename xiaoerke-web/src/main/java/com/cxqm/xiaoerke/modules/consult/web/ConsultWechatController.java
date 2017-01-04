@@ -122,19 +122,20 @@ public class ConsultWechatController extends BaseController {
         if (messageType.contains("voice") || messageType.contains("video") || messageType.contains("image")) {
             paramMap.put("mediaId", mediaId);
         }
+        LogUtils.saveLog(openId, "1");
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
         sysWechatAppintInfoVo.setOpen_id(openId);
         SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
-
+        LogUtils.saveLog(openId, "2");
         try {
             String locaHostIp = HttpUtils.getRealIp(sysPropertyVoWithBLOBsVo);
-            LogUtils.saveLog("ip", locaHostIp);
+            LogUtils.saveLog(openId, "3 locaHostIp"+locaHostIp);
             paramMap.put("serverAddress", locaHostIp);
         } catch (SocketException e) {
             e.printStackTrace();
         }
-
+        LogUtils.saveLog(openId, "4");
         Runnable thread = new processUserMessageThread(paramMap, sysPropertyVoWithBLOBsVo, wechatAttentionVo);
         threadExecutor.execute(thread);
         LogUtils.saveLog(openId,"推送消息完成");
@@ -157,8 +158,11 @@ public class ConsultWechatController extends BaseController {
 
             //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
             String openId = (String) this.param.get("openId");
+            LogUtils.saveLog(openId, "4");
             String messageType = (String) this.param.get("messageType");
+            LogUtils.saveLog(openId, "5");
             String messageContent = (String) this.param.get("messageContent");
+            LogUtils.saveLog(openId, "6");
             String serverAddress = (String) this.param.get("serverAddress");
             LogUtils.saveLog(openId,"开始处理消息single"+openId+"  "+messageType+"  "+messageContent+" "+serverAddress);
             String userName = openId;
@@ -427,7 +431,7 @@ public class ConsultWechatController extends BaseController {
 
                     obj.put("serverAddress", serverAddress);
                     obj.put("source", consultSession.getSource());
-                    LogUtils.saveLog(openId, "发送给医生的消息为："+obj.toJSONString());
+                    LogUtils.saveLog(openId, "发送给医生的消息为：" + obj.toJSONString());
                     StringBuffer sbf = new StringBuffer();
                     if (messageType.equals("text")) {
                         obj.put("type", 0);
