@@ -114,9 +114,9 @@ public class ConsultWechatController extends BaseController {
         paramMap.put("messageContent", messageContent);
 
 
-        LogUtils.saveLog("conversationopenId", openId);
-        LogUtils.saveLog("conversationmessageType", messageType);
-        LogUtils.saveLog("conversationmessageContent", messageContent);
+        LogUtils.saveLog(openId, "咨询进入openId为"+openId);
+        LogUtils.saveLog(openId,"咨询进入messageType为" +messageType);
+        LogUtils.saveLog(openId, "咨询进入messageContent为"+messageContent);
 
 
         if (messageType.contains("voice") || messageType.contains("video") || messageType.contains("image")) {
