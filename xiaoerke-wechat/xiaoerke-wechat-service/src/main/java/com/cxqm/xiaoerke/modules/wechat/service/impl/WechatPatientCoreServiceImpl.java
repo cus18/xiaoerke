@@ -149,6 +149,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         String msgType = xmlEntity.getMsgType();
         String openId = xmlEntity.getFromUserName();
         String eventKey = xmlEntity.getEventKey();
+        LogUtils.saveLog(xmlEntity.getFromUserName(), "msgComeInKeeper");
         // xml请求解析
         if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)) {
             // 事件类型
@@ -500,6 +501,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("openId",xmlEntity.getFromUserName());
                 jsonObject.put("messageType",xmlEntity.getMsgType());
+                LogUtils.saveLog(xmlEntity.getFromUserName(), "sendMsgToAngel");
                 if (xmlEntity.getMsgType().equals("text")) {
                     jsonObject.put("messageContent", URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
                     this.postByBody(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/conversation",jsonObject.toString());
