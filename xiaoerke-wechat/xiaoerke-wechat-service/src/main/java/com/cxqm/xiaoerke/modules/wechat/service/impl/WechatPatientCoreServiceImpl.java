@@ -133,6 +133,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
     private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
+    private static ExecutorService threadExecutorHash = Executors.newCachedThreadPool();
     /**
      * 处理微信发来的请求
      *
@@ -213,6 +214,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             try {
                 //关键字回复功能
                 if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)||!consultMemberRedsiCacheService.consultChargingCheck(xmlEntity.getFromUserName(), token,true)) {
+                    LogUtils.saveLog(xmlEntity.getFromUserName(),"关键字拦截");
                     return "success";
                 }
             } catch (Exception e) {
@@ -221,7 +223,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String customerService = Global.getConfig("wechat.customservice");
             if ("false".equals(customerService)) {
                 Runnable thread = new processConsultMessageThread(xmlEntity);
-                threadExecutor.execute(thread);
+                threadExecutorHash.execute(thread);
                 return "";
             } else if ("true".equals(customerService)) {
                 respMessage = transferToCustomer(xmlEntity);
