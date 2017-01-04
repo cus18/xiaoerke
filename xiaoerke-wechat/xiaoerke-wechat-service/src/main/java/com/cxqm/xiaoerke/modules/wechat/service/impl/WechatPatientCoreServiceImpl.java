@@ -131,9 +131,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
     private Map<String, OperationPromotionVo> keywordMap;
 
-    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+    private static ExecutorService threadExecutorSingle = Executors.newSingleThreadExecutor();
+    private static ExecutorService threadExecutorCash = Executors.newCachedThreadPool();
 
-    private static ExecutorService threadExecutorHash = Executors.newCachedThreadPool();
+
     /**
      * 处理微信发来的请求
      *
@@ -223,7 +224,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String customerService = Global.getConfig("wechat.customservice");
             if ("false".equals(customerService)) {
                 Runnable thread = new processConsultMessageThread(xmlEntity);
-                threadExecutorHash.execute(thread);
+                threadExecutor.execute(thread);
                 return "";
             } else if ("true".equals(customerService)) {
                 respMessage = transferToCustomer(xmlEntity);
@@ -781,7 +782,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             boolean sendsucmes = false;
             if (list1.size() == 0) {//用户第一次加入保护伞
                 Runnable thread = new sendUBWechatMessage(toOpenId, EventKey);
-                threadExecutor.execute(thread);
+                threadExecutorSingle.execute(thread);
             } else {
                 if ("success".equals(list1.get(0).get("pay_result"))) {
                     sendsucmes = true;
@@ -933,7 +934,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         } else if (EventKey.indexOf("yufangjiezhong") > -1) {
             //有名片的医生扫码用户,推送文字消息.(扫码有名片医生二维码.)
             Runnable thread = new sendHasCardDoctorWechatMessage(EventKey, xmlEntity);
-            threadExecutor.execute(thread);
+            threadExecutorSingle.execute(thread);
         }else if (EventKey.indexOf("PD_TPCB") > -1) {
 //             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
             LogUtils.saveLog("TPCB_GZTS",xmlEntity.getFromUserName());
@@ -959,11 +960,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
         if (list1.size() == 0) {//用户第一次加入保护伞
             Runnable thread = new sendUBWechatMessage(toOpenId, EventKey);
-            threadExecutor.execute(thread);
+            threadExecutorSingle.execute(thread);
         } else {
             if ("success".equals(list1.get(0).get("pay_result"))) {
                 Runnable thread = new addUserType(toOpenId);
-                threadExecutor.execute(thread);
+                threadExecutorSingle.execute(thread);
             }
         }
 
