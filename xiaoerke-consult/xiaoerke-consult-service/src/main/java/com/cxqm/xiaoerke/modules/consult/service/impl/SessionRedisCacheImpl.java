@@ -127,6 +127,11 @@ public class SessionRedisCacheImpl implements SessionRedisCache {
 		redisTemplate.opsForHash().delete(USER_SESSIONID_KEY, userId);
 	}
 
+	@Override
+	public void putRedisSessionAddress(Integer sessionId, String ip) {
+
+	}
+
 
 	@Override
 	public void clearInstantConsultationList() {
