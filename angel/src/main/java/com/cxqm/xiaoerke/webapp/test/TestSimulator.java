@@ -46,8 +46,8 @@ public class TestSimulator implements Runnable {
         for (int i = 1; i <= testConcurrentDemo.getMessageCount(); i++) {
             try {
                     sendPost(url,i);
-                    Thread.sleep(3 * 1000);
-                } catch (InterruptedException e) {
+//                    Thread.sleep(3 * 1000);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

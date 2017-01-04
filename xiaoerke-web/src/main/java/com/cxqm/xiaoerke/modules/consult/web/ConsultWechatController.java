@@ -137,7 +137,7 @@ public class ConsultWechatController extends BaseController {
 
         Runnable thread = new processUserMessageThread(paramMap, sysPropertyVoWithBLOBsVo, wechatAttentionVo);
         threadExecutor.execute(thread);
-
+        LogUtils.saveLog(openId,"推送消息完成");
         result.put("status", "success");
         return result;
     }
@@ -160,7 +160,7 @@ public class ConsultWechatController extends BaseController {
             String messageType = (String) this.param.get("messageType");
             String messageContent = (String) this.param.get("messageContent");
             String serverAddress = (String) this.param.get("serverAddress");
-
+            LogUtils.saveLog(openId,"开始处理消息single"+openId+"  "+messageType+"  "+messageContent+" "+serverAddress);
             String userName = openId;
             String userId = openId;
             if (openId.length() > 20) {
@@ -183,46 +183,59 @@ public class ConsultWechatController extends BaseController {
             Integer consultTimes = 0;
             Channel csChannel = null;
             //根据用户的openId，判断redis中，是否有用户正在进行的session
+            LogUtils.saveLog(openId, "开始从redis取sessionId");
             Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
-           HashMap<String, Object> createWechatConsultSessionMap = null;
-            System.out.println("sessionId------" + sessionId);
+            LogUtils.saveLog(openId, "从redis取sessionId完成" + sessionId);
+            HashMap<String, Object> createWechatConsultSessionMap = null;
             RichConsultSession consultSession = new RichConsultSession();
 
             //如果此用户不是第一次发送消息，则sessionId不为空
             if (sessionId != null) {
+                LogUtils.saveLog(userId,"用户不是第一次发送消息");
                 //检测是否给用户推送以下消息-- 每个会话只推一次(您需要花点时间排队，请耐心等待哦)
                 String sessionList = consultPayUserService.getChargeInfo(sessionId);
                 if (null == sessionList && consultPayUserService.angelChargeCheck(openId)) {
                     consultPayUserService.saveChargeUser(sessionId, openId);
                     consultPayUserService.sendMessageToConsult(openId, 4);
                 }
+                LogUtils.saveLog(openId,"根据sessionId取consultSession"+sessionId);
                 consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+                LogUtils.saveLog(openId,"根据sessionId取consultSession完成"+sessionId);
+
                 /**
                  * 2016-9-8 17:42:43 jiangzg 增加消息数量
                  */
                 if (consultSession != null) {
                     int currentNum = consultSession.getConsultNum() + 1;
                     consultSession.setConsultNum(currentNum);
+                    LogUtils.saveLog(openId, "增加消息数量" + sessionId);
                     sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
+                    LogUtils.saveLog(openId, "增加消息数量完成" + sessionId);
                 }
                 csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
-                System.out.println("csChannel------" + csChannel);
+                LogUtils.saveLog(openId,"该用户分配的医生为："+consultSession.getCsUserId()+consultSession.getCsUserName());
+
                 if (csChannel == null) {
+                    LogUtils.saveLog(openId,"csChannel为空，保存聊天记录");
                     //保存聊天记录
                     consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
                     //更新会话操作时间
                     consultRecordService.saveConsultSessionStatus(consultSession);
+                    LogUtils.saveLog(openId, "更新会话操作时间结束");
                 } else {
-                    System.out.println("csChannel.isActive()------" + csChannel.isActive());
                     if (!csChannel.isActive()) {
+                        LogUtils.saveLog(openId,"csChannel is notActive，保存聊天记录");
                         //保存聊天记录
                         consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
                         //更新会话操作时间
                         consultRecordService.saveConsultSessionStatus(consultSession);
+                        LogUtils.saveLog(openId, "csChannel is notActive，保存聊天记录结束");
+
                     }
                 }
             } else {
                 //如果此用户是第一次发送消息，则sessionId为空
+                LogUtils.saveLog(userId,"用户第一次发送消息");
 
                 consultSession.setCreateTime(new Date());
                 consultSession.setUserId(userId);
@@ -238,12 +251,17 @@ public class ConsultWechatController extends BaseController {
                 String token = (String) userWechatParam.get("token");
                 String whiteNameStr = sysPropertyVoWithBLOBsVo.getWhiteNameList();
                 String consultNumStr = sysPropertyVoWithBLOBsVo.getConsultLimitNum();
+
+                LogUtils.saveLog(openId," "+token+" "+whiteNameStr+" "+consultNumStr);
+
                 int consultLimitNum = 24;
                 if(StringUtils.isNotNull(consultNumStr)){
                     consultLimitNum = Integer.valueOf(consultNumStr);
                 }
                 if(StringUtils.isNotNull(whiteNameStr)){
+                    LogUtils.saveLog(openId,"whiteNameStr ："+whiteNameStr);
                     if(whiteNameStr.contains(openId)){
+                        LogUtils.saveLog(openId,"whiteNameStr ：openId包含在白名单中");
                         ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(openId);
                         if(consultSessionPropertyVo != null){
                             if(consultSessionPropertyVo.getMonthTimes() > 0 ){
@@ -311,6 +329,7 @@ public class ConsultWechatController extends BaseController {
                     }
                 }else{
                     ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(openId);
+                    LogUtils.saveLog(openId,"咨询属性");
                     if(consultSessionPropertyVo != null){
                         if(consultSessionPropertyVo.getMonthTimes() > 0 ){
                             Query query = (new Query()).addCriteria(where("userId").is(openId)).with(new Sort(Sort.Direction.DESC, "createDate"));
@@ -444,9 +463,9 @@ public class ConsultWechatController extends BaseController {
 
                     //保存聊天记录
                     consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
-
+                    LogUtils.saveLog(consultSession.getUserId(), "保存ConsultSessionStatusVo");
                     consultRecordService.saveConsultSessionStatus(consultSession);
-
+                    LogUtils.saveLog(consultSession.getUserId(), "保存ConsultSessionStatusVo成功！");
 
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
