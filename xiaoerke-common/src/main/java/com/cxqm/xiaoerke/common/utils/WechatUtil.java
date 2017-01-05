@@ -345,6 +345,8 @@ public class WechatUtil {
             }
         }catch(Exception ex){
             ex.printStackTrace();
+        }finally {
+            inputStream.close();
         }
 
         return mediaURL;
