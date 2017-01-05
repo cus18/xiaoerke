@@ -38,8 +38,6 @@ import java.util.concurrent.Executors;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 微信咨询Controller
@@ -79,8 +77,6 @@ public class ConsultWechatController extends BaseController {
     private ConsultBadEvaluateRemindUserService consultBadEvaluateRemindUserService;
 
     private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
-
-    private static Lock lock = new ReentrantLock();
 
     @Autowired
     private ConsultVoiceRecordMongoServiceImpl consultVoiceRecordMongoService;
@@ -142,7 +138,7 @@ public class ConsultWechatController extends BaseController {
         LogUtils.saveLog(openId, "4");
         Runnable thread = new processUserMessageThread(paramMap, sysPropertyVoWithBLOBsVo, wechatAttentionVo);
         threadExecutor.execute(thread);
-        LogUtils.saveLog(openId, "推送消息完成");
+        LogUtils.saveLog(openId,"推送消息完成");
         result.put("status", "success");
         return result;
     }
@@ -194,155 +190,85 @@ public class ConsultWechatController extends BaseController {
             Channel csChannel = null;
             //根据用户的openId，判断redis中，是否有用户正在进行的session
             LogUtils.saveLog(openId, "开始从redis取sessionId");
-
             Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
             LogUtils.saveLog(openId, "从redis取sessionId完成" + sessionId);
             HashMap<String, Object> createWechatConsultSessionMap = null;
             RichConsultSession consultSession = new RichConsultSession();
 
-            lock.lock();
-            try {
-                //如果此用户不是第一次发送消息，则sessionId不为空
-                if (sessionId != null) {
-                    LogUtils.saveLog(userId, "用户不是第一次发送消息");
-                    //检测是否给用户推送以下消息-- 每个会话只推一次(您需要花点时间排队，请耐心等待哦)
-                    String sessionList = consultPayUserService.getChargeInfo(sessionId);
-                    if (null == sessionList && consultPayUserService.angelChargeCheck(openId)) {
-                        consultPayUserService.saveChargeUser(sessionId, openId);
-                        consultPayUserService.sendMessageToConsult(openId, 4);
-                    }
-                    LogUtils.saveLog(openId, "根据sessionId取consultSession" + sessionId);
-                    consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
-                    LogUtils.saveLog(openId, "根据sessionId取consultSession完成" + sessionId);
+            //如果此用户不是第一次发送消息，则sessionId不为空
+            if (sessionId != null) {
+                LogUtils.saveLog(userId, "用户不是第一次发送消息");
+                //检测是否给用户推送以下消息-- 每个会话只推一次(您需要花点时间排队，请耐心等待哦)
+                String sessionList = consultPayUserService.getChargeInfo(sessionId);
+                if (null == sessionList && consultPayUserService.angelChargeCheck(openId)) {
+                    consultPayUserService.saveChargeUser(sessionId, openId);
+                    consultPayUserService.sendMessageToConsult(openId, 4);
+                }
+                LogUtils.saveLog(openId, "根据sessionId取consultSession" + sessionId);
+                consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+                LogUtils.saveLog(openId, "根据sessionId取consultSession完成" + sessionId);
 
-                    /**
-                     * 2016-9-8 17:42:43 jiangzg 增加消息数量
-                     */
-                    if (consultSession != null) {
-                        int currentNum = consultSession.getConsultNum() + 1;
-                        consultSession.setConsultNum(currentNum);
-                        LogUtils.saveLog(openId, "增加消息数量" + sessionId);
-                        sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
-                        LogUtils.saveLog(openId, "增加消息数量完成" + sessionId);
-                    }
-                    csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
-                    LogUtils.saveLog(openId, "该用户分配的医生为：" + consultSession.getCsUserId() + consultSession.getCsUserName());
+                /**
+                 * 2016-9-8 17:42:43 jiangzg 增加消息数量
+                 */
+                if (consultSession != null) {
+                    int currentNum = consultSession.getConsultNum() + 1;
+                    consultSession.setConsultNum(currentNum);
+                    LogUtils.saveLog(openId, "增加消息数量" + sessionId);
+                    sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
+                    LogUtils.saveLog(openId, "增加消息数量完成" + sessionId);
+                }
+                csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
+                LogUtils.saveLog(openId, "该用户分配的医生为：" + consultSession.getCsUserId() + consultSession.getCsUserName());
 
-                    if (csChannel == null) {
-                        LogUtils.saveLog(openId, "csChannel为空，保存聊天记录");
+                if (csChannel == null) {
+                    LogUtils.saveLog(openId, "csChannel为空，保存聊天记录");
+                    //保存聊天记录
+                    consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
+                    //更新会话操作时间
+                    consultRecordService.saveConsultSessionStatus(consultSession);
+                    LogUtils.saveLog(openId, "更新会话操作时间结束");
+                } else {
+                    if (!csChannel.isActive()) {
+                        LogUtils.saveLog(openId, "csChannel is notActive，保存聊天记录");
                         //保存聊天记录
                         consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
                         //更新会话操作时间
                         consultRecordService.saveConsultSessionStatus(consultSession);
-                        LogUtils.saveLog(openId, "更新会话操作时间结束");
-                    } else {
-                        if (!csChannel.isActive()) {
-                            LogUtils.saveLog(openId, "csChannel is notActive，保存聊天记录");
-                            //保存聊天记录
-                            consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
-                            //更新会话操作时间
-                            consultRecordService.saveConsultSessionStatus(consultSession);
-                            LogUtils.saveLog(openId, "csChannel is notActive，保存聊天记录结束");
+                        LogUtils.saveLog(openId, "csChannel is notActive，保存聊天记录结束");
 
-                        }
                     }
-                } else {
-                    //如果此用户是第一次发送消息，则sessionId为空
-                    LogUtils.saveLog(userId, "用户第一次发送消息");
+                }
+            } else {
+                //如果此用户是第一次发送消息，则sessionId为空
+                LogUtils.saveLog(userId, "用户第一次发送消息");
 
-                    consultSession.setCreateTime(new Date());
-                    consultSession.setUserId(userId);
-                    consultSession.setUserName(userName);
-                    consultSession.setSource(source);
-                    consultSession.setServerAddress(serverAddress);
-                    /**
-                     * 新增咨询次数字段 jiangzg 2016-9-8 17:33:17
-                     */
-                    consultSession.setConsultNum(1);
-                    //创建会话，发送消息给用户，给用户分配接诊员
-                    Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                    String token = (String) userWechatParam.get("token");
-                    String whiteNameStr = sysPropertyVoWithBLOBsVo.getWhiteNameList();
-                    String consultNumStr = sysPropertyVoWithBLOBsVo.getConsultLimitNum();
+                consultSession.setCreateTime(new Date());
+                consultSession.setUserId(userId);
+                consultSession.setUserName(userName);
+                consultSession.setSource(source);
+                consultSession.setServerAddress(serverAddress);
+                /**
+                 * 新增咨询次数字段 jiangzg 2016-9-8 17:33:17
+                 */
+                consultSession.setConsultNum(1);
+                //创建会话，发送消息给用户，给用户分配接诊员
+                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                String token = (String) userWechatParam.get("token");
+                String whiteNameStr = sysPropertyVoWithBLOBsVo.getWhiteNameList();
+                String consultNumStr = sysPropertyVoWithBLOBsVo.getConsultLimitNum();
 
-                    LogUtils.saveLog(openId, " " + token + " " + whiteNameStr + " " + consultNumStr);
+                LogUtils.saveLog(openId, " " + token + " " + whiteNameStr + " " + consultNumStr);
 
-                    int consultLimitNum = 24;
-                    if (StringUtils.isNotNull(consultNumStr)) {
-                        consultLimitNum = Integer.valueOf(consultNumStr);
-                    }
-                    if (StringUtils.isNotNull(whiteNameStr)) {
-                        LogUtils.saveLog(openId, "whiteNameStr ：" + whiteNameStr);
-                        if (whiteNameStr.contains(openId)) {
-                            LogUtils.saveLog(openId, "whiteNameStr ：openId包含在白名单中");
-                            ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(openId);
-                            if (consultSessionPropertyVo != null) {
-                                if (consultSessionPropertyVo.getMonthTimes() > 0) {
-                                    Query query = (new Query()).addCriteria(where("userId").is(openId)).with(new Sort(Sort.Direction.DESC, "createDate"));
-                                    List<ConsultSessionStatusVo> consultSessionStatusVoList = consultRecordService.getConsultSessionStatusVo(query);
-                                    if (consultSessionStatusVoList != null && consultSessionStatusVoList.size() > 0) {
-                                        if (consultSessionStatusVoList.size() > consultLimitNum) {
-                                            HashMap praiseParam = new HashMap();
-                                            Map praiseParamMap = new HashMap();
-                                            praiseParam.put("sessionId", Integer.valueOf(consultSessionStatusVoList.get(0).getSessionId()));
-                                            praiseParam.put("openId", openId);
-                                            if (StringUtils.isNotNull(consultSessionStatusVoList.get(0).getCsUserId())) {
-                                                String[] csUserIds = consultSessionStatusVoList.get(0).getCsUserId().toString().split(" ");
-                                                Map status = new HashMap();
-                                                status.put("state", "no");
-                                                for (int j = 0; j < csUserIds.length; j++) {
-                                                    praiseParam.put("doctorId", csUserIds[j]);
-                                                    List<HashMap<String, Object>> praiseList = consultBadEvaluateRemindUserService.selectConsultStatisticVoByMap(praiseParam);
-                                                    if (praiseList != null && !"0".equalsIgnoreCase(String.valueOf(praiseList.get(0).get("serviceAttitude")))) {
-                                                        status.put("state", "yes");
-                                                        break;
-                                                    }
-                                                }
-                                                if ("yes".equalsIgnoreCase(String.valueOf(status.get("state")))) {
-                                                    createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
-                                                } else {
-                                                    praiseParamMap.put("consultSessionId", Integer.valueOf(consultSessionStatusVoList.get(0).getSessionId()));
-                                                    List<Map<String, Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParamMap);
-                                                    if (sysPropertyVoWithBLOBsVo.getDistributorList().contains(String.valueOf(praiseList.get(0).get("doctorId")))) {
-                                                        createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
-                                                    } else {
-                                                        StringBuilder stringBuilder = new StringBuilder();
-                                                        stringBuilder.append("<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wxPay/patientPay.do?consultStatus=wantConsult&serviceType=customerPay&customerId=");
-                                                        stringBuilder.append(praiseList.get(0).get("id"));
-                                                        stringBuilder.append("&sessionId=");
-                                                        stringBuilder.append(Integer.valueOf(consultSessionStatusVoList.get(0).getSessionId()));
-                                                        stringBuilder.append("'>评价医生>></a>");
-                                                        String textMsg = sysPropertyVoWithBLOBsVo.getPushNeedEvaluateMsgToUser();
-                                                        if (StringUtils.isNull(textMsg)) {
-                                                            textMsg = "亲爱的，请为上次的服务做出评价，评价后才可以继续咨询哦~";
-                                                        }
-                                                        textMsg = textMsg + "\n" + stringBuilder.toString();
-                                                        LogUtils.saveLog("ZXPJ_PJYS", openId);
-                                                        WechatUtil.sendMsgToWechat(token, openId, textMsg);
-                                                        return;
-                                                    }
-                                                }
-                                            } else {
-                                                createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
-                                            }
-                                        } else {
-                                            createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
-                                        }
-                                    } else {
-                                        createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
-                                    }
-                                } else {
-                                    createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
-                                }
-                            } else {
-                                createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
-                            }
-                        } else {
-                            createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
-                        }
-                    } else {
+                int consultLimitNum = 24;
+                if (StringUtils.isNotNull(consultNumStr)) {
+                    consultLimitNum = Integer.valueOf(consultNumStr);
+                }
+                if (StringUtils.isNotNull(whiteNameStr)) {
+                    LogUtils.saveLog(openId, "whiteNameStr ：" + whiteNameStr);
+                    if (whiteNameStr.contains(openId)) {
+                        LogUtils.saveLog(openId, "whiteNameStr ：openId包含在白名单中");
                         ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(openId);
-                        LogUtils.saveLog(openId, "咨询属性");
                         if (consultSessionPropertyVo != null) {
                             if (consultSessionPropertyVo.getMonthTimes() > 0) {
                                 Query query = (new Query()).addCriteria(where("userId").is(openId)).with(new Sort(Sort.Direction.DESC, "createDate"));
@@ -384,8 +310,8 @@ public class ConsultWechatController extends BaseController {
                                                         textMsg = "亲爱的，请为上次的服务做出评价，评价后才可以继续咨询哦~";
                                                     }
                                                     textMsg = textMsg + "\n" + stringBuilder.toString();
-                                                    WechatUtil.sendMsgToWechat(token, openId, textMsg);
                                                     LogUtils.saveLog("ZXPJ_PJYS", openId);
+                                                    WechatUtil.sendMsgToWechat(token, openId, textMsg);
                                                     return;
                                                 }
                                             }
@@ -404,27 +330,88 @@ public class ConsultWechatController extends BaseController {
                         } else {
                             createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
                         }
+                    } else {
+                        createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
                     }
-
-                    if (createWechatConsultSessionMap != null) {
-                        csChannel = (Channel) createWechatConsultSessionMap.get("csChannel");
-                        consultSession = (RichConsultSession) createWechatConsultSessionMap.get("consultSession");
-                        sessionId = consultSession.getId();
+                } else {
+                    ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(openId);
+                    LogUtils.saveLog(openId, "咨询属性");
+                    if (consultSessionPropertyVo != null) {
+                        if (consultSessionPropertyVo.getMonthTimes() > 0) {
+                            Query query = (new Query()).addCriteria(where("userId").is(openId)).with(new Sort(Sort.Direction.DESC, "createDate"));
+                            List<ConsultSessionStatusVo> consultSessionStatusVoList = consultRecordService.getConsultSessionStatusVo(query);
+                            if (consultSessionStatusVoList != null && consultSessionStatusVoList.size() > 0) {
+                                if (consultSessionStatusVoList.size() > consultLimitNum) {
+                                    HashMap praiseParam = new HashMap();
+                                    Map praiseParamMap = new HashMap();
+                                    praiseParam.put("sessionId", Integer.valueOf(consultSessionStatusVoList.get(0).getSessionId()));
+                                    praiseParam.put("openId", openId);
+                                    if (StringUtils.isNotNull(consultSessionStatusVoList.get(0).getCsUserId())) {
+                                        String[] csUserIds = consultSessionStatusVoList.get(0).getCsUserId().toString().split(" ");
+                                        Map status = new HashMap();
+                                        status.put("state", "no");
+                                        for (int j = 0; j < csUserIds.length; j++) {
+                                            praiseParam.put("doctorId", csUserIds[j]);
+                                            List<HashMap<String, Object>> praiseList = consultBadEvaluateRemindUserService.selectConsultStatisticVoByMap(praiseParam);
+                                            if (praiseList != null && !"0".equalsIgnoreCase(String.valueOf(praiseList.get(0).get("serviceAttitude")))) {
+                                                status.put("state", "yes");
+                                                break;
+                                            }
+                                        }
+                                        if ("yes".equalsIgnoreCase(String.valueOf(status.get("state")))) {
+                                            createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
+                                        } else {
+                                            praiseParamMap.put("consultSessionId", Integer.valueOf(consultSessionStatusVoList.get(0).getSessionId()));
+                                            List<Map<String, Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(praiseParamMap);
+                                            if (sysPropertyVoWithBLOBsVo.getDistributorList().contains(String.valueOf(praiseList.get(0).get("doctorId")))) {
+                                                createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
+                                            } else {
+                                                StringBuilder stringBuilder = new StringBuilder();
+                                                stringBuilder.append("<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wxPay/patientPay.do?consultStatus=wantConsult&serviceType=customerPay&customerId=");
+                                                stringBuilder.append(praiseList.get(0).get("id"));
+                                                stringBuilder.append("&sessionId=");
+                                                stringBuilder.append(Integer.valueOf(consultSessionStatusVoList.get(0).getSessionId()));
+                                                stringBuilder.append("'>评价医生>></a>");
+                                                String textMsg = sysPropertyVoWithBLOBsVo.getPushNeedEvaluateMsgToUser();
+                                                if (StringUtils.isNull(textMsg)) {
+                                                    textMsg = "亲爱的，请为上次的服务做出评价，评价后才可以继续咨询哦~";
+                                                }
+                                                textMsg = textMsg + "\n" + stringBuilder.toString();
+                                                WechatUtil.sendMsgToWechat(token, openId, textMsg);
+                                                LogUtils.saveLog("ZXPJ_PJYS", openId);
+                                                return;
+                                            }
+                                        }
+                                    } else {
+                                        createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
+                                    }
+                                } else {
+                                    createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
+                                }
+                            } else {
+                                createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
+                            }
+                        } else {
+                            createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
+                        }
+                    } else {
+                        createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
                     }
-                    //咨询收费处理
-                    consultTimes = consultCharge(openId, sessionId, consultSession, sysPropertyVoWithBLOBsVo);
-                    LogUtils.saveLog(openId, "咨询收费处理结束");
-                    sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
-                    LogUtils.saveLog(openId, "putSessionIdConsultSessionPair");
-                    sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
-                    LogUtils.saveLog(openId, "putUserIdSessionIdPair");
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                lock.unlock();
-            }
 
+                if (createWechatConsultSessionMap != null) {
+                    csChannel = (Channel) createWechatConsultSessionMap.get("csChannel");
+                    consultSession = (RichConsultSession) createWechatConsultSessionMap.get("consultSession");
+                    sessionId = consultSession.getId();
+                }
+                //咨询收费处理
+                consultTimes = consultCharge(openId, sessionId, consultSession, sysPropertyVoWithBLOBsVo);
+                LogUtils.saveLog(openId, "咨询收费处理结束");
+                sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
+                LogUtils.saveLog(openId, "putSessionIdConsultSessionPair");
+                sessionRedisCache.putUserIdSessionIdPair(consultSession.getUserId(), sessionId);
+                LogUtils.saveLog(openId, "putUserIdSessionIdPair");
+            }
 
             //会话创建成功，拿到了csChannel,给接诊员(或是医生)发送消息
             if (csChannel != null) {
