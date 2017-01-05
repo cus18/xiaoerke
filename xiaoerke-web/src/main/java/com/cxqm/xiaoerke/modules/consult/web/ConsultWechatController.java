@@ -149,8 +149,8 @@ public class ConsultWechatController extends BaseController {
         private SysWechatAppintInfoVo wechatAttentionVo;
 
         public processUserMessageThread(HashMap<String, Object> paramMap, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo, SysWechatAppintInfoVo wechatAttentionVo) {
-            LogUtils.saveLog((String) this.param.get("openId"),"构造方法");
             this.param = paramMap;
+            LogUtils.saveLog((String) this.param.get("openId"),"构造方法");
             this.sysPropertyVoWithBLOBsVo = sysPropertyVoWithBLOBsVo;
             this.wechatAttentionVo = wechatAttentionVo;
         }
