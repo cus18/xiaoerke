@@ -33,7 +33,8 @@ import java.net.SocketException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
@@ -75,7 +76,7 @@ public class ConsultWechatController extends BaseController {
     @Autowired
     private ConsultBadEvaluateRemindUserService consultBadEvaluateRemindUserService;
 
-    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+    private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
 
     @Autowired
     private ConsultVoiceRecordMongoServiceImpl consultVoiceRecordMongoService;
@@ -83,7 +84,7 @@ public class ConsultWechatController extends BaseController {
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String, Object> conversation(HttpServletRequest request, @RequestBody String body) throws InterruptedException, ExecutionException, TimeoutException {
+    Map<String, Object> conversation(HttpServletRequest request, @RequestBody String body) throws InterruptedException {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
         JSONObject json = JSONObject.parseObject(body);
@@ -136,13 +137,8 @@ public class ConsultWechatController extends BaseController {
         }
         LogUtils.saveLog(openId, "4");
         Runnable thread = new processUserMessageThread(paramMap, sysPropertyVoWithBLOBsVo, wechatAttentionVo);
-        LogUtils.saveLog(openId, "开始提交任务");
-        Future future = threadExecutor.submit(thread);
-        future.get(5000, TimeUnit.MILLISECONDS);
-        if (!future.isDone()) {
-            future.cancel(true);
-        }
-        LogUtils.saveLog(openId, "推送消息完成");
+        threadExecutor.execute(thread);
+        LogUtils.saveLog(openId,"推送消息完成");
         result.put("status", "success");
         return result;
     }
