@@ -149,13 +149,14 @@ public class ConsultWechatController extends BaseController {
         private SysWechatAppintInfoVo wechatAttentionVo;
 
         public processUserMessageThread(HashMap<String, Object> paramMap, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo, SysWechatAppintInfoVo wechatAttentionVo) {
+            LogUtils.saveLog((String) this.param.get("openId"),"构造方法");
             this.param = paramMap;
             this.sysPropertyVoWithBLOBsVo = sysPropertyVoWithBLOBsVo;
             this.wechatAttentionVo = wechatAttentionVo;
         }
 
         public void run() {
-
+            LogUtils.saveLog((String) this.param.get("openId"),"开始线程");
             //需要根据openId获取到nickname，如果拿不到nickName，则用利用openId换算出一个编号即可
             String openId = (String) this.param.get("openId");
             LogUtils.saveLog(openId, "44");
