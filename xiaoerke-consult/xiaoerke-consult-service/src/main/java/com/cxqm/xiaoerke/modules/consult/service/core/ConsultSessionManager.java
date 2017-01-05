@@ -33,8 +33,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
@@ -103,7 +101,6 @@ public enum ConsultSessionManager {
 
     private ConsultMemberRedsiCacheServiceImpl consultMemberRedsiCacheService = SpringContextHolder.getBean("consultMemberRedsiCacheServiceImpl");
 
-    private static Lock lock = new ReentrantLock();
 
     private ConsultSessionManager() {
         User user = new User();
@@ -413,144 +410,137 @@ public enum ConsultSessionManager {
     }
 
     public HashMap<String, Object> createUserWXConsultSession(RichConsultSession consultSession) {
-        lock.lock();
-        try {
-            LogUtils.saveLog(consultSession.getUserId(),"开始分配咨询医生");
-            HashMap<String, Object> response = new HashMap<String, Object>();
-            Channel csChannel = null;
-            Channel distributorChannel = null;
-            ConsultCountTotal consultCountTotal = new ConsultCountTotal();
-            consultCountTotal.setUserId(consultSession.getUserId());
-            consultCountTotal.setCreateDate(new Date());
-            int count = this.getConsultTotal(consultCountTotal);
-            LogUtils.saveLog(consultSession.getUserId(),"consultCountTotal为"+String.valueOf(count));
-            List currentDistributorChannel = new ArrayList();
-            if (distributors != null && distributors.size() > 0) {
-                LogUtils.saveLog(consultSession.getUserId(),"distributors大小"+distributors.size());
-                for (Map.Entry<String, Channel> entry : distributors.entrySet()) {
-                    if (entry.getValue().isActive()) {
-                        HashMap<String, Channel> currentActiveChannel = new HashMap<String, Channel>();
-                        currentActiveChannel.put(entry.getKey(), entry.getValue());
-                        currentDistributorChannel.add(currentActiveChannel);
-                    } else {
-                        distributors.remove(entry.getKey());
-                        csUserChannelMapping.remove(entry.getKey());
-                        userChannelMapping.remove(entry.getKey());
-                    }
-                }
-                if (currentDistributorChannel != null && currentDistributorChannel.size() > 0) {
-                    int number = count % currentDistributorChannel.size();
-                    HashMap<String, Channel> hashMap = (HashMap) currentDistributorChannel.get(number);
-                    for (Map.Entry<String, Channel> entry : hashMap.entrySet()) {
-                        consultSession.setCsUserId(entry.getKey());
-                        consultSession.setUserType(ConstantUtil.DISTRIBUTOR.getVariable());
-                        consultCountTotal.setCsUserId(entry.getKey());
-                        User csUser = systemService.getUserById(entry.getKey());
-                        consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
-                        csChannel = entry.getValue();
-                    }
+        LogUtils.saveLog(consultSession.getUserId(),"开始分配咨询医生");
+        HashMap<String, Object> response = new HashMap<String, Object>();
+        Channel csChannel = null;
+        Channel distributorChannel = null;
+        ConsultCountTotal consultCountTotal = new ConsultCountTotal();
+        consultCountTotal.setUserId(consultSession.getUserId());
+        consultCountTotal.setCreateDate(new Date());
+        int count = this.getConsultTotal(consultCountTotal);
+        LogUtils.saveLog(consultSession.getUserId(),"consultCountTotal为"+String.valueOf(count));
+        List currentDistributorChannel = new ArrayList();
+        if (distributors != null && distributors.size() > 0) {
+            LogUtils.saveLog(consultSession.getUserId(),"distributors大小"+distributors.size());
+            for (Map.Entry<String, Channel> entry : distributors.entrySet()) {
+                if (entry.getValue().isActive()) {
+                    HashMap<String, Channel> currentActiveChannel = new HashMap<String, Channel>();
+                    currentActiveChannel.put(entry.getKey(), entry.getValue());
+                    currentDistributorChannel.add(currentActiveChannel);
+                } else {
+                    distributors.remove(entry.getKey());
+                    csUserChannelMapping.remove(entry.getKey());
+                    userChannelMapping.remove(entry.getKey());
                 }
             }
+            if (currentDistributorChannel != null && currentDistributorChannel.size() > 0) {
+                int number = count % currentDistributorChannel.size();
+                HashMap<String, Channel> hashMap = (HashMap) currentDistributorChannel.get(number);
+                for (Map.Entry<String, Channel> entry : hashMap.entrySet()) {
+                    consultSession.setCsUserId(entry.getKey());
+                    consultSession.setUserType(ConstantUtil.DISTRIBUTOR.getVariable());
+                    consultCountTotal.setCsUserId(entry.getKey());
+                    User csUser = systemService.getUserById(entry.getKey());
+                    consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+                    csChannel = entry.getValue();
+                }
+            }
+        }
 
-            if (csChannel != null) {
-                this.updateConsultCountTotal(consultCountTotal);
-            } else {
-                /***接诊员不在线，随机分配在线医生***/
-                /**
-                 *  jiangzhongge modify
-                 *  2016年7月4日11:52:04
-                 */
-                LogUtils.saveLog(consultSession.getUserId(),"接诊员不在线，随机分配在线医生");
+        if (csChannel != null) {
+            this.updateConsultCountTotal(consultCountTotal);
+        } else {
+            /***接诊员不在线，随机分配在线医生***/
+            /**
+             *  jiangzhongge modify
+             *  2016年7月4日11:52:04
+             */
+            LogUtils.saveLog(consultSession.getUserId(),"接诊员不在线，随机分配在线医生");
 
-                this.deleteConsultCountTotal(consultCountTotal);
-                Map<String, Channel> currentCSUserChannelMap = csUserChannelMapping;
-                Channel nowChannel = null;
-                if (currentCSUserChannelMap.size() > 0) {
-                    for (int i = 0; i < currentCSUserChannelMap.size(); i++) {
-                        //所有的接诊员不在线，随机分配一个在线医生
-                        String csUserId = RandomUtils.getRandomKeyFromMap(currentCSUserChannelMap);
-                        nowChannel = currentCSUserChannelMap.get(csUserId);
-                        if (nowChannel != null && nowChannel.isActive()) {
-                            User csUser = systemService.getUserById(csUserId);
-                            consultSession.setCsUserId(csUserId);
-                            consultSession.setUserType(ConstantUtil.CONSULTDOCTOR.getVariable());
-                            consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
-                            csChannel = nowChannel;
+            this.deleteConsultCountTotal(consultCountTotal);
+            Map<String, Channel> currentCSUserChannelMap = csUserChannelMapping;
+            Channel nowChannel = null;
+            if (currentCSUserChannelMap.size() > 0) {
+                for (int i = 0; i < currentCSUserChannelMap.size(); i++) {
+                    //所有的接诊员不在线，随机分配一个在线医生
+                    String csUserId = RandomUtils.getRandomKeyFromMap(currentCSUserChannelMap);
+                    nowChannel = currentCSUserChannelMap.get(csUserId);
+                    if (nowChannel != null && nowChannel.isActive()) {
+                        User csUser = systemService.getUserById(csUserId);
+                        consultSession.setCsUserId(csUserId);
+                        consultSession.setUserType(ConstantUtil.CONSULTDOCTOR.getVariable());
+                        consultSession.setCsUserName(csUser.getName() == null ? csUser.getLoginName() : csUser.getName());
+                        csChannel = nowChannel;
 
 
-                            //咨询会员
-                            Map parameter = systemService.getWechatParameter();
-                            String token = (String) parameter.get("token");
-                            //根据接入的是否为医生来判断
-                            try{
+                        //咨询会员
+                        Map parameter = systemService.getWechatParameter();
+                        String token = (String) parameter.get("token");
+                        //根据接入的是否为医生来判断
+                        try{
 //                            检测用户是否超时(只检测 不推送消息)
 
-                                boolean bool = consultMemberRedsiCacheService.cheackMemberTimeOut(consultSession.getUserId());
-                                LogUtils.saveLog(consultSession.getUserId(), "检测用户是否超时(只检测 不推送消息)"+bool);
-                                if(!bool) {
-                                    SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-                                    consultMemberRedsiCacheService.useFreeChance(consultSession.getUserId(),sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
-                                    LogUtils.saveLog(consultSession.getUserId(), "useFreeChance");
-                                }
-                            }catch (Exception e){
-                                e.printStackTrace();
+                            boolean bool = consultMemberRedsiCacheService.cheackMemberTimeOut(consultSession.getUserId());
+                            LogUtils.saveLog(consultSession.getUserId(), "检测用户是否超时(只检测 不推送消息)"+bool);
+                            if(!bool) {
+                                SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+                                consultMemberRedsiCacheService.useFreeChance(consultSession.getUserId(),sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
+                                LogUtils.saveLog(consultSession.getUserId(), "useFreeChance");
                             }
-                            break;
-                        } else {
-                            csUserChannelMapping.remove(csUserId);
-                            csUserChannelMapping.remove(csUserId);
-                            userChannelMapping.remove(csUserId);
-                            currentCSUserChannelMap.remove(csUserId);
+                        }catch (Exception e){
+                            e.printStackTrace();
                         }
+                        break;
+                    } else {
+                        csUserChannelMapping.remove(csUserId);
+                        csUserChannelMapping.remove(csUserId);
+                        userChannelMapping.remove(csUserId);
+                        currentCSUserChannelMap.remove(csUserId);
                     }
                 }
-                /**
-                 * @author jiangzg
-                 * @date 2016-7-7 10:33:29
-                 */
-                if (csChannel == null) {
-                    Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                    String content = "抱歉，暂时没有医生在线，请稍后使用服务！";
-                    LogUtils.saveLog(consultSession.getUserId(),content);
-                    WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), content);
-                    return null;
-                }
             }
-
-            if (StringUtils.isNotNull(consultSession.getCsUserId())) {
-                HashMap<String, Object> perInfo = userInfoService.findPersonDetailInfoByUserId(consultSession.getCsUserId());
-                consultSession.setCsUserName((String) perInfo.get("name"));
-                LogUtils.saveLog(consultSession.getUserId(),consultSession.getCsUserId());
-            }
-
-            //可开启线程进行记录
-            if (consultSession.getCsUserId() != null) {
-                //查询该用户之前咨询次数
-                Map praiseParam = new HashMap();
-                praiseParam.put("userId", consultSession.getUserId());
-                Integer sessionCount = consultSessionService.getConsultSessionByUserId(praiseParam);
-                LogUtils.saveLog(consultSession.getUserId(), "咨询次数为"+sessionCount);
-                consultSession.setConsultNumber(sessionCount + 1);
-                LogUtils.saveLog(consultSession.getUserId(), "保存consultSession");
-                consultSessionService.saveConsultInfo(consultSession);
-                LogUtils.saveLog(consultSession.getUserId(), "保存consultSession成功");
-
-                Integer sessionId = consultSession.getId();
-                saveCustomerEvaluation(consultSession);
-                LogUtils.saveLog(consultSession.getUserId(),"保存评价1");
-                response.put("csChannel", csChannel);
-                response.put("sessionId", sessionId);
-                response.put("consultSession", consultSession);
-                return response;
-            } else {
+            /**
+             * @author jiangzg
+             * @date 2016-7-7 10:33:29
+             */
+            if (csChannel == null) {
+                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                String content = "抱歉，暂时没有医生在线，请稍后使用服务！";
+                LogUtils.saveLog(consultSession.getUserId(),content);
+                WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), content);
                 return null;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            lock.unlock();
         }
-        return null;
+
+        if (StringUtils.isNotNull(consultSession.getCsUserId())) {
+            HashMap<String, Object> perInfo = userInfoService.findPersonDetailInfoByUserId(consultSession.getCsUserId());
+            consultSession.setCsUserName((String) perInfo.get("name"));
+            LogUtils.saveLog(consultSession.getUserId(),consultSession.getCsUserId());
+        }
+
+        //可开启线程进行记录
+        if (consultSession.getCsUserId() != null) {
+            //查询该用户之前咨询次数
+            Map praiseParam = new HashMap();
+            praiseParam.put("userId", consultSession.getUserId());
+            Integer sessionCount = consultSessionService.getConsultSessionByUserId(praiseParam);
+            LogUtils.saveLog(consultSession.getUserId(), "咨询次数为"+sessionCount);
+            consultSession.setConsultNumber(sessionCount + 1);
+            LogUtils.saveLog(consultSession.getUserId(), "保存consultSession");
+            consultSessionService.saveConsultInfo(consultSession);
+            LogUtils.saveLog(consultSession.getUserId(), "保存consultSession成功");
+
+            Integer sessionId = consultSession.getId();
+            saveCustomerEvaluation(consultSession);
+            LogUtils.saveLog(consultSession.getUserId(),"保存评价1");
+            response.put("csChannel", csChannel);
+            response.put("sessionId", sessionId);
+            response.put("consultSession", consultSession);
+            return response;
+        } else {
+            return null;
+        }
+
     }
 
     /**
