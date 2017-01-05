@@ -33,8 +33,7 @@ import java.net.SocketException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
@@ -76,7 +75,9 @@ public class ConsultWechatController extends BaseController {
     @Autowired
     private ConsultBadEvaluateRemindUserService consultBadEvaluateRemindUserService;
 
-    private static ExecutorService threadExecutor = Executors.newCachedThreadPool();
+    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+
+    private static ExecutorService cacheExecutor = Executors.newCachedThreadPool();
 
     @Autowired
     private ConsultVoiceRecordMongoServiceImpl consultVoiceRecordMongoService;
@@ -446,6 +447,20 @@ public class ConsultWechatController extends BaseController {
                             System.out.println(messageContent);
                         }
                         obj.put("content", URLDecoder.decode(messageContent, "utf-8"));
+                        /**
+                         * jiangzg add 2016-9-8 17:44:45 增加消息数量
+                         */
+                        LogUtils.saveLog(openId, "消息数量为" + consultSession.getConsultNum());
+                        obj.put("consultNum", consultSession.getConsultNum());
+                        TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
+                        csChannel.writeAndFlush(frame.retain());
+                        LogUtils.saveLog(openId, "消息推送给医生结束");
+
+                        //保存聊天记录
+                        consultRecordService.buildRecordMongoVo(userId, String.valueOf(ConsultUtil.transformMessageTypeToType(messageType)), messageContent, consultSession);
+                        LogUtils.saveLog(consultSession.getUserId(), "保存ConsultSessionStatusVo");
+                        consultRecordService.saveConsultSessionStatus(consultSession);
+                        LogUtils.saveLog(consultSession.getUserId(), "保存ConsultSessionStatusVo成功！");
 
                     } else {
                         if (messageType.contains("image")) {
@@ -458,7 +473,79 @@ public class ConsultWechatController extends BaseController {
                         //收到语音，发送通知给用户，提示为了更好地咨询，最好文字聊天
                         //根据mediaId，从微信服务器上，获取到媒体文件，再将媒体文件，放置阿里云服务器，获取URL
                         if (messageType.contains("voice") || messageType.contains("video") || messageType.contains("image")) {
-                            messageContent = voiceHandle(messageType, messageContent, sessionId, consultSession, obj, sysPropertyVoWithBLOBsVo);
+
+                            Runnable cthread = new Thread(new MultiSendMsg(openId,csChannel,userId,messageType, messageContent, sessionId, consultSession, obj, sysPropertyVoWithBLOBsVo,param));
+                            try {
+                                Future future = cacheExecutor.submit(cthread);
+                                future.get(5000, TimeUnit.MILLISECONDS);
+                                if(!future.isDone()){
+                                    future.cancel(true);
+                                }
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            } catch (TimeoutException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    e.getMessage();
+                }
+            }
+
+        }
+        private class MultiSendMsg implements Runnable{
+
+            private String openId ;
+            private Channel csChannel;
+            private String userId ;
+            private String messageType ;
+            private String messageContent ;
+            private Integer sessionId ;
+            private  RichConsultSession consultSession ;
+            private JSONObject obj ;
+            private SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo ;
+            private HashMap param ;
+
+            public MultiSendMsg( String openId , Channel csChannel ,String userId , String messageType, String messageContent, Integer sessionId, RichConsultSession consultSession, JSONObject obj, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo,HashMap param ){
+                this.openId = openId ;
+                this.csChannel = csChannel ;
+                this.userId = userId;
+                this.messageType = messageType ;
+                this.messageContent = messageContent ;
+                this.consultSession = consultSession ;
+                this.sessionId = sessionId ;
+                this.obj = obj ;
+                this.sysPropertyVoWithBLOBsVo = sysPropertyVoWithBLOBsVo ;
+                this.param = param ;
+            }
+
+            private String voiceHandle(String openId , Channel csChannel ,String userId , String messageType, String messageContent, Integer sessionId, RichConsultSession consultSession, JSONObject obj, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo,HashMap param) {
+                try {
+                    WechatUtil wechatUtil = new WechatUtil();
+                    Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                    String mediaURL = wechatUtil.downloadMediaFromWx((String) userWechatParam.get("token"),
+                            (String) this.param.get("mediaId"), messageType, sysPropertyVoWithBLOBsVo);
+                    obj.put("content", mediaURL);
+                    messageContent = mediaURL;
+                    if (messageType.contains("voice")) {
+                        ConsultVoiceRecordMongoVo consultVoiceRecordMongoVo = new ConsultVoiceRecordMongoVo();
+                        consultVoiceRecordMongoVo.setCsUserId(consultSession.getCsUserId());
+                        consultVoiceRecordMongoVo.setSessionId(sessionId);
+                        long consultCount = consultVoiceRecordMongoService.countConsultByVoice(consultVoiceRecordMongoVo);
+                        if (consultCount < 1) {
+                            consultVoiceRecordMongoVo.setCreateDate(new Date());
+                            consultVoiceRecordMongoVo.setType(messageType);
+                            consultVoiceRecordMongoVo.setUserId(consultSession.getUserId());
+                            consultVoiceRecordMongoVo.setCsUserName(consultSession.getCsUserName());
+                            consultVoiceRecordMongoVo.setUserName(consultSession.getUserName());
+                            consultVoiceRecordMongoVo.setContent(mediaURL);
+                            consultVoiceRecordMongoService.insert(consultVoiceRecordMongoVo);
+                            WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), "亲亲，语音会影响医生的判断哦，为了您的咨询更准确，要用文字提问呦~");
                         }
                     }
                     /**
@@ -476,42 +563,16 @@ public class ConsultWechatController extends BaseController {
                     consultRecordService.saveConsultSessionStatus(consultSession);
                     LogUtils.saveLog(consultSession.getUserId(), "保存ConsultSessionStatusVo成功！");
 
-                } catch (UnsupportedEncodingException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
-                    e.getMessage();
                 }
+                return messageContent;
             }
 
-        }
-
-        private String voiceHandle(String messageType, String messageContent, Integer sessionId, RichConsultSession consultSession, JSONObject obj, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
-            try {
-                WechatUtil wechatUtil = new WechatUtil();
-                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                String mediaURL = wechatUtil.downloadMediaFromWx((String) userWechatParam.get("token"),
-                        (String) this.param.get("mediaId"), messageType, sysPropertyVoWithBLOBsVo);
-                obj.put("content", mediaURL);
-                messageContent = mediaURL;
-                if (messageType.contains("voice")) {
-                    ConsultVoiceRecordMongoVo consultVoiceRecordMongoVo = new ConsultVoiceRecordMongoVo();
-                    consultVoiceRecordMongoVo.setCsUserId(consultSession.getCsUserId());
-                    consultVoiceRecordMongoVo.setSessionId(sessionId);
-                    long consultCount = consultVoiceRecordMongoService.countConsultByVoice(consultVoiceRecordMongoVo);
-                    if (consultCount < 1) {
-                        consultVoiceRecordMongoVo.setCreateDate(new Date());
-                        consultVoiceRecordMongoVo.setType(messageType);
-                        consultVoiceRecordMongoVo.setUserId(consultSession.getUserId());
-                        consultVoiceRecordMongoVo.setCsUserName(consultSession.getCsUserName());
-                        consultVoiceRecordMongoVo.setUserName(consultSession.getUserName());
-                        consultVoiceRecordMongoVo.setContent(mediaURL);
-                        consultVoiceRecordMongoService.insert(consultVoiceRecordMongoVo);
-                        WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), "亲亲，语音会影响医生的判断哦，为了您的咨询更准确，要用文字提问呦~");
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            @Override
+            public void run() {
+                voiceHandle(openId,csChannel,userId,messageType, messageContent, sessionId, consultSession, obj, sysPropertyVoWithBLOBsVo,param);
             }
-            return messageContent;
         }
 
         private Integer consultCharge(String openId, Integer sessionId, RichConsultSession richConsultSession, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {

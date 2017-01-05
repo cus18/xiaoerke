@@ -339,6 +339,14 @@ public class WechatUtil {
         OSSObjectTool.uploadFileInputStream(mediaName, picLen, inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
 
         String mediaURL = OSSObjectTool.getConsultMediaBaseUrl()+ mediaName;
+        try{
+            if(inputStream != null ){
+                inputStream.close();
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
         return mediaURL;
     }
 
