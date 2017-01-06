@@ -477,9 +477,11 @@ public class ConsultWechatController extends BaseController {
                             Runnable cthread = new Thread(new MultiSendMsg(openId,csChannel,userId,messageType, messageContent, sessionId, consultSession, obj, sysPropertyVoWithBLOBsVo,param));
                             try {
                                 Future future = cacheExecutor.submit(cthread);
-                                future.get(5000, TimeUnit.MILLISECONDS);
-                                if(!future.isDone()){
-                                    future.cancel(true);
+                                if(future!=null){
+                                    future.get(5000, TimeUnit.MILLISECONDS);
+                                    if(!future.isDone()){
+                                        future.cancel(true);
+                                    }
                                 }
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
