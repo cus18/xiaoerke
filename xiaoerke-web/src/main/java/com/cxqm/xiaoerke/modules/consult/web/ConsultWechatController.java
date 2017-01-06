@@ -481,6 +481,7 @@ public class ConsultWechatController extends BaseController {
                                     future.get(5000, TimeUnit.MILLISECONDS);
                                     if(!future.isDone()){
                                         future.cancel(true);
+                                        LogUtils.saveLog(openId,"任务是否已经取消"+future.isCancelled());
                                     }
                                 }
                             } catch (InterruptedException e) {
