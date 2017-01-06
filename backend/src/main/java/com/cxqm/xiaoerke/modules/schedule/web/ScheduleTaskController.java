@@ -5,9 +5,12 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
-import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.util.ConsultUtil;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.operation.service.ConsultStatisticService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
@@ -20,8 +23,12 @@ import com.cxqm.xiaoerke.modules.vaccine.service.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 /**
  * backend定时器
@@ -58,6 +65,14 @@ public class ScheduleTaskController extends BaseController {
     @Autowired
     private BabyCoinService babyCoinService;
 
+    @Autowired
+    private SessionRedisCache sessionRedisCache;
+
+    @Autowired
+    private ConsultSessionService consultSessionService ;
+
+    @Autowired
+    private ConsultRecordService consultRecordService;
 
     /**
      * 咨询统计信息
@@ -438,4 +453,108 @@ public class ScheduleTaskController extends BaseController {
     }
 
 
+    /**
+     * 清理redis、mongo、mysql垃圾数据
+     * 2016-10-12 15:51:46 jiangzg add
+     */
+    public void clearRedisData() {
+        //o3_NPwmmMGpZxC5eS491_JzFRHtU
+        Map<String, Object> result = new HashMap<String, Object>();
+        List dataList = new ArrayList();          //删除的数据
+        List<Object> consultSessions = sessionRedisCache.getConsultSessionsByKey();
+        List<Object> sessionIds = sessionRedisCache.getSessionIdByKey();
+        List<Integer> sessionIdList = null;            //redis 所有sessionID
+        if(sessionIds != null && sessionIds.size() >0){
+            sessionIdList = new ArrayList<Integer>();
+            for (Object o : sessionIds) {
+                Integer sessionId = Integer.valueOf(String.valueOf(o));
+                sessionIdList.add(sessionId);
+            }
+        }
+        Date nowDate = new Date();
+        HashMap<Object,Object> dataMap = new HashMap<Object,Object>();
+        /**
+         * mysql
+         */
+        ConsultSession consultSession = new ConsultSession();
+        consultSession.setStatus(ConsultSession.STATUS_ONGOING);
+        List<ConsultSession> consultSessionList = consultSessionService.selectBySelective(consultSession);
+        if(consultSessionList !=null && consultSessionList.size() >0){
+            for(ConsultSession ongoingConsultSession : consultSessionList){
+                if(nowDate.getTime() - ongoingConsultSession.getCreateTime().getTime() > 6*60*60*1000){
+                    ongoingConsultSession.setStatus(ConsultSession.STATUS_COMPLETED);
+                    consultSessionService.updateSessionInfo(ongoingConsultSession);
+                    if(!dataMap.containsKey(ongoingConsultSession.getId())){
+                        dataMap.put(ongoingConsultSession.getId(), ongoingConsultSession.getUserId());
+                    }
+                }
+            }
+        }
+        /**
+         * mongo
+         */
+        Query queryAgain = new Query(where("status").is("ongoing"));
+        List<ConsultSessionStatusVo> consultSessionStatusAgainVos = consultRecordService.querySessionStatusList(queryAgain);
+        if(consultSessionStatusAgainVos != null && consultSessionStatusAgainVos.size()>0){
+            for(int i=0 ; i<consultSessionStatusAgainVos.size();i++){
+                if(consultSessionStatusAgainVos.get(i).getLastMessageTime() != null && consultSessionStatusAgainVos.get(i).getLastMessageTime().getTime()-nowDate.getTime() > 6*60*60*1000){
+                    //清除mongo内的残留数据
+                    Query removeQuery = new Query().addCriteria(where("_id").is(consultSessionStatusAgainVos.get(i).getId()));
+                    consultRecordService.updateConsultSessionStatusVo(removeQuery,"complete");
+                    if(!dataMap.containsKey(consultSessionStatusAgainVos.get(i).getSessionId())){
+                        dataMap.put(consultSessionStatusAgainVos.get(i).getSessionId(), consultSessionStatusAgainVos.get(i).getUserId());
+                    }
+                    /*if(!removelist.contains(consultSessionStatusAgainVos.get(i).getSessionId())) {
+                         removelist.add(consultSessionStatusAgainVos.get(i).getSessionId());
+                    }*/
+                }
+            }
+        }
+        /**
+         * monog sessionId is null
+         */
+        List matchList = new ArrayList();
+        matchList.add("null");
+        matchList.add("");
+        Query clearQuery = new Query(where("sessionId").in(matchList));
+        consultRecordService.deleteMongoRecordBySelective(clearQuery, ConsultSessionStatusVo.class);
+
+        /**
+         * redis
+         */
+        Map noRemoveMap = new HashMap();
+        if(consultSessions !=null && consultSessions.size()>0){
+            for(Object consultSessionObject:consultSessions){
+                if(consultSessionObject != null) {
+                    RichConsultSession consultSessionValue = ConsultUtil.transferMapToRichConsultSession((Map<Object, Object>) consultSessionObject);
+                    if(consultSessionValue != null && consultSessionValue.getCreateTime() != null && (nowDate.getTime() - consultSessionValue.getCreateTime().getTime() > 6*60*60*1000)){
+                        if("ongoing".equalsIgnoreCase(consultSessionValue.getStatus())){
+                            sessionRedisCache.removeConsultSessionBySessionId(consultSessionValue.getId());
+                            if(!dataMap.containsKey(consultSessionValue.getId())) {
+                                dataMap.put(consultSessionValue.getId(), consultSessionValue.getUserId());
+                            }
+                       /* if(!removelist.contains(consultSessionValue.getId())){
+                            removelist.add(consultSessionValue.getId());
+                        }*/
+                            if(sessionIdList != null && sessionIdList.size() >0){
+                                if(sessionIdList.contains(consultSessionValue.getId())){
+                                    Integer sessionId = sessionRedisCache.getSessionIdByUserId(consultSessionValue.getUserId());
+                                    if((sessionId !=null) && String.valueOf(sessionId).equalsIgnoreCase(String.valueOf(consultSessionValue.getId()))){
+                                        sessionRedisCache.removeUserIdSessionIdPair(consultSessionValue.getUserId());
+                                    }else{
+                                        HashMap userIdSessionIdPair = new HashMap();
+                                        userIdSessionIdPair.put(sessionId,consultSessionValue.getUserId());
+                                        noRemoveMap.put(consultSessionValue.getId(),userIdSessionIdPair);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        dataList.add(dataMap);
+        result.put("removeSessionList",dataList);
+        result.put("noRemoveSessionList",noRemoveMap);
+    }
 }

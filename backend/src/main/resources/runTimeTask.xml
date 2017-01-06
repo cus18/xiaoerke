@@ -64,6 +64,16 @@
 		<property name="cronExpression" value="0 0 1 1 * ?"/>
 	</bean>
 
+	<bean id="clearRedisDataQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scheduledQuarz"/>
+		<property name="targetMethod" value="clearRedisData"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	<bean id="clearRedisDataTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="clearRedisDataQuarzTask"/>
+		<property name="cronExpression" value="0 0 0/6 * * ?"/>
+	</bean>
+
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
@@ -72,6 +82,7 @@
 				<ref bean="updateOlyGamesCronTrigger"/>
 				<ref bean="updateConsultDoctorInfoTrigger"/>
 				<ref bean="updateBabyCoinInviteNumberTrigger"/>
+				<ref bean="clearRedisDataTrigger"/>
 			</list>
 		</property>
 		<property name="autoStartup" value="true"/>

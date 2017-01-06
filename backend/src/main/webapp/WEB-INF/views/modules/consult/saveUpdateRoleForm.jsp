@@ -32,7 +32,7 @@
 		$(function(){
 			$('#emotion').qqFace({
 				id : 'facebox',
-				assign:'saytext',
+				assign:'confContent',
 				path:'${ctxStatic}/qqemotion/arclist/'	//表情存放的路径
 			});
 		});
@@ -67,8 +67,8 @@
 		<div class="control-group">
 			<label class="control-label">回复:</label>
 			<div class="controls">
-				<form:textarea class="input" path="replyText" id="saytext" name="saytext" style="width: 400px ;height: 80px" value="${vo.replyText}"></form:textarea>
-				<img id="emotion" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fqqface%2F1.gif"/>
+				<form:textarea class="input" path="replyText" id="confContent" name="confContent" style="width: 200px ;height: 80px" value="${vo.replyText}"></form:textarea>
+				<sys:ckeditor replace="confContent"/>
 			</div>
 			<div id="show"></div>
 		</div>

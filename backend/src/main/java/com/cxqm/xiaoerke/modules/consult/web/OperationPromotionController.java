@@ -7,6 +7,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionTemplateVo;
 import com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionVo;
 import com.cxqm.xiaoerke.modules.consult.service.OperationPromotionService;
 import com.cxqm.xiaoerke.modules.consult.service.OperationPromotionTemplateService;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -75,6 +76,10 @@ public class OperationPromotionController extends BaseController {
     public String saveKeywordRole(OperationPromotionVo vo,HttpServletRequest request, Model model) {
         String keywordQcode = request.getParameter("keywordQcode");
         vo.setMessageType(keywordQcode);
+        if(StringUtils.isNotNull(vo.getReplyText())){
+            vo.setReplyText(StringEscapeUtils.unescapeHtml4(vo.getReplyText()));
+            vo.setReplyText(vo.getReplyText().replace("<p>","").replace("\r\n\t","").replace("amp;","").replace("</p>","").replace("\"","'"));
+        }
         operationPromotionService.saveKeywordRole(vo);
         model.addAttribute("vo", new OperationPromotionVo());
         try {

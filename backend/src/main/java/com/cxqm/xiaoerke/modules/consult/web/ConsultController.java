@@ -595,7 +595,7 @@ public class ConsultController extends BaseController {
 		if(sessionIds != null && sessionIds.size() >0){
 			sessionIdList = new ArrayList<Integer>();
 			for (Object o : sessionIds) {
-				Integer sessionId = (Integer) o;
+				Integer sessionId = Integer.valueOf(String.valueOf(o));
 				sessionIdList.add(sessionId);
 			}
 		}
