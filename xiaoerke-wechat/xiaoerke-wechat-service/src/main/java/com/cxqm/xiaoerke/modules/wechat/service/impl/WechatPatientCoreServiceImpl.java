@@ -2,12 +2,9 @@ package com.cxqm.xiaoerke.modules.wechat.service.impl;
 
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
-import com.cxqm.xiaoerke.modules.consult.dao.ConsultStatisticDao;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
-import com.cxqm.xiaoerke.modules.consult.utils.DateUtil;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
-import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.marketing.service.LoveMarketingService;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
 import com.cxqm.xiaoerke.modules.sys.entity.*;
@@ -25,16 +22,12 @@ import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatPatientCoreService;
 import com.cxqm.xiaoerke.modules.wechat.service.util.MessageUtil;
 import net.sf.json.JSONObject;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -1824,15 +1817,14 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //        }
 //        return true;
 //    }
-
-
 //    public static void main(String[] args){
 //
 //        JSONObject jsonObject = new JSONObject();
-//        jsonObject.put("openId","fsdaf");
-//        jsonObject.put("messageType","哈哈哈哈哈哈哈哈哈");
+//        jsonObject.put("openId","o3_NPwnpYevGPIQU4uXAK3RqNRe8");
+//        jsonObject.put("messageType","text");
+//        jsonObject.put("messageContent","测试");
 //        try{
-//            URL url = new URL("http://s120.xiaork.com/angel/consult/wechat/conversation");
+//            URL url = new URL("http://test.x2ke.cn/angel/consult/wechat/conversation");
 //            URLConnection urlConnection = url.openConnection();
 //            // 设置doOutput属性为true表示将使用此urlConnection写入数据
 //            urlConnection.setDoOutput(true);
