@@ -43,6 +43,8 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String consultMemberWhiteList;
 
+    private String freeConsultNum;
+
     public String getTemplateIdYWFWTX() {
         return templateIdYWFWTX;
     }
@@ -239,5 +241,12 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     public void setConsultMemberWhiteList(String consultMemberWhiteList) {
         this.consultMemberWhiteList = consultMemberWhiteList;
+    }
+    public String getFreeConsultNum() {
+        return freeConsultNum;
+    }
+
+    public void setFreeConsultNum(String freeConsultNum) {
+        this.freeConsultNum = freeConsultNum;
     }
 }

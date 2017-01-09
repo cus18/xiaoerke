@@ -1533,7 +1533,8 @@ public class ScheduledTask {
 
     //每个月赠送给用户四次咨询机会
     public void updateMonthTime() {
-        consultSessionPropertyService.updateMonthTime();
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        consultSessionPropertyService.updateMonthTime(sysPropertyVoWithBLOBsVo.getFreeConsultNum());
     }
 
     public void nonRealtimeSessinTimeOut(){
