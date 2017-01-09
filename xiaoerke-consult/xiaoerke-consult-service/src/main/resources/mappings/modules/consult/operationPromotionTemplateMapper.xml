@@ -20,6 +20,17 @@
       and id = #{id}
     </if>
   </select>
+
+  <select id="getFreeConsultInfo" resultMap="BaseResultMap">
+    select * from operation_promotion_template
+    where 1=1
+    and type = 'consultPay'
+    and NOW() BETWEEN opt.info3 and opt.info4
+    and DATE_FORMAT(NOW(),'%H:%i') BETWEEN opt.info5 and opt.info6
+    limit 1
+  </select>
+
+
 <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
   delete from operation_promotion_template
   where id = #{id}
