@@ -15,6 +15,6 @@ public interface ConsultSessionPropertyService {
 
     int addPermTimes(String userId);
 
-    int updateMonthTime();
+    int updateMonthTime(String freeNum);
 
 }

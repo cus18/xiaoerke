@@ -37,4 +37,5 @@ public interface ConsultMemberRedsiCacheService {
 
     void updateRedisConsultInfo(ConsultMemberVo vo);
 
+    boolean cheackFreeConsultRule();
 }

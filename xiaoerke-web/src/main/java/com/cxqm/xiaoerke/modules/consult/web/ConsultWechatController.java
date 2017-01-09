@@ -591,12 +591,13 @@ public class ConsultWechatController extends BaseController {
             int messageFlag = 0;
             Integer monthTime = 0;
             ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(richConsultSession.getUserId());
+
             //首次咨询
             if (consultSessionPropertyVo == null) {
                 chargeType = "mt";
                 consultSessionPropertyVo = new ConsultSessionPropertyVo();
                 consultSessionPropertyVo.setCreateTime(new Date());
-                consultSessionPropertyVo.setMonthTimes(4);
+                consultSessionPropertyVo.setMonthTimes(Integer.parseInt(sysPropertyVoWithBLOBsVo.getFreeConsultNum()));
                 consultSessionPropertyVo.setPermTimes(0);
                 consultSessionPropertyVo.setSysUserId(openId);
                 consultSessionPropertyVo.setCreateBy(openId);

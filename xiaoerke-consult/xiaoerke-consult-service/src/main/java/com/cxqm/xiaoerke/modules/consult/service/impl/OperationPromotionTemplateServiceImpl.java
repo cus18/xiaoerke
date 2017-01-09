@@ -60,6 +60,11 @@ public class OperationPromotionTemplateServiceImpl implements OperationPromotion
         operationPromotionTemplateDao.deleteByPrimaryKey(vo.getId()+"");
     }
 
+    @Override
+    public OperationPromotionTemplateVo getFreeConsultInfo() {
+        return operationPromotionTemplateDao.getFreeConsultInfo();
+    }
+
     private void uploadArticleImage(String id , String src) {
         try {
             File file = new File(System.getProperty("user.dir").replace("bin", "webapps") + URLDecoder.decode(src, "utf-8"));

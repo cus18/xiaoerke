@@ -39,8 +39,8 @@ public class ConsultSessionPropertyServiceImpl implements ConsultSessionProperty
         }
 
         @Override
-        public int updateMonthTime() {
-            return consultSessionPropertyDao.updateMonthTime() ;
+        public int updateMonthTime(String freeNum) {
+            return consultSessionPropertyDao.updateMonthTime(Integer.parseInt(freeNum)) ;
         }
 
         @Override

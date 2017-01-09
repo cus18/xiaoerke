@@ -24,7 +24,7 @@ public interface ConsultSessionPropertyDao {
 
     int addPermTimes(@Param("userId") String userId);
 
-    int updateMonthTime();
+    int updateMonthTime(@Param("freeNum") Integer freeNum);
 
     Page<ConsultSessionPropertyVo> findConsultUserInfoListByInfo(Page<ConsultSessionPropertyVo> page,ConsultSessionPropertyVo vo);
 

@@ -12,6 +12,8 @@ public interface OperationPromotionTemplateDao {
 
     List<OperationPromotionTemplateVo> findTemplateListByInfo(OperationPromotionTemplateVo vo);
 
+    OperationPromotionTemplateVo getFreeConsultInfo();
+
     int deleteByPrimaryKey(String id);
 
     int insertSelective(OperationPromotionTemplateVo record);
