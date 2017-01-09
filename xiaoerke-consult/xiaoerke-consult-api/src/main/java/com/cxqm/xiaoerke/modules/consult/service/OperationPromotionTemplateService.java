@@ -18,4 +18,5 @@ public interface OperationPromotionTemplateService {
 
     void deleteOperationPromotionTemplate(OperationPromotionTemplateVo vo);
 
+    OperationPromotionTemplateVo getFreeConsultInfo();
 }
