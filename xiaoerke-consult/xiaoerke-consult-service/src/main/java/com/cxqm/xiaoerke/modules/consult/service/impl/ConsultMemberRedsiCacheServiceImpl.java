@@ -183,8 +183,9 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             OperationPromotionTemplateVo templatevo = operationPromotionTemplateService.getFreeConsultInfo();
 
             //推送的消息文案
-            if("收费".equals(templatevo.getInfo1())){
+            if(null !=templatevo&&"收费".equals(templatevo.getInfo1())){
                 WechatUtil.sendMsgToWechat(token,openid,templatevo.getInfo2());
+                LogUtils.saveLog("ZXTS_YJSD",openid);
                 return false;
             };
 
@@ -198,7 +199,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                 ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query2);
                 if(null != propertyVo && (propertyVo.getPermTimes()+propertyVo.getMonthTimes()) > 0){
 //             用户有咨询机会
-                    String content = "亲爱的，你今天的"+sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime()+"分钟免费咨询还未启用。\n为减少其他生病宝宝的焦急等待，从医生接入时开始计时";
+                    String content =templatevo!=null?templatevo.getInfo2():"亲爱的，你今天的"+sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime()+"分钟免费咨询还未启用。\n为减少其他生病宝宝的焦急等待，从医生接入时开始计时";
                     if((propertyVo.getPermTimes()+propertyVo.getMonthTimes())==1) content += "\n----------\n别怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
 //                 查询用户最后一条记录是否ongoing的状态
                     if(null !=consultSessionStatusVo2 && prompt&&!ConsultSession.STATUS_ONGOING.equals(consultSessionStatusVo2.getStatus()))WechatUtil.sendMsgToWechat(token,openid,content);
