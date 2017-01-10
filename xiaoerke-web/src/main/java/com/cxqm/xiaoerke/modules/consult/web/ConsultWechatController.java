@@ -690,7 +690,7 @@ public class ConsultWechatController extends BaseController {
             //更新会话操作时间
             consultRecordService.saveConsultSessionStatus(richConsultSession);
             Query query;
-            if (richConsultSession.getUserType().equals(ConstantUtil.CONSULTDOCTOR.getVariable())) {
+            if (ConstantUtil.CONSULTDOCTOR.getVariable().equals(richConsultSession.getUserType())) {
                 Query qry = (new Query()).addCriteria(where("userId").is(richConsultSession.getUserId())).with(new Sort(Sort.Direction.DESC, "createDate"));
                 ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(qry);
                 query = new Query().addCriteria(where("_id").is(consultSessionStatusVo.getId()));
