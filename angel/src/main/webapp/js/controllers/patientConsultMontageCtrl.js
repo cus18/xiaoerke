@@ -9,12 +9,12 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
             $scope.sessionId = "";
             $scope.socketServer = "";
             $scope.glued = true;
-            $scope.source = "h5cxqmUser";
+            $scope.source = "h5mtqUser";
             //界面的初始化
             $scope.patientConsultFirst = function(){
                 var num = randomString(32);
                 $scope.patientId = num.substring(0,6);
-                $scope.patientName = "保护伞"+num.substring(0,1);
+                $scope.patientName = "MTQ5-"+num.substring(0,1);
                 $scope.initConsultSocket();
             };
             //初始化接口
@@ -24,7 +24,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 }
                 if (window.WebSocket) {
                     $scope.socketServer = new ReconnectingWebSocket("ws://s251.baodf.com/wsbackend/ws&user&"
-                        + $scope.patientId +"&h5cxqm");//cs,user,distributor
+                        + $scope.patientId +"&h5mtq");//cs,user,distributor
 
                     /*$scope.socketServer = new ReconnectingWebSocket("ws://xiaork.com:2048/ws&user&"
                      + $scope.patientId +"&h5cxqm");//cs,user,distributor*/

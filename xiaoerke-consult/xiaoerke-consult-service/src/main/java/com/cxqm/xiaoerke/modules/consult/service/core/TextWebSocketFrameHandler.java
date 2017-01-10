@@ -170,6 +170,8 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                 consultSession = ConsultSessionManager.INSTANCE.createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5bhq");
             }else if(msgMap.get("source").equals("h5ykdlUser") && msgMap.get("senderId") != null){
                 consultSession = ConsultSessionManager.INSTANCE.createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5ykdl");
+            }else if(msgMap.get("source").equals("h5mtqUser") && msgMap.get("senderId") != null){
+                consultSession = ConsultSessionManager.INSTANCE.createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5mtq");
             }
             //保存聊天记录
             if (consultSession != null) {
@@ -196,7 +198,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
     private boolean doctorSendToUser(TextWebSocketFrame msg, Map<String, Object> msgMap, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo, int msgType, Map userWechatParam, RichConsultSession richConsultSession, String csUserId, String userId) {
         //渠道来源H5
-        if (richConsultSession.getSource().equals("h5cxqm")||richConsultSession.getSource().equals("h5wjy") || richConsultSession.getSource().equals("h5bhq") || richConsultSession.getSource().equals("h5ykdl")) {
+        if (richConsultSession.getSource().equals("h5cxqm")||richConsultSession.getSource().equals("h5wjy") || richConsultSession.getSource().equals("h5bhq") || richConsultSession.getSource().equals("h5ykdl") || richConsultSession.getSource().equals("h5mtq")) {
             Channel userChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(userId);
             //channel是活跃的状态
             if (userChannel != null && userChannel.isActive()) {
@@ -279,7 +281,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
     }
 
     private boolean channelAlive(TextWebSocketFrame msg, Map<String, Object> msgMap, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo, int msgType, RichConsultSession richConsultSession, String csUserId, String userId, Channel userChannel) {
-        if(richConsultSession.getSource().equals("h5bhq") || richConsultSession.getSource().equals("h5ykdl")){
+        if(richConsultSession.getSource().equals("h5bhq") || richConsultSession.getSource().equals("h5ykdl") || richConsultSession.getSource().equals("h5mtq")){
             Map<String, Date> userConnectionTimeMapping = ConsultSessionManager.INSTANCE.getUserConnectionTimeMapping();
             Date oldDate = null;
             if(userConnectionTimeMapping.containsKey(richConsultSession.getUserId())){
@@ -305,7 +307,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                 }
             }
             if(flag){
-                if(richConsultSession.getSource().equals("h5ykdl")){
+                if(richConsultSession.getSource().equals("h5ykdl") || richConsultSession.getSource().equals("h5mtq")){
                     if("true".equalsIgnoreCase(messageContentFilter(msgMap))){
                         Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
                         JSONObject jsonObj = new JSONObject();
@@ -323,7 +325,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                     userChannel.writeAndFlush(msg.retain());
                 }
             }else{
-                if(richConsultSession.getSource().equals("h5ykdl")){
+                if(richConsultSession.getSource().equals("h5ykdl") || richConsultSession.getSource().equals("h5mtq")){
                     if("true".equalsIgnoreCase(messageContentFilter(msgMap))){
                         Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
                         JSONObject jsonObj = new JSONObject();
