@@ -19,6 +19,8 @@ public interface BabyCoinDao {
 
     List<BabyCoinVo> selectListByBabyCoinVo(BabyCoinVo babyCoinVo);
 
+    List<BabyCoinVo> selectSubBabyCoin(BabyCoinVo babyCoinVo);
+
     int updateByPrimaryKeySelective(BabyCoinVo record);
 
     int updateByOpenId(BabyCoinVo record);

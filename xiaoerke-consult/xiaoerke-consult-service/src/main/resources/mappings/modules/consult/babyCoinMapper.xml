@@ -61,6 +61,12 @@
     </if>
   </select>
 
+  <select id="selectSubBabyCoin" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo" >
+    select (bc.cash - bcr.balance) cash,bc.open_id  from baby_coin bc
+    INNER JOIN (select sum(balance) balance,open_id from baby_coin_record where create_time > '2016-11-31 23:59:59' and balance >0 GROUP BY open_id ) bcr on bcr.open_id=bc.open_id
+    and bc.cash > bcr.balance
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from baby_coin
     where id = #{id,jdbcType=INTEGER}
