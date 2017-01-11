@@ -44,4 +44,6 @@ public interface ConsultSessionService {
     boolean cheakInstantConsultation(String openid);
 
     ConsultSession selectByOpenid(String openid);
+
+    ConsultSession selectConsultDurationByOpenid(String openid);
 }

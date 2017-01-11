@@ -29,7 +29,11 @@ public interface PatientRegisterPraiseService {
     Integer updateCustomerEvaluation(Map<String, Object> params);
     
     Map<String,Object> selectCustomerEvaluation(@Param("id")String id);
-    
+
+    Map<String,Object> select2016EvaluationByOpenId(@Param("openId") String openId);
+
+    Map<String,Object> select2016EvaluationByOpenId_2(@Param("openId") String openId);
+
     Map<String,Object> getCustomerStarInfoById(@Param("doctorId")String id);
 
     Map<String,Object> getCustomerStarSingById(@Param("doctorId")String id);

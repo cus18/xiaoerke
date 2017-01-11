@@ -31,7 +31,7 @@
         select
         <include refid="Base_Column_List"/>
         from consult_session
-        where sys_user_id = #{openid,jdbcType=INTEGER}
+        where sys_user_id = #{openid,jdbcType=VARCHAR}
         order by consult_number desc
         limit 1
     </select>
@@ -363,5 +363,18 @@
         SELECT cdi.name doctorName,cdi.hospital hospitalName,cdi.title professional,cdi.skill
         FROM consult_doctor_info cdi
         where cdi.marketer = #{marketer} limit 1
+    </select>
+
+    <select id="selectConsultDurationByOpenid" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+            datediff(update_time, create_time) * 24 * 60 consult_number,
+            DATE_FORMAT(create_time, '%Y-%m-%d') create_time
+        FROM
+            consult_session
+        WHERE
+            sys_user_id = #{openid,jdbcType=INTEGER}
+        ORDER BY
+            consult_number DESC
+         limit 1
     </select>
 </mapper>

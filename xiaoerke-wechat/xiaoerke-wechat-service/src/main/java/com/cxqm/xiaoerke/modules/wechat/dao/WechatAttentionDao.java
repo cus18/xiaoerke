@@ -20,6 +20,8 @@ public interface WechatAttentionDao {
 	 //根据openId查询关注信息
     List<SysWechatAppintInfoVo> findAttentionInfoByOpenId(SysWechatAppintInfoVo sysWechatAppintInfoVo);
 
+    List<SysWechatAppintInfoVo> selectByOpenId(SysWechatAppintInfoVo sysWechatAppintInfoVo);
+    
     List<SysWechatAppintInfoVo> getAttentionInfoByOpenId(SysWechatAppintInfoVo sysWechatAppintInfoVo);
 
     int deleteByPrimaryKey(String id);
