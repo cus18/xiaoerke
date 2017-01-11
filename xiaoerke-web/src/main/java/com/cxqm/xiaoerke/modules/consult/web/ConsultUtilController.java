@@ -99,7 +99,7 @@ public class ConsultUtilController {
         String remark = "年末送亲戚孩子的礼品你准备好了吗？宝宝币点击兑换优惠券更省钱哦~";
         String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=48";
         if(babyCoinVos!=null && babyCoinVos.size()>0){
-            for(int i = 100;i<=babyCoinVos.size();i++){
+            for(int i = 0;i<=babyCoinVos.size();i++){
                 if(babyCoinVos.get(i)!=null){
                     BabyCoinVo vo = babyCoinVos.get(i);
                     if(StringUtils.isNotNull(vo.getOpenId())){
