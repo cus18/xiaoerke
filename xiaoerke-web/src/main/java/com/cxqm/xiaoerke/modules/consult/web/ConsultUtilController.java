@@ -84,7 +84,7 @@ public class ConsultUtilController {
      */
     @RequestMapping(value = "/sendMessage", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map<String, Object> sendMessage(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
+    public Map<String, Object> sendMessage(Map<String, Object> params, HttpSession session, HttpServletRequest request) {
 
         Map<String, Object> response = new HashMap<String, Object>();
         Map parameter = systemService.getWechatParameter();
@@ -103,7 +103,7 @@ public class ConsultUtilController {
                 if(babyCoinVos.get(i)!=null){
                     BabyCoinVo vo = babyCoinVos.get(i);
                     if(StringUtils.isNotNull(vo.getOpenId())){
-                        if(vo.getOpenId().equals("oogbDwD_2BTQpftPu9QClr-mCw7U"))
+//                        if(vo.getOpenId().equals("o3_NPwqranZIs-hNjl-B2LjV39oQ"))
                         WechatMessageUtil.templateModel(title, keyword1, keyword2, keyword3, "", remark, token, url, vo.getOpenId(), sysPropertyVoWithBLOBsVo.getTemplateIdYWFWTX());
 //                        babyCoinService.updateBabyCoinByOpenId(vo);
                     }

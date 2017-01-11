@@ -16,6 +16,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             var heartBeatNum = 0;
             $scope.lookMore = false;//查看更多
             $scope.patientImg = "";
+            $scope.patientId= "" ;
             $scope.patientName= "" ;
             $scope.fucengLock = false;//第一次进入页面的浮层
             $scope.alertFlag = false;
@@ -37,7 +38,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                 $scope.getQQExpression();
                 var num = randomString(32);
                 $scope.patientId = num.substring(0,6);
-                $scope.patientName = "MTQ-"+num.substring(0,3);
+                $scope.patientName = "MTQ-"+num.substring(0,2);
                 $scope.initConsultSocket();
             }
 
@@ -170,7 +171,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                             "content": data.showFile,
                             "dateTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                             "senderId": $scope.patientId,
-                            "senderName": "MTQ-"+$scope.patientName,
+                            "senderName": $scope.patientName,
                             "sessionId": parseInt($scope.sessionId),
                             "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                         };
@@ -206,7 +207,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                         "content": $("#saytext").val(),
                         "dateTime": moment().format("YYYY-MM-DD HH:mm:ss"),
                         "senderId":$scope.patientId,
-                        "senderName":"MTQ-"+$scope.patientName,
+                        "senderName":$scope.patientName,
                         "sessionId":parseInt($scope.sessionId),
                         "source":$scope.source,
                         "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"

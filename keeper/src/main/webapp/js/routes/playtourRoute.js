@@ -106,7 +106,7 @@ define(['appPlayTour'], function(app){
                         }
                     })
                     .state('babyCoinInvitePage', {
-                        url: '/babyCoinInvitePage',
+                        url: '/babyCoinInvitePage/:isShow',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'babyCoinInvitePageCtrl',
                         resolve: {
