@@ -52,7 +52,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor   测试机
 
                     $scope.socketServer = new WebSocket("ws://s132.baodf.com/wsbackend/ws&user&"
-                        + $scope.patientId +"&h5mtq");//cs,user,distributor 生产机*/
+                        + $scope.patientId +"&h5mtq");//cs,user,distributor 生产机
 
                     $scope.socketServer.onmessage = function(event) {
                         var consultData = JSON.parse(event.data);
