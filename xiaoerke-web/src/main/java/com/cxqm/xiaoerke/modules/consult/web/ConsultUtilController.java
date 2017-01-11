@@ -28,7 +28,7 @@ import java.util.Map;
  * Created by Administrator on 2016/09/05 0024.
  */
 @Controller
-@RequestMapping(value = "util")
+@RequestMapping(value = "consult/util")
 public class ConsultUtilController {
     @Autowired
     private OlyGamesService olyGamesService;
