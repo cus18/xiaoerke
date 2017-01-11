@@ -21,7 +21,6 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.alertFlag = false;
             $scope.imgBarFlag = false;
 
-
             function randomString(len) {
                 len = len || 32;
                 var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';/****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
