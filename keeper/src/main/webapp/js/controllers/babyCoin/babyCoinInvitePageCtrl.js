@@ -1,6 +1,6 @@
 angular.module('controllers', [])
-    .controller('babyCoinInvitePageCtrl',['$scope','$state','GetAttentionInfo','GetUserOpenId','GetBabyCoinInfo','BabyCoinInit','GetConfig','$ionicScrollDelegate',
-        function ($scope,$state,GetAttentionInfo,GetUserOpenId,GetBabyCoinInfo,BabyCoinInit,GetConfig,$ionicScrollDelegate) {
+    .controller('babyCoinInvitePageCtrl',['$scope','$state','GetAttentionInfo','GetUserOpenId','GetBabyCoinInfo','BabyCoinInit','GetConfig','$ionicScrollDelegate','$stateParams',
+        function ($scope,$state,GetAttentionInfo,GetUserOpenId,GetBabyCoinInfo,BabyCoinInit,GetConfig,$ionicScrollDelegate,$stateParams) {
             $scope.minename = '您的朋友';
             $scope.openid = '';
             $scope.marketer = '';
@@ -8,6 +8,21 @@ angular.module('controllers', [])
             $scope.info = {
                 flag:false
             };
+
+            if($stateParams.isShow != null){
+                $ionicScrollDelegate.scrollTop();
+                $scope.info.flag = true;
+            }
+            //获取页面参数值
+            // function GetQueryString(name)
+            // {
+            //     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            //     var r = window.location.search.substr(1).match(reg);
+            //     if(r!=null)return  unescape(r[2]); return null;
+            // }
+            //
+            // var a = GetQueryString("aa");
+
             $scope.invitePageInit = function(){
                 BabyCoinInit.save({},function(data){
                     $scope.openid = data.babyCoinVo.openId;
