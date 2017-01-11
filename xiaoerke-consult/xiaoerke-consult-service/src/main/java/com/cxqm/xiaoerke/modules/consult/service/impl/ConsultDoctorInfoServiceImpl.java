@@ -259,7 +259,7 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
     public HashMap<String, Object> getConsultDoctorHomepageInfo(String csUserId) {
         HashMap<String, Object> returnMap = new HashMap<String, Object>();
         ConsultDoctorInfoVo vo = consultDoctorInfoDao.getConsultDoctorInfoByUserId(csUserId);
-        Query query = new Query().addCriteria(new Criteria().where("csUserId").regex(csUserId));
+        Query query = new Query().addCriteria(new Criteria().where("csUserId").is(csUserId));
         long num = consultRecordMongoDBService.consultCount(query);
         Map<String,Object> param = new HashMap<String, Object>();
         param.put("doctorId", csUserId);
