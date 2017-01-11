@@ -92,11 +92,11 @@ public class ConsultUtilController {
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         BabyCoinVo babyCoinVo = new BabyCoinVo();
         List<BabyCoinVo> babyCoinVos = babyCoinService.selectSubBabyCoin(babyCoinVo);
-        String title = "亲爱的，你的宝宝币即将到期啦！";
-        String keyword1 = "宝宝币到期服务提醒";
+        String title = "亲爱的，你的宝宝币即将到期啦！ ";
+        String keyword1 = "宝宝币到期提醒";
         String keyword2 = "2017年11月30日前获得的宝宝币还有4天到期";
         String keyword3 = "2017年1月15日";
-        String remark = "还没用完的抓紧咨询医生， 或者点击前往兑换优惠券哦~";
+        String remark = "年末送亲戚孩子的礼品你准备好了吗？宝宝币点击兑换优惠券更省钱哦~";
         String url = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=48";
         if(babyCoinVos!=null && babyCoinVos.size()>0){
             for(int i = 100;i<=babyCoinVos.size();i++){
