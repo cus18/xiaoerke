@@ -9,7 +9,7 @@ angular.module('controllers', [])
                 flag:false
             };
 
-            if($stateParams.isShow != null){
+            if($stateParams.isShow != ''){
                 $ionicScrollDelegate.scrollTop();
                 $scope.info.flag = true;
             }
