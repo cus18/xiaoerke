@@ -117,7 +117,7 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
                     if(data=="1"){
                         recordLogs("ZXPJSXY_PJ");
                        /* window.location.href = "playtour#/playtourShare/"+3;*/
-                        window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD";
+                        window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD,fda";
                     }
                     if(data=="2"){
                         window.location.href = "playtour#/evaluateSuccess";

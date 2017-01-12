@@ -25,7 +25,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 
 /**
@@ -51,14 +53,23 @@ public class ConsultActiveController extends BaseController {
     @Autowired
     private BabyUmbrellaInfoThirdPartyService babyUmbrellaInfoThirdPartyService;
 
-    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+
+    @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public void test(HttpSession session, HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<String, Object>();
+        response.put("openId", "o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
+        response = getUser2016Data(response);
+        System.out.println(response);
+    }
+
 
     @RequestMapping(value = "/getUser2016Data", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map<String, Object> getUser2016Data(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
+    public Map<String, Object> getUser2016Data(@RequestBody Map<String, Object> params) {
 
         Map<String, Object> response = new HashMap<String, Object>();
-
+        params.put("openId", "o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
         String openId = String.valueOf(params.get("openId"));
         //---------------------------------------查询用户的关注时间-----------------------------------
         SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
@@ -66,7 +77,7 @@ public class ConsultActiveController extends BaseController {
         sysWechatAppintInfoVo = wechatAttentionService.getAttentionInfoByOpenId(sysWechatAppintInfoVo);
         if (sysWechatAppintInfoVo != null) {
             String attention_time = sysWechatAppintInfoVo.getAttention_time();
-            response.put("attentionDate", StringUtils.isNotBlank(attention_time) ? attention_time : "null");
+            response.put("attentionDate", StringUtils.isNotBlank(attention_time) ? attention_time.split(" ")[0] : "null");
         } else {
             //从微信接口获取用户关注时间
         }
@@ -74,27 +85,33 @@ public class ConsultActiveController extends BaseController {
         //----------------------------查询用户第一次咨询时间，总共咨询多少次------------------------------
         Callable FirstConsultTime = new FirstConsultTime(openId);
         FutureTask calculateFirstConsultTimeTask = new FutureTask(FirstConsultTime);
-
+        Thread calculateFirstConsultTimeThread = new Thread(calculateFirstConsultTimeTask);
+        calculateFirstConsultTimeThread.start();
         //----------------------------日期+ 咨询时长最长的一次------------------------------
         Callable largestConsultTime = new LargestConsultTime(openId);
         FutureTask largestConsultTask = new FutureTask(largestConsultTime);
-
+        Thread largestConsultThread = new Thread(largestConsultTask);
+        largestConsultThread.start();
         //----------------------------评价（11693）：2016第一次评价------------------------------
         Callable firstEvaluation = new FirstEvaluation(openId);
         FutureTask firstEvaluationTask = new FutureTask(firstEvaluation);
-
+        Thread firstEvaluationThread = new Thread(firstEvaluationTask);
+        firstEvaluationThread.start();
         //----------------送心意（4572）： 2016年第一次为医生送心意时间+ 总共送心意……钱----------------
         Callable firstRedPacket = new FirstRedPacket(openId);
         FutureTask firstRedPacketTask = new FutureTask(firstRedPacket);
-
+        Thread firstRedPacketThread = new Thread(firstRedPacketTask);
+        firstRedPacketThread.start();
         //宝护伞（13153）： 2016年加入宝护伞时间
         Callable joinUmbrellaTime = new JoinUmbrellaTime(openId);
         FutureTask joinUmbrellaTimeTask = new FutureTask(joinUmbrellaTime);
-
+        Thread joinUmbrellaTimeThread = new Thread(joinUmbrellaTimeTask);
+        joinUmbrellaTimeThread.start();
         //邀请（3596）： 2016年有……人通过你认识宝大夫
         Callable joinBaoDaiFuForYou = new JoinBaoDaiFuForYou(openId);
         FutureTask joinBaoDaiFuForYouTask = new FutureTask(joinBaoDaiFuForYou);
-
+        Thread joinBaoDaiFuForYouThread = new Thread(joinBaoDaiFuForYouTask);
+        joinBaoDaiFuForYouThread.start();
         while (!calculateFirstConsultTimeTask.isDone() || !largestConsultTask.isDone() || !firstEvaluationTask.isDone() ||
                 !firstRedPacketTask.isDone() || !joinUmbrellaTimeTask.isDone() || !joinBaoDaiFuForYouTask.isDone()) {
             try {
@@ -137,12 +154,14 @@ public class ConsultActiveController extends BaseController {
 
         @Override
         public Object call() throws Exception {
-            Map<String, Object> response = null;
+            Map<String, Object> response = new HashMap<String, Object>();
             ConsultSession consultSession = new ConsultSession();
             consultSession.setUserId(openId);
             List<ConsultSession> consultSessionList = consultSessionService.selectBySelective(consultSession);
             if (consultSessionList != null && consultSessionList.size() > 0) {
-                response.put("firstConsultTime", DateUtils.DateToStr(consultSessionList.get(0).getCreateTime(), "date"));
+                consultSession = consultSessionList.get(consultSessionList.size() - 1);
+                String date = DateUtils.DateToStr(consultSession.getCreateTime(), "date");
+                response.put("firstConsultTime", date);
                 response.put("ConsultTitleNumber", consultSessionList.size());
             } else {
                 response.put("firstConsultTime", "null");
@@ -162,13 +181,13 @@ public class ConsultActiveController extends BaseController {
 
         @Override
         public Object call() throws Exception {
-            Map<String, Object> response = null;
+            Map<String, Object> response = new HashMap<String, Object>();
             ConsultSession consultSession = new ConsultSession();
             consultSession.setUserId(openId);
             consultSession = consultConversationService.selectConsultDurationByOpenid(openId);
             if (consultSession != null && consultSession.getConsultNumber() != null) {
-                response.put("largestConsultTime", consultSession.getCreateTime());
-                Integer consultNumber = consultSession.getConsultNumber();
+                response.put("largestConsultTime", DateUtils.DateToStr(consultSession.getCreateTime(), "date"));
+                Integer consultNumber = consultSession.getConsultNumber() > 0 ? consultSession.getConsultNumber() : 118;
                 response.put("largestConsultDuration", consultNumber > 500 ? "118" : consultNumber);//异常处理
             } else {
                 response.put("largestConsultTime", "null");
@@ -187,7 +206,7 @@ public class ConsultActiveController extends BaseController {
 
         @Override
         public Object call() throws Exception {
-            Map<String, Object> response = null;
+            Map<String, Object> response = new HashMap<String, Object>();
             Map registerPraiseInfo1 = patientRegisterPraiseService.select2016EvaluationByOpenId(openId);
             if (registerPraiseInfo1 != null && registerPraiseInfo1.size() > 0) {
                 response.put("2016FirstEvaluation", DateUtils.DateToStr((Date) registerPraiseInfo1.get("createtime"), "date"));
@@ -207,7 +226,7 @@ public class ConsultActiveController extends BaseController {
 
         @Override
         public Object call() throws Exception {
-            Map<String, Object> response = null;
+            Map<String, Object> response = new HashMap<String, Object>();
             Map registerPraiseInfo2 = patientRegisterPraiseService.select2016EvaluationByOpenId_2(openId);
             if (registerPraiseInfo2 != null && registerPraiseInfo2.size() > 0) {
                 response.put("2016FirstRedPacket", DateUtils.DateToStr((Date) registerPraiseInfo2.get("createtime"), "date"));
@@ -227,14 +246,14 @@ public class ConsultActiveController extends BaseController {
 
         @Override
         public Object call() throws Exception {
-            Map<String, Object> response = null;
+            Map<String, Object> response = new HashMap<String, Object>();
             Map<String, Object> openIdMap = new HashMap<String, Object>();
             openIdMap.put("openId", openId);
             List<Map<String, Object>> openIdList = babyUmbrellaInfoThirdPartyService.getIfBuyUmbrellaByOpenidOrPhone(openIdMap);
             if (openIdList != null && openIdList.size() > 0) {
-                response.put("joinUmbrellaTime", openIdList.get(0).get("createTime"));
+                response.put("joinUmbrellaTime", DateUtils.DateToStr((Date) openIdList.get(0).get("createTime"), "date"));
             } else {
-                response.put("joinUmbrellaTime", openIdList.get(0).get("null"));
+                response.put("joinUmbrellaTime", "null");
             }
             return response;
         }
@@ -249,7 +268,7 @@ public class ConsultActiveController extends BaseController {
 
         @Override
         public Object call() throws Exception {
-            Map<String, Object> response = null;
+            Map<String, Object> response = new HashMap<String, Object>();
             SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
             sysWechatAppintInfoVo.setOpen_id(openId);
             List<SysWechatAppintInfoVo> sysWechatAppintInfoVos = wechatAttentionService.selectByOpenId(sysWechatAppintInfoVo);
