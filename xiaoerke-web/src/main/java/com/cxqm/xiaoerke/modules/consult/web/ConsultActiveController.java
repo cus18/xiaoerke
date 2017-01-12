@@ -137,6 +137,7 @@ public class ConsultActiveController extends BaseController {
             response.put("joinUmbrellaTime", map5.get("joinUmbrellaTime"));
             response.put("joinBaoDaiFuForYou", map6.get("joinBaoDaiFuForYou"));
             response.put("attentionDate", map7.get("attentionDate"));
+            response.put("nickName", map7.get("nickName"));
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -209,6 +210,7 @@ public class ConsultActiveController extends BaseController {
             sysWechatAppintInfoVo = wechatAttentionService.getAttentionInfoByOpenId(sysWechatAppintInfoVo);
             if (sysWechatAppintInfoVo != null) {
                 String attention_time = sysWechatAppintInfoVo.getAttention_time();
+                response.put("nickName",sysWechatAppintInfoVo.getWechat_name());
                 response.put("attentionDate", StringUtils.isNotBlank(attention_time) ? DateToStr(DateUtils.StrToDate(attention_time,"datetime"),"date") : "null");
             } else {
                 //从微信接口获取用户关注时间
