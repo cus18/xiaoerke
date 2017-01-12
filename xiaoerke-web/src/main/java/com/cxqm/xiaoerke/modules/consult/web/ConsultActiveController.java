@@ -9,12 +9,9 @@ import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
-import com.cxqm.xiaoerke.modules.sys.entity.User;
-import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoThirdPartyService;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
-import org.h2.mvstore.DataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +25,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 
 /**
@@ -59,7 +58,7 @@ public class ConsultActiveController extends BaseController {
     @ResponseBody
     public void test(HttpSession session, HttpServletRequest request) {
         Map<String, Object> response = new HashMap<String, Object>();
-        response.put("openId","o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
+        response.put("openId", "o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
         response = getUser2016Data(response);
         System.out.println(response);
     }
@@ -70,7 +69,7 @@ public class ConsultActiveController extends BaseController {
     public Map<String, Object> getUser2016Data(@RequestBody Map<String, Object> params) {
 
         Map<String, Object> response = new HashMap<String, Object>();
-        params.put("openId","o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
+        params.put("openId", "o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
         String openId = String.valueOf(params.get("openId"));
         //---------------------------------------查询用户的关注时间-----------------------------------
         SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
@@ -160,7 +159,7 @@ public class ConsultActiveController extends BaseController {
             consultSession.setUserId(openId);
             List<ConsultSession> consultSessionList = consultSessionService.selectBySelective(consultSession);
             if (consultSessionList != null && consultSessionList.size() > 0) {
-                consultSession = consultSessionList.get(consultSessionList.size()-1);
+                consultSession = consultSessionList.get(consultSessionList.size() - 1);
                 String date = DateUtils.DateToStr(consultSession.getCreateTime(), "date");
                 response.put("firstConsultTime", date);
                 response.put("ConsultTitleNumber", consultSessionList.size());
@@ -188,7 +187,7 @@ public class ConsultActiveController extends BaseController {
             consultSession = consultConversationService.selectConsultDurationByOpenid(openId);
             if (consultSession != null && consultSession.getConsultNumber() != null) {
                 response.put("largestConsultTime", DateUtils.DateToStr(consultSession.getCreateTime(), "date"));
-                Integer consultNumber = consultSession.getConsultNumber();
+                Integer consultNumber = consultSession.getConsultNumber() > 0 ? consultSession.getConsultNumber() : 118;
                 response.put("largestConsultDuration", consultNumber > 500 ? "118" : consultNumber);//异常处理
             } else {
                 response.put("largestConsultTime", "null");
