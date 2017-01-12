@@ -130,11 +130,11 @@ public class ConsultActiveController extends BaseController {
             Map map5 = (Map) joinUmbrellaTimeTask.get();
             Map map6 = (Map) joinBaoDaiFuForYouTask.get();
             response.put("firstConsultTime", map1.get("firstConsultTime"));
-            response.put("ConsultTitleNumber", map1.get("ConsultTitleNumber"));
+            response.put("consultTitleNumber", map1.get("consultTitleNumber"));
             response.put("largestConsultTime", map2.get("largestConsultTime"));
             response.put("largestConsultDuration", map2.get("largestConsultDuration"));
             response.put("FirstEvaluationTime", map3.get("2016FirstEvaluationTime"));
-            response.put("FirstRedPacket", map4.get("2016FirstRedPacketTime"));
+            response.put("2016FirstRedPacketTime", map4.get("2016FirstRedPacketTime"));
             response.put("FirstRedPacketCount", map4.get("2016FirstRedPacketCount"));
             response.put("joinUmbrellaTime", map5.get("joinUmbrellaTime"));
             response.put("joinBaoDaiFuForYou", map6.get("joinBaoDaiFuForYou"));
@@ -186,10 +186,10 @@ public class ConsultActiveController extends BaseController {
                 consultSession = consultSessionList.get(consultSessionList.size() - 1);
                 String date = DateToStr(consultSession.getCreateTime(), "date");
                 response.put("firstConsultTime", date);
-                response.put("ConsultTitleNumber", consultSessionList.size());
+                response.put("consultTitleNumber", consultSessionList.size());
             } else {
                 response.put("firstConsultTime", "null");
-                response.put("ConsultTitleNumber", "null");
+                response.put("consultTitleNumber", "null");
             }
             return response;
         }
