@@ -69,50 +69,50 @@
                 <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story0.png" >
             </section>
             <!-------------slide1----------------->
-            <section class="swiper-slide swiper-slide1 ">
+            <section class="swiper-slide  ">
                 <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story1.png" >
-                <div class="date c11 ani effect1" swiper-animate-effect="zoomIn" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s">2016年5月12日</div>
+                <div class="date c11 ani effect1" swiper-animate-effect="zoomIn" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s">{{dataInfo.attentionDate}}</div>
             </section>
             <!---------------slide2-------------->
-            <section class="swiper-slide swiper-slide2 ">
+            <section class="swiper-slide  " ng-if="dataInfo.firstConsultTime!='null'">
                 <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story2.png" >
-                <div class="date c12 " >2016年5月12日</div>
+                <div class="date c12 " >{{dataInfo.firstConsultTime}}</div>
                 <img class="ani effect2 " swiper-animate-effect="fadeInLeft" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s"  width="70%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story2_1.png" >
             </section>
             <!----------------slide3-------------->
-            <section class="swiper-slide swiper-slide3 ">
+            <section class="swiper-slide  " ng-if="dataInfo.firstConsultTime!='null'">
                 <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story3.png" >
-                <div class="date c13 " >2016年5月12日</div>
-                <div class="c18 ani effect3" swiper-animate-effect="zoomIn" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s">112分钟</div>
+                <div class="date c13 " >{{dataInfo.largestConsultTime}}</div>
+                <div class="c18 ani effect3" swiper-animate-effect="zoomIn" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s">{{dataInfo.largestConsultDuration}}分钟</div>
             </section>
             <!-------------slide4----------------->
-            <section class="swiper-slide swiper-slide4 ">
+            <section class="swiper-slide  "  >
                 <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story4.png" >
-                <div class="date c14 " >2016年5月12日</div>
+                <div class="date c14 " >{{dataInfo.2016FirstEvaluation}}</div>
                 <img class="ani effect4 " swiper-animate-effect="zoomIn" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s"  width="70%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story4_1.png" >
             </section>
             <!-------------slide5---------------->
-            <section class="swiper-slide swiper-slide5 ">
+            <section class="swiper-slide  " >
                 <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story5.png" >
-                <div class="date c15  "  >2016年5月12日</div>
+                <div class="date c15  "  >{{}}</div>
                 <span class="c19  ani effect5"  swiper-animate-effect="fadeInRight" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s">100元</span>
             </section>
             <!-------------slide6----------------->
-            <section class="swiper-slide swiper-slide6 ">
+            <section class="swiper-slide  " ng-if="dataInfo.joinUmbrellaTime!='null'">
                 <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story6.png" >
-                <div class="date c16  "  >2016年5月12日</div>
+                <div class="date c16  "  >{{dataInfo.joinUmbrellaTime}}</div>
                 <img class="ani effect6 " swiper-animate-effect="zoomInLeft" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s"  width="70%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story6_1.png" >
             </section>
             <!-------------slide7----------------->
-            <section class="swiper-slide swiper-slide7 ">
+            <section class="swiper-slide  " ng-if="dataInfo.joinBaoDaiFuForYou!='null'">
                 <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story7.png" >
-                <div class="ani effect7 c20" swiper-animate-effect="zoomIn" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s">有88位</div>
+                <div class="ani effect7 c20" swiper-animate-effect="zoomIn" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s">有{{dataInfo.joinBaoDaiFuForYou}}位</div>
                 <img class="ani story71" width="66%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story7_1.png" >
                 <img class="ani story72" width="70%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story7_2.png" >
             </section>
             <!-------------slide8----------------->
-            <section class="swiper-slide swiper-slide8 ">
-                <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8.png" >
+            <section class="swiper-slide  ">
+                <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story0.png" >
             </section>
         </div>
 
