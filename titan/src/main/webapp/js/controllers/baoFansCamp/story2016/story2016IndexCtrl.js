@@ -1,11 +1,15 @@
-﻿angular.module('controllers', ['ionic']).controller('story2016IndexCtrl', [
-    '$scope','$state','$stateParams',
-    function ($scope,$state,$stateParams) {
-        $scope.sex = 1;
-        $scope.boyLock = true;
+﻿﻿angular.module('controllers', ['ionic']).controller('story2016IndexCtrl', [
+    '$scope','$state','$stateParams','getUser2016Data',
+    function ($scope,$state,$stateParams,getUser2016Data) {
+        $scope.data2016 = "";
 
 
         $scope.$on('$ionicView.enter',function() {
+
+            getUser2016Data.save({},function (data) {
+                console.log("2016数据",data);
+                $scope.dataInfo=data;
+            });
             var scaleW=window.innerWidth/320;
             var scaleH=window.innerHeight/480;
             var resizes = document.querySelectorAll('.resize');
