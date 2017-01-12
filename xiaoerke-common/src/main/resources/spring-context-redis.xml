@@ -28,6 +28,23 @@
         <constructor-arg index="4" value="${redis.password}"/>
     </bean>
 
+    <bean id="springSession" class="org.springframework.session.web.http.SessionRepositoryFilter">
+        <constructor-arg>
+            <bean class="org.springframework.session.data.redis.RedisOperationsSessionRepository">
+                <constructor-arg>
+                    <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+                        <property name="usePool" value="true"/>
+                        <property name="hostName" value="${redis.host}"/>
+                        <property name="port" value="${redis.port}"/>
+                        <property name="password" value="${redis.password}"/>
+                        <property name="timeout" value="${redis.timeout}"/>
+                        <property name="poolConfig" ref="jedisPoolConfig"/>
+                    </bean>
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
+    </bean>
+
     <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
         <property name="usePool" value="true"/>
         <property name="hostName" value="${redis.host}"/>
