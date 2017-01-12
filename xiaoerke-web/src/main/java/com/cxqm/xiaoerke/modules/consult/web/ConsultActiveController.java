@@ -9,14 +9,13 @@ import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
-import com.cxqm.xiaoerke.modules.sys.entity.User;
-import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoThirdPartyService;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
-import org.h2.mvstore.DataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,11 +23,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 
 /**
@@ -59,7 +61,7 @@ public class ConsultActiveController extends BaseController {
     @ResponseBody
     public void test(HttpSession session, HttpServletRequest request) {
         Map<String, Object> response = new HashMap<String, Object>();
-        response.put("openId","o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
+        response.put("openId", "o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
         response = getUser2016Data(response);
         System.out.println(response);
     }
@@ -68,21 +70,16 @@ public class ConsultActiveController extends BaseController {
     @RequestMapping(value = "/getUser2016Data", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map<String, Object> getUser2016Data(@RequestBody Map<String, Object> params) {
-
+        Long startTime = System.currentTimeMillis();
         Map<String, Object> response = new HashMap<String, Object>();
-
+        params.put("openId", "o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
         String openId = String.valueOf(params.get("openId"));
+        Assert.notNull(openId, "openId must not be null");
         //---------------------------------------查询用户的关注时间-----------------------------------
-        SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
-        sysWechatAppintInfoVo.setOpen_id(openId);
-        sysWechatAppintInfoVo = wechatAttentionService.getAttentionInfoByOpenId(sysWechatAppintInfoVo);
-        if (sysWechatAppintInfoVo != null) {
-            String attention_time = sysWechatAppintInfoVo.getAttention_time();
-            response.put("attentionDate", StringUtils.isNotBlank(attention_time) ? attention_time.split(" ")[0] : "null");
-        } else {
-            //从微信接口获取用户关注时间
-        }
-
+        Callable attentionDate = new getAttentionDate(openId);
+        FutureTask attentionDateTask = new FutureTask(attentionDate);
+        Thread attentionDateThread = new Thread(attentionDateTask);
+        attentionDateThread.start();
         //----------------------------查询用户第一次咨询时间，总共咨询多少次------------------------------
         Callable FirstConsultTime = new FirstConsultTime(openId);
         FutureTask calculateFirstConsultTimeTask = new FutureTask(FirstConsultTime);
@@ -116,7 +113,7 @@ public class ConsultActiveController extends BaseController {
         while (!calculateFirstConsultTimeTask.isDone() || !largestConsultTask.isDone() || !firstEvaluationTask.isDone() ||
                 !firstRedPacketTask.isDone() || !joinUmbrellaTimeTask.isDone() || !joinBaoDaiFuForYouTask.isDone()) {
             try {
-                Thread.sleep(300);
+                Thread.sleep(100);
                 System.out.println("等待...");
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -129,21 +126,46 @@ public class ConsultActiveController extends BaseController {
             Map map4 = (Map) firstRedPacketTask.get();
             Map map5 = (Map) joinUmbrellaTimeTask.get();
             Map map6 = (Map) joinBaoDaiFuForYouTask.get();
+            Map map7 = (Map) attentionDateTask.get();
             response.put("firstConsultTime", map1.get("firstConsultTime"));
-            response.put("ConsultTitleNumber", map1.get("ConsultTitleNumber"));
+            response.put("consultTitleNumber", map1.get("consultTitleNumber"));
             response.put("largestConsultTime", map2.get("largestConsultTime"));
             response.put("largestConsultDuration", map2.get("largestConsultDuration"));
-            response.put("2016FirstEvaluation", map3.get("2016FirstEvaluation"));
-            response.put("2016FirstRedPacket", map4.get("2016FirstRedPacket"));
+            response.put("FirstEvaluationTime", map3.get("2016FirstEvaluationTime"));
+            response.put("FirstRedPacketTime", map4.get("2016FirstRedPacketTime"));
+            response.put("FirstRedPacketCount", map4.get("2016FirstRedPacketCount"));
             response.put("joinUmbrellaTime", map5.get("joinUmbrellaTime"));
             response.put("joinBaoDaiFuForYou", map6.get("joinBaoDaiFuForYou"));
+            response.put("attentionDate", map7.get("attentionDate"));
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
+        LogUtils.saveLog(openId,"查询时间为"+(System.currentTimeMillis()-startTime));
         return response;
+    }
+
+    public static String DateToStr(Date date,String flag) {
+        SimpleDateFormat format = null;
+        if("time".equals(flag)){
+            format = new SimpleDateFormat("HH:mm");
+        }else if("date".equals(flag)) {
+            format = new SimpleDateFormat("yyyy年MM月dd日");
+        }else if("datetime".equals(flag)){
+            format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        }else if("monthDate".equals(flag)){
+            format = new SimpleDateFormat("MM/dd");
+        }else if("monthDate:".equals(flag)){
+            format = new SimpleDateFormat("MM:dd");
+        }else if("flag1".equals(flag)){
+            format = new SimpleDateFormat("MM-dd HH:mm");
+        }else{
+            format = new SimpleDateFormat(flag);
+        }
+        String dateStr = null;
+        dateStr = format.format(date);
+        return dateStr;
     }
 
     private class FirstConsultTime implements Callable {
@@ -160,13 +182,36 @@ public class ConsultActiveController extends BaseController {
             consultSession.setUserId(openId);
             List<ConsultSession> consultSessionList = consultSessionService.selectBySelective(consultSession);
             if (consultSessionList != null && consultSessionList.size() > 0) {
-                consultSession = consultSessionList.get(consultSessionList.size()-1);
-                String date = DateUtils.DateToStr(consultSession.getCreateTime(), "date");
+                consultSession = consultSessionList.get(consultSessionList.size() - 1);
+                String date = DateToStr(consultSession.getCreateTime(), "date");
                 response.put("firstConsultTime", date);
-                response.put("ConsultTitleNumber", consultSessionList.size());
+                response.put("consultTitleNumber", consultSessionList.size());
             } else {
                 response.put("firstConsultTime", "null");
-                response.put("ConsultTitleNumber", "null");
+                response.put("consultTitleNumber", "null");
+            }
+            return response;
+        }
+    }
+
+    private class getAttentionDate implements Callable {
+        private String openId;
+
+        private getAttentionDate(String openId) {
+            this.openId = openId;
+        }
+
+        @Override
+        public Object call() throws Exception {
+            Map<String, Object> response = new HashMap<String, Object>();
+            SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+            sysWechatAppintInfoVo.setOpen_id(openId);
+            sysWechatAppintInfoVo = wechatAttentionService.getAttentionInfoByOpenId(sysWechatAppintInfoVo);
+            if (sysWechatAppintInfoVo != null) {
+                String attention_time = sysWechatAppintInfoVo.getAttention_time();
+                response.put("attentionDate", StringUtils.isNotBlank(attention_time) ? DateToStr(DateUtils.StrToDate(attention_time,"datetime"),"date") : "null");
+            } else {
+                //从微信接口获取用户关注时间
             }
             return response;
         }
@@ -187,8 +232,8 @@ public class ConsultActiveController extends BaseController {
             consultSession.setUserId(openId);
             consultSession = consultConversationService.selectConsultDurationByOpenid(openId);
             if (consultSession != null && consultSession.getConsultNumber() != null) {
-                response.put("largestConsultTime", DateUtils.DateToStr(consultSession.getCreateTime(), "date"));
-                Integer consultNumber = consultSession.getConsultNumber();
+                response.put("largestConsultTime", DateToStr(consultSession.getCreateTime(), "date"));
+                Integer consultNumber = consultSession.getConsultNumber() > 0 ? consultSession.getConsultNumber() : 118;
                 response.put("largestConsultDuration", consultNumber > 500 ? "118" : consultNumber);//异常处理
             } else {
                 response.put("largestConsultTime", "null");
@@ -210,9 +255,9 @@ public class ConsultActiveController extends BaseController {
             Map<String, Object> response = new HashMap<String, Object>();
             Map registerPraiseInfo1 = patientRegisterPraiseService.select2016EvaluationByOpenId(openId);
             if (registerPraiseInfo1 != null && registerPraiseInfo1.size() > 0) {
-                response.put("2016FirstEvaluation", DateUtils.DateToStr((Date) registerPraiseInfo1.get("createtime"), "date"));
+                response.put("2016FirstEvaluationTime", DateToStr((Date) registerPraiseInfo1.get("createtime"), "date"));
             } else {
-                response.put("2016FirstEvaluation", "null");
+                response.put("2016FirstEvaluationTime", "null");
             }
             return response;
         }
@@ -230,9 +275,11 @@ public class ConsultActiveController extends BaseController {
             Map<String, Object> response = new HashMap<String, Object>();
             Map registerPraiseInfo2 = patientRegisterPraiseService.select2016EvaluationByOpenId_2(openId);
             if (registerPraiseInfo2 != null && registerPraiseInfo2.size() > 0) {
-                response.put("2016FirstRedPacket", DateUtils.DateToStr((Date) registerPraiseInfo2.get("createtime"), "date"));
+                response.put("2016FirstRedPacketTime", DateToStr((Date) registerPraiseInfo2.get("createtime"), "date"));
+                response.put("2016FirstRedPacketCount", registerPraiseInfo2.get("redPacket"));
             } else {
-                response.put("2016FirstRedPacket", "null");
+                response.put("2016FirstRedPacketTime", "null");
+                response.put("2016FirstRedPacketCount", "null");
             }
             return response;
         }
@@ -252,7 +299,7 @@ public class ConsultActiveController extends BaseController {
             openIdMap.put("openId", openId);
             List<Map<String, Object>> openIdList = babyUmbrellaInfoThirdPartyService.getIfBuyUmbrellaByOpenidOrPhone(openIdMap);
             if (openIdList != null && openIdList.size() > 0) {
-                response.put("joinUmbrellaTime", DateUtils.DateToStr((Date) openIdList.get(0).get("createTime"), "date"));
+                response.put("joinUmbrellaTime", DateToStr((Date) openIdList.get(0).get("createTime"), "date"));
             } else {
                 response.put("joinUmbrellaTime", "null");
             }
