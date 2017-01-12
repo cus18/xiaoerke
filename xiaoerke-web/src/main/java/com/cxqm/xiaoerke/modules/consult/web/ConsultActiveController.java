@@ -15,6 +15,7 @@ import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -73,6 +74,7 @@ public class ConsultActiveController extends BaseController {
         Map<String, Object> response = new HashMap<String, Object>();
         params.put("openId", "o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
         String openId = String.valueOf(params.get("openId"));
+        Assert.notNull(openId, "openId must not be null");
         //---------------------------------------查询用户的关注时间-----------------------------------
         Callable attentionDate = new getAttentionDate(openId);
         FutureTask attentionDateTask = new FutureTask(attentionDate);
