@@ -347,7 +347,7 @@
 
     <select id="select2016EvaluationByOpenId_2" resultType="java.util.Map">
         SELECT
-        createtime
+        createtime,redPacket
         FROM
         customerEvaluation
         WHERE
