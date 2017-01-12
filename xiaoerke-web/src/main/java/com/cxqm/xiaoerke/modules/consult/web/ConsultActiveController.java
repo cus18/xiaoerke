@@ -70,7 +70,7 @@ public class ConsultActiveController extends BaseController {
     public Map<String, Object> getUser2016Data(@RequestBody Map<String, Object> params) {
 
         Map<String, Object> response = new HashMap<String, Object>();
-
+        params.put("openId","o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
         String openId = String.valueOf(params.get("openId"));
         //---------------------------------------查询用户的关注时间-----------------------------------
         SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
