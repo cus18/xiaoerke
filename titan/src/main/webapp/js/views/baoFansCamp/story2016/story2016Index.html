@@ -86,16 +86,16 @@
                 <div class="c18 ani effect3" swiper-animate-effect="zoomIn" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s">{{dataInfo.largestConsultDuration}}分钟</div>
             </section>
             <!-------------slide4----------------->
-            <section class="swiper-slide  "  >
+            <section class="swiper-slide  "  ng-if="dataInfo.FirstEvaluationTime!='null'">
                 <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story4.png" >
-                <div class="date c14 " >{{dataInfo.2016FirstEvaluation}}</div>
+                <div class="date c14 " >{{dataInfo.FirstEvaluationTime}}</div>
                 <img class="ani effect4 " swiper-animate-effect="zoomIn" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s"  width="70%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story4_1.png" >
             </section>
             <!-------------slide5---------------->
-            <section class="swiper-slide  " >
+            <section class="swiper-slide  "  ng-if="dataInfo.FirstRedPacketTime!='null'">
                 <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story5.png" >
-                <div class="date c15  "  >{{}}</div>
-                <span class="c19  ani effect5"  swiper-animate-effect="fadeInRight" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s">100元</span>
+                <div class="date c15  "  >{{dataInfo.FirstRedPacketTime}}</div>
+                <span class="c19  ani effect5"  swiper-animate-effect="fadeInRight" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s">{{dataInfo.FirstRedPacketCount}}元</span>
             </section>
             <!-------------slide6----------------->
             <section class="swiper-slide  " ng-if="dataInfo.joinUmbrellaTime!='null'">
