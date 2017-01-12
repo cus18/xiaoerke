@@ -111,7 +111,7 @@ public class ConsultActiveController extends BaseController {
         while (!calculateFirstConsultTimeTask.isDone() || !largestConsultTask.isDone() || !firstEvaluationTask.isDone() ||
                 !firstRedPacketTask.isDone() || !joinUmbrellaTimeTask.isDone() || !joinBaoDaiFuForYouTask.isDone()) {
             try {
-                Thread.sleep(300);
+                Thread.sleep(100);
                 System.out.println("等待...");
             } catch (InterruptedException e) {
                 e.printStackTrace();
