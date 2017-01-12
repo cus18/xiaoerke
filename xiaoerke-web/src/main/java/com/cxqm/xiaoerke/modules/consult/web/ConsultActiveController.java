@@ -9,6 +9,7 @@ import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.umbrella.service.BabyUmbrellaInfoThirdPartyService;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
@@ -68,21 +69,15 @@ public class ConsultActiveController extends BaseController {
     @RequestMapping(value = "/getUser2016Data", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map<String, Object> getUser2016Data(@RequestBody Map<String, Object> params) {
-
+        Long startTime = System.currentTimeMillis();
         Map<String, Object> response = new HashMap<String, Object>();
         params.put("openId", "o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
         String openId = String.valueOf(params.get("openId"));
         //---------------------------------------查询用户的关注时间-----------------------------------
-        SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
-        sysWechatAppintInfoVo.setOpen_id(openId);
-        sysWechatAppintInfoVo = wechatAttentionService.getAttentionInfoByOpenId(sysWechatAppintInfoVo);
-        if (sysWechatAppintInfoVo != null) {
-            String attention_time = sysWechatAppintInfoVo.getAttention_time();
-            response.put("attentionDate", StringUtils.isNotBlank(attention_time) ? attention_time.split(" ")[0] : "null");
-        } else {
-            //从微信接口获取用户关注时间
-        }
-
+        Callable attentionDate = new getAttentionDate(openId);
+        FutureTask attentionDateTask = new FutureTask(attentionDate);
+        Thread attentionDateThread = new Thread(attentionDateTask);
+        attentionDateThread.start();
         //----------------------------查询用户第一次咨询时间，总共咨询多少次------------------------------
         Callable FirstConsultTime = new FirstConsultTime(openId);
         FutureTask calculateFirstConsultTimeTask = new FutureTask(FirstConsultTime);
@@ -129,6 +124,7 @@ public class ConsultActiveController extends BaseController {
             Map map4 = (Map) firstRedPacketTask.get();
             Map map5 = (Map) joinUmbrellaTimeTask.get();
             Map map6 = (Map) joinBaoDaiFuForYouTask.get();
+            Map map7 = (Map) attentionDateTask.get();
             response.put("firstConsultTime", map1.get("firstConsultTime"));
             response.put("consultTitleNumber", map1.get("consultTitleNumber"));
             response.put("largestConsultTime", map2.get("largestConsultTime"));
@@ -138,12 +134,13 @@ public class ConsultActiveController extends BaseController {
             response.put("FirstRedPacketCount", map4.get("2016FirstRedPacketCount"));
             response.put("joinUmbrellaTime", map5.get("joinUmbrellaTime"));
             response.put("joinBaoDaiFuForYou", map6.get("joinBaoDaiFuForYou"));
+            response.put("attentionDate", map7.get("attentionDate"));
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
+        LogUtils.saveLog(openId,"查询时间为"+(System.currentTimeMillis()-startTime));
         return response;
     }
 
@@ -190,6 +187,29 @@ public class ConsultActiveController extends BaseController {
             } else {
                 response.put("firstConsultTime", "null");
                 response.put("consultTitleNumber", "null");
+            }
+            return response;
+        }
+    }
+
+    private class getAttentionDate implements Callable {
+        private String openId;
+
+        private getAttentionDate(String openId) {
+            this.openId = openId;
+        }
+
+        @Override
+        public Object call() throws Exception {
+            Map<String, Object> response = new HashMap<String, Object>();
+            SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+            sysWechatAppintInfoVo.setOpen_id(openId);
+            sysWechatAppintInfoVo = wechatAttentionService.getAttentionInfoByOpenId(sysWechatAppintInfoVo);
+            if (sysWechatAppintInfoVo != null) {
+                String attention_time = sysWechatAppintInfoVo.getAttention_time();
+                response.put("attentionDate", StringUtils.isNotBlank(attention_time) ? DateToStr(DateUtils.StrToDate(attention_time,"datetime"),"date") : "null");
+            } else {
+                //从微信接口获取用户关注时间
             }
             return response;
         }
