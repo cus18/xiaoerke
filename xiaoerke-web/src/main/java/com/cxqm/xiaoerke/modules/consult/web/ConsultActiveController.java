@@ -207,7 +207,7 @@ public class ConsultActiveController extends BaseController {
             sysWechatAppintInfoVo = wechatAttentionService.getAttentionInfoByOpenId(sysWechatAppintInfoVo);
             if (sysWechatAppintInfoVo != null) {
                 String attention_time = sysWechatAppintInfoVo.getAttention_time();
-                response.put("attentionDate", StringUtils.isNotBlank(attention_time) ? attention_time.split(" ")[0] : "null");
+                response.put("attentionDate", StringUtils.isNotBlank(attention_time) ? DateToStr(DateUtils.StrToDate(attention_time,"datetime"),"date") : "null");
             } else {
                 //从微信接口获取用户关注时间
             }
