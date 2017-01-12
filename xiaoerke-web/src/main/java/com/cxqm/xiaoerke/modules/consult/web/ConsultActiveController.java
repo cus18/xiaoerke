@@ -134,7 +134,7 @@ public class ConsultActiveController extends BaseController {
             response.put("largestConsultTime", map2.get("largestConsultTime"));
             response.put("largestConsultDuration", map2.get("largestConsultDuration"));
             response.put("FirstEvaluationTime", map3.get("2016FirstEvaluationTime"));
-            response.put("2016FirstRedPacketTime", map4.get("2016FirstRedPacketTime"));
+            response.put("FirstRedPacketTime", map4.get("2016FirstRedPacketTime"));
             response.put("FirstRedPacketCount", map4.get("2016FirstRedPacketCount"));
             response.put("joinUmbrellaTime", map5.get("joinUmbrellaTime"));
             response.put("joinBaoDaiFuForYou", map6.get("joinBaoDaiFuForYou"));
