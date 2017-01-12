@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao" >
-  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.interaction.entity.PatientRegisterPraise" >
-    <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="patient_register_service_id" property="patientRegisterServiceId" jdbcType="VARCHAR" />
-    <result column="sys_patient_id" property="sysPatientId" jdbcType="VARCHAR" />
-    <result column="praise" property="praise" jdbcType="VARCHAR" />
-    <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <result column="star" property="star" jdbcType="VARCHAR" />
-    <result column="praise_date" property="praiseDate" jdbcType="TIMESTAMP" />
-    <result column="sys_doctor_id" property="sysDoctorId" jdbcType="VARCHAR" />
-    <result column="symptom" property="symptom" jdbcType="VARCHAR" />
-    <result column="impression" property="impression" jdbcType="VARCHAR" />
-    <result column="zan" property="zan" jdbcType="VARCHAR" />
-    <result column="reason" property="reason" jdbcType="VARCHAR" />
-    <result column="visit_endTime" property="visitEndtime" jdbcType="VARCHAR" />
-    <result column="major_star" property="majorStar" jdbcType="VARCHAR" />
-    <result column="evaluateType" property="evaluateType" jdbcType="VARCHAR" />
-      <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
-      <result column="wechat_name" property="wechatName" jdbcType="VARCHAR" />
-  </resultMap>
+<mapper namespace="com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao">
+    <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.interaction.entity.PatientRegisterPraise">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="patient_register_service_id" property="patientRegisterServiceId" jdbcType="VARCHAR"/>
+        <result column="sys_patient_id" property="sysPatientId" jdbcType="VARCHAR"/>
+        <result column="praise" property="praise" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="star" property="star" jdbcType="VARCHAR"/>
+        <result column="praise_date" property="praiseDate" jdbcType="TIMESTAMP"/>
+        <result column="sys_doctor_id" property="sysDoctorId" jdbcType="VARCHAR"/>
+        <result column="symptom" property="symptom" jdbcType="VARCHAR"/>
+        <result column="impression" property="impression" jdbcType="VARCHAR"/>
+        <result column="zan" property="zan" jdbcType="VARCHAR"/>
+        <result column="reason" property="reason" jdbcType="VARCHAR"/>
+        <result column="visit_endTime" property="visitEndtime" jdbcType="VARCHAR"/>
+        <result column="major_star" property="majorStar" jdbcType="VARCHAR"/>
+        <result column="evaluateType" property="evaluateType" jdbcType="VARCHAR"/>
+        <result column="pic_url" property="picUrl" jdbcType="VARCHAR"/>
+        <result column="wechat_name" property="wechatName" jdbcType="VARCHAR"/>
+    </resultMap>
 
-  <sql id="Base_Column_List" >
+    <sql id="Base_Column_List">
     id, patient_register_service_id, sys_patient_id, praise, phone, star, praise_date, 
     sys_doctor_id, symptom, impression, zan, reason, visit_endTime, major_star
   </sql>
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from patient_register_praise
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from patient_register_praise
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from patient_register_praise
     where id = #{id,jdbcType=VARCHAR}
   </delete>
 
-  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.interaction.entity.PatientRegisterPraise" >
+    <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.interaction.entity.PatientRegisterPraise">
     insert into patient_register_praise (id, patient_register_service_id, sys_patient_id, 
       praise, phone, star, 
       praise_date, sys_doctor_id, symptom, 
@@ -50,145 +50,146 @@
       #{visitEndtime,jdbcType=VARCHAR}, #{majorStar,jdbcType=VARCHAR})
   </insert>
 
-  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.interaction.entity.PatientRegisterPraise" >
-    insert into patient_register_praise
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="patientRegisterServiceId != null" >
-        patient_register_service_id,
-      </if>
-      <if test="sysPatientId != null" >
-        sys_patient_id,
-      </if>
-      <if test="praise != null" >
-        praise,
-      </if>
-      <if test="phone != null" >
-        phone,
-      </if>
-      <if test="star != null" >
-        star,
-      </if>
-      <if test="praiseDate != null" >
-        praise_date,
-      </if>
-      <if test="sysDoctorId != null" >
-        sys_doctor_id,
-      </if>
-      <if test="symptom != null" >
-        symptom,
-      </if>
-      <if test="impression != null" >
-        impression,
-      </if>
-      <if test="zan != null" >
-        zan,
-      </if>
-      <if test="reason != null" >
-        reason,
-      </if>
-      <if test="visitEndtime != null" >
-        visit_endTime,
-      </if>
-      <if test="majorStar != null" >
-        major_star,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="patientRegisterServiceId != null" >
-        #{patientRegisterServiceId,jdbcType=VARCHAR},
-      </if>
-      <if test="sysPatientId != null" >
-        #{sysPatientId,jdbcType=VARCHAR},
-      </if>
-      <if test="praise != null" >
-        #{praise,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null" >
-        #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="star != null" >
-        #{star,jdbcType=VARCHAR},
-      </if>
-      <if test="praiseDate != null" >
-        #{praiseDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="sysDoctorId != null" >
-        #{sysDoctorId,jdbcType=VARCHAR},
-      </if>
-      <if test="symptom != null" >
-        #{symptom,jdbcType=VARCHAR},
-      </if>
-      <if test="impression != null" >
-        #{impression,jdbcType=VARCHAR},
-      </if>
-      <if test="zan != null" >
-        #{zan,jdbcType=VARCHAR},
-      </if>
-      <if test="reason != null" >
-        #{reason,jdbcType=VARCHAR},
-      </if>
-      <if test="visitEndtime != null" >
-        #{visitEndtime,jdbcType=VARCHAR},
-      </if>
-      <if test="majorStar != null" >
-        #{majorStar,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
+    <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.interaction.entity.PatientRegisterPraise">
+        insert into patient_register_praise
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="patientRegisterServiceId != null">
+                patient_register_service_id,
+            </if>
+            <if test="sysPatientId != null">
+                sys_patient_id,
+            </if>
+            <if test="praise != null">
+                praise,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="star != null">
+                star,
+            </if>
+            <if test="praiseDate != null">
+                praise_date,
+            </if>
+            <if test="sysDoctorId != null">
+                sys_doctor_id,
+            </if>
+            <if test="symptom != null">
+                symptom,
+            </if>
+            <if test="impression != null">
+                impression,
+            </if>
+            <if test="zan != null">
+                zan,
+            </if>
+            <if test="reason != null">
+                reason,
+            </if>
+            <if test="visitEndtime != null">
+                visit_endTime,
+            </if>
+            <if test="majorStar != null">
+                major_star,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="patientRegisterServiceId != null">
+                #{patientRegisterServiceId,jdbcType=VARCHAR},
+            </if>
+            <if test="sysPatientId != null">
+                #{sysPatientId,jdbcType=VARCHAR},
+            </if>
+            <if test="praise != null">
+                #{praise,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="star != null">
+                #{star,jdbcType=VARCHAR},
+            </if>
+            <if test="praiseDate != null">
+                #{praiseDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sysDoctorId != null">
+                #{sysDoctorId,jdbcType=VARCHAR},
+            </if>
+            <if test="symptom != null">
+                #{symptom,jdbcType=VARCHAR},
+            </if>
+            <if test="impression != null">
+                #{impression,jdbcType=VARCHAR},
+            </if>
+            <if test="zan != null">
+                #{zan,jdbcType=VARCHAR},
+            </if>
+            <if test="reason != null">
+                #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="visitEndtime != null">
+                #{visitEndtime,jdbcType=VARCHAR},
+            </if>
+            <if test="majorStar != null">
+                #{majorStar,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.interaction.entity.PatientRegisterPraise" >
-    update patient_register_praise
-    <set >
-      <if test="patientRegisterServiceId != null" >
-        patient_register_service_id = #{patientRegisterServiceId,jdbcType=VARCHAR},
-      </if>
-      <if test="sysPatientId != null" >
-        sys_patient_id = #{sysPatientId,jdbcType=VARCHAR},
-      </if>
-      <if test="praise != null" >
-        praise = #{praise,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null" >
-        phone = #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="star != null" >
-        star = #{star,jdbcType=VARCHAR},
-      </if>
-      <if test="praiseDate != null" >
-        praise_date = #{praiseDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="sysDoctorId != null" >
-        sys_doctor_id = #{sysDoctorId,jdbcType=VARCHAR},
-      </if>
-      <if test="symptom != null" >
-        symptom = #{symptom,jdbcType=VARCHAR},
-      </if>
-      <if test="impression != null" >
-        impression = #{impression,jdbcType=VARCHAR},
-      </if>
-      <if test="zan != null" >
-        zan = #{zan,jdbcType=VARCHAR},
-      </if>
-      <if test="reason != null" >
-        reason = #{reason,jdbcType=VARCHAR},
-      </if>
-      <if test="visitEndtime != null" >
-        visit_endTime = #{visitEndtime,jdbcType=VARCHAR},
-      </if>
-      <if test="majorStar != null" >
-        major_star = #{majorStar,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.cxqm.xiaoerke.modules.interaction.entity.PatientRegisterPraise">
+        update patient_register_praise
+        <set>
+            <if test="patientRegisterServiceId != null">
+                patient_register_service_id = #{patientRegisterServiceId,jdbcType=VARCHAR},
+            </if>
+            <if test="sysPatientId != null">
+                sys_patient_id = #{sysPatientId,jdbcType=VARCHAR},
+            </if>
+            <if test="praise != null">
+                praise = #{praise,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="star != null">
+                star = #{star,jdbcType=VARCHAR},
+            </if>
+            <if test="praiseDate != null">
+                praise_date = #{praiseDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sysDoctorId != null">
+                sys_doctor_id = #{sysDoctorId,jdbcType=VARCHAR},
+            </if>
+            <if test="symptom != null">
+                symptom = #{symptom,jdbcType=VARCHAR},
+            </if>
+            <if test="impression != null">
+                impression = #{impression,jdbcType=VARCHAR},
+            </if>
+            <if test="zan != null">
+                zan = #{zan,jdbcType=VARCHAR},
+            </if>
+            <if test="reason != null">
+                reason = #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="visitEndtime != null">
+                visit_endTime = #{visitEndtime,jdbcType=VARCHAR},
+            </if>
+            <if test="majorStar != null">
+                major_star = #{majorStar,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
 
-  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.interaction.entity.PatientRegisterPraise" >
+    <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.interaction.entity.PatientRegisterPraise">
     update patient_register_praise
     set patient_register_service_id = #{patientRegisterServiceId,jdbcType=VARCHAR},
       sys_patient_id = #{sysPatientId,jdbcType=VARCHAR},
@@ -220,7 +221,7 @@
         from patient_register_praise prp
         where prp.sys_doctor_id = #{doctorId}
 
-        <if test="evaluateType != null" >
+        <if test="evaluateType != null">
             and evaluateType = #{evaluateType,jdbcType=VARCHAR}
         </if>
     </select>
@@ -238,16 +239,16 @@
         where
         prp.sys_doctor_id = #{doctorId}
 
-        <if test="evaluateType == 1" >
+        <if test="evaluateType == 1">
             and evaluateType = '1'
         </if>
 
-        <if test="evaluateType == 2" >
+        <if test="evaluateType == 2">
             and (evaluateType &lt;&gt; '1' or evaluateType is null)
         </if>
         ORDER BY prp.praise_date DESC
-        <if test="limit != null" >
-            limit  #{limit}
+        <if test="limit != null">
+            limit #{limit}
         </if>
     </select>
 
@@ -263,18 +264,18 @@
         from patient_register_praise prp
         where prp.sys_doctor_id = #{doctorId}
 
-        <if test="evaluateType == 1" >
+        <if test="evaluateType == 1">
             and evaluateType = '1'
         </if>
 
-        <if test="evaluateType == 2" >
+        <if test="evaluateType == 2">
             and (evaluateType &lt;&gt; '1' or evaluateType is null)
         </if>
 
         ORDER BY prp.praise_date DESC
     </select>
 
-  <select id="findAllPraiseByDoctorId" resultType="java.util.Map">
+    <select id="findAllPraiseByDoctorId" resultType="java.util.Map">
 		SELECT prp.*,ROUND((TIME_TO_SEC(prp.visit_endTime) - TIME_TO_SEC(srs.begin_time))/60) AS wait_time
 		FROM patient_register_praise prp
 		INNER JOIN patient_register_service prs ON prs.id = prp.patient_register_service_id
@@ -283,55 +284,83 @@
 		WHERE prp.sys_doctor_id = #{sys_doctor_id} and srs.location_id=#{location_id}
 	</select>
 
-<!--    保存评价内容 -->
-	<insert id="saveCustomerEvaluation">
+    <!--    保存评价内容 -->
+    <insert id="saveCustomerEvaluation">
 	 INSERT INTO customerEvaluation(id,serviceAttitude,professional,Solve,openid,doctorId,createtime,content,dissatisfied,redPacket,consult_session_id,evaluateSource)
         VALUES(#{uuid},#{starNum1},#{starNum2},#{starNum3},#{openid},#{doctorId},now(),#{content},#{dissatisfied},#{redPacket},#{consultSessionId},#{evaluateSource})
 	</insert>
-<!-- 	修改评价内容 -->
-	<update id="updateCustomerEvaluation">
-	 update customerEvaluation
-	 <!--set-->
+    <!-- 	修改评价内容 -->
+    <update id="updateCustomerEvaluation">
+        update customerEvaluation
+        <!--set-->
 
         <!--<if test="starNum1 != null" >-->
-            <!--redPacket=#{redPacket},serviceAttitude=#{starNum1},content=#{content},dissatisfied=#{dissatisfied}-->
+        <!--redPacket=#{redPacket},serviceAttitude=#{starNum1},content=#{content},dissatisfied=#{dissatisfied}-->
         <!--</if>-->
 
         <!--<if test="starNum1 == null" >-->
-            <!--redPacket=#{redPacket}-->
+        <!--redPacket=#{redPacket}-->
         <!--</if>-->
 
         <!--<if test="payStatus != null" >-->
-            <!--payStatus=#{payStatus}-->
+        <!--payStatus=#{payStatus}-->
         <!--</if>-->
 
-        <set >
-            <if test="redPacket != null" >
+        <set>
+            <if test="redPacket != null">
                 redPacket=#{redPacket},
             </if>
-            <if test="starNum1 != null" >
+            <if test="starNum1 != null">
                 serviceAttitude=#{starNum1},
             </if>
-            <if test="content != null" >
+            <if test="content != null">
                 content=#{content},
             </if>
-            <if test="dissatisfied != null" >
+            <if test="dissatisfied != null">
                 dissatisfied=#{dissatisfied},
             </if>
-            <if test="payStatus != null" >
+            <if test="payStatus != null">
                 payStatus = #{payStatus},
             </if>
         </set>
 
-       where id=#{id}
-	</update>
+        where id=#{id}
+    </update>
 
-<!-- 	获取评价详情 -->
-	 <select id="selectCustomerEvaluation" resultType="java.util.Map">
+    <!-- 	获取评价详情 -->
+    <select id="selectCustomerEvaluation" resultType="java.util.Map">
 		SELECT * FROM customerEvaluation WHERE id=#{id}
 	</select>
-<!--  获取医生信息 -->
-	 <select id="getCustomerStarInfoById" resultType="java.util.Map">
+
+    <select id="select2016EvaluationByOpenId" resultType="java.util.Map">
+        SELECT
+            *
+        FROM
+            customerEvaluation
+        WHERE
+            content IS NOT NULL
+        AND content != ""
+        AND createtime LIKE '2016%'
+        AND openid = #{openId}
+        ORDER BY createtime DESC LIMIT 1
+    </select>
+
+    <select id="select2016EvaluationByOpenId_2" resultType="java.util.Map">
+        SELECT
+        createtime
+        FROM
+        customerEvaluation
+        WHERE
+          redPacket IS NOT NULL
+        AND redPacket != ""
+        AND createtime LIKE '2016%'
+        AND redPacket != 0
+        AND openid = #{openId}
+        ORDER BY createtime DESC LIMIT 1
+    </select>
+
+    <!--  获取医生信息 -->
+    <select id="getCustomerStarInfoById" resultType="java.util.Map">
 		SELECT
 			COUNT(redPacket)+16 AS redPacket
 		FROM
@@ -369,9 +398,8 @@
     </select>
 
 
-
     <!--  获取医生头像信息 -->
-	 <select id="getDoctorHeadImageURIById" resultType="java.util.Map">
+    <select id="getDoctorHeadImageURIById" resultType="java.util.Map">
 		SELECT
             su.name AS 'doctor_name',
             CONCAT('http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/',
@@ -399,25 +427,25 @@
         order by createtime desc
     </select>
 
-	<insert id="saveQuestionnaireSurvey" parameterType="java.util.List">
-		<selectKey keyProperty="id" resultType="long">
-			select LAST_INSERT_ID()
-		</selectKey>
-      INSERT INTO questionnairesurvey(id,openid,createtime,titl,num,answer)
+    <insert id="saveQuestionnaireSurvey" parameterType="java.util.List">
+        <selectKey keyProperty="id" resultType="long">
+            select LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO questionnairesurvey(id,openid,createtime,titl,num,answer)
         VALUES
-		<foreach collection="list" item="item" index="index" separator=",">
-			(#{item.uuid},#{item.openid},now(),#{item.ti},#{item.nu},#{item.co})
-		</foreach>
-	</insert>
-	
-	<!--插入最后就诊时间，待测试 -->
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.uuid},#{item.openid},now(),#{item.ti},#{item.nu},#{item.co})
+        </foreach>
+    </insert>
+
+    <!--插入最后就诊时间，待测试 -->
     <insert id="PatientRegisterServiceIsPraise"
             useGeneratedKeys="true" keyProperty="planId">
         INSERT INTO patient_register_praise(visit_endTime,id,patient_register_service_id,sys_patient_id,phone,praise,star,praise_date,symptom,impression,zan,sys_doctor_id,major_star,evaluateType,wechat_name,pic_url)
         VALUES
         (#{visit_endTime},#{patientRegisterPraiseId},#{id},#{patientId},#{phone},#{appraise},#{star},#{praise_date},#{symptom},#{impression},#{zan},#{sys_doctor_id},#{major_star},#{evaluateType},#{wechat_name},#{pic_url});
     </insert>
-    
+
     <!--获取某个医生的详细信息 @author 09_zdl-->
     <select id="findDoctorDetailPraiseInfo" resultType="com.cxqm.xiaoerke.modules.interaction.entity.PraiseVo"
             parameterType="com.cxqm.xiaoerke.modules.interaction.entity.PraiseVo">
@@ -428,8 +456,8 @@
         </if>
     </select>
 
-  <!--将取消原因插入到patient_register_praise表中-->
-  <insert id="insertCancelReason">
+    <!--将取消原因插入到patient_register_praise表中-->
+    <insert id="insertCancelReason">
     INSERT INTO patient_register_praise(id,patient_register_service_id,sys_patient_id,phone,praise,star,praise_date,symptom,impression,zan,sys_doctor_id,reason)
     VALUES
     (#{praiseId},#{patientRegisterServiceId},#{patientId},#{phone},#{appraise},#{star},#{praise_date},#{symptom},#{impression},#{zan},#{sys_doctor_id},#{reason});

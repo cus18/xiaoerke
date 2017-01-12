@@ -195,7 +195,7 @@
 
     <!--根据手机号或者openid查询该用户是否购买-->
     <select id="getIfBuyUmbrellaByOpenidOrPhone" parameterType="java.util.Map" resultType="java.util.Map" >
-        SELECT id,parent_phone,parent_name,pay_result from baby_umbrellainfo
+        SELECT id,parent_phone,parent_name,pay_result,create_time createTime from baby_umbrellainfo
         where pay_result='success'
         <if test="userPhone != null and userPhone != ''">
             and parent_phone=#{userPhone}

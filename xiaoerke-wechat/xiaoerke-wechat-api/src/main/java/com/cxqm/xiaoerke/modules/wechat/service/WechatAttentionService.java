@@ -28,6 +28,8 @@ public interface WechatAttentionService {
 
 	SysWechatAppintInfoVo getAttentionInfoByOpenId(SysWechatAppintInfoVo sysWechatAppintInfoVo);
 
+	List<SysWechatAppintInfoVo> selectByOpenId(SysWechatAppintInfoVo sysWechatAppintInfoVo);
+
 	List<SysWechatAppintInfoVo> findAttentionInfo(SysWechatAppintInfoVo sysWechatAppintInfoVo);
 
 	HashMap<String,Object> getAttention(String open_id);

@@ -73,12 +73,17 @@
         from sys_attention where openid = #{open_id} and nickname is not null order by date desc
     </select>
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from sys_attention
-    where id = #{id,jdbcType=VARCHAR}
+  <select id="selectByOpenId" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention" >
+    select openid from sys_attention where marketer=(select marketer from baby_coin where open_id=#{open_id}) GROUP BY openid
   </select>
+
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from sys_attention
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from sys_attention
