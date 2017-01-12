@@ -268,11 +268,12 @@ public class FieldworkWechatController {
             url = getBabyCoinURL(request, openid,sysPropertyVoWithBLOBsVo);
         }else if(url.startsWith("42")){
             if(url.equals("42")){
-                url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/playtour#/babyCoinInvitePage";
+                url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/playtour#/babyCoinInvitePage/";
             }else{
                 String logstr = url.split(",")[1];
+                String showlayer = url.split(",").length>2?url.split(",")[2]:"";
                 LogUtils.saveLog(logstr,openid);
-                url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/playtour#/babyCoinInvitePage";
+                url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/playtour#/babyCoinInvitePage/"+showlayer;
             }
         }else if(url.startsWith("46")){
             if(StringUtils.isNull(openid)){

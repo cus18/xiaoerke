@@ -176,4 +176,10 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
     public ConsultSession selectByOpenid(String openid){
         return consultSessionDao.selectByOpenid(openid);
     }
+
+    @Override
+    public ConsultSession selectConsultDurationByOpenid(String openid){
+        return consultSessionDao.selectConsultDurationByOpenid(openid);
+    }
+
 }

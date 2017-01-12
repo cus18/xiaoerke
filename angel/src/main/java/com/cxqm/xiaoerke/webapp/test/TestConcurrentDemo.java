@@ -9,8 +9,8 @@ public class TestConcurrentDemo {
 
     //public  boolean isFinished = false;
     //private static String url = "http://localhost:8080/keeper/patient/wxChat";
-    private static String url = "http://s202.xiaork.com/keeper/patient/wxChat";
-    private static final int MAX_THREADS_COUNT = 60;//初始化开启最大线程数
+    private static String url = "http://s201.xiaork.com/keeper/patient/wxChat";
+    private static final int MAX_THREADS_COUNT = 100;//初始化开启最大线程数
     //private static final int MAX_THREADS_COUNT = 1;
     private static final int MESSAGE_COUNT = 3;//模拟一个用户向服务器发送的消息总数
 
@@ -24,10 +24,9 @@ public class TestConcurrentDemo {
     public void process(){
         //ExecutorService executorService =  Executors.newFixedThreadPool(5000);
         //executorService.execute(new TestSimulator(1));
-        int maxThreadsCount = MAX_THREADS_COUNT;
-        for (int i = 0; i < maxThreadsCount; i++) {
+        for (int i = 0; i < MAX_THREADS_COUNT; i++) {
 
-            new Thread(new TestSimulator(i,"线程" + i)).start();
+            new Thread(new TestSimulator(i,"测试线程" + i)).start();
             //System.out.println("线程" +i);
         }
 

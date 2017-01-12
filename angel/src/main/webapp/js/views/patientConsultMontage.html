@@ -1,50 +1,68 @@
-<ion-view ng-init="patientConsultFirst()">
-    <div class="container-fluid h100">
-        <div class="consultTitle">宝大夫</div>
-        <div class="consultDisplay h100">
-            <div class="consulChatList h100" scroll-glue-bottom="glued">
-                <div class="chatBox" ng-repeat="item in consultContent">
-                    <div class="patientConsultContent" ng-if="item.senderId==patientId&&item.type!='4'">
-                        <div class="patientHeaderImg">
-                            <img width="25px" ng-src="{{item.avatar}}">
-                        </div>
-                        <div class="message" ng-if="item.type=='0'"  ng-bind-html="item.content">
-                        </div>
-                        <div ng-if="item.type=='1'" class="message">
-                            <img width="100px" ng-src="{{item.content}}" ng-click="tapImgButton('magnifyImg',item.content)">
-                        </div>
-                    </div>
-                    <div class="doctorReplyContent"  ng-if="item.senderId!=patientId&&item.type!='4'">
-                        <div class="doctorHeaderImg">
-                            <img width="25px" ng-src="{{item.avatar}}">
-                        </div>
-                        <div class="message" ng-if="item.type=='0'"  ng-bind-html="item.content">
-                        </div>
-                        <div class="message" ng-if="item.type=='1'">
-                            <img width="100px" ng-src="{{item.content}}" ng-click="tapImgButton('magnifyImg',item.content)">
-                        </div>
-                    </div>
-                    <div ng-if="item.type=='4'&&item.notifyType=='1001'">
-                        亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1001
-                    </div>
-                    <div ng-if="item.type=='4'&&item.notifyType=='1002'">
-                        亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1002
-                    </div>
-                    <div ng-if="item.type=='4'&&item.notifyType=='1003'">
-                        亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1003
-                    </div>
+<ion-view  ng-init="patientConsultFirst()">
+    <ion-content class="patientConsultBHQ">
+        <div class="wjy_lookmore" ng-if="lookMore" ng-click="goLookMore()">
+            查看更多...
+        </div>
+        <div class="chatBox" ng-repeat="item in consultContent">
+            <div class="patientConsultContent" ng-if="item.senderId==patientId&&item.type!='4'">
+                <div class="patientHeaderImg">
+                    <img width="44px" ng-src="{{item.avatar}}">
                 </div>
-                <div class="magnifyImg" ng-show='showFlag.magnifyImg' ng-click="tapShowButton('magnifyImg')">
-                    <img width="400px" ng-src="{{imageSrc}}">
+                <div ng-if="item.type=='0'" class="wjy_patient">
+                    <div class="message"   ng-bind-html="item.content"></div>
+                    <img class="wjy_patsanjiao" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_left.png" width="11" height="20">
+                </div>
+                <div ng-if="item.type=='1'" class="message wjy_com">
+                    <img width="100px" ng-src="{{item.content}}" ng-click="showImageBar(item.content)">
                 </div>
             </div>
-        </div>
-        <div class="consultInput">
-            <div class="textInput">
-                <textarea placeholder="请输入咨询内容" id="saytext" ng-model="info.consultInputValue" style="outline:none;border:none;"></textarea>
-                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyh_6.png" alt="" id="face" ng-click="getQQExpression()"/>
+            <div class="doctorReplyContent"  ng-if="item.senderId!=patientId&&item.type!='4'">
+                <div class="doctorHeaderImg">
+                    <img width="44px" ng-src="{{item.avatar}}">
+                </div>
+                <div ng-if="item.type=='0'" class="wjy_doctor">
+                    <div class="message"   ng-bind-html="item.content"></div>
+                    <img class="wjy_docsanjiao" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_right.png" width="11" height="20">
+                </div>
+                <div class="message wjy_com" ng-if="item.type=='1'">
+                    <img width="100px" ng-src="{{item.content}}" ng-click="showImageBar(item.content)">
+                </div>
             </div>
-            <input ng-click="sendConsultContent()" type="button" value="发送">
+            <div ng-if="item.type=='4'&&item.notifyType=='1001'">
+                亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1001
+            </div>
+            <div ng-if="item.type=='4'&&item.notifyType=='1002'">
+                亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1002
+            </div>
+            <div ng-if="item.type=='4'&&item.notifyType=='1003'">
+                亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1003
+            </div>
         </div>
+        <!--<div class="magnifyImg" ng-show='showFlag.magnifyImg' ng-click="tapShowButton('magnifyImg')">-->
+        <!--<img width="400px" ng-src="{{imageSrc}}">-->
+        <!--</div>-->
+        <br/><br/><br/><br/><br/><br/><br/><br/>
+    </ion-content>
+    <div class="wjy_c">
+        <div class="wjy_input">
+            <input type="text" placeholder="请输入消息内容" id="saytext" ng-model="info.consultInputValue" style="border-style:none;outline: none;"  ng-blur="getautoFocus()">
+            <div class="wjy_icon">
+                <img class="wjy_icon_1" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_qq2.png" width="22" height="22" id="face" ng-click="getQQExpression()"/>
+                <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_img2.png" width="22" height="22"
+                     type="file" ng-file-select="uploadFiles($files,'image')" accept="image/*"
+                     ng-file-max-height="2000" ng-file-max-size="2MB"/>
+                <img class="wjy_set" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_go.png" width="60" height="25" ng-click="sendConsultContent()"/>
+            </div>
+        </div>
+    </div>
+    <div class="wjy_fuceng" ng-if="fucengLock">
+        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_fu.png" width="217" height="161"/>
+        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_fu2.png" width="228" height="237"/>
+    </div>
+    <div class="wjy_alert" ng-if="alertFlag">
+        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_alert.png" width="197" height="52"/>
+    </div>
+    <div class="imgBar" ng-if="imgBarFlag" ng-click="hideImageBar()">
+        <span><img id="imageBar" ng-src="{{imgSrc}}"/></span>
     </div>
 </ion-view>

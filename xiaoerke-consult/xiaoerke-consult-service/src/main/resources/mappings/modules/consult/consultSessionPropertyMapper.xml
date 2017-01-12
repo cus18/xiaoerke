@@ -132,7 +132,7 @@
     GROUP BY sys_user_id
   </select>
 
-  <update id="updateMonthTime" parameterType="java.lang.String">
+  <update id="updateMonthTime" parameterType="java.lang.Integer">
     update consult_session_property
     set month_times = #{freeNum,jdbcType=INTEGER}
   </update>

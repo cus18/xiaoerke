@@ -378,6 +378,16 @@ public class PatientRegisterPraiseServiceImpl implements PatientRegisterPraiseSe
 	}
 
 	@Override
+	public Map<String,Object> select2016EvaluationByOpenId(@Param("openId")String openId){
+		return patientRegisterPraiseDao.select2016EvaluationByOpenId(openId);
+	}
+
+	@Override
+	public Map<String,Object> select2016EvaluationByOpenId_2(@Param("openId")String openId){
+		return patientRegisterPraiseDao.select2016EvaluationByOpenId_2(openId);
+	}
+
+	@Override
 	public Map<String, Object> getCustomerStarInfoById(String id) {
 		// TODO Auto-generated method stub
 		return patientRegisterPraiseDao.getCustomerStarInfoById(id);

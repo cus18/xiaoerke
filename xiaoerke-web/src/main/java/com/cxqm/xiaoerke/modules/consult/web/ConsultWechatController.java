@@ -645,10 +645,10 @@ public class ConsultWechatController extends BaseController {
                         //先扣月次数
                         if (monthTime > 0) {
 //                            content = "亲爱的，你本月还有" + monthTime + "次24小时咨询服务就开始付费了";
-                            if (consultSessionPropertyVo.getMonthTimes() == 1) {
-                                content = "别怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
-                                WechatUtil.sendMsgToWechat(token, sysUserId, content);
-                            }
+//                            if (consultSessionPropertyVo.getMonthTimes() == 1) {
+//                                content = "别怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
+//                                WechatUtil.sendMsgToWechat(token, sysUserId, content);
+//                            }
 //                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                             if (monthTime == 1) {

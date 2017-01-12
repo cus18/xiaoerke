@@ -20,6 +20,8 @@ public interface ConsultSessionDao {
 
     ConsultSession selectByOpenid(String openid);
 
+    ConsultSession selectConsultDurationByOpenid(String openid);
+
     int updateByPrimaryKeySelective(ConsultSession consultSession);
 
     int updateSessionInfoByUserId(ConsultSession consultSession);
