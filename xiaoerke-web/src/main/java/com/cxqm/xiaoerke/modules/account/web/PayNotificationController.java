@@ -507,7 +507,7 @@ public class PayNotificationController {
 //				判断当次的sessionid是否已经支付
                 payRecord.setOrderId(sessionId + "");
 
-                if (insuranceMap.get("fee_type").toString().equals("doctorConsultPay") && !"success".equals(payRecord.getStatus())) {
+                if (insuranceMap.get("fee_type").toString().equals("doctorConsultPay") && !"success".equals(insuranceMap.get("status"))) {
                     payRecord.setStatus("success");
                     payRecord.setReceiveDate(new Date());
                     payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
