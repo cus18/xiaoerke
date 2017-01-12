@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -145,6 +146,28 @@ public class ConsultActiveController extends BaseController {
         return response;
     }
 
+    public static String DateToStr(Date date,String flag) {
+        SimpleDateFormat format = null;
+        if("time".equals(flag)){
+            format = new SimpleDateFormat("HH:mm");
+        }else if("date".equals(flag)) {
+            format = new SimpleDateFormat("yyyy年MM月dd日");
+        }else if("datetime".equals(flag)){
+            format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        }else if("monthDate".equals(flag)){
+            format = new SimpleDateFormat("MM/dd");
+        }else if("monthDate:".equals(flag)){
+            format = new SimpleDateFormat("MM:dd");
+        }else if("flag1".equals(flag)){
+            format = new SimpleDateFormat("MM-dd HH:mm");
+        }else{
+            format = new SimpleDateFormat(flag);
+        }
+        String dateStr = null;
+        dateStr = format.format(date);
+        return dateStr;
+    }
+
     private class FirstConsultTime implements Callable {
         private String openId;
 
@@ -160,7 +183,7 @@ public class ConsultActiveController extends BaseController {
             List<ConsultSession> consultSessionList = consultSessionService.selectBySelective(consultSession);
             if (consultSessionList != null && consultSessionList.size() > 0) {
                 consultSession = consultSessionList.get(consultSessionList.size() - 1);
-                String date = DateUtils.DateToStr(consultSession.getCreateTime(), "date");
+                String date = DateToStr(consultSession.getCreateTime(), "date");
                 response.put("firstConsultTime", date);
                 response.put("ConsultTitleNumber", consultSessionList.size());
             } else {
@@ -186,7 +209,7 @@ public class ConsultActiveController extends BaseController {
             consultSession.setUserId(openId);
             consultSession = consultConversationService.selectConsultDurationByOpenid(openId);
             if (consultSession != null && consultSession.getConsultNumber() != null) {
-                response.put("largestConsultTime", DateUtils.DateToStr(consultSession.getCreateTime(), "date"));
+                response.put("largestConsultTime", DateToStr(consultSession.getCreateTime(), "date"));
                 Integer consultNumber = consultSession.getConsultNumber() > 0 ? consultSession.getConsultNumber() : 118;
                 response.put("largestConsultDuration", consultNumber > 500 ? "118" : consultNumber);//异常处理
             } else {
@@ -209,7 +232,7 @@ public class ConsultActiveController extends BaseController {
             Map<String, Object> response = new HashMap<String, Object>();
             Map registerPraiseInfo1 = patientRegisterPraiseService.select2016EvaluationByOpenId(openId);
             if (registerPraiseInfo1 != null && registerPraiseInfo1.size() > 0) {
-                response.put("2016FirstEvaluation", DateUtils.DateToStr((Date) registerPraiseInfo1.get("createtime"), "date"));
+                response.put("2016FirstEvaluation", DateToStr((Date) registerPraiseInfo1.get("createtime"), "date"));
             } else {
                 response.put("2016FirstEvaluation", "null");
             }
@@ -229,7 +252,7 @@ public class ConsultActiveController extends BaseController {
             Map<String, Object> response = new HashMap<String, Object>();
             Map registerPraiseInfo2 = patientRegisterPraiseService.select2016EvaluationByOpenId_2(openId);
             if (registerPraiseInfo2 != null && registerPraiseInfo2.size() > 0) {
-                response.put("2016FirstRedPacket", DateUtils.DateToStr((Date) registerPraiseInfo2.get("createtime"), "date"));
+                response.put("2016FirstRedPacket", DateToStr((Date) registerPraiseInfo2.get("createtime"), "date"));
             } else {
                 response.put("2016FirstRedPacket", "null");
             }
@@ -251,7 +274,7 @@ public class ConsultActiveController extends BaseController {
             openIdMap.put("openId", openId);
             List<Map<String, Object>> openIdList = babyUmbrellaInfoThirdPartyService.getIfBuyUmbrellaByOpenidOrPhone(openIdMap);
             if (openIdList != null && openIdList.size() > 0) {
-                response.put("joinUmbrellaTime", DateUtils.DateToStr((Date) openIdList.get(0).get("createTime"), "date"));
+                response.put("joinUmbrellaTime", DateToStr((Date) openIdList.get(0).get("createTime"), "date"));
             } else {
                 response.put("joinUmbrellaTime", "null");
             }
