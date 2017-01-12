@@ -133,8 +133,9 @@ public class ConsultActiveController extends BaseController {
             response.put("ConsultTitleNumber", map1.get("ConsultTitleNumber"));
             response.put("largestConsultTime", map2.get("largestConsultTime"));
             response.put("largestConsultDuration", map2.get("largestConsultDuration"));
-            response.put("2016FirstEvaluation", map3.get("2016FirstEvaluation"));
-            response.put("2016FirstRedPacket", map4.get("2016FirstRedPacket"));
+            response.put("FirstEvaluationTime", map3.get("2016FirstEvaluationTime"));
+            response.put("FirstRedPacket", map4.get("2016FirstRedPacketTime"));
+            response.put("FirstRedPacketCount", map4.get("2016FirstRedPacketCount"));
             response.put("joinUmbrellaTime", map5.get("joinUmbrellaTime"));
             response.put("joinBaoDaiFuForYou", map6.get("joinBaoDaiFuForYou"));
         } catch (InterruptedException e) {
@@ -232,9 +233,9 @@ public class ConsultActiveController extends BaseController {
             Map<String, Object> response = new HashMap<String, Object>();
             Map registerPraiseInfo1 = patientRegisterPraiseService.select2016EvaluationByOpenId(openId);
             if (registerPraiseInfo1 != null && registerPraiseInfo1.size() > 0) {
-                response.put("2016FirstEvaluation", DateToStr((Date) registerPraiseInfo1.get("createtime"), "date"));
+                response.put("2016FirstEvaluationTime", DateToStr((Date) registerPraiseInfo1.get("createtime"), "date"));
             } else {
-                response.put("2016FirstEvaluation", "null");
+                response.put("2016FirstEvaluationTime", "null");
             }
             return response;
         }
@@ -252,9 +253,11 @@ public class ConsultActiveController extends BaseController {
             Map<String, Object> response = new HashMap<String, Object>();
             Map registerPraiseInfo2 = patientRegisterPraiseService.select2016EvaluationByOpenId_2(openId);
             if (registerPraiseInfo2 != null && registerPraiseInfo2.size() > 0) {
-                response.put("2016FirstRedPacket", DateToStr((Date) registerPraiseInfo2.get("createtime"), "date"));
+                response.put("2016FirstRedPacketTime", DateToStr((Date) registerPraiseInfo2.get("createtime"), "date"));
+                response.put("2016FirstRedPacketCount", registerPraiseInfo2.get("redPacket"));
             } else {
-                response.put("2016FirstRedPacket", "null");
+                response.put("2016FirstRedPacketTime", "null");
+                response.put("2016FirstRedPacketCount", "null");
             }
             return response;
         }
