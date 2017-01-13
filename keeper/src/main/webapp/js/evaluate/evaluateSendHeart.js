@@ -148,7 +148,8 @@ function commitEvaluate(){
                                         window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD,fda";
                                     }
                                     if(data=="2"){
-                                        window.location.href = "playtour#/evaluateSuccess";
+                                        // window.location.href = "playtour#/evaluateSuccess";
+                                        window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD,fda";
                                     }
                                 },
                                 error : function(res) {

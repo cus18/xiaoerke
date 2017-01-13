@@ -15,6 +15,7 @@ import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -73,6 +74,7 @@ public class ConsultActiveController extends BaseController {
         Map<String, Object> response = new HashMap<String, Object>();
         params.put("openId", "o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
         String openId = String.valueOf(params.get("openId"));
+        Assert.notNull(openId, "openId must not be null");
         //---------------------------------------查询用户的关注时间-----------------------------------
         Callable attentionDate = new getAttentionDate(openId);
         FutureTask attentionDateTask = new FutureTask(attentionDate);
@@ -111,7 +113,7 @@ public class ConsultActiveController extends BaseController {
         while (!calculateFirstConsultTimeTask.isDone() || !largestConsultTask.isDone() || !firstEvaluationTask.isDone() ||
                 !firstRedPacketTask.isDone() || !joinUmbrellaTimeTask.isDone() || !joinBaoDaiFuForYouTask.isDone()) {
             try {
-                Thread.sleep(300);
+                Thread.sleep(100);
                 System.out.println("等待...");
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -135,6 +137,7 @@ public class ConsultActiveController extends BaseController {
             response.put("joinUmbrellaTime", map5.get("joinUmbrellaTime"));
             response.put("joinBaoDaiFuForYou", map6.get("joinBaoDaiFuForYou"));
             response.put("attentionDate", map7.get("attentionDate"));
+            response.put("nickName", map7.get("nickName"));
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -207,6 +210,7 @@ public class ConsultActiveController extends BaseController {
             sysWechatAppintInfoVo = wechatAttentionService.getAttentionInfoByOpenId(sysWechatAppintInfoVo);
             if (sysWechatAppintInfoVo != null) {
                 String attention_time = sysWechatAppintInfoVo.getAttention_time();
+                response.put("nickName",sysWechatAppintInfoVo.getWechat_name());
                 response.put("attentionDate", StringUtils.isNotBlank(attention_time) ? DateToStr(DateUtils.StrToDate(attention_time,"datetime"),"date") : "null");
             } else {
                 //从微信接口获取用户关注时间
