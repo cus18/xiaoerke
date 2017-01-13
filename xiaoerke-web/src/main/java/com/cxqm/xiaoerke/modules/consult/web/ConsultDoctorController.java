@@ -277,6 +277,7 @@ public class ConsultDoctorController extends BaseController {
     public void test(HttpSession session, HttpServletRequest request) {
         User user = systemService.getUserByLoginName("13181557398");
         UserUtils.putCache("user", user);
+        UserUtils.getCache("user");
     }
 
     @RequestMapping(value = "/updateAddress", method = {RequestMethod.POST, RequestMethod.GET})
