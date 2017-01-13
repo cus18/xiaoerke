@@ -346,17 +346,34 @@
     </select>
 
     <select id="select2016EvaluationByOpenId_2" resultType="java.util.Map">
+    SELECT
+        apr1.pay_date createtime,
+        ROUND(apr1.amount / 100) redPacket,
+        ROUND(apr2.redPacketSum) redPacketSum
+    FROM
+        account_pay_record apr1
+    LEFT JOIN (
         SELECT
-        createtime,redPacket
+            sum(amount) / 100 redPacketSum,
+            open_id
         FROM
-        customerEvaluation
+            account_pay_record
         WHERE
-          redPacket IS NOT NULL
-        AND redPacket != ""
-        AND createtime LIKE '2016%'
-        AND redPacket != 0
-        AND openid = #{openId}
-        ORDER BY createtime DESC LIMIT 1
+            open_id = #{openId}
+        AND pay_date LIKE '2016%'
+        AND STATUS = 'success'
+        AND fee_type = 'customer'
+    ) apr2 ON apr2.open_id = apr1.open_id
+    WHERE
+        apr1.open_id = #{openId}
+    AND apr1.pay_date LIKE '2016%'
+    AND apr1. STATUS = 'success'
+    AND apr1.fee_type = 'customer'
+    AND ROUND(apr1.amount / 100) >1
+    AND ROUND(apr2.redPacketSum) >1
+    ORDER BY
+        apr1.pay_date DESC
+    LIMIT 1
     </select>
 
     <!--  获取医生信息 -->

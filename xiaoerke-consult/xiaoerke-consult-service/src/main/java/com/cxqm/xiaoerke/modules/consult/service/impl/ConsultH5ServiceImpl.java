@@ -67,38 +67,45 @@ public class ConsultH5ServiceImpl implements ConsultH5Service {
                     inputStream_ws = file.getInputStream();
                     String key = null ;
                     String aliUrl = null ;
+                    RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
                     if(("image").equalsIgnoreCase(fileType) ||("1").equalsIgnoreCase(fileType)){
                         User user = systemService.getUserById(senderId);
-                        String userType = user.getUserType();
-                        if(StringUtils.isNotNull(userType) && ("distributor".equalsIgnoreCase(userType) || "consultDoctor".equalsIgnoreCase(userType))){
-                            RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
-                            if("wxcxqm".equalsIgnoreCase(consultSession.getSource())){
-                                String upLoadUrl = "https://api.weixin.qq.com/cgi-bin/media/upload";
-                                key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_DOCTOR_PIC);
-                                aliUrl = "http://"+OSSObjectTool.BUCKET_DOCTOR_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
-                                JSONObject jsonObject = WechatUtil.uploadNoTextMsgToWX((String) userWechatParam.get("token"), upLoadUrl, fileType, fileName, inputStream_ws);
-                                String  media_id= jsonObject.optString("media_id");
-                                response.put("WS_File",media_id);
-                                response.put("source","wxcxqm");
+                        if(user != null){
+                            String userType = user.getUserType();
+                            if(StringUtils.isNotNull(userType) && ("distributor".equalsIgnoreCase(userType) || "consultDoctor".equalsIgnoreCase(userType))){
+                                if("wxcxqm".equalsIgnoreCase(consultSession.getSource())){
+                                    String upLoadUrl = "https://api.weixin.qq.com/cgi-bin/media/upload";
+                                    key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_DOCTOR_PIC);
+                                    aliUrl = "http://"+OSSObjectTool.BUCKET_DOCTOR_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
+                                    JSONObject jsonObject = WechatUtil.uploadNoTextMsgToWX((String) userWechatParam.get("token"), upLoadUrl, fileType, fileName, inputStream_ws);
+                                    String  media_id= jsonObject.optString("media_id");
+                                    response.put("WS_File",media_id);
+                                    response.put("source",consultSession.getSource());
+                                }else{
+                                    key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_DOCTOR_PIC);
+                                    aliUrl = "http://"+OSSObjectTool.BUCKET_DOCTOR_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
+                                    response.put("source",consultSession.getSource());
+                                }
                             }else{
-                                key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_DOCTOR_PIC);
-                                aliUrl = "http://"+OSSObjectTool.BUCKET_DOCTOR_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
-                                response.put("source","h5cxqm");
+                                key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
+                                aliUrl = "http://"+OSSObjectTool.BUCKET_CONSULT_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
+                                response.put("source",consultSession.getSource());
                             }
                         }else{
                             key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
                             aliUrl = "http://"+OSSObjectTool.BUCKET_CONSULT_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
-                            response.put("source","h5cxqm");
+                            response.put("source",consultSession.getSource());
                         }
+
 
                     }else if(("voice").equalsIgnoreCase(fileType) || ("2").equalsIgnoreCase(fileType)){
                         key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
                         aliUrl = "http://"+OSSObjectTool.BUCKET_CONSULT_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
-                        response.put("source","h5cxqm");
+                        response.put("source",consultSession.getSource());
                     }else{
                         key = OSSObjectTool.uploadFileInputStream(fileName, file.getSize(), inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
                         aliUrl = "http://"+OSSObjectTool.BUCKET_CONSULT_PIC+".oss-cn-beijing.aliyuncs.com/"+fileName;
-                        response.put("source","h5cxqm");
+                        response.put("source",consultSession.getSource());
                     }
 
                     if(StringUtils.isNotNull(key)){

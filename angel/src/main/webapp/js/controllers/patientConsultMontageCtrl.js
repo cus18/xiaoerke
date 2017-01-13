@@ -18,7 +18,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.patientImg = "";
             $scope.patientId= "" ;
             $scope.patientName= "" ;
-            $scope.fucengLock = false;//第一次进入页面的浮层
+            $scope.fucengLock = true;//第一次进入页面的浮层
             $scope.alertFlag = false;
             $scope.imgBarFlag = false;
 

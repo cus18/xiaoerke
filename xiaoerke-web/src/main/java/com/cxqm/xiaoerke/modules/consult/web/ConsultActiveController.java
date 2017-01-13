@@ -132,6 +132,7 @@ public class ConsultActiveController extends BaseController {
             response.put("largestConsultTime", map2.get("largestConsultTime"));
             response.put("largestConsultDuration", map2.get("largestConsultDuration"));
             response.put("FirstEvaluationTime", map3.get("2016FirstEvaluationTime"));
+            response.put("redPacketSum", map4.get("redPacketSum"));
             response.put("FirstRedPacketTime", map4.get("2016FirstRedPacketTime"));
             response.put("FirstRedPacketCount", map4.get("2016FirstRedPacketCount"));
             response.put("joinUmbrellaTime", map5.get("joinUmbrellaTime"));
@@ -143,25 +144,25 @@ public class ConsultActiveController extends BaseController {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        LogUtils.saveLog(openId,"查询时间为"+(System.currentTimeMillis()-startTime));
+        LogUtils.saveLog(openId, "查询时间为" + (System.currentTimeMillis() - startTime));
         return response;
     }
 
-    public static String DateToStr(Date date,String flag) {
+    public static String DateToStr(Date date, String flag) {
         SimpleDateFormat format = null;
-        if("time".equals(flag)){
+        if ("time".equals(flag)) {
             format = new SimpleDateFormat("HH:mm");
-        }else if("date".equals(flag)) {
+        } else if ("date".equals(flag)) {
             format = new SimpleDateFormat("yyyy年MM月dd日");
-        }else if("datetime".equals(flag)){
+        } else if ("datetime".equals(flag)) {
             format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        }else if("monthDate".equals(flag)){
+        } else if ("monthDate".equals(flag)) {
             format = new SimpleDateFormat("MM/dd");
-        }else if("monthDate:".equals(flag)){
+        } else if ("monthDate:".equals(flag)) {
             format = new SimpleDateFormat("MM:dd");
-        }else if("flag1".equals(flag)){
+        } else if ("flag1".equals(flag)) {
             format = new SimpleDateFormat("MM-dd HH:mm");
-        }else{
+        } else {
             format = new SimpleDateFormat(flag);
         }
         String dateStr = null;
@@ -210,8 +211,8 @@ public class ConsultActiveController extends BaseController {
             sysWechatAppintInfoVo = wechatAttentionService.getAttentionInfoByOpenId(sysWechatAppintInfoVo);
             if (sysWechatAppintInfoVo != null) {
                 String attention_time = sysWechatAppintInfoVo.getAttention_time();
-                response.put("nickName",sysWechatAppintInfoVo.getWechat_name());
-                response.put("attentionDate", StringUtils.isNotBlank(attention_time) ? DateToStr(DateUtils.StrToDate(attention_time,"datetime"),"date") : "null");
+                response.put("nickName", sysWechatAppintInfoVo.getWechat_name());
+                response.put("attentionDate", StringUtils.isNotBlank(attention_time) ? DateToStr(DateUtils.StrToDate(attention_time, "datetime"), "date") : "null");
             } else {
                 //从微信接口获取用户关注时间
             }
@@ -278,7 +279,20 @@ public class ConsultActiveController extends BaseController {
             Map registerPraiseInfo2 = patientRegisterPraiseService.select2016EvaluationByOpenId_2(openId);
             if (registerPraiseInfo2 != null && registerPraiseInfo2.size() > 0) {
                 response.put("2016FirstRedPacketTime", DateToStr((Date) registerPraiseInfo2.get("createtime"), "date"));
-                response.put("2016FirstRedPacketCount", registerPraiseInfo2.get("redPacket"));
+                String redPacket = String.valueOf(registerPraiseInfo2.get("redPacket"));
+                if(redPacket.indexOf(".")!=-1){
+                    redPacket = redPacket.split("\\.")[0];
+                }
+                response.put("2016FirstRedPacketCount", redPacket);
+                if (registerPraiseInfo2.get("redPacketSum") != null) {
+                    String redPacketSum = String.valueOf(registerPraiseInfo2.get("redPacketSum"));
+                    if(redPacketSum.indexOf(".")!=-1){
+                        redPacketSum = redPacketSum.split("\\.")[0];
+                    }
+                    response.put("redPacketSum", redPacketSum);
+                }else {
+                    response.put("redPacketSum", "null");
+                }
             } else {
                 response.put("2016FirstRedPacketTime", "null");
                 response.put("2016FirstRedPacketCount", "null");
