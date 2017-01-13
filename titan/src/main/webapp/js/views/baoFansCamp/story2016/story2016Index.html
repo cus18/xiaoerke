@@ -62,57 +62,63 @@
         </ion-slide>
 
     </ion-slide-box>-->
-    <div class="swiper-container"  >
+    <div  ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.firstConsultTime=='null' && dataInfo.FirstRedPacketTime=='null' && dataInfo.FirstEvaluationTime=='null' && dataInfo.joinUmbrellaTime=='null'">
+        <img width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story_no.png">
+    </div>
+    <div class="swiper-container"  ng-if="dataInfo.joinBaoDaiFuForYou!='null' || dataInfo.firstConsultTime!='null' || dataInfo.FirstRedPacketTime!='null' || dataInfo.FirstEvaluationTime!='null' || dataInfo.joinUmbrellaTime!='null'">
         <div class="swiper-wrapper pic-list">
             <!-------------slid01----------------->
             <section class="swiper-slide swiper-slide0 ">
-                <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story0.png" >
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" swiper-animate-effect="fadeIn" swiper-animate-duration="1s" swiper-animate-delay="0s" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story0.png" >
             </section>
             <!-------------slide1----------------->
             <section class="swiper-slide  ">
-                <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story1.png" >
-                <div class="date c11 ani effect1" swiper-animate-effect="zoomIn" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s">{{dataInfo.attentionDate}}</div>
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story1.png" >
+                <div class="date c11 ani resize effect1" style="top:50px;left:55px;" swiper-animate-effect="zoomIn" swiper-animate-duration="1s" swiper-animate-delay="0s">{{dataInfo.attentionDate}}</div>
             </section>
             <!---------------slide2-------------->
             <section class="swiper-slide  " ng-if="dataInfo.firstConsultTime!='null'">
-                <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story2.png" >
-                <div class="date c12 " >{{dataInfo.firstConsultTime}}</div>
-                <img class="ani effect2 " swiper-animate-effect="fadeInLeft" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s"  width="70%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story2_1.png" >
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story2.png" >
+                <div class="date c12 resize" style="top:50px;left:55px;">{{dataInfo.firstConsultTime}}</div>
+                <img class="ani effect2 resize" style="width:215.2px;height:64px;left:55px;top:85px;" swiper-animate-effect="fadeIn" swiper-animate-duration="1s" swiper-animate-delay="0s"   src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story2_1.png" >
             </section>
             <!----------------slide3-------------->
             <section class="swiper-slide  " ng-if="dataInfo.firstConsultTime!='null'">
-                <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story3.png" >
-                <div class="date c13 " >{{dataInfo.largestConsultTime}}</div>
-                <div class="c18 ani effect3" swiper-animate-effect="zoomIn" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s">{{dataInfo.largestConsultDuration}}分钟</div>
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story3.png" >
+                <div class="date c13 resize" style="top:50px;left:55px;">{{dataInfo.largestConsultTime}}</div>
+                <div class="c18 ani effect3 resize"  style="width:215.2px;height:64px;left:55px;top:145px;" swiper-animate-effect="swing" swiper-animate-duration="1s" swiper-animate-delay="0s">{{dataInfo.largestConsultDuration}}分钟</div>
             </section>
             <!-------------slide4----------------->
             <section class="swiper-slide  "  ng-if="dataInfo.FirstEvaluationTime!='null'">
-                <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story4.png" >
-                <div class="date c14 " >{{dataInfo.FirstEvaluationTime}}</div>
-                <img class="ani effect4 " swiper-animate-effect="zoomIn" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s"  width="70%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story4_1.png" >
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story4.png" >
+                <div class="date c14 resize" style="top:50px;left:55px;">{{dataInfo.FirstEvaluationTime}}</div>
+                <img class="ani effect4  resize"  style="width:215.2px;height:64px;left:55px;top:95px;" swiper-animate-effect="filpInX" swiper-animate-duration="1s" swiper-animate-delay="0s"  width="70%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story4_1.png" >
             </section>
             <!-------------slide5---------------->
             <section class="swiper-slide  "  ng-if="dataInfo.FirstRedPacketTime!='null'">
-                <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story5.png" >
-                <div class="date c15  "  >{{dataInfo.FirstRedPacketTime}}</div>
-                <span class="c19  ani effect5"  swiper-animate-effect="fadeInRight" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s">{{dataInfo.FirstRedPacketCount}}元</span>
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story5.png" >
+                <div class="date c15  resize"  style="top:50px;left:55px;">{{dataInfo.FirstRedPacketTime}}</div>
+                <span class="c19  ani effect5 resize"  style="width:215.2px;height:64px;right:50px;top:135px;"  swiper-animate-effect="rubberBand" swiper-animate-duration="1s" swiper-animate-delay="0s">{{dataInfo.FirstRedPacketCount}}元</span>
             </section>
             <!-------------slide6----------------->
             <section class="swiper-slide  " ng-if="dataInfo.joinUmbrellaTime!='null'">
-                <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story6.png" >
-                <div class="date c16  "  >{{dataInfo.joinUmbrellaTime}}</div>
-                <img class="ani effect6 " swiper-animate-effect="zoomInLeft" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s"  width="70%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story6_1.png" >
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story6.png" >
+                <div class="date c16  resize" style="top:50px;left:55px;" >{{dataInfo.joinUmbrellaTime}}</div>
+                <img class="ani effect6  resize"  style="width:215.2px;height:64px;left:55px;top:90px;" swiper-animate-effect="fadeIn" swiper-animate-duration="1s" swiper-animate-delay="0s"  width="70%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story6_1.png" >
             </section>
             <!-------------slide7----------------->
             <section class="swiper-slide  " ng-if="dataInfo.joinBaoDaiFuForYou!='null'">
-                <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story7.png" >
-                <div class="ani effect7 c20" swiper-animate-effect="zoomIn" swiper-animate-duration="1.5s" swiper-animate-delay="0.1s">有{{dataInfo.joinBaoDaiFuForYou}}位</div>
-                <img class="ani story71" width="66%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story7_1.png" >
-                <img class="ani story72" width="70%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story7_2.png" >
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story7.png" >
+                <div class="ani effect7 c20 resize"  style="left:55px;top:88px;" swiper-animate-effect="bounceIn" swiper-animate-duration="1s" swiper-animate-delay="0s">有{{dataInfo.joinBaoDaiFuForYou}}位</div>
+                <img class="ani story71 resize" style="width:183.2px;height:15.2px;left:105px;top:90px;"src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story7_1.png" >
+                <img class="ani story72 resize" style="width:224px;height:22.4px;left:55px;top:130px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story7_2.png" >
             </section>
             <!-------------slide8----------------->
             <section class="swiper-slide  ">
-                <img class="my-img2" width="94%" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story0.png" >
+                <img ng-if="dataInfo.joinBaoDaiFuForYou!='null'" class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_1.png" >
+                <img ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.firstConsultTime!='null'" class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_2.png" >
+                <img ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.firstConsultTime=='null' && dataInfo.FirstRedPacketTime!='null'" class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_3.png" >
+                <img ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.firstConsultTime=='null' && dataInfo.FirstRedPacketTime=='null' && dataInfo.FirstEvaluationTime!='null'" class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_3.png" >
             </section>
         </div>
 
