@@ -132,7 +132,7 @@ public class ConsultActiveController extends BaseController {
             response.put("largestConsultTime", map2.get("largestConsultTime"));
             response.put("largestConsultDuration", map2.get("largestConsultDuration"));
             response.put("FirstEvaluationTime", map3.get("2016FirstEvaluationTime"));
-            response.put("redPacketSum", map3.get("redPacketSum"));
+            response.put("redPacketSum", map4.get("redPacketSum"));
             response.put("FirstRedPacketTime", map4.get("2016FirstRedPacketTime"));
             response.put("FirstRedPacketCount", map4.get("2016FirstRedPacketCount"));
             response.put("joinUmbrellaTime", map5.get("joinUmbrellaTime"));
@@ -279,9 +279,17 @@ public class ConsultActiveController extends BaseController {
             Map registerPraiseInfo2 = patientRegisterPraiseService.select2016EvaluationByOpenId_2(openId);
             if (registerPraiseInfo2 != null && registerPraiseInfo2.size() > 0) {
                 response.put("2016FirstRedPacketTime", DateToStr((Date) registerPraiseInfo2.get("createtime"), "date"));
-                response.put("2016FirstRedPacketCount", registerPraiseInfo2.get("redPacket"));
+                String redPacket = String.valueOf(registerPraiseInfo2.get("redPacket"));
+                if(redPacket.indexOf(".")!=-1){
+                    redPacket = redPacket.split("\\.")[0];
+                }
+                response.put("2016FirstRedPacketCount", redPacket);
                 if (registerPraiseInfo2.get("redPacketSum") != null) {
-                    response.put("redPacketSum", registerPraiseInfo2.get("redPacketSum"));
+                    String redPacketSum = String.valueOf(registerPraiseInfo2.get("redPacketSum"));
+                    if(redPacketSum.indexOf(".")!=-1){
+                        redPacketSum = redPacketSum.split("\\.")[0];
+                    }
+                    response.put("redPacketSum", redPacketSum);
                 }else {
                     response.put("redPacketSum", "null");
                 }

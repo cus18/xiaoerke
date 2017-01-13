@@ -348,8 +348,8 @@
     <select id="select2016EvaluationByOpenId_2" resultType="java.util.Map">
     SELECT
         apr1.pay_date createtime,
-        floor(apr1.amount / 100) redPacket,
-        floor(apr2.redPacketSum) redPacketSum
+        ROUND(apr1.amount / 100) redPacket,
+        ROUND(apr2.redPacketSum) redPacketSum
     FROM
         account_pay_record apr1
     LEFT JOIN (
@@ -369,6 +369,8 @@
     AND apr1.pay_date LIKE '2016%'
     AND apr1. STATUS = 'success'
     AND apr1.fee_type = 'customer'
+    AND ROUND(apr1.amount / 100) >1
+    AND ROUND(apr2.redPacketSum) >1
     ORDER BY
         apr1.pay_date DESC
     LIMIT 1
