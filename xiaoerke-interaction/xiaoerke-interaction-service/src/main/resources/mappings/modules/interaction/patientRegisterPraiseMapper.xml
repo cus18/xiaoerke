@@ -349,7 +349,7 @@
     SELECT
         apr1.pay_date createtime,
         floor(apr1.amount / 100) redPacket,
-        floor(apr2.redPacketSum)
+        floor(apr2.redPacketSum) redPacketSum
     FROM
         account_pay_record apr1
     LEFT JOIN (
