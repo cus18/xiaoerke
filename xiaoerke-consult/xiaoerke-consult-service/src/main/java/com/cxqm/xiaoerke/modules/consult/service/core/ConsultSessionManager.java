@@ -186,7 +186,11 @@ public enum ConsultSessionManager {
             if (user != null) {
                 consultSession.setUserName(user.getName() == null ? user.getLoginName() : user.getName());
             } else {
-                consultSession.setUserName(userId);
+                if("h5mtq".equalsIgnoreCase(source)){
+                    consultSession.setUserName("MTQ-"+userId);
+                }else{
+                    consultSession.setUserName(userId);
+                }
             }
             consultSession.setSource(source);
 
