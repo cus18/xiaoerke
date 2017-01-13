@@ -1,15 +1,11 @@
 ﻿﻿angular.module('controllers', ['ionic']).controller('story2016IndexCtrl', [
     '$scope','$state','$stateParams','getUser2016Data',
     function ($scope,$state,$stateParams,getUser2016Data) {
-        $scope.data2016 = "";
+        $scope.dataInfo = {};
 
 
         $scope.$on('$ionicView.enter',function() {
 
-            getUser2016Data.save({},function (data) {
-                console.log("2016数据",data);
-                $scope.dataInfo=data;
-            });
             var scaleW=window.innerWidth/320;
             var scaleH=window.innerHeight/480;
             var resizes = document.querySelectorAll('.resize');
@@ -20,6 +16,7 @@
                 resizes[j].style.bottom=parseInt(resizes[j].style.bottom)*scaleH+'px';
                 resizes[j].style.left=parseInt(resizes[j].style.left)*scaleW+'px';
                 resizes[j].style.right=parseInt(resizes[j].style.right)*scaleW+'px';
+                resizes[j].style.right=parseInt(resizes[j].style.fontSize)*scaleW+'px';
             }
             var mySwiper = new Swiper ('.swiper-container', {
                 direction : 'horizontal',
@@ -32,6 +29,30 @@
                     swiperAnimate(swiper); //每个slide切换结束时也运行当前slide动画
                 }
             })
+
+            getUser2016Data.save({},function (data) {
+                console.log("2016数据",data);
+                $scope.dataInfo=data;
+                if($scope.dataInfo.firstConsultTime=='null'){
+                    mySwiper.removeSlide(2);
+                    mySwiper.removeSlide(3);
+
+                }
+                if($scope.dataInfo.FirstEvaluationTime=='null'){
+                    mySwiper.removeSlide(4);
+                }
+                if($scope.dataInfo.FirstRedPacketTime=='null'){
+                    mySwiper.removeSlide(5);
+                }
+
+                if($scope.dataInfo.joinUmbrellaTime=="null"){
+                    mySwiper.removeSlide(6);
+                }
+                if($scope.dataInfo.joinBaoDaiFuForYou=='null'){
+                    mySwiper.removeSlide(7);
+                }
+                $(".swiper-pagination").show();
+            });
         });
 
 
