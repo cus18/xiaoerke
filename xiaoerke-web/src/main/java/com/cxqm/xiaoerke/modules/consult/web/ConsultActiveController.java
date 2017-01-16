@@ -5,6 +5,7 @@ package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
@@ -62,18 +63,18 @@ public class ConsultActiveController extends BaseController {
     public void test(HttpSession session, HttpServletRequest request) {
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("openId", "o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
-        response = getUser2016Data(response);
+//        response = getUser2016Data(response);
         System.out.println(response);
     }
 
 
     @RequestMapping(value = "/getUser2016Data", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map<String, Object> getUser2016Data(@RequestBody Map<String, Object> params) {
+    public Map<String, Object> getUser2016Data(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
         Long startTime = System.currentTimeMillis();
         Map<String, Object> response = new HashMap<String, Object>();
-        params.put("openId", "o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
-        String openId = String.valueOf(params.get("openId"));
+//        params.put("openId", "o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
+        String openId = WechatUtil.getOpenId(session,request);
         Assert.notNull(openId, "openId must not be null");
         //---------------------------------------查询用户的关注时间-----------------------------------
         Callable attentionDate = new getAttentionDate(openId);
