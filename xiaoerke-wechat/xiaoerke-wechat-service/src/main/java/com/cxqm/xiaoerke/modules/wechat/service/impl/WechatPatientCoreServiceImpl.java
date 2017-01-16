@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
+import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.marketing.service.LoveMarketingService;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
 import com.cxqm.xiaoerke.modules.sys.entity.*;
@@ -40,6 +41,8 @@ import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @Service
 @Transactional(readOnly = false)
@@ -123,6 +126,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     private ConsultMemberRedsiCacheService consultMemberRedsiCacheService;
 
     private Map<String, OperationPromotionVo> keywordMap;
+
+    @Autowired
+    private ConsultRecordService consultRecordService;
+
+    @Autowired
+    private PatientRegisterPraiseService patientRegisterPraiseService;
 
     private static ExecutorService threadExecutorSingle = Executors.newSingleThreadExecutor();
     private static ExecutorService threadExecutorCash = Executors.newCachedThreadPool();
@@ -1707,7 +1716,26 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         }
 
         if (StringUtils.isNotNull(roleInfo.getReplyText())) {
-            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), roleInfo.getReplyText());
+            String openid = xmlEntity.getFromUserName();
+            String msgContent = roleInfo.getReplyText();
+            Query query2 = (new Query()).addCriteria(where("userId").is(openid)).with(new Sort(Sort.Direction.DESC, "createDate"));
+            ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query2);
+            if(null !=consultSessionStatusVo2&&ConsultSession.STATUS_ONGOING.equals(consultSessionStatusVo2.getStatus())){
+                msgContent = msgContent.replace("CUSTOMERID", consultSessionStatusVo2.getCsUserId());
+                Map param = new HashMap();
+                param.put("userId",consultSessionStatusVo2.getCsUserId());
+                param.put("consultSessionId",consultSessionStatusVo2.getSessionId());
+                List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(param);
+                if (praiseList != null && praiseList.size() > 0) {
+                    for (Map<String, Object> evaluationMap : praiseList) {
+                        if (Integer.parseInt((String) evaluationMap.get("serviceAttitude")) == 0) {
+                            msgContent = msgContent.replace("SESSIONID",(String)evaluationMap.get("id"));
+                            break;
+                        }
+                    }
+                }
+            }
+            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), msgContent);
         }
         if (StringUtils.isNotNull(roleInfo.getReplyPicId())) {
             for (String mediaId : roleInfo.getReplyPicId().split(",")) {
