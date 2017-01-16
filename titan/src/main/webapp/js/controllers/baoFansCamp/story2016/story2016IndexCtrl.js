@@ -42,32 +42,29 @@
             getUser2016Data.save({},function (data) {
                 console.log("2016数据",data);
                 $scope.dataInfo=data;
-                var a=2;
+                var removeIndex=2;
                 if($scope.dataInfo.firstConsultTime=='null'){
-                    //mySwiper.removeSlide(2);
-                    //mySwiper.removeSlide(3);
                     mySwiper.removeSlide(a);
                     mySwiper.removeSlide(a);
                     mySwiper.removeSlide(a);
                     mySwiper.removeSlide(a);
 
                 }
-                a = a+2;
+                removeIndex = removeIndex + 2;
                 if($scope.dataInfo.FirstEvaluationTime=='null'){
                     mySwiper.removeSlide(a);
                 }else{
-                    a =a+1;
+                    ++removeIndex;
                 }
                 if($scope.dataInfo.FirstRedPacketTime=='null'){
-                    //mySwiper.removeSlide(5);
                     mySwiper.removeSlide(a);
                 }else{
-                    a = a+1;
+                    ++removeIndex;
                 }
                 if($scope.dataInfo.joinUmbrellaTime=="null"){
                     mySwiper.removeSlide(a);
                 }else{
-                    a = a+1;
+                    ++removeIndex;
                 }
                 if($scope.dataInfo.joinBaoDaiFuForYou=='null'){
                     mySwiper.removeSlide(a);
