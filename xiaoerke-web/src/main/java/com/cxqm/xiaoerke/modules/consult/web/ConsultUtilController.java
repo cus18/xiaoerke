@@ -103,6 +103,7 @@ public class ConsultUtilController {
                 if(babyCoinVos.get(i)!=null){
                     BabyCoinVo vo = babyCoinVos.get(i);
                     if(StringUtils.isNotNull(vo.getOpenId())){
+//                        if(vo.getOpenId().equals("o3_NPwqranZIs-hNjl-B2LjV39oQ"))
                         WechatMessageUtil.templateModel(title, keyword1, keyword2, keyword3, "", remark, token, url, vo.getOpenId(), sysPropertyVoWithBLOBsVo.getTemplateIdYWFWTX());
 //                        babyCoinService.updateBabyCoinByOpenId(vo);
                     }
