@@ -44,10 +44,10 @@
                 $scope.dataInfo=data;
                 var removeIndex=2;
                 if($scope.dataInfo.firstConsultTime=='null'){
-                    mySwiper.removeSlide(a);
-                    mySwiper.removeSlide(a);
-                    mySwiper.removeSlide(a);
-                    mySwiper.removeSlide(a);
+                    mySwiper.removeSlide(removeIndex);
+                    mySwiper.removeSlide(removeIndex);
+                    mySwiper.removeSlide(removeIndex);
+                    mySwiper.removeSlide(removeIndex);
 
                 }
                 removeIndex = removeIndex + 2;
