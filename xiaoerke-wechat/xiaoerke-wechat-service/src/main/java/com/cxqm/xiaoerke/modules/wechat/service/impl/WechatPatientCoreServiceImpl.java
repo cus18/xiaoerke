@@ -1721,7 +1721,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             Query query2 = (new Query()).addCriteria(where("userId").is(openid)).with(new Sort(Sort.Direction.DESC, "createDate"));
             ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query2);
             if(null !=consultSessionStatusVo2&&ConsultSession.STATUS_ONGOING.equals(consultSessionStatusVo2.getStatus())){
-                msgContent = msgContent.replace("SESSIONID", consultSessionStatusVo2.getCsUserId());
+                msgContent = msgContent.replace("SESSIONID", consultSessionStatusVo2.getSessionId());
                 Map param = new HashMap();
                 param.put("userId",consultSessionStatusVo2.getCsUserId());
                 param.put("consultSessionId",consultSessionStatusVo2.getSessionId());
