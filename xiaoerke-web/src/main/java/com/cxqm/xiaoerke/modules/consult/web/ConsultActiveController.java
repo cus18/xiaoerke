@@ -132,6 +132,7 @@ public class ConsultActiveController extends BaseController {
             response.put("largestConsultTime", map2.get("largestConsultTime"));
             response.put("largestConsultDuration", map2.get("largestConsultDuration"));
             response.put("FirstEvaluationTime", map3.get("2016FirstEvaluationTime"));
+            response.put("evaluationCount", map3.get("evaluationCount"));
             response.put("redPacketSum", map4.get("redPacketSum"));
             response.put("FirstRedPacketTime", map4.get("2016FirstRedPacketTime"));
             response.put("FirstRedPacketCount", map4.get("2016FirstRedPacketCount"));
@@ -259,6 +260,7 @@ public class ConsultActiveController extends BaseController {
             Map registerPraiseInfo1 = patientRegisterPraiseService.select2016EvaluationByOpenId(openId);
             if (registerPraiseInfo1 != null && registerPraiseInfo1.size() > 0) {
                 response.put("2016FirstEvaluationTime", DateToStr((Date) registerPraiseInfo1.get("createtime"), "date"));
+                response.put("evaluationCount",  registerPraiseInfo1.get("evaluationCount"));
             } else {
                 response.put("2016FirstEvaluationTime", "null");
             }
