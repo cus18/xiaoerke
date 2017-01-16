@@ -52,22 +52,22 @@
                 }
                 removeIndex = removeIndex + 2;
                 if($scope.dataInfo.FirstEvaluationTime=='null'){
-                    mySwiper.removeSlide(a);
+                    mySwiper.removeSlide(removeIndex);
                 }else{
                     ++removeIndex;
                 }
                 if($scope.dataInfo.FirstRedPacketTime=='null'){
-                    mySwiper.removeSlide(a);
+                    mySwiper.removeSlide(removeIndex);
                 }else{
                     ++removeIndex;
                 }
                 if($scope.dataInfo.joinUmbrellaTime=="null"){
-                    mySwiper.removeSlide(a);
+                    mySwiper.removeSlide(removeIndex);
                 }else{
                     ++removeIndex;
                 }
                 if($scope.dataInfo.joinBaoDaiFuForYou=='null'){
-                    mySwiper.removeSlide(a);
+                    mySwiper.removeSlide(removeIndex);
                 }
                 $(".swiper-pagination").show();
               /* if(mySwiper.activeIndex==mySwiper.slides.length){
