@@ -25,10 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -74,7 +71,7 @@ public class ConsultActiveController extends BaseController {
         Long startTime = System.currentTimeMillis();
         Map<String, Object> response = new HashMap<String, Object>();
 //        params.put("openId", "o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
-        String openId = WechatUtil.getOpenId(session,request);
+        String openId = WechatUtil.getOpenId(session, request);
         Assert.notNull(openId, "openId must not be null");
         //---------------------------------------查询用户的关注时间-----------------------------------
         Callable attentionDate = new getAttentionDate(openId);
@@ -237,9 +234,10 @@ public class ConsultActiveController extends BaseController {
             consultSession.setUserId(openId);
             consultSession = consultConversationService.selectConsultDurationByOpenid(openId);
             if (consultSession != null && consultSession.getConsultNumber() != null) {
+                Random rand = new Random();
                 response.put("largestConsultTime", DateToStr(consultSession.getCreateTime(), "date"));
                 Integer consultNumber = consultSession.getConsultNumber() > 0 ? consultSession.getConsultNumber() : 118;
-                response.put("largestConsultDuration", consultNumber > 500 ? "118" : consultNumber);//异常处理
+                response.put("largestConsultDuration", consultNumber > 500 ? rand.nextInt(80)+20 : consultNumber);//异常处理
             } else {
                 response.put("largestConsultTime", "null");
                 response.put("largestConsultDuration", "null");
