@@ -334,15 +334,28 @@
 
     <select id="select2016EvaluationByOpenId" resultType="java.util.Map">
         SELECT
-            *
+            ce1.*, ce2.evaluationCount
         FROM
-            customerEvaluation
+            customerEvaluation ce1
+        INNER JOIN (
+            SELECT
+                count(*) evaluationCount,
+                openid
+            FROM
+                customerEvaluation ce2
+            WHERE
+                ce2.content != ""
+            AND createtime LIKE '2016%'
+            AND openid = #{openId}
+        ) ce2 ON ce2.openid = ce1.openid
         WHERE
-            content IS NOT NULL
-        AND content != ""
-        AND createtime LIKE '2016%'
-        AND openid = #{openId}
-        ORDER BY createtime DESC LIMIT 1
+            ce1.content IS NOT NULL
+        AND ce1.content != ""
+        AND ce1.createtime LIKE '2016%'
+        AND ce1.openid = #{openId}
+        ORDER BY
+            ce1.createtime DESC
+        LIMIT 1
     </select>
 
     <select id="select2016EvaluationByOpenId_2" resultType="java.util.Map">

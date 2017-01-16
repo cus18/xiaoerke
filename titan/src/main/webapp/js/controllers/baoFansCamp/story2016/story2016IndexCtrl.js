@@ -27,6 +27,15 @@
                 },
                 onSlideChangeEnd: function(swiper){
                     swiperAnimate(swiper); //每个slide切换结束时也运行当前slide动画
+                    if(mySwiper.isEnd){
+                        $(".swiper-pagination").hide();
+                        $(".remind-arr").hide();
+                        $(".remind-save").show();
+                    }else{
+                        $(".swiper-pagination").show();
+                        $(".remind-arr").show();
+                        $(".remind-save").hide();
+                    }
                 }
             })
 
@@ -52,6 +61,12 @@
                     mySwiper.removeSlide(7);
                 }
                 $(".swiper-pagination").show();
+              /* if(mySwiper.activeIndex==mySwiper.slides.length){
+                   $(".swiper-pagination").hide();
+                }*/
+
+
+
             });
         });
 
