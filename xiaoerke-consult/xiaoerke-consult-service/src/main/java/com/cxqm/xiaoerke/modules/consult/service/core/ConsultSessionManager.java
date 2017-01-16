@@ -126,7 +126,7 @@ public enum ConsultSessionManager {
             } else if (fromType.equals("cs")) {
                 String userId = args[2];
                 User csUser = systemService.getUserById(userId);
-                if (csUser.getUserType().equals("consultDoctor")) {
+                if (StringUtils.isNotNull(csUser.getUserType()) && csUser.getUserType().equals("consultDoctor")) {
                     doCreateSocketInitiatedByCs(userId, channel);
                 }
             } else if (fromType.equals("distributor")) {
