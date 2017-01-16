@@ -43,7 +43,7 @@ public class WechatMessageUtil {
 
     protected static final String DOC_APPINTMENT_CANCEL= "OPENTM203353498";
     //模板颜色
-    private static final String COLOR = "#000000";
+    private static final String COLOR = "#0000CC";
 
     /**
      * @param content 消息内容
@@ -81,7 +81,7 @@ public class WechatMessageUtil {
         Map<String,TemplateData> m = new HashMap<String,TemplateData>();
 
         TemplateData templateData = new TemplateData();
-        templateData.setColor("FF0000");
+        templateData.setColor(COLOR);
         templateData.setValue(first);
         m.put("first", templateData);
 
