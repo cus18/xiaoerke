@@ -297,6 +297,10 @@ define(['appBaoFansCamp'], function (app) {
         .factory('addDoctorCase',['$resource',function ($resource){
             return $resource(healthRecord + 'addDoctorCase');
         }])
+       //2016您与宝大夫的故事
+        .factory('getUser2016Data',['$resource',function ($resource){
+            return $resource(user_h5 + 'consult/active/getUser2016Data');
+        }])
         //根据用户的登陆状态，进行相应的操作
         .factory('resolveUserLoginStatus', ['GetUserLoginStatus','$state',
             function(GetUserLoginStatus,$state) {

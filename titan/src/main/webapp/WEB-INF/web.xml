@@ -195,9 +195,6 @@
 		<filter-name>springSessionFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	<filter-mapping>
-		<filter-name>springSessionFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+
 
 </web-app>

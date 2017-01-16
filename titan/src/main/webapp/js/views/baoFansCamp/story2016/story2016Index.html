@@ -1,0 +1,76 @@
+<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+<ion-view view-title="{{title}}" class="story2016Index ">
+    <!--空白页显示-->
+    <div  ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.firstConsultTime=='null' && dataInfo.FirstRedPacketTime=='null' && dataInfo.FirstEvaluationTime=='null' && dataInfo.joinUmbrellaTime=='null'">
+        <img data-tap-disabled="true"  class="my-img2 resize" style="width:284.4px;height:410px;margin-top:5%;"  src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story_no.png">
+    </div>
+    <!--用户非只关注显示内容-->
+    <div class="swiper-container"  ng-if="dataInfo.joinBaoDaiFuForYou!='null' || dataInfo.firstConsultTime!='null' || dataInfo.FirstRedPacketTime!='null' || dataInfo.FirstEvaluationTime!='null' || dataInfo.joinUmbrellaTime!='null'">
+        <div class="swiper-wrapper pic-list">
+            <!-------------slid01----------------->
+            <div class="swiper-slide swiper-slide0 ">
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" swiper-animate-effect="fadeIn" swiper-animate-duration="1s" swiper-animate-delay="0s" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story0.png" >
+            </div>
+            <!-------------slide1----------------->
+            <div class="swiper-slide  swiper-slide1">
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story1.png" >
+                <div class="date c11 ani resize effect1" style="top:50px;left:55px;" swiper-animate-effect="swing" swiper-animate-duration="1s" swiper-animate-delay="0s">{{dataInfo.attentionDate}}</div>
+            </div>
+            <!---------------slide2-------------->
+            <div class="swiper-slide  swiper-slide2" >
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story2.png" >
+                <div class="date c12 resize" style="top:50px;left:55px;">{{dataInfo.firstConsultTime}}</div>
+                <img class="ani effect2 resize" style="width:215.2px;height:64px;left:55px;top:85px;" swiper-animate-effect="rotateInDownLeft" swiper-animate-duration="1s" swiper-animate-delay="0s"   src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story2_1.png" >
+            </div>
+            <!----------------slide3-------------->
+            <div class="swiper-slide  swiper-slide3" >
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story3.png" >
+                <div class="date c13 resize" style="top:50px;left:55px;">{{dataInfo.largestConsultTime}}</div>
+                <div class="c18 ani effect3 resize"  style="left:55px;top:145px;" swiper-animate-effect="slideInLeft" swiper-animate-duration="1s" swiper-animate-delay="0s">{{dataInfo.largestConsultDuration}}分钟</div>
+            </div>
+            <!-------------slide4----------------->
+            <div class="swiper-slide  swiper-slide4"  >
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story4.png" >
+                <div class="date c14 resize" style="top:50px;left:55px;">{{dataInfo.FirstEvaluationTime}}</div>
+                <img class="ani effect4  resize"  style="width:215.2px;height:64px;left:55px;top:95px;" swiper-animate-effect="fadeIn" swiper-animate-duration="2s" swiper-animate-delay="0.2s"  src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story4_1.png" >
+            </div>
+            <!-------------slide5---------------->
+            <div class="swiper-slide  swiper-slide5"  >
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story5.png" >
+                <div class="date c15  resize"  style="top:50px;left:55px;">{{dataInfo.FirstRedPacketTime}}</div>
+                <div class="c19  ani effect5 resize "  style="left:200px;top:136px;"  swiper-animate-effect="fadeInRight" swiper-animate-duration="1s" swiper-animate-delay="0s">{{dataInfo.FirstRedPacketCount}}元</div>
+            </div>
+            <!-------------slide6----------------->
+            <div class="swiper-slide  swiper-slide6" >
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story6.png" >
+                <div class="date c16  resize" style="top:50px;left:55px;" >{{dataInfo.joinUmbrellaTime}}</div>
+                <img class="ani effect6  resize"  style="width:215.2px;height:64px;left:55px;top:90px;" swiper-animate-effect="fadeIn" swiper-animate-duration="1s" swiper-animate-delay="0s"   src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story6_1.png" >
+            </div>
+            <!-------------slide7----------------->
+            <div class="swiper-slide  swiper-slide7" >
+                <img class="my-img2 resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story7.png" >
+                <div class="ani effect7 c20 resize"  style="left:55px;top:88.5px;" swiper-animate-effect="shake" swiper-animate-duration="0.5s" swiper-animate-delay="0s">有{{dataInfo.joinBaoDaiFuForYou}}位</div>
+                <img class="ani story71 resize" style="width:183.2px;height:15.2px;left:105px;top:90px;"src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story7_1.png" >
+                <img class="ani story72 resize" style="width:224px;height:22.4px;left:55px;top:130px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story7_2.png" >
+            </div>
+            <!-------------slide8----------------->
+            <div class="swiper-slide  swiper-slide8">
+                <img data-tap-disabled="true" ng-if="dataInfo.joinBaoDaiFuForYou!='null'" class="my-img2  resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_1.png" >
+                <img data-tap-disabled="true" ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.FirstRedPacketTime!='null'" class="my-img2 resize " style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_3.png" >
+                <img data-tap-disabled="true" ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.FirstRedPacketTime=='null' && dataInfo.FirstEvaluationTime!='null'" class="my-img2  resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_3.png" >
+                <img data-tap-disabled="true" ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.FirstRedPacketTime=='null' && dataInfo.FirstEvaluationTime=='null' && dataInfo.firstConsultTime!='null'" class="my-img2   resize" style="width:284.4px;height:410px;" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_2.png" >
+                <div class="nickname resize f2 c0"    style="left:120px;top:65px;" >{{dataInfo.nickName}}</div>
+                <div class="total resize love "       style="top:120px;left:185px;" ng-if="dataInfo.joinBaoDaiFuForYou!='null'">{{dataInfo.joinBaoDaiFuForYou}}位</div>
+                <div class="total resize gratitude"   style="top:120px;left:185px;" ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.FirstRedPacketTime!='null'">{{dataInfo.consultTitleNumber}}元</div>
+                <div class="total resize communicate" style="top:120px;left:185px;" ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.FirstRedPacketTime=='null' && dataInfo.FirstEvaluationTime!='null'"></div>
+                <div class="total resize health"      style="top:120px;left:185px;" ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.FirstRedPacketTime=='null' && dataInfo.FirstEvaluationTime=='null' && dataInfo.firstConsultTime!='null'">{{dataInfo.consultTitleNumber}}次</div>
+            </div>
+        </div>
+
+        <div class="swiper-pagination" hidden></div>
+        <div class="remind-arr c4 f2">
+            <img class="my-img1" width="7" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story_arr.png" >
+            向左滑
+        </div>
+    </div>
+</ion-view>

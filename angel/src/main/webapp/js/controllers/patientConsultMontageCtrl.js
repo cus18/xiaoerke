@@ -93,7 +93,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     'senderId':conversationData.senderId,
                     'senderName':conversationData.senderName,
                     'sessionId':conversationData.sessionId,
-                    "avatar":"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
+                    "avatar":"http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/706748668177525417.jpg"
                 };
                 $scope.consultContent.push(doctorValMessage);
             };
