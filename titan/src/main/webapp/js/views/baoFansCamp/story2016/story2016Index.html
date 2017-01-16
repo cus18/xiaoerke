@@ -1,7 +1,7 @@
 <ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
 <ion-view view-title="{{title}}" class="story2016Index ">
     <!--空白页显示-->
-    <div  ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.firstConsultTime=='null' && dataInfo.FirstRedPacketTime=='null' && dataInfo.FirstEvaluationTime=='null' && dataInfo.joinUmbrellaTime=='null'">
+    <div  class="attention-only">
         <img data-tap-disabled="true"  class="my-img2 resize" style="width:284.4px;height:410px;margin-top:5%;"  src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story_no.png">
         <div class="remind-com remind-save1 c4 f2 tc" >
             <img data-tap-disabled="true" class="my-img1" width="12" height="16" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story_hand.png" >
@@ -9,7 +9,7 @@
         </div>
     </div>
     <!--用户非只关注显示内容-->
-    <div class="swiper-container"  ng-if="dataInfo.joinBaoDaiFuForYou!='null' || dataInfo.firstConsultTime!='null' || dataInfo.FirstRedPacketTime!='null' || dataInfo.FirstEvaluationTime!='null' || dataInfo.joinUmbrellaTime!='null'">
+    <div class="swiper-container"  >
         <div class="swiper-wrapper pic-list">
             <!-------------slid01----------------->
             <div class="swiper-slide swiper-slide0 ">
@@ -59,11 +59,7 @@
             </div>
             <!-------------slide8----------------->
             <div class="swiper-slide  swiper-slide8">
-                <img data-tap-disabled="true" class="my-img2 resize" style="width:284.4px;height:410px;" ng-if="dataInfo.joinBaoDaiFuForYou!='null'"  src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_1.png" >
-                <img data-tap-disabled="true" class="my-img2 resize" style="width:284.4px;height:410px;" ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.FirstRedPacketTime!='null'"  src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_3.png" >
-                <img data-tap-disabled="true" class="my-img2 resize" style="width:284.4px;height:410px;" ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.FirstRedPacketTime=='null' && dataInfo.FirstEvaluationTime!='null'"  src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_3.png" >
-                <img data-tap-disabled="true" class="my-img2 resize" style="width:284.4px;height:410px;"   src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_4.png" >
-                <img data-tap-disabled="true" class="my-img2 resize" style="width:284.4px;height:410px;" ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.FirstRedPacketTime=='null' && dataInfo.FirstEvaluationTime=='null' && dataInfo.firstConsultTime=='null'"  src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story_no.png" >
+                <img data-tap-disabled="true" class="my-img2 resize story-last1" style="width:284.4px;height:410px;" ng-if="dataInfo.joinBaoDaiFuForYou!='null'"  ng-src="story8show" >
                 <div class="nickname resize f2 c0"    style="left:120px;top:65px;"  >{{dataInfo.nickName}}</div>
                 <div class="total resize ani love "       style="top:120px;left:185px;" swiper-animate-effect="flash" swiper-animate-duration="0.5s" swiper-animate-delay="0s" ng-if="dataInfo.joinBaoDaiFuForYou!='null'">{{dataInfo.joinBaoDaiFuForYou}}位</div>
                 <div class="total resize ani gratitude"   style="top:120px;left:185px;" swiper-animate-effect="flash" swiper-animate-duration="0.5s" swiper-animate-delay="0s" ng-if="dataInfo.joinBaoDaiFuForYou=='null' && dataInfo.FirstRedPacketTime!='null'">{{dataInfo.consultTitleNumber}}元</div>
