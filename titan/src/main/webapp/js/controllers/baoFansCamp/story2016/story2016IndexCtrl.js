@@ -1,4 +1,4 @@
-﻿﻿angular.module('controllers', ['ionic']).controller('story2016IndexCtrl', [
+﻿angular.module('controllers', ['ionic']).controller('story2016IndexCtrl', [
     '$scope','$state','$stateParams','getUser2016Data',
     function ($scope,$state,$stateParams,getUser2016Data) {
         $scope.dataInfo = {};
