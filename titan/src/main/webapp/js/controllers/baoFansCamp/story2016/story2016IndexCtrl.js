@@ -57,7 +57,7 @@
                     $scope.story8show="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story_no.png";
                 }
                 //判断用户除了关注是否有其他操作 （咨询 宝护伞 分享）
-                if(dataInfo.firstConsultTime!='null'  ||dataInfo.joinBaoDaiFuForYou!='null'  || dataInfo.joinUmbrellaTime!='null'){
+                if($scope.dataInfo.firstConsultTime!='null'  ||$scope.dataInfo.joinBaoDaiFuForYou!='null'  || $scope.dataInfo.joinUmbrellaTime!='null'){
                     $(".swiper-container").show();
                     $(".attention-only").hide();
                 }
