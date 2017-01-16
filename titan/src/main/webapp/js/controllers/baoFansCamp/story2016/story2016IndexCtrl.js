@@ -42,23 +42,36 @@
             getUser2016Data.save({},function (data) {
                 console.log("2016数据",data);
                 $scope.dataInfo=data;
+                var a=2;
                 if($scope.dataInfo.firstConsultTime=='null'){
-                    mySwiper.removeSlide(2);
-                    mySwiper.removeSlide(3);
-
+                    //mySwiper.removeSlide(2);
+                    //mySwiper.removeSlide(3);
+                    mySwiper.removeSlide(a);
+                    mySwiper.removeSlide(a);
+                    mySwiper.removeSlide(a);
+                    mySwiper.removeSlide(a);
+                    mySwiper.removeSlide(a);
+                    mySwiper.removeSlide(a);
                 }
+                a = a+2;
                 if($scope.dataInfo.FirstEvaluationTime=='null'){
-                    mySwiper.removeSlide(4);
+                    mySwiper.removeSlide(a);
+                }else{
+                    a =a+1;
                 }
                 if($scope.dataInfo.FirstRedPacketTime=='null'){
-                    mySwiper.removeSlide(5);
+                    //mySwiper.removeSlide(5);
+                    mySwiper.removeSlide(a);
+                }else{
+                    a = a+1;
                 }
-
                 if($scope.dataInfo.joinUmbrellaTime=="null"){
-                    mySwiper.removeSlide(6);
+                    mySwiper.removeSlide(a);
+                }else{
+                    a = a+1;
                 }
                 if($scope.dataInfo.joinBaoDaiFuForYou=='null'){
-                    mySwiper.removeSlide(7);
+                    mySwiper.removeSlide(a);
                 }
                 $(".swiper-pagination").show();
               /* if(mySwiper.activeIndex==mySwiper.slides.length){
