@@ -50,8 +50,7 @@
                     mySwiper.removeSlide(a);
                     mySwiper.removeSlide(a);
                     mySwiper.removeSlide(a);
-                    mySwiper.removeSlide(a);
-                    mySwiper.removeSlide(a);
+
                 }
                 a = a+2;
                 if($scope.dataInfo.FirstEvaluationTime=='null'){
