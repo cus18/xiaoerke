@@ -214,6 +214,7 @@ public class ConsultActiveController extends BaseController {
                 response.put("attentionDate", StringUtils.isNotBlank(attention_time) ? DateToStr(DateUtils.StrToDate(attention_time, "datetime"), "date") : "亲爱的");
             } else {
                 response.put("attentionDate",  "亲爱的");
+                response.put("nickName",  "亲爱的");
                 //从微信接口获取用户关注时间
             }
             return response;
