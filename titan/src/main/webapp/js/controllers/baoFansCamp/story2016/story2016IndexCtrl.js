@@ -49,7 +49,7 @@
                 }
                 if( $scope.dataInfo.joinBaoDaiFuForYou=='null' &&  $scope.dataInfo.FirstRedPacketTime!='null'){
                     $scope.story8show="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_2.png";
-                    $scope.story8data= $scope.dataInfo.FirstRedPacketCount+"元"
+                    $scope.story8data= $scope.dataInfo.redPacketSum+"元"
                 }
                 if($scope.dataInfo.joinBaoDaiFuForYou=='null' &&  $scope.dataInfo.FirstRedPacketTime=='null' &&  $scope.dataInfo.FirstEvaluationTime!='null'){
                     $scope.story8show="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_3.png";
