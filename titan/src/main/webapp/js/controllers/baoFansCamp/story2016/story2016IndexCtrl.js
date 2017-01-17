@@ -57,7 +57,7 @@
                 }
                 if( $scope.dataInfo.joinBaoDaiFuForYou=='null' &&  $scope.dataInfo.FirstRedPacketTime=='null' &&  $scope.dataInfo.FirstEvaluationTime=='null' &&  $scope.dataInfo.firstConsultTime!='null'){
                     $scope.story8show="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_4.png";
-                    $scope.story8data= $scope.dataInfo.consultTitleNumber;
+                    $scope.story8data= $scope.dataInfo.consultTitleNumber+"次";
                 }
                 if( $scope.dataInfo.joinBaoDaiFuForYou=='null' &&  $scope.dataInfo.FirstRedPacketTime=='null' &&  $scope.dataInfo.FirstEvaluationTime=='null' &&  $scope.dataInfo.firstConsultTime=='null'){
                     $scope.story8show="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story_no.png";
