@@ -183,7 +183,7 @@ public class ConsultActiveController extends BaseController {
             consultSession.setUserId(openId);
             List<ConsultSession> consultSessionList = consultSessionService.selectBySelectiveOrder(consultSession);
             if (consultSessionList != null && consultSessionList.size() > 0) {
-                consultSession = consultSessionList.get(consultSessionList.size() - 1);
+                consultSession = consultSessionList.get(0);
                 String date = DateToStr(consultSession.getCreateTime(), "date");
                 response.put("firstConsultTime", date);
                 response.put("consultTitleNumber", consultSessionList.size());
