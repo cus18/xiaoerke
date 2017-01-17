@@ -70,7 +70,7 @@ public class ConsultActiveController extends BaseController {
     public Map<String, Object> getUser2016Data(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
         Long startTime = System.currentTimeMillis();
         Map<String, Object> response = new HashMap<String, Object>();
-//        params.put("openId", "o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
+//        params.put("openId", "o3_NPwo7FN3-L3Vnl_P4J63FWri8");
         String openId = WechatUtil.getOpenId(session, request);
         Assert.notNull(openId, "openId must not be null");
         //---------------------------------------查询用户的关注时间-----------------------------------
@@ -84,7 +84,7 @@ public class ConsultActiveController extends BaseController {
         Thread calculateFirstConsultTimeThread = new Thread(calculateFirstConsultTimeTask);
         calculateFirstConsultTimeThread.start();
         //----------------------------日期+ 咨询时长最长的一次------------------------------
-        Callable largestConsultTime = new LargestConsultTime(openId);
+        Callable largestConsultTime = new LargestConsultTime(openId,request);
         FutureTask largestConsultTask = new FutureTask(largestConsultTime);
         Thread largestConsultThread = new Thread(largestConsultTask);
         largestConsultThread.start();
@@ -224,9 +224,10 @@ public class ConsultActiveController extends BaseController {
 
     private class LargestConsultTime implements Callable {
         private String openId;
-
-        private LargestConsultTime(String openId) {
+        private HttpServletRequest request=null;
+        private LargestConsultTime(String openId,HttpServletRequest request) {
             this.openId = openId;
+            this.request = request;
         }
 
         @Override
@@ -237,9 +238,22 @@ public class ConsultActiveController extends BaseController {
             consultSession = consultConversationService.selectConsultDurationByOpenid(openId);
             if (consultSession != null && consultSession.getConsultNumber() != null) {
                 Random rand = new Random();
+                HttpSession session = request.getSession();
+                if(session != null){
+                    Object largestConsultDuration = session.getAttribute("largestConsultDuration");
+                    if(StringUtils.isNotNull(String.valueOf(largestConsultDuration))){
+                        response.put("largestConsultDuration", largestConsultDuration);
+                    }else{
+                        if(consultSession.getConsultNumber() > 500){
+                            largestConsultDuration = rand.nextInt(80) + 20;
+                            session.setAttribute("largestConsultDuration",largestConsultDuration);
+                            response.put("largestConsultDuration", largestConsultDuration);
+                        }else{
+                            response.put("largestConsultDuration", consultSession.getConsultNumber());
+                        }
+                    }
+                }
                 response.put("largestConsultTime", DateToStr(consultSession.getCreateTime(), "date"));
-                Integer consultNumber = consultSession.getConsultNumber() > 0 ? consultSession.getConsultNumber() : 118;
-                response.put("largestConsultDuration", consultNumber > 500 ? rand.nextInt(80) + 20 : consultNumber);//异常处理
             } else {
                 response.put("largestConsultTime", "null");
                 response.put("largestConsultDuration", "null");
