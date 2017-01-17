@@ -38,10 +38,10 @@
 
     <bean id="cookieHttpSessionStrategy" class="org.springframework.session.web.http.DefaultCookieSerializer">
         <property name="cookiePath" value="/"/>
-        <property name="domainName" value="xiaork.com"/>
+        <property name="domainName" value=".xiaork.com"/>
+        <property name="cookieName" value="test"/>
     </bean>
-    <bean id="redisHttpSessionConfiguration"  class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration" >
-        <property name="maxInactiveIntervalInSeconds" value="1800" />
+    <bean id="redisHttpSessionConfiguration"  class="org.springframework.session.config.annotation.web.http.SpringHttpSessionConfiguration" >
         <property name="cookieSerializer" ref="cookieHttpSessionStrategy"/>
     </bean>
 
