@@ -67,7 +67,7 @@ public class ConsultActiveController extends BaseController {
 
     @RequestMapping(value = "/getUser2016Data", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map<String, Object> getUser2016Data(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
+    public Map<String, Object> getUser2016Data(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
         Long startTime = System.currentTimeMillis();
         Map<String, Object> response = new HashMap<String, Object>();
 //        params.put("openId", "o3_NPwh2PkuPM-xPA2fZxlmB5Xqg");
@@ -237,7 +237,7 @@ public class ConsultActiveController extends BaseController {
                 Random rand = new Random();
                 response.put("largestConsultTime", DateToStr(consultSession.getCreateTime(), "date"));
                 Integer consultNumber = consultSession.getConsultNumber() > 0 ? consultSession.getConsultNumber() : 118;
-                response.put("largestConsultDuration", consultNumber > 500 ? rand.nextInt(80)+20 : consultNumber);//异常处理
+                response.put("largestConsultDuration", consultNumber > 500 ? rand.nextInt(80) + 20 : consultNumber);//异常处理
             } else {
                 response.put("largestConsultTime", "null");
                 response.put("largestConsultDuration", "null");
@@ -259,7 +259,7 @@ public class ConsultActiveController extends BaseController {
             Map registerPraiseInfo1 = patientRegisterPraiseService.select2016EvaluationByOpenId(openId);
             if (registerPraiseInfo1 != null && registerPraiseInfo1.size() > 0) {
                 response.put("2016FirstEvaluationTime", DateToStr((Date) registerPraiseInfo1.get("createtime"), "date"));
-                response.put("evaluationCount",  registerPraiseInfo1.get("evaluationCount"));
+                response.put("evaluationCount", registerPraiseInfo1.get("evaluationCount"));
             } else {
                 response.put("2016FirstEvaluationTime", "null");
             }
@@ -281,17 +281,17 @@ public class ConsultActiveController extends BaseController {
             if (registerPraiseInfo2 != null && registerPraiseInfo2.size() > 0) {
                 response.put("2016FirstRedPacketTime", DateToStr((Date) registerPraiseInfo2.get("createtime"), "date"));
                 String redPacket = String.valueOf(registerPraiseInfo2.get("redPacket"));
-                if(redPacket.indexOf(".")!=-1){
+                if (redPacket.indexOf(".") != -1) {
                     redPacket = redPacket.split("\\.")[0];
                 }
                 response.put("2016FirstRedPacketCount", redPacket);
                 if (registerPraiseInfo2.get("redPacketSum") != null) {
                     String redPacketSum = String.valueOf(registerPraiseInfo2.get("redPacketSum"));
-                    if(redPacketSum.indexOf(".")!=-1){
+                    if (redPacketSum.indexOf(".") != -1) {
                         redPacketSum = redPacketSum.split("\\.")[0];
                     }
-                    response.put("redPacketSum", redPacketSum);
-                }else {
+                    response.put("redPacketSum", redPacketSum == null ? "null" : redPacketSum);
+                } else {
                     response.put("redPacketSum", "null");
                 }
             } else {
