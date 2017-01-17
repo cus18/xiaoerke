@@ -210,7 +210,7 @@ public class ConsultActiveController extends BaseController {
             sysWechatAppintInfoVo = wechatAttentionService.getAttentionInfoByOpenId(sysWechatAppintInfoVo);
             if (sysWechatAppintInfoVo != null) {
                 String attention_time = sysWechatAppintInfoVo.getAttention_time();
-                response.put("nickName", sysWechatAppintInfoVo.getWechat_name()==null?"null":sysWechatAppintInfoVo.getWechat_name());
+                response.put("nickName", sysWechatAppintInfoVo.getWechat_name()==null?"亲爱的":sysWechatAppintInfoVo.getWechat_name());
                 response.put("attentionDate", StringUtils.isNotBlank(attention_time) ? DateToStr(DateUtils.StrToDate(attention_time, "datetime"), "date") : "亲爱的");
             } else {
                 response.put("attentionDate",  "亲爱的");
