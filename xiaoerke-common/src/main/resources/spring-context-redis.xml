@@ -31,18 +31,12 @@
     <bean id="springSession" class="org.springframework.session.web.http.SessionRepositoryFilter">
         <constructor-arg>
             <bean class="org.springframework.session.data.redis.RedisOperationsSessionRepository">
-                <constructor-arg>
-                    <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-                        <property name="usePool" value="true"/>
-                        <property name="hostName" value="${redis.host}"/>
-                        <property name="port" value="${redis.port}"/>
-                        <property name="password" value="${redis.password}"/>
-                        <property name="timeout" value="${redis.timeout}"/>
-                        <property name="poolConfig" ref="jedisPoolConfig"/>
-                    </bean>
-                </constructor-arg>
+                <constructor-arg ref="connectionFactory"/>
             </bean>
         </constructor-arg>
+    </bean>
+    <bean id="cookieHttpSessionStrategy" class="org.springframework.session.web.http.DefaultCookieSerializer">
+        <property name="cookiePath" value="/"/>
     </bean>
 
     <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
