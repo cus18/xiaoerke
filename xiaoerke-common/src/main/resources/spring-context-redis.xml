@@ -37,6 +37,7 @@
     </bean>
     <bean id="cookieHttpSessionStrategy" class="org.springframework.session.web.http.DefaultCookieSerializer">
         <property name="cookiePath" value="/"/>
+        <property name="domainName" value="xiaork.com"/>
     </bean>
 
     <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
