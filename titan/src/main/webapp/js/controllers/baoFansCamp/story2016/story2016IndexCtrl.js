@@ -45,19 +45,19 @@
                 //判断最后一页的属于什么大使
                 if( $scope.dataInfo.joinBaoDaiFuForYou!='null'){
                     $scope.story8show="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_1.png";
-                    $scope.story8data= $scope.dataInfo.joinBaoDaiFuForYou+"位"
+                    $scope.story8data= $scope.dataInfo.joinBaoDaiFuForYou+"位";
                 }
                 if( $scope.dataInfo.joinBaoDaiFuForYou=='null' &&  $scope.dataInfo.FirstRedPacketTime!='null'){
                     $scope.story8show="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_2.png";
-                    $scope.story8data= $scope.dataInfo.redPacketSum+"元"
+                    $scope.story8data= $scope.dataInfo.redPacketSum+"元";
                 }
                 if($scope.dataInfo.joinBaoDaiFuForYou=='null' &&  $scope.dataInfo.FirstRedPacketTime=='null' &&  $scope.dataInfo.FirstEvaluationTime!='null'){
                     $scope.story8show="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_3.png";
-                    $scope.story8data= $scope.dataInfo.evaluationCount+"次"
+                    $scope.story8data= $scope.dataInfo.evaluationCount+"次";
                 }
                 if( $scope.dataInfo.joinBaoDaiFuForYou=='null' &&  $scope.dataInfo.FirstRedPacketTime=='null' &&  $scope.dataInfo.FirstEvaluationTime=='null' &&  $scope.dataInfo.firstConsultTime!='null'){
                     $scope.story8show="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_4.png";
-                    $scope.story8data= $scope.dataInfo.consultTitleNumber+"次"
+                    $scope.story8data= $scope.dataInfo.consultTitleNumber;
                 }
                 if( $scope.dataInfo.joinBaoDaiFuForYou=='null' &&  $scope.dataInfo.FirstRedPacketTime=='null' &&  $scope.dataInfo.FirstEvaluationTime=='null' &&  $scope.dataInfo.firstConsultTime=='null'){
                     $scope.story8show="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story_no.png";
