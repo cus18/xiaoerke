@@ -2,10 +2,73 @@
     '$scope','$state','$stateParams','getUser2016Data',
     function ($scope,$state,$stateParams,getUser2016Data) {
         $scope.dataInfo = {};
+        $scope.attentionOnly = false;
+        $scope.story8show = "";
 
 
         $scope.$on('$ionicView.enter',function() {
+            getUser2016Data.save({},function (data) {
+                console.log("2016数据",data);
+                $scope.dataInfo=data;
+                //根据用户数据，判断显示或删除那个盒子
+                var removeIndex=2;
+                if($scope.dataInfo.firstConsultTime=='null'){
+                    mySwiper.removeSlide(removeIndex);
+                    mySwiper.removeSlide(removeIndex);
+                    mySwiper.removeSlide(removeIndex);
+                    mySwiper.removeSlide(removeIndex);
 
+                }
+                removeIndex = removeIndex + 2;
+                if($scope.dataInfo.FirstEvaluationTime=='null'){
+                    mySwiper.removeSlide(removeIndex);
+                }else{
+                    ++removeIndex;
+                }
+                if($scope.dataInfo.FirstRedPacketTime=='null'){
+                    mySwiper.removeSlide(removeIndex);
+                }else{
+                    ++removeIndex;
+                }
+                if($scope.dataInfo.joinUmbrellaTime=="null"){
+                    mySwiper.removeSlide(removeIndex);
+                }else{
+                    ++removeIndex;
+                }
+                if($scope.dataInfo.joinBaoDaiFuForYou=='null'){
+                    mySwiper.removeSlide(removeIndex);
+                }
+                $(".swiper-pagination").show();
+
+                //判断最后一页的属于什么大使
+                if( $scope.dataInfo.joinBaoDaiFuForYou!='null'){
+                    $scope.story8show="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_1.png";
+                }
+                if( $scope.dataInfo.joinBaoDaiFuForYou=='null' &&  $scope.dataInfo.FirstRedPacketTime!='null'){
+                    $scope.story8show="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_2.png";
+                }
+                if($scope.dataInfo.joinBaoDaiFuForYou=='null' &&  $scope.dataInfo.FirstRedPacketTime=='null' &&  $scope.dataInfo.FirstEvaluationTime!='null'){
+                    $scope.story8show="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_3.png";
+                }
+                if( $scope.dataInfo.joinBaoDaiFuForYou=='null' &&  $scope.dataInfo.FirstRedPacketTime=='null' &&  $scope.dataInfo.FirstEvaluationTime=='null' &&  $scope.dataInfo.firstConsultTime!='null'){
+                    $scope.story8show="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story8_4.png";
+                }
+                if( $scope.dataInfo.joinBaoDaiFuForYou=='null' &&  $scope.dataInfo.FirstRedPacketTime=='null' &&  $scope.dataInfo.FirstEvaluationTime=='null' &&  $scope.dataInfo.firstConsultTime=='null'){
+                    $scope.story8show="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/story2016/story_no.png";
+                }
+                //判断用户除了关注是否有其他操作 （咨询 宝护伞 分享）
+                if($scope.dataInfo.firstConsultTime!='null'  ||$scope.dataInfo.joinBaoDaiFuForYou!='null'  || $scope.dataInfo.joinUmbrellaTime!='null'){
+                    $(".swiper-container").show();
+                    $(".attention-only").hide();
+                }
+               else{
+                    $(".swiper-container").hide();
+                    $(".attention-only").show();
+                }
+
+
+
+            });
             var scaleW=window.innerWidth/320;
             var scaleH=window.innerHeight/480;
             var resizes = document.querySelectorAll('.resize');
@@ -16,7 +79,6 @@
                 resizes[j].style.bottom=parseInt(resizes[j].style.bottom)*scaleH+'px';
                 resizes[j].style.left=parseInt(resizes[j].style.left)*scaleW+'px';
                 resizes[j].style.right=parseInt(resizes[j].style.right)*scaleW+'px';
-                resizes[j].style.right=parseInt(resizes[j].style.fontSize)*scaleW+'px';
             }
             var mySwiper = new Swiper ('.swiper-container', {
                 direction : 'horizontal',
@@ -39,35 +101,7 @@
                 }
             })
 
-            getUser2016Data.save({},function (data) {
-                console.log("2016数据",data);
-                $scope.dataInfo=data;
-                if($scope.dataInfo.firstConsultTime=='null'){
-                    mySwiper.removeSlide(2);
-                    mySwiper.removeSlide(3);
 
-                }
-                if($scope.dataInfo.FirstEvaluationTime=='null'){
-                    mySwiper.removeSlide(4);
-                }
-                if($scope.dataInfo.FirstRedPacketTime=='null'){
-                    mySwiper.removeSlide(5);
-                }
-
-                if($scope.dataInfo.joinUmbrellaTime=="null"){
-                    mySwiper.removeSlide(6);
-                }
-                if($scope.dataInfo.joinBaoDaiFuForYou=='null'){
-                    mySwiper.removeSlide(7);
-                }
-                $(".swiper-pagination").show();
-              /* if(mySwiper.activeIndex==mySwiper.slides.length){
-                   $(".swiper-pagination").hide();
-                }*/
-
-
-
-            });
         });
 
 
