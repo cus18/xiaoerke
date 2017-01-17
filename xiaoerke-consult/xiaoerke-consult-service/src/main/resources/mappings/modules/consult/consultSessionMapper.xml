@@ -408,7 +408,7 @@
 
     <select id="selectConsultDurationByOpenid" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT
-            datediff(update_time, create_time) * 24 * 60 consult_number,
+            FLOOR((UNIX_TIMESTAMP(update_time)-UNIX_TIMESTAMP(create_time))/60) consult_number,
             DATE_FORMAT(create_time, '%Y-%m-%d') create_time
         FROM
             consult_session
