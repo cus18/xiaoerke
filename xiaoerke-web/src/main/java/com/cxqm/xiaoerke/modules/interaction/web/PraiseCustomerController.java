@@ -15,6 +15,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.core.HttpRequestHandler;
+import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultRecordMongoDBServiceImpl;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
@@ -68,6 +69,9 @@ public class PraiseCustomerController extends BaseController {
 
     @Autowired
     private ConsultSessionService consultSessionService ;
+
+    @Autowired
+    private ConsultRecordMongoDBServiceImpl consultRecordMongoDBService;
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
@@ -260,10 +264,12 @@ public class PraiseCustomerController extends BaseController {
         DecimalFormat df = new DecimalFormat("0.00");//格式化小数
         String s = df.format(num);//返回的是String类型
         Query queryNew = (new Query()).addCriteria(where("csUserId").regex(doctorId));
-        List<ConsultSessionStatusVo> resultList = consultRecordService.getConsultSessionStatusVo(queryNew);
+        //优化
+        long resultNum = consultRecordMongoDBService.consultCount(queryNew);
+//        List<ConsultSessionStatusVo> resultList = consultRecordService.getConsultSessionStatusVo(queryNew);
         starInfo.put("startNum", s);
         result.put("starInfo", starInfo);
-        result.put("serverNum", resultList.size());
+        result.put("serverNum", resultNum);
         result.put("doctorHeadImage", patientRegisterPraiseService.getDoctorHeadImageURIById(doctorId));
         return result;
     }
