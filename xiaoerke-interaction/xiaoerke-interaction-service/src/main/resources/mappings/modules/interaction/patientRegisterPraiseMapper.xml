@@ -354,7 +354,7 @@
         AND ce1.createtime LIKE '2016%'
         AND ce1.openid = #{openId}
         ORDER BY
-            ce1.createtime DESC
+            ce1.createtime asc
         LIMIT 1
     </select>
 
