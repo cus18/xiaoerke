@@ -65,6 +65,7 @@
         </if>
         and `status`='0'
         GROUP BY sa.openid
+        order by date asc
     </select>
 
     <!--456-->
