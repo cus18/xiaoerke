@@ -181,7 +181,7 @@ public class ConsultActiveController extends BaseController {
             Map<String, Object> response = new HashMap<String, Object>();
             ConsultSession consultSession = new ConsultSession();
             consultSession.setUserId(openId);
-            List<ConsultSession> consultSessionList = consultSessionService.selectBySelective(consultSession);
+            List<ConsultSession> consultSessionList = consultSessionService.selectBySelectiveOrder(consultSession);
             if (consultSessionList != null && consultSessionList.size() > 0) {
                 consultSession = consultSessionList.get(consultSessionList.size() - 1);
                 String date = DateToStr(consultSession.getCreateTime(), "date");

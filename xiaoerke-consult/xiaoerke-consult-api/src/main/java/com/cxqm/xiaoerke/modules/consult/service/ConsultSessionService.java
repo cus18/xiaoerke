@@ -18,6 +18,9 @@ public interface ConsultSessionService {
 
     List<ConsultSession> selectBySelective(ConsultSession consultSession);
 
+    List<ConsultSession> selectBySelectiveOrder(ConsultSession consultSession);
+
+
     int insertConsultSessionBatch(List<ConsultSession> consultSession);
 
     List<ConsultSession> getCsUserByUserId(ConsultSession consultSession);
