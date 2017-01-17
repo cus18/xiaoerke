@@ -97,6 +97,7 @@
 
 	<!-- 开启注解 -->
 	<mvc:annotation-driven/>
+	<bean id="redisHttpSessionConfiguration"  class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration" ></bean>
 
 	<import resource="runTimeTask.xml"></import>
 </beans>
