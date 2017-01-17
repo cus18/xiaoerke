@@ -276,8 +276,8 @@ public class ConsultDoctorController extends BaseController {
     @ResponseBody
     public void test(HttpSession session, HttpServletRequest request) {
         User user = systemService.getUserByLoginName("13181557398");
-        UserUtils.putCache("user", user);
-        UserUtils.getCache("user");
+        UserUtils.putCache("user",user);
+        int q=1;
     }
 
     @RequestMapping(value = "/updateAddress", method = {RequestMethod.POST, RequestMethod.GET})
@@ -461,7 +461,7 @@ public class ConsultDoctorController extends BaseController {
 
         Map param = new HashMap();
         param.put("userId",richConsultSession.getCsUserId());
-        param.put("consultSessionId",richConsultSession.getId());
+        param.put("consultSessionId", richConsultSession.getId());
         List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(param);
         List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
         Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");

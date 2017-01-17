@@ -77,6 +77,47 @@
         </if>
     </select>
 
+    <select id="selectBySelectiveOrder" resultMap="BaseResultMap"
+            parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
+        select
+        <include refid="Base_Column_List"/>
+        from consult_session
+        where 1=1
+        <if test="title != null">
+            and title = #{title,jdbcType=VARCHAR}
+        </if>
+        <if test="consultNumber != null">
+            and consult_number = #{consultNumber,jdbcType=INTEGER}
+        </if>
+        <if test="createTime != null">
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="status != null">
+            and state = #{status,jdbcType=VARCHAR}
+        </if>
+        <if test="updateTime != null">
+            and update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="csUserId != null">
+            and sys_user_id_cs = #{csUserId,jdbcType=VARCHAR}
+        </if>
+        <if test="source != null">
+            and source = #{source,jdbcType=VARCHAR}
+        </if>
+        <if test="flag != null">
+            and flag = #{flag,jdbcType=VARCHAR}
+        </if>
+        <if test="chargeType != null">
+            and charge_type = #{chargeType,jdbcType=VARCHAR}
+        </if>
+        <if test="userId != null">
+            and sys_user_id = #{userId,jdbcType=VARCHAR} ORDER BY create_time asc
+        </if>
+        <if test="chargeType != null">
+            and charge_type = #{chargeType,jdbcType=VARCHAR}
+        </if>
+    </select>
+
     <select id="selectConsultSession" resultMap="BaseResultMap"
             parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
         select
@@ -367,7 +408,7 @@
 
     <select id="selectConsultDurationByOpenid" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT
-            datediff(update_time, create_time) * 24 * 60 consult_number,
+            FLOOR((UNIX_TIMESTAMP(update_time)-UNIX_TIMESTAMP(create_time))/60) consult_number,
             DATE_FORMAT(create_time, '%Y-%m-%d') create_time
         FROM
             consult_session

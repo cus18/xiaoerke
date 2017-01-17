@@ -65,12 +65,13 @@
         </if>
         and `status`='0'
         GROUP BY sa.openid
+        order by date asc
     </select>
 
     <!--456-->
     <select id="getAttentionInfoByOpenId" resultMap="sysWechatAppintInfoVo">
         select sa.nickname wechat_name,sa.date attention_time,sa.marketer
-        from sys_attention where openid = #{open_id} and nickname is not null order by date desc
+        from sys_attention where openid = #{open_id} and nickname is not null order by date asc
     </select>
 
   <select id="selectByOpenId" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention" >

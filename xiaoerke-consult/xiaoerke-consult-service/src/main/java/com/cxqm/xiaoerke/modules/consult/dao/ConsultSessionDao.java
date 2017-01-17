@@ -32,6 +32,9 @@ public interface ConsultSessionDao {
     
     List<ConsultSession> selectBySelective(ConsultSession consultSession);
 
+    List<ConsultSession> selectBySelectiveOrder(ConsultSession consultSession);
+
+
     List<RichConsultSession> selectRichConsultSessions(RichConsultSession consultSession);
 
     List<ConsultSession> getCsUserByUserId(ConsultSession consultSession);
