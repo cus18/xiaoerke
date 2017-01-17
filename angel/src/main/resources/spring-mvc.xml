@@ -97,7 +97,14 @@
 
 	<!-- 开启注解 -->
 	<mvc:annotation-driven/>
-	<bean id="redisHttpSessionConfiguration"  class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration" ></bean>
+	<bean id="cookieHttpSessionStrategy" class="org.springframework.session.web.http.DefaultCookieSerializer">
+		<property name="cookiePath" value="/"/>
+		<property name="domainName" value="xiaork.com"/>
+	</bean>
+	<bean id="redisHttpSessionConfiguration"  class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration" >
+		<property name="maxInactiveIntervalInSeconds" value="1800" />
+		<property name="cookieSerializer" ref="cookieHttpSessionStrategy"/>
+	</bean>
 
 	<import resource="runTimeTask.xml"></import>
 </beans>
