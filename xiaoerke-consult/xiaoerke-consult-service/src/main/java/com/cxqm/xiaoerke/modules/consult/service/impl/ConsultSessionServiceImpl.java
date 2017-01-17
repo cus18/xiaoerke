@@ -58,6 +58,10 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
     public List<ConsultSession> selectBySelective(ConsultSession consultSession) {
         return consultSessionDao.selectBySelective(consultSession);
     }
+    @Override
+    public List<ConsultSession> selectBySelectiveOrder(ConsultSession consultSession) {
+        return consultSessionDao.selectBySelectiveOrder(consultSession);
+    }
 
 
     @Override
