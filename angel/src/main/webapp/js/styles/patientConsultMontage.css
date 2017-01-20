@@ -256,3 +256,8 @@ input {
     width: 100%;
     height: auto;
 }
+.reminder {
+    position: fixed;
+    bottom: 116px;
+    padding: 0 5px;
+}
