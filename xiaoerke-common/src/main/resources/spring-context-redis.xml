@@ -4,7 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 		http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.2.xsd"
->
+        >
 
     <description>Jedis Configuration</description>
 
@@ -39,11 +39,12 @@
     <bean id="cookieHttpSessionStrategy" class="org.springframework.session.web.http.DefaultCookieSerializer">
         <property name="cookiePath" value="/"/>
         <property name="domainName" value=".xiaork.com"/>
-        <property name="cookieName" value="JSESSIONID" />
+        <property name="cookieName" value="JSESSIONID"/>
         <!--<property name="domainNamePattern" value="^.+?\\.(\\w+\\.[a-z]+)$"/>-->
     </bean>
-    <bean id="redisHttpSessionConfiguration"  class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration" >
-        <property name="maxInactiveIntervalInSeconds" value="1800" />
+    <bean id="redisHttpSessionConfiguration"
+          class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
+        <property name="maxInactiveIntervalInSeconds" value="1800"/>
         <property name="cookieSerializer" ref="cookieHttpSessionStrategy"/>
     </bean>
 
@@ -84,8 +85,7 @@
     <!--<property name="testWhileIdle" value="true"/>-->
     <!--</bean>-->
 
-    <!--<bean id="sentinelConfiguration"-->
-    <!--class="org.springframework.data.redis.connection.RedisSentinelConfiguration">-->
+    <!--<bean id="sentinelConfiguration" class="org.springframework.data.redis.connection.RedisSentinelConfiguration">-->
     <!--<property name="master">-->
     <!--<bean class="org.springframework.data.redis.connection.RedisNode">-->
     <!--<property name="name" value="${redis.sentinel.masterName}"></property>-->
@@ -104,10 +104,32 @@
     <!--</set>-->
     <!--</property>-->
     <!--</bean>-->
+    <!-- -->
     <!--<bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"-->
     <!--p:password="${redis.sentinel.password}">-->
     <!--<constructor-arg name="sentinelConfig" ref="sentinelConfiguration"></constructor-arg>-->
     <!--<constructor-arg name="poolConfig" ref="poolConfig"></constructor-arg>-->
+    <!--</bean>-->
+
+
+    <!--<bean id="springSession" class="org.springframework.session.web.http.SessionRepositoryFilter">-->
+    <!--<constructor-arg>-->
+    <!--<bean class="org.springframework.session.data.redis.RedisOperationsSessionRepository">-->
+    <!--<constructor-arg ref="connectionFactory"/>-->
+    <!--</bean>-->
+    <!--</constructor-arg>-->
+    <!--</bean>-->
+
+    <!--<bean id="cookieHttpSessionStrategy" class="org.springframework.session.web.http.DefaultCookieSerializer">-->
+    <!--<property name="cookiePath" value="/"/>-->
+    <!--<property name="domainName" value=".baodf.com"/>-->
+    <!--<property name="cookieName" value="JSESSIONID"/>-->
+    <!--&lt;!&ndash;<property name="domainNamePattern" value="^.+?\\.(\\w+\\.[a-z]+)$"/>&ndash;&gt;-->
+    <!--</bean>-->
+    <!--<bean id="redisHttpSessionConfiguration"-->
+    <!--class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">-->
+    <!--<property name="maxInactiveIntervalInSeconds" value="1800"/>-->
+    <!--<property name="cookieSerializer" ref="cookieHttpSessionStrategy"/>-->
     <!--</bean>-->
 
     <!--<bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">-->
