@@ -259,5 +259,6 @@ input {
 .reminder {
     position: fixed;
     bottom: 116px;
-    padding: 0 5px;
+    padding: 0 15px;
+    text-align: center;
 }
