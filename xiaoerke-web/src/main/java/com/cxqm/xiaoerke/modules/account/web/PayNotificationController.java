@@ -511,14 +511,10 @@ public class PayNotificationController {
                     payRecord.setStatus("success");
                     payRecord.setReceiveDate(new Date());
                     payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
-
 //					RichConsultSession consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
-
-
-
 //					String notifyStatus = consultPayUserService.getChargeInfo(sessionId);
 //					if(!ConstantUtil.CONSULTDOCTOR.equals(consultSession.getUserType())&& StringUtils.isNotNull(notifyStatus)){
-                    consultSessionPropertyService.addPermTimes(openid);
+//                    consultSessionPropertyService.addPermTimes(openid);
 //						consultPayUserService.saveChargeUser(sessionId, openid);
 //					}
 
@@ -526,6 +522,20 @@ public class PayNotificationController {
                     BabyCoinVo babyCoinVo = new BabyCoinVo();
                     babyCoinVo.setOpenId(openid);
                     babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
+                    if (null == babyCoinVo || null == babyCoinVo.getCash()) {
+                        LogUtils.saveLog("宝宝币初始化", openid);
+                        babyCoinVo = new BabyCoinVo();
+                        babyCoinVo.setCash(0l);
+                        babyCoinVo.setCreateBy(openid);
+                        babyCoinVo.setCreateTime(new Date());
+                        babyCoinVo.setOpenId(openid);
+                        babyCoinVo.setNickName("");
+                        BabyCoinVo lastBabyCoinUser = new BabyCoinVo();
+                        lastBabyCoinUser.setCreateTime(new Date());
+                        lastBabyCoinUser = babyCoinService.selectByBabyCoinVo(lastBabyCoinUser);
+                        babyCoinVo.setMarketer(String.valueOf(Integer.valueOf(lastBabyCoinUser.getMarketer()) + 1));
+                        babyCoinService.insertBabyCoinSelective(babyCoinVo);
+                    }
 
                     double babyCash = (Double.valueOf(sysPropertyVoWithBLOBsVo.getConsulAmount()) * 100 - Double.valueOf(insuranceMap.get("amount").toString())) / 10;//使用宝宝币数
                     babyCoinVo.setCash(babyCoinVo.getCash() - (long) babyCash);
