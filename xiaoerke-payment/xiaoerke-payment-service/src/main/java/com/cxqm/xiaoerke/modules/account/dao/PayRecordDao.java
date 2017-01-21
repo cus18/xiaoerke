@@ -15,6 +15,8 @@ public interface PayRecordDao {
     int updateByPrimaryKeySelective(PayRecord record);
 
     PayRecord selectSuccessOrderByOrderId(String orderId);
+
+    List<PayRecord> selectUserPayInfo(PayRecord record);
     
     List<PayRecord> selectNewestOrderByOrderId(String orderId);
 

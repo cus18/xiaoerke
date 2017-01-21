@@ -90,7 +90,7 @@
             and consult_number = #{consultNumber,jdbcType=INTEGER}
         </if>
         <if test="createTime != null">
-            and create_time = #{createTime,jdbcType=TIMESTAMP}
+            and create_time BETWEEN #{createTime,jdbcType=TIMESTAMP} AND #{updateTime,jdbcType=TIMESTAMP}
         </if>
         <if test="status != null">
             and state = #{status,jdbcType=VARCHAR}
