@@ -414,7 +414,6 @@ public enum ConsultSessionManager {
     }
 
     public HashMap<String, Object> createUserWXConsultSession(RichConsultSession consultSession) {
-        LogUtils.saveLog(consultSession.getUserId(),"开始分配咨询医生");
         HashMap<String, Object> response = new HashMap<String, Object>();
         Channel csChannel = null;
         Channel distributorChannel = null;
@@ -422,7 +421,6 @@ public enum ConsultSessionManager {
         consultCountTotal.setUserId(consultSession.getUserId());
         consultCountTotal.setCreateDate(new Date());
         int count = this.getConsultTotal(consultCountTotal);
-        LogUtils.saveLog(consultSession.getUserId(),"consultCountTotal为"+String.valueOf(count));
         List currentDistributorChannel = new ArrayList();
         if (distributors != null && distributors.size() > 0) {
             LogUtils.saveLog(consultSession.getUserId(),"distributors大小"+distributors.size());
@@ -485,11 +483,9 @@ public enum ConsultSessionManager {
 //                            检测用户是否超时(只检测 不推送消息)
 
                             boolean bool = consultMemberRedsiCacheService.cheackMemberTimeOut(consultSession.getUserId());
-                            LogUtils.saveLog(consultSession.getUserId(), "检测用户是否超时(只检测 不推送消息)"+bool);
                             if(!bool) {
                                 SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
                                 consultMemberRedsiCacheService.useFreeChance(consultSession.getUserId(),sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
-                                LogUtils.saveLog(consultSession.getUserId(), "useFreeChance");
                             }
                         }catch (Exception e){
                             e.printStackTrace();
@@ -510,7 +506,6 @@ public enum ConsultSessionManager {
             if (csChannel == null) {
                 Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
                 String content = "抱歉，暂时没有医生在线，请稍后使用服务！";
-                LogUtils.saveLog(consultSession.getUserId(),content);
                 WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), consultSession.getUserId(), content);
                 return null;
             }
@@ -519,7 +514,6 @@ public enum ConsultSessionManager {
         if (StringUtils.isNotNull(consultSession.getCsUserId())) {
             HashMap<String, Object> perInfo = userInfoService.findPersonDetailInfoByUserId(consultSession.getCsUserId());
             consultSession.setCsUserName((String) perInfo.get("name"));
-            LogUtils.saveLog(consultSession.getUserId(),consultSession.getCsUserId());
         }
 
         //可开启线程进行记录
@@ -528,15 +522,11 @@ public enum ConsultSessionManager {
             Map praiseParam = new HashMap();
             praiseParam.put("userId", consultSession.getUserId());
             Integer sessionCount = consultSessionService.getConsultSessionByUserId(praiseParam);
-            LogUtils.saveLog(consultSession.getUserId(), "咨询次数为"+sessionCount);
             consultSession.setConsultNumber(sessionCount + 1);
-            LogUtils.saveLog(consultSession.getUserId(), "保存consultSession");
             consultSessionService.saveConsultInfo(consultSession);
-            LogUtils.saveLog(consultSession.getUserId(), "保存consultSession成功");
 
             Integer sessionId = consultSession.getId();
             saveCustomerEvaluation(consultSession);
-            LogUtils.saveLog(consultSession.getUserId(),"保存评价1");
             response.put("csChannel", csChannel);
             response.put("sessionId", sessionId);
             response.put("consultSession", consultSession);
