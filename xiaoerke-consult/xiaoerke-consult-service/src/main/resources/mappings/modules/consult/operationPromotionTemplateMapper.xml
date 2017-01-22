@@ -5,9 +5,13 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="info1" property="info1" jdbcType="VARCHAR" />
     <result column="info2" property="info2" jdbcType="VARCHAR" />
+    <result column="info3" property="info3" jdbcType="DATE" />
+    <result column="info4" property="info4" jdbcType="DATE" />
+    <result column="info5" property="info5" jdbcType="TIME" />
+    <result column="info6" property="info6" jdbcType="TIME" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, info1, info2
+    id, info1, info2,info3,info4,info5,info6
   </sql>
 
   <select id="findTemplateListByInfo" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.OperationPromotionTemplateVo" >
@@ -18,6 +22,9 @@
     </if>
     <if test="id != null and id !=''">
       and id = #{id}
+    </if>
+    <if test="type != null and type !=''">
+      and type = #{type}
     </if>
   </select>
 
@@ -46,6 +53,18 @@
     <if test="info2 != null" >
       info2,
     </if>
+    <if test="info3 != null" >
+      info3,
+    </if>
+    <if test="info4 != null" >
+      info4,
+    </if>
+    <if test="info5 != null" >
+      info5,
+    </if>
+    <if test="info6 != null" >
+      info6,
+    </if>
     <if test="type != null" >
       type,
     </if>
@@ -56,6 +75,18 @@
     </if>
     <if test="info2 != null" >
       #{info2,jdbcType=VARCHAR},
+    </if>
+    <if test="info3 != null" >
+      #{info3,jdbcType=DATE},
+    </if>
+    <if test="info4 != null" >
+      #{info4,jdbcType=DATE},
+    </if>
+    <if test="info5 != null" >
+      #{info5,jdbcType=TIME},
+    </if>
+    <if test="info6 != null" >
+      #{info6,jdbcType=TIME},
     </if>
     <if test="type != null" >
       #{type,jdbcType=VARCHAR},
@@ -70,6 +101,18 @@
     </if>
     <if test="info2 != null" >
       info2 = #{info2},
+    </if>
+    <if test="info3 != null" >
+      info3 = #{info3},
+    </if>
+    <if test="info4 != null" >
+      info4 = #{info4},
+    </if>
+    <if test="info5 != null" >
+      info5 = #{info5},
+    </if>
+    <if test="info6 != null" >
+      info6 = #{info6},
     </if>
   </set>
   where id = #{id}

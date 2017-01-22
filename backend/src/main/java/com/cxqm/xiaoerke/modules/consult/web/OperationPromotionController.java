@@ -1,5 +1,6 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
+import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.HttpRequestUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Time;
 import java.util.*;
 
 /**
@@ -78,7 +80,7 @@ public class OperationPromotionController extends BaseController {
         vo.setMessageType(keywordQcode);
         if(StringUtils.isNotNull(vo.getReplyText())){
             vo.setReplyText(StringEscapeUtils.unescapeHtml4(vo.getReplyText()));
-            vo.setReplyText(vo.getReplyText().replace("<p>","").replace("\r\n\t","").replace("amp;","").replace("</p>","").replace("\"","'"));
+            vo.setReplyText(vo.getReplyText().replace("<p>", "").replace("\r\n\t", "").replace("amp;", "").replace("</p>", "").replace("\"", "'"));
         }
         operationPromotionService.saveKeywordRole(vo);
         model.addAttribute("vo", new OperationPromotionVo());
@@ -131,14 +133,41 @@ public class OperationPromotionController extends BaseController {
      */
     @RequestMapping(value = "operationPromotionTemplateOperForm")
     public String operationPromotionTemplateOperForm(OperationPromotionTemplateVo vo, Model model) {
-        OperationPromotionTemplateVo cddvo = new OperationPromotionTemplateVo();
         if(StringUtils.isNotNull(vo.getId()+"")){
             List<OperationPromotionTemplateVo> list = operationPromotionTemplateService.findOperationPromotionTemplateList(vo);//consultDoctorInfoService.findDepartmentList(vo);
-            cddvo = list.get(0);
-            cddvo.setImage("http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/pictureTransmission"+vo.getId());
+            vo = list.get(0);
+            if("consultPay".equals(vo.getType())){
+                vo.setInfo3s(DateUtils.DateToStr(vo.getInfo3(),"date"));
+                vo.setInfo4s(DateUtils.DateToStr(vo.getInfo4(), "date"));
+                vo.setInfo5s(DateUtils.DateToStr(vo.getInfo5(), "time"));
+                vo.setInfo6s(DateUtils.DateToStr(vo.getInfo6(), "time"));
+            }
+            vo.setImage("http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/pictureTransmission"+vo.getId());
         }
-        model.addAttribute("vo", cddvo);
+        model.addAttribute("vo", vo);
         return "modules/consult/operationPromotionTemplateOperForm";
+    }
+
+    /**
+     * 添加修改运营推广信息
+     * @param
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "operationPromotionTemplateOper1")
+    public String operationPromotionTemplateOper1(OperationPromotionTemplateVo vo,HttpServletRequest request) {
+        vo.setInfo2(StringEscapeUtils.unescapeHtml4(vo.getInfo2()));
+        vo.setInfo2(vo.getInfo2().replace("<p>", "").replace("\r\n\t", "").replace("amp;", "").replace("</p>", "").replace("\"", "'"));
+        vo.setInfo3(DateUtils.StrToDate(vo.getInfo3s(),"date"));
+        vo.setInfo4(DateUtils.StrToDate(vo.getInfo4s(), "date"));
+        vo.setInfo5(DateUtils.StrToDate(vo.getInfo5s(),"time"));
+        vo.setInfo6(DateUtils.StrToDate(vo.getInfo6s(), "time"));
+        try {
+            operationPromotionTemplateService.operationPromotionTemplateOper(vo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:" + adminPath + "/operationPromotion/operationPromotionTemplateList?type="+vo.getType();
     }
 
     /**

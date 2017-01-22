@@ -47,7 +47,6 @@ public class OperationPromotionTemplateServiceImpl implements OperationPromotion
         if(StringUtils.isNotNull(vo.getId()+"")){
             operationPromotionTemplateDao.updateByPrimaryKeySelective(vo);
         }else{
-            vo.setType("pictureTransmission");
             operationPromotionTemplateDao.insertSelective(vo);
         }
         if(StringUtils.isNotNull(vo.getImage())){
