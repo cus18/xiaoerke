@@ -45,13 +45,6 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select
-    <include refid="Base_Column_List" />
-    from account_pay_record
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
-
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from account_pay_record
     where id = #{id,jdbcType=VARCHAR}
