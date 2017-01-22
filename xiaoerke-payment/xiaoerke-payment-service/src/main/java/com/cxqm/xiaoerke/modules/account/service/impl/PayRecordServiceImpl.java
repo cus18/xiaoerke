@@ -41,7 +41,7 @@ public class PayRecordServiceImpl implements PayRecordService {
 
 	@Override
 	public PayRecord findRecordByOpenid(String openid,String type) {
-		return payRecordDao.findRecordByOpenid(openid,type);
+		return payRecordDao.findRecordByOpenid(openid, type);
 	}
 
 
@@ -49,6 +49,13 @@ public class PayRecordServiceImpl implements PayRecordService {
 	public List<PayRecord> findNewestOrderByOrderId(String orderId) {
 		return payRecordDao.selectNewestOrderByOrderId(orderId);
 	}
+
+	@Override
+	public boolean selectUserPayInfo(PayRecord record) {
+		List<PayRecord> payRecords =  payRecordDao.selectUserPayInfo(record);
+		return  payRecords.size()>0?true:false;
+	}
+
 
 	@Override
 	public PayRecord findById(String id) {

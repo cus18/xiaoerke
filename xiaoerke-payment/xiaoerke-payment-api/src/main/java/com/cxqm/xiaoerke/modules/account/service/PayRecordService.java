@@ -19,7 +19,9 @@ public interface PayRecordService {
 
 	List<PayRecord> findNewestOrderByOrderId(String orderId);
 
-	PayRecord findById(String id);
+    boolean selectUserPayInfo(PayRecord record);
+
+    PayRecord findById(String id);
 
 	PayRecord findPayRecordByOrder(String orderId);
 
