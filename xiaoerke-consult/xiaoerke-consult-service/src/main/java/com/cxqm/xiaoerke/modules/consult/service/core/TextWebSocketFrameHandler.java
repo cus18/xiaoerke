@@ -174,9 +174,14 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                                 return;
                             }
                             stringBuilder.append("------------------\n");
+
+//                            http://localhost/titan/consultDoctorHome#/consultDoctorHome/00034ads0d764sdsa66a2d6esd0e8ddf
+                            stringBuilder.append("<a href='http://s123.xiaork.com/titan/consultDoctorHome#/consultDoctorHome/"+richConsultSession.getCsUserId()+"'>");
                             stringBuilder.append(content.substring(0, nameIndex));
-                            stringBuilder.append("|");
-                            stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
+                            stringBuilder.append("</a>|");
+
+//                            stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
+                            stringBuilder.append("<a href='http://s123.xiaork.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
                             stringBuilder.append(praiseList.get(0).get("id"));
                             stringBuilder.append("&sessionId=");
                             stringBuilder.append(sessionId);
