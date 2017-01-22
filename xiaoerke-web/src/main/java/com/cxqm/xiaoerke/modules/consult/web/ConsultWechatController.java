@@ -664,17 +664,15 @@ public class ConsultWechatController extends BaseController {
 //                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
                             onlyDoctorOnlineHandle(richConsultSession, consultSessionPropertyVo);
                         } else if (messageFlag == 0) {
-
-                            boolean flag = consultSessionService.cheakInstantConsultation(sysUserId);
-
-                            richConsultSession.setPayStatus(ConstantUtil.NO_PAY.getVariable());
-                            content = "亲爱的~你本月免费机会已用完，请医生喝杯茶，继续咨询\n\n" +
-                                    "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=35'>>>付费</a>";
+//                            boolean flag = consultSessionService.cheakInstantConsultation(sysUserId);
+//                            richConsultSession.setPayStatus(ConstantUtil.NO_PAY.getVariable());
+//                            content = "亲爱的~你本月免费机会已用完，请医生喝杯茶，继续咨询\n\n" +
+//                                    "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=35'>>>付费</a>";
 //                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
-                            content = "什么？咨询要收费？\n 不怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_2_backend'>>>邀请好友赚机会</a>";
+//                            content = "什么？咨询要收费？\n 不怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_2_backend'>>>邀请好友赚机会</a>";
 //                            WechatUtil.sendMsgToWechat(token, sysUserId, content);
-                            LogUtils.saveLog("consult_charge_twice_information", sysUserId);
-                            LogUtils.saveLog("ZXYQ_RK_TS_N2", sysUserId);
+//                            LogUtils.saveLog("consult_charge_twice_information", sysUserId);
+//                            LogUtils.saveLnoog("ZXYQ_RK_TS_N2", sysUserId);
                         }
                     }
                 }
