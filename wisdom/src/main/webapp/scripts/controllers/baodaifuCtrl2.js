@@ -104,19 +104,19 @@ angular.module('controllers2', [])
 
             num = 0;
             //banner轮播图
-            angular.forEach(bannerList, function (value,index) {
+           /* angular.forEach(bannerList, function (value,index) {
                 var li = '<li/>';
                 $(".index_ban ul").append(li);
-            });
+            });*/
 
             $(".index_ban ul li").eq(0).css("background",'url(http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/pc2/bdf_bandianxuanzhong.png) no-repeat center');
-            var seti = setInterval(function () {
+            /*var seti = setInterval(function () {
                 num++;
                 if(num==bannerList.length){
                     num = 0;
                 }
                 bannerImg();
-            },8000);
+            },8000);*/
 
             //点击banner左箭头
             $scope.goBannerLeft = function (event) {
@@ -145,14 +145,14 @@ angular.module('controllers2', [])
             //顶部关于我们
             $scope.goCallMine = function () {
                 setLog("GW_TOP_GYWM");
-                clearInterval(seti);
+                //clearInterval(seti);
                 $state.go("callMine",{id:1});
             }
 
             //点击banner
             $scope.goBanner = function(){
                  if(num==(bannerList.length-1)){
-                    clearInterval(seti);
+                    //clearInterval(seti);
                      setLog("GW_BANNER_YHZ");
                     $state.go("doctorHelp");
                 }
@@ -160,7 +160,7 @@ angular.module('controllers2', [])
 
             //关于我们
             $scope.goGuanYu = function (log) {
-                clearInterval(seti);
+                //clearInterval(seti);
                 setLog(log);
                 $state.go("callMine",{id:1});
 
@@ -168,28 +168,28 @@ angular.module('controllers2', [])
 
             //联系我们
             $scope.goLianXi = function (log) {
-                clearInterval(seti);
+                //clearInterval(seti);
                 setLog(log);
                 $state.go("callMine",{id:2});
             }
 
             //联系我们
             $scope.goLianXi2 = function (log) {
-                clearInterval(seti);
+                //clearInterval(seti);
                 setLog(log);
                 $state.go("callMine",{id:5});
             }
 
             //服务协议
             $scope.goFuWu = function (log) {
-                clearInterval(seti);
+               // clearInterval(seti);
                 setLog(log);
                 $state.go("callMine",{id:3});
             }
 
             //隐私保护
             $scope.goYinSi = function (log) {
-                clearInterval(seti);
+              //  clearInterval(seti);
                 setLog(log);
                 $state.go("callMine",{id:4});
             }
