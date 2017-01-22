@@ -183,7 +183,7 @@ public class ConsultUtilController {
             consultSession.setCreateTime(date2);
             consultSession.setUpdateTime(date3);
             consultSession.setChargeType("mt");
-            consultSession.setUserId(mongoLog.getUserId());
+            consultSession.setUserId(mongoLog.getOpen_id());
             List<ConsultSession> consultSessions = consultSessionService.selectBySelectiveOrder(consultSession);
             if(consultSessions!=null && consultSessions.size()>0){
                 boolean2 ="来咨询";
