@@ -153,7 +153,7 @@ public class ConsultUtilController {
         boolean boolean1 = true;
         boolean boolean2 = true;
         //查询符合条件的openId
-        Query query = new Query().addCriteria(Criteria.where("title").is("ZXTS_YJSD").and("create_date").gte(beforeDate).and("create_date").lte(beforeDate));
+        Query query = new Query().addCriteria(Criteria.where("title").is("ZXTS_YJSD").and("create_date").gte(beforeDate).and("create_date").lte(afterDate));
         List<MongoLog> mongoLogs = logMongoDBService.queryList(query);
         Assert.notNull(mongoLogs, "consultRecordMongoVos 不能为空！！！！");
         for (MongoLog mongoLog : mongoLogs) {
