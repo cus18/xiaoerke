@@ -113,9 +113,6 @@
         <if test="userId != null">
             and sys_user_id = #{userId,jdbcType=VARCHAR} ORDER BY create_time asc
         </if>
-        <if test="chargeType != null">
-            and charge_type = #{chargeType,jdbcType=VARCHAR}
-        </if>
     </select>
 
     <select id="selectConsultSession" resultMap="BaseResultMap"
