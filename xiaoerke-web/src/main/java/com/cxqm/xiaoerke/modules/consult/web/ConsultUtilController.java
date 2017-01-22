@@ -14,9 +14,11 @@ import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultRecordMongoDBServic
 import com.cxqm.xiaoerke.modules.operation.service.ConsultStatisticService;
 import com.cxqm.xiaoerke.modules.sys.entity.MongoLog;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.LogMongoDBServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.util.Assert;
@@ -133,6 +135,14 @@ public class ConsultUtilController {
             }
         }
         return response;
+    }
+
+    @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public void test(HttpSession session, HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<String, Object>();
+        response = getstatistic(response,session,request);
+        int a=1;
     }
 
     /**
