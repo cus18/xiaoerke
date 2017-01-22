@@ -1430,10 +1430,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
 
 
-            String welcomeMsg = "很高兴遇见您！我们是一群有爱又专业的医生朋友。\ue022 \n\n" +
-                    "在这里，您可以24H随时咨询妇产科和儿科专家！\uD83C\uDFE5科室齐全，回复超快！\uD83D\uDE80 点击:<a href='http://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR#rd'>咨询大夫</a> \n\n" +
-                    "还可买到各大名牌母婴产品，足不出户享受最真、最快、最优的实惠商品\uD83D\uDC9D。点击：<a href='https://shop17975201.koudaitong.com/v2/home/4z2f8goy?reft=1477987510078&spm=g305026344&oid=0&sf=wx_sm'>立即购买</a>\n\n" +
-                    "更可随时学习育儿知识\uD83D\uDC76，和千万宝宝一同快乐成长\uD83D\uDC6A！点击：<a href='https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI2MDAxOTY3OQ==&from=singlemessage&isappinstalled=0&scene=116#wechat_redirect'>学习知识</a>";
+            String welcomeMsg = "1、很高兴遇见您！我们是一群有爱又专业的医生朋友。\ue022 \n\n" +
+                    "Nice to see you ~送您两次免费咨询专业医生的机会(月底到期哦~)。\n\n宝贝疾病或者育儿知识都可以哦,既专业又亲和~!\uD83D\uDE80 \n快来体现下吧!点击:<a href='http://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR#rd'>咨询大夫</a> \n\n" +
+                    "2、\uE022送您一张价值10元代金券,先到先得哦~\n这里有各大名牌母婴产品，足不出户享最真、最快、最优实惠商品。\n点击：<a href='https://h5.koudaitong.com/v2/ump/promocard/fetchByToken?token=df19d0cd840ae3c77a86806c7bfe1f57&shop_id=17783033'>立即领取</a> " +
+//                    "还可买到各大名牌母婴产品，足不出户享受最真、最快、最优的实惠商品\uD83D\uDC9D。点击：<a href='https://shop17975201.koudaitong.com/v2/home/4z2f8goy?reft=1477987510078&spm=g305026344&oid=0&sf=wx_sm'>立即购买</a>\n\n" +
+                    "3、还有更多千万宝宝值得学习的育儿知识哦~   点击：<a href='https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI2MDAxOTY3OQ==&from=singlemessage&isappinstalled=0&scene=116#wechat_redirect'>学习知识</a>";
             WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), welcomeMsg);
         }
         return processScanEvent(xmlEntity, "newUser", request, response, sysPropertyVoWithBLOBsVo);
