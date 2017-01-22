@@ -120,10 +120,10 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
     @Override
     public void payConsultMember(String openid,String timeLength,String totalFee,String token) {
         //                   mysql 增加会员记录,延长redis的时间
-        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-        if(null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList()&&sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid)==-1){
-            return;
-        }
+//        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+//        if(null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList()&&sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid)==-1){
+//            return;
+//        }
         ConsultMemberVo consultMemberVo = getConsultMemberInfo(openid);
         Integer memberEndTime = Integer.parseInt(timeLength);
         if(null == consultMemberVo){
