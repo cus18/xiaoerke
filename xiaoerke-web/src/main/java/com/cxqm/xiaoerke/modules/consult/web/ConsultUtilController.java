@@ -158,12 +158,12 @@ public class ConsultUtilController {
     public Map<String, Object> getstatistic(Map<String, Object> params, HttpSession session, HttpServletRequest request) {
 
         Map<String, Object> response = new HashMap<String, Object>();
-        Date beforeDate = new Date(2017, 0, 11);
-        Date afterDate = new Date();
+        Date beforeDate = new Date(117, 0, 11);
+        Date afterDate = new Date(117, 1, 11);
         boolean boolean1 = true;
         boolean boolean2 = true;
         //查询符合条件的openId
-        Query query = new Query().addCriteria(Criteria.where("title").is("ZXTS_YJSD").and("create_date").gte(beforeDate).and("create_date").lte(afterDate));
+        Query query = new Query().addCriteria(Criteria.where("title").is("ZXTS_YJSD").and("create_date").gte(beforeDate).andOperator(Criteria.where("create_date").lte(afterDate)));
         List<MongoLog> mongoLogs = logMongoDBService.queryList(query);
         Assert.notNull(mongoLogs, "consultRecordMongoVos 不能为空！！！！");
         for (MongoLog mongoLog : mongoLogs) {
