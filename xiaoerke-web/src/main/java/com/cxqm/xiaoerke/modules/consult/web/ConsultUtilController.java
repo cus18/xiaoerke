@@ -183,6 +183,7 @@ public class ConsultUtilController {
             consultSession.setCreateTime(date2);
             consultSession.setUpdateTime(date3);
             consultSession.setChargeType("mt");
+            consultSession.setUserId(mongoLog.getUserId());
             List<ConsultSession> consultSessions = consultSessionService.selectBySelectiveOrder(consultSession);
             if(consultSessions!=null && consultSessions.size()>0){
                 boolean2 ="来咨询";
@@ -194,6 +195,7 @@ public class ConsultUtilController {
             consultStatisticVo.setMaxMoney(mongoLog.getOpen_id());
             consultStatisticVo.setMonthSatisfiedDegree(boolean1==true?"支付": "未支付");
             consultStatisticVo.setMinMoney(boolean2);
+            consultStatisticVo.setCreateDate(mongoLog.getCreate_date());
             consultStatisticService.insertSelective(consultStatisticVo);
         }
 
