@@ -1737,6 +1737,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     }
                 }
             }
+            LogUtils.saveLog("ZXPJXX_GJZHF",msgContent);
             WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), msgContent);
         }
         if (StringUtils.isNotNull(roleInfo.getReplyPicId())) {
