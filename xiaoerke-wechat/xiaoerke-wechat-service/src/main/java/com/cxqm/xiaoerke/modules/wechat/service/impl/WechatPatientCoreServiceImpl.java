@@ -175,8 +175,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 /**
                  *  疫苗站关注提醒 2016年12月12日11:23:52 jiangzg
                  */
-                if(eventKey.contains("YMJZ_AH_")){
-                    attentionByThirdPlace(eventKey,openId ,token,sysPropertyVoWithBLOBsVo);
+                if (eventKey.contains("YMJZ_AH_")) {
+                    attentionByThirdPlace(eventKey, openId, token, sysPropertyVoWithBLOBsVo);
                 }
 
             } else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
@@ -191,8 +191,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 /**
                  *  疫苗站关注提醒 2016年12月12日11:23:52 jiangzg
                  */
-                if(eventKey.contains("YMJZ_AH_")){
-                    attentionByThirdPlace(eventKey,openId ,token,sysPropertyVoWithBLOBsVo);
+                if (eventKey.contains("YMJZ_AH_")) {
+                    attentionByThirdPlace(eventKey, openId, token, sysPropertyVoWithBLOBsVo);
                 }
             }
             // 取消订阅
@@ -216,8 +216,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String token = (String) userWechatParam.get("token");
             try {
                 //关键字回复功能
-                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD)||!consultMemberRedsiCacheService.consultChargingCheck(xmlEntity.getFromUserName(), token,true)) {
-                    LogUtils.saveLog(xmlEntity.getFromUserName(),"关键字拦截");
+                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD) || !consultMemberRedsiCacheService.consultChargingCheck(xmlEntity.getFromUserName(), token, true)) {
+                    LogUtils.saveLog(xmlEntity.getFromUserName(), "关键字拦截");
                     return "success";
                 }
             } catch (Exception e) {
@@ -236,10 +236,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     }
 
     /**
-     *  2016年12月12日11:24:59 jiangzg
+     * 2016年12月12日11:24:59 jiangzg
      */
-    private void attentionByThirdPlace(String eventKey , String fromUserId ,String token , SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo){
-        if(StringUtils.isNotNull(eventKey) && eventKey.contains("YMJZ_AH_")){
+    private void attentionByThirdPlace(String eventKey, String fromUserId, String token, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
+        if (StringUtils.isNotNull(eventKey) && eventKey.contains("YMJZ_AH_")) {
             StringBuilder sb = new StringBuilder();
             sb.append("点击领取：");
             sb.append("<a href='" + sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/vaccine#/vaccineList" + "'>");
@@ -248,7 +248,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             WechatUtil.sendMsgToWechat(token, fromUserId, sb.toString());
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("如有疼痛发热等症状及其他育儿问题，点击左下角");
-            stringBuilder.append("\'"+"小键盘"+"\'，即可咨询儿科专家医生");
+            stringBuilder.append("\'" + "小键盘" + "\'，即可咨询儿科专家医生");
             stringBuilder.append("\n");
             stringBuilder.append("预防接种科咨询时间：19：00—21：00");
             WechatUtil.sendMsgToWechat(token, fromUserId, stringBuilder.toString());
@@ -504,15 +504,15 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 System.out.println(xmlEntity.getContent());
                 SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("openId",xmlEntity.getFromUserName());
-                jsonObject.put("messageType",xmlEntity.getMsgType());
+                jsonObject.put("openId", xmlEntity.getFromUserName());
+                jsonObject.put("messageType", xmlEntity.getMsgType());
                 LogUtils.saveLog(xmlEntity.getFromUserName(), "sendMsgToAngel");
                 if (xmlEntity.getMsgType().equals("text")) {
                     jsonObject.put("messageContent", URLEncoder.encode(xmlEntity.getContent(), "UTF-8"));
-                    this.postByBody(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/conversation",jsonObject.toString());
+                    this.postByBody(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/conversation", jsonObject.toString());
                 } else {
-                    jsonObject.put("mediaId",xmlEntity.getMediaId());
-                    this.postByBody(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/conversation",jsonObject.toString());
+                    jsonObject.put("mediaId", xmlEntity.getMediaId());
+                    this.postByBody(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/conversation", jsonObject.toString());
                 }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -574,8 +574,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             return result;
         }
 
-        public void postByBody(String urlPath ,String param){
-            try{
+        public void postByBody(String urlPath, String param) {
+            try {
                 URL url = new URL(urlPath);
                 URLConnection urlConnection = url.openConnection();
                 // 设置doOutput属性为true表示将使用此urlConnection写入数据
@@ -598,7 +598,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 }
                 System.out.print(line);
                 String encoding = urlConnection.getContentEncoding();
-            }catch(IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -633,37 +633,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         newsMessage.setCreateTime(new Date().getTime());
         newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
         newsMessage.setFuncFlag(0);
-//        if (EventKey.indexOf("baoxian_000001") > -1 && xmlEntity.getEvent().equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
-//            TextMessage textMessage = new TextMessage();
-//            textMessage.setToUserName(xmlEntity.getFromUserName());
-//            textMessage.setFromUserName(xmlEntity.getToUserName());
-//            textMessage.setCreateTime(new Date().getTime());
-//            textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
-//            textMessage.setFuncFlag(0);
-//            textMessage.setContent("尊敬的诺安康VIP客户，您好！欢迎加入宝大夫，让您从此育儿不用愁！\n\n【咨询大夫】直接咨询北京三甲医院儿科专家，一分钟内极速回复！\n\n【妈妈活动】添加宝大夫客服微信：bdfdxb，加入宝大夫家长群，与众多宝爸宝妈一起交流分享，参与更多好玩的活动！\n\n如需人工协助，请您拨打：400-623-7120。\n");
-//            return MessageUtil.textMessageToXml(textMessage);
-//
-//        } else if (EventKey.indexOf("YY0016") > -1) {
-//            Map parameter = systemService.getWechatParameter();
-//            String token = (String) parameter.get("token");
-//            String msg = "欢迎来到宝大夫，请按照下方操作领走12本超值电子书籍 \n\n1·将海报图片（见下方）发送到朋友圈，集齐10个赞\n\n2·截图发给宝大夫客服（客服二维码见下方图片）\n\n以上操作完成后请静待客服把12本亲子书籍送到您手里。关注宝大夫后期会有更多福利送不停。";
-//            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), msg);
-//            WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6fe8844t0Ewt49JlUhW7ukzDQ", 1);
-//            WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6fe-amTDnt4DhnNviDaW7kTNc", 1);
-//        } else if (EventKey.indexOf("YY0018") > -1) {
-//            Map parameter = systemService.getWechatParameter();
-//            String token = (String) parameter.get("token");
-//            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), "欢迎来到宝大夫，请按照下方操作领走精品食谱，儿歌，绘本，动画片等资源。\n" +
-//                    "\n" +
-//                    "1·将海报图片（见下方）发送到朋友圈，集齐10个赞。\n" +
-//                    " 或  随机分享到母婴相关的5个微信群即可；\n" +
-//                    "\n" +
-//                    "2·截图发给宝大夫客服（客服二维码见下方图片）\n" +
-//                    "\n" +
-//                    "以上操作完成后请静待客服把众多资源送到您手里。关注宝大夫后期会有更多福利送不停哦。");
-//            WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6feyoI5F7e9v8waWTGfb56bcg", 1);
-//            WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6fe41AjIlPrqLyUz5-S99mCls", 1);
-//        }
 
         if (EventKey.indexOf("doc") > -1) {
             Map<String, Object> map = wechatInfoDao.getDoctorInfo(EventKey.replace("doc", ""));
@@ -673,25 +642,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/doctorAppointment/" + map.get("id") + ",,,,,doctorShare,,");
             articleList.add(article);
         }
-//        } else if (EventKey.indexOf("267") > -1) {
-//            article.setTitle("恭喜您,通过‘糖盒儿(tanghe2)’关注宝大夫,不仅可以随时免费咨询儿科专家,还可获赠一次预约名医的机会。");
-//            article.setDescription("");
-//            articleList.add(article);
-//        } else if (EventKey.indexOf("263") > -1) {
-//            article.setTitle("【郑玉巧育儿经】--宝大夫");
-//            article.setDescription("智能匹配月龄，获取针对一对一育儿指导，建立宝宝专属健康档案，一路呵护，茁壮成长！");
-//            article.setPicUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/images/Follow.jpg");
-//            article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/knowledgeIndex");
-//            articleList.add(article);
-//        } else if (EventKey.indexOf("521") > -1) {
-//            article.setTitle("宝大夫关爱儿童公益活动");
-//            article.setDescription("赶快去邀请更多的人传递爱吧！");
-//            article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/MessageImage/10.pic_hd.jpg");
-//            article.setUrl(sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/knowledgeIndex");
-//            articleList.add(article);
-//            //更新二维码拥有者善款
-//            loveMarketingService.updateInviteMan(EventKey, xmlEntity.getFromUserName());
-//        }
         if (EventKey.indexOf("month") > -1) {
             if (userType.equals("newUser")) {
                 Boolean value = activityService.judgeActivityValidity(EventKey.replace("qrscene_", ""));
@@ -856,10 +806,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 //全新用户，并且在非微信平台已购买宝护伞
                 //首先完成绑定，然后推送消息
                 PatientVo patientVo = utilService.bindUserForThirdParty(userPhone, openId);
-                //BabyBaseInfoVo vo = new BabyBaseInfoVo();
-                //vo.setUserid(patientVo.getSysUserId());
-                //vo.setOpenid(openId);
-                //int result = babyBaseInfoService.updateBabyInfoByUserId(vo);
 
                 BabyUmbrellaInfo babyUmbrellaInfo = new BabyUmbrellaInfo();
                 babyUmbrellaInfo.setId(Integer.valueOf(umbrellaid));
@@ -886,79 +832,26 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         "<a href='http://s68.baodf.com/titan/appoint#/userEvaluate'>赶紧玩起来吧！</a>";
                 WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
             } else {
-//                String userOpenid = EventKey.replace("qrscene_", "");
-//
-//                OlyBabyGamesVo olyBabyGamesVo = olyGamesService.getBaseByMarketer(userOpenid);
-//                Integer alreadyInviteNum = olyBabyGamesVo.getInviteFriendNumber() + 1;
-//                if (alreadyInviteNum < 1 && openLevel >= 1) {
-////					第一关
-//                    olyBabyGamesVo.setGameLevel(1);
-//                } else if (alreadyInviteNum < 3 && openLevel >= 2) {
-////					第二关
-//                    olyBabyGamesVo.setGameLevel(2);
-//                } else if (alreadyInviteNum < 6 && openLevel >= 3) {
-////						第三关
-//                    olyBabyGamesVo.setGameLevel(3);
-//                } else if (alreadyInviteNum < 10 && openLevel >= 4) {
-////						第四关
-//                    olyBabyGamesVo.setGameLevel(4);
-//                } else if (alreadyInviteNum < 15 && openLevel >= 5) {
-////						第五关
-//                    olyBabyGamesVo.setGameLevel(5);
-//                } else if (alreadyInviteNum >= 15 && openLevel >= 6) {
-////						第六关
-//                    olyBabyGamesVo.setGameLevel(6);
-//                }
-
-                //	如果是新用户推广者加一
-//                if (olyGamesService.getNewAttentionByOpenId(xmlEntity.getFromUserName()) == 0 && !EventKey.startsWith("150")) {
-//                    olyBabyGamesVo.setInviteFriendNumber(alreadyInviteNum);
-//
-//                    String msg = "";
-//                    Integer gemeLevel = olyBabyGamesVo.getGameLevel();
-//                    Integer needInviteNum = 0;
-//                    for (int i = 0; i <= gemeLevel; i++) {
-//                        needInviteNum += i;
-//                    }
-//                    needInviteNum -= alreadyInviteNum;
-//                    if (gemeLevel >= openLevel) {
-//                        msg = "已开通第" + gemeLevel + "关";
-//                        if (openLevel == 6) msg = "满六关：您已成功开通所有关卡";
-//
-//                    } else {
-//                        msg = "已开通第" + gemeLevel + "关，还需邀请" + needInviteNum + "位好友开通下一关";
-//                    }
-//                    WechatMessageUtil.templateModel("游戏首页", "恭喜您，已经有" + alreadyInviteNum + "位好友在宝宝奥运大闯关游戏中为你助力，赶紧继续闯关吧！", msg, "", "", "快去闯关玩游戏抽奖吧！", token, "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37", olyBabyGamesVo.getOpenId(), "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg");
-//                    //				更新用户信息
-//                    olyGamesService.updateByPrimaryKeySelective(olyBabyGamesVo);
-//                }
-                ;
-//
-//
-//                String st = "感谢你的倾情助力，" + olyBabyGamesVo.getNickName() + "为“宝大夫”带盐，向您推荐宝宝奥运大闯关游戏，" +
-//                        "<a href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=37'>赶紧玩起来吧！</a>";
-//                WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
             }
         } else if (EventKey.indexOf("yufangjiezhong") > -1) {
             //有名片的医生扫码用户,推送文字消息.(扫码有名片医生二维码.)
             Runnable thread = new sendHasCardDoctorWechatMessage(EventKey, xmlEntity);
             threadExecutorSingle.execute(thread);
-        }else if (EventKey.indexOf("PD_TPCB") > -1) {
+        } else if (EventKey.indexOf("PD_TPCB") > -1) {
 //             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-            LogUtils.saveLog("TPCB_GZTS",xmlEntity.getFromUserName());
-            String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=44";
+            LogUtils.saveLog("TPCB_GZTS", xmlEntity.getFromUserName());
+            String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=44";
             Map parameter = systemService.getWechatParameter();
             String token = (String) parameter.get("token");
-            WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),"来吧，各位小宝贝们，一起来接受圣诞老人的祝福吧！\n\n<a href='"+url+"'>接祝福喽>></a>");
-        }else if (EventKey.indexOf("PD_YQKFC") > -1) {
+            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), "来吧，各位小宝贝们，一起来接受圣诞老人的祝福吧！\n\n<a href='" + url + "'>接祝福喽>></a>");
+        } else if (EventKey.indexOf("PD_YQKFC") > -1) {
 //             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-            LogUtils.saveLog("TPCB_GZTS",xmlEntity.getFromUserName());
-            String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=44";
+            LogUtils.saveLog("TPCB_GZTS", xmlEntity.getFromUserName());
+            String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=44";
             Map parameter = systemService.getWechatParameter();
             String token = (String) parameter.get("token");
-            WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),"点击左下角小键盘，赶快咨询吧~");
+            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), "点击左下角小键盘，赶快咨询吧~");
         }
-
 
 
         String toOpenId = xmlEntity.getFromUserName();//扫码者openid
@@ -1315,18 +1208,18 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         }
                     }
 
-                    LogUtils.saveLog("老用户剩余的宝宝币数="+afterCash+"邀请的好友为："+newUserNickName,oldOpenId);
+                    LogUtils.saveLog("老用户剩余的宝宝币数=" + afterCash + "邀请的好友为：" + newUserNickName, oldOpenId);
 
 //                    WechatUtil.sendMsgToWechat(token, olderUser.getOpenId(), content);
                     String title = "恭喜您成功邀请 " + newUserNickName + " 加入宝大夫，您的您的宝宝币将增加" + cash + "枚！";
                     String templateId = sysPropertyVoWithBLOBsVo.getTemplateIdYWDTTX();
                     String keyword1 = "业务进度：您的宝宝币余额为 " + afterCash + "枚";
-                    String keyword2 = "您有" + afterCash / 99 + "次免费咨询专家的机会，本月还可邀请好友"+(20-olderUser.getInviteNumberMonth())+"次";
+                    String keyword2 = "您有" + afterCash / 99 + "次免费咨询专家的机会，本月还可邀请好友" + (20 - olderUser.getInviteNumberMonth()) + "次";
                     String remark = "邀请更多好友加入>，获得更多机会！";
-                    String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_MBXX";
+                    String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_MBXX";
 //                    WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, oldOpenId, templateId);
-                    String templateInfo = "\"first\": {\"value\":"+title+",\"color\":\"#FF0000\"},\"keynote1\":{ \"value\":"+keyword1+",, \"color\":\"#000000\"},\"keynote2\": { \"value\":"+keyword2+", \"color\":\"#000000\" }, \"remark\":{ \"value\":"+remark+",\"color\":\"#FF0000\"}";
-                    WechatUtil.sendTemplateMsgToUser(token,oldOpenId,templateId,templateInfo);
+                    String templateInfo = "\"first\": {\"value\":" + title + ",\"color\":\"#FF0000\"},\"keynote1\":{ \"value\":" + keyword1 + ",, \"color\":\"#000000\"},\"keynote2\": { \"value\":" + keyword2 + ", \"color\":\"#000000\" }, \"remark\":{ \"value\":" + remark + ",\"color\":\"#FF0000\"}";
+                    WechatUtil.sendTemplateMsgToUser(token, oldOpenId, templateId, templateInfo);
 
                 }
 
@@ -1398,37 +1291,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         LogUtils.saveLog(request, "00000001");//注：参数含义请参照sys_log_mapping表，如00000001表示“微信宝大夫用户版公众平台关注”
         String EventKey = xmlEntity.getEventKey();
         if (EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma") <= -1 && EventKey.indexOf("baoxian_000001") <= -1 && EventKey.indexOf("YY0016") <= -1 && EventKey.indexOf("YY0018") <= -1) {
-//			List<Article> articleList = new ArrayList<Article>();
-//			Article article = new Article();
-//			article.setTitle("对孩子健康负责的家长必看！万人推荐！");
-//			article.setDescription("");
-//			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%AE%9D%E6%8A%A4%E4%BC%9Ebanner2%20-%20%E5%89%AF%E6%9C%AC%20%E6%8B%B7%E8%B4%9D.png");
-//			article.setUrl("http://s165.baodf.com/wisdom/umbrella#/umbrellaLead/130000000/a");
-//			articleList.add(article);
-//
-//			article = new Article();
-//			article.setTitle("咨询大夫\n秒回不等待，7X24全年无休");
-//			article.setDescription("三甲医院医生7X24全年无休   一分钟极速回复");
-//			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%92%A8%E8%AF%A2%E5%A4%A7%E5%A4%AB.png");
-//			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR&key=f5c31ae61525f82ed83c573369e70b8f9b853c238066190fb5eb7b8640946e0a090bbdb47e79b6d2e57b615c44bd82c5&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=dG5W6eOP3JU1%2Fo3JXw19SFBAh1DgpSlQrAXTyirZuj970HMU7TYojM4D%2B2LdJI9n");
-//			articleList.add(article);
-//
-//			article = new Article();
-//			article.setTitle("名医面诊\n轻松预约专家，到点就诊不排队");
-//			article.setDescription("三甲医院儿科专家，线上准时预约，线下准时就诊");
-//			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%90%8D%E5%8C%BB%E9%9D%A2%E8%AF%8A.png");
-//			article.setUrl("http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=2");
-//			articleList.add(article);
-//
-//			article = new Article();
-//			article.setTitle("妈妈社群\n育儿交流名医讲座，福利发不停");
-//			article.setDescription("添加宝大夫客服微信：bdfdsb，加入宝大夫家长群，与众多宝妈一起交流分享，参与更多好玩儿的活动");
-//			article.setPicUrl("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/menu/%E5%A6%88%E5%A6%88%E6%B4%BB%E5%8A%A8.png");
-//			article.setUrl("https://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236661&idx=3&sn=4c1fd3ee4eb99e6aca415f60dceb6834&scene=1&srcid=0616uPcrUKz7FVGgrmOcZqqq&from=singlemessage&isappinstalled=0&key=18e81ac7415f67c44d3973b3eb8e53f264f47c1109eceefa8d6be994349fa7f152bb8cfdfab15b36bd16a4400cd1bd87&ascene=0&uin=MzM2NjEyMzM1&devicetype=iMac+MacBookPro11%2C4+OSX+OSX+10.11.4+build(15E65)&version=11020201&pass_ticket=ZgGIH5%2B8%2FkhHiHeeRG9v6qbPZmK5qPlBL02k0Qo%2FHCK7eLMOZexAypBy0dzPjzaZ");
-//			articleList.add(article);
-
-//			WechatUtil.senImgMsgToWechat(token,xmlEntity.getFromUserName(),articleList);
-
 
             String welcomeMsg = "\uE022很高兴遇见您！我们是一群有爱又专业的医生朋友。\n\n" +
                     "Nice to see you ~送您两次免费咨询专业医生的机会(月底到期哦~)。\n\n宝贝疾病或者育儿知识都可以哦,既专业又及时~!\uD83D\uDE80 \n快来体验下吧!点击:<a href='http://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR#rd'>咨询大夫</a>";
@@ -1498,15 +1360,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             HttpSession session = request.getSession();
             session.setAttribute("openId", xmlEntity.getFromUserName());
             LogUtils.saveLog(request, "00000003");//注：参数含义请参照sys_log_mapping表，如00000003表示“咨询医生消息推送”
-//			TextMessage textMessage = new TextMessage();
-//			textMessage.setToUserName(xmlEntity.getFromUserName());
-//			textMessage.setFromUserName(xmlEntity.getToUserName());
-//			textMessage.setCreateTime(new Date().getTime());
-//			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
-//			textMessage.setFuncFlag(0);
-//			textMessage.setContent("1、点击左下角“小键盘”输入文字或语音,即可咨询疾病或保健问题\t\t\n 2、免费在线咨询时间:\n小儿内科:   24小时全天\n小儿皮肤科:   9:00~22:00\n营养保健科:   9:00~22:00\n小儿其他专科:(外科、眼科、耳鼻喉科、口腔科、预防保健科、中医科)   19:00~21:00 \n妇产科   19:00~22:00");
 
-//			respMessage = MessageUtil.textMessageToXml(textMessage);
             Map parameter = systemService.getWechatParameter();
             String token = (String) parameter.get("token");
             List<Article> articleList = new ArrayList<Article>();
@@ -1595,70 +1449,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         vo.setTitle(title);
         vo.setCsUserId("110@BaodfWX");
         consultConversationService.saveConsultInfo(vo);
-//
-//		if(xmlEntity.getContent().equals("营养")){
-//			String st = "加入宝大夫营养管理（仅限1-3岁），科学喂养让宝宝成长更加健康！\n\n" +
-//					"点击直接进入：<a href='http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/fieldwork/wechat/" +
-//					"author?url=http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/getUserWechatMenId?url=10'>营养管理(戳此链接)</a>" +
-//					"\n" +
-//					"微信入口：宝大夫—宝粉之家—健康管理—营养管理";
-//			Map parameter = systemService.getWechatParameter();
-//			String token = (String)parameter.get("token");
-//			WechatUtil.senImgMsgToWechat(token, xmlEntity.getFromUserName(), "营养报告 | 科学喂养的重要性", "这里面的不仅仅是答案。",
-//					"http://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=403036004&idx=1&sn=db524245950080a097b0574927c97001" +
-//							"&scene=0&previewkey=lQ2vTkDCu67xf5wIiSxoGJ1iJUUG%2F7eLf7OA%2FVEtaJE%3D#wechat_redirect",
-//					"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/MessageImage%2F7.jpg");
-//			WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
-//			Log log=new Log();
-//			log.setTitle("YYHD-YY");
-//			log.setCreateDate(new Date());
-//			log.setUpdateDate(new Date());
-//			log.setOpenId(xmlEntity.getFromUserName());
-//			LogUtils.saveLogVo(log);
-//			return "";
-//		}
-//		if(xmlEntity.getContent().equals("安全")){
-//			String st = "恭喜您，参与抽奖成功。抽奖结果请关注4月5号微信文章。" +
-//					"\n\n" +
-//					"更重要的是：" +
-//					"\n" +
-//					"关注宝大夫即可直接免费咨询北京三甲医院的儿科专家，1分钟内极速回复。就像微信聊天一样简单！\n" +
-//					"\n" +
-//					"点击下方小键盘，赶紧发送您的健康疑问吧！";
-//			Map parameter = systemService.getWechatParameter();
-//			String token = (String)parameter.get("token");
-//			WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
-//			Log log=new Log();
-//			log.setTitle("YYHD-AQ");
-//			log.setCreateDate(new Date());
-//			log.setUpdateDate(new Date());
-//			log.setOpenId(xmlEntity.getFromUserName());
-//			LogUtils.saveLogVo(log);
-//			return "";
-//		}
-        //增加一个判断用户宝宝信息的接口,如果没有宝宝信息则推送消息
-//		List<BabyBaseInfoVo> babyList = healthRecordsService.selectUserBabyInfo(xmlEntity.getFromUserName());
-//		boolean healthRecordMsgAlreadySend = false;
-//		try{
-//		  healthRecordMsgAlreadySend = this.findHealthRecordMsgByOpenid(xmlEntity.getFromUserName(),"BB_MSG");
-//		}catch (Exception e){
-//			e.printStackTrace();
-//		}
-//
-//		if(babyList.size()==0 && !healthRecordMsgAlreadySend){
-//			String st = "在正式开始咨询前，医生需要了解一些宝宝的简单信息，以便更快速精准和细致地为宝宝服务！\n" +
-//					"---------------------\n"+
-//					"<a href='http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/fieldwork/wechat/author?url" +
-//					"=http://s22.baodf.com/xiaoerke-wxapp/wechatInfo/getUserWechatMenId?url=24'>点击这里补充宝宝信息</a>";
-//			Map parameter = systemService.getWechatParameter();
-//			String token = (String)parameter.get("token");
-//			WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), st);
-//			HealthRecordMsgVo healthRecordMsgVo = new HealthRecordMsgVo();
-//			healthRecordMsgVo.setOpenId(xmlEntity.getFromUserName());
-//			healthRecordMsgVo.setType("BB_MSG");
-//			insertHealthRecordMsg(healthRecordMsgVo);
-//		}
-
 
         return "<xml><ToUserName><![CDATA[" + xmlEntity.getFromUserName() +
                 "]]></ToUserName><FromUserName><![CDATA[" + xmlEntity.getToUserName() +
@@ -1722,22 +1512,22 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String msgContent = roleInfo.getReplyText();
             Query query2 = (new Query()).addCriteria(where("userId").is(openid)).with(new Sort(Sort.Direction.DESC, "createDate"));
             ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query2);
-            if(null !=consultSessionStatusVo2&&ConsultSession.STATUS_ONGOING.equals(consultSessionStatusVo2.getStatus())){
+            if (null != consultSessionStatusVo2 && ConsultSession.STATUS_ONGOING.equals(consultSessionStatusVo2.getStatus())) {
                 msgContent = msgContent.replace("SESSIONID", consultSessionStatusVo2.getSessionId());
                 Map param = new HashMap();
-                param.put("userId",consultSessionStatusVo2.getCsUserId());
-                param.put("consultSessionId",consultSessionStatusVo2.getSessionId());
-                List<Map<String,Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(param);
+                param.put("userId", consultSessionStatusVo2.getCsUserId());
+                param.put("consultSessionId", consultSessionStatusVo2.getSessionId());
+                List<Map<String, Object>> praiseList = patientRegisterPraiseService.getCustomerEvaluationListByInfo(param);
                 if (praiseList != null && praiseList.size() > 0) {
                     for (Map<String, Object> evaluationMap : praiseList) {
                         if (Integer.parseInt((String) evaluationMap.get("serviceAttitude")) == 0) {
-                            msgContent = msgContent.replace("CUSTOMERID",(String)evaluationMap.get("id"));
+                            msgContent = msgContent.replace("CUSTOMERID", (String) evaluationMap.get("id"));
                             break;
                         }
                     }
                 }
             }
-            LogUtils.saveLog("ZXPJXX_GJZHF_"+roleInfo.getReplyText(),openid);
+            LogUtils.saveLog("ZXPJXX_GJZHF_" + roleInfo.getReplyText(), openid);
             WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), msgContent);
         }
         if (StringUtils.isNotNull(roleInfo.getReplyPicId())) {
@@ -1753,52 +1543,52 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
      * 非实时咨询检测
      * 1、用户的免费机会是否用完
      * 2、没有购买的机会、本月首次，咨询次数是否超过26次
-     * */
-    public boolean nonRealTimeCheck(String whitelist, ReceiveXmlEntity xmlEntity, String token){
+     */
+    public boolean nonRealTimeCheck(String whitelist, ReceiveXmlEntity xmlEntity, String token) {
         String openid = xmlEntity.getFromUserName();
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-        System.out.println("白名单:"+whitelist);
-        System.out.println(whitelist.indexOf(openid)==-1);
-        if(StringUtils.isNotNull(whitelist)&&whitelist.indexOf(openid)==-1){
+        System.out.println("白名单:" + whitelist);
+        System.out.println(whitelist.indexOf(openid) == -1);
+        if (StringUtils.isNotNull(whitelist) && whitelist.indexOf(openid) == -1) {
             return false;
         }
-        ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
+        ConsultSessionPropertyVo propertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
 
-        String path = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=40";
+        String path = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=40";
         //所有机会都用完
-        if((propertyVo.getPermTimes()+propertyVo.getMonthTimes()) == 0){
+        if ((propertyVo.getPermTimes() + propertyVo.getMonthTimes()) == 0) {
 
-            String payContent = "亲爱的~你本月免费机会已用完，请医生喝杯茶，继续咨询\n\n"+
-                    "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>付费</a>" ;
-            WechatUtil.sendMsgToWechat(token,openid,payContent);
+            String payContent = "亲爱的~你本月免费机会已用完，请医生喝杯茶，继续咨询\n\n" +
+                    "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=35'>>>付费</a>";
+            WechatUtil.sendMsgToWechat(token, openid, payContent);
 
-            String invatUrl = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD";
+            String invatUrl = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD";
 
             String bayContent = "什么？咨询要收费？\n不怕！邀请个好友加入宝大夫，免费机会立刻有！\n" +
-                    "<a href='"+invatUrl+"'>>>邀请好友赚机会</a>";
-            WechatUtil.sendMsgToWechat(token,openid,bayContent);
+                    "<a href='" + invatUrl + "'>>>邀请好友赚机会</a>";
+            WechatUtil.sendMsgToWechat(token, openid, bayContent);
 
             String content = "问题不着急？\n试试给医生留言咨询吧， 医生会尽快回复哦\n" +
-                    "<a href='"+path+"'>>>图文咨询</a>";
-            WechatUtil.sendMsgToWechat(token,openid,content);
+                    "<a href='" + path + "'>>>图文咨询</a>";
+            WechatUtil.sendMsgToWechat(token, openid, content);
 
-            LogUtils.saveLog("FSS_YHD_RK1_TS",openid);
+            LogUtils.saveLog("FSS_YHD_RK1_TS", openid);
 
             return true;
         }
-        ConsultSession  consultInfo = consultConversationService.selectByOpenid(openid);
+        ConsultSession consultInfo = consultConversationService.selectByOpenid(openid);
 //        首次
-        if((propertyVo.getMonthTimes() == 4 && propertyVo.getPermTimes()==0 && consultInfo.getConsultNumber() > 26)){
-            String payContent = "亲爱的~你本月免费机会已用完，请医生喝杯茶，继续咨询\n\n"+
-                    "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>付费</a>" ;
-            WechatUtil.sendMsgToWechat(token,openid,payContent);
+        if ((propertyVo.getMonthTimes() == 4 && propertyVo.getPermTimes() == 0 && consultInfo.getConsultNumber() > 26)) {
+            String payContent = "亲爱的~你本月免费机会已用完，请医生喝杯茶，继续咨询\n\n" +
+                    "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=35'>>>付费</a>";
+            WechatUtil.sendMsgToWechat(token, openid, payContent);
 
 
             String content = "不想掏钱？\n来试试“点名咨询”。你可指定专家医生或曾咨询过的医生， 医生会在24h 内尽快对您的提问进行答复哦~\n（如有疑问，可直接拨打400-6237-120）\n" +
-                    "<a href='"+path+"'>>>点名咨询医生</a>";
-            WechatUtil.sendMsgToWechat(token,openid,content);
+                    "<a href='" + path + "'>>>点名咨询医生</a>";
+            WechatUtil.sendMsgToWechat(token, openid, content);
 
-            LogUtils.saveLog("FSS_YHD_RK3_TS",openid);
+            LogUtils.saveLog("FSS_YHD_RK3_TS", openid);
             return true;
         }
         return false;
@@ -1812,68 +1602,5 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         //从数据库重新查一次
         keywordMap = operationPromotionService.getAllRoleListByKeyword();
     }
-
-
-//    @Override
-//    public boolean consultChargingCheck(String openid, String token){
-////        String openid = xmlEntity.getFromUserName();
-//        Date nowDate = new Date();
-//        //检测当前用户会员是否过期(没有会员按未过期处理)
-//        String memberEndTime = consultMemberRedsiCacheService.getConsultMember(openid+memberRedisCachVo.MEMBER_END_DATE);
-//        if(null == memberEndTime||DateUtils.StrToDate(memberEndTime,"datetime").getTime()<nowDate.getTime()){
-//            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-////            说明是新用户或者是用户的会员已过期,要检测是否是今日 首次咨询以及是否有机会
-//                String datetime = DateUtils.DateToStr(nowDate,"date");
-//                String latestConsultTime = consultMemberRedsiCacheService.getConsultMember(openid+memberRedisCachVo.LATEST_CONSULT_TIME);
-//                if(null == latestConsultTime ||!datetime.equals(latestConsultTime)){
-////                    用户是首次咨询
-//                    ConsultSessionPropertyVo propertyVo =consultSessionPropertyService.findConsultSessionPropertyByUserId(openid);
-//                    if(null != propertyVo && (propertyVo.getPermTimes()+propertyVo.getMonthTimes()) > 0){
-////                        用户有咨询机会
-////                        consultMemberRedsiCacheService.useFreeChance(openid,sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
-//                        return true;
-//                    }else{
-//                        //没有机会,推送购买链接
-//                        String content = "求助客服请直接向分诊说明，不需付费\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/angel/patient/consult#/patientCustomerService'>h5页面的入口</a>" +
-//                                "\n\n您好，由于本月的咨询机会已经用完，为了给你更好更快的服务，需要购买咨询服务\n-----------\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询服务</a>";
-//                        WechatUtil.sendMsgToWechat(token,openid,content);
-//                        return  false;
-//                    }
-//                }
-//            //会员时间超时,推送购买链接
-//            String content = "求助客服请直接向分诊说明，不需付费\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/angel/patient/consult#/patientCustomerService'>h5页面的入口</a>" +
-//                    "\n\n您好，由于本月的咨询机会已经用完，为了给你更好更快的服务，需要购买咨询服务\n-----------\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>点击这里购买更多咨询服务</a>";
-//            WechatUtil.sendMsgToWechat(token,openid,content);
-//            return false;
-//        }
-//        return true;
-//    }
-//    public static void main(String[] args){
-//
-//        JSONObject jsonObject = new JSONObject();
-//        jsonObject.put("openId","o3_NPwnpYevGPIQU4uXAK3RqNRe8");
-//        jsonObject.put("messageType","text");
-//        jsonObject.put("messageContent","测试");
-//        try{
-//            URL url = new URL("http://test.x2ke.cn/angel/consult/wechat/conversation");
-//            URLConnection urlConnection = url.openConnection();
-//            // 设置doOutput属性为true表示将使用此urlConnection写入数据
-//            urlConnection.setDoOutput(true);
-//            // 定义待写入数据的内容类型，我们设置为application/x-www-form-urlencoded类型
-//            urlConnection.setRequestProperty("content-type", "text/plain");
-//            urlConnection.setRequestProperty("charset", "UTF-8");
-//            // 得到请求的输出流对象
-//            OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
-//            // 把数据写入请求的Body
-//            out.write(jsonObject.toString());
-//            out.flush();
-//            out.close();
-//            // 从服务器读取响应
-//            InputStream inputStream = urlConnection.getInputStream();
-//            String encoding = urlConnection.getContentEncoding();
-//        }catch(IOException e){
-//            e.printStackTrace();
-//        }
-//    }
 
 }
