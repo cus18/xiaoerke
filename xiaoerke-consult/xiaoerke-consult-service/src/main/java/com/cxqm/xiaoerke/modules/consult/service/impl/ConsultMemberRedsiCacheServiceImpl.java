@@ -164,31 +164,23 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             consultSessionPropertyVo.setCreateBy(openid);
             consultSessionPropertyService.insertUserConsultSessionProperty(consultSessionPropertyVo);
         }
-
         //白名单用户
         if(null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList()&&sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid)==-1){
             return true;
         }
-
-//        检测是否可以用免费机会!!
-
-
         //正常逻辑
         Date nowDate = new Date();
         //检测当前用户会员是否过期(没有会员按未过期处理)
         String memberEndTime = getConsultMember(openid+memberRedisCachVo.MEMBER_END_DATE);
         if(null==memberEndTime||DateUtils.StrToDate(memberEndTime,"datetime").getTime()<nowDate.getTime()){
-
 //            判断是否是晚上咨询,若果是则直接让用户购买
             OperationPromotionTemplateVo templatevo = operationPromotionTemplateService.getFreeConsultInfo();
-
             //推送的消息文案
             if(null !=templatevo&&"收费".equals(templatevo.getInfo1())){
                 WechatUtil.sendMsgToWechat(token,openid,templatevo.getInfo2());
                 LogUtils.saveLog("ZXTS_YJSD",openid);
                 return false;
             };
-
 //      说明是新用户或者是用户的会员已过期,要检测是否是今日 首次咨询以及是否有机会
             String datetime = DateUtils.DateToStr(nowDate,"date");
             String latestConsultTime = getConsultMember(openid+memberRedisCachVo.LATEST_CONSULT_TIME);
@@ -208,6 +200,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                 }else{
                     //没有机会,推送购买链接
                     String content = "时间真快，您本月的免费咨询机会已用完\n更多咨询机会请\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35&from=fdsa'>>>猛戳这里购买吧！</a>";
+                    content += "\n----------\n别怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
                     if(prompt)WechatUtil.sendMsgToWechat(token,openid,content);
                     LogUtils.saveLog("ZXTS_MYMFJH",openid);
                     return  false;
@@ -215,6 +208,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             }
             //会员时间超时,推送购买链接
             String content = "亲爱的，您本次免费咨询时间已到\n" +"还没问完？ 畅享24小时随时提问，专业医生随时候答\n<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/getUserWechatMenId?url=35'>>>猛戳这里购买吧！</a>\n\n不急的麻麻可以等待\n24h后您的下次"+sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime()+"分钟免费机会哦~";
+            content += "\n----------\n别怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
             WechatUtil.sendMsgToWechat(token,openid,content);
             LogUtils.saveLog("ZXTS_SYMFJH",openid);
             return false;
