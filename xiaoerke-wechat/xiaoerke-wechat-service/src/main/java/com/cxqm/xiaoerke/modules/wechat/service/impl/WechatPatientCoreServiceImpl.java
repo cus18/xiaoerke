@@ -894,10 +894,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         if (StringUtils.isNotNull(EventKey)) {
             marketer = EventKey.replace("qrscene_", "");
         }
+        String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=49";
+
         if(marketer.startsWith("PD_NDGS")){
-            String message = "快来看下2016你和宝宝在宝大夫的秘密故事吧" +
-                                                "<a href='"+ sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"/keeper/wechatInfo/fieldwork/wechat/author?url=" +
-                    sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=49" + "'》》点击查看</a>";
+            String message = "快来看下2016你和宝宝在宝大夫的秘密故事吧<a href='"+url+"'>》》点击查看</a>";
             WechatUtil.sendMsgToWechat(token,openId , message);
         }
     }
