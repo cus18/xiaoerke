@@ -1,7 +1,9 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.EmojiFilter;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.impl.PayRecordServiceImpl;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
@@ -15,11 +17,13 @@ import com.cxqm.xiaoerke.modules.operation.service.ConsultStatisticService;
 import com.cxqm.xiaoerke.modules.sys.entity.MongoLog;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
+import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.LogMongoDBServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
+import com.cxqm.xiaoerke.modules.wechat.dao.WechatInfoDao;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,16 +38,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/09/05 0024.
  */
 @Controller
-@RequestMapping(value = "consult/util")
+@RequestMapping(value = "consult/util")//consult/util/getAllWeChatUser
 public class ConsultUtilController {
     @Autowired
     private OlyGamesService olyGamesService;
@@ -74,6 +75,9 @@ public class ConsultUtilController {
 
     @Autowired
     SendMindCouponService sendMindCouponService;
+
+    @Autowired
+    WechatInfoDao wechatInfoDao;
 
     @Autowired
     private ConsultMemberRedsiCacheService consultMemberRedsiCacheService;
@@ -144,6 +148,28 @@ public class ConsultUtilController {
         response = getstatistic(response,session,request);
         int a=1;
     }
+
+    @RequestMapping(value = "/getAllWeChatUser", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public void getAllWeChatUser(HttpSession session, HttpServletRequest request) {
+        String token = "JhHsmfIlhYlTrq1ZPeYBCClhbB1ZqO_iP9KDt7YjRMN_siepDY_EP6MTxtnHM-VJC9TPsrXjtqjpvfxDC9wK-PN0KcYs_ft0SaU6T64R4skFVQdAAAIYT";
+        String nextOpenId = "o3_NPwlWVPhE5mUySWmijFUsdUM0";
+        List<String> openIds = WechatUtil.getList(token,nextOpenId);
+        for(String openId : openIds){
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            String id = UUID.randomUUID().toString().replaceAll("-", "");
+            WechatBean wechatBean = WechatUtil.getWechatName(token, openId);
+            map.put("id", id);
+            map.put("status", "0");
+            map.put("openId", openId);
+            map.put("marketer", "unkown");
+            map.put("updateTime", new Date());
+            map.put("nickname", EmojiFilter.coverEmoji(wechatBean.getNickname()));
+            wechatInfoDao.insertAttentionInfo(map);
+        }
+
+    }
+
 
     /**
      * 统计 1.12---1.21 符合条件的，21：00-----09：00：00 没有付费，第二天用次数进行咨询的次数

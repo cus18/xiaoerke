@@ -16,10 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by baoweiw on 2015/7/27.
@@ -54,12 +51,12 @@ public class WechatUtil {
      * @return
      * @throws IOException
      */
-    public static String getOauth2Url(String type,String backUrl,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
+    public static String getOauth2Url(String type, String backUrl, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
         backUrl = urlEncodeUTF8(backUrl);
-        if(type.equals("user")){
+        if (type.equals("user")) {
             return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
                     sysPropertyVoWithBLOBsVo.getUserCorpid() + "&redirect_uri=" + backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
-        }else if(type.equals("doctor")){
+        } else if (type.equals("doctor")) {
             return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
                     sysPropertyVoWithBLOBsVo.getDoctorCorpid() + "&redirect_uri=" + backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
         }
@@ -101,8 +98,8 @@ public class WechatUtil {
      * @param li          聊天记录集合
      */
     public static void setWechatInfoToDb(String dateTime, String accessToken, int pageIndex, List<WechatRecord> li) {
-        long startTime = (new Date().getTime()-30*60*1000)/1000;
-        long endTime = new Date().getTime()/1000;
+        long startTime = (new Date().getTime() - 30 * 60 * 1000) / 1000;
+        long endTime = new Date().getTime() / 1000;
         String request = getCustom(accessToken, endTime, startTime, pageIndex, 30);
         JSONObject resultJson = new JSONObject(request);
         JSONArray array = resultJson.getJSONArray("recordlist");
@@ -185,7 +182,7 @@ public class WechatUtil {
      * @param content 发送内容
      */
     public static String sendMsgToWechat(String token, String openId, String content) {
-        LogUtils.saveLog(content,openId);
+        LogUtils.saveLog(content, openId);
         String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
         String result = "failure";
         try {
@@ -194,19 +191,19 @@ public class WechatUtil {
             json = json.replace("CONTENT", content);
             String re = HttpRequestUtil.getConnectionResult(url, "POST", json);
             System.out.print(json + "--" + re);
-            if(re.contains("access_token is invalid")){
+            if (re.contains("access_token is invalid")) {
                 //token已经失效，重新获取新的token
                 result = "tokenIsInvalid";
             }
             JSONObject obj = new JSONObject(re);
-            Integer resultStatus = (Integer)obj.get("errcode");
-            if(resultStatus != null && resultStatus == 0){
+            Integer resultStatus = (Integer) obj.get("errcode");
+            if (resultStatus != null && resultStatus == 0) {
                 result = "messageOk";
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-      return result ;
+        return result;
     }
 
 
@@ -274,7 +271,7 @@ public class WechatUtil {
      *
      * @author deliang
      */
-    public static String downloadMediaFromWx(String accessToken, String mediaId, String messageType ,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) throws IOException {
+    public static String downloadMediaFromWx(String accessToken, String mediaId, String messageType, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) throws IOException {
         if (StringUtils.isEmpty(accessToken) || StringUtils.isEmpty(mediaId)) return "";
         Long picLen = 0L;
         InputStream inputStream = null;
@@ -301,80 +298,80 @@ public class WechatUtil {
 
         //返回图片的阿里云地址getConsultMediaBaseUrl
         String mediaName = mediaId;
-        if(messageType.contains("image")){
-            mediaName = mediaName+".jpg";
-        }else if(messageType.contains("voice")){
-            String mediaNameAmr = mediaName+".amr";
-            String mediaNameMp3 = mediaName+".mp3";
+        if (messageType.contains("image")) {
+            mediaName = mediaName + ".jpg";
+        } else if (messageType.contains("voice")) {
+            String mediaNameAmr = mediaName + ".amr";
+            String mediaNameMp3 = mediaName + ".mp3";
             BufferedInputStream bis = new BufferedInputStream(inputStream);
-            if(sysPropertyVoWithBLOBsVo.getAmrTomp3Func().equals("windows")){
-                FileOutputStream fos = new FileOutputStream(sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspathtemp()+mediaNameAmr);
+            if (sysPropertyVoWithBLOBsVo.getAmrTomp3Func().equals("windows")) {
+                FileOutputStream fos = new FileOutputStream(sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspathtemp() + mediaNameAmr);
                 byte[] buf = new byte[8096];
                 int size = 0;
                 while ((size = bis.read(buf)) != -1)
                     fos.write(buf, 0, size);
                 fos.close();
                 bis.close();
-                ToMp3(sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspath(), sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspathtemp() + mediaName,sysPropertyVoWithBLOBsVo);
-                inputStream = new FileInputStream(new File(sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspathtemp()+mediaNameMp3));
+                ToMp3(sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspath(), sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspathtemp() + mediaName, sysPropertyVoWithBLOBsVo);
+                inputStream = new FileInputStream(new File(sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspathtemp() + mediaNameMp3));
                 StringUtils.deleteFile(new File(sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspathtemp()));
-            }else if(sysPropertyVoWithBLOBsVo.getAmrTomp3Func().equals("linux")){
-                FileOutputStream fos = new FileOutputStream(sysPropertyVoWithBLOBsVo.getAmrTomp3Linuxpath()+mediaNameAmr);
+            } else if (sysPropertyVoWithBLOBsVo.getAmrTomp3Func().equals("linux")) {
+                FileOutputStream fos = new FileOutputStream(sysPropertyVoWithBLOBsVo.getAmrTomp3Linuxpath() + mediaNameAmr);
                 byte[] buf = new byte[8096];
                 int size = 0;
                 while ((size = bis.read(buf)) != -1)
                     fos.write(buf, 0, size);
                 fos.close();
                 bis.close();
-                ToMp3(sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspath(), sysPropertyVoWithBLOBsVo.getAmrTomp3Linuxpath() + mediaName,sysPropertyVoWithBLOBsVo);
-                inputStream = new FileInputStream(new File(sysPropertyVoWithBLOBsVo.getAmrTomp3Linuxpath()+mediaNameMp3));
+                ToMp3(sysPropertyVoWithBLOBsVo.getAmrTomp3Windowspath(), sysPropertyVoWithBLOBsVo.getAmrTomp3Linuxpath() + mediaName, sysPropertyVoWithBLOBsVo);
+                inputStream = new FileInputStream(new File(sysPropertyVoWithBLOBsVo.getAmrTomp3Linuxpath() + mediaNameMp3));
                 StringUtils.deleteFile(new File(sysPropertyVoWithBLOBsVo.getAmrTomp3Linuxpath()));
             }
             mediaName = mediaNameMp3;
-        }else if(messageType.contains("video")){
-            mediaName = mediaName+".mp4";
+        } else if (messageType.contains("video")) {
+            mediaName = mediaName + ".mp4";
         }
 
         //上传图片到阿里云
         OSSObjectTool.uploadFileInputStream(mediaName, picLen, inputStream, OSSObjectTool.BUCKET_CONSULT_PIC);
 
-        String mediaURL = OSSObjectTool.getConsultMediaBaseUrl()+ mediaName;
-        try{
-            if(inputStream != null ){
+        String mediaURL = OSSObjectTool.getConsultMediaBaseUrl() + mediaName;
+        try {
+            if (inputStream != null) {
                 inputStream.close();
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-        }finally {
+        } finally {
             inputStream.close();
         }
 
         return mediaURL;
     }
 
-    public static void ToMp3(String webroot, String sourcePath,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo){
+    public static void ToMp3(String webroot, String sourcePath, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) {
 
-        String targetPath = sourcePath+".mp3";//转换后文件的存储地址，直接将原来的文件名后加mp3后缀名
+        String targetPath = sourcePath + ".mp3";//转换后文件的存储地址，直接将原来的文件名后加mp3后缀名
         Runtime run = null;
         try {
             run = Runtime.getRuntime();
-            long start=System.currentTimeMillis();
+            long start = System.currentTimeMillis();
             String path = "";
-            if(sysPropertyVoWithBLOBsVo.getAmrTomp3Func().equals("windows")){
-                path = webroot + "ffmpeg -i "+sourcePath+".amr"+" -acodec libmp3lame "+targetPath;
-            }else if(sysPropertyVoWithBLOBsVo.getAmrTomp3Func().equals("linux")){
-                path = "ffmpeg -i "+sourcePath+".amr"+" -acodec libmp3lame "+targetPath;
+            if (sysPropertyVoWithBLOBsVo.getAmrTomp3Func().equals("windows")) {
+                path = webroot + "ffmpeg -i " + sourcePath + ".amr" + " -acodec libmp3lame " + targetPath;
+            } else if (sysPropertyVoWithBLOBsVo.getAmrTomp3Func().equals("linux")) {
+                path = "ffmpeg -i " + sourcePath + ".amr" + " -acodec libmp3lame " + targetPath;
             }
             Process p = run.exec(path);
             p.getOutputStream().close();
             p.getInputStream().close();
             p.getErrorStream().close();
             p.waitFor();
-            long end=System.currentTimeMillis();
-            System.out.println(sourcePath+" convert success, costs:"+(end-start)+"ms");
+            long end = System.currentTimeMillis();
+            System.out.println(sourcePath + " convert success, costs:" + (end - start) + "ms");
         } catch (Exception e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             //run调用lame解码器最后释放内存
             run.freeMemory();
         }
@@ -383,56 +380,59 @@ public class WechatUtil {
 
     /**
      * 获取短链接信息
+     *
      * @param accessToken
      * @param longUrl
      * @return
      */
-    public static String getShortUrl(String accessToken,String longUrl){
-        String url = "https://api.weixin.qq.com/cgi-bin/shorturl?access_token="+accessToken;
-        ShortUrlCreate shortUrlCreate  = new ShortUrlCreate();
+    public static String getShortUrl(String accessToken, String longUrl) {
+        String url = "https://api.weixin.qq.com/cgi-bin/shorturl?access_token=" + accessToken;
+        ShortUrlCreate shortUrlCreate = new ShortUrlCreate();
         shortUrlCreate.setAction("long2short");
         shortUrlCreate.setLong_url(longUrl);
         String object = HttpRequestUtil.httpsRequest(url, "POST", net.sf.json.JSONObject.fromObject(shortUrlCreate).toString());
         JSONObject resultJson = new JSONObject(object);
-        String shortUrl = resultJson == null ?"":(String) resultJson.get("short_url");
+        String shortUrl = resultJson == null ? "" : (String) resultJson.get("short_url");
         return shortUrl;
     }
 
     /**
      * 上传H5医生向微信用户发送图片消息
-     * @param token 微信唯一票据
-     * @param openId 微信用户唯一标识
+     *
+     * @param token   微信唯一票据
+     * @param openId  微信用户唯一标识
      * @param content 发送内容
      * @param msgType 发送信息类型
-     * */
-    public static void sendNoTextMsgToWechat(String token, String openId, String content,int msgType){
-        String type = null ;
-        if(msgType == 1){
+     */
+    public static void sendNoTextMsgToWechat(String token, String openId, String content, int msgType) {
+        String type = null;
+        if (msgType == 1) {
             type = "image";
-        }else if(msgType ==2){
+        } else if (msgType == 2) {
             type = "voice";
-        }else{
+        } else {
             type = "video";
         }
         String sendUrl = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
-        String json = "{\"touser\": \""+openId+"\",\"msgtype\": \""+type+"\", \""+type+"\": {\"media_id\": \""+content+"\"}}";
-        sendNoTextToWX(sendUrl,json);
+        String json = "{\"touser\": \"" + openId + "\",\"msgtype\": \"" + type + "\", \"" + type + "\": {\"media_id\": \"" + content + "\"}}";
+        sendNoTextToWX(sendUrl, json);
     }
 
     /**
      * 上传H5医生向微信用户发送图片消息
-     * @param  token 微信唯一票据
-     * @param  urlStr 上传微信服务器地址
-     * @param  msgType 发送文件类型
-     * @param  fileName 上传文件名字
-     * @param  inputStream 上传文件流
-     * */
-    public static JSONObject uploadNoTextMsgToWX(String token,String urlStr,String msgType,String fileName,InputStream inputStream){
-        String upLoadUrl = urlStr + "?access_token="+token+"&type="+msgType;
+     *
+     * @param token       微信唯一票据
+     * @param urlStr      上传微信服务器地址
+     * @param msgType     发送文件类型
+     * @param fileName    上传文件名字
+     * @param inputStream 上传文件流
+     */
+    public static JSONObject uploadNoTextMsgToWX(String token, String urlStr, String msgType, String fileName, InputStream inputStream) {
+        String upLoadUrl = urlStr + "?access_token=" + token + "&type=" + msgType;
         String result = null;
         BufferedReader reader = null;
         try {
-            URL openUrl= new URL(upLoadUrl);
+            URL openUrl = new URL(upLoadUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection) openUrl.openConnection();
             httpURLConnection.setRequestMethod("POST"); // 以Post方式提交表单，默认get方式
             httpURLConnection.setDoInput(true);
@@ -443,14 +443,14 @@ public class WechatUtil {
             httpURLConnection.setRequestProperty("Charset", "UTF-8");
             // 设置边界
             String BOUNDARY = "----------" + System.currentTimeMillis();
-            httpURLConnection.setRequestProperty("Content-Type", "multipart/form-data; boundary="+BOUNDARY);
+            httpURLConnection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + BOUNDARY);
             // 请求正文信息
             // 第一部分：
             StringBuilder sb = new StringBuilder();
             sb.append("--"); // 必须多两道线
             sb.append(BOUNDARY);
             sb.append("\r\n");
-            sb.append("Content-Disposition: form-data;name=\"file\";filename=\""+ fileName + "\"\r\n");
+            sb.append("Content-Disposition: form-data;name=\"file\";filename=\"" + fileName + "\"\r\n");
             sb.append("Content-Type:application/octet-stream\r\n\r\n");
             byte[] head = sb.toString().getBytes("utf-8");
             // 获得输出流
@@ -487,7 +487,7 @@ public class WechatUtil {
         } catch (IOException e) {
             System.out.println("发送POST请求出现异常！" + e);
             e.printStackTrace();
-        }finally {
+        } finally {
             if (reader != null) {
                 try {
                     reader.close();
@@ -502,17 +502,18 @@ public class WechatUtil {
 
     /**
      * 上传到微信服务器永久文件，微信说不超过20M，我试了下，超过10M调通的可能性都比较小，建议大家上传视频素材的大小小于10M比交好
+     *
      * @param accessToken
-     * @param file  上传的文件
-     * @param title  上传类型为video的标题
+     * @param file         上传的文件
+     * @param title        上传类型为video的标题
      * @param introduction 上传类型为video的描述
      * @throws JSONException
      */
     public static String uploadPermanentMedia(String accessToken,
-                                             File file,String title,String introduction) {
+                                              File file, String title, String introduction) {
         try {
             //这块是用来处理如果上传的类型是video的类型的
-            JSONObject j=new JSONObject();
+            JSONObject j = new JSONObject();
             j.put("title", title);
             j.put("introduction", introduction);
             // 拼装请求地址
@@ -522,9 +523,9 @@ public class WechatUtil {
             URL url = new URL(uploadMediaUrl);
             String result = null;
             long filelength = file.length();
-            String fileName=file.getName();
-            String suffix=fileName.substring(fileName.lastIndexOf("."),fileName.length());
-            String type="video/mp4"; //我这里写死
+            String fileName = file.getName();
+            String suffix = fileName.substring(fileName.lastIndexOf("."), fileName.length());
+            String type = "video/mp4"; //我这里写死
             type = "image";
             /**
              *  你们需要在这里根据文件后缀suffix将type的值设置成对应的mime类型的值
@@ -549,15 +550,15 @@ public class WechatUtil {
             sb.append(BOUNDARY);
             sb.append("\r\n");
             sb.append("Content-Disposition: form-data;name=\"type\" \r\n\r\n"); //这里是参数名，参数名和值之间要用两次
-            sb.append(type+"\r\n"); //参数的值
+            sb.append(type + "\r\n"); //参数的值
 
             //这块是上传video是必须的参数，你们可以在这里根据文件类型做if/else 判断
-            if(!"".equals(title)&&!"".equals(introduction)){
+            if (!"".equals(title) && !"".equals(introduction)) {
                 sb.append("--"); // 必须多两道线
                 sb.append(BOUNDARY);
                 sb.append("\r\n");
                 sb.append("Content-Disposition: form-data;name=\"description\" \r\n\r\n");
-                sb.append(j.toString()+"\r\n");
+                sb.append(j.toString() + "\r\n");
             }
             /**
              * 这里重点说明下，上面两个参数完全可以卸载url地址后面 就想我们平时url地址传参一样，
@@ -606,7 +607,7 @@ public class WechatUtil {
             // 使用JSON-lib解析返回结果
             JSONObject jsonObject = new JSONObject(result);
             if (jsonObject.has("media_id")) {
-                System.out.println("media_id:"+jsonObject.getString("media_id"));
+                System.out.println("media_id:" + jsonObject.getString("media_id"));
                 return jsonObject.getString("media_id");
             } else {
                 System.out.println(jsonObject.toString());
@@ -621,11 +622,12 @@ public class WechatUtil {
     }
 
     /**
-     *  向微信端发送非文字消息
-     *  @param sendUrl 发送微信地址
-     *  @param  json 发送json类型消息
+     * 向微信端发送非文字消息
+     *
+     * @param sendUrl 发送微信地址
+     * @param json    发送json类型消息
      */
-    public static String sendNoTextToWX(String sendUrl,String json){
+    public static String sendNoTextToWX(String sendUrl, String json) {
         URL sendWXUser;
         String reResult = null;
         try {
@@ -645,7 +647,7 @@ public class WechatUtil {
             byte[] jsonBytes = new byte[size];
             is.read(jsonBytes);
             reResult = new String(jsonBytes, "UTF-8");
-            System.out.println("请求返回结果:"+reResult);
+            System.out.println("请求返回结果:" + reResult);
 //            LogUtils.saveLog(json+"----"+reResult);
             is.close();
         } catch (Exception e) {
@@ -664,40 +666,42 @@ public class WechatUtil {
     public static void senImgMsgToWechat(String token, String openId, List<Article> articleList) {
         String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
         try {
-            String newStr =   "";
-            for(Article article:articleList){
-                newStr +=  "{\"title\":\"" + article.getTitle() + "\",\"description\":\"" + article.getDescription() + "\",\"url\":\"" + article.getUrl()+ "\",\"picurl\":\"" + article.getPicUrl() + "\"}," ;
+            String newStr = "";
+            for (Article article : articleList) {
+                newStr += "{\"title\":\"" + article.getTitle() + "\",\"description\":\"" + article.getDescription() + "\",\"url\":\"" + article.getUrl() + "\",\"picurl\":\"" + article.getPicUrl() + "\"},";
             }
             String json = "{\"touser\":\"" + openId + "\",\"msgtype\":\"news\",\"news\":" +
-                    "{\"articles\":[" +newStr+"]" + "}";
-            String s = HttpRequestUtil.getConnectionResult(url, "POST", json.substring(0,json.length()-1));
+                    "{\"articles\":[" + newStr + "]" + "}";
+            String s = HttpRequestUtil.getConnectionResult(url, "POST", json.substring(0, json.length() - 1));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     /**
-     *  向用户发送模板消息
-     *  @author jiangzg
-     *  @version 1.0
-     *  2016年6月27日12:28:59
+     * 向用户发送模板消息
+     *
+     * @author jiangzg
+     * @version 1.0
+     * 2016年6月27日12:28:59
      */
-    public static String sendTemplateMsgToUser(String token , String openId ,String templateId ,String content){
-        String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+token;
+    public static String sendTemplateMsgToUser(String token, String openId, String templateId, String content) {
+        String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + token;
         String result = "failure";
         try {
-            String json = "{\"touser\":\"" + openId + "\",\"template_id\":\""+templateId+"\",\"url\":\"\"," +
-                    "\"data\":" + "{"+content+"}}";
+            String json = "{\"touser\":\"" + openId + "\",\"template_id\":\"" + templateId + "\",\"url\":\"\"," +
+                    "\"data\":" + "{" + content + "}}";
             String re = HttpRequestUtil.getConnectionResult(url, "POST", json);
             System.out.print(json + "--" + re);
             JSONObject jsonObject = new JSONObject(re);
-            if(re.contains("access_token is invalid")){
+            if (re.contains("access_token is invalid")) {
                 //token已经失效，重新获取新的token
                 result = "tokenIsInvalid";
             }
-            Integer resultStatus = (Integer)jsonObject.get("errcode");
-            if(resultStatus != null && resultStatus == 0){
+            Integer resultStatus = (Integer) jsonObject.get("errcode");
+            if (resultStatus != null && resultStatus == 0) {
                 result = "messageOk";
-                System.out.println("------"+resultStatus);
+                System.out.println("------" + resultStatus);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -705,13 +709,13 @@ public class WechatUtil {
         return result;
     }
 
-  public static void main(String[] args){
-      String token = "qUjyIaqq5GemBwRXeg5bw0MIIRycQ9RowiUJXy6zA9ONIUWW0o1rpHkppiSFvIoSTJvfO-6sCGIpv7y01dpAsCX6zyZ_8qViFI-EjeIQBi6JKSv72HnmGYLqAJt7N8TLLMDeACAQRI";
-      String openid = "oogbDwCLH1_x-KLcQKqlrmUzG2ng";
-      String content ="VqbZoh6NyIk5kmVZ0AVT-BMQDAenOeQyZ5GfbLrbAhE";
+    public static void main(String[] args) {
+        String token = "qUjyIaqq5GemBwRXeg5bw0MIIRycQ9RowiUJXy6zA9ONIUWW0o1rpHkppiSFvIoSTJvfO-6sCGIpv7y01dpAsCX6zyZ_8qViFI-EjeIQBi6JKSv72HnmGYLqAJt7N8TLLMDeACAQRI";
+        String openid = "oogbDwCLH1_x-KLcQKqlrmUzG2ng";
+        String content = "VqbZoh6NyIk5kmVZ0AVT-BMQDAenOeQyZ5GfbLrbAhE";
 //      sendMsgToWechat(token,openid,content);
-      sendNoTextMsgToWechat(token,openid,content,1);
-  }
+        sendNoTextMsgToWechat(token, openid, content, 1);
+    }
    /*       List<String> openIds = new ArrayList<String>();
         openIds.add("o3_NPwsDuiEk1LW1dFvpBlozafu4");
         openIds.add("o3_NPwh8Jqkf9Dr2YsuFSSoAyzpc");
@@ -748,4 +752,55 @@ public class WechatUtil {
             WechatUtil.sendMsgToWechat(tokenId,"o3_NPwuDSb46Qv-nrWL-uTuHiB8U",failureMessage);
         }
     }*/
+
+    /**
+     * 获取所有的关注用户
+     * @param nextOpenId start with nextOpenId
+     * @author deliang
+     * @return
+     */
+
+    public static String getConnectionResult(String urlPath,String method,String content){
+        try {
+            URL url;
+            url = new URL(urlPath);
+            HttpURLConnection connection=(HttpURLConnection)url.openConnection();
+            connection.setRequestMethod(method.toUpperCase());
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setReadTimeout(10000);  //超时时间
+            if ("GET".equalsIgnoreCase(method))connection.connect();
+            if(!content.isEmpty()){
+                OutputStream os=connection.getOutputStream();
+                BufferedOutputStream bos=new BufferedOutputStream(os);
+                bos.write(content.getBytes("utf-8"));
+                bos.close();
+            }
+            InputStream is=connection.getInputStream();
+            String str="";
+            StringBuffer outputValue=new StringBuffer();
+            BufferedReader br=new BufferedReader(new InputStreamReader(is, "utf-8"));
+            System.out.println(br.toString());
+            while((str=br.readLine())!=null)
+            {
+                outputValue.append(str);
+                outputValue.append("\n");
+            }
+            br.close();
+            String result=outputValue.toString();
+            System.out.println("result = " + result);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static List<String> getList(String token,String nextopenid) {
+        String url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token=" + token + "&next_openid=" + nextopenid + "";
+        String jsonObj = getConnectionResult(url, "GET", "");
+        JSONObject obj = new JSONObject(jsonObj);
+        Map<String, List> mapJson = (Map<String, List>) obj.get("data");
+        return mapJson.get("openid");
+    }
 }
