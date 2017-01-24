@@ -176,12 +176,13 @@ public class ConsultUserController extends BaseController {
             String dateTemp;
             Calendar ca = Calendar.getInstance();
             if (dateNum == 0) {
-                ca.set(Calendar.HOUR, 0);
+                ca.set(Calendar.HOUR_OF_DAY, 0);
                 ca.set(Calendar.SECOND, 0);
-                ca.set(Calendar.MINUTE, 0);
+                ca.set(Calendar.MINUTE, 1);
             } else {
                 ca.add(Calendar.DATE, -dateNum);// 30为增加的天数，可以改变的
             }
+            Date date22 = ca.getTime();
             dateTemp = DateUtils.DateToStr(ca.getTime(), "datetime");
             date = DateUtils.StrToDate(dateTemp, "datetime");
         }
