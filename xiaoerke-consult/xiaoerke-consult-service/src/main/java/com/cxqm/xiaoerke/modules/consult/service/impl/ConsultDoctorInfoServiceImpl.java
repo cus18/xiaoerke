@@ -256,7 +256,7 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         returnMap.put("gender",vo.getGender());
         returnMap.put("title",vo.getTitle());
         returnMap.put("department",vo.getDepartment());
-        returnMap.put("description",vo.getDescription());
+        returnMap.put("description",vo.getDescription()+" "+vo.getSkill());
         returnMap.put("evaluationList",evaluationList);
         returnMap.put("personNum",num);
         return returnMap;

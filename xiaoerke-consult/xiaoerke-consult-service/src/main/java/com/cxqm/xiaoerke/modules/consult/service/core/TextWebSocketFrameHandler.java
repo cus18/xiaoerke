@@ -176,9 +176,10 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             stringBuilder.append("------------------\n");
 
 //                            http://localhost/titan/consultDoctorHome#/consultDoctorHome/00034ads0d764sdsa66a2d6esd0e8ddf
-                            stringBuilder.append("<a href='http://s123.xiaork.com/titan/consultDoctorHome#/consultDoctorHome/"+richConsultSession.getCsUserId()+"'>");
+//                            stringBuilder.append("<a href='http://s123.xiaork.com/titan/consultDoctorHome#/consultDoctorHome/"+richConsultSession.getCsUserId()+"'>");
                             stringBuilder.append(content.substring(0, nameIndex));
-                            stringBuilder.append("</a>|");
+//                            stringBuilder.append("</a>|");
+                            stringBuilder.append("|");
 
 //                            stringBuilder.append("<a href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
                             stringBuilder.append("<a href='http://s123.xiaork.com/keeper/wxPay/patientPay.do?serviceType=customerPay&customerId=");
@@ -186,7 +187,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             stringBuilder.append("&sessionId=");
                             stringBuilder.append(sessionId);
                             stringBuilder.append("'>评价医生</a>|");
-                            stringBuilder.append("<a href='http://s251.baodf.com/keeper/playtour#/playtourShare/6");
+                            stringBuilder.append("<a href='http://s123.xiaork.com/keeper/playtour#/playtourShare/6");
                             stringBuilder.append("'>分享</a>");
                             sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());
                             //发送消息
