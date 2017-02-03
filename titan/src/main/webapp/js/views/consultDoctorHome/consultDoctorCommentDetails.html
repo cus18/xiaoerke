@@ -15,7 +15,7 @@
                     <span ng-if="allEvaluationList.redPacket!=''&&allEvaluationList.redPacket!=null" class="contentspan4 com_font13 com_bold">{{allEvaluationList.redPacket}}元</span>
                     <span class="contentspan3 com_font13 com_bold">{{allEvaluationList.serviceAttitude==1?'不满意':''}}{{allEvaluationList.serviceAttitude==3?'满意':''}}{{allEvaluationList.serviceAttitude==5?'非常满意':''}}</span>
                 </div>
-                <div class="com_font14 com_color3 com_margin11">{{allEvaluationList.content}}</div>
+                <div class="com_font18 com_color3 com_margin11">{{allEvaluationList.content}}</div>
             </div>
             <div class="comment_content comment_content2" ng-repeat="item in commentList">
                 <div class="content_title">
@@ -27,7 +27,7 @@
                     <span ng-if="item.redPacket!=''&&item.redPacket!=null" class="contentspan4 com_font13 com_bold">{{item.redPacket}}元</span>
                     <span class="contentspan3 com_font13 com_bold">{{item.serviceAttitude==1?'不满意':''}}{{item.serviceAttitude==3?'满意':''}}{{item.serviceAttitude==5?'非常满意':''}}</span>
                 </div>
-                <div class="com_font14 com_color3 com_margin11">{{item.content}}</div>
+                <div class="com_font18 com_color3 com_margin11">{{item.content}}</div>
             </div>
         </div>
         <div class="details_more" ng-click="goMore()" ng-if="showMore">

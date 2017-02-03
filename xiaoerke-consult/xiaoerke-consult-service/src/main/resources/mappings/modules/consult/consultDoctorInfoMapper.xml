@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="sys_user_id" property="userId" jdbcType="VARCHAR" />
     <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="hospital" property="hospital" jdbcType="VARCHAR" />
@@ -20,7 +21,7 @@
     <result column="type" property="type" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, sys_user_id, gender,name, title, hospital, department,practitionerCertificateNo, skill, description, grab_session, send_message, receive_differential_notification,
+    id, sys_user_id, password,gender,name, title, hospital, department,practitionerCertificateNo, skill, description, grab_session, send_message, receive_differential_notification,
     create_date, update_date,type
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -75,6 +76,9 @@
       <if test="userId != null" >
         sys_user_id,
       </if>
+      <if test="password != null" >
+        password,
+      </if>
       <if test="gender != null" >
         gender,
       </if>
@@ -125,6 +129,9 @@
       <if test="userId != null" >
         #{userId,jdbcType=VARCHAR},
       </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
       <if test="gender != null" >
         #{gender,jdbcType=VARCHAR},
       </if>
@@ -174,6 +181,9 @@
     <set >
       <if test="userId != null" >
         sys_user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
       </if>
       <if test="gender != null" >
         gender = #{gender,jdbcType=VARCHAR},
