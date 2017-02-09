@@ -28,4 +28,6 @@ public interface BabyCoinService {
     int updateBabyCoinByOpenId(BabyCoinVo record);
 
     int insertBabyCoinSelective(BabyCoinVo record);
+
+    int giveBabyCoin(String openid,Long count);
 }
