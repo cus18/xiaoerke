@@ -262,7 +262,7 @@ var recordLogs = function(val){
 var  giveCoin = function (val) {
     var data = {'count':val};
     $.ajax({
-        url:"interaction/user/findCustomerEvaluation",// 跳转到 action
+        url:"babyCoin/giveBabyCoin",// 跳转到 action
         type:'POST', //GET
         data:JSON.stringify(data),
         dataType:'json',
