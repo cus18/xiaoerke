@@ -21,6 +21,8 @@ import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
+import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +89,12 @@ public class ConsultDoctorController extends BaseController {
 
     @Autowired
     private MessageContentConfService messageContentConfService;
+
+    @Autowired
+    private BabyCoinService babyCoinService;
+
+    @Autowired
+    private WechatAttentionService wechatAttentionService;
 
     @RequestMapping(value = "/getCurrentUserHistoryRecord", method = {RequestMethod.POST, RequestMethod.GET})
     public
@@ -466,7 +474,6 @@ public class ConsultDoctorController extends BaseController {
         List<ConsultDoctorInfoVo> consultDoctorInfoVos = consultDoctorInfoService.getConsultDoctorByInfo(param);
         Map wechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         String st = "";
-
         if(consultDoctorInfoVos !=null && consultDoctorInfoVos.size() >0) {
             if (null != consultDoctorInfoVos.get(0).getSendMessage() && consultDoctorInfoVos.get(0).getSendMessage().equals("1")) {
                 if (praiseList != null && praiseList.size() > 0) {
@@ -477,10 +484,10 @@ public class ConsultDoctorController extends BaseController {
 //                                                evaluationMap.get("id") + "&sessionId=" + sessionId + "'>点击这里去评价</a>】";
                             //根据场景和日期查询是否有匹配的文案推送
                             MessageContentConfVo messageContentConfVo = messageContentConfService.messageConfInfo(MessageContentVo.SESSION_END.getVariable());
-                            if(null != messageContentConfVo){
+                            if (null != messageContentConfVo) {
                                 st = messageContentConfVo.getContent();
-                                st = st.replace("CUSTOMERID", (String)evaluationMap.get("id"));
-                                st = st.replace("SESSIONID",sessionId);
+                                st = st.replace("CUSTOMERID", (String) evaluationMap.get("id"));
+                                st = st.replace("SESSIONID", sessionId);
                             }
                             break;
                         } else {
@@ -491,12 +498,13 @@ public class ConsultDoctorController extends BaseController {
                 } else {
                     st = "嗨，亲爱的,本次咨询已关闭。";
                 }
-                WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
-                st =  "医生的及时解答很给力，有木有？下次还想要？\n戳戳手指，邀请好友加入宝大夫，免费机会就来咯！\n"+
-                        "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_3_backend'>>>邀请好友赚机会</a>";
-                WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
-                LogUtils.saveLog("ZXYQ_RK_TS_N3",userId);
 
+                WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
+                st = "医生的及时解答很给力，有木有？下次还想要？\n戳戳手指，邀请好友加入宝大夫，减免机会就来咯！\n" +
+                        "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_3_backend'>>>邀请好友赚机会</a>";
+                WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
+                LogUtils.saveLog("ZXYQ_RK_TS_N3", userId);
+                babyCoinService.giveBabyCoin(userId,10l);
             }
             //分享的代码
 //                    patientRegisterPraiseService.sendRemindMsgToUser(userId,sessionId);
