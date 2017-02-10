@@ -111,7 +111,7 @@ public class BabyCoinServiceImpl implements BabyCoinService {
                 insertBabyCoinSelective(babyCoinVo);
             }
         }else{
-            babyCoinVo.setCash(babyCoinVo.getCash()+10);
+            babyCoinVo.setCash(babyCoinVo.getCash()+count);
             updateBabyCoinByOpenId(babyCoinVo);
         }
         //发消息
