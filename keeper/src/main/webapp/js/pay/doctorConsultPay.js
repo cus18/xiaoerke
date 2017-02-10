@@ -2,7 +2,7 @@ var payLock = true;
 var moneys = 9.9;
 var leaveNotes = "reward";
 var useBabyCoin = true;
-
+var payFlag = false;
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
 var doRefresh = function () {
     var timestamp;//时间戳
@@ -150,6 +150,8 @@ var recordLogs = function (val) {
                     //var canUse = 0;//可以抵钱的宝宝币数
                     var cash = data.babyCoinVo.cash;//现有宝宝币总数
                     if(cash >= 50){
+                        document.getElementById("useBabyCoinDiv").style.display="";
+                        payFlag = true;
                         $('#useBabyCoinLeft').html('亲，您有宝宝币可减免5.0元');
                         $('#useBabyCoinRight').click(function () {
                             if (useBabyCoin) {
@@ -163,10 +165,13 @@ var recordLogs = function (val) {
                             $('#useBabyCoinRightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%');
                             console.log(useBabyCoin)
                         });
+                        $('#payConfirm').html('确认支付4.9元');
                     } else {
+                        document.getElementById("useBabyCoinDiv").style.display="none";
                         $('#useBabyCoinRightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRightUnchoose.png") 100% 100%/100% 100%')
                         useBabyCoin = false;
                         console.log(useBabyCoin)
+                        $('#payConfirm').html('确认支付9.9元');
                     }
                 },
                 error: function (jqXHR) {
