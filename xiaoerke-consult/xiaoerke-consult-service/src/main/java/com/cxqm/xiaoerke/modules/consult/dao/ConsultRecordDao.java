@@ -20,6 +20,8 @@ public interface ConsultRecordDao {
 
     List<ConsultRecordVo> selectByVo(ConsultRecordVo record);
 
+    List<ConsultRecordVo> selectConsultRecord(ConsultRecordVo record);
+
     int updateByPrimaryKeySelective(ConsultRecordVo record);
 
     int updateByPrimaryKey(ConsultRecordVo record);

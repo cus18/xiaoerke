@@ -199,7 +199,7 @@ public class ConsultUtilController {
             record.setPayDate(date1);
             record.setReceiveDate(date2);
             record.setStatus("success");
-            boolean1 = payRecordService.selectUserPayInfo(record);
+            boolean1 = payRecordService.judgeUserPay(record);
             //判断第二天有没有用咨询次数进行咨询
             ConsultSession consultSession = new ConsultSession();
             Date date3 = new Date(payDate.getYear(),payDate.getMonth(),payDate.getDate()+1,21,0,0);
@@ -257,6 +257,42 @@ public class ConsultUtilController {
 
         }
         //批量插入到consult_record6表当中
+        consultRecordService.insertConsultRecordBatchTest(consultRecordVoList);
+    }
+
+    @RequestMapping(value = "/statisticsConsultDuration", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public void statisticsPay24HConsultDuration(HttpSession session, HttpServletRequest request) {
+        //查询1月份咨询付费用户及付费时间
+        PayRecord record = new PayRecord();
+        record.setPayDate(DateUtils.StrToDate("2017-01-01 00:00:01", "datetime"));
+        record.setReceiveDate(DateUtils.StrToDate("2017-02-01 00:00:01", "datetime"));
+        record.setStatus("success");
+        record.setPayType("doctorConsultPay");
+        List<ConsultRecordVo> consultRecordVoList = new ArrayList<ConsultRecordVo>();
+        List<PayRecord> payRecords = payRecordService.selectUserPayInfo(record);
+        //查询用户从付费开始到付费后24h之内与平台的最后一条聊天记录
+        if(payRecords!=null && payRecords.size()>0){
+            for(PayRecord payRecord : payRecords){
+                ConsultRecordVo consultRecordVo = new ConsultRecordVo();
+                consultRecordVo.setCreateDate(payRecord.getReceiveDate());
+                consultRecordVo.setUpdateDate(new Date(payRecord.getReceiveDate().getTime() + 24 * 60 * 60 * 1000));
+                List<ConsultRecordVo> consultRecordVos = consultRecordService.selectConsultRecord(consultRecordVo);
+                if(consultRecordVos!=null && consultRecordVos.size()>0){
+                    ConsultRecordVo vo = consultRecordVos.get(0);
+                    //咨询时长 = 最后一条记录时间 - 付费时间
+                    vo.setMessage(String.valueOf(DateUtils.getMinuteOfTwoDate(payRecord.getReceiveDate(), vo.getCreateDate())));
+                    vo.setUserId(vo.getUserId());
+                    vo.setCsuserId(vo.getCsuserId());
+                    vo.setCreateDate(vo.getCreateDate());
+                    vo.setDoctorName("1111111111111111");
+                    vo.setSessionId(String.valueOf(vo.getId()));
+                    vo.setId(IdGen.uuid());
+                    consultRecordVoList.add(vo);
+                }
+            }
+        }
+        //保存到record表中
         consultRecordService.insertConsultRecordBatchTest(consultRecordVoList);
     }
 

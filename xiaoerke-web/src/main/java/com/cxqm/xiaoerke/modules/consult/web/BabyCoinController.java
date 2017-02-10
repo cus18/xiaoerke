@@ -385,9 +385,9 @@ public class BabyCoinController {
     @RequestMapping(value = "redPacketCreate")
     public
     @ResponseBody
-    void redPacketCreate(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
+    String redPacketCreate(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
         String openId = WechatUtil.getOpenId(session, request);
-        String uuid = UUIDUtil.getUUID();
+        String uuid = (String)params.get("uuid");//UUIDUtil.getUUID();
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         double count = Double.valueOf(sysPropertyVoWithBLOBsVo.getRedPacketCount());
 //        redis 记录红包生成 mong记录具体的抢红包的记录
@@ -397,7 +397,6 @@ public class BabyCoinController {
         vo.setBalance(count);
         vo.setCreate_time(new Date());
         vo.setId(uuid);
-        babyCoinService.redPacketInit(vo);
-
+        return babyCoinService.redPacketInit(vo);
     }
 }

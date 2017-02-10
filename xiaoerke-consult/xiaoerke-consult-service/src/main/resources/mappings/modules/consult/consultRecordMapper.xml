@@ -32,6 +32,22 @@
     </if>
 
   </select>
+
+  <select id="selectConsultRecord" resultMap="BaseResultMap" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo" >
+    SELECT
+    *
+    FROM
+    consult_record5
+    WHERE
+    createDate BETWEEN #{createDate}
+    AND #{updateDate}
+    AND userId = #{userId}
+    ORDER BY
+    createDate DESC
+    LIMIT 1
+  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from consult_record
     where id = #{id,jdbcType=VARCHAR}
