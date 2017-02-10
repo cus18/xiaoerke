@@ -1,23 +1,30 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.dao.BabyCoinDao;
 import com.cxqm.xiaoerke.modules.consult.dao.BabyCoinRecordDao;
-import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
-import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 /**
  * Created by deliang on 16/09/05.
@@ -40,6 +47,18 @@ public class BabyCoinServiceImpl implements BabyCoinService {
 
     @Autowired
     private SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo;
+
+    @Autowired
+    private MongoDBService<RedPacketInfoVo> redPacketInfoService;
+
+    @Autowired
+    private MongoDBService<RedPacketRecordVo> redPacketRecordService;
+
+    @Resource(name = "redisTemplate")
+    private RedisTemplate<String, Object> redisTemplate;
+
+
+    private static final String USER_SESSIONID_KEY = "redpacket";
 
     @Override
     public BabyCoinVo selectByBabyCoinVo(BabyCoinVo babyCoinVo){
@@ -125,6 +144,53 @@ public class BabyCoinServiceImpl implements BabyCoinService {
         WechatMessageUtil.templateModel("亲！有宝宝币入账啦",wechatAttentionVo.getWechat_name(),count+"个", DateUtils.DateToStr(new Date(),"yyyy年MM月dd日"),"","时间有限，宝宝币要抓紧使用哦，不要过期浪费啦~\n" +
                 "点击进入宝宝币兑换中心",token,url,openid,"U-0n4vv3HTXzOE4iD5hZ1siCjbpFVTPpFsXrxs4ASK8");
         return 0;
+    }
+
+    @Override
+    public void redPacketShare(String openid, String packetId) {
+        Query queryInLog = new Query();
+        queryInLog.addCriteria(Criteria.where("id").is(packetId));
+        List<RedPacketInfoVo> li = redPacketInfoService.queryList(queryInLog);
+        if(null != li&&li.size()>0){
+            RedPacketInfoVo vo =  li.get(0);
+            String redPacketNum = sysPropertyVoWithBLOBsVo.getRedPacketNum();
+            Query queryRedPackRecord = new Query();
+            queryInLog.addCriteria(Criteria.where("packetId").is(packetId));
+            List<RedPacketRecordVo> recordVoList = redPacketRecordService.queryList(queryRedPackRecord);
+            if(vo.getBalance()>0){
+                int packentNum = Integer.parseInt(redPacketNum)-recordVoList.size();
+                //红包数量
+                long shareCoin = Math.round(vo.getBalance()/packentNum);
+                if(Math.random()*10%2==0){
+                    shareCoin =  new Double(shareCoin*(1+Math.random())).longValue();
+                }else{
+                    shareCoin =  new Double(shareCoin*(1-Math.random())).longValue();
+                }
+                giveBabyCoin(openid,shareCoin);
+
+                RedPacketRecordVo recordVo = new RedPacketRecordVo();
+                recordVo.setPacketId(packetId);
+                recordVo.setCreate_time(new Date());
+                recordVo.setCount(shareCoin);
+                recordVo.setOpenid(openid);
+                redPacketRecordService.insert(recordVo);
+
+                redPacketInfoService.upsert((new Query(where("id").is(packetId))),
+                        new Update().update("balance", vo.getCount()-shareCoin));
+            }
+
+        }
+    }
+
+    @Override
+    public String redPacketInit(RedPacketInfoVo re) {
+        String packetId =  (String)redisTemplate.opsForValue().get("redPacket_"+re.getOpenid());
+        if(null == packetId){
+            redPacketInfoService.insert(re);
+            redisTemplate.opsForValue().set("redPacket_"+re.getOpenid(), re.getId(),24, TimeUnit.HOURS);
+            packetId = re.getId();
+        }
+        return packetId;
     }
 
 }

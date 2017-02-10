@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.consult.service;
 
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
+import com.cxqm.xiaoerke.modules.consult.entity.RedPacketInfoVo;
 
 import java.util.List;
 
@@ -30,4 +31,8 @@ public interface BabyCoinService {
     int insertBabyCoinSelective(BabyCoinVo record);
 
     int giveBabyCoin(String openid,Long count);
+
+    void redPacketShare(String openid, String packetId);
+
+    String redPacketInit(RedPacketInfoVo re);
 }
