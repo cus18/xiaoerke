@@ -1,6 +1,6 @@
 angular.module('controllers', [])
-    .controller('babyCoinInvitePageCtrl',['$scope','$state','GetAttentionInfo','GetUserOpenId','GetBabyCoinInfo','BabyCoinInit','GetConfig','$ionicScrollDelegate','$stateParams',
-        function ($scope,$state,GetAttentionInfo,GetUserOpenId,GetBabyCoinInfo,BabyCoinInit,GetConfig,$ionicScrollDelegate,$stateParams) {
+    .controller('babyCoinInvitePageCtrl',['$scope','$state','GetAttentionInfo','GetUserOpenId','GetBabyCoinInfo','BabyCoinInit','GetConfig','$ionicScrollDelegate','$stateParams','redPacketCreate',
+        function ($scope,$state,GetAttentionInfo,GetUserOpenId,GetBabyCoinInfo,BabyCoinInit,GetConfig,$ionicScrollDelegate,$stateParams,redPacketCreate) {
             $scope.minename = '您的朋友';
             $scope.openid = '';
             $scope.marketer = '';
@@ -109,6 +109,7 @@ angular.module('controllers', [])
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                         success: function (res) {
                                             recordLogs("ZXYQ_YQY_SHARE");
+                                            redPacketCreate();
                                         },
                                         fail: function (res) {
                                         }

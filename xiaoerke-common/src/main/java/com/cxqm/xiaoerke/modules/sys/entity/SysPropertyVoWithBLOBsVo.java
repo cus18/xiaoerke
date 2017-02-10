@@ -45,6 +45,10 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String freeConsultNum;
 
+    private String redPacketCount;
+
+    private String redPacketNum;
+
     public String getTemplateIdYWFWTX() {
         return templateIdYWFWTX;
     }
@@ -248,5 +252,21 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     public void setFreeConsultNum(String freeConsultNum) {
         this.freeConsultNum = freeConsultNum;
+    }
+
+    public String getRedPacketCount() {
+        return redPacketCount;
+    }
+
+    public void setRedPacketCount(String redPacketCount) {
+        this.redPacketCount = redPacketCount;
+    }
+
+    public String getRedPacketNum() {
+        return redPacketNum;
+    }
+
+    public void setRedPacketNum(String redPacketNum) {
+        this.redPacketNum = redPacketNum;
     }
 }

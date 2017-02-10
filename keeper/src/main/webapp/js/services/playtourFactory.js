@@ -40,6 +40,10 @@ define(['appPlayTour'], function (app) {
             return $resource(user_h5 + 'babyCoin/sendMindCouponList');
         }])
 
+        .factory('redPacketCreate',['$resource',function ($resource){
+            return $resource(user_h5 + 'babyCoin/redPacketCreate');
+        }])
+
         .factory('exchangeCoupon',['$resource',function ($resource){
             return $resource(user_h5 + 'babyCoin/exchangeCoupon');
         }]);

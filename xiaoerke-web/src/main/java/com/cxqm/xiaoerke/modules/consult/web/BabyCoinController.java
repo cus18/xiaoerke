@@ -6,12 +6,14 @@ import com.cxqm.xiaoerke.modules.account.service.impl.PayRecordServiceImpl;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
+import com.cxqm.xiaoerke.modules.consult.entity.RedPacketInfoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.SendMindCouponVo;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
+import com.cxqm.xiaoerke.modules.sys.utils.UUIDUtil;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
@@ -371,4 +373,31 @@ public class BabyCoinController {
         babyCoinService.giveBabyCoin(openId,count);
     }
 
+    @RequestMapping(value = "redPacketShare")
+    public
+    @ResponseBody
+    void redPacketShare(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
+        String openId = WechatUtil.getOpenId(session, request);
+        Long count = Long.valueOf((Integer) params.get("count"));
+        babyCoinService.giveBabyCoin(openId,count);
+    }
+
+    @RequestMapping(value = "redPacketCreate")
+    public
+    @ResponseBody
+    void redPacketCreate(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
+        String openId = WechatUtil.getOpenId(session, request);
+        String uuid = UUIDUtil.getUUID();
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        double count = Double.valueOf(sysPropertyVoWithBLOBsVo.getRedPacketCount());
+//        redis 记录红包生成 mong记录具体的抢红包的记录
+        RedPacketInfoVo vo = new RedPacketInfoVo();
+        vo.setOpenid(openId);
+        vo.setCount(count);
+        vo.setBalance(count);
+        vo.setCreate_time(new Date());
+        vo.setId(uuid);
+        babyCoinService.redPacketInit(vo);
+
+    }
 }
