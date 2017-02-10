@@ -282,10 +282,13 @@ public class ConsultDoctorController extends BaseController {
 
     @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public void test(HttpSession session, HttpServletRequest request) {
-        User user = systemService.getUserByLoginName("13181557398");
-        UserUtils.putCache("user",user);
-        int q=1;
+    public String test(HttpSession session, HttpServletRequest request) {
+
+        String localip= request.getLocalAddr();
+
+        String resutl="本机IP:"+localip+" 当前session id"+session.getId();
+        Object user = UserUtils.getCache("user");
+        return resutl;
     }
 
     @RequestMapping(value = "/updateAddress", method = {RequestMethod.POST, RequestMethod.GET})

@@ -75,7 +75,7 @@ public class ConsultRecordServiceImpl implements ConsultRecordService{
 
     @Override
     public int insertConsultRecordBatchTest(List<ConsultRecordVo> consultRecordVos) {
-        return consultRecordDao.insertConsultRecordBatch(consultRecordVos);
+        return consultRecordDao.insertConsultRecordBatchTest(consultRecordVos);
     }
 
     @Override

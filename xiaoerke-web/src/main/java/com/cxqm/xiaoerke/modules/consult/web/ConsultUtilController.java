@@ -142,7 +142,7 @@ public class ConsultUtilController {
     @ResponseBody
     public void test(HttpSession session, HttpServletRequest request) {
         Map<String, Object> response = new HashMap<String, Object>();
-        response = getstatistic(response,session,request);
+        statisticsConsultDuration(session,request);
         int a=1;
     }
 
