@@ -1,6 +1,7 @@
 <ion-view ng-init="invitePageInit()">
     <ion-content class="babyCoinInviteOld">
-        <div class="inviteOldBox clearfix">
+        <!--一下是之前版本-->
+       <!-- <div class="inviteOldBox clearfix">
             <img class="inviteTop" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite%2FinviteTop.png" alt="">
             <div class="consult">
                 点击&nbsp;→<span ng-click="showGoConsult()">咨询医生</span>立即咨询吧
@@ -18,6 +19,42 @@
         <div id="invitePageShade1" class="invitePageShade" ng-show="info.share" ng-click="hideShare()">
             <img class="invitePageShareContent" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fyaoqing_png_03.png" alt=""/>
             <img class="invitePageShareMark" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/invitePageShareMark.png" alt=""/>
+        </div>-->
+        <!--一下是之前版本-->
+        <div class="new-edition">
+            <!--未领取-->
+            <div class="top tc receive-gone" ng-if="!receiveLock" >
+                <img width="100%" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/receiveNo1.png">
+                <img class="text-pic my-img2" width="196" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/receiveNo2.png">
+            </div>
+            <!--已领取-->
+            <div class="top tc" ng-if="receiveLock">
+                <img width="100%" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/receive1.png">
+                <div class="text tc">
+                    <div class="key f3 c5">成功领到</div>
+                    <div class="f7 coin">宝宝币：20枚=￥2元</div>
+                </div>
+                <div class="store f2 c5">宝宝币已放入宝大夫个人中心</div>
+            </div>
+
+            <div class="friend-list">
+                <img class="headline" width="164.5" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/friend_list.png">
+                <ul>
+                    <li class="f4" ng-repeat="item in friendsData">
+                        <span class="headPic"><img class="my-img1 radius" width="30" height="30" ng-src="{{item.headPic}}"></span>
+                        <span class="name c3">{{item.name}}</span>
+                        <span class="date c4">{{item.date}}</span>
+                        <span class="coin">{{item.coin}}枚</span>
+                    </li>
+                </ul>
+                <br> <br> <br> <br> <br> <br>
+            </div>
         </div>
     </ion-content>
+    <div ng-if="!receiveLock" class="bottom-btn bottom-btn-coin" ng-click="sendRedPackets()">
+        <div class="no">我来发红包</div>
+    </div>
+    <div ng-if="receiveLock" class="bottom-btn bottom-btn-coin" ng-click="goUse()">
+        <div>立即使用</div>
+    </div>
 </ion-view>

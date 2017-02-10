@@ -1,5 +1,5 @@
 .babyCoinInviteOld {
-    background: #36b7ce;
+    background: #fdf7e7;
 }
 
 .babyCoinInviteOld .inviteOldBox {
@@ -73,4 +73,83 @@
     position: absolute;
     right: 29px;
     top: 15px;
+}
+
+
+.babyCoinInviteOld .new-edition .top{
+    position: relative;
+}
+.babyCoinInviteOld .receive-gone{
+   padding-bottom:26px;
+}
+.babyCoinInviteOld .receive-gone .text-pic{
+    margin-top:25px;
+}
+.babyCoinInviteOld .new-edition .top .congratulate{
+    position: absolute;
+    top:0;
+    left:50%;
+    margin-left:-129.5px;
+}
+.babyCoinInviteOld .new-edition .top .text{
+    position: absolute;
+    width:100%;
+    bottom:50px;
+}
+.babyCoinInviteOld .new-edition .text .coin {
+    margin-top:8px;
+    color:#ff5237;
+}
+.babyCoinInviteOld .new-edition .top .store {
+    font-weight: 300;
+    margin-top:10px;
+ }
+.babyCoinInviteOld .new-edition .friend-list{
+    margin:44px 24px 0;
+    position: relative;
+}
+.babyCoinInviteOld .new-edition .friend-list .headline{
+    position: absolute;
+    top:-25.5px;
+    left:50%;
+    margin-left:-82.25px;
+}
+.babyCoinInviteOld .new-edition .friend-list ul{
+    background-color: #fff;
+    border-radius: 3px;
+    padding-top:44px;
+    padding-bottom:10px;
+}
+.babyCoinInviteOld .new-edition .friend-list li{
+    margin-bottom:13px;
+    padding:0 24px;
+}
+.babyCoinInviteOld .new-edition .friend-list span{
+   display: inline-block;
+}
+.babyCoinInviteOld .new-edition .friend-list .headPic{
+    width:18%;
+}
+.babyCoinInviteOld .new-edition .friend-list .name{
+    width:20%;
+}
+.babyCoinInviteOld .new-edition .friend-list .date{
+    width:36%;
+}
+.babyCoinInviteOld .new-edition .friend-list .coin{
+    width:20%;
+    text-align: right;
+    color:#ff5237;
+ }
+.bottom-btn-coin{
+    background-color: rgba(255,255,255,0.9);
+
+}
+.bottom-btn-coin div{
+    background-color: #ff5237;
+    margin:0 24px;
+    border-radius:3px;
+}
+.bottom-btn-coin div.no{
+    background-color:#1975cf;
 }

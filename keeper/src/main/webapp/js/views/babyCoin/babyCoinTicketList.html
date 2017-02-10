@@ -1,7 +1,8 @@
 <ion-view view-title=""  >
     <ion-content class="babyCoinTicketList bg1"  style="top:0;" >
         <ion-scroll direction="y" has-bouncing="true">
-            <div class="ticket-list ">
+           <!-- 之前版本-->
+           <!-- <div class="ticket-list ">
                 <ul class="">
                     <li ng-repeat="item in couponList" ng-click="goExchange(item.id,item.name)">
                         <img class="fl ticket" width="69%" height="auto" ng-src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/sendMindCoupon{{item.id}}" />
@@ -9,6 +10,40 @@
 
                      </li>
                 </ul>
+            </div>-->
+            <div class="exchange-center">
+                <!--标题-->
+                <div class="headline tc">
+                    <img class="line line-l" width="20%" height="1" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/line_l.png">
+                    <img class="line line-r" width="20%" height="1" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/line_r.png">
+                    宝宝币兑换中心
+                </div>
+                <!--我的宝宝币-->
+                <div class="myBabyCoin c0">
+                    <img class="" width="100%" height="100%" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/myBabyCoin_bg.png">
+                    <div class="info">
+                        <div class="describe f2 ">
+                            <span>我的宝宝币</span>
+                            <span class="fr">（有效期六个月）</span>
+                        </div>
+                        <div class="coin-value">
+                            <span>8888枚</span>
+                            <a class="fr f2" ng-click="earnBabyCoin()">赚宝宝币</a>
+                        </div>
+                    </div>
+                </div>
+                <!--10像素灰色间隔-->
+                <div class="depart"></div>
+                <!--代金券列表-->
+                <ul class="ticket-wrap">
+                    <li class="fl" ng-repeat="item in ticketData" ng-click="goExchange()">
+                        <div class="ticket-name f5 c3">{{item.name}}</div>
+                        <div class="ticket-coin f3 c5">宝宝币：<span>{{item.coin}}枚</span></div>
+                        <img class="ticket-pic" width="110" height="auto" ng-src="{{item.pic}}">
+                    </li>
+
+                </ul>
+                <br><br><br><br>
             </div>
 
         </ion-scroll>

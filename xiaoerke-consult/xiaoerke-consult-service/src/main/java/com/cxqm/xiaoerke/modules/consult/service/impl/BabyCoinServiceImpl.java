@@ -7,6 +7,7 @@ import com.cxqm.xiaoerke.modules.consult.dao.BabyCoinRecordDao;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
@@ -36,6 +37,9 @@ public class BabyCoinServiceImpl implements BabyCoinService {
 
     @Autowired
     private SystemService systemService;
+
+    @Autowired
+    private SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo;
 
     @Override
     public BabyCoinVo selectByBabyCoinVo(BabyCoinVo babyCoinVo){
@@ -111,11 +115,11 @@ public class BabyCoinServiceImpl implements BabyCoinService {
                 insertBabyCoinSelective(babyCoinVo);
             }
         }else{
-            babyCoinVo.setCash(babyCoinVo.getCash()+10);
+            babyCoinVo.setCash(babyCoinVo.getCash()+count);
             updateBabyCoinByOpenId(babyCoinVo);
         }
         //发消息
-        String url = "";
+        String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=48";
         Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
         WechatMessageUtil.templateModel("亲！有宝宝币入账啦",wechatAttentionVo.getWechat_name(),count+"个", DateUtils.DateToStr(new Date(),"yyyy年MM月dd日"),"","时间有限，宝宝币要抓紧使用哦，不要过期浪费啦~\n" +
