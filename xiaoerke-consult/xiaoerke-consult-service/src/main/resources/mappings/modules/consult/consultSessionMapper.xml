@@ -95,9 +95,7 @@
         <if test="status != null">
             and state = #{status,jdbcType=VARCHAR}
         </if>
-        <if test="updateTime != null">
-            and update_time = #{updateTime,jdbcType=TIMESTAMP}
-        </if>
+
         <if test="csUserId != null">
             and sys_user_id_cs = #{csUserId,jdbcType=VARCHAR}
         </if>
@@ -162,6 +160,42 @@
         SELECT su.name from consult_conversation_forward_records ccfr
         INNER JOIN sys_user su on su.id = ccfr.to_user_id
         where ccfr.conversation_id = #{id}
+    </select>
+
+    <select id="getstatisticsConsultDuration" resultMap="BaseResultMap"
+            parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
+        SELECT
+            cr1.createDate create_time,
+            cr2.createDate update_time
+        FROM
+            (
+                SELECT
+                    cr.createDate,
+                    cr.csUserId
+                FROM
+                    consult_record5 cr
+                INNER JOIN sys_user su ON su.id = cr.csUserId
+                WHERE
+                    su.user_type = 'consultDoctor'
+                AND cr.sessionId = #{id,jdbcType=INTEGER}
+                ORDER BY
+                    createDate ASC
+                LIMIT 1
+            ) cr1
+        INNER JOIN (
+            SELECT
+                cr.createDate,
+                cr.csUserId
+            FROM
+                consult_record5 cr
+            INNER JOIN sys_user su ON su.id = cr.csUserId
+            WHERE
+                su.user_type = 'consultDoctor'
+            AND cr.sessionId = #{id,jdbcType=INTEGER}
+            ORDER BY
+                createDate DESC
+            LIMIT 1
+        ) cr2 ON cr1.csUserId = cr2.csUserId
     </select>
 
     <select id="getAlreadyAccessUsers" resultMap="BaseResultMap"

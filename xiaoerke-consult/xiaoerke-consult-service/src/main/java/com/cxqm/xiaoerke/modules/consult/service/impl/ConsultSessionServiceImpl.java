@@ -77,6 +77,11 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
     }
 
     @Override
+    public List<ConsultSession> getstatisticsConsultDuration(ConsultSession consultSession) {
+        return consultSessionDao.getstatisticsConsultDuration(consultSession);
+    }
+
+    @Override
     public List<HashMap<String, Object>> getOnlineCsListInfo(List<String> userList) {
         return consultSessionDao.getOnlineCsListInfo(userList);
     }

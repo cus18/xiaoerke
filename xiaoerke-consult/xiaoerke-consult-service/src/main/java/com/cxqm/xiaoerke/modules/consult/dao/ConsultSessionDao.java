@@ -39,6 +39,8 @@ public interface ConsultSessionDao {
 
     List<ConsultSession> getCsUserByUserId(ConsultSession consultSession);
 
+    List<ConsultSession> getstatisticsConsultDuration(ConsultSession consultSession);
+
     List<HashMap<String,Object>> getOnlineCsListInfo(List<String> userList);
 
     List<ConsultSession> getAlreadyAccessUsers(ConsultSession consultSession);

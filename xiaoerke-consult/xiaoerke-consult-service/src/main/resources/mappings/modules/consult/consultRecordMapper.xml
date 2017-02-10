@@ -64,6 +64,20 @@
     </foreach>
   </insert>
 
+  <insert id="insertConsultRecordBatchTest" parameterType="java.util.List">
+    insert into consult_record6 (id, sessionId, message,
+    createDate, updateDate, type,
+    senderId, csuserId, userId,
+    doctorName, senderName)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.id,jdbcType=VARCHAR}, #{item.sessionId,jdbcType=VARCHAR}, #{item.message,jdbcType=VARCHAR},
+      #{item.createDate,jdbcType=TIMESTAMP}, #{item.updateDate,jdbcType=TIMESTAMP}, #{item.type,jdbcType=VARCHAR},
+      #{item.senderId,jdbcType=VARCHAR}, #{item.csuserId,jdbcType=VARCHAR}, #{item.userId,jdbcType=VARCHAR},
+      #{item.doctorName,jdbcType=VARCHAR}, #{item.senderName,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
 
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordVo" >
     insert into consult_record

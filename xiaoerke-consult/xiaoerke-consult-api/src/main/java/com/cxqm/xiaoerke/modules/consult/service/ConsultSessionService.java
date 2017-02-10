@@ -25,6 +25,8 @@ public interface ConsultSessionService {
 
     List<ConsultSession> getCsUserByUserId(ConsultSession consultSession);
 
+    List<ConsultSession> getstatisticsConsultDuration(ConsultSession consultSession);
+
     List<HashMap<String, Object>> getOnlineCsListInfo(List<String> userList);
 
     String clearSession(String sessionId, String userId);
