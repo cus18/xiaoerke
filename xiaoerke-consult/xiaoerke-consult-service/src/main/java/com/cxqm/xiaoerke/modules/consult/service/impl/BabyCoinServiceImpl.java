@@ -7,6 +7,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
@@ -45,8 +46,6 @@ public class BabyCoinServiceImpl implements BabyCoinService {
     @Autowired
     private SystemService systemService;
 
-    @Autowired
-    private SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo;
 
     @Autowired
     private MongoDBService<RedPacketInfoVo> redPacketInfoService;
@@ -56,6 +55,9 @@ public class BabyCoinServiceImpl implements BabyCoinService {
 
     @Resource(name = "redisTemplate")
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
 
     private static final String USER_SESSIONID_KEY = "redpacket";
@@ -112,6 +114,7 @@ public class BabyCoinServiceImpl implements BabyCoinService {
         babyCoinVo = selectByBabyCoinVo(babyCoinVo);
         SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
         sysWechatAppintInfoVo.setOpen_id(openid);
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
         if (babyCoinVo == null || babyCoinVo.getCash() == null) {
             synchronized (this) {
@@ -151,6 +154,7 @@ public class BabyCoinServiceImpl implements BabyCoinService {
         Query queryInLog = new Query();
         queryInLog.addCriteria(Criteria.where("id").is(packetId));
         List<RedPacketInfoVo> li = redPacketInfoService.queryList(queryInLog);
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         if(null != li&&li.size()>0){
             RedPacketInfoVo vo =  li.get(0);
             String redPacketNum = sysPropertyVoWithBLOBsVo.getRedPacketNum();
