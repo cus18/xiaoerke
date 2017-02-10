@@ -272,6 +272,7 @@ public class FieldworkWechatController {
             }else{
                 String logstr = url.split(",")[1];
                 String showlayer = url.split(",").length>2?url.split(",")[2]:"";
+
                 LogUtils.saveLog(logstr,openid);
                 url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/playtour#/babyCoinInvitePage/"+showlayer;
             }
@@ -293,14 +294,17 @@ public class FieldworkWechatController {
         String[] parameters = request.getQueryString().split(",");
         String oldOpenId = java.net.URLDecoder.decode(parameters[1], "utf-8");
         String marketer = java.net.URLDecoder.decode(parameters[2], "utf-8");
+        String redPacketId = java.net.URLDecoder.decode(parameters.length>3?parameters[3]:"", "utf-8");
+
         if(marketer.contains("&")){
             marketer = marketer.split("&")[0];
         }
+
         if(attention == null || attention.getDate() == null){//新用户
             url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteNew/"+oldOpenId+","+marketer;
             LogUtils.saveLog("ZXYQ_YQK_NEW","oldOpenId="+oldOpenId+"openid="+openid+"marketer"+marketer);
         }else {//老用户
-            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteOld/"+oldOpenId+","+marketer;
+            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteOld/"+oldOpenId+","+marketer+","+redPacketId;
             LogUtils.saveLog("ZXYQ_YQK_OLD","openid="+openid);
         }
         return url;
