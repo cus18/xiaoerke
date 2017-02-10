@@ -110,6 +110,8 @@ function commitEvaluate(){
     var content=$("#content").val();
     consultStatus=GetQueryString("consultStatus");
     if (redPacket != "" && redPacket > 0  ) {
+        //加50枚
+        giveCoin(50);
         recordLogs("ZXPJSXY_JE");
         $.ajax({
             url:"account/user/customerPay",// 跳转到 action
@@ -171,8 +173,9 @@ function commitEvaluate(){
                 recordLogs("PAY_ERROR4:"+res.errMsg);
             }
         });
-    }
-    else{
+    }else{
+        //加20枚
+        giveCoin(20);
         var data = {'id':customerId,'consultStatus':consultStatus,'starNum1':starNum1+"",'content':content,'redPacket':redPacket,'sessionId':sessionId};
         $.ajax({
             url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
@@ -255,3 +258,17 @@ var recordLogs = function(val){
         }
     });
 };
+
+var  giveCoin = function (val) {
+    var data = {'count':val};
+    $.ajax({
+        url:"babyCoin/giveBabyCoin",// 跳转到 action
+        type:'POST', //GET
+        data:JSON.stringify(data),
+        dataType:'json',
+        contentType: "application/json;charset=UTF-8",
+        success:function(data) {
+
+        }
+    })
+}

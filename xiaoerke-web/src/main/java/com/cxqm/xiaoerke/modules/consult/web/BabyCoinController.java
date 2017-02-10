@@ -362,4 +362,13 @@ public class BabyCoinController {
 
     }
 
+    @RequestMapping(value = "giveBabyCoin")
+    public
+    @ResponseBody
+    void giveBabyCoin(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
+        String openId = WechatUtil.getOpenId(session, request);//"oogbDwD_2BTQpftPu9QClr-mCw7U"
+        Long count = Long.valueOf((Integer) params.get("count"));
+        babyCoinService.giveBabyCoin(openId,count);
+    }
+
 }
