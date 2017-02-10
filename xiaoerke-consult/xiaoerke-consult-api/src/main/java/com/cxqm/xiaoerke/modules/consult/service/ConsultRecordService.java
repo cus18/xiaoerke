@@ -27,6 +27,8 @@ public interface ConsultRecordService {
 
     int insertConsultRecordBatch(List<ConsultRecordVo> record);
 
+    int insertConsultRecordBatchTest(List<ConsultRecordVo> consultRecordVos);
+
     int insertSelective(ConsultRecordVo record);
 
     List<ConsultRecordVo> selectByVo(ConsultRecordVo record);

@@ -1,16 +1,10 @@
 package com.cxqm.xiaoerke.modules.consult.web;
 
-import com.cxqm.xiaoerke.common.utils.DateUtils;
-import com.cxqm.xiaoerke.common.utils.EmojiFilter;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.impl.PayRecordServiceImpl;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
-import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultStatisticVo;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultRecordMongoDBServiceImpl;
 import com.cxqm.xiaoerke.modules.operation.service.ConsultStatisticService;
@@ -78,6 +72,9 @@ public class ConsultUtilController {
 
     @Autowired
     WechatInfoDao wechatInfoDao;
+
+    @Autowired
+    private ConsultRecordService consultRecordService;
 
     @Autowired
     private ConsultMemberRedsiCacheService consultMemberRedsiCacheService;
@@ -227,6 +224,42 @@ public class ConsultUtilController {
 
         return response;
     }
+
+    @RequestMapping(value = "/statisticsConsultDuration", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public void statisticsConsultDuration(HttpSession session, HttpServletRequest request) {
+        //根据日期查询所有的sessionID
+        ConsultSession consultSession = new ConsultSession();
+        consultSession.setCreateTime(DateUtils.StrToDate("2017-01-01 00:00:01","datetime"));//开始时间
+        consultSession.setUpdateTime(DateUtils.StrToDate("2017-01-02 23:59:59","datetime"));//结束时间
+        List<ConsultSession> consultSessions = consultSessionService.selectBySelectiveOrder(consultSession);
+        //遍历所有的sessionId咨询医生对应的开始时间，结束时间
+        List<ConsultRecordVo> consultRecordVoList = new ArrayList<ConsultRecordVo>();
+        for(ConsultSession vo : consultSessions){
+            ConsultSession session1 =new ConsultSession();
+            List<ConsultSession> sessionList = consultSessionService.getstatisticsConsultDuration(vo);
+            if(sessionList!=null && sessionList.size()>0){
+                session1 = sessionList.get(0);
+                ConsultRecordVo consultRecordVo = new ConsultRecordVo();
+                consultRecordVo.setMessage(String.valueOf(DateUtils.getMinuteOfTwoDate(session1.getCreateTime(), session1.getUpdateTime())));
+                consultRecordVo.setUserId(vo.getUserId());
+                consultRecordVo.setCsuserId(vo.getCsUserId());
+                consultRecordVo.setCreateDate(session1.getCreateTime());
+                consultRecordVo.setSenderId(vo.getSource());
+                consultRecordVo.setDoctorName(vo.getUserId());
+                consultRecordVo.setSessionId(String.valueOf(vo.getId()));
+                consultRecordVo.setId(IdGen.uuid());
+                consultRecordVoList.add(consultRecordVo);
+            }else{
+                System.out.println("==============="+vo.getId()+"===============");
+            }
+
+
+        }
+        //批量插入到consult_record6表当中
+        consultRecordService.insertConsultRecordBatchTest(consultRecordVoList);
+    }
+
 
 
 }

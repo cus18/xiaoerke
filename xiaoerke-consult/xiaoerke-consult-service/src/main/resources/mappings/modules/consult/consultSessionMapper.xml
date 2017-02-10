@@ -164,6 +164,42 @@
         where ccfr.conversation_id = #{id}
     </select>
 
+    <select id="getstatisticsConsultDuration" resultMap="BaseResultMap"
+            parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
+        SELECT
+            cr1.createDate create_time,
+            cr2.createDate update_time
+        FROM
+            (
+                SELECT
+                    cr.createDate,
+                    cr.csUserId
+                FROM
+                    consult_record5 cr
+                INNER JOIN sys_user su ON su.id = cr.csUserId
+                WHERE
+                    su.user_type = 'consultDoctor'
+                AND cr.sessionId = #{id,jdbcType=INTEGER}
+                ORDER BY
+                    createDate ASC
+                LIMIT 1
+            ) cr1
+        INNER JOIN (
+            SELECT
+                cr.createDate,
+                cr.csUserId
+            FROM
+                consult_record5 cr
+            INNER JOIN sys_user su ON su.id = cr.csUserId
+            WHERE
+                su.user_type = 'consultDoctor'
+            AND cr.sessionId = #{id,jdbcType=INTEGER}
+            ORDER BY
+                createDate DESC
+            LIMIT 1
+        ) cr2 ON cr1.csUserId = cr2.csUserId
+    </select>
+
     <select id="getAlreadyAccessUsers" resultMap="BaseResultMap"
             parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultSession">
         SELECT * from consult_session cc

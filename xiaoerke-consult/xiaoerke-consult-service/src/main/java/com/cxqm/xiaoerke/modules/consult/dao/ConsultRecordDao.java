@@ -14,6 +14,8 @@ public interface ConsultRecordDao {
 
     int insertConsultRecordBatch(List<ConsultRecordVo> consultRecordVos);
 
+    int insertConsultRecordBatchTest(List<ConsultRecordVo> consultRecordVos);
+
     int insertSelective(ConsultRecordVo record);
 
     List<ConsultRecordVo> selectByVo(ConsultRecordVo record);
