@@ -2,22 +2,22 @@ var payLock = true;
 var moneys = 9.9;
 var leaveNotes = "reward";
 var useBabyCoin = true;
-
+var payFlag = false;
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
-var doRefresh = function(){
+var doRefresh = function () {
     var timestamp;//时间戳
     var nonceStr;//随机字符串
     var signature;//得到的签名
     var appid;//得到的签名
     $.ajax({
-        url:"wechatInfo/getConfig",// 跳转到 action
-        async:true,
-        type:'get',
-        data:{url:location.href},//得到需要分享页面的url
-        cache:false,
-        dataType:'json',
-        success:function(data) {
-            if(data!=null ){
+        url: "wechatInfo/getConfig",// 跳转到 action
+        async: true,
+        type: 'get',
+        data: {url: location.href},//得到需要分享页面的url
+        cache: false,
+        dataType: 'json',
+        success: function (data) {
+            if (data != null) {
                 timestamp = data.timestamp;//得到时间戳
                 nonceStr = data.nonceStr;//得到随机字符串
                 signature = data.signature;//得到签名
@@ -26,7 +26,7 @@ var doRefresh = function(){
                 wx.config({
                     debug: false,
                     appId: appid,
-                    timestamp:timestamp,
+                    timestamp: timestamp,
                     nonceStr: nonceStr,
                     signature: signature,
                     jsApiList: [
@@ -36,49 +36,54 @@ var doRefresh = function(){
                 wx.ready(function () {
                     wx.hideOptionMenu();
                 });
-            }else{
+            } else {
             }
         },
-        error : function() {
+        error: function () {
         }
     });
 
-     $('#money').html(moneys);
+    $('#money').html(moneys);
     recordLogs("consult_charge_twice_information_payclick");
 };
-var recordLogs = function(val){
+var recordLogs = function (val) {
     $.ajax({
-        url:"util/recordLogs",// 跳转到 action
-        async:true,
-        type:'get',
-        data:{logContent:encodeURI(val)},
-        cache:false,
-        dataType:'json',
-        success:function(data) {
+        url: "util/recordLogs",// 跳转到 action
+        async: true,
+        type: 'get',
+        data: {logContent: encodeURI(val)},
+        cache: false,
+        dataType: 'json',
+        success: function (data) {
         },
-        error : function() {
+        error: function () {
         }
     });
 };
 recordLogs("ZXTS_GMRK")
 function wechatPay() {
-    if(useBabyCoin){
-        UseBobyCoinPay();
-        recordLogs("ZXYQ_ZFY_SHIYONG")
-    }
+    //if (useBabyCoin) {
+    //    UseBobyCoinPay();
+    //    recordLogs("ZXYQ_ZFY_SHIYONG")
+    //}
     recordLogs("consult_charge_twice_paypage_paybutton");
     var u = navigator.userAgent, app = navigator.appVersion;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('linux') > -1; //g
     var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
     if (isAndroid) {
-        payLock=true;
+        payLock = true;
     }
-    if(payLock) {
-        if (moneys != "0" && moneys!="") {
+    if (payLock) {
+        if (moneys != "0" && moneys != "") {
             $.ajax({
                 url: "account/user/doctorConsultPay",
                 type: 'get',
-                data: {payType:"doctorConsultPay",leaveNotes: leaveNotes, payPrice: moneys * 100,useBabyCoinPay:useBabyCoin},
+                data: {
+                    payType: "doctorConsultPay",
+                    leaveNotes: leaveNotes,
+                    payPrice: moneys * 100,
+                    useBabyCoinPay: useBabyCoin
+                },
                 cache: false,
                 success: function (data) {
                     $('#payButton').removeAttr("disabled");
@@ -112,58 +117,64 @@ function wechatPay() {
             });
         } else {
         }
-    }else{
-        payLock=true;
+    } else {
+        payLock = true;
     }
 }
 
-var recordLogs = function(val){
+var recordLogs = function (val) {
     $.ajax({
-        url:"util/recordLogs",// 跳转到 action
-        async:true,
-        type:'get',
-        data:{logContent:encodeURI(val)},
-        cache:false,
-        dataType:'json',
-        success:function(data) {
+        url: "util/recordLogs",// 跳转到 action
+        async: true,
+        type: 'get',
+        data: {logContent: encodeURI(val)},
+        cache: false,
+        dataType: 'json',
+        success: function (data) {
         },
-        error : function() {
+        error: function () {
         }
     });
 };
-(function(){
+(function () {
     var time1,
         bar = 'Choose';
-    time1 = setInterval(flag,100);
-    function flag(){
-        if($('#useBabyCoinRight')){
+    time1 = setInterval(flag, 100);
+    function flag() {
+        if ($('#useBabyCoinRight')) {
             $.ajax({
                 type: "get",
-                url: 'http://'+window.location.host + "/keeper/babyCoin/babyCoinInit",
+                url: 'http://' + window.location.host + "/keeper/babyCoin/babyCoinInit",
                 dataType: "json",
-                success: function(data) {
-                    var canUse = 90;
-                    data.babyCoinVo.cash>99?canUse = 99:canUse = data.babyCoinVo.cash;
-                    $('#useBabyCoinLeft').html('宝宝币：'+data.babyCoinVo.cash+'枚，本次可以用'+canUse+'枚');
-                    if(data.babyCoinVo.cash > 0){
-                        $('#useBabyCoinRight').click(function(){
-                            if(useBabyCoin){
+                success: function (data) {
+                    //var canUse = 0;//可以抵钱的宝宝币数
+                    var cash = data.babyCoinVo.cash;//现有宝宝币总数
+                    if(cash >= 50){
+                        document.getElementById("useBabyCoinDiv").style.display="";
+                        payFlag = true;
+                        $('#useBabyCoinLeft').html('亲，您有宝宝币可减免5.0元');
+                        $('#useBabyCoinRight').click(function () {
+                            if (useBabyCoin) {
                                 bar = 'Unchoose';
                                 useBabyCoin = false;
-                            }else{
+                            } else {
                                 bar = 'Choose';
                                 useBabyCoin = true;
-                            };
-                            $('#useBabyCoinRightImg').css('background','url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight'+bar+'.png") 100% 100%/100% 100%');
+                            }
+                            ;
+                            $('#useBabyCoinRightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%');
                             console.log(useBabyCoin)
                         });
-                    }else{
-                        $('#useBabyCoinRightImg').css('background','url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRightUnchoose.png") 100% 100%/100% 100%')
+                        $('#payConfirm').html('确认支付4.9元');
+                    } else {
+                        document.getElementById("useBabyCoinDiv").style.display="none";
+                        $('#useBabyCoinRightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRightUnchoose.png") 100% 100%/100% 100%')
                         useBabyCoin = false;
                         console.log(useBabyCoin)
+                        $('#payConfirm').html('确认支付9.9元');
                     }
                 },
-                error: function(jqXHR){
+                error: function (jqXHR) {
                     console.log("发生错误：" + jqXHR.status);
                 },
             });
@@ -176,15 +187,15 @@ function UseBobyCoinPay() {
     $.ajax({
         type: "GET",
         url: "babyCoin/minusOrAddBabyCoin",
-        async:false,
+        async: false,
         dataType: "json",
-        success: function(data) {
-            if(data.status == 'success'){
+        success: function (data) {
+            if (data.status == 'success') {
                 console.log('我成功扣到钱了');
-                window.location.href="http://s132.baodf.com/angel/patient/consult#/doctorConsultPaySuccess";
+                window.location.href = "http://s132.baodf.com/angel/patient/consult#/doctorConsultPaySuccess";
             }
         },
-        error: function(jqXHR){
+        error: function (jqXHR) {
             console.log("发生错误：" + jqXHR.status);
         },
     });

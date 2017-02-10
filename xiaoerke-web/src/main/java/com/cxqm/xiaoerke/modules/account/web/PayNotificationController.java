@@ -537,7 +537,7 @@ public class PayNotificationController {
                         babyCoinService.insertBabyCoinSelective(babyCoinVo);
                     }
 
-                    double babyCash = (Double.valueOf(sysPropertyVoWithBLOBsVo.getConsulAmount()) * 100 - Double.valueOf(insuranceMap.get("amount").toString())) / 10;//使用宝宝币数
+                    double babyCash = (Double.valueOf(9.9) * 100 - Double.valueOf(insuranceMap.get("amount").toString())) / 10;//使用宝宝币数
                     babyCoinVo.setCash(babyCoinVo.getCash() - (long) babyCash);
 
                     BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();

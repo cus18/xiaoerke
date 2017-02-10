@@ -12,6 +12,54 @@ angular.module('controllers', [])
                 share:false,
                 goConsult:false
             };
+            $scope.receiveLock = false;//未领取
+            /*好友领取宝宝币信息*/
+            $scope.friendsData=[
+                {
+                    name:"王某某",
+                    coin:"50",
+                    date:"2016/03/02",
+                    headPic:"http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg"
+                },
+                {
+                    name:"陈某某",
+                    coin:"50",
+                    date:"2016/04/02",
+                    headPic:"http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg"
+                },
+                {
+                    name:"赵某某",
+                    coin:"55",
+                    date:"2016/06/02",
+                    headPic:"http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg"
+                },
+                {
+                    name:"王某某",
+                    coin:"350",
+                    date:"2017/01/02",
+                    headPic:"http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg"
+                },
+                {
+                    name:"李某某",
+                    coin:"150",
+                    date:"2017/01/31",
+                    headPic:"http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg"
+                },
+                {
+                    name:"张某某",
+                    coin:"10",
+                    date:"2016/03/30",
+                    headPic:"http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common/baodf_logo.jpg"
+                },
+            ];
+            /*点击最下面 立即使用 按钮*/
+            $scope.goUse = function () {
+                $state.go("babyCoinTicketList");
+            };
+            /*点击最下面 我来发红包 按钮*/
+            $scope.sendRedPackets = function () {
+                $state.go("babyCoinInvitePage");
+            };
             $scope.invitePageInit = function () {
                 CreateInviteCard.save({"marketer":$scope.marketer,"oldOpenId":$scope.oldOpenId}, function (data) {
                     $scope.headImgUrl = {
