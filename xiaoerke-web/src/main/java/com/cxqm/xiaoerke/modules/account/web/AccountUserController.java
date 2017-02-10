@@ -261,9 +261,9 @@ public class AccountUserController {
         babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
         if (babyCoinVo != null && useBabyCoin != null && useBabyCoin.equals("true")) {//用宝宝币抵钱
             //当前用户所拥有的宝宝币<99直接扣光宝宝币，并计算实际金额
-            if (babyCoinVo.getCash() <= Float.valueOf(sysPropertyVoWithBLOBsVo.getConsulAmount()) * 10) {
+            if (babyCoinVo.getCash() >= Float.valueOf(sysPropertyVoWithBLOBsVo.getConsulAmount()) * 10) {
                 Float payPrice = Float.valueOf(request.getParameter("payPrice"));
-                payPrice = payPrice - Float.valueOf(String.valueOf(babyCoinVo.getCash()))*10;
+                payPrice = payPrice - Float.valueOf(String.valueOf(sysPropertyVoWithBLOBsVo.getOnceConsultNeedBabyCoin()))*10;
                 request.setAttribute("payPrice", payPrice/100.0);
                 LogUtils.saveLog(Servlets.getRequest(), openId+" 发起扣除宝宝币支付", "宝宝币个数为"+ babyCoinVo.getCash());
             } else {
