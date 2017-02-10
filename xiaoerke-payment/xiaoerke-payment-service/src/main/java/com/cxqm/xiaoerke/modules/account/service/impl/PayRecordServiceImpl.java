@@ -51,11 +51,16 @@ public class PayRecordServiceImpl implements PayRecordService {
 	}
 
 	@Override
-	public boolean selectUserPayInfo(PayRecord record) {
+	public boolean judgeUserPay(PayRecord record) {
 		List<PayRecord> payRecords =  payRecordDao.selectUserPayInfo(record);
 		return  payRecords.size()>0?true:false;
 	}
 
+	@Override
+	public List<PayRecord> selectUserPayInfo(PayRecord record) {
+		List<PayRecord> payRecords =  payRecordDao.selectUserPayInfo(record);
+		return  payRecords;
+	}
 
 	@Override
 	public PayRecord findById(String id) {

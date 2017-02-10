@@ -30,12 +30,19 @@
       <include refid="Base_Column_List" />
       FROM
       account_pay_record
-      WHERE
-      pay_date BETWEEN #{pay_date}
-      AND #{receive_date}
-      AND STATUS = #{status}
-      AND fee_type LIKE 'doctorConsultPay%'
-      and open_id=#{openId}
+      WHERE 1=1
+      <if test="pay_date != null" >
+        and pay_date BETWEEN #{pay_date} AND #{receive_date}
+      </if>
+      <if test="status != null" >
+        AND status = #{status}
+      </if>
+      <if test="fee_type != null" >
+        AND fee_type LIKE 'doctorConsultPay%'
+      </if>
+      <if test="open_id != null" >
+        and open_id=#{openId}
+      </if>
   </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >

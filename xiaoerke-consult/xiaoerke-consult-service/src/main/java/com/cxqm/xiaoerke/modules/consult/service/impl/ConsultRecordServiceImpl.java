@@ -89,6 +89,11 @@ public class ConsultRecordServiceImpl implements ConsultRecordService{
     }
 
     @Override
+    public List<ConsultRecordVo> selectConsultRecord(ConsultRecordVo record) {
+        return consultRecordDao.selectConsultRecord(record);
+    }
+
+    @Override
     public int updateByPrimaryKeySelective(ConsultRecordVo consultRecordVo) {
         return consultRecordDao.updateByPrimaryKeySelective(consultRecordVo);
     }
