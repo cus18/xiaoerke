@@ -105,16 +105,14 @@ angular.module('controllers', [])
                                 });
                                 wx.ready(function () {
                                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
-                                    redPacketCreate.save({},function (data) {
-                                        share = share+data;
-                                    });
                                     wx.onMenuShareTimeline({
                                         title: '在这里可以免费咨询三甲医院儿科专家', // 分享标题
                                         link: share, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                         success: function (res) {
                                             recordLogs("ZXYQ_YQY_SHARE");
-
+                                            redPacketCreate.save({"uuid":$scope.uuid},function (data) {
+                                            });
                                         },
                                         fail: function (res) {
                                         }
