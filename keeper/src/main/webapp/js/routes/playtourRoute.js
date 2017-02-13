@@ -144,6 +144,19 @@ define(['appPlayTour'], function(app){
                             }
                         }
                     })
+                    .state('storyList', {
+                        url: '/storyList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'storyListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.storyListCtrl',
+                                    ['js/controllers/storyList/storyListCtrl.js?ver='+wxVersion,
+                                        'styles/storyList/storyList.css?ver='+wxVersion],
+                                    'js/views/storyList/storyList.html?ver='+wxVersion);
+                            }
+                        }
+                    })
 
                 $urlRouterProvider.otherwise('playtourShare');
             }])
