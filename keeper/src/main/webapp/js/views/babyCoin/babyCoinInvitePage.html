@@ -1,6 +1,6 @@
 <ion-view ng-init="invitePageInit()">
     <ion-content class="babyCoinInvitePage">
-        <div class="invitePageBox">
+        <!--<div class="invitePageBox">
             <img width="90%" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fbiaoti_png_03.png" alt=""/>
             <img class="fl" width="90%" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fone_png_02.png" alt=""/>
             <img class="fr" width="90%" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Ffive_png_03.png" alt=""/>
@@ -20,5 +20,27 @@
             <img class="invitePageShareContent" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fyaoqing_png_03.png" alt=""/>
             <img class="invitePageShareMark" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/invitePageShareMark.png" alt=""/>
         </div>
+    -->
+        <div class="invitePageBox">
+            <img width="90%" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin%2Fbanner_png_210.png" alt=""/>
+            <img class="m-top" width="90%" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin%2Fone_png_210.png" alt=""/>
+            <img class="m-top" width="90%" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin%2Ftwo_png_210.png" alt=""/>
+            <img class="m-top" id="invitePageContent" ng-click="showFlag()" width="90%" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin%2Fbutton_png_210.png" alt=""/>
+            <div class="store-btn">
+                <div ng-click="goCoupon()" class="coupon">
+                    <img width="90%" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin%2Fbutton_a_png_210.png" alt=""/>
+                </div>
+                <div ng-click="goStore()" class="store">
+                    <img width="90%" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin%2Fbutton_b_png_210.png" alt=""/>
+                </div>
+            </div>
+            <img width="90%" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin%2Fguize_png_210.png" alt=""/>
+        </div>
+        <div id="invitePageShade" class="invitePageShade" ng-show="info.flag" ng-click="hideFlag()">
+            <img class="invitePageShareContent" src="http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/babyMoney%2Fyaoqing_png_03.png" alt=""/>
+            <img class="invitePageShareMark" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/invitePageShareMark.png" alt=""/>
+        </div>
+
+
     </ion-content>
 </ion-view>
