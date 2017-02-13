@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -150,13 +151,15 @@ public class BabyCoinServiceImpl implements BabyCoinService {
     }
 
     @Override
-    public void redPacketShare(String openid, String packetId) {
+    public Map<String,Object> redPacketShare(String openid, String packetId) {
+        Map<String,Object> resultMap = new HashMap<String, Object>();
         Query queryInLog = new Query();
         queryInLog.addCriteria(Criteria.where("id").is(packetId));
         List<RedPacketInfoVo> li = redPacketInfoService.queryList(queryInLog);
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         if(null != li&&li.size()>0){
             RedPacketInfoVo vo =  li.get(0);
+            resultMap.put("balance",vo.getBalance());
             String redPacketNum = sysPropertyVoWithBLOBsVo.getRedPacketNum();
             Query queryRedPackRecord = new Query();
             queryInLog.addCriteria(Criteria.where("packetId").is(packetId));
@@ -181,9 +184,13 @@ public class BabyCoinServiceImpl implements BabyCoinService {
 
                 redPacketInfoService.upsert((new Query(where("id").is(packetId))),
                         new Update().update("balance", vo.getCount()-shareCoin));
+
+                resultMap.put("recordVoList",recordVoList);
             }
 
+
         }
+        return resultMap;
     }
 
     @Override
@@ -195,6 +202,23 @@ public class BabyCoinServiceImpl implements BabyCoinService {
             packetId = re.getId();
         }
         return packetId;
+    }
+
+    @Override
+    public String redPacketInfo(String packetId) {
+        Query queryInLog = new Query();
+        queryInLog.addCriteria(Criteria.where("id").is(packetId));
+        List<RedPacketInfoVo> li = redPacketInfoService.queryList(queryInLog);
+        if (null != li && li.size() > 0) {
+            RedPacketInfoVo vo = li.get(0);
+            vo.getBalance();
+
+         }
+        Query queryRedPackRecord = new Query();
+        queryInLog.addCriteria(Criteria.where("packetId").is(packetId));
+        List<RedPacketRecordVo> recordVoList = redPacketRecordService.queryList(queryRedPackRecord);
+        return "";
+
     }
 
 }

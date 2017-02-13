@@ -7,12 +7,18 @@ angular.module('controllers', [])
             $scope.oldOpenId = $stateParams.oldOpenId;
             $scope.minename = '您的朋友';
             $scope.openid = $stateParams.oldOpenId;
+            $scope.redPacketId = $stateParams.redPacketId;
             $scope.inviteUrlData = "";
             $scope.info = {
                 share:false,
                 goConsult:false
             };
             $scope.receiveLock = false;//未领取
+            // 判断用户是否领了该红包
+            //该红包是否可领
+            
+
+
             /*好友领取宝宝币信息*/
             $scope.friendsData=[
                 {

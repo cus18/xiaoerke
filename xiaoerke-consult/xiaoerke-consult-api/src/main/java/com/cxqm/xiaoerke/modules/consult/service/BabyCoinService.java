@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RedPacketInfoVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wangbaowei on 16/3/10.
@@ -32,7 +33,9 @@ public interface BabyCoinService {
 
     int giveBabyCoin(String openid,Long count);
 
-    void redPacketShare(String openid, String packetId);
+    Map<String,Object> redPacketShare(String openid, String packetId);
 
     String redPacketInit(RedPacketInfoVo re);
+
+    String redPacketInfo(String packetId);
 }
