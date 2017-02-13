@@ -1,0 +1,70 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+.scroll-content{
+    overflow: scroll;
+}
+.fl{
+    float: left!important;
+}
+
+.fr{
+    float: right!important;
+}
+
+.storyList .content{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    padding: 55px 27px 15px 29px;
+    background: url('http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/storyList%2Fbackground.png') 0 0 no-repeat;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+}
+
+.storyList .prove {
+    list-style: none;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 3;
+}
+.storyList .prove li {
+    width: 72px;
+    height: auto;
+    display: inline-block;
+}
+.storyList .prove li:nth-child(1){
+    margin-left: 5px;
+}
+/*.storyList .prove li:nth-child(1),
+.storyList .prove li:nth-child(4){
+    margin-left: 5px;
+}
+.storyList .prove li:nth-child(5),
+.storyList .prove li:nth-child(6),
+.storyList .prove li:nth-child(4){
+    margin-top: 65px;
+}*/
+.storyList .prove li img{
+    width: 100%;
+    height: auto;
+}
+
+.storyList .bookRack{
+    position: absolute;
+    left: 5px;
+    top: 135px;
+}
+.storyList .bookRack1{
+    position: absolute;
+    left: 5px;
+    top: 296px;
+}
+.storyList .bookBottom{
+    position: absolute;
+    bottom: 15px;
+    left:0;
+    text-align: center;
+}
