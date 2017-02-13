@@ -373,13 +373,19 @@ public class BabyCoinController {
         babyCoinService.giveBabyCoin(openId,count);
     }
 
+    /**
+     * 宝宝币分配情况
+     *
+     * */
     @RequestMapping(value = "redPacketShare")
     public
     @ResponseBody
-    void redPacketShare(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
+    Map<String,Object> redPacketShare(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
         String openId = WechatUtil.getOpenId(session, request);
-        Long count = Long.valueOf((Integer) params.get("count"));
-        babyCoinService.giveBabyCoin(openId,count);
+       //检测该红包是否有效
+        String redPacketId = (String) params.get("redPacketId");
+        return babyCoinService.redPacketShare(openId,redPacketId);
+
     }
 
     @RequestMapping(value = "redPacketCreate")
