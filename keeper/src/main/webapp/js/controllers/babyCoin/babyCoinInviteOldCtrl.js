@@ -1,7 +1,7 @@
 angular.module('controllers', [])
     .controller('babyCoinInviteOldCtrl',
-    ['$scope','$state','CreateInviteCard','$stateParams','GetConfig','$ionicScrollDelegate',
-        function ($scope,$state,CreateInviteCard,$stateParams,GetConfig,$ionicScrollDelegate) {
+    ['$scope','$state','CreateInviteCard','$stateParams','GetConfig','$ionicScrollDelegate','redPacketShare',
+        function ($scope,$state,CreateInviteCard,$stateParams,GetConfig,$ionicScrollDelegate,redPacketShare) {
 
             $scope.marketer = $stateParams.marketer;
             $scope.oldOpenId = $stateParams.oldOpenId;
@@ -16,8 +16,9 @@ angular.module('controllers', [])
             $scope.receiveLock = false;//未领取
             // 判断用户是否领了该红包
             //该红包是否可领
-            
-
+            redPacketShare.save({redPacketId:$scope.redPacketId},function (data) {
+                
+            })
 
             /*好友领取宝宝币信息*/
             $scope.friendsData=[

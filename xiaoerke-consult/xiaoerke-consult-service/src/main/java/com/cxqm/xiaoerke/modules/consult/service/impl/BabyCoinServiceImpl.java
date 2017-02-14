@@ -153,6 +153,22 @@ public class BabyCoinServiceImpl implements BabyCoinService {
     @Override
     public Map<String,Object> redPacketShare(String openid, String packetId) {
         Map<String,Object> resultMap = new HashMap<String, Object>();
+
+        //先查询当前用户是否已经领取红包,如果领取过则直接返回领取结果
+        Query queryRedPackRecord = new Query();
+        queryRedPackRecord.addCriteria(Criteria.where("packetId").is(packetId));
+        List<RedPacketRecordVo> recordVoList = redPacketRecordService.queryList(queryRedPackRecord);
+        for(RedPacketRecordVo recordVo : recordVoList){
+            if(recordVo.getOpenid().equals(openid)){
+                resultMap.put("balance",recordVo.getCount());
+                resultMap.put("packetstatus","receive");
+                resultMap.put("recordVoList",recordVoList);
+                return resultMap;
+            }
+        }
+
+
+        //查询红包发配情况
         Query queryInLog = new Query();
         queryInLog.addCriteria(Criteria.where("id").is(packetId));
         List<RedPacketInfoVo> li = redPacketInfoService.queryList(queryInLog);
@@ -161,9 +177,7 @@ public class BabyCoinServiceImpl implements BabyCoinService {
             RedPacketInfoVo vo =  li.get(0);
             resultMap.put("balance",vo.getBalance());
             String redPacketNum = sysPropertyVoWithBLOBsVo.getRedPacketNum();
-            Query queryRedPackRecord = new Query();
-            queryInLog.addCriteria(Criteria.where("packetId").is(packetId));
-            List<RedPacketRecordVo> recordVoList = redPacketRecordService.queryList(queryRedPackRecord);
+
             if(vo.getBalance()>0){
                 int packentNum = Integer.parseInt(redPacketNum)-recordVoList.size();
                 //红包数量
@@ -181,14 +195,10 @@ public class BabyCoinServiceImpl implements BabyCoinService {
                 recordVo.setCount(shareCoin);
                 recordVo.setOpenid(openid);
                 redPacketRecordService.insert(recordVo);
-
                 redPacketInfoService.upsert((new Query(where("id").is(packetId))),
                         new Update().update("balance", vo.getCount()-shareCoin));
-
                 resultMap.put("recordVoList",recordVoList);
             }
-
-
         }
         return resultMap;
     }
