@@ -17,7 +17,21 @@ angular.module('controllers', [])
             // 判断用户是否领了该红包
             //该红包是否可领
             redPacketShare.save({redPacketId:$scope.redPacketId},function (data) {
-                
+                console.log(data);
+                // 已经领取
+                if(data.packetstatus == "receive"){
+                    $scope.receiveLock = true;//未领取
+                    $scope.balance = data.balance;//领取金额
+                    $scope.recordVoList = data.recordVoList;//红包分配情况
+                }else if(data.packetstatus == "share"){
+                    $scope.receiveLock = true;//未领取
+                    $scope.balance = data.balance;//领取金额
+                    $scope.recordVoList = data.recordVoList;//红包分配情况
+                }else if(data.packetstatus == "isend"){
+                    $scope.receiveLock = false;//未领取
+                    $scope.recordVoList = data.recordVoList;//红包分配情况
+                }
+
             })
 
             /*好友领取宝宝币信息*/
