@@ -178,7 +178,7 @@ public class BabyCoinServiceImpl implements BabyCoinService {
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         if(null != li&&li.size()>0){
             RedPacketInfoVo vo =  li.get(0);
-            resultMap.put("balance",vo.getBalance());
+
             String redPacketNum = sysPropertyVoWithBLOBsVo.getRedPacketNum();
 
             if(vo.getBalance()>0){
@@ -190,6 +190,7 @@ public class BabyCoinServiceImpl implements BabyCoinService {
                 }else{
                     shareCoin =  new Double(shareCoin*(1-Math.random())).longValue();
                 }
+                resultMap.put("balance",shareCoin);
                 giveBabyCoin(openid,shareCoin);
 
                 RedPacketRecordVo recordVo = new RedPacketRecordVo();
