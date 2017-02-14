@@ -194,6 +194,12 @@ public class BabyCoinServiceImpl implements BabyCoinService {
                 recordVo.setCreate_time(new Date());
                 recordVo.setCount(shareCoin);
                 recordVo.setOpenid(openid);
+                SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+                sysWechatAppintInfoVo.setOpen_id(openid);
+                SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+                if (wechatAttentionVo != null && wechatAttentionVo.getWechat_name() != null) {
+                    recordVo.setNickName(wechatAttentionVo.getWechat_name());
+                }
                 redPacketRecordService.insert(recordVo);
                 redPacketInfoService.upsert((new Query(where("id").is(packetId))),
                         new Update().update("balance", vo.getCount()-shareCoin));
