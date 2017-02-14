@@ -36,7 +36,7 @@
                 <div class="depart"></div>
                 <!--代金券列表-->
                 <ul class="ticket-wrap">
-                    <li class="fl" ng-repeat="item in ticketData" ng-click="goExchange()">
+                    <li class="fl" ng-repeat="item in ticketData" ng-click="goExchange(item.id,item.name)">
                         <div class="ticket-name f5 c3">{{item.name}}</div>
                         <div class="ticket-coin f3 c5">宝宝币：<span>{{item.coin}}枚</span></div>
                         <img class="ticket-pic" width="110" height="auto" ng-src="{{item.pic}}">
