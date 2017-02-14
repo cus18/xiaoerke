@@ -1,8 +1,11 @@
 angular.module('controllers', ['ionic']).controller('babyCoinTicketListCtrl', [
-    '$scope','$state','$stateParams','sendMindCouponList',
-    function ($scope,$state,$stateParams,sendMindCouponList) {
+    '$scope','$state','$stateParams','sendMindCouponList','BabyCoinInit',
+    function ($scope,$state,$stateParams,sendMindCouponList,BabyCoinInit) {
 
         $scope.commitLock=true;
+        BabyCoinInit.save({},function(data){
+            $scope.babyMoney = data.babyCoinVo.cash;
+        })
         $scope.ticketData=[
             {
                 name:"咨询5折券",
