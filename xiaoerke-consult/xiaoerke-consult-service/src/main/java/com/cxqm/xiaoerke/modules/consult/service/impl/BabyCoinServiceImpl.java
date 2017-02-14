@@ -160,11 +160,12 @@ public class BabyCoinServiceImpl implements BabyCoinService {
         Query queryRedPackRecord = new Query();
         queryRedPackRecord.addCriteria(Criteria.where("packetId").is(packetId));
         List<RedPacketRecordVo> recordVoList = redPacketRecordService.queryList(queryRedPackRecord);
+        resultMap.put("recordVoList",recordVoList);
+
         for(RedPacketRecordVo recordVo : recordVoList){
             if(recordVo.getOpenid().equals(openid)){
                 resultMap.put("balance",recordVo.getCount());
                 resultMap.put("packetstatus","receive");
-                resultMap.put("recordVoList",recordVoList);
                 return resultMap;
             }
         }
@@ -206,7 +207,10 @@ public class BabyCoinServiceImpl implements BabyCoinService {
                 redPacketRecordService.insert(recordVo);
                 redPacketInfoService.upsert((new Query(where("id").is(packetId))),
                         new Update().update("balance", vo.getCount()-shareCoin));
+                resultMap.put("packetstatus","share");
                 resultMap.put("recordVoList",recordVoList);
+            }else{
+                resultMap.put("packetstatus","isend");
             }
         }
         return resultMap;
