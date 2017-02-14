@@ -12,7 +12,11 @@
 .fr{
     float: right!important;
 }
-
+img.magnifyImg{
+    position: absolute;
+    top: 0;
+    z-index: 999;
+}
 .storyList .content{
     height: 100%;
     width: 100%;
@@ -38,15 +42,6 @@
 .storyList .prove li:nth-child(1){
     margin-left: 5px;
 }
-/*.storyList .prove li:nth-child(1),
-.storyList .prove li:nth-child(4){
-    margin-left: 5px;
-}
-.storyList .prove li:nth-child(5),
-.storyList .prove li:nth-child(6),
-.storyList .prove li:nth-child(4){
-    margin-top: 65px;
-}*/
 .storyList .prove li img{
     width: 100%;
     height: auto;
