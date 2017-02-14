@@ -3,16 +3,16 @@
         <div class="content">
             <div>
                 <ul class="prove">
-                    <li class="fl"><img data-tap-disabled="true" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/storyList%2FstoryList_1.png" ng-click="previewImage(0)" /></li>
-                    <li><img data-tap-disabled="true" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/storyList%2FstoryList_2.png" ng-click="previewImage(1)" /></li>
-                    <li class="fr"><img data-tap-disabled="true" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/storyList%2FstoryList_3.png" ng-click="previewImage(2)" /></li>
+                    <li class="fl"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/storyList%2FstoryList_1.png" ng-click="previewImage(0)" /></li>
+                    <li><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/storyList%2FstoryList_2.png" ng-click="previewImage(1)" /></li>
+                    <li class="fr"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/storyList%2FstoryList_3.png" ng-click="previewImage(2)" /></li>
                 </ul>
             </div>
             <div style="margin-top: 66px">
                 <ul class="prove">
-                    <li class="fl"><img data-tap-disabled="true" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/storyList%2FstoryList_4.png" ng-click="previewImage(3)" /></li>
-                    <li><img data-tap-disabled="true" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/storyList%2FstoryList_5.png" ng-click="previewImage(4)" /></li>
-                    <li class="fr"><img data-tap-disabled="true" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/storyList%2FstoryList_6.png" ng-click="previewImage(5)" /></li>
+                    <li class="fl"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/storyList%2FstoryList_4.png" ng-click="previewImage(3)" /></li>
+                    <li><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/storyList%2FstoryList_5.png" ng-click="previewImage(4)" /></li>
+                    <li class="fr"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/storyList%2FstoryList_6.png" ng-click="previewImage(5)" /></li>
                 </ul>
             </div>
 
@@ -26,5 +26,6 @@
                 <img width="80%" data-tap-disabled="true" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/storyList%2Fcode.png" alt=""/>
             </div>
         </div>
+        <img width="100%" class="magnifyImg" data-tap-disabled="true" ng-click="hideImg()" ng-show='showFlag.magnifyImg' ng-src="{{imageSrc}}" alt=""/>
     </ion-content>
 </ion-view>
