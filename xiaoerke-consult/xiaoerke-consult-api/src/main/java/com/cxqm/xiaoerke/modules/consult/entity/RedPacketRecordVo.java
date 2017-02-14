@@ -10,6 +10,7 @@ public class RedPacketRecordVo {
     private String packetId;
     private String openid;
     private String nickName;
+    private String headPic;
     private double count;
     private Date create_time;
 
@@ -59,5 +60,13 @@ public class RedPacketRecordVo {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public String getHeadPic() {
+        return headPic;
+    }
+
+    public void setHeadPic(String headPic) {
+        this.headPic = headPic;
     }
 }
