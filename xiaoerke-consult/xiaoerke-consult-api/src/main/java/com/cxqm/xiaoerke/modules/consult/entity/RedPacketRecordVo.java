@@ -6,21 +6,12 @@ import java.util.Date;
  * Created by wangbaowei on 17/2/10.
  */
 public class RedPacketRecordVo {
-    private int id;
     private String packetId;
     private String openid;
     private String nickName;
     private String headPic;
     private double count;
     private Date create_time;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getPacketId() {
         return packetId;
