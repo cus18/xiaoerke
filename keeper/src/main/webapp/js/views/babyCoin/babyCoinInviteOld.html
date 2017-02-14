@@ -32,7 +32,7 @@
                 <img width="100%" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/receive1.png">
                 <div class="text tc">
                     <div class="key f3 c5">成功领到</div>
-                    <div class="f7 coin">宝宝币：20枚=￥2元</div>
+                    <div class="f7 coin">宝宝币：{{$scope.balance}}枚=￥{{$scope.balance/2}}元</div>
                 </div>
                 <div class="store f2 c5">宝宝币已放入宝大夫个人中心</div>
             </div>
@@ -40,11 +40,11 @@
             <div class="friend-list">
                 <img class="headline" width="164.5" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/friend_list.png">
                 <ul>
-                    <li class="f4" ng-repeat="item in friendsData">
+                    <li class="f4" ng-repeat="item in recordVoList">
                         <span class="headPic"><img class="my-img1 radius" width="30" height="30" ng-src="{{item.headPic}}"></span>
-                        <span class="name c3">{{item.name}}</span>
-                        <span class="date c4">{{item.date}}</span>
-                        <span class="coin">{{item.coin}}枚</span>
+                        <span class="name c3">{{item.nickName}}</span>
+                        <span class="date c4">{{item.create_time|'yyy-mm-dd'}}</span>
+                        <span class="coin">{{item.count}}枚</span>
                     </li>
                 </ul>
                 <br> <br> <br> <br> <br> <br>
