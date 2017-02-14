@@ -44,6 +44,10 @@ define(['appPlayTour'], function (app) {
             return $resource(user_h5 + 'babyCoin/redPacketCreate');
         }])
 
+        .factory('redPacketShare',['$resource',function ($resource){
+            return $resource(user_h5 + 'babyCoin/redPacketShare');
+        }])
+
         .factory('exchangeCoupon',['$resource',function ($resource){
             return $resource(user_h5 + 'babyCoin/exchangeCoupon');
         }]);
