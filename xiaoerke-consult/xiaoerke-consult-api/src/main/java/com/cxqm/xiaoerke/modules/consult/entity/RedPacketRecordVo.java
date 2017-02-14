@@ -9,6 +9,7 @@ public class RedPacketRecordVo {
     private int id;
     private String packetId;
     private String openid;
+    private String nickName;
     private double count;
     private Date create_time;
 
@@ -50,5 +51,13 @@ public class RedPacketRecordVo {
 
     public void setCreate_time(Date create_time) {
         this.create_time = create_time;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }
