@@ -124,6 +124,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 //        if(null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList()&&sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid)==-1){
 //            return;
 //        }
+        LogUtils.saveLog("增加会员时间",openid);
         ConsultMemberVo consultMemberVo = getConsultMemberInfo(openid);
         Integer memberEndTime = Integer.parseInt(timeLength);
         if(null == consultMemberVo){
