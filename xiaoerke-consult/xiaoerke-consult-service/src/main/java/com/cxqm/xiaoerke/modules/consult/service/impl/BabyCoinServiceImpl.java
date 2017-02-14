@@ -1,11 +1,13 @@
 package com.cxqm.xiaoerke.modules.consult.service.impl;
 
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.dao.BabyCoinDao;
 import com.cxqm.xiaoerke.modules.consult.dao.BabyCoinRecordDao;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.MongoDBService;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
@@ -194,12 +196,13 @@ public class BabyCoinServiceImpl implements BabyCoinService {
                 recordVo.setCreate_time(new Date());
                 recordVo.setCount(shareCoin);
                 recordVo.setOpenid(openid);
-                SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
-                sysWechatAppintInfoVo.setOpen_id(openid);
-                SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
-                if (wechatAttentionVo != null && wechatAttentionVo.getWechat_name() != null) {
-                    recordVo.setNickName(wechatAttentionVo.getWechat_name());
-                }
+                Map parameter = systemService.getWechatParameter();
+                String token = (String) parameter.get("token");
+                WechatBean wechatInfo = WechatUtil.getWechatName(token,openid);
+                recordVo.setHeadPic(wechatInfo.getHeadimgurl());
+                recordVo.setNickName(wechatInfo.getNickname());
+
+
                 redPacketRecordService.insert(recordVo);
                 redPacketInfoService.upsert((new Query(where("id").is(packetId))),
                         new Update().update("balance", vo.getCount()-shareCoin));
