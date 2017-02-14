@@ -518,6 +518,11 @@ public class PayNotificationController {
 //						consultPayUserService.saveChargeUser(sessionId, openid);
 //					}
 
+                    Map parameter = systemService.getWechatParameter();
+                    String token = (String) parameter.get("token");
+                    consultMemberRedsiCacheService.payConsultMember(openid,sysPropertyVoWithBLOBsVo.getConsultMemberTime(),(String) map.get("total_fee"),token);
+//                   mysql 增加会员记录,延长redis的时间
+
 
                     BabyCoinVo babyCoinVo = new BabyCoinVo();
                     babyCoinVo.setOpenId(openid);
@@ -548,7 +553,6 @@ public class PayNotificationController {
                             "openId=" + openid);
                     //扣过了不再扣
                     if (babyCoinRecordVos == null || babyCoinRecordVos.size() == 0) {
-
                         babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
                         babyCoinRecordVo.setBalance(-babyCash);
                         babyCoinRecordVo.setCreateTime(new Date());
@@ -558,10 +562,7 @@ public class PayNotificationController {
                         babyCoinRecordVo.setSource("consultPay");
                         babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
                     }
-                    Map parameter = systemService.getWechatParameter();
-                    String token = (String) parameter.get("token");
-                    consultMemberRedsiCacheService.payConsultMember(openid,sysPropertyVoWithBLOBsVo.getConsultMemberTime(),(String) map.get("total_fee"),token);
-//                   mysql 增加会员记录,延长redis的时间
+
 
 
                 }
