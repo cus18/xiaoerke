@@ -49,7 +49,6 @@ public class BabyCoinServiceImpl implements BabyCoinService {
     @Autowired
     private SystemService systemService;
 
-
     @Autowired
     private MongoDBService<RedPacketInfoVo> redPacketInfoService;
 
@@ -203,10 +202,9 @@ public class BabyCoinServiceImpl implements BabyCoinService {
                 WechatBean wechatInfo = WechatUtil.getWechatName(token,openid);
                 recordVo.setHeadPic(wechatInfo.getHeadimgurl());
                 recordVo.setNickName(wechatInfo.getNickname());
-
-
                 redPacketRecordService.insert(recordVo);
-                redPacketInfoService.upsert((new Query(where("id").is(packetId))),
+
+                redPacketInfoService.upsert((new Query(where("_id").is(packetId))),
                         new Update().update("balance", vo.getCount()-shareCoin));
                 resultMap.put("packetstatus","share");
                 resultMap.put("recordVoList",recordVoList);
@@ -228,21 +226,19 @@ public class BabyCoinServiceImpl implements BabyCoinService {
         return packetId;
     }
 
-    @Override
-    public String redPacketInfo(String packetId) {
-        Query queryInLog = new Query();
-        queryInLog.addCriteria(Criteria.where("id").is(packetId));
-        List<RedPacketInfoVo> li = redPacketInfoService.queryList(queryInLog);
-        if (null != li && li.size() > 0) {
-            RedPacketInfoVo vo = li.get(0);
-            vo.getBalance();
-
-         }
-        Query queryRedPackRecord = new Query();
-        queryInLog.addCriteria(Criteria.where("packetId").is(packetId));
-        List<RedPacketRecordVo> recordVoList = redPacketRecordService.queryList(queryRedPackRecord);
-        return "";
-
-    }
+//    @Override
+//    public String redPacketInfo(String packetId) {
+//        Query queryInLog = new Query();
+//        queryInLog.addCriteria(Criteria.where("id").is(packetId));
+//        List<RedPacketInfoVo> li = redPacketInfoService.queryList(queryInLog);
+//        if (null != li && li.size() > 0) {
+//            RedPacketInfoVo vo = li.get(0);
+//            vo.getBalance();
+//         }
+//        Query queryRedPackRecord = new Query();
+//        queryInLog.addCriteria(Criteria.where("packetId").is(packetId));
+//        List<RedPacketRecordVo> recordVoList = redPacketRecordService.queryList(queryRedPackRecord);
+//        return "";
+//    }
 
 }
