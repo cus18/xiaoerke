@@ -69,7 +69,7 @@ angular.module('controllers', [])
             var loadShare = function(){
                 $scope.uuid = uuid();
                 redPacketCreate.save({"uuid":$scope.uuid},function (data) {
-                    $scope.uuid = data;
+                    $scope.uuid = data.uuid;
                 });
                 GetConfig.save({}, function (data) {
                     $scope.inviteUrlData = data.publicSystemInfo.inviteUrl;
