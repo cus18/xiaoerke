@@ -67,12 +67,13 @@ angular.module('controllers', [])
             };
             //分享到朋友圈或者微信
             var loadShare = function(){
-                redPacketCreate.save({"uuid":uuid()},function (data) {
+                $scope.uuid = uuid();
+                redPacketCreate.save({"uuid":$scope.uuid},function (data) {
                     $scope.uuid = data;
                 });
                 GetConfig.save({}, function (data) {
                     $scope.inviteUrlData = data.publicSystemInfo.inviteUrl;
-                    // $scope.uuid = uuid();
+
                     var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
                     // if(version=="a"){
                     version="a";
