@@ -110,20 +110,20 @@ angular.module('controllers', [])
                                 wx.ready(function () {
                                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                     wx.onMenuShareTimeline({
-                                        title: '在这里可以免费咨询三甲医院儿科专家', // 分享标题
+                                        title: '比比运气，大波红包等你抢~在这里可以免费咨询三甲医院儿科专家', // 分享标题
                                         link: share, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                         success: function (res) {
                                             recordLogs("ZXYQ_YQY_SHARE");
-                                            redPacketCreate.save({"uuid":$scope.uuid},function (data) {
-                                            });
+                                            // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
+                                            // });
                                         },
                                         fail: function (res) {
                                         }
                                     });
                                     wx.onMenuShareAppMessage({
                                         title: $scope.minename  + '向你推荐', // 分享标题
-                                        desc: '在这里可以免费咨询三甲医院儿科专家', // 分享描述
+                                        desc: '比比运气，大波红包等你抢~在这里可以免费咨询三甲医院儿科专家', // 分享描述
                                         link: share, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                         success: function (res) {
