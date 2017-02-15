@@ -37,5 +37,5 @@ public interface BabyCoinService {
 
     String redPacketInit(RedPacketInfoVo re);
 
-    String redPacketInfo(String packetId);
+//    String redPacketInfo(String packetId);
 }
