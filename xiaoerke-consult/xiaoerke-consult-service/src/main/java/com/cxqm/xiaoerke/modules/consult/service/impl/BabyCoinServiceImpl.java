@@ -172,7 +172,7 @@ public class BabyCoinServiceImpl implements BabyCoinService {
 
         //查询红包发配情况
         Query queryInLog = new Query();
-        queryInLog.addCriteria(Criteria.where("id").is(packetId));
+        queryInLog.addCriteria(Criteria.where("_id").is(packetId));
         List<RedPacketInfoVo> li = redPacketInfoService.queryList(queryInLog);
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         if(null != li&&li.size()>0){
@@ -207,7 +207,7 @@ public class BabyCoinServiceImpl implements BabyCoinService {
                 redPacketRecordService.insert(recordVo);
 
                 redPacketInfoService.upsert((queryInLog),
-                        new Update().update("balance", vo.getCount()-shareCoin));
+                        new Update().update("balance", vo.getBalance()-shareCoin));
                 resultMap.put("packetstatus","share");
                 resultMap.put("recordVoList",recordVoList);
             }else{
