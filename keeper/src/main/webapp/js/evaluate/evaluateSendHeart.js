@@ -111,7 +111,7 @@ function commitEvaluate(){
     consultStatus=GetQueryString("consultStatus");
     if (redPacket != "" && redPacket > 0  ) {
         //加50枚
-        giveCoin(50);
+        giveCoin(20);
         recordLogs("ZXPJSXY_JE");
         $.ajax({
             url:"account/user/customerPay",// 跳转到 action
@@ -175,7 +175,7 @@ function commitEvaluate(){
         });
     }else{
         //加20枚
-        giveCoin(20);
+        giveCoin(5);
         var data = {'id':customerId,'consultStatus':consultStatus,'starNum1':starNum1+"",'content':content,'redPacket':redPacket,'sessionId':sessionId};
         $.ajax({
             url:"interaction/user/updateCustomerEvaluation",// 跳转到 action
