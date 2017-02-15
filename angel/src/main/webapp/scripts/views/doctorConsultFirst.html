@@ -18,11 +18,11 @@
                 <span ng-if="loseConnectionFirstFlag||loseConnectionSecondFlag">您已与平台断开了连接，请检查您的网络情况，谢谢！</span>
                 <span ng-if="!loseConnectionFirstFlag&&!loseConnectionSecondFlag">您目前与平台连接正常！</span>
                 <div class="bdf-dkf-content-right">
-                   <!-- <div class="cjgl">退出</div>
-                    <div class="xtsz" ng-click="tapShowButton('systemSetup')">
-                        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>
-                        系统设置
-                    </div>-->
+                    <!-- <div class="cjgl">退出</div>
+                     <div class="xtsz" ng-click="tapShowButton('systemSetup')">
+                         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fa_06.png" alt=""/>
+                         系统设置
+                     </div>-->
                     <div ng-click="tapShowButton('specialistList')"
                          ng-style="userType=='distributor'?{'display':'block'}:{'display':'none'}"
                             >
@@ -30,15 +30,15 @@
                     </div>
                 </div>
                 <!--<span>自动回复-->
-                    <!--<select>-->
-                        <!--<option>无</option>-->
-                        <!--<option>外出就餐，请稍候</option>-->
-                        <!--<option>不在电脑旁边，请稍候</option>-->
-                        <!--<option>接听电话中</option>-->
-                        <!--<option>无自动回复</option>-->
-                        <!--<option>马上回来</option>-->
-                    <!--</select>-->
-                    <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>-->
+                <!--<select>-->
+                <!--<option>无</option>-->
+                <!--<option>外出就餐，请稍候</option>-->
+                <!--<option>不在电脑旁边，请稍候</option>-->
+                <!--<option>接听电话中</option>-->
+                <!--<option>无自动回复</option>-->
+                <!--<option>马上回来</option>-->
+                <!--</select>-->
+                <!--<img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fpic%2Fjiantou_png_03.png" alt=""/>-->
                 <!--</span>-->
             </div>
         </div>
@@ -219,15 +219,14 @@
                     </div>
                 </div>
             </div>
-            <!--<iframe src="http://s132.baodf.com/angel/scripts/views/customerss.html" frameborder="0"-->
             <iframe src="http://s123.xiaork.com/angel/scripts/views/customerss.html" frameborder="0"
-            class="advisory-content" ng-show='showFlag.advisoryContent'>
+                    class="advisory-content" ng-show='showFlag.advisoryContent'>
             </iframe>
             <textarea type="text" name="messageData" id="patientIdData" class="textarea" style="display:none;">{{currentUserConversation.patientId}}</textarea>
             <textarea type="text" name="messageData" id="doctorIdData" class="textarea" style="display:none;">{{doctorId}}</textarea>
             <textarea type="text" name="messageData" id="sourceData" class="textarea" style="display:none;">{{currentUserConversation.source}}</textarea>
-            <div class="advisory-content" ng-show='showFlag.advisoryContent'>
-                <!--用户信息-->
+            <!--<div class="advisory-content" ng-show='showFlag.advisoryContent'>
+                &lt;!&ndash;用户信息&ndash;&gt;
                 <div class="module">
                     <div class="title">
                         <h3>用户信息<input type="submit" class="more" value="{{userTableMore}}" ng-click="tapUserTable('userTable')"/> <span>(VIP)</span>：</h3>
@@ -257,7 +256,7 @@
                         </tr>
                     </table>
                 </div>
-                <!--近期就诊记录-->
+                &lt;!&ndash;近期就诊记录&ndash;&gt;
                 <div class="module">
                     <div class="title">
                         <h3>近期就诊记录<input type="submit" class="more" value="{{recentTableMore}}" ng-click="tapRecentTable('recentTable')"/></h3>
@@ -302,7 +301,7 @@
                         </tr>
                     </table>
                 </div>
-                <!--添加咨询记录-->
+                &lt;!&ndash;添加咨询记录&ndash;&gt;
                 <div class="module" >
                     <div class="title">
                         <h3>添加咨询记录<input type="submit" class="more" value="{{addConsultTableMore}}" ng-click="tapAddConsultTable('addConsultTable')"/> </h3>
@@ -310,7 +309,7 @@
                     <table class="table3" ng-show="showFlag.addConsultTable">
                         <tr>
                             <td>
-                                <span>客服：大熊猫</span><!--{{doctorName}}-->
+                                <span>客服：</span><input type="text" value="{{currentUserConversation.patientId}}"/>
                             </td>
                             <td class="td-l">
                                 <span>归档日期：</span><span>{{todayTime}}</span>
@@ -338,23 +337,19 @@
                         </tr>
                         <tr class="save">
                             <td colspan="3">
-                                <input type="submit" value="添加记录"
-                                       ng-style="backgroundAdd?{'background':'#88d9dd'}:{'background':'gray'}"
-                                       ng-click="addDiagnosisRecords()"/>
+                                <input type="submit" value="添加记录" ng-click="addDiagnosisRecords()"/>
                                 <input type="submit" value="取消保存"/>
                                 <input type="submit" value="推荐医生"/>
                             </td>
                         </tr>
                         <tr class="save">
                             <td>
-                                <span>定时回访：<input type="submit" value="添加定时回访"
-                                                  ng-style="backgroundAddTime?{'background':'#88d9dd'}:{'background':'gray'}"
-                                                  ng-click="addDiagnosisTiming()"/></span>
+                                <span>定时回访：<input type="submit" value="添加定时回访"/></span>
                             </td>
                         </tr>
                     </table>
                 </div>
-                <!--历史咨询档案-->
+                &lt;!&ndash;历史咨询档案&ndash;&gt;
                 <div class="module">
                     <div class="title">
                         <h3 >历史咨询档案<input type="submit" class="more" value="{{historyTableMore}}" ng-click="tapHistoryTable('historyTable')"/></h3>
@@ -381,7 +376,7 @@
                         </tr>
                     </table>
                 </div>
-                <!--<div>
+                &lt;!&ndash;<div>
                        <span style="">科室/类别：</span><input type="text" id="addSections"/>
                        <br/>
                        <center>
@@ -396,8 +391,8 @@
                            <br/><br/><br/><br/>
                            <input type="submit" value="关闭"/>
                        </center>
-                   </div>-->
-            </div>
+                   </div>&ndash;&gt;
+            </div>-->
         </div>
         <div class="msg-m h30" ng-if="chooseAlreadyJoinConsultPatientId!=''">
             <div class="headportrait">
@@ -412,7 +407,7 @@
                 </div>
                 <div class="chatlist">
                     <div scroll-glue-bottom="glued" class="chatlistin">
-                        <div class="moreInformation" ng-click="seeMoreConversationMessage(10)">
+                        <div class="moreInformation" ng-click="seeMoreConversationMessage()">
                             <a href="">查看更多消息</a>
                         </div>
                         <div class="moreInformation">
