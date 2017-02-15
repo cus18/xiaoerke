@@ -157,9 +157,11 @@ var recordLogs = function (val) {
                             if (useBabyCoin) {
                                 bar = 'Unchoose';
                                 useBabyCoin = false;
+                                $('#payConfirm').html('确认支付9.9元');
                             } else {
                                 bar = 'Choose';
                                 useBabyCoin = true;
+                                $('#payConfirm').html('确认支付4.9元');
                             }
                             ;
                             $('#useBabyCoinRightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%');
