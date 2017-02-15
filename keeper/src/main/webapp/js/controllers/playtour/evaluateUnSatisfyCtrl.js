@@ -100,6 +100,17 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
                     window.location.href = "playtour#/evaluateSuccess";
                 }
             });*/
+            var data = {'count':5};
+            $.ajax({
+                url:"babyCoin/giveBabyCoin",// 跳转到 action
+                type:'POST', //GET
+                data:JSON.stringify(data),
+                dataType:'json',
+                contentType: "application/json;charset=UTF-8",
+                success:function(data) {
+
+                }
+            })
             var dissatisfied= "";
             for(var i=0;i<noManYi.length;i++){
                 dissatisfied +=noManYi[i]+",";
