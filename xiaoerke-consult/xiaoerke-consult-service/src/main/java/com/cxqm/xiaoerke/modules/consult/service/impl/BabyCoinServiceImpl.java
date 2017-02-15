@@ -184,10 +184,12 @@ public class BabyCoinServiceImpl implements BabyCoinService {
                 int packentNum = Integer.parseInt(redPacketNum)-recordVoList.size();
                 //红包数量
                 long shareCoin = Math.round(vo.getBalance()/packentNum);
-                if(Math.random()*10%2==0){
-                    shareCoin =  new Double(shareCoin*(1+Math.random())).longValue();
-                }else{
-                    shareCoin =  new Double(shareCoin*(1-Math.random())).longValue();
+                if(packentNum>1){
+                    if(Math.random()*10%2==0){
+                        shareCoin =  new Double(shareCoin*(1+Math.random())).longValue();
+                    }else{
+                        shareCoin =  new Double(shareCoin*(1-Math.random())).longValue();
+                    }
                 }
                 resultMap.put("balance",shareCoin);
                 giveBabyCoin(openid,shareCoin);
@@ -204,7 +206,7 @@ public class BabyCoinServiceImpl implements BabyCoinService {
                 recordVo.setNickName(wechatInfo.getNickname());
                 redPacketRecordService.insert(recordVo);
 
-                redPacketInfoService.upsert((new Query(where("_id").is(packetId))),
+                redPacketInfoService.upsert((queryInLog),
                         new Update().update("balance", vo.getCount()-shareCoin));
                 resultMap.put("packetstatus","share");
                 resultMap.put("recordVoList",recordVoList);
