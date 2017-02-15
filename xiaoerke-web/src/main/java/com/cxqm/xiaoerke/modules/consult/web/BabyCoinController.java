@@ -391,7 +391,8 @@ public class BabyCoinController {
     @RequestMapping(value = "redPacketCreate")
     public
     @ResponseBody
-    String redPacketCreate(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
+    Map<String,String> redPacketCreate(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
+        Map<String,String> resultMap = new HashMap<String, String>();
         String openId = WechatUtil.getOpenId(session, request);
         String uuid = (String)params.get("uuid");//UUIDUtil.getUUID();
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
@@ -403,6 +404,7 @@ public class BabyCoinController {
         vo.setBalance(count);
         vo.setCreate_time(new Date());
         vo.setId(uuid);
-        return babyCoinService.redPacketInit(vo);
+        resultMap.put("uuid",babyCoinService.redPacketInit(vo));
+        return resultMap;
     }
 }
