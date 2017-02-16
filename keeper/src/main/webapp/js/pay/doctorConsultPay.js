@@ -3,6 +3,7 @@ var moneys = 9.9;
 var leaveNotes = "reward";
 var useBabyCoin = true;
 var payFlag = false;
+var payCount = 25;
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
 var doRefresh = function () {
     var timestamp;//时间戳
@@ -45,6 +46,7 @@ var doRefresh = function () {
 
     $('#money').html(moneys);
     recordLogs("consult_charge_twice_information_payclick");
+    userBabyCoinPay();
 };
 var recordLogs = function (val) {
     $.ajax({
@@ -62,10 +64,6 @@ var recordLogs = function (val) {
 };
 recordLogs("ZXTS_GMRK")
 function wechatPay() {
-    //if (useBabyCoin) {
-    //    UseBobyCoinPay();
-    //    recordLogs("ZXYQ_ZFY_SHIYONG")
-    //}
     recordLogs("consult_charge_twice_paypage_paybutton");
     var u = navigator.userAgent, app = navigator.appVersion;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('linux') > -1; //g
@@ -102,7 +100,7 @@ function wechatPay() {
                         paySign: obj.paySign,  // 支付签名
                         success: function (res) {
                             if (res.errMsg == "chooseWXPay:ok") {
-                              window.location.href="http://s132.baodf.com/angel/patient/consult#/doctorConsultPaySuccess";
+                                window.location.href = "http://s132.baodf.com/angel/patient/consult#/doctorConsultPaySuccess";
                             } else {
                                 alert("支付失败,请重新支付")
                             }
@@ -121,6 +119,19 @@ function wechatPay() {
         payLock = true;
     }
 }
+function selectPay25Money() {
+    document.getElementById("25MoneyPay").style.display = "";//隐藏
+    document.getElementById("10MoneyPay").style.display = "none";//显
+    payCount = 25;
+    userBabyCoinPay();
+}
+function selectPay10Money() {
+    document.getElementById("10MoneyPay").style.display = "";//隐藏
+    document.getElementById("25MoneyPay").style.display = "none";//显
+    payCount = 10;
+    userBabyCoinPay();
+}
+
 
 var recordLogs = function (val) {
     $.ajax({
@@ -136,54 +147,77 @@ var recordLogs = function (val) {
         }
     });
 };
-(function () {
-    var time1,
-        bar = 'Choose';
-    time1 = setInterval(flag, 100);
-    function flag() {
-        if ($('#useBabyCoinRight')) {
-            $.ajax({
-                type: "get",
-                url: 'http://' + window.location.host + "/keeper/babyCoin/babyCoinInit",
-                dataType: "json",
-                success: function (data) {
-                    //var canUse = 0;//可以抵钱的宝宝币数
-                    var cash = data.babyCoinVo.cash;//现有宝宝币总数
-                    if(cash >= 50){
-                        document.getElementById("useBabyCoinDiv").style.display="";
-                        payFlag = true;
-                        $('#useBabyCoinLeft').html('亲，您有宝宝币可减免5.0元');
-                        $('#useBabyCoinRight').click(function () {
-                            if (useBabyCoin) {
-                                bar = 'Unchoose';
-                                useBabyCoin = false;
-                                $('#payConfirm').html('确认支付9.9元');
-                            } else {
-                                bar = 'Choose';
-                                useBabyCoin = true;
-                                $('#payConfirm').html('确认支付4.9元');
-                            }
-                            ;
-                            $('#useBabyCoinRightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%');
-                            console.log(useBabyCoin)
-                        });
-                        $('#payConfirm').html('确认支付4.9元');
-                    } else {
-                        document.getElementById("useBabyCoinDiv").style.display="none";
-                        $('#useBabyCoinRightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRightUnchoose.png") 100% 100%/100% 100%')
-                        useBabyCoin = false;
+var userBabyCoinPay = function () {
+    var bar = 'Choose';
+    $.ajax({
+        type: "get",
+        url: 'http://' + window.location.host + "/keeper/babyCoin/babyCoinInit",
+        dataType: "json",
+        success: function (data) {
+            //var canUse = 0;//可以抵钱的宝宝币数
+            var cash = 140;//现有宝宝币总数
+            if (payCount == 10) {//用户选择支付10元的
+                document.getElementById("useBabyCoin25Div").style.display = "none";
+                document.getElementById("useBabyCoin10Div").style.display = "";
+                if (cash >= 50) {
+                    payFlag = true;
+                    $('#useBabyCoin10Left').html('亲，您有宝宝币可减免5.0元');
+                    $('#useBabyCoin10Right').click(function () {
+                        if (useBabyCoin) {
+                            bar = 'Unchoose';
+                            useBabyCoin = false;
+                            $('#payConfirm').html('确认支付9.9元');
+                        } else {
+                            bar = 'Choose';
+                            useBabyCoin = true;
+                            $('#payConfirm').html('确认支付4.9元');
+                        }
+                        ;
+                        $('#useBabyCoin10RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%');
                         console.log(useBabyCoin)
-                        $('#payConfirm').html('确认支付9.9元');
-                    }
-                },
-                error: function (jqXHR) {
-                    console.log("发生错误：" + jqXHR.status);
-                },
-            });
-        }
-        clearTimeout(time1);
-    }
-}());
+                    });
+                    $('#payConfirm').html('确认支付4.9元');
+                } else {
+                    $('#useBabyCoin10RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRightUnchoose.png") 100% 100%/100% 100%')
+                    useBabyCoin = false;
+                    console.log(useBabyCoin)
+                    $('#payConfirm').html('确认支付9.9元');
+                }
+            } else {//用户选择支付25元的
+                document.getElementById("useBabyCoin10Div").style.display = "none";
+                document.getElementById("useBabyCoin25Div").style.display = "";
+                if (cash >= 125) {
+                    payFlag = true;
+                    $('#useBabyCoin25Left').html('亲，您有宝宝币可减免12.5元');
+                    $('#useBabyCoin25Right').click(function () {
+                        if (useBabyCoin) {
+                            bar = 'Unchoose';
+                            useBabyCoin = false;
+                            $('#payConfirm').html('确认支付25.0元');
+                        } else {
+                            bar = 'Choose';
+                            useBabyCoin = true;
+                            $('#payConfirm').html('确认支付12.5元');
+                        }
+                        ;
+                        $('#useBabyCoin25RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%');
+                        console.log(useBabyCoin)
+                    });
+                    $('#payConfirm').html('确认支付12.5元');
+                } else {
+                    $('#useBabyCoin25RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRightUnchoose.png") 100% 100%/100% 100%')
+                    useBabyCoin = false;
+                    console.log(useBabyCoin)
+                    $('#payConfirm').html('确认支付25.0元');
+                }
+            }
+
+        },
+        error: function (jqXHR) {
+            console.log("发生错误：" + jqXHR.status);
+        },
+    });
+};
 //doctorConsultPaySuccess
 function UseBobyCoinPay() {
     $.ajax({

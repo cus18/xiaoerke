@@ -5,33 +5,78 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
 <meta content="yes" name="apple-mobile-web-app-capable">
-<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<meta name="viewport"
+      content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
 <title>咨询医生</title>
 <script src="js/libs/jquery-2.1.3.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="js/pay/doctorConsultPay.js"></script>
-<link rel="stylesheet" href="/keeper/styles/main.less" type="text/css" />
-<link rel="stylesheet" href="/keeper/styles/pay/commonPay.less" type="text/css" />
-<link rel="stylesheet" href="/keeper/styles/pay/doctorConsultPay.less" type="text/css" />
+<link rel="stylesheet" href="/keeper/styles/main.less" type="text/css"/>
+<link rel="stylesheet" href="/keeper/styles/pay/commonPay.less" type="text/css"/>
+<link rel="stylesheet" href="/keeper/styles/pay/doctorConsultPay.less" type="text/css"/>
 <body onload="doRefresh()">
-<div class="doctorConsultPay bg1" >
-    <div class="intro">
-        <img width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fb_03.png" alt=""/>
-        <span>你需支付</span>
-        <span>咨询服务费￥9.9</span>
+<div class="doctorConsultPay bg1">
+    <div>
+        <br> <br>
+
+        <p align="center"><img
+                src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultPayVersion1.2%2Fhengxian.png"
+                width="35%" height="1%"/>
+            请选择服务<img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultPayVersion1.2%2Fhengxian.png"
+                      width="35%" height="1%"/>
+        </p>
+
+        <p align="center">&nbsp;</p>
     </div>
-    <div id="useBabyCoinDiv" class="useBabyCoin">
-        <span id="useBabyCoinLeft" class="useBabyCoinLeft">请支付9.9元</span>
-        <div id="useBabyCoinRight" class="useBabyCoinRight">
-            <div id="useBabyCoinRightImg" class="useBabyCoinRightImg"></div>
+    <br>
+
+    <div id="10MoneyPay" style="display: none;" onclick="selectPay25Money()" class="selectPay10Money();">
+        <p align="center"><img
+                src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultPayVersion1.2%2FselectPay9.9.png"
+                width="90%" height="6%"/></p>
+        <br>
+
+        <p align="center"><img
+                src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultPayVersion1.2%2FunsuccessPay25.png"
+                width="90%" height="6%"/></p>
+
+        <p align="center">&nbsp;</p>
+    </div>
+
+    <div id="25MoneyPay" onclick="selectPay10Money()">
+        <p align="center"><img
+                src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultPayVersion1.2%2FunselectPay9.9.png"
+                width="90%" height="6%"/></p>
+        <br>
+
+        <p align="center"><img
+                src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultPayVersion1.2%2FselectPay25.png"
+                width="90%" height="6%"/></p>
+
+        <p align="center">&nbsp;</p>
+    </div>
+
+    <div id="useBabyCoin10Div" class="useBabyCoin" style="display: none;">
+        <span id="useBabyCoin10Left" class="useBabyCoinLeft">请支付9.9元</span>
+
+        <div id="useBabyCoin10Right" class="useBabyCoinRight">
+            <div id="useBabyCoin10RightImg" class="useBabyCoinRightImg"></div>
             <span class="useBabyCoinRightText">使用</span>
         </div>
+    </div>
+    <div id="useBabyCoin25Div" class="useBabyCoin">
+        <span id="useBabyCoin25Left" class="useBabyCoinLeft">请支付25.0元</span>
 
+        <div id="useBabyCoin25Right" class="useBabyCoinRight">
+            <div id="useBabyCoin25RightImg" class="useBabyCoinRightImg"></div>
+            <span class="useBabyCoinRightText">使用</span>
+        </div>
     </div>
     <div class="weChat">
         <div>购买一次，开始咨询后，24小时内医生都会回复</div>
     </div>
-    <div id="payButton" class="button" ><a onclick="wechatPay()" class="change"><span id="payConfirm">确认支付</span></a></div>
+    <div id="payButton" class="button"><a onclick="wechatPay()" class="change"><span id="payConfirm">确认支付</span></a>
+    </div>
 </div>
 </body>
 </html>
