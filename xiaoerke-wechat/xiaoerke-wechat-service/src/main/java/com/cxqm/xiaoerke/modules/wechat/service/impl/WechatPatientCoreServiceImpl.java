@@ -1123,7 +1123,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), welcomeMsg);
             welcomeMsg = "\uE022送您一张价值10元代金券,先到先得哦~\n这里有各大名牌母婴产品，足不出户享最真、最快、最优实惠商品。\n点击：<a href='https://h5.koudaitong.com/v2/ump/promocard/fetch?alias=2l170s90'>立即领取</a> " +
 //                    "还可买到各大名牌母婴产品，足不出户享受最真、最快、最优的实惠商品\uD83D\uDC9D。点击：<a href='https://shop17975201.koudaitong.com/v2/home/4z2f8goy?reft=1477987510078&spm=g305026344&oid=0&sf=wx_sm'>立即购买</a>\n\n" +
-                    "\n\n还有更多千万宝宝值得学习的育儿知识哦~   点击：<a href='https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI2MDAxOTY3OQ==&from=singlemessage&isappinstalled=0&scene=116#wechat_redirect'>学习知识</a>";
+                    "\n\n还有更多千万宝宝值得学习的育儿知识哦~   点击：<a href='https://h5.koudaitong.com/v2/ump/promocard/fetch?alias=8y6uvykm'>学习知识</a>";
             WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), welcomeMsg);
         }
         return processScanEvent(xmlEntity, "newUser", request, response, sysPropertyVoWithBLOBsVo);
