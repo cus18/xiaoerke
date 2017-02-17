@@ -483,6 +483,7 @@ public class AccountServiceImpl implements AccountService {
                 payRecord.setStatus("wait");
                 payRecord.setPayDate(new Date());
                 payRecord.setCreatedBy(user.getId());
+                payRecord.setLeaveNote(PrepayInfo.get("leaveNote"));
                 payRecord.setFeeType(PrepayInfo.get("feeType"));
                 if ("lovePlan".equals(PrepayInfo.get("feeType"))) {
                     payRecord.setLeaveNote(URLDecoder.decode(request.getParameter("leaveNote"), "UTF-8"));

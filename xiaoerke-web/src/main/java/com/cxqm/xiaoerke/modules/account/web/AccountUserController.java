@@ -250,37 +250,39 @@ public class AccountUserController {
     @RequestMapping(value = "/account/user/doctorConsultPay", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    String doctorConsultPay(HttpServletRequest request, HttpSession session) throws Exception {
+    String doctorConsultPay(HttpServletRequest request, HttpSession session) throws ServiceException {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-        //是否用宝宝币抵扣金额数
+        HashMap<String, Object> response = new HashMap<String, Object>();
         String openId = WechatUtil.getOpenId(session, request);
-        String useBabyCoin = (String) request.getParameter("useBabyCoinPay");
+        String payCount = String.valueOf(request.getParameter("payPrice"));//支付的金额
+        String babyCoinNumber = String.valueOf(request.getParameter("babyCoinNumber"));//使用宝宝币抵扣的金额
+        //支付只有四种情况 1、9.9金额 0宝宝币 2、4.9金额 50宝宝币 3、25金额 0宝宝币  4、12.5金额 125宝宝币
         BabyCoinVo babyCoinVo = new BabyCoinVo();
         babyCoinVo.setOpenId(openId);
-        babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
-        if (babyCoinVo != null && useBabyCoin != null && useBabyCoin.equals("true")) {//用宝宝币抵钱
-            //当前用户所拥有的宝宝币<99直接扣光宝宝币，并计算实际金额
-            if (babyCoinVo.getCash() >= Float.valueOf(sysPropertyVoWithBLOBsVo.getConsulAmount()) * 10) {
-                Float payPrice = Float.valueOf(request.getParameter("payPrice"));
-                payPrice = payPrice - Float.valueOf(String.valueOf(sysPropertyVoWithBLOBsVo.getOnceConsultNeedBabyCoin()))*10;
-                request.setAttribute("payPrice", payPrice/100.0);
-                LogUtils.saveLog(Servlets.getRequest(), openId+" 发起扣除宝宝币支付", "宝宝币个数为"+ babyCoinVo.getCash());
-            } else {
-                throw new ServiceException("baby coin greater than 99");
-            }
-        }
-        //获取统一支付接口参数
-        String payType = "doctorConsultPay";// (String)request.getAttribute("payType");
-        request.setAttribute("feeType", payType);
-        Map prepayInfo = accountService.getPrepayInfo(request, session, "doctorConsultPay");
-        prepayInfo.put("feeType", payType);
-//		System.out.println("feeType:" + prepayInfo.get("feeType").toString());
-        //拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
-        String userId = UserUtils.getUser().getId();
-        String payParameter = accountService.assemblyPayParameter(request, prepayInfo, session, userId, null);
+        babyCoinVo = babyCoinService.getBabyCoin(response, openId);
+        boolean canPay1 = payCount.equals("9.9") && babyCoinNumber.equals("0");
+        boolean canPay2 = payCount.equals("4.9") && babyCoinNumber.equals("50") && babyCoinVo.getCash() >= 50;
+        boolean canPay3 = payCount.equals("25") && babyCoinNumber.equals("0");
+        boolean canPay4 = payCount.equals("12.5") && babyCoinNumber.equals("125") && babyCoinVo.getCash() >= 125;
 
-        return payParameter;
+        if (canPay1 || canPay2 || canPay3 || canPay4) {
+            //获取统一支付接口参数
+            request.setAttribute("payPrice", Float.valueOf(payCount));
+            request.setAttribute("feeType", "doctorConsultPay");
+            Map prepayInfo = accountService.getPrepayInfo(request, session, "doctorConsultPay");
+
+            //拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
+            String userId = UserUtils.getUser().getId();
+            prepayInfo.put("feeType", "doctorConsultPay");
+            prepayInfo.put("leaveNote", babyCoinNumber);
+
+            String payParameter = accountService.assemblyPayParameter(request, prepayInfo, session, userId, null);
+
+            return payParameter;
+        } else {
+            throw new ServiceException("操作异常");
+        }
+
     }
 
 }

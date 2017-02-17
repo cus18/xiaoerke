@@ -49,6 +49,16 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String redPacketNum;
 
+    private String consultMemberTimeType2;
+
+    public String getConsultMemberTimeType2() {
+        return consultMemberTimeType2;
+    }
+
+    public void setConsultMemberTimeType2(String consultMemberTimeType2) {
+        this.consultMemberTimeType2 = consultMemberTimeType2;
+    }
+
     public String getTemplateIdYWFWTX() {
         return templateIdYWFWTX;
     }

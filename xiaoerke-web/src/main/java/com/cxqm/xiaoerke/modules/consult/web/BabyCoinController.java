@@ -83,7 +83,7 @@ public class BabyCoinController {
         String openId = WechatUtil.getOpenId(session, request);//"oogbDwD_2BTQpftPu9QClr-mCw7U"
         String oldOpenId = String.valueOf(params.get("oldOpenId"));
         String marketer = String.valueOf(params.get("marketer"));
-        BabyCoinVo babyCoinVo = getBabyCoin(response, oldOpenId);
+        BabyCoinVo babyCoinVo = babyCoinService.getBabyCoin(response, oldOpenId);
         String userQRCode = olyGamesService.getUserQRCode(marketer);//二维码
         String headImgUrl = olyGamesService.getWechatMessage(oldOpenId);//头像
         response.put("userQRCode", userQRCode);
@@ -111,7 +111,7 @@ public class BabyCoinController {
 
         String openId = WechatUtil.getOpenId(session, request);
 //        String openId = "oogbDwD_2BTQpftPu9QClr-mCs7U";
-        BabyCoinVo babyCoinVo = getBabyCoin(response, openId);
+        BabyCoinVo babyCoinVo = babyCoinService.getBabyCoin(response, openId);
         BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
         babyCoinRecordVo.setOpenId(openId);
         List<BabyCoinRecordVo> babyCoinRecordVos = babyCoinService.selectByBabyCoinRecordVo(babyCoinRecordVo);
@@ -127,40 +127,6 @@ public class BabyCoinController {
         response.put("babyCoinVo", babyCoinVo);
 
         return response;
-    }
-
-    private BabyCoinVo getBabyCoin(HashMap<String, Object> response, String openId) {
-        BabyCoinVo babyCoinVo = new BabyCoinVo();
-        babyCoinVo.setOpenId(openId);
-        babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
-        SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
-        sysWechatAppintInfoVo.setOpen_id(openId);
-        SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
-        if (babyCoinVo == null || babyCoinVo.getCash() == null) {//新用户，初始化宝宝币
-            synchronized (this) {
-                babyCoinVo = new BabyCoinVo();
-                babyCoinVo.setCash(0l);
-                babyCoinVo.setCreateBy(openId);
-                babyCoinVo.setCreateTime(new Date());
-                babyCoinVo.setOpenId(openId);
-                if(wechatAttentionVo != null && wechatAttentionVo.getWechat_name()!=null){
-                    babyCoinVo.setNickName(wechatAttentionVo.getWechat_name());
-                }
-                BabyCoinVo lastBabyCoinUser = new BabyCoinVo();
-                lastBabyCoinUser.setCreateTime(new Date());
-                lastBabyCoinUser = babyCoinService.selectByBabyCoinVo(lastBabyCoinUser);
-                if (lastBabyCoinUser == null || lastBabyCoinUser.getMarketer() == null) {
-                    babyCoinVo.setMarketer("110000000");//初始值
-                } else {
-                    babyCoinVo.setMarketer(String.valueOf(Integer.valueOf(lastBabyCoinUser.getMarketer()) + 1));
-                }
-                babyCoinService.insertBabyCoinSelective(babyCoinVo);
-            }
-            response.put("userStatus", "newBabyCoinUser");
-        } else {
-            response.put("userStatus", "oldBabyCoinUser");
-        }
-        return babyCoinVo;
     }
 
 

@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RedPacketInfoVo;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,8 @@ public interface BabyCoinService {
 
 
     BabyCoinVo selectByBabyCoinVo(BabyCoinVo babyCoinVo);
+
+    BabyCoinVo getBabyCoin(HashMap<String, Object> response, String openId);
 
     List<BabyCoinVo> selectListByBabyCoinVo(BabyCoinVo babyCoinVo);
 
