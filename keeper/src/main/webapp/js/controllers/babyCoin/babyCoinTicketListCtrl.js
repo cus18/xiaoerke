@@ -57,6 +57,10 @@ angular.module('controllers', ['ionic']).controller('babyCoinTicketListCtrl', [
 
         });
 
+        $scope.goToPayPage = function () {
+            window.location.href= "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=window.location.href=/keeper/wechatInfo/getUserWechatMenId?url=35";
+        }
+
         function recordLogs(val){
             $.ajax({
                 url:"util/recordLogs",// 跳转到 action
