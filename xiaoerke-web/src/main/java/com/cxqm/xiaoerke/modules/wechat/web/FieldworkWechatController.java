@@ -327,6 +327,10 @@ public class FieldworkWechatController {
         Map<String, Object> parameter = systemService.getWechatParameter();
         String ticket = (String) parameter.get("ticket");
         Map<String, String> config = JsApiTicketUtil.sign(ticket, u,sysPropertyVoWithBLOBsVo);
+        config.put("payType1SumMoney", sysPropertyVoWithBLOBsVo.getPayType1SumMoney());
+        config.put("payType1UseBabycoin", sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());
+        config.put("payType2SumMoney", sysPropertyVoWithBLOBsVo.getPayType2SumMoney());
+        config.put("payType2UseBabycoin",sysPropertyVoWithBLOBsVo.getPayType2UseBabycoin());
         return config;
     }
 
