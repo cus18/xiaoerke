@@ -142,7 +142,7 @@ public class ConsultUtilController {
     @ResponseBody
     public void test(HttpSession session, HttpServletRequest request) {
         Map<String, Object> response = new HashMap<String, Object>();
-        statisticsConsultDuration(session,request);
+        sendMessageToHeBeiUser(response,session,request);
         int a=1;
     }
 
@@ -171,18 +171,18 @@ public class ConsultUtilController {
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         BabyCoinVo babyCoinVo = new BabyCoinVo();
         List<BabyCoinVo> babyCoinVos = babyCoinService.selectSubBabyCoin(babyCoinVo);
-        String title = "一分钟，让宝宝多一分健康，少一些病痛！ ";
-        String keyword1 = "深夜孩子发烧慌了神、 儿童医院排号堪比登天、孩子体弱免疫力低下 等等， 这些情况宝妈们肯定是宝妈最不想经历的。   宝大夫愿携宝妈们为宝宝健康成长添一份力，爱心宝妈们一起填写你们想要的吧!</br> ";
-        String keyword2 = "宝宝健康比天高~";
+        String title = "一分钟，让宝宝多一分健康，少一些病痛！\n\n ";
+        String keyword1 = "深夜孩子发烧慌了神、 儿童医院排号堪比登天、孩子体弱免疫力低下 等等， 这些情况肯定是宝妈最不想经历的。   宝大夫愿为宝宝健康成长添一份力，爱心宝妈们一起填写你们想要的吧! \n\n";
+        String keyword2 = "宝宝健康比天高~\n";
         String keyword3 = "";
         String remark = "点击立即参与，反馈给宝大夫";
         String url = "https://jinshuju.net/f/meCBt5";
         if (babyCoinVos != null && babyCoinVos.size() > 0) {
-            for (int i = 0; i <= babyCoinVos.size(); i++) {
+            for (int i = 0; i < babyCoinVos.size(); i++) {
                 if (babyCoinVos.get(i) != null) {
                     BabyCoinVo vo = babyCoinVos.get(i);
                     if (StringUtils.isNotNull(vo.getOpenId())) {
-                        if(vo.getOpenId().equals("o3_NPwqranZIs-hNjl-B2LjV39oQ"))
+//                        if(vo.getOpenId().equals("o3_NPwg-OS8YJ3dL7WmnsxYbMa9U"))
                         WechatMessageUtil.templateModel(title, keyword1, keyword2, keyword3, "", remark, token, url, vo.getOpenId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
 //                        babyCoinService.updateBabyCoinByOpenId(vo);
                     }
@@ -276,8 +276,8 @@ public class ConsultUtilController {
     public void statisticsConsultDuration(HttpSession session, HttpServletRequest request) {
         //根据日期查询所有的sessionID
         ConsultSession consultSession = new ConsultSession();
-        consultSession.setCreateTime(DateUtils.StrToDate("2017-01-01 00:00:01","datetime"));//开始时间
-        consultSession.setUpdateTime(DateUtils.StrToDate("2017-01-01 00:59:59","datetime"));//结束时间
+        consultSession.setCreateTime(DateUtils.StrToDate("2017-01-21 00:00:01","datetime"));//开始时间
+        consultSession.setUpdateTime(DateUtils.StrToDate("2017-02-01 00:00:01","datetime"));//结束时间
         List<ConsultSession> consultSessions = consultSessionService.selectBySelectiveOrder(consultSession);
         //遍历所有的sessionId咨询医生对应的开始时间，结束时间
         List<ConsultRecordVo> consultRecordVoList = new ArrayList<ConsultRecordVo>();
@@ -323,6 +323,8 @@ public class ConsultUtilController {
                 ConsultRecordVo consultRecordVo = new ConsultRecordVo();
                 consultRecordVo.setCreateDate(payRecord.getReceiveDate());
                 consultRecordVo.setUpdateDate(new Date(payRecord.getReceiveDate().getTime() + 24 * 60 * 60 * 1000));
+                consultRecordVo.setUserId(payRecord.getOpenId());
+                consultRecordVo.setSenderId("senderId");
                 List<ConsultRecordVo> consultRecordVos = consultRecordService.selectConsultRecord(consultRecordVo);
                 if(consultRecordVos!=null && consultRecordVos.size()>0){
                     ConsultRecordVo vo = consultRecordVos.get(0);
