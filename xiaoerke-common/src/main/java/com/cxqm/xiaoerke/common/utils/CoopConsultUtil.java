@@ -1,10 +1,14 @@
 package com.cxqm.xiaoerke.common.utils;
 
 import net.sf.json.JSONObject;
+import org.json.JSONArray;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Iterator;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by jiangzhongge on 2016-7-12.
@@ -135,15 +139,100 @@ public class CoopConsultUtil {
 
 
     public static void main(String[] args) {
-        String url = "http://rest.ihiss.com:9000/user/current";   //http://rest.ihiss.com:9000/user/children
-        String token = "f09b10f3-a582-4164-987f-6663c1a7e82a";
+          //String url = "http://rest.ihiss.com:9000/user/current";   //http://rest.ihiss.com:9000/user/children
+        /*String url = "http://rest.tx2010.com/user/current";
+        //String token = "f09b10f3-a582-4164-987f-6663c1a7e82a";
+        String token = "211f3d56-f815-4e92-a7c9-804adcb6b531";
         String access_token = "{'X-Access-Token':'" + token + "'}";
         String method = "GET";
         String dataType = "json";
-        String str = getCurrentUserInfo(url, method, dataType, access_token,"",2);
-        JSONObject jsonObject = JSONObject.fromObject(str);
+        String str = getCurrentUserInfo(url, method, dataType, access_token,"",2);*/
+        /*JSONObject jsonObject = JSONObject.fromObject(str);
         String imgUrl = (String)jsonObject.get("avatar");
-        System.out.println("imgUrl===="+imgUrl);
+        System.out.println("imgUrl===="+imgUrl);*/
+//        String star = "[{\"id\": 2302898,  \"birthday\" : \"2012-01-01\",  \"sex\" : 2,  \"name\" : \"雪花梨孩子\"}, {  \"id\" : 12323123,  \"birthday\" : \"2015-01-01\",  \"sex\" : 2,  \"name\" : \"kkkk\"}]";
+//        JSONArray jsonArray = new JSONArray(str);
+/*       for(int i= 0; i<jsonArray.length();i++){
+            System.out.println(jsonArray.length());
+            JSONObject jsonObject = JSONObject.fromObject(jsonArray.get(i).toString());
+             System.out.println(jsonObject.get("name"));
+        }*/
+//        System.out.println(str);
+
+        /*String currentUrl = "http://101.201.154.75/angel/consult/cooperate/getConsultDataByCoop";
+        String method = "POST";
+        String dataType="json";
+        net.sf.json.JSONObject noReadMsg = new net.sf.json.JSONObject();
+        noReadMsg.put("startTime","2016-08-24 10:30:00");
+        noReadMsg.put("endTime","2016-10-10 16:30:00");
+        noReadMsg.put("source","COOP_BHQ");
+        noReadMsg.put("secCode","091016COOP_BHQ");
+        String contentJson = "{\"startTime\":\"2016-08-24 10:30:00\",\"endTime\":\"2016-08-25 16:30:00\",\"source\":\"COOP_BHQ\",\"secCode\":\"091016COOP_BHQ\"}";
+        String str = getCurrentUserInfo(currentUrl, method, dataType, null, noReadMsg.toString(), 4);
         System.out.println(str);
+
+        String message = "分诊李军：好的";
+        if(message.contains("：")){
+            System.out.println(message.substring(message.indexOf("：")+1));
+        }else{
+            System.out.println(message);
+        }*/
+//        String url = "http://101.200.180.132:8081/backend/util/clearRedisData";
+//        String method = "POST";
+//        String dataType="json";
+//        String str = getCurrentUserInfo(url, method, dataType, null, null, 2);
+//        System.out.println(str);
+//        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(1476106285 * 1000L)));
+        /*String fileName = "123.213.jp.jpeg";
+        fileName = UUID.randomUUID().toString().replaceAll("-","")+fileName.substring(fileName.lastIndexOf("."),fileName.length());
+        System.out.println(fileName);
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        int currentYear = calendar.get(calendar.YEAR) - 2000;
+        int currentMonth = calendar.get(calendar.MONTH) + 1;
+        int currentDate = calendar.get(calendar.DAY_OF_MONTH);
+        int currentHour = calendar.get(calendar.HOUR_OF_DAY);
+        System.out.println(currentHour);*/
+        /*Random random = new Random();
+        int maxRandom = 92 ;
+        int minRandom = 90 ;
+        for(int i = 0;i<20;i++){
+            int daShang = random.nextInt(3)+minRandom ;
+            System.out.println(daShang);
+        }*/
+       /* float num = (float) 90 / 200*100;
+        DecimalFormat df = new DecimalFormat("0");//格式化小数
+        String s = df.format(num);//返回的是String类型
+        System.out.println(s);*/
+        StringBuilder sb = new StringBuilder();
+        sb.append("点击领取：");
+        sb.append("<a href=''>");
+        sb.append("疫苗接种告知单及相关知识>>");
+        sb.append("</a>");
+        sb.append("\n\n");
+        sb.append("如有疼痛发热等症状及其他育儿问题，点击左下角");
+        sb.append("\n");
+        sb.append("\"小键盘\"，即可咨询儿科专家医生");
+        sb.append("\n");
+        sb.append("预防接种科咨询时间：19：00—21：00");
+        System.out.println(sb.toString());
+        String eventKey = "YMJZ_AH_02";
+        String marketer = "";
+        if(eventKey.contains("qrscene_")){
+            marketer = eventKey.replace("qrscene_", "").trim();
+        }else{
+            marketer = eventKey.trim();
+        }
+        marketer = marketer.substring(marketer.lastIndexOf("_")+1,marketer.length());
+        System.out.println(marketer);
+        int marketerId = 0 ;
+        if(marketer.startsWith("0")){
+            marketerId = Integer.valueOf(marketer.substring(1));
+        }else{
+            marketerId = Integer.valueOf(marketer);
+        }
+        System.out.println(marketerId);
     }
 }

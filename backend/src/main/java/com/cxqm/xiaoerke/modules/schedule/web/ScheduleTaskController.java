@@ -1,7 +1,10 @@
 package com.cxqm.xiaoerke.modules.schedule.web;
 
+import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
+import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.web.BaseController;
 import com.cxqm.xiaoerke.modules.activity.entity.OlyBabyGamesVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
@@ -20,12 +23,17 @@ import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.vaccine.entity.VaccineSendMessageVo;
 import com.cxqm.xiaoerke.modules.vaccine.service.VaccineService;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -556,5 +564,204 @@ public class ScheduleTaskController extends BaseController {
         dataList.add(dataMap);
         result.put("removeSessionList",dataList);
         result.put("noRemoveSessionList",noRemoveMap);
+    }
+
+    /**
+     * 蒙太奇聊天记录导出 每天抓取
+     * jiangzg 2017-1-13 16:02:42
+     */
+    public void exportConsultDataByThird() {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.READ);
+
+        String source = "COOP_BTQ";
+
+        String outExportPath = "";
+        String osName = System.getProperty("os.name").toLowerCase();
+        if("windows".equalsIgnoreCase(osName)){
+            outExportPath = "D:/test" ;
+        }else{
+            outExportPath = "/mnt/tomcat/data" ;
+        }
+        StringBuilder startTime = new StringBuilder();
+        StringBuilder endTime = new StringBuilder();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        int currentYear = calendar.get(calendar.YEAR);
+        int currentMonth = calendar.get(calendar.MONTH) + 1;
+        int currentDate = calendar.get(calendar.DAY_OF_MONTH);
+        if(currentDate == 1){
+            if(currentMonth == 1){
+                currentYear = currentYear - 1 ;
+                currentMonth = 12;
+                currentDate = 31 ;
+            }else{
+                if(calendar.YEAR % 4 == 0){
+                   if(currentMonth == 3){
+                       currentMonth = 2 ;
+                       currentDate = 29 ;
+                   }else{
+                      if("1-3-5-7-8-10-12".contains(""+currentMonth)){
+                          currentMonth = currentMonth -1 ;
+                          currentDate = 30 ;
+                      }else{
+                          currentMonth = currentMonth -1 ;
+                          currentDate = 31 ;
+                      }
+                   }
+                }else{
+                    if(currentMonth == 3){
+                        currentMonth = 2 ;
+                        currentDate = 28 ;
+                    }else{
+                        if("1-3-5-7-8-10-12".contains(""+currentMonth)){
+                            currentMonth = currentMonth -1 ;
+                            currentDate = 30 ;
+                        }else{
+                            currentMonth = currentMonth -1 ;
+                            currentDate = 31 ;
+                        }
+                    }
+                }
+            }
+        }
+        int currentHour = calendar.get(calendar.HOUR_OF_DAY);
+
+        if (StringUtils.isNotNull(source)) {
+            if (currentMonth < 10) {
+                if(currentDate < 10){
+                    startTime.append(""+currentYear+ "-0" + currentMonth + "-0"+currentDate).append("").append("00:00:00");
+                    endTime.append(""+currentYear+ "-0" + currentMonth + "-0"+currentDate).append("").append("23:59:59");
+                }else{
+                    startTime.append(""+currentYear + "-0" + currentMonth +"-"+ currentDate).append("").append("00:00:00");
+                    endTime.append(""+currentYear + "-0" + currentMonth +"-"+ currentDate).append("").append("23:59:59");
+                }
+            } else {
+                if(currentDate < 10){
+                    startTime.append(""+currentYear + currentMonth + "-0" + currentDate).append("").append("00:00:00");
+                    endTime.append(""+currentYear + currentMonth + "-0" + currentDate).append("").append("23:59:59");
+                }else {
+                    startTime.append(""+currentYear + currentMonth + currentDate).append("").append("00:00:00");
+                    endTime.append(""+currentYear + currentMonth + currentDate).append("").append("23:59:59");
+                }
+            }
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long differTime = 0;
+        long startDate = 0l ;
+        long endDate = 0l ;
+        try {
+            Date start = sdf.parse(startTime.toString());
+            Date end = sdf.parse(endTime.toString());
+            startDate = start.getTime();
+            endDate = end.getTime();
+            differTime = endDate - startDate;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (StringUtils.isNotNull(source)) {
+            if("COOP_BHQ".equalsIgnoreCase(source)){
+                source = "h5bhq";
+            }else if("COOP_YKDL".equalsIgnoreCase(source)){
+                source = "h5ykdl";
+            }else if("COOP_BTQ".equalsIgnoreCase(source)){
+                source = "h5mtq";
+            }
+            JSONArray jsonArray = new JSONArray();
+            try {
+                /**
+                 * 加入聊天记录提取代码
+                 */
+                Query query = new Query(Criteria.where("createDate").exists(true).andOperator(Criteria.where("createDate").gte(sdf.parse(startTime.toString())), Criteria.where("createDate").lt(sdf.parse(endTime.toString()))).and("source").is(source));
+                query.with(new Sort(Sort.Direction.DESC, "createDate"));
+                List<ConsultRecordMongoVo> consultRecordMongoVos = consultRecordService.getCurrentUserHistoryRecord(query);
+                if (consultRecordMongoVos != null && consultRecordMongoVos.size() > 0) {
+                    for (ConsultRecordMongoVo consultRecordMongoVo : consultRecordMongoVos) {
+                        JSONObject data = new JSONObject();
+                        data.put("id", consultRecordMongoVo.getSessionId());
+                        data.put("userName", consultRecordMongoVo.getNickName());
+                        data.put("userId", consultRecordMongoVo.getUserId());
+                        data.put("csUserId", consultRecordMongoVo.getCsUserId());
+                        data.put("senderId", consultRecordMongoVo.getSenderId());
+                        if(consultRecordMongoVo.getMessage().contains("：")){
+                            data.put("message", consultRecordMongoVo.getMessage().substring(consultRecordMongoVo.getMessage().indexOf("：")+1));
+                        }else{
+                            data.put("message", consultRecordMongoVo.getMessage());
+                        }
+                        data.put("type", consultRecordMongoVo.getType());
+                        data.put("createDate", consultRecordMongoVo.getCreateDate());
+                        jsonArray.add(data);
+                    }
+                }
+            } catch (Exception ex) {
+                ex.getStackTrace();
+            }
+            Map titleMap = new HashMap();
+            titleMap.put("1","会话ID");
+            titleMap.put("2","用户ID");
+            titleMap.put("3","用户昵称");
+            titleMap.put("4","医生ID");
+            titleMap.put("5","发送者ID");
+            titleMap.put("6","发送消息");
+            titleMap.put("7","消息类型");
+            titleMap.put("8","发送时间");
+            exportConsultDataForMTQ(outExportPath,source,startDate,endDate,titleMap,jsonArray);
+        }
+    }
+
+    public void exportConsultDataForMTQ(String outExportPath , String source ,long startDate ,long endDate,Map titleMap,JSONArray jsonArray){
+        File csvFile = null;
+        BufferedWriter csvFileOutputStream = null;
+        String fileName = source +"-"+new SimpleDateFormat("yyMMdd").format(new Date());
+        try {
+            csvFile = new File(outExportPath + fileName + ".csv");
+            File parent = csvFile.getParentFile();
+            if (parent != null && !parent.exists()) {
+                parent.mkdirs();
+            }
+            if(!csvFile.exists()){
+                csvFile.createNewFile();
+            }
+            csvFileOutputStream = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(csvFile), "GB2312"), 1024);
+            // 写入文件头部
+            for (Iterator propertyIterator = titleMap.entrySet().iterator(); propertyIterator.hasNext();) {
+                java.util.Map.Entry propertyEntry = (java.util.Map.Entry) propertyIterator
+                        .next();
+                csvFileOutputStream.write("\""
+                        + propertyEntry.getValue().toString() + "\"");
+                if (propertyIterator.hasNext()) {
+                    csvFileOutputStream.write(",");
+                }
+            }
+            csvFileOutputStream.newLine();
+            if(jsonArray != null && jsonArray.size() > 0){
+               for(Iterator iterator = jsonArray.iterator(); iterator.hasNext();){
+                   LinkedHashMap row = (LinkedHashMap) iterator.next();
+                   for (Iterator propertyIterator = row.entrySet().iterator(); propertyIterator.hasNext();) {
+                       java.util.Map.Entry propertyEntry = (java.util.Map.Entry) propertyIterator.next();
+                       // System.out.println( BeanUtils.getProperty(row, propertyEntry.getKey().toString()));
+                       csvFileOutputStream.write("\""
+                               +  propertyEntry.getValue().toString() + "\"");
+                       if (propertyIterator.hasNext()) {
+                           csvFileOutputStream.write(",");
+                       }
+                   }
+                   if (iterator.hasNext()) {
+                       csvFileOutputStream.newLine();
+                   }
+               }
+               csvFileOutputStream.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                csvFileOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

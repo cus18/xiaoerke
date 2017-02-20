@@ -7,6 +7,8 @@ import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.modules.consult.dao.ConsultDoctorDepartmentDao;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorDepartmentVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultTransferListVo;
 import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
@@ -146,9 +148,23 @@ public class ConsultTransferListController {
     public @ResponseBody
     HashMap<String,Object> findDoctorDepartment(){
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-
         HashMap<String,Object> response = new HashMap<String, Object>();
-        List<String> departmentList = consultDoctorInfoService.getConsultDoctorDepartment();
+        List<ConsultDoctorDepartmentVo> consultDoctorDepartmentVos = consultDoctorInfoService.getConsultDoctorDepartmentShow();
+        JSONObject jsonObject;
+        JSONArray jsonArray = new JSONArray();
+        if(consultDoctorDepartmentVos != null && consultDoctorDepartmentVos.size()>0){
+            for(ConsultDoctorDepartmentVo consultDoctorDepartmentVo : consultDoctorDepartmentVos){
+                String departmentName = consultDoctorDepartmentVo.getName();
+                jsonObject = new JSONObject();
+                jsonObject.put("departmentName",departmentName);
+                jsonArray.add(jsonObject);
+            }
+            response.put("data",jsonArray);
+            response.put("status","success");
+        }else{
+            response.put("status","failure");
+        }
+        /*List<String> departmentList = consultDoctorInfoService.getConsultDoctorDepartment();
         JSONObject jsonObject;
         JSONArray jsonArray = new JSONArray();
         if(departmentList != null && departmentList.size()>0){
@@ -162,7 +178,7 @@ public class ConsultTransferListController {
             response.put("status","success");
         }else{
             response.put("status","failure");
-        }
+        }*/
         return response ;
     }
 

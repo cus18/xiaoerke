@@ -138,7 +138,6 @@ public class ConsultDoctorAnswerController extends BaseController {
     @ResponseBody Map<String, Object> modify(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse httpResponse) {
         Map<String, Object> response = new HashMap<String, Object>();
         Map<String, Object> tranMap = new HashMap<String, Object>();
-
         String answerType = String.valueOf(params.get("answerType"));
         if(answerType.equals("myAnswer")){
             tranMap.put("myAnswer",params.get("answer"));

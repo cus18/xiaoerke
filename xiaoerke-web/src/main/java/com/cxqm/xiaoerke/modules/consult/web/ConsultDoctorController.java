@@ -443,9 +443,8 @@ public class ConsultDoctorController extends BaseController {
                         doctorChannel.writeAndFlush(csframe.retain());
                     }
                 } else if ("wxcxqm".equalsIgnoreCase(richConsultSession.getSource())) {
-
                     sessionEndWX(sessionId, userId, sysPropertyVoWithBLOBsVo, richConsultSession);
-                }else if("h5bhq".equalsIgnoreCase(richConsultSession.getSource()) || "h5ykdl".equalsIgnoreCase(richConsultSession.getSource())){
+                }else if(!"h5cxqm".equalsIgnoreCase(richConsultSession.getSource()) && richConsultSession.getSource().contains("h5")){
                     sessionEndH5(sessionId, sysPropertyVoWithBLOBsVo, richConsultSession);
                 }
             }

@@ -581,6 +581,7 @@ angular.module('controllers', ['luegg.directives'])
                         }
                     };
 
+                    $scope.socketServerFirst.on
                 } else {
                     alert("你的浏览器不支持！");
                 }

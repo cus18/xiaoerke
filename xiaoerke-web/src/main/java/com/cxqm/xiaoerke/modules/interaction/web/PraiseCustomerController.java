@@ -220,6 +220,7 @@ public class PraiseCustomerController extends BaseController {
             String templateId =  sysPropertyVoWithBLOBsVo.getBadEvaluateTempleteId();
             if(StringUtils.isNull(templateId)){
                 templateId = "xP7QzdilUu1RRTFzVv8krwwMOyv-1pg9l0ABsooub14";    //正式
+                            //xp7qzdiluu1rrtfzvv8krwwmoyv-1pg9l0absooub14
             }
             String failureMessage = "";
             if (openIds != null && openIds.size() > 0) {
