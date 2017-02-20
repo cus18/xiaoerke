@@ -9,7 +9,7 @@ angular.module('controllers', [])
             $scope.info = {
                 flag:false
             };
-
+            loadShare();
             if($stateParams.isShow != ''){
                 $ionicScrollDelegate.scrollTop();
                 $scope.info.flag = true;
@@ -68,9 +68,9 @@ angular.module('controllers', [])
             //分享到朋友圈或者微信
             var loadShare = function(){
                 $scope.uuid = uuid();
-                redPacketCreate.save({"uuid":$scope.uuid},function (data) {
-                    $scope.uuid = data.uuid;
-                });
+                // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
+                //     $scope.uuid = data.uuid;
+                // });
                 GetConfig.save({}, function (data) {
                     $scope.inviteUrlData = data.publicSystemInfo.inviteUrl;
 
