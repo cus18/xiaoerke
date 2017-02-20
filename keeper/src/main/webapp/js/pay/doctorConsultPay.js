@@ -54,6 +54,10 @@ var doRefresh = function () {
                 payConfirmInfo5 = payConfirmInfo3;
                 $('#payConfirm').html(payConfirmInfo3);
                 $('#useBabyCoin25Left').html(payConfirmInfo5);
+
+                $('#money').html(moneys);
+                recordLogs("consult_charge_twice_information_payclick");
+                userBabyCoinPay();
                 //微信配置
                 wx.config({
                     debug: false,
@@ -75,9 +79,6 @@ var doRefresh = function () {
         }
     });
 
-    $('#money').html(moneys);
-    recordLogs("consult_charge_twice_information_payclick");
-    userBabyCoinPay();
 };
 
 function selectPayMoney(moneyCount) {
