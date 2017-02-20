@@ -51,6 +51,43 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String consultMemberTimeType2;
 
+    private String PayType1SumMoney;//9.9元
+    private String PayType1UseBabycoin;//50宝宝币
+    private String PayType2SumMoney;//25元
+    private String PayType2UseBabycoin;//125宝宝币
+
+    public String getPayType1SumMoney() {
+        return PayType1SumMoney;
+    }
+
+    public void setPayType1SumMoney(String payType1SumMoney) {
+        PayType1SumMoney = payType1SumMoney;
+    }
+
+    public String getPayType1UseBabycoin() {
+        return PayType1UseBabycoin;
+    }
+
+    public void setPayType1UseBabycoin(String payType1UseBabycoin) {
+        PayType1UseBabycoin = payType1UseBabycoin;
+    }
+
+    public String getPayType2SumMoney() {
+        return PayType2SumMoney;
+    }
+
+    public void setPayType2SumMoney(String payType2SumMoney) {
+        PayType2SumMoney = payType2SumMoney;
+    }
+
+    public String getPayType2UseBabycoin() {
+        return PayType2UseBabycoin;
+    }
+
+    public void setPayType2UseBabycoin(String payType2UseBabycoin) {
+        PayType2UseBabycoin = payType2UseBabycoin;
+    }
+
     public String getConsultMemberTimeType2() {
         return consultMemberTimeType2;
     }
