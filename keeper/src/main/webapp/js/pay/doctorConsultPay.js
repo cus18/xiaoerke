@@ -119,13 +119,14 @@ var userBabyCoinPay = function () {
                     }
 
                 } else {
-                    $('#useBabyCoin10RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRightUnchoose.png") 100% 100%/100% 100%')
                     useBabyCoin = false;
                     console.log(useBabyCoin)
                     $('#payConfirm').html(payConfirmInfo1);
                     moneys = payType1SumMoney;
                     babyCoinNumber = 0;
                 }
+                $('#useBabyCoin10RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%')
+
             } else {//用户选择支付25元的
                 document.getElementById("useBabyCoin10Div").style.display = "none";
                 document.getElementById("useBabyCoin25Div").style.display = "";
@@ -145,13 +146,14 @@ var userBabyCoinPay = function () {
                         $('#payConfirm').html(payConfirmInfo3);
                     }
                 } else {
-                    $('#useBabyCoin25RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRightUnchoose.png") 100% 100%/100% 100%')
                     useBabyCoin = false;
                     console.log(useBabyCoin)
                     $('#payConfirm').html(payConfirmInfo3);
                     moneys = payType2SumMoney;
                     babyCoinNumber = 0;
                 }
+                $('#useBabyCoin25RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%')
+
             }
 
         },
