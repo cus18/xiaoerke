@@ -146,6 +146,52 @@ public class ConsultUtilController {
         int a=1;
     }
 
+
+    /**
+     * 给用户推消息
+     *
+     * @param request
+     * @param
+     * @return
+     */
+    /**
+     一分钟，让宝宝多一分健康，少一些病痛！
+     待办事项： 深夜孩子发烧慌了神、 儿童医院排号堪比登天、孩子体弱免疫力低下 等等， 这些情况宝妈们肯定是宝妈最不想经历的。
+     宝大夫愿携宝妈们为宝宝健康成长添一份力，爱心宝妈们一起填写你们想要的吧！
+     优先级： 宝宝健康比天高~
+     点击立即参与，反馈给宝大夫
+     */
+    @RequestMapping(value = "/sendMessageToHeBeiUser", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map<String, Object> sendMessageToHeBeiUser(Map<String, Object> params, HttpSession session, HttpServletRequest request) {
+
+        Map<String, Object> response = new HashMap<String, Object>();
+        Map parameter = systemService.getWechatParameter();
+        String token = (String) parameter.get("token");
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        BabyCoinVo babyCoinVo = new BabyCoinVo();
+        List<BabyCoinVo> babyCoinVos = babyCoinService.selectSubBabyCoin(babyCoinVo);
+        String title = "一分钟，让宝宝多一分健康，少一些病痛！ ";
+        String keyword1 = "深夜孩子发烧慌了神、 儿童医院排号堪比登天、孩子体弱免疫力低下 等等， 这些情况宝妈们肯定是宝妈最不想经历的。   宝大夫愿携宝妈们为宝宝健康成长添一份力，爱心宝妈们一起填写你们想要的吧!</br> ";
+        String keyword2 = "宝宝健康比天高~";
+        String keyword3 = "";
+        String remark = "点击立即参与，反馈给宝大夫";
+        String url = "https://jinshuju.net/f/meCBt5";
+        if (babyCoinVos != null && babyCoinVos.size() > 0) {
+            for (int i = 0; i <= babyCoinVos.size(); i++) {
+                if (babyCoinVos.get(i) != null) {
+                    BabyCoinVo vo = babyCoinVos.get(i);
+                    if (StringUtils.isNotNull(vo.getOpenId())) {
+                        if(vo.getOpenId().equals("o3_NPwqranZIs-hNjl-B2LjV39oQ"))
+                        WechatMessageUtil.templateModel(title, keyword1, keyword2, keyword3, "", remark, token, url, vo.getOpenId(), sysPropertyVoWithBLOBsVo.getTemplateIdDBRWTX());
+//                        babyCoinService.updateBabyCoinByOpenId(vo);
+                    }
+                }
+            }
+        }
+        return response;
+    }
+
     @RequestMapping(value = "/getAllWeChatUser", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public void getAllWeChatUser(HttpSession session, HttpServletRequest request) {
