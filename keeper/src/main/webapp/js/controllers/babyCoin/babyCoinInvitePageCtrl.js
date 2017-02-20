@@ -74,7 +74,11 @@ angular.module('controllers', [])
                 GetConfig.save({}, function (data) {
                     $scope.inviteUrlData = data.publicSystemInfo.inviteUrl;
 
-                    var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
+                    redPacketCreate.save({"uuid":$scope.uuid},function (data) {
+                        $scope.uuid = data.uuid;
+                        var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
+
+                    // var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
                     // if(version=="a"){
                     version="a";
                     var timestamp;//时间戳
@@ -140,7 +144,7 @@ angular.module('controllers', [])
                         }
                     });
                 })
-
+                });
             };
 
             function uuid() {
