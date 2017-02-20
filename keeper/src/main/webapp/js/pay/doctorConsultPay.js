@@ -51,7 +51,7 @@ var doRefresh = function () {
                 payConfirmInfo2 = "确认支付" + payType1ActualMoney + "元";
                 payConfirmInfo3 = "确认支付" + payType2SumMoney + "元";
                 payConfirmInfo4 = "确认支付" + payType2ActualMoney + "元";
-                payConfirmInfo5 = payConfirmInfo3;
+                payConfirmInfo5 = "亲，您有宝宝币可减免12.5元";
                 $('#payConfirm').html(payConfirmInfo3);
                 $('#useBabyCoin25Left').html(payConfirmInfo5);
 
@@ -107,11 +107,17 @@ var userBabyCoinPay = function () {
                 document.getElementById("useBabyCoin25Div").style.display = "none";
                 document.getElementById("useBabyCoin10Div").style.display = "";
                 if (cash >= payType1UseBabycoin) {
-                    payFlag = true;
                     $('#useBabyCoin10Left').html(payConfirmInfo0);
-                    moneys = payType1ActualMoney;
-                    babyCoinNumber = payType1UseBabycoin;
-                    $('#payConfirm').html(payConfirmInfo2);
+                    if(bar == "Choose"){
+                        moneys = payType1ActualMoney;
+                        babyCoinNumber = payType1UseBabycoin;
+                        $('#payConfirm').html(payConfirmInfo2);
+                    }else{
+                        moneys = payType1SumMoney;
+                        babyCoinNumber = 0;
+                        $('#payConfirm').html(payConfirmInfo1);
+                    }
+
                 } else {
                     $('#useBabyCoin10RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRightUnchoose.png") 100% 100%/100% 100%')
                     useBabyCoin = false;
@@ -124,11 +130,20 @@ var userBabyCoinPay = function () {
                 document.getElementById("useBabyCoin10Div").style.display = "none";
                 document.getElementById("useBabyCoin25Div").style.display = "";
                 if (cash >= payType2UseBabycoin) {
-                    payFlag = true;
                     $('#useBabyCoin25Left').html(payConfirmInfo5);
-                    $('#payConfirm').html(payConfirmInfo4);
+
                     moneys = payType2ActualMoney;
                     babyCoinNumber = payType2UseBabycoin;
+
+                    if(bar == "Choose"){
+                        moneys = payType2ActualMoney;
+                        babyCoinNumber = payType1UseBabycoin;
+                        $('#payConfirm').html(payConfirmInfo4);
+                    }else{
+                        moneys = payType2SumMoney;
+                        babyCoinNumber = 0;
+                        $('#payConfirm').html(payConfirmInfo3);
+                    }
                 } else {
                     $('#useBabyCoin25RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRightUnchoose.png") 100% 100%/100% 100%')
                     useBabyCoin = false;
