@@ -289,7 +289,7 @@ public class AccountUserController {
 
             return payParameter;
         } else {
-            throw new ServiceException("操作异常");
+            return "false";
         }
 
     }
