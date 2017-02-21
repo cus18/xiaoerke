@@ -502,7 +502,10 @@ public class PayNotificationController {
                 PayRecord payRecord = new PayRecord();
                 payRecord.setId((String) map.get("out_trade_no"));
                 Map<String, Object> insuranceMap = insuranceService.getPayRecordById(payRecord.getId());
-                float subCash = Float.valueOf(String.valueOf(insuranceMap.get("operate_type")));//发起支付用的宝宝币数
+                float subCash =  0f;
+                if(null != insuranceMap.get("operate_type")){
+                    subCash = Float.valueOf(String.valueOf(insuranceMap.get("operate_type")));//发起支付用的宝宝币数
+                }
                 String openid = (String) map.get("openid");
                 Integer sessionId = sessionRedisCache.getSessionIdByUserId(openid);
 //				判断当次的sessionid是否已经支付
@@ -524,19 +527,19 @@ public class PayNotificationController {
                         consultMemberRedsiCacheService.payConsultMember(openid, sysPropertyVoWithBLOBsVo.getConsultMemberTime(), (String) map.get("total_fee"), token);
 
 //                   mysql 增加会员记录,延长redis的时间
-                    BabyCoinVo babyCoinVo = new BabyCoinVo();
-                    babyCoinVo.setOpenId(openid);
-                    babyCoinVo = babyCoinService.getBabyCoin(new HashMap<String, Object>(), openid);
-                    babyCoinVo.setCash(babyCoinVo.getCash() - (long)subCash);
-                    babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
-
                     BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
 //                    babyCoinRecordVo.setSessionId(sessionId);
 //                    List<BabyCoinRecordVo> babyCoinRecordVos = babyCoinService.selectByBabyCoinRecordVo(babyCoinRecordVo);
                     HttpRequestUtil.wechatpost(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/notifyPayInfo2Distributor?openId=" + openid,
                             "openId=" + openid);
                     //扣过了不再扣
-//                    if (babyCoinRecordVos == null || babyCoinRecordVos.size() == 0) {
+                    if (subCash > 0) {
+                        BabyCoinVo babyCoinVo = new BabyCoinVo();
+                        babyCoinVo.setOpenId(openid);
+                        babyCoinVo = babyCoinService.getBabyCoin(new HashMap<String, Object>(), openid);
+                        babyCoinVo.setCash(babyCoinVo.getCash() - (long)subCash);
+                        babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
+
                         babyCoinRecordVo.setBalance(-subCash);
                         babyCoinRecordVo.setCreateTime(new Date());
                         babyCoinRecordVo.setCreateBy(openid);
@@ -544,7 +547,7 @@ public class PayNotificationController {
                         babyCoinRecordVo.setSessionId(sessionRedisCache.getSessionIdByUserId(openid));
                         babyCoinRecordVo.setSource("consultPay");
                         babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
-//                    }
+                    }
                 }
             }
             return XMLUtil.setXML("SUCCESS", "");
