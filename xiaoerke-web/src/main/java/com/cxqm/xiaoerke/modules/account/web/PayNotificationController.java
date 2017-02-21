@@ -527,16 +527,16 @@ public class PayNotificationController {
                     BabyCoinVo babyCoinVo = new BabyCoinVo();
                     babyCoinVo.setOpenId(openid);
                     babyCoinVo = babyCoinService.getBabyCoin(new HashMap<String, Object>(), openid);
-                    babyCoinVo.setCash(Long.valueOf(String.valueOf(subCash)));
+                    babyCoinVo.setCash(babyCoinVo.getCash() - (long)subCash);
                     babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
 
                     BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
-                    babyCoinRecordVo.setSessionId(sessionId);
-                    List<BabyCoinRecordVo> babyCoinRecordVos = babyCoinService.selectByBabyCoinRecordVo(babyCoinRecordVo);
+//                    babyCoinRecordVo.setSessionId(sessionId);
+//                    List<BabyCoinRecordVo> babyCoinRecordVos = babyCoinService.selectByBabyCoinRecordVo(babyCoinRecordVo);
                     HttpRequestUtil.wechatpost(sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/consult/wechat/notifyPayInfo2Distributor?openId=" + openid,
                             "openId=" + openid);
                     //扣过了不再扣
-                    if (babyCoinRecordVos == null || babyCoinRecordVos.size() == 0) {
+//                    if (babyCoinRecordVos == null || babyCoinRecordVos.size() == 0) {
                         babyCoinRecordVo.setBalance(-subCash);
                         babyCoinRecordVo.setCreateTime(new Date());
                         babyCoinRecordVo.setCreateBy(openid);
@@ -544,7 +544,7 @@ public class PayNotificationController {
                         babyCoinRecordVo.setSessionId(sessionRedisCache.getSessionIdByUserId(openid));
                         babyCoinRecordVo.setSource("consultPay");
                         babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
-                    }
+//                    }
                 }
             }
             return XMLUtil.setXML("SUCCESS", "");
