@@ -31,16 +31,16 @@
       FROM
       account_pay_record
       WHERE 1=1
-      <if test="pay_date != null" >
-        and pay_date BETWEEN #{pay_date} AND #{receive_date}
+      <if test="payDate != null" >
+        and pay_date BETWEEN #{payDate} AND #{receiveDate}
       </if>
       <if test="status != null" >
         AND status = #{status}
       </if>
-      <if test="fee_type != null" >
+      <if test="feeType != null" >
         AND fee_type LIKE 'doctorConsultPay%'
       </if>
-      <if test="open_id != null" >
+      <if test="openId != null" >
         and open_id=#{openId}
       </if>
   </select>
