@@ -502,7 +502,7 @@ public class PayNotificationController {
                 PayRecord payRecord = new PayRecord();
                 payRecord.setId((String) map.get("out_trade_no"));
                 Map<String, Object> insuranceMap = insuranceService.getPayRecordById(payRecord.getId());
-                float subCash = Float.valueOf(String.valueOf(insuranceMap.get("operateType")));//发起支付用的宝宝币数
+                float subCash = Float.valueOf(String.valueOf(insuranceMap.get("operate_type")));//发起支付用的宝宝币数
                 String openid = (String) map.get("openid");
                 Integer sessionId = sessionRedisCache.getSessionIdByUserId(openid);
 //				判断当次的sessionid是否已经支付
