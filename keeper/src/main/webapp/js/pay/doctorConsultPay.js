@@ -124,6 +124,7 @@ var userBabyCoinPay = function () {
                     $('#payConfirm').html(payConfirmInfo1);
                     moneys = payType1SumMoney;
                     babyCoinNumber = 0;
+                    bar = "Unchoose";
                 }
                 $('#useBabyCoin10RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%')
 
@@ -147,6 +148,7 @@ var userBabyCoinPay = function () {
                     $('#payConfirm').html(payConfirmInfo3);
                     moneys = payType2SumMoney;
                     babyCoinNumber = 0;
+                    bar = "Unchoose";
                 }
                 $('#useBabyCoin25RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%')
 
