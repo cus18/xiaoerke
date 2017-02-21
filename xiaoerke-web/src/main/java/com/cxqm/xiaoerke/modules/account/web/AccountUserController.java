@@ -273,10 +273,7 @@ public class AccountUserController {
         boolean canPay2 = (payCount == payType1ActualMoney && babyCoinNumber == PayType1UseBabycoin) && PayType1UseBabycoin < babyCoinVo.getCash();
         boolean canPay3 = payCount == PayType2SumMoney && babyCoinNumber == 0f;
         boolean canPay4 = (payCount == payType2ActualMoney && babyCoinNumber == PayType2UseBabycoin && PayType2UseBabycoin < babyCoinVo.getCash());
-        System.out.println(payCount == payType2ActualMoney);
-        System.out.println(babyCoinNumber == PayType2UseBabycoin);
-        System.out.println(PayType2UseBabycoin < babyCoinVo.getCash());
-        System.out.println();
+
         if (canPay1 || canPay2 || canPay3 || canPay4) {
             //获取统一支付接口参数
             request.setAttribute("payPrice", Float.valueOf(payCount));
