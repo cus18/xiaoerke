@@ -30,7 +30,7 @@
     </div>
     <br>
 
-    <div id="10MoneyPay" style="display: none;" onclick="selectPay25Money()" class="selectPay10Money();">
+    <div id="10MoneyPay" style="display: none;" onclick="selectPayMoney(25)" class="selectPay10Money();">
         <p align="center"><img
                 src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultPayVersion1.2%2FselectPay9.9.png"
                 width="90%" height="6%"/></p>
@@ -43,7 +43,7 @@
         <p align="center">&nbsp;</p>
     </div>
 
-    <div id="25MoneyPay" onclick="selectPay10Money()">
+    <div id="25MoneyPay" onclick="selectPayMoney(9.9)">
         <p align="center"><img
                 src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultPayVersion1.2%2FunselectPay9.9.png"
                 width="90%" height="6%"/></p>
@@ -57,18 +57,20 @@
     </div>
 
     <div id="useBabyCoin10Div" class="useBabyCoin" style="display: none;">
-        <span id="useBabyCoin10Left" class="useBabyCoinLeft">请支付9.9元</span>
+        <span id="useBabyCoin10Left" class="useBabyCoinLeft"></span>
 
         <div id="useBabyCoin10Right" class="useBabyCoinRight">
-            <div id="useBabyCoin10RightImg" class="useBabyCoinRightImg"></div>
+            <div id="useBabyCoin10RightImg" class="useBabyCoinRightImg"
+                 onclick="useBabyCoinClick('useBabyCoin10Right')"></div>
             <span class="useBabyCoinRightText">使用</span>
         </div>
     </div>
     <div id="useBabyCoin25Div" class="useBabyCoin">
-        <span id="useBabyCoin25Left" class="useBabyCoinLeft">请支付25.0元</span>
+        <span id="useBabyCoin25Left" class="useBabyCoinLeft"></span>
 
         <div id="useBabyCoin25Right" class="useBabyCoinRight">
-            <div id="useBabyCoin25RightImg" class="useBabyCoinRightImg"></div>
+            <div id="useBabyCoin25RightImg" class="useBabyCoinRightImg"
+                 onclick="useBabyCoinClick('useBabyCoin25RightImg')"></div>
             <span class="useBabyCoinRightText">使用</span>
         </div>
     </div>
