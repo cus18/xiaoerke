@@ -166,7 +166,7 @@ function useBabyCoinClick(useBabyCoinType){
             bar = 'Unchoose';
             useBabyCoin = false;
             $('#payConfirm').html(payConfirmInfo1);
-            moneys = payConfirmInfo1;
+            moneys = payType1SumMoney;
             babyCoinNumber = 0;
         } else {
             bar = 'Choose';
