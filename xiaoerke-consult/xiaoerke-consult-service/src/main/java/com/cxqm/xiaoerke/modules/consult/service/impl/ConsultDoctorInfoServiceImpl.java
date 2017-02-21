@@ -223,6 +223,12 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
     }
 
     @Override
+    public List<ConsultDoctorInfoVo> getRecentTimeList(ConsultDoctorInfoVo consultDoctorInfoVo) {
+        List<ConsultDoctorInfoVo> result = consultDoctorInfoDao.findRecentTimeConusltInfo(consultDoctorInfoVo);
+        return result;
+    }
+
+    @Override
     public Page<ConsultDoctorTimeGiftVo> findConsultDoctorOrderListByInfo(Page<ConsultDoctorTimeGiftVo> page, ConsultDoctorTimeGiftVo vo) {
         return consultDoctorTimeGiftDao.findConsultDoctorOrderListByInfo(page,vo);
     }

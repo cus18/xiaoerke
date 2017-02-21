@@ -376,4 +376,23 @@
   <select id="getStarDoctorList" parameterType="java.util.Map" resultMap="BaseResultMap">
     SELECT * from consult_doctor_info where star_doctor = '1' order by  sort,name
   </select>
+
+  <!-- jiangzg add 查询具有某种权限的医生信息 2016-8-12 10:55:20-->
+  <select id="findRecentTimeConusltInfo" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" resultMap="BaseResultMap">
+    SELECT
+      cdi.*,ncs.status,ncs.create_time
+    from consult_doctor_info cdi
+    left join
+    (SELECT * FROM (select * from non_real_time_consult_session ORDER BY create_time DESC) d GROUP BY cs_user_id ORDER BY create_time DESC
+    ) ncs
+    on cdi.sys_user_id = ncs.cs_user_id
+    where 1=1
+    <if test="nonrealtimeStatus != null and nonrealtimeStatus != ''">
+      and nonrealtime_status = #{nonrealtimeStatus,jdbcType=VARCHAR}
+    </if>
+    and sys_user_id in(
+    select DISTINCT sys_user_id_cs from consult_session cs
+      where cs.sys_user_id = #{openId,jdbcType=VARCHAR}
+    )
+  </select>
 </mapper>

@@ -174,6 +174,16 @@ public class NonRealTimeConsultUserContorller {
         return resultMap;
     }
 
+    @RequestMapping(value = "/recentTimeList", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> getRecentTimeList(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        String openid = WechatUtil.getOpenId(session,request);
+        List<ConsultDoctorInfoVo> departmentVoList = nonRealTimeConsultUserService.getRecentTimeList(openid);
+        resultMap.put("departmentVoList",departmentVoList);
+        return resultMap;
+    }
+
     @RequestMapping(value = "/sessionList", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public Map<String,Object> sessionList(HttpSession session, HttpServletRequest request) {

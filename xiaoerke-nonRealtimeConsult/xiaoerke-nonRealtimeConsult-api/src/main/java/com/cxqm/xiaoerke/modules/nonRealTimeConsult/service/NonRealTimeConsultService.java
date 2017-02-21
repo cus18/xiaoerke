@@ -73,6 +73,8 @@ public interface NonRealTimeConsultService {
      * */
     List<ConsultDoctorInfoVo> getDoctorListByDepartment(String departmentName);
 
+    List<ConsultDoctorInfoVo> getRecentTimeList(String openid);
+
     /**
      * 定时器 -每小时一次
      * 将36小时后的会话关闭
