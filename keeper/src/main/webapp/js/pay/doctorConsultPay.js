@@ -126,6 +126,7 @@ var userBabyCoinPay = function () {
                     babyCoinNumber = 0;
                     bar = "Unchoose";
                 }
+                $('#useBabyCoin10Left').html(payConfirmInfo0);
                 $('#useBabyCoin10RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%')
 
             } else {//用户选择支付25元的
@@ -178,7 +179,7 @@ function useBabyCoinClick(useBabyCoinType){
             babyCoinNumber = payType1UseBabycoin;
         }else{
             alert("对不起，宝宝币不足"+payType1SumMoney * 10+"个，无法使用");
-            $('#payConfirm').html(payConfirmInfo2);
+            $('#payConfirm').html(payConfirmInfo1);
         }
 
         $('#useBabyCoin10RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%');
@@ -196,7 +197,7 @@ function useBabyCoinClick(useBabyCoinType){
             $('#payConfirm').html(payConfirmInfo4);
         }else{
             alert("对不起，宝宝币不足"+payType2UseBabycoin+"个，无法使用");
-            $('#payConfirm').html(payConfirmInfo4);
+            $('#payConfirm').html(payConfirmInfo3);
         }
         $('#useBabyCoin25RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%');
         console.log(useBabyCoin)
