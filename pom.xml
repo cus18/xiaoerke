@@ -72,7 +72,7 @@
 		<repository>
             <id>oschina-repos</id>
             <name>Oschina Releases</name>
-            <url>http://maven.oschina.net/content/groups/public</url>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
         </repository>
         
         <repository>
