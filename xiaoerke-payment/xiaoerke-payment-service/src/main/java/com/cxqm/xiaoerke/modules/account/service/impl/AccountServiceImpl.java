@@ -394,6 +394,7 @@ public class AccountServiceImpl implements AccountService {
         }
 
         order_price=(int)Double.parseDouble(order_price)+"";//format 返回的是字符串
+        order_price = "1";
         //生成的商户订单号
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
         String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串\
@@ -483,7 +484,7 @@ public class AccountServiceImpl implements AccountService {
                 payRecord.setStatus("wait");
                 payRecord.setPayDate(new Date());
                 payRecord.setCreatedBy(user.getId());
-                payRecord.setLeaveNote(PrepayInfo.get("leaveNote"));
+                payRecord.setOperateType(PrepayInfo.get("operateType"));
                 payRecord.setFeeType(PrepayInfo.get("feeType"));
                 if ("lovePlan".equals(PrepayInfo.get("feeType"))) {
                     payRecord.setLeaveNote(URLDecoder.decode(request.getParameter("leaveNote"), "UTF-8"));

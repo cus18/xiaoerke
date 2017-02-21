@@ -3,7 +3,6 @@ var moneys = 9.9;
 var babyCoinNumber = 0;
 var leaveNotes = "reward";
 var useBabyCoin = true;
-var payFlag = false;
 var payCount = 25;
 var payType1SumMoney = 0;
 var payType1UseBabycoin = 0;
@@ -12,6 +11,7 @@ var payType2SumMoney = 0;
 var payType2UseBabycoin = 0;
 var payType2ActualMoney = 0;
 var bar = 'Choose';
+var cash = 0;
 
 var payConfirmInfo0 = "";
 var payConfirmInfo1 = "";
@@ -102,11 +102,11 @@ var userBabyCoinPay = function () {
         dataType: "json",
         success: function (data) {
             //var canUse = 0;//可以抵钱的宝宝币数
-            var cash = 140;//现有宝宝币总数
+            cash = data.babyCoinVo.cash;//现有宝宝币总数
             if (payCount == payType1SumMoney) {//用户选择支付10元的
                 document.getElementById("useBabyCoin25Div").style.display = "none";
                 document.getElementById("useBabyCoin10Div").style.display = "";
-                if (cash >= payType1UseBabycoin) {
+                if (cash >= payType1SumMoney * 10) {
                     $('#useBabyCoin10Left').html(payConfirmInfo0);
                     if(bar == "Choose"){
                         moneys = payType1ActualMoney;
@@ -124,7 +124,9 @@ var userBabyCoinPay = function () {
                     $('#payConfirm').html(payConfirmInfo1);
                     moneys = payType1SumMoney;
                     babyCoinNumber = 0;
+                    bar = "Unchoose";
                 }
+                $('#useBabyCoin10Left').html(payConfirmInfo0);
                 $('#useBabyCoin10RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%')
 
             } else {//用户选择支付25元的
@@ -132,13 +134,9 @@ var userBabyCoinPay = function () {
                 document.getElementById("useBabyCoin25Div").style.display = "";
                 if (cash >= payType2UseBabycoin) {
                     $('#useBabyCoin25Left').html(payConfirmInfo5);
-
-                    moneys = payType2ActualMoney;
-                    babyCoinNumber = payType2UseBabycoin;
-
                     if(bar == "Choose"){
                         moneys = payType2ActualMoney;
-                        babyCoinNumber = payType1UseBabycoin;
+                        babyCoinNumber = payType2UseBabycoin;
                         $('#payConfirm').html(payConfirmInfo4);
                     }else{
                         moneys = payType2SumMoney;
@@ -151,6 +149,7 @@ var userBabyCoinPay = function () {
                     $('#payConfirm').html(payConfirmInfo3);
                     moneys = payType2SumMoney;
                     babyCoinNumber = 0;
+                    bar = "Unchoose";
                 }
                 $('#useBabyCoin25RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%')
 
@@ -170,16 +169,19 @@ function useBabyCoinClick(useBabyCoinType){
             bar = 'Unchoose';
             useBabyCoin = false;
             $('#payConfirm').html(payConfirmInfo1);
-            moneys = payConfirmInfo1;
+            moneys = payType1SumMoney;
             babyCoinNumber = 0;
-        } else {
+        } else if(cash >= payType1SumMoney * 10){
             bar = 'Choose';
             useBabyCoin = true;
             $('#payConfirm').html(payConfirmInfo2);
             moneys = payType1ActualMoney;
             babyCoinNumber = payType1UseBabycoin;
+        }else{
+            alert("对不起，宝宝币不足"+payType1SumMoney * 10+"个，无法使用");
+            $('#payConfirm').html(payConfirmInfo1);
         }
-        ;
+
         $('#useBabyCoin10RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%');
         console.log(useBabyCoin)
     }else {
@@ -189,10 +191,13 @@ function useBabyCoinClick(useBabyCoinType){
             $('#payConfirm').html(payConfirmInfo3);
             moneys = payType2SumMoney;
             babyCoinNumber = 0;
-        } else {
+        } else if(cash >= payType2UseBabycoin){
             bar = 'Choose';
             useBabyCoin = true;
             $('#payConfirm').html(payConfirmInfo4);
+        }else{
+            alert("对不起，宝宝币不足"+payType2UseBabycoin+"个，无法使用");
+            $('#payConfirm').html(payConfirmInfo3);
         }
         $('#useBabyCoin25RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%');
         console.log(useBabyCoin)
@@ -218,31 +223,35 @@ function wechatPay() {
                 },
                 cache: false,
                 success: function (data) {
-                    $('#payButton').removeAttr("disabled");
-                    var obj = eval('(' + data + ')');
-                    if (parseInt(obj.agent) < 5) {
-                        alert("您的微信版本低于5.0无法使用微信支付");
-                        return;
-                    }
-                    //打开微信支付控件
-                    wx.chooseWXPay({
-                        appId: obj.appId,
-                        timestamp: obj.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-                        nonceStr: obj.nonceStr,  // 支付签名随机串，不长于 32 位
-                        package: obj.package,// 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-                        signType: obj.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-                        paySign: obj.paySign,  // 支付签名
-                        success: function (res) {
-                            if (res.errMsg == "chooseWXPay:ok") {
-                                window.location.href = "http://s132.baodf.com/angel/patient/consult#/doctorConsultPaySuccess";
-                            } else {
-                                alert("支付失败,请重新支付")
-                            }
-                        },
-                        fail: function (res) {
-                            alert(res.errMsg)
+                    if(data == "false"){
+                        alert("对不起，宝宝币不足，请选择其他支付方式！");
+                    }else{
+                        $('#payButton').removeAttr("disabled");
+                        var obj = eval('(' + data + ')');
+                        if (parseInt(obj.agent) < 5) {
+                            alert("您的微信版本低于5.0无法使用微信支付");
+                            return;
                         }
-                    });
+                        //打开微信支付控件
+                        wx.chooseWXPay({
+                            appId: obj.appId,
+                            timestamp: obj.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                            nonceStr: obj.nonceStr,  // 支付签名随机串，不长于 32 位
+                            package: obj.package,// 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+                            signType: obj.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                            paySign: obj.paySign,  // 支付签名
+                            success: function (res) {
+                                if (res.errMsg == "chooseWXPay:ok") {
+                                    window.location.href = "http://s132.baodf.com/angel/patient/consult#/doctorConsultPaySuccess";
+                                } else {
+                                    alert("支付失败,请重新支付")
+                                }
+                            },
+                            fail: function (res) {
+                                alert(res.errMsg)
+                            }
+                        });
+                    }
                 },
                 error: function () {
                 }

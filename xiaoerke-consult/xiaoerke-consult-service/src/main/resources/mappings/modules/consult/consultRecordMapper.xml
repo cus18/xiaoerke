@@ -42,6 +42,9 @@
     createDate BETWEEN #{createDate}
     AND #{updateDate}
     AND userId = #{userId}
+    <if test="senderId != null" >
+      and senderId like 'o3_%'
+    </if>
     ORDER BY
     createDate DESC
     LIMIT 1
