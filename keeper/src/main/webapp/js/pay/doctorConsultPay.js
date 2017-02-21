@@ -102,7 +102,7 @@ var userBabyCoinPay = function () {
         dataType: "json",
         success: function (data) {
             //var canUse = 0;//可以抵钱的宝宝币数
-            var cash = 140;//现有宝宝币总数
+            var cash = data.babyCoinVo.cash;//现有宝宝币总数
             if (payCount == payType1SumMoney) {//用户选择支付10元的
                 document.getElementById("useBabyCoin25Div").style.display = "none";
                 document.getElementById("useBabyCoin10Div").style.display = "";
