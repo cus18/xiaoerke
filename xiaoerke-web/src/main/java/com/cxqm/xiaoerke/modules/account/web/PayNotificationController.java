@@ -502,7 +502,7 @@ public class PayNotificationController {
                 PayRecord payRecord = new PayRecord();
                 payRecord.setId((String) map.get("out_trade_no"));
                 Map<String, Object> insuranceMap = insuranceService.getPayRecordById(payRecord.getId());
-                Long subCash = Long.valueOf(String.valueOf(insuranceMap.get("leaveNote")));//发起支付用的宝宝币数
+                float subCash = Float.valueOf(String.valueOf(insuranceMap.get("operateType")));//发起支付用的宝宝币数
                 String openid = (String) map.get("openid");
                 Integer sessionId = sessionRedisCache.getSessionIdByUserId(openid);
 //				判断当次的sessionid是否已经支付
@@ -515,7 +515,10 @@ public class PayNotificationController {
 
                     Map parameter = systemService.getWechatParameter();
                     String token = (String) parameter.get("token");
-                    if ((subCash == 0 && payRecord.getAmount() == 990) || (subCash == 50 && payRecord.getAmount() == 490)) //支付9.0免费咨询30分钟
+                    float PayType1SumMoney = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney())*100;
+                    float PayType1UseBabycoin = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());
+                    float payType1ActualMoney = (float) (PayType1SumMoney * 10 - PayType1UseBabycoin) / 10 * 100 / 100;
+                    if ((subCash == 0 && payRecord.getAmount() == PayType1SumMoney) || (subCash == PayType1UseBabycoin) && payRecord.getAmount() == payType1ActualMoney) //支付9.0免费咨询30分钟
                         consultMemberRedsiCacheService.payConsultMember(openid, sysPropertyVoWithBLOBsVo.getConsultMemberTimeType2(), (String) map.get("total_fee"), token);
                     else //支付25免费咨询30分钟
                         consultMemberRedsiCacheService.payConsultMember(openid, sysPropertyVoWithBLOBsVo.getConsultMemberTime(), (String) map.get("total_fee"), token);
@@ -524,7 +527,7 @@ public class PayNotificationController {
                     BabyCoinVo babyCoinVo = new BabyCoinVo();
                     babyCoinVo.setOpenId(openid);
                     babyCoinVo = babyCoinService.getBabyCoin(new HashMap<String, Object>(), openid);
-                    babyCoinVo.setCash(subCash);
+                    babyCoinVo.setCash(Long.valueOf(String.valueOf(subCash)));
                     babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
 
                     BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
