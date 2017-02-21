@@ -217,7 +217,7 @@ function wechatPay() {
                 cache: false,
                 success: function (data) {
                     if(data == "false"){
-                        alert("对不起，你的操作异常！请正确操作！");
+                        alert("对不起，宝宝币不足，请选择其他支付方式！");
                     }else{
                         $('#payButton').removeAttr("disabled");
                         var obj = eval('(' + data + ')');
