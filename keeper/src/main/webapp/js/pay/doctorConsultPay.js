@@ -132,13 +132,9 @@ var userBabyCoinPay = function () {
                 document.getElementById("useBabyCoin25Div").style.display = "";
                 if (cash >= payType2UseBabycoin) {
                     $('#useBabyCoin25Left').html(payConfirmInfo5);
-
-                    moneys = payType2ActualMoney;
-                    babyCoinNumber = payType2UseBabycoin;
-
                     if(bar == "Choose"){
                         moneys = payType2ActualMoney;
-                        babyCoinNumber = payType1UseBabycoin;
+                        babyCoinNumber = payType2UseBabycoin;
                         $('#payConfirm').html(payConfirmInfo4);
                     }else{
                         moneys = payType2SumMoney;
