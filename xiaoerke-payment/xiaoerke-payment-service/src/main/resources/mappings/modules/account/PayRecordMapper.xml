@@ -116,6 +116,10 @@
         <if test="leaveNote != null" >
             leave_note,
         </if>
+      <if test="operateType != null" >
+        operate_type,
+      </if>
+
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -163,6 +167,9 @@
         <if test="leaveNote != null" >
             #{leaveNote,jdbcType=VARCHAR},
         </if>
+      <if test="operateType != null" >
+        #{operateType,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
 
