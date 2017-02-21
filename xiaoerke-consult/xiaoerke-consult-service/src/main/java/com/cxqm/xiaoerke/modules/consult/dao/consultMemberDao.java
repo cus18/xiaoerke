@@ -27,4 +27,5 @@ public interface ConsultMemberDao {
 
     List<ConsultMemberVo> getConsultMemberList(ConsultMemberVo vo);
 
+
 }
