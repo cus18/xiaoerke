@@ -3,7 +3,6 @@ var moneys = 9.9;
 var babyCoinNumber = 0;
 var leaveNotes = "reward";
 var useBabyCoin = true;
-var payFlag = false;
 var payCount = 25;
 var payType1SumMoney = 0;
 var payType1UseBabycoin = 0;
@@ -12,6 +11,7 @@ var payType2SumMoney = 0;
 var payType2UseBabycoin = 0;
 var payType2ActualMoney = 0;
 var bar = 'Choose';
+var cash = 0;
 
 var payConfirmInfo0 = "";
 var payConfirmInfo1 = "";
@@ -102,11 +102,11 @@ var userBabyCoinPay = function () {
         dataType: "json",
         success: function (data) {
             //var canUse = 0;//可以抵钱的宝宝币数
-            var cash = data.babyCoinVo.cash;//现有宝宝币总数
+            cash = data.babyCoinVo.cash;//现有宝宝币总数
             if (payCount == payType1SumMoney) {//用户选择支付10元的
                 document.getElementById("useBabyCoin25Div").style.display = "none";
                 document.getElementById("useBabyCoin10Div").style.display = "";
-                if (cash >= payType1UseBabycoin) {
+                if (cash >= payType1SumMoney * 10) {
                     $('#useBabyCoin10Left').html(payConfirmInfo0);
                     if(bar == "Choose"){
                         moneys = payType1ActualMoney;
@@ -170,14 +170,16 @@ function useBabyCoinClick(useBabyCoinType){
             $('#payConfirm').html(payConfirmInfo1);
             moneys = payType1SumMoney;
             babyCoinNumber = 0;
-        } else {
+        } else if(cash >= payType1SumMoney * 10){
             bar = 'Choose';
             useBabyCoin = true;
             $('#payConfirm').html(payConfirmInfo2);
             moneys = payType1ActualMoney;
             babyCoinNumber = payType1UseBabycoin;
+        }else{
+            alert("对不起，宝宝币不足"+payType1SumMoney * 10+"个，无法使用");
         }
-        ;
+
         $('#useBabyCoin10RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%');
         console.log(useBabyCoin)
     }else {
@@ -187,10 +189,12 @@ function useBabyCoinClick(useBabyCoinType){
             $('#payConfirm').html(payConfirmInfo3);
             moneys = payType2SumMoney;
             babyCoinNumber = 0;
-        } else {
+        } else if(cash >= payType2UseBabycoin){
             bar = 'Choose';
             useBabyCoin = true;
             $('#payConfirm').html(payConfirmInfo4);
+        }else{
+            alert("对不起，宝宝币不足"+payType2UseBabycoin+"个，无法使用");
         }
         $('#useBabyCoin25RightImg').css('background', 'url("http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/useBabyCoinRight' + bar + '.png") 100% 100%/100% 100%');
         console.log(useBabyCoin)
