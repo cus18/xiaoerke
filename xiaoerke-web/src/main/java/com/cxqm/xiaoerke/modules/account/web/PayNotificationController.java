@@ -18,6 +18,8 @@ import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceServi
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.mutualHelp.entity.MutualHelpDonation;
 import com.cxqm.xiaoerke.modules.mutualHelp.service.MutualHelpDonationService;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.impl.NonRealTimeConsultServiceImpl;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
@@ -105,6 +107,9 @@ public class PayNotificationController {
 
     @Autowired
     private ConsultMemberRedsiCacheService consultMemberRedsiCacheService;
+
+    @Autowired
+    private NonRealTimeConsultServiceImpl nonRealTimeConsultServiceImpl;
 
     private static Lock lock = new ReentrantLock();
 
@@ -735,19 +740,18 @@ public class PayNotificationController {
                 payRecord.setId((String) map.get("out_trade_no"));
                 payRecord.setStatus("success");
                 payRecord.setReceiveDate(new Date());
-//                Map<String, Object> insuranceMap = insuranceService.getPayRecordById(payRecord.getId());
-//                String insuranceId = insuranceMap.get("order_id").toString();
-//                System.out.println("orderId:" + insuranceId);
-//                if (insuranceMap.get("fee_type").toString().equals("insurance")) {
-//                    InsuranceRegisterService insurance = new InsuranceRegisterService();
-//                    insurance.setId(insuranceId);
-//                    insurance.setState("0");
-//                    insuranceService.updateInsuranceRegisterService(insurance);
-//                    payRecord.getId();//修改pay_record表状态
-//                    payRecord.setStatus("success");
-//                    payRecord.setReceiveDate(new Date());
-//                    payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
-//                }
+                Map<String, Object> insuranceMap = insuranceService.getPayRecordById(payRecord.getId());
+                String insuranceId = insuranceMap.get("order_id").toString();
+                System.out.println("orderId:" + insuranceId);
+                if (insuranceMap.get("fee_type").toString().equals("nonRealTimeConsult")) {
+                    payRecord.setStatus("success");
+                    payRecord.setReceiveDate(new Date());
+                    payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+                    NonRealTimeConsultSessionVo sessionVo = new NonRealTimeConsultSessionVo();
+                    sessionVo.setId(Integer.parseInt(insuranceId));
+                    sessionVo.setStatus("ongoing");
+                    nonRealTimeConsultServiceImpl.updateConsultSessionInfo(sessionVo);
+                }
             }
             return XMLUtil.setXML("SUCCESS", "");
         } catch (Exception e) {
