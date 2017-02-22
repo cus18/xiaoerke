@@ -1,11 +1,11 @@
 <ion-view view-title={{title}} >
 	<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
-	<div bdf-head="title"></div>
+	<!--<div bdf-head="title"></div>-->
 	<ion-content class="selfCenter"  overflow-scroll="true" >
 		<ion-scroll direction="y" has-bouncing="true">
 			<div class="top">最近咨询</div>
 			<ul class="doctorList">
-				<li>
+				<li ng-repeat="item in doctorInfo">
 					<div class="left">
 						<span><img src=""/></span>
 						<div class="time">14:45</div>
@@ -19,34 +19,34 @@
 						<div class="bottom"><span ng-click="">再次咨询</span></div>
 					</div>
 				</li>
-				<li>
-					<div class="left">
-						<span><img src=""/></span>
-						<div class="time">14:45</div>
-					</div>
-					<div class="right">
-						<div class="doctorDetail">
-							<div class="nameDetail"><span class="name">梁医生</span><span>妇科</span><span>主任医师</span></div>
-							<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_10.png" alt=""/>已帮助过33人</span>
-							<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_07.png" alt=""/>好评率99%</span>
-						</div>
-						<div class="bottom"><span ng-click="">再次咨询</span></div>
-					</div>
-				</li>
-				<li>
-					<div class="left">
-						<span><img src=""/></span>
-						<div class="time">14:45</div>
-					</div>
-					<div class="right">
-						<div class="doctorDetail">
-							<div class="nameDetail"><span class="name">梁医生</span><span>妇科</span><span>主任医师</span></div>
-							<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_10.png" alt=""/>已帮助过33人</span>
-							<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_07.png" alt=""/>好评率99%</span>
-						</div>
-						<div class="bottom"><span ng-click="">再次咨询</span></div>
-					</div>
-				</li>
+				<!--<li>-->
+					<!--<div class="left">-->
+						<!--<span><img src=""/></span>-->
+						<!--<div class="time">14:45</div>-->
+					<!--</div>-->
+					<!--<div class="right">-->
+						<!--<div class="doctorDetail">-->
+							<!--<div class="nameDetail"><span class="name">梁医生</span><span>妇科</span><span>主任医师</span></div>-->
+							<!--<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_10.png" alt=""/>已帮助过33人</span>-->
+							<!--<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_07.png" alt=""/>好评率99%</span>-->
+						<!--</div>-->
+						<!--<div class="bottom"><span ng-click="">再次咨询</span></div>-->
+					<!--</div>-->
+				<!--</li>-->
+				<!--<li>-->
+					<!--<div class="left">-->
+						<!--<span><img src=""/></span>-->
+						<!--<div class="time">14:45</div>-->
+					<!--</div>-->
+					<!--<div class="right">-->
+						<!--<div class="doctorDetail">-->
+							<!--<div class="nameDetail"><span class="name">梁医生</span><span>妇科</span><span>主任医师</span></div>-->
+							<!--<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_10.png" alt=""/>已帮助过33人</span>-->
+							<!--<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_07.png" alt=""/>好评率99%</span>-->
+						<!--</div>-->
+						<!--<div class="bottom"><span ng-click="">再次咨询</span></div>-->
+					<!--</div>-->
+				<!--</li>-->
 			</ul>
 		</ion-scroll>
 	</ion-content>
