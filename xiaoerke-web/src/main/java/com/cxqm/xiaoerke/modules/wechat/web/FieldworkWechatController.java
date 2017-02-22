@@ -236,6 +236,8 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/baoFansCamp#/feedback";
         }else if("48".equals(url)){
             url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinTicketList";
+        }else if("50".equals(url)){
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/myDoctor";
         }
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +
