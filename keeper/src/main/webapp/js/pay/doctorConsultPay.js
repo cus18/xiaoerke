@@ -247,7 +247,7 @@ function wechatPay() {
                                         consultTime = "30";
                                     else
                                         consultTime = "1440"
-                                    window.location.href = "http://s132.baodf.com/angel/patient/consult#/doctorConsultPaySuccess?conaultTime="+consultTime;
+                                    window.location.href = "http://s132.baodf.com/angel/patient/consult#/doctorConsultPaySuccess/"+consultTime;
                                 } else {
                                     alert("支付失败,请重新支付")
                                 }

@@ -1,9 +1,8 @@
 angular.module('controllers', ['luegg.directives','ngFileUpload'])
-    .controller('doctorConsultPaySuccessCtrl', ['$scope',
-        function ($scope) {
-            $scope.consultTime = "";
+    .controller('doctorConsultPaySuccessCtrl', ['$scope','$stateParams',
+        function ($scope,$stateParams) {
+            $scope.consultTime = $stateParams.consultTime;
             $scope.doctorConsultPaySuccess = function () {
-                $scope.consultTime = getQueryString("consultTime");
                 if($scope.consultTime == "30")
                     $scope.consultTime = "30分钟";
                 else
@@ -14,10 +13,5 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
                 wx.closeWindow();
             };
 
-            function getQueryString(name) {
-                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-                var r = window.location.search.substr(1).match(reg);
-                if (r != null) return unescape(r[2]); return null;
-            }
         }])
 
