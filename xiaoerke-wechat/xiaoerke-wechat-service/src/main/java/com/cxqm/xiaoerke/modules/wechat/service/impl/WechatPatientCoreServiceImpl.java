@@ -657,6 +657,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             Map parameter = systemService.getWechatParameter();
             String token = (String) parameter.get("token");
             WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), "点击左下角小键盘，赶快咨询吧~");
+        }else if(EventKey.indexOf("WifiConnected") > -1){
+            //该用户链接wifi
+            String shopId = xmlEntity.getShopId();
+            String openid = xmlEntity.getFromUserName();
+            LogUtils.saveLog("WifiConnected",openid+"_"+shopId);
         }
 
 

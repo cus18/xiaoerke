@@ -236,6 +236,11 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/baoFansCamp#/feedback";
         }else if("48".equals(url)){
             url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinTicketList";
+        }else if("50".equals(url)){
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/myDoctor";
+        }else if(url.startsWith("51")){
+            String[] parameters = request.getQueryString().split(",");
+            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wxPay/patientPay.do?serviceType=nonRealTime&consultId="+parameters[1];
         }
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +

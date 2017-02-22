@@ -7,6 +7,7 @@ import com.cxqm.xiaoerke.modules.consult.entity.ConsultMemberVo;
 
 @MyBatisDao
 public interface ConsultMemberDao {
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(ConsultMemberVo record);

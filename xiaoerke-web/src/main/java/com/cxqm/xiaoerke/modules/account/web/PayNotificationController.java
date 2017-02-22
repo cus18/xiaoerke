@@ -705,4 +705,56 @@ public class PayNotificationController {
         return null; // 自定义错误信息
     }
 
+    /**
+     * 接收支付成后微信notify_url参数中传来的参数
+     * 支付完成 后服务器故障 事物无法回滚
+     */
+    @RequestMapping(value = "/user/getNonRealTimeConsultPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public synchronized
+    @ResponseBody
+    String getNonRealTimeConsultPayNotifyInfo(HttpServletRequest request) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+        lock.lock();
+        InputStream inStream = null;
+        try {
+            inStream = request.getInputStream();
+            ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = inStream.read(buffer)) != -1) {
+                outSteam.write(buffer, 0, len);
+            }
+            outSteam.close();
+            inStream.close();
+            String result = new String(outSteam.toByteArray(), "utf-8");
+            Map<String, Object> map = XMLUtil.doXMLParse(result);
+            //放入service层进行事物控制
+            if ("SUCCESS".equals(map.get("return_code"))) {
+                LogUtils.saveLog(Servlets.getRequest(), "00000048", "用户微信支付完成:" + map.get("out_trade_no"));
+                PayRecord payRecord = new PayRecord();
+                payRecord.setId((String) map.get("out_trade_no"));
+                payRecord.setStatus("success");
+                payRecord.setReceiveDate(new Date());
+//                Map<String, Object> insuranceMap = insuranceService.getPayRecordById(payRecord.getId());
+//                String insuranceId = insuranceMap.get("order_id").toString();
+//                System.out.println("orderId:" + insuranceId);
+//                if (insuranceMap.get("fee_type").toString().equals("insurance")) {
+//                    InsuranceRegisterService insurance = new InsuranceRegisterService();
+//                    insurance.setId(insuranceId);
+//                    insurance.setState("0");
+//                    insuranceService.updateInsuranceRegisterService(insurance);
+//                    payRecord.getId();//修改pay_record表状态
+//                    payRecord.setStatus("success");
+//                    payRecord.setReceiveDate(new Date());
+//                    payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+//                }
+            }
+            return XMLUtil.setXML("SUCCESS", "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
+        return "";
+    }
 }

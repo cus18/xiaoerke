@@ -36,6 +36,8 @@ public class ReceiveXmlEntity {
 	private String FromKfAccount = "";
 	private String MenuId = "";
 	private String Status = "";
+	private String ShopId = "";
+
 
 	public String getRecognition() {
 		return Recognition;
@@ -222,5 +224,13 @@ public class ReceiveXmlEntity {
 
 	public void setMenuId(String menuId) {
 		MenuId = menuId;
+	}
+
+	public String getShopId() {
+		return ShopId;
+	}
+
+	public void setShopId(String shopId) {
+		ShopId = shopId;
 	}
 }
