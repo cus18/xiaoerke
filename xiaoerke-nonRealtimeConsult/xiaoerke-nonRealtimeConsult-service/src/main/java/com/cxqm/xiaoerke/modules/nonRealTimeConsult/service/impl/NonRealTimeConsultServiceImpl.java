@@ -296,6 +296,9 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 
     }
 
-    ;
+    @Override
+    public NonRealTimeConsultSessionVo getSessionInfoById(Integer id){
+        return  nonRealTimeConsultSessionDao.selectByPrimaryKey(id);
+    }
 
 }

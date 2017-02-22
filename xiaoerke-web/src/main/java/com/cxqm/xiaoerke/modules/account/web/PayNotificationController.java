@@ -19,6 +19,7 @@ import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseServic
 import com.cxqm.xiaoerke.modules.mutualHelp.entity.MutualHelpDonation;
 import com.cxqm.xiaoerke.modules.mutualHelp.service.MutualHelpDonationService;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.impl.NonRealTimeConsultServiceImpl;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
@@ -109,7 +110,7 @@ public class PayNotificationController {
     private ConsultMemberRedsiCacheService consultMemberRedsiCacheService;
 
     @Autowired
-    private NonRealTimeConsultServiceImpl nonRealTimeConsultServiceImpl;
+    private NonRealTimeConsultService nonRealTimeConsultService;
 
     private static Lock lock = new ReentrantLock();
 
@@ -747,10 +748,11 @@ public class PayNotificationController {
                     payRecord.setStatus("success");
                     payRecord.setReceiveDate(new Date());
                     payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
-                    NonRealTimeConsultSessionVo sessionVo = new NonRealTimeConsultSessionVo();
-                    sessionVo.setId(Integer.parseInt(insuranceId));
+                    NonRealTimeConsultSessionVo sessionVo = nonRealTimeConsultService.getSessionInfoById(Integer.parseInt(insuranceId));
                     sessionVo.setStatus("ongoing");
-                    nonRealTimeConsultServiceImpl.updateConsultSessionInfo(sessionVo);
+                    nonRealTimeConsultService.updateConsultSessionInfo(sessionVo);
+                    //通知相关医生来回答--模板消息
+                    nonRealTimeConsultService.sendRemindDoctor(sessionVo.getUserId(),sessionVo.getUserName(),String.valueOf(sessionVo.getId()));
                 }
             }
             return XMLUtil.setXML("SUCCESS", "");
