@@ -6,38 +6,7 @@ angular.module('controllers', ['ionic']).controller('babyCoinTicketListCtrl', [
         BabyCoinInit.save({},function(data){
             $scope.babyMoney = data.babyCoinVo.cash;
         })
-        // $scope.ticketData=[
-        //     {
-        //         name:"咨询5折券",
-        //         coin:"50",
-        //         pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/ticket5_1.png"
-        //     },
-        //     {
-        //         name:"5元代金券",
-        //         coin:"50",
-        //         pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/ticket5_2.png"
-        //     },
-        //     {
-        //         name:"10元代金券",
-        //         coin:"100",
-        //         pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/ticket10.png"
-        //     },
-        //     {
-        //         name:"20元代金券",
-        //         coin:"200",
-        //         pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/ticket20.png"
-        //     },
-        //     {
-        //         name:"30元代金券",
-        //         coin:"300",
-        //         pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/ticket30.png"
-        //     },
-        //     {
-        //         name:"40元代金券",
-        //         coin:"400",
-        //         pic:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/ticket40.png"
-        //     }
-        // ];
+
         //点击 赚取宝宝币
         $scope.earnBabyCoin = function () {
             $state.go("babyCoinInvitePage");
@@ -56,6 +25,10 @@ angular.module('controllers', ['ionic']).controller('babyCoinTicketListCtrl', [
 
 
         });
+
+        $scope.goToPayPage = function () {
+            window.location.href= "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=window.location.href=/keeper/wechatInfo/getUserWechatMenId?url=35";
+        }
 
         function recordLogs(val){
             $.ajax({

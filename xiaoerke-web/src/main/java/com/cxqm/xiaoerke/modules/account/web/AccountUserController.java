@@ -252,18 +252,27 @@ public class AccountUserController {
     @ResponseBody
     String doctorConsultPay(HttpServletRequest request, HttpSession session) throws ServiceException {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         HashMap<String, Object> response = new HashMap<String, Object>();
         String openId = WechatUtil.getOpenId(session, request);
-        String payCount = String.valueOf(request.getParameter("payPrice"));//支付的金额
-        String babyCoinNumber = String.valueOf(request.getParameter("babyCoinNumber"));//使用宝宝币抵扣的金额
-        //支付只有四种情况 1、9.9金额 0宝宝币 2、4.9金额 50宝宝币 3、25金额 0宝宝币  4、12.5金额 125宝宝币
+        float payCount = Float.valueOf(String.valueOf(request.getParameter("payPrice")));//支付的金额
+        float babyCoinNumber = Float.valueOf(String.valueOf(request.getParameter("babyCoinNumber")));//使用宝宝币抵扣的金额
+
         BabyCoinVo babyCoinVo = new BabyCoinVo();
         babyCoinVo.setOpenId(openId);
         babyCoinVo = babyCoinService.getBabyCoin(response, openId);
-        boolean canPay1 = payCount.equals("9.9") && babyCoinNumber.equals("0");
-        boolean canPay2 = payCount.equals("4.9") && babyCoinNumber.equals("50") && babyCoinVo.getCash() >= 50;
-        boolean canPay3 = payCount.equals("25") && babyCoinNumber.equals("0");
-        boolean canPay4 = payCount.equals("12.5") && babyCoinNumber.equals("125") && babyCoinVo.getCash() >= 125;
+
+        float PayType1SumMoney = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney());
+        float PayType1UseBabycoin = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());
+        float payType1ActualMoney = (float) (PayType1SumMoney * 10 - PayType1UseBabycoin) / 10 * 100 / 100;
+        float PayType2SumMoney = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType2SumMoney());
+        float PayType2UseBabycoin = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType2UseBabycoin());
+        float payType2ActualMoney = (float) ((PayType2SumMoney * 10 - PayType2UseBabycoin) / 10 * 100) / 100;
+        //此支付只有四种情况 1、9.9金额 0宝宝币 2、4.9金额 50宝宝币 3、25金额 0宝宝币  4、12.5金额 125宝宝币
+        boolean canPay1 = (payCount == PayType1SumMoney && babyCoinNumber == 0f);
+        boolean canPay2 = (payCount == payType1ActualMoney && babyCoinNumber == PayType1UseBabycoin) && PayType1SumMoney * 10 < babyCoinVo.getCash();
+        boolean canPay3 = payCount == PayType2SumMoney && babyCoinNumber == 0f;
+        boolean canPay4 = (payCount == payType2ActualMoney && babyCoinNumber == PayType2UseBabycoin && PayType2SumMoney * 10 < babyCoinVo.getCash());
 
         if (canPay1 || canPay2 || canPay3 || canPay4) {
             //获取统一支付接口参数
@@ -274,13 +283,13 @@ public class AccountUserController {
             //拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
             String userId = UserUtils.getUser().getId();
             prepayInfo.put("feeType", "doctorConsultPay");
-            prepayInfo.put("leaveNote", babyCoinNumber);
+            prepayInfo.put("operateType", String.valueOf(babyCoinNumber));
 
             String payParameter = accountService.assemblyPayParameter(request, prepayInfo, session, userId, null);
 
             return payParameter;
         } else {
-            throw new ServiceException("操作异常");
+            return "false";
         }
 
     }

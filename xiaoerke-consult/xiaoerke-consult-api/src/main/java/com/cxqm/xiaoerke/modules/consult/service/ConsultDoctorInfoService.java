@@ -44,6 +44,8 @@ public interface ConsultDoctorInfoService {
 
     List<ConsultDoctorInfoVo> findManagerDoctorInfoBySelective(ConsultDoctorInfoVo consultDoctorInfoVo);
 
+    List<ConsultDoctorInfoVo> getRecentTimeList(ConsultDoctorInfoVo consultDoctorInfoVo);
+
     Page<ConsultDoctorTimeGiftVo> findConsultDoctorOrderListByInfo(Page<ConsultDoctorTimeGiftVo> page,ConsultDoctorTimeGiftVo vo);
 
     Page<ConsultSessionPropertyVo> findConsultUserInfoListByInfo(Page<ConsultSessionPropertyVo> page,ConsultSessionPropertyVo vo);

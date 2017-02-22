@@ -4,7 +4,7 @@ angular.module('controllers', ['ionic']).controller('babyCoinTicketPayCtrl', [
 
         $scope.surePayLock=true; // 是否点击使用
         $scope.imgUrl = "http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/sendMindCoupon"+$stateParams.id;
-        $scope.needCoin = parseInt($stateParams.name) *10
+        $scope.needCoin = parseInt($stateParams.name)
 
 
         //点击 赚取宝宝币

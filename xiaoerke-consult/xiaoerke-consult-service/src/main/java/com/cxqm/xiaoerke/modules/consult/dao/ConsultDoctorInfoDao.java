@@ -45,4 +45,6 @@ public interface ConsultDoctorInfoDao {
     List<ConsultDoctorInfoVo> getConsultLecture(Map param);
 
     List<ConsultDoctorInfoVo> getStarDoctorList();
+
+    List<ConsultDoctorInfoVo> findRecentTimeConusltInfo(ConsultDoctorInfoVo consultDoctorInfoVo);
 }

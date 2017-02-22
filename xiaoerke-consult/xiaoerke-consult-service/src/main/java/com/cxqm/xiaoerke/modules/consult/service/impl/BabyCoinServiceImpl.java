@@ -182,7 +182,7 @@ public class BabyCoinServiceImpl implements BabyCoinService {
         Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
         WechatMessageUtil.templateModel("亲！有宝宝币入账啦",wechatAttentionVo.getWechat_name(),count+"枚", DateUtils.DateToStr(new Date(),"yyyy年MM月dd日"),"","时间有限，宝宝币要抓紧使用哦，不要过期浪费啦~\n" +
-                "点击进入宝宝币兑换中心",token,url,openid,"U-0n4vv3HTXzOE4iD5hZ1siCjbpFVTPpFsXrxs4ASK8");
+                "点击进入宝宝币兑换中心",token,url,openid,"6CP1Qv0i9fWvnY_x-Ol4OutmTpZUT9Nd9nb_0dxfrog");
         return 0;
     }
 
