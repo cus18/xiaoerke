@@ -1,5 +1,5 @@
-// 订单单价,账户余额,订单id,微信需支付
-var chargePrice,patient_register_service_id,needPayMoney;
+// // 订单单价,账户余额,订单id,微信需支付
+// var chargePrice,patient_register_service_id,needPayMoney;
 
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
 var doRefresh = function(){
@@ -78,12 +78,13 @@ var doRefresh = function(){
 }
 
 var pay = function(){
+    var consultId = GetQueryString("");
     $('#payButton').attr('disabled',"true");//添加disabled属性
     $.ajax({
-        url:"ap/account/user/userPay",// 跳转到 action
+        url:"ap/account/user/nonRealTimeConsultPay",// 跳转到 action
         async:true,
         type:'get',
-        data:{patientRegisterId:patient_register_service_id,payPrice:needPayMoney*100},
+        data:{patientRegisterId:consultId,payPrice:880},
         cache:false,
         success:function(data) {
             $('#payButton').removeAttr("disabled");
