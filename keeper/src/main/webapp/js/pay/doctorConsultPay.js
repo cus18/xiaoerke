@@ -250,7 +250,7 @@ function wechatPay() {
                             success: function (res) {
                                 if (res.errMsg == "chooseWXPay:ok") {
                                     var consultTime ="";
-                                    if(moneys <= payType1SumMoney)
+                                    if(parseInt(moneys) <= parseInt(payType1SumMoney))
                                         consultTime = "30";
                                     else
                                         consultTime = "1440"
