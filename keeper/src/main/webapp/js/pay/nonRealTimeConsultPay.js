@@ -48,7 +48,7 @@ var wechatPay = function(){
     var consultId = GetQueryString("consultId");
     $('#payButton').attr('disabled',"true");//添加disabled属性
     $.ajax({
-        url:"ap/account/user/nonRealTimeConsultPay",// 跳转到 action
+        url:"account/user/nonRealTimeConsultPay",// 跳转到 action
         async:true,
         type:'get',
         data:{patientRegisterId:consultId,payPrice:880},
