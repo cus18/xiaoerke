@@ -9,6 +9,7 @@ import java.util.List;
 
 @MyBatisDao
 public interface ConsultMemberDao {
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(ConsultMemberVo record);
