@@ -21,6 +21,7 @@ var payConfirmInfo4 = "";
 var payConfirmInfo5 = "";
 var payConfirmInfo6 = "购买一次，开始咨询后，30分钟内医生都会回复";
 var payConfirmInfo7 = "购买一次，开始咨询后，24小时内医生都会回复";
+var angelWebUrl = "";
 
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
 var doRefresh = function () {
@@ -48,6 +49,7 @@ var doRefresh = function () {
                 payType2UseBabycoin = data.payType2UseBabycoin;
                 payType1ActualMoney = toDecimal2((payType1SumMoney * 10 - payType1UseBabycoin) / 10);
                 payType2ActualMoney = toDecimal2((payType2SumMoney * 10 - payType2UseBabycoin) / 10);
+                angelWebUrl = data.angelWebUrl;
                 payConfirmInfo0 = "亲，您有宝宝币可减免5.0元";
                 payConfirmInfo1 = "确认支付" + payType1SumMoney + "元";
                 payConfirmInfo2 = "确认支付" + payType1ActualMoney + "元";
@@ -248,11 +250,11 @@ function wechatPay() {
                             success: function (res) {
                                 if (res.errMsg == "chooseWXPay:ok") {
                                     var consultTime ="";
-                                    if(moneys <= payType1SumMoney)
+                                    if(parseInt(moneys) <= parseInt(payType1SumMoney))
                                         consultTime = "30";
                                     else
                                         consultTime = "1440"
-                                    window.location.href = "http://s132.baodf.com/angel/patient/consult#/doctorConsultPaySuccess/"+consultTime;
+                                    window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+consultTime;
                                 } else {
                                     alert("支付失败,请重新支付")
                                 }
