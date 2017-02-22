@@ -173,6 +173,9 @@ public class PayController {
         }else if("doctorConsultPay".equals(serviceType)){
             model.addAttribute("payPrice",8);
             return "pay/doctorConsultPay";
+        }else if("nonRealTime".equals(serviceType)){
+            model.addAttribute("payPrice",8);
+            return "pay/nonRealTimeConsultPay";
         }
         else{
             return null;

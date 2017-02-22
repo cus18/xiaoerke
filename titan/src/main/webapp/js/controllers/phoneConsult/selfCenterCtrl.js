@@ -41,6 +41,10 @@
                 RecordLogs.get({logContent:encodeURI("DHZX_HYZX_DQDD")},function(){})
                 resolveUserLoginStatus.events("currentOrderList","","","","notGo");
             };
+            /* 我的医生*/
+            $scope.myDoctor = function(){
+               $state.go('myDoctor');
+            };
             /* 预约挂号订单*/
             $scope.appointOrder = function(){
                 RecordLogs.get({logContent:encodeURI("DHZX_HYZX_YYGH")},function(){})
@@ -87,7 +91,11 @@
                 }
             })
             BabyCoinInit.save({},function(data){
-                $scope.babyMoney = data.babyCoinVo.cash;
+               if(data.babyCoinVo==undefined){
+
+               }else{
+                   $scope.babyMoney = data.babyCoinVo.cash;
+               }
             })
 
             $scope.$on('$ionicView.enter', function(){
