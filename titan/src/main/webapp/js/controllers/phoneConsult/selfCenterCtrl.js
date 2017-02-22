@@ -43,7 +43,7 @@
             };
             /* 我的医生*/
             $scope.myDoctor = function(){
-               $state.go('myDoctor');
+                window.location.href='http://localhost:8080/titan/nonRealTimeConsult#/myDoctor'
             };
             /* 预约挂号订单*/
             $scope.appointOrder = function(){
