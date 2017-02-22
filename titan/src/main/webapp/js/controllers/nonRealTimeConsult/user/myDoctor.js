@@ -20,7 +20,7 @@
             location.href="consultDoctorHome#/consultDoctorHome/"+$scope.doctorInfo[index].userId;
         }
 
-        $scope.nonRealTimeConsult = function () {
-            $state.go("NonTimeUserFirstConsult",{"doctorId":$scope.pageData.doctorId});
+        $scope.nonRealTimeConsult = function (userid) {
+            $state.go("NonTimeUserFirstConsult",{"doctorId":userid});
         }
     }]);
