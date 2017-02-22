@@ -55,6 +55,7 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
     private String PayType1UseBabycoin;//50宝宝币
     private String PayType2SumMoney;//25元
     private String PayType2UseBabycoin;//125宝宝币
+
     private String nonRealTimeConsultUrl;
 
     public String getPayType1SumMoney() {
