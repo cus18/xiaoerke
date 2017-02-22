@@ -7,14 +7,14 @@
 			<ul class="doctorList">
 				<li ng-repeat="item in doctorInfo">
 					<div class="left">
-						<span><img src=""/></span>
+						<span> <img ng-width="100%" ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.userId}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/></span>
 						<div class="time">14:45</div>
 					</div>
 					<div class="right">
 						<div class="doctorDetail">
-							<div class="nameDetail"><span class="name">梁医生</span><span>妇科</span><span>主任医师</span></div>
-							<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_10.png" alt=""/>已帮助过33人</span>
-							<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_07.png" alt=""/>好评率99%</span>
+							<div class="nameDetail"><span class="name">{{item.name}}</span><span>{{item.department}}</span><span>{{item.title}}</span></div>
+							<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_10.png" alt=""/>已帮助过{{item.consult_num}}人</span>
+							<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_07.png" alt=""/>好评率{{item.evaluate}}%</span>
 						</div>
 						<div class="bottom"><span ng-click="">再次咨询</span></div>
 					</div>
