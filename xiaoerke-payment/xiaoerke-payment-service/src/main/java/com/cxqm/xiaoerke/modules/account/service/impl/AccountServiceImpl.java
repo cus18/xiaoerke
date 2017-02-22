@@ -426,8 +426,7 @@ public class AccountServiceImpl implements AccountService {
             parameters.put("notify_url", sysPropertyVoWithBLOBsVo.getNotifyLoveplanUrl());//通知地址
         }else if (serviceType.equals("nonRealTimeConsult")) {
             parameters.put("notify_url", sysPropertyVoWithBLOBsVo.getNotifyLoveplanUrl());//通知地址
-        }
-        if (serviceType.equals("doctorConsultPay")) {
+        }if (serviceType.equals("doctorConsultPay")) {
             parameters.put("notify_url", sysPropertyVoWithBLOBsVo.getNonRealTimeConsultUrl());//通知地址
         }
         parameters.put("trade_type", "JSAPI");//交易类型
