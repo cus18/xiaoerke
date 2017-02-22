@@ -14,4 +14,13 @@
             }
 
         })
+
+        $scope.checkDoctorInformation = function(index){
+            console.log($scope.doctorInfo[index].doctorId);
+            location.href="consultDoctorHome#/consultDoctorHome/"+$scope.doctorInfo[index].userId;
+        }
+
+        $scope.nonRealTimeConsult = function () {
+            $state.go("NonTimeUserFirstConsult",{"doctorId":$scope.pageData.doctorId});
+        }
     }]);
