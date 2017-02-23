@@ -24,8 +24,5 @@ public interface ConsultMemberDao {
     int updateByPrimaryKey(ConsultMemberVo record);
 
     Page<ConsultMemberVo> findConsultMemberList(ConsultMemberVo vo,Page<ConsultMemberVo> page);
-
     List<ConsultMemberVo> getConsultMemberList(ConsultMemberVo vo);
-
-
 }
