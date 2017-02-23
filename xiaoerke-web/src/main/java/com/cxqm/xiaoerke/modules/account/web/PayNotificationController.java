@@ -525,9 +525,9 @@ public class PayNotificationController {
 
                     Map parameter = systemService.getWechatParameter();
                     String token = (String) parameter.get("token");
-                    float PayType1SumMoney = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney())*100;
-                    float PayType1UseBabycoin = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());
-                    float payType1ActualMoney = (float) (PayType1SumMoney * 10 - PayType1UseBabycoin) / 10 * 100 / 100;
+                    double PayType1SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney())*100;
+                    double PayType1UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());
+                    double payType1ActualMoney = (double) (PayType1SumMoney * 10 - PayType1UseBabycoin) / 10 * 100 / 100;
                     if ((subCash == 0 && payRecord.getAmount() == PayType1SumMoney) || (subCash == PayType1UseBabycoin) && payRecord.getAmount() == payType1ActualMoney) //支付9.0免费咨询30分钟
                         consultMemberRedsiCacheService.payConsultMember(openid, sysPropertyVoWithBLOBsVo.getConsultMemberTimeType2(), (String) map.get("total_fee"), token);
                     else //支付25免费咨询30分钟
