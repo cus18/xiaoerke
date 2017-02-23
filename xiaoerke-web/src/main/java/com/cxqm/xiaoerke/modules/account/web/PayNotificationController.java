@@ -521,6 +521,7 @@ public class PayNotificationController {
                     payRecord.setStatus("success");
                     payRecord.setReceiveDate(new Date());
                     payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+                    payRecord = payRecordService.findById((String) map.get("out_trade_no"));
 
                     Map parameter = systemService.getWechatParameter();
                     String token = (String) parameter.get("token");
