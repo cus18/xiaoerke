@@ -9,7 +9,6 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
         $scope.close = function () {
             $scope.doctorLock = false;
         };
-
         $scope.doctorBindingAction = function () {
             doctorBinding.save({username: $scope.info.phoneNum, password: $scope.info.password}, function (data) {
                 if (data.status == "failure") {
