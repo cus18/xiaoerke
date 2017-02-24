@@ -64,6 +64,7 @@ public class ConsultDoctorInfoVo {
     //会话状态
     private Date createTime;
     private String status;
+    private String sessionid;
 
     public String getStarDoctor() {
         return starDoctor;
@@ -317,5 +318,13 @@ public class ConsultDoctorInfoVo {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getSessionid() {
+        return sessionid;
+    }
+
+    public void setSessionid(String sessionid) {
+        this.sessionid = sessionid;
     }
 }
