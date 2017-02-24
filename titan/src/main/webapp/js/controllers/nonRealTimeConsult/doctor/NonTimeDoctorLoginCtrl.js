@@ -20,7 +20,7 @@ angular.module('controllers', []).controller('NonTimeDoctorLoginCtrl', [
                     $scope.doctorLock = true;
                 }else {
                     GetConfig.save({}, function (data) {
-                        window.location.href = data.publicSystemInfo.doctorBindingUrl;
+                        $state.go("NonTimeDoctorMessageList");
                     })
                 }
             });
