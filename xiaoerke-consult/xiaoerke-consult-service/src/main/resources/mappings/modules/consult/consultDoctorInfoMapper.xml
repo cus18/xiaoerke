@@ -28,7 +28,8 @@
     <result column="sort" property="sort" jdbcType="VARCHAR" />
     <result column="microMallAddress" property="microMallAddress" jdbcType="VARCHAR" />
 
-
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, sys_user_id, password,gender,name, title, hospital, department,practitionerCertificateNo, skill, description, grab_session, send_message, receive_differential_notification,
