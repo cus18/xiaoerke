@@ -84,7 +84,7 @@ var wechatPay = function(){
                 paySign:obj.paySign,  // 支付签名
                 success: function (res) {
                     if(res.errMsg == "chooseWXPay:ok" ) {
-                        window.location.href = "http://s201.xiaorl.com/nonRealTimeConsult#/NonTimeUserConversation/"+consultId;
+                        window.location.href = "http://s201.xiaork.com/titan/nonRealTimeConsult#/NonTimeUserConversation/"+consultId;
                     }else{
                         alert("支付失败,请重新支付")
                     }
