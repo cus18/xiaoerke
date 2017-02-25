@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', []).controller('myDoctor', [
-    '$scope','$stateParams','recentTimeList',
-    function ($scope,$stateParams,recentTimeList) {
+    '$scope','$stateParams','$state','recentTimeList',
+    function ($scope,$stateParams,$state,recentTimeList) {
         $scope.title='我的医生';
         $scope.doctorInfo = {};
 
