@@ -1,86 +1,30 @@
 <html>
 <head>
 </head>
-<base href="/titan/"/>
+<base href="/keeper/"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
 <meta content="yes" name="apple-mobile-web-app-capable">
 <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
-<title>宝大夫</title>
+<title>咨询医生</title>
 <script src="js/libs/jquery-2.1.3.min.js"></script>
-<script src="js/pay/pay.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<link rel="stylesheet" href="styles/pay/pay.less" type="text/css" />
+<script src="js/pay/doctorConsultPay.js"></script>
+<link rel="stylesheet" href="/keeper/styles/main.less" type="text/css" />
+<link rel="stylesheet" href="/keeper/styles/pay/commonPay.less" type="text/css" />
+<link rel="stylesheet" href="/keeper/styles/pay/doctorConsultPay.less" type="text/css" />
 <body onload="doRefresh()">
-<div class="pay-weChat">
-    <div class="head">
-        <a class="left" href="firstPage/appoint"><span class="city">首页</span> </a>
-        <h1 class="title" >支付</h1>
-        <div class="right">
-            <a class= my" href="appoint#/myselfFirst/," >
-                <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/ap%2Fmy1.png" width="22" height="22" ng-if="!haveOrder">
-            </a>
-        </div>
+<div class="doctorConsultPay bg1" >
+    <div class="intro">
+        <img width="100%" height="auto" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2FconsultPay%2Fb_03.png" alt=""/>
+        <span>你需支付</span>
+        <span>图文咨询服务费￥8.8</span>
     </div>
-    <div class="box2">
-        <div>购买：月会员服务</div>
-        <p>赠送：免费预约名医门诊1次</p>
-        <span id ="payMoney"></span>
-        <span class="cir"></span>
-    </div>
-    <dl style="margin-bottom: 20px">
-        <dt>资深儿科医生 随时线上咨询 为健康保驾护航</dt>
-        <dd><span class="cir"></span>我们的平台医生7x18小时在线，及时答复健康咨询</dd>
-        <dd><span class="cir"></span>服务专员按需为宝宝转诊</dd>
-        <dd><span class="cir"></span>平台医生跟踪院外病况，指导合理用药</dd>
-        <dt>专属个人档案 专家健康指导 让宝宝健康成长</dt>
-        <dd><span class="cir"></span>我们为宝宝建立专属健康档案</dd>
-        <dd><span class="cir"></span>提供个性化育儿保健知识和健康指导</dd>
-        <dt>享受特惠医院的特殊优惠</dt>
-        <dd><span class="cir"></span>可无限次预约特惠医院的医生</dd>
-        <dd><span class="cir"></span>更多优惠信息可进入特惠医院查看</dd>
-    </dl>
-    <div class="box3">
-        <h3 id="appointmentInfo">
-            <span></span>
-            使用此次赠送免费预约机会：
-            <img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/common%2Fselect_yes.png" width="22" height="22" >
-        </h3>
-        <ul id="doctorInfo">
-            <li>
-                <span class="li-fl">医生</span>
-                <span class="li-fr" id="doctorName"></span>
-            </li>
-            <li>
-                <span class="li-fl">时间</span>
-                <span class="li-fr" id="date"></span>
-            </li>
-            <li>
-                <span class="li-fl">地点</span>
-                <span class="li-fr" id="hospitalName" ></span>
-            </li>
-        </ul>
-    </div>
-    <div class="apart"></div>
 
-    <div class="pay">
-        <ul >
-            <li>
-                <span class="l">需要支付</span>
-                <span class="r" id="needPay">元</span>
-            </li>
-        </ul>
+    <div class="weChat">
+        <div>购买成功后,医生将使用休息时间解答您的问题,请耐心等待</div>
     </div>
-    <div style="background-color: #fff;">
-        <button class="button foot-btn" onclick="pay()"  id="payButton">
-            微信支付
-        </button>
-        <a class="pay-problem"
-           style="color:#32b7be;margin-top:5px;padding-right:0;"
-           href="appoint#/payProblem/,">
-            支付建议
-        </a>
-    </div>
+    <div id="payButton" class="button" ><a onclick="wechatPay()" class="change">确认支付</a></div>
 </div>
 </body>
 </html>
