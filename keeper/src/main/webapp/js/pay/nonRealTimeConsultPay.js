@@ -1,4 +1,11 @@
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
+var GetQueryString = function(name)
+{
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return  unescape(r[2]); return null;
+}
+var consultId = GetQueryString("consultId");
 var doRefresh = function(){
     var timestamp;//时间戳
     var nonceStr;//随机字符串
@@ -45,7 +52,7 @@ var doRefresh = function(){
 }
 
 var wechatPay = function(){
-    var consultId = GetQueryString("consultId");
+
     $('#payButton').attr('disabled',"true");//添加disabled属性
     $.ajax({
         url:"account/user/nonRealTimeConsultPay",// 跳转到 action
@@ -77,7 +84,7 @@ var wechatPay = function(){
                 paySign:obj.paySign,  // 支付签名
                 success: function (res) {
                     if(res.errMsg == "chooseWXPay:ok" ) {
-                        window.location.href = "appoint#/memberServiceSuccess/"+patient_register_service_id;
+                        window.location.href = "nonRealTimeConsult#/NonTimeUserConversation/"+consultId;
                     }else{
                         alert("支付失败,请重新支付")
                     }
@@ -92,10 +99,5 @@ var wechatPay = function(){
     });
 }
 
-var GetQueryString = function(name)
-{
-    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);
-    if(r!=null)return  unescape(r[2]); return null;
-}
+
 
