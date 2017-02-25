@@ -58,6 +58,8 @@ public interface NonRealTimeConsultService {
      * */
     void updateConsultDoctorInfo();
 
+    void updateConsultSessionInfo(NonRealTimeConsultSessionVo consultSessionVo);
+
     /**
      * 患者医生间的咨询消息
      * */

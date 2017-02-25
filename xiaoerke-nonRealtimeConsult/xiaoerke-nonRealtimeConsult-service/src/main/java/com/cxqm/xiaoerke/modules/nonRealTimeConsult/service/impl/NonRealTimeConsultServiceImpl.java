@@ -154,7 +154,11 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
     public void updateConsultDoctorInfo() {
         nonRealTimeConsultSessionDao.updateEvaluateEarchDay();
         nonRealTimeConsultSessionDao.updateConsultNumEarchDay();
+    }
 
+    @Override
+    public void updateConsultSessionInfo(NonRealTimeConsultSessionVo consultSessionVo) {
+        nonRealTimeConsultSessionDao.updateByPrimaryKey(consultSessionVo);
     }
 
     @Override
