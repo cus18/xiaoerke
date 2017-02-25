@@ -1,6 +1,3 @@
-// // 订单单价,账户余额,订单id,微信需支付
-// var chargePrice,patient_register_service_id,needPayMoney;
-
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
 var doRefresh = function(){
     var timestamp;//时间戳
@@ -45,43 +42,13 @@ var doRefresh = function(){
         }
     });
 
-    patient_register_service_id = getCookie("patient_register_service_id");
-    if(patient_register_service_id == "noData") {
-        $("#doctorInfo").hide();
-        $("#appointmentInfo").hide();
-
-    }
-    else{
-        //获取页面信息
-        var mydata = '{"patient_register_service_id":"'
-            + patient_register_service_id + '"}';
-        $.ajaxSetup({
-            contentType : 'application/json'
-        });
-        $.post('ap/order/user/getOrderPayInfo', mydata,
-            function(data) {
-                if(data!=null ){
-                    document.getElementById("date").innerHTML = data.date;
-                    document.getElementById("doctorName").innerHTML = data.doctorName;
-                    document.getElementById("hospitalName").innerHTML = data.hospitalName;
-                }
-            }, 'json');
-    }
-
-    //显示支付金额
-    var payMoney = document.getElementById("payMoney");
-    var needPay = document.getElementById("needPay");
-    chargePrice = parseInt(getCookie("chargePrice"))/100;
-    payMoney.innerHTML = chargePrice + "元/月";
-    needPay.innerHTML = chargePrice+"元";
-    needPayMoney = chargePrice;
 }
 
-var pay = function(){
-    var consultId = GetQueryString("");
+var wechatPay = function(){
+    var consultId = GetQueryString("consultId");
     $('#payButton').attr('disabled',"true");//添加disabled属性
     $.ajax({
-        url:"ap/account/user/nonRealTimeConsultPay",// 跳转到 action
+        url:"account/user/nonRealTimeConsultPay",// 跳转到 action
         async:true,
         type:'get',
         data:{patientRegisterId:consultId,payPrice:880},
@@ -123,15 +90,6 @@ var pay = function(){
         error : function() {
         }
     });
-}
-
-var getCookie = function(name)
-{
-    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
-    if(arr=document.cookie.match(reg))
-        return unescape(arr[2]);
-    else
-        return null;
 }
 
 var GetQueryString = function(name)

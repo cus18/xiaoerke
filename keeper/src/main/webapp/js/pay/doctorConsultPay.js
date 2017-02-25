@@ -242,7 +242,12 @@ function wechatPay() {
                             paySign: obj.paySign,  // 支付签名
                             success: function (res) {
                                 if (res.errMsg == "chooseWXPay:ok") {
-                                    window.location.href = "http://s132.baodf.com/angel/patient/consult#/doctorConsultPaySuccess";
+                                    var consultTime ="";
+                                    if(moneys <= payType1SumMoney)
+                                        consultTime = "30";
+                                    else
+                                        consultTime = "1440"
+                                    window.location.href = "http://s132.baodf.com/angel/patient/consult#/doctorConsultPaySuccess/"+consultTime;
                                 } else {
                                     alert("支付失败,请重新支付")
                                 }
