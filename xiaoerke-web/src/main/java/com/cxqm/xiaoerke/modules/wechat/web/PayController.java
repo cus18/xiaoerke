@@ -171,7 +171,6 @@ public class PayController {
         }else if("lovePlanPay".equals(serviceType)){
             return "pay/lovePlanPay";
         }else if("doctorConsultPay".equals(serviceType)){
-            model.addAttribute("payPrice",8);
             return "pay/doctorConsultPay";
         }else if("nonRealTime".equals(serviceType)){
             model.addAttribute("payPrice",8);
