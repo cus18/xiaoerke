@@ -158,7 +158,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 
     @Override
     public void updateConsultSessionInfo(NonRealTimeConsultSessionVo consultSessionVo) {
-        nonRealTimeConsultSessionDao.updateByPrimaryKey(consultSessionVo);
+        nonRealTimeConsultSessionDao.updateByPrimaryKeySelective(consultSessionVo);
     }
 
     @Override
@@ -296,6 +296,9 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 
     }
 
-    ;
+    @Override
+    public NonRealTimeConsultSessionVo getSessionInfoById(Integer id){
+        return  nonRealTimeConsultSessionDao.selectByPrimaryKey(id);
+    }
 
 }
