@@ -90,9 +90,10 @@ public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfo
     public HashMap<String, Object> chooseCardsAndRewards(Map<String, Object> params, HashMap<String, Object> response, HttpSession session, HttpServletRequest request) throws BusinessPaymentExceeption, BalanceNotEnoughException {
         String openId = String.valueOf(params.get("openId"));
         String id = String.valueOf(params.get("id"));
-        String typeCard = String.valueOf(params.get("type"));
+        String typeCard = String.valueOf(params.get("typeCard"));
         String moneyCount = String.valueOf(params.get("moneyCount"));
-        int type = Integer.valueOf(typeCard);
+        String type = String.valueOf(params.get("type"));
+        int cardType = Integer.valueOf(typeCard);
         response.put("type", type);
         response.put("moneyCount", moneyCount);
         RedpackageActivityInfoVo redpackageActivityInfoVo = null;
@@ -110,7 +111,7 @@ public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfo
         }
         if (redpackageActivityInfoVo != null) {
             response.put("cardNum", "error");
-            switch (type) {
+            switch (cardType) {
                 case 0:
                     if (redpackageActivityInfoVo.getCardBig() > 0) {
                         redpackageActivityInfoVo.setCardBig(redpackageActivityInfoVo.getCardBig() - 1);
@@ -151,7 +152,7 @@ public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfo
             if ("yes".equalsIgnoreCase(String.valueOf(response.get("cardNum")))) {
                 int num = updateByPrimaryKeySelective(redpackageActivityInfoVo);
                 if (num > 0) {
-                    if (type == 1) {
+                    if ("1".equalsIgnoreCase(type)) {
                         payRedPackageToUser(params, response, request, session);
                     }
                     String state = String.valueOf(params.get("state"));
