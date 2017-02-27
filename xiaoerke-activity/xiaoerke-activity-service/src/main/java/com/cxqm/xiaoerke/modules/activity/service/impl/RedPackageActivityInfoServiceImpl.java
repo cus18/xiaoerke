@@ -1,0 +1,209 @@
+package com.cxqm.xiaoerke.modules.activity.service.impl;
+
+import com.cxqm.xiaoerke.common.utils.CookieUtils;
+import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.IdGen;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.modules.account.exception.BalanceNotEnoughException;
+import com.cxqm.xiaoerke.modules.account.exception.BusinessPaymentExceeption;
+import com.cxqm.xiaoerke.modules.account.service.AccountService;
+import com.cxqm.xiaoerke.modules.activity.dao.RedpackageActivityInfoDao;
+import com.cxqm.xiaoerke.modules.activity.entity.RedpackageActivityInfoVo;
+import com.cxqm.xiaoerke.modules.activity.entity.RedpackageResultsInfoVo;
+import com.cxqm.xiaoerke.modules.activity.service.RedPackageActivityInfoService;
+import com.cxqm.xiaoerke.modules.activity.service.RedPackageResultsInfoService;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
+import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by jiangzhongge on 2017-2-20.
+ */
+@Service
+@Transactional(readOnly = false)
+public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfoService {
+
+    @Autowired
+    private RedpackageActivityInfoDao redpackageActivityInfoDao;
+
+    @Autowired
+    private SystemService systemService;
+
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private RedPackageResultsInfoService redPackageResultsInfoService;
+
+    @Override
+    public int deleteByPrimaryKey(String id) {
+        return redpackageActivityInfoDao.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public int insert(RedpackageActivityInfoVo record) {
+        return redpackageActivityInfoDao.insert(record);
+    }
+
+    @Override
+    public int insertSelective(RedpackageActivityInfoVo record) {
+        return redpackageActivityInfoDao.insertSelective(record);
+    }
+
+    @Override
+    public RedpackageActivityInfoVo selectByPrimaryKey(String id) {
+        return redpackageActivityInfoDao.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int updateByPrimaryKeySelective(RedpackageActivityInfoVo record) {
+        return redpackageActivityInfoDao.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public int updateByPrimaryKey(RedpackageActivityInfoVo record) {
+        return redpackageActivityInfoDao.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public List<RedpackageActivityInfoVo> getRedpackageActivityBySelective(RedpackageActivityInfoVo vo) {
+        return redpackageActivityInfoDao.getRedpackageActivityBySelective(vo);
+    }
+
+    @Override
+    public int getRedPackageActivityTatalCount() {
+        return redpackageActivityInfoDao.getRedPackageActivityTatalCount();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public HashMap<String, Object> chooseCardsAndRewards(Map<String, Object> params, HashMap<String, Object> response, HttpSession session, HttpServletRequest request) throws BusinessPaymentExceeption, BalanceNotEnoughException {
+        String openId = String.valueOf(params.get("openId"));
+        String id = String.valueOf(params.get("id"));
+        String typeCard = String.valueOf(params.get("type"));
+        String moneyCount = String.valueOf(params.get("moneyCount"));
+        int type = Integer.valueOf(typeCard);
+        response.put("type", type);
+        response.put("moneyCount", moneyCount);
+        RedpackageActivityInfoVo redpackageActivityInfoVo = null;
+        if (StringUtils.isNotNull(id)) {
+            redpackageActivityInfoVo = selectByPrimaryKey(id);
+        } else if (StringUtils.isNotNull(openId)) {
+            redpackageActivityInfoVo = new RedpackageActivityInfoVo();
+            redpackageActivityInfoVo.setOpenId(openId);
+            List<RedpackageActivityInfoVo> resultList = getRedpackageActivityBySelective(redpackageActivityInfoVo);
+            if (resultList != null && resultList.size() > 0) {
+                redpackageActivityInfoVo = resultList.get(0);
+            }
+        } else {
+            response.put("status", "failure");
+        }
+        if (redpackageActivityInfoVo != null) {
+            response.put("cardNum", "error");
+            switch (type) {
+                case 0:
+                    if (redpackageActivityInfoVo.getCardBig() > 0) {
+                        redpackageActivityInfoVo.setCardBig(redpackageActivityInfoVo.getCardBig() - 1);
+                        response.put("cardNum", "yes");
+                    }
+                    break;
+                case 1:
+                    if (redpackageActivityInfoVo.getCardHappy() > 0) {
+                        redpackageActivityInfoVo.setCardBig(redpackageActivityInfoVo.getCardHappy() - 1);
+                        response.put("cardNum", "yes");
+                    }
+                    break;
+                case 2:
+                    if (redpackageActivityInfoVo.getCardHealth() > 0) {
+                        redpackageActivityInfoVo.setCardBig(redpackageActivityInfoVo.getCardHealth() - 1);
+                        response.put("cardNum", "yes");
+                    }
+                    break;
+                case 3:
+                    if (redpackageActivityInfoVo.getCardLove() > 0) {
+                        redpackageActivityInfoVo.setCardBig(redpackageActivityInfoVo.getCardLove() - 1);
+                        response.put("cardNum", "yes");
+                    }
+                    break;
+                case 4:
+                    if (redpackageActivityInfoVo.getCardRuyi() > 0) {
+                        redpackageActivityInfoVo.setCardBig(redpackageActivityInfoVo.getCardRuyi() - 1);
+                        response.put("cardNum", "yes");
+                    }
+                    break;
+                default:
+                    if (redpackageActivityInfoVo.getCardYoushan() > 0) {
+                        redpackageActivityInfoVo.setCardBig(redpackageActivityInfoVo.getCardYoushan() - 1);
+                        response.put("cardNum", "yes");
+                    }
+                    break;
+            }
+            if ("yes".equalsIgnoreCase(String.valueOf(response.get("cardNum")))) {
+                int num = updateByPrimaryKeySelective(redpackageActivityInfoVo);
+                if (num > 0) {
+                    if (type == 1) {
+                        payRedPackageToUser(params, response, request, session);
+                    }
+                    String state = String.valueOf(params.get("state"));
+                    RedpackageResultsInfoVo vo = new RedpackageResultsInfoVo();
+                    vo.setId(IdGen.uuid());
+                    vo.setCreateTime(new Date());
+                    vo.setDelFlag(0);
+                    vo.setType(Integer.valueOf(type));
+                    vo.setState(Integer.valueOf(state));
+                    vo.setMoneyCount(Double.parseDouble(moneyCount));
+                    vo.setOpenId(openId);
+                    num = redPackageResultsInfoService.insert(vo);
+                    if (num > 0) {
+                        response.put("status", "success");
+                    }
+                }
+            }
+        }
+        return response;
+    }
+
+    /**
+     * 调用企业支付接口,实现用户提现功能
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Map<String, Object> payRedPackageToUser(Map<String, Object> params, Map<String, Object> response, HttpServletRequest request, HttpSession session)
+            throws BalanceNotEnoughException, BusinessPaymentExceeption {
+        response.put("payStatus", "failure");
+        Integer takeCashOut = Integer.parseInt((String) params.get("moneyCount"));
+        Float returnMoney = Float.valueOf(takeCashOut) * 100;
+        //判断用于余额
+        String openid = String.valueOf(params.get("openId"));
+        if (null == openid) {
+            openid = CookieUtils.getCookie(request, "openId");
+        }
+        String ip = request.getRemoteAddr();
+        String payResult = null;
+        try {
+            payResult = accountService.returnPay(returnMoney, openid, ip);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        response.put("return_msg", payResult);
+        response.put("amount", returnMoney);
+        if ("SUCCESS".equals(payResult.toUpperCase())) {
+            Map tokenMap = systemService.getWechatParameter();
+            String token = (String) tokenMap.get("token");
+            PatientMsgTemplate.withdrawalsSuccess2Wechat(openid, token, "", String.valueOf(returnMoney / 100), DateUtils.DateToStr(new Date(), "date"));
+            response.put("payStatus", "success");
+        }
+        return response;
+    }
+
+}
