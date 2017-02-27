@@ -19,6 +19,9 @@ var payConfirmInfo2 = "";
 var payConfirmInfo3 = "";
 var payConfirmInfo4 = "";
 var payConfirmInfo5 = "";
+var payConfirmInfo6 = "购买一次，开始咨询后，30分钟内医生都会回复";
+var payConfirmInfo7 = "购买一次，开始咨询后，24小时内医生都会回复";
+var angelWebUrl = "";
 
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
 var doRefresh = function () {
@@ -46,6 +49,7 @@ var doRefresh = function () {
                 payType2UseBabycoin = data.payType2UseBabycoin;
                 payType1ActualMoney = toDecimal2((payType1SumMoney * 10 - payType1UseBabycoin) / 10);
                 payType2ActualMoney = toDecimal2((payType2SumMoney * 10 - payType2UseBabycoin) / 10);
+                angelWebUrl = data.angelWebUrl;
                 payConfirmInfo0 = "亲，您有宝宝币可减免5.0元";
                 payConfirmInfo1 = "确认支付" + payType1SumMoney + "元";
                 payConfirmInfo2 = "确认支付" + payType1ActualMoney + "元";
@@ -86,10 +90,13 @@ function selectPayMoney(moneyCount) {
         document.getElementById("25MoneyPay").style.display = "";//隐藏
         document.getElementById("10MoneyPay").style.display = "none";//显
         payCount = payType2SumMoney;
+        $('#payInfoId').html(payConfirmInfo7);
     } else {
         document.getElementById("10MoneyPay").style.display = "";//隐藏
         document.getElementById("25MoneyPay").style.display = "none";//显
         payCount = payType1SumMoney;
+        $('#payInfoId').html(payConfirmInfo6);
+
     }
     userBabyCoinPay();
 }
@@ -242,7 +249,12 @@ function wechatPay() {
                             paySign: obj.paySign,  // 支付签名
                             success: function (res) {
                                 if (res.errMsg == "chooseWXPay:ok") {
-                                    window.location.href = "http://s132.baodf.com/angel/patient/consult#/doctorConsultPaySuccess";
+                                    var consultTime ="";
+                                    if(parseInt(moneys) <= parseInt(payType1SumMoney))
+                                        consultTime = "30";
+                                    else
+                                        consultTime = "1440"
+                                    window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+consultTime;
                                 } else {
                                     alert("支付失败,请重新支付")
                                 }

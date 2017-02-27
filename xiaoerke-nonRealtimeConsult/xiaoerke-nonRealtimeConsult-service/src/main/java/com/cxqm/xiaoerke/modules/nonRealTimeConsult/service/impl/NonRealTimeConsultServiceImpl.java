@@ -146,7 +146,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         resultMap.put("sessionId",sessionVo.getId());
 
         //通知相关医生来回答--模板消息
-        sendRemindDoctor(csUserId,sessionVo.getUserName(),String.valueOf(sessionVo.getId()));
+//        sendRemindDoctor(csUserId,sessionVo.getUserName(),String.valueOf(sessionVo.getId()));
         return resultMap;
     }
 
@@ -154,7 +154,11 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
     public void updateConsultDoctorInfo() {
         nonRealTimeConsultSessionDao.updateEvaluateEarchDay();
         nonRealTimeConsultSessionDao.updateConsultNumEarchDay();
+    }
 
+    @Override
+    public void updateConsultSessionInfo(NonRealTimeConsultSessionVo consultSessionVo) {
+        nonRealTimeConsultSessionDao.updateByPrimaryKeySelective(consultSessionVo);
     }
 
     @Override
@@ -217,7 +221,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         ConsultDoctorInfoVo doctorInfoVo = new ConsultDoctorInfoVo();
         doctorInfoVo.setOpenId(openid);
         doctorInfoVo.setNonrealtimeStatus("1");
-        return consultDoctorInfoService.findManagerDoctorInfoBySelective(doctorInfoVo);
+        return consultDoctorInfoService.getRecentTimeList(doctorInfoVo);
     }
 
     @Override
@@ -292,6 +296,9 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 
     }
 
-    ;
+    @Override
+    public NonRealTimeConsultSessionVo getSessionInfoById(Integer id){
+        return  nonRealTimeConsultSessionDao.selectByPrimaryKey(id);
+    }
 
 }

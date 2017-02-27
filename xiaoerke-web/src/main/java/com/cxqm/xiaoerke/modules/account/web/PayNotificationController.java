@@ -18,6 +18,9 @@ import com.cxqm.xiaoerke.modules.insurance.service.InsuranceRegisterServiceServi
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.mutualHelp.entity.MutualHelpDonation;
 import com.cxqm.xiaoerke.modules.mutualHelp.service.MutualHelpDonationService;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
+import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.impl.NonRealTimeConsultServiceImpl;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
@@ -105,6 +108,9 @@ public class PayNotificationController {
 
     @Autowired
     private ConsultMemberRedsiCacheService consultMemberRedsiCacheService;
+
+    @Autowired
+    private NonRealTimeConsultService nonRealTimeConsultService;
 
     private static Lock lock = new ReentrantLock();
 
@@ -515,12 +521,13 @@ public class PayNotificationController {
                     payRecord.setStatus("success");
                     payRecord.setReceiveDate(new Date());
                     payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+                    payRecord = payRecordService.findById((String) map.get("out_trade_no"));
 
                     Map parameter = systemService.getWechatParameter();
                     String token = (String) parameter.get("token");
-                    float PayType1SumMoney = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney())*100;
-                    float PayType1UseBabycoin = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());
-                    float payType1ActualMoney = (float) (PayType1SumMoney * 10 - PayType1UseBabycoin) / 10 * 100 / 100;
+                    double PayType1SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney())*100;
+                    double PayType1UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());
+                    double payType1ActualMoney = (double) (PayType1SumMoney  - PayType1UseBabycoin*10);
                     if ((subCash == 0 && payRecord.getAmount() == PayType1SumMoney) || (subCash == PayType1UseBabycoin) && payRecord.getAmount() == payType1ActualMoney) //支付9.0免费咨询30分钟
                         consultMemberRedsiCacheService.payConsultMember(openid, sysPropertyVoWithBLOBsVo.getConsultMemberTimeType2(), (String) map.get("total_fee"), token);
                     else //支付25免费咨询30分钟
@@ -705,4 +712,56 @@ public class PayNotificationController {
         return null; // 自定义错误信息
     }
 
+    /**
+     * 接收支付成后微信notify_url参数中传来的参数
+     * 支付完成 后服务器故障 事物无法回滚
+     */
+    @RequestMapping(value = "/user/getNonRealTimeConsultPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public synchronized
+    @ResponseBody
+    String getNonRealTimeConsultPayNotifyInfo(HttpServletRequest request) {
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+        lock.lock();
+        InputStream inStream = null;
+        try {
+            inStream = request.getInputStream();
+            ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = inStream.read(buffer)) != -1) {
+                outSteam.write(buffer, 0, len);
+            }
+            outSteam.close();
+            inStream.close();
+            String result = new String(outSteam.toByteArray(), "utf-8");
+            Map<String, Object> map = XMLUtil.doXMLParse(result);
+            //放入service层进行事物控制
+            if ("SUCCESS".equals(map.get("return_code"))) {
+                LogUtils.saveLog(Servlets.getRequest(), "00000048", "用户微信支付完成:" + map.get("out_trade_no"));
+                PayRecord payRecord = new PayRecord();
+                payRecord.setId((String) map.get("out_trade_no"));
+                payRecord.setStatus("success");
+                payRecord.setReceiveDate(new Date());
+                Map<String, Object> insuranceMap = insuranceService.getPayRecordById(payRecord.getId());
+                String insuranceId = insuranceMap.get("order_id").toString();
+                System.out.println("orderId:" + insuranceId);
+                if (insuranceMap.get("fee_type").toString().equals("nonRealTimeConsult")) {
+                    payRecord.setStatus("success");
+                    payRecord.setReceiveDate(new Date());
+                    payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+                    NonRealTimeConsultSessionVo sessionVo = nonRealTimeConsultService.getSessionInfoById(Integer.parseInt(insuranceId));
+                    sessionVo.setStatus("ongoing");
+                    nonRealTimeConsultService.updateConsultSessionInfo(sessionVo);
+                    //通知相关医生来回答--模板消息
+                    nonRealTimeConsultService.sendRemindDoctor(sessionVo.getUserId(),sessionVo.getUserName(),String.valueOf(sessionVo.getId()));
+                }
+            }
+            return XMLUtil.setXML("SUCCESS", "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
+        return "";
+    }
 }

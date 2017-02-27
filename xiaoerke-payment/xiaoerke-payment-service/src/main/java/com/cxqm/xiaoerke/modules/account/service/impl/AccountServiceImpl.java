@@ -394,7 +394,6 @@ public class AccountServiceImpl implements AccountService {
         }
 
         order_price=(int)Double.parseDouble(order_price)+"";//format 返回的是字符串
-        order_price = "1";
         //生成的商户订单号
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
         String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串\
@@ -424,8 +423,9 @@ public class AccountServiceImpl implements AccountService {
             parameters.put("notify_url", sysPropertyVoWithBLOBsVo.getNotifyUmbrellaUrl());//通知地址
         } else if (serviceType.equals("lovePlanService")) {
             parameters.put("notify_url", sysPropertyVoWithBLOBsVo.getNotifyLoveplanUrl());//通知地址
-        }
-        if (serviceType.equals("doctorConsultPay")) {
+        }else if (serviceType.equals("nonRealTimeConsult")) {
+            parameters.put("notify_url", sysPropertyVoWithBLOBsVo.getNonRealTimeConsultUrl());//通知地址
+        }if (serviceType.equals("doctorConsultPay")) {
             parameters.put("notify_url", sysPropertyVoWithBLOBsVo.getNotifyDoctorconsultpayUrl());//通知地址
         }
         parameters.put("trade_type", "JSAPI");//交易类型

@@ -56,6 +56,11 @@ define(['appNonRealTimeConsult'], function (app) {
             return $resource(path_user + 'upadateRecorde');
         }])
 
+        //我的医生
+        .factory('recentTimeList',['$resource',function ($resource){
+            return $resource(path_user + 'recentTimeList');
+        }])
+
         //登陆地址地址
         .factory('LoginUrl', function() {
             return "http://s68.baodf.com/titan/nonRealTimeConsult#/NonTimeDoctorLogin";

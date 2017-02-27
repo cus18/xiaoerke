@@ -170,8 +170,24 @@ define(['appNonRealTimeConsult'], function(app){
                             }
                         }
                     })
+                    /*我的医生*/
+                    .state('myDoctor', {
+                        url: '/myDoctor',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'myDoctor',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.myDoctor',
+                                    [
+                                        'js/libs/lodash.min.js',
+                                        'js/controllers/nonRealTimeConsult/user/myDoctor.js',
+                                        'styles/nonRealTimeConsult/user/myDoctor.less?ver='+nonRealTimeConsultVersion],
+                                    'js/views/nonRealTimeConsult/user/myDoctor.html?ver='+nonRealTimeConsultVersion);
+                            }
+                        }
+                    })
 
-                $urlRouterProvider.otherwise('');
+                $urlRouterProvider.otherwise('myDoctor');
             }])
         .run(function ($rootScope){
             $rootScope.unBindUserPhoneNum = '';

@@ -42,8 +42,8 @@
                         <img class="ticket-pic" width="110" height="auto" ng-src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/sendMindCoupon2">
                     </li>
                     <li class="fl" ng-repeat="item in ticketData" ng-click="goExchange(item.id,item.name)">
-                        <div class="ticket-name f5 c3">{{item.name/10}}元优惠券</div>
-                        <div class="ticket-coin f3 c5">宝宝币：<span>{{item.name}}枚</span></div>
+                        <div class="ticket-name f5 c3">{{item.name}}元优惠券</div>
+                        <div class="ticket-coin f3 c5">宝宝币：<span>{{item.name*10}}枚</span></div>
                         <img class="ticket-pic" width="110" height="auto" ng-src="http://xiaoerke-article-pic.oss-cn-beijing.aliyuncs.com/sendMindCoupon{{item.id}}">
                     </li>
 

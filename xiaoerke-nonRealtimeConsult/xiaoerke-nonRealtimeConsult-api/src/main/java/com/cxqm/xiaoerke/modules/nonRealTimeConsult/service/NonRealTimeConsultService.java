@@ -58,6 +58,8 @@ public interface NonRealTimeConsultService {
      * */
     void updateConsultDoctorInfo();
 
+    void updateConsultSessionInfo(NonRealTimeConsultSessionVo consultSessionVo);
+
     /**
      * 患者医生间的咨询消息
      * */
@@ -90,4 +92,6 @@ public interface NonRealTimeConsultService {
     void sendRemindDoctor(String doctorId, String userName, String sessionId);
 
     void sendRemindUser(NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo);
+
+    NonRealTimeConsultSessionVo getSessionInfoById(Integer id);
 }
