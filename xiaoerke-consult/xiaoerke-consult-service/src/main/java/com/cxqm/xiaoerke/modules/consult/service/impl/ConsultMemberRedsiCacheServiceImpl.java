@@ -7,10 +7,7 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultMemberDao;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultMemberRedsiCacheService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
-import com.cxqm.xiaoerke.modules.consult.service.OperationPromotionTemplateService;
+import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
@@ -57,6 +54,9 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
     @Autowired
     private OperationPromotionTemplateService operationPromotionTemplateService;
+
+    @Autowired
+    private ConsultDoctorInfoService consultDoctorInfoService;
 
 
     @Override
@@ -206,6 +206,8 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                     String content = "时间真快，您本月的免费咨询机会已用完\n更多咨询机会请\n<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=35&from=fdsa'>>>猛戳这里购买吧！</a>";
                     content += "\n----------\n别怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
                     if (prompt) WechatUtil.sendMsgToWechat(token, openid, content);
+                    sendNonRealTimeMsg(openid,token,sysPropertyVoWithBLOBsVo.getKeeperWebUrl());
+
                     LogUtils.saveLog("ZXTS_MYMFJH", openid);
                     return false;
                 }
@@ -215,6 +217,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             WechatUtil.sendMsgToWechat(token, openid, content);
             content = "没问够、不想掏钱？还可以\n戳戳手指，邀请个好友加入宝大夫，减免机会就来咯~\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
             WechatUtil.sendMsgToWechat(token, openid, content);
+            sendNonRealTimeMsg(openid,token,sysPropertyVoWithBLOBsVo.getKeeperWebUrl());
             LogUtils.saveLog("ZXTS_SYMFJH", openid);
             return false;
         }
@@ -256,5 +259,19 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 //  根据现时段找到相应的收费模式以及消息
 
         return false;
+    }
+
+    public void sendNonRealTimeMsg(String openid,String token,String url){
+        ConsultDoctorInfoVo doctorInfoVo = new ConsultDoctorInfoVo();
+        doctorInfoVo.setOpenId(openid);
+        doctorInfoVo.setNonrealtimeStatus("1");
+        List<ConsultDoctorInfoVo> list =  consultDoctorInfoService.getRecentTimeList(doctorInfoVo);
+        String doctorName = "";
+        if(null !=list&&list.size()>0){
+            ConsultDoctorInfoVo vo = list.get(0);
+            doctorName = vo.getName();
+        }
+        WechatUtil.sendMsgToWechat(token,openid,doctorName+"服务过你，你可以查看<a href='" + url + "keeper/wechatInfo/fieldwork/wechat/author?url=" + url + "keeper/wechatInfo/getUserWechatMenId?url=50'>>>走你</a>");
+        LogUtils.saveLog("ZXTS_ZXJL");
     }
 }
