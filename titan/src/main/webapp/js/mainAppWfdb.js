@@ -10,7 +10,9 @@ require.config({
         "angular-sanitize" : "libs/angular-sanitize.min",
         "angular-route" : "libs/angular-route.min",
         "ocLazyLoad":"libs/ocLazyLoad.require.min",
+        "ngDialog":"libs/ngDialog",
         "jquery":"libs/jquery-2.1.3.min",
+        "swiper":"libs/swiper",
         "appWfdbFactory" : "services/appWfdbFactory",
         "titanCommonFactory": "services/titanCommonFactory",
         "appointDirective" : "directives/appointDirective",
@@ -34,13 +36,17 @@ require.config({
             deps: ['angular'],   //依赖什么模块
             exports: 'angular-sanitize'
         },
+        'ngDialog':{
+            deps: ['angular'],   //依赖什么模块
+            exports: 'ngDialog'
+        },
         'ocLazyLoad': ['angular'],
         'app':['ocLazyLoad'],
     }
 });
 
-require(['angular','angular-resource','angular-sanitize','angular-route',
-        'ocLazyLoad','jquery','appWfdbFactory','titanCommonFactory',
+require(['angular','angular-resource','angular-sanitize','angular-route','ngDialog',
+        'ocLazyLoad','jquery','swiper','appWfdbFactory','titanCommonFactory',
         'appWfdbRoute','appWfdb'],
     function (angular){
         angular.bootstrap(document,["appWfdb"]);
