@@ -4,10 +4,14 @@
                 <a class="myPrize" ng-click='lookPrize()'><span>我的奖品</span><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/home/home_small_arr.png" /></a>
                 <div class="home_banner"></div>
                 <div class="home_con">
-                    <span class="btn"></span>
+                    <span class="btn" ng-click="share()"></span>
                     <div class="myCard" ng-click="lookMyCard()"><span class="word">我的卡片</span><span><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/home/home_arrow.png" alt=""/></span></div>
                 </div>
                 <div class="footer" ng-click="lookRules()">查看详细规则&nbsp;&nbsp;》</div>
+                <div ng-click="share_close()" ng-show="share_status" class="invited">
+                    <img class="share_arrow" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/invitePageShareMark.png" alt=""/>
+                    <img class="share_img" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/home/share.png" alt=""/>
+                </div>
             </div>
     </ion-content>
 </ion-view>
