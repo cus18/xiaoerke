@@ -385,7 +385,7 @@
     SELECT
       cdi.*,ncs.status,ncs.create_time,ncs.id sessionid
     from consult_doctor_info cdi
-    right join
+    left join
     (SELECT * FROM (select * from non_real_time_consult_session ORDER BY create_time DESC) d GROUP BY cs_user_id ORDER BY create_time DESC
     ) ncs
     on cdi.sys_user_id = ncs.cs_user_id
@@ -397,5 +397,6 @@
     select DISTINCT sys_user_id_cs from consult_session cs
       where cs.sys_user_id = #{openId,jdbcType=VARCHAR}
     )
+    order by cdi.create_date desc
   </select>
 </mapper>
