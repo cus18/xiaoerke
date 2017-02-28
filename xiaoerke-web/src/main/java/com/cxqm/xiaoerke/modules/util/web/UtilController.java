@@ -284,6 +284,7 @@ public class UtilController extends BaseController {
         publicSystemInfo.setInviteUrl(sysPropertyVoWithBLOBsVo.getInviteUrl());
         publicSystemInfo.setNonRealtimeLoginUrl(sysPropertyVoWithBLOBsVo.getNonRealtimeLoginUrl());
         publicSystemInfo.setNonRealtimeDoctorBindingUrl(sysPropertyVoWithBLOBsVo.getNonRealtimeDoctorBindingUrl());
+        publicSystemInfo.setRedPackageShareUrl(sysPropertyVoWithBLOBsVo.getRedPackageShareUrl());
         resultMap.put("publicSystemInfo",publicSystemInfo);
         return resultMap;
     }
