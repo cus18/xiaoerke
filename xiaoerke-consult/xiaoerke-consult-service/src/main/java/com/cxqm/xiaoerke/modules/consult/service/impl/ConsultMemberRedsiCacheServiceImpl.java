@@ -214,8 +214,8 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             }
             //会员时间超时,推送购买链接
             String content = "亲爱的，您本次免费咨询时间已到\n" + "还没问完？ 畅享24小时随时提问，专业医生随时候答\n<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=35'>>>猛戳这里购买吧！</a>\n\n不急的麻麻可以等待\n24h后您的下次" + sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime() + "分钟免费机会哦~";
-            WechatUtil.sendMsgToWechat(token, openid, content);
-            content = "没问够、不想掏钱？还可以\n戳戳手指，邀请个好友加入宝大夫，减免机会就来咯~\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
+//            WechatUtil.sendMsgToWechat(token, openid, content);
+            content += "\n\n没问够、不想掏钱？还可以\n戳戳手指，邀请个好友加入宝大夫，减免机会就来咯~\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
             WechatUtil.sendMsgToWechat(token, openid, content);
             sendNonRealTimeMsg(openid,token,sysPropertyVoWithBLOBsVo.getKeeperWebUrl());
             LogUtils.saveLog("ZXTS_SYMFJH", openid);
@@ -271,7 +271,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             ConsultDoctorInfoVo vo = list.get(0);
             doctorName = vo.getName();
         }
-        WechatUtil.sendMsgToWechat(token,openid,doctorName+"不久前为您解答过问题，体验怎么样？<a href='" + url + "keeper/wechatInfo/fieldwork/wechat/author?url=" + url + "keeper/wechatInfo/getUserWechatMenId?url=50'>>>点击继续咨询TA</a>");
+        WechatUtil.sendMsgToWechat(token,openid,doctorName+"不久前为您解答过问题，体验怎么样？\n<a href='" + url + "keeper/wechatInfo/fieldwork/wechat/author?url=" + url + "keeper/wechatInfo/getUserWechatMenId?url=50'>>>点击继续咨询TA</a>");
         LogUtils.saveLog("ZXTS_ZXJL");
     }
 }
