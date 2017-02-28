@@ -271,7 +271,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             ConsultDoctorInfoVo vo = list.get(0);
             doctorName = vo.getName();
         }
-        WechatUtil.sendMsgToWechat(token,openid,doctorName+"服务过你，你可以查看<a href='" + url + "keeper/wechatInfo/fieldwork/wechat/author?url=" + url + "keeper/wechatInfo/getUserWechatMenId?url=50'>>>走你</a>");
+        WechatUtil.sendMsgToWechat(token,openid,doctorName+"不久前为您解答过问题，体验怎么样？<a href='" + url + "keeper/wechatInfo/fieldwork/wechat/author?url=" + url + "keeper/wechatInfo/getUserWechatMenId?url=50'>>>点击继续咨询TA</a>");
         LogUtils.saveLog("ZXTS_ZXJL");
     }
 }
