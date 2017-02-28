@@ -248,9 +248,9 @@ public class ActivitiesController {
                 if (resultList != null && resultList.size() > 0) {
                     resultsVo = resultList.get(0);
                     resultMap.put("rewardsVo", resultList);
-                    resultMap.put("status", "rewardsSuccess");
+                    resultMap.put("rewardStatus", "rewardsSuccess");
                 } else {
-                    resultMap.put("status", "rewardsFailure");
+                    resultMap.put("rewardStatus", "rewardsFailure");
                 }
                 resultMap.put("status", "success");
             } else {
@@ -295,10 +295,10 @@ public class ActivitiesController {
                         vo.setMarket(Integer.valueOf(market));
                         int num = redPackageActivityInfoService.insert(vo);
                         if (num > 0) {
-                            resultMap.put("status", "insertSuccess");
+                            resultMap.put("dataStatus", "insertSuccess");
                             resultMap.put("data", vo);
                         } else {
-                            resultMap.put("status", "failure");
+                            resultMap.put("dataStatus", "failure");
                         }
                     } catch (Exception ex) {
                         System.out.print(ex.getStackTrace());

@@ -58,6 +58,16 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String nonRealTimeConsultUrl;
 
+    private String redPackageShareUrl;
+
+    public String getRedPackageShareUrl() {
+        return redPackageShareUrl;
+    }
+
+    public void setRedPackageShareUrl(String redPackageShareUrl) {
+        this.redPackageShareUrl = redPackageShareUrl;
+    }
+
     public String getPayType1SumMoney() {
         return PayType1SumMoney;
     }
