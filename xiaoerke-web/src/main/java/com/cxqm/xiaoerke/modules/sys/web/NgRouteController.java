@@ -119,6 +119,14 @@ public class NgRouteController extends BaseController {
         return "angular/vaccineIndex";
     }
 
+    /**
+     *appWfdb 疫苗站主页
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/appWfdb",method = {RequestMethod.POST, RequestMethod.GET})
+    public String appWfdbIndex() {
+        return "angular/appWfdbIndex";
+    }
     /*
         wisdom 项目
     */

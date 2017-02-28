@@ -14,6 +14,7 @@ angular.module('controllers', [])
                 goConsult:false
             };
             $scope.receiveLock = false;//未领取
+            recordLogs("ZUYQ_SHARE_NEW");
             // 判断用户是否领了该红包
             //该红包是否可领
             redPacketShare.save({redPacketId:$scope.redPacketId},function (data) {
@@ -75,10 +76,12 @@ angular.module('controllers', [])
             ];
             /*点击最下面 立即使用 按钮*/
             $scope.goUse = function () {
+                recordLogs("ZUYQ_LJYQ");
                 $state.go("babyCoinTicketList");
             };
             /*点击最下面 我来发红包 按钮*/
             $scope.sendRedPackets = function () {
+                recordLogs("ZUYQ_WLFHB");
                 $state.go("babyCoinInvitePage");
             };
             $scope.invitePageInit = function () {
