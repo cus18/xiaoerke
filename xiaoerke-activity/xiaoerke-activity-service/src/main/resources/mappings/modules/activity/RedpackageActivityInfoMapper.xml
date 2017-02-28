@@ -186,7 +186,7 @@
       market = #{market,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="getRedpackageActivityBySelective" parameterMap="com.cxqm.xiaoerke.modules.activity.entity.RedpackageActivityInfoVo" resultMap="BaseResultMap">
+  <select id="getRedpackageActivityBySelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.RedpackageActivityInfoVo" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from redpackage_activity_info

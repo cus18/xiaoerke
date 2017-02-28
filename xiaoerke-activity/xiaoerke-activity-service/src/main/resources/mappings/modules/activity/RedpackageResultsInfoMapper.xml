@@ -125,7 +125,7 @@
       del_flag = #{delFlag,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="getRedPackageResultsBySelective" parameterMap="com.cxqm.xiaoerke.modules.activity.entity.RedpackageResultsInfoVo" resultMap="BaseResultMap">
+  <select id="getRedPackageResultsBySelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.RedpackageResultsInfoVo" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from redpackage_results_info
