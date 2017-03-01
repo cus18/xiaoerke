@@ -8,9 +8,9 @@
                 <div class="cashBigCard" ng-show="cash_status"><div><b>8.88</b><span>元</span></div></div>
 
                 <!--控制显示按钮-->
-                <div class="btn" ng-show="invite_friend_status" ng-click="invite_friend()"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/btn_Invitation.png" alt=""/></div>
-                <div class="btn" ng-show="draw_prize_status" ng-click="draw_prize()"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/btn_draw.png" alt=""/></div>
-                <div class="btn" ng-show="receive_prize_status" ng-click="receive_prize()"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/btn_receive.png" alt=""/></div>
+                <div class="btn" ng-show="invite_friend_status" ><img ng-click="invite_friend()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/btn_Invitation.png" alt=""/></div>
+                <div class="btn" ng-show="draw_prize_status" ><img ng-click="draw_prize()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/btn_draw.png" alt=""/></div>
+                <div class="btn" ng-show="receive_prize_status" ><img ng-click="receive_prize()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/btn_receive.png" alt=""/></div>
 
                 <!--我的卡片的显示区域-->
                 <div class="smallCard">
@@ -26,6 +26,11 @@
                     </div>
                 </div>
 
+
+                <div ng-click="share_close()" ng-show="share_status" class="invited">
+                    <img class="share_arrow" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/invitePageShareMark.png" alt=""/>
+                    <img class="share_img" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/home/share.png" alt=""/>
+                </div>
 
             </div>
         </div>
