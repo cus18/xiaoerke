@@ -83,12 +83,12 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                             $scope.sexItem = data.babySex;
                         }
                         if ($scope.sexItem == 0) {
-                            $scope.isSelectedB = true;
-                            $scope.isSelectedG = false;
-                        }
-                        if ($scope.sexItem == 1) {
                             $scope.isSelectedG = true;
                             $scope.isSelectedB = false;
+                        }
+                        if ($scope.sexItem == 1) {
+                            $scope.isSelectedB = true;
+                            $scope.isSelectedG = false;
                         }
                     }
 
