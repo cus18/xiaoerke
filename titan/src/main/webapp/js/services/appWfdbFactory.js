@@ -9,5 +9,14 @@ define(['appWfdb'], function (app) {
         .factory('GetCardInfoList',['$resource',function ($resource){
             return $resource(activity + 'getCardInfoList');
         }])
+        .factory('ChooseCard',['$resource',function ($resource){
+            return $resource(activity + 'chooseCard');
+        }])
+        .factory('UpdateRedPackageInfo',['$resource',function ($resource){
+            return $resource(activity + 'updateRedPackageInfo');
+        }])
+        .factory('CreateInviteCardInfo',['$resource',function ($resource){
+            return $resource(activity + 'createInviteCardInfo');
+        }])
 
 })
