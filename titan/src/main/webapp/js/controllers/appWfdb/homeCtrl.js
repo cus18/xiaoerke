@@ -1,20 +1,19 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
     '$scope','$state','$stateParams','MyselfInfoAppointmentDetail',
-    'OrderPayMemberServiceOperation','GetUserMemberService','$location','ngDialog','GetCardInfoList',
-    function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog,GetCardInfoList) {
+    'OrderPayMemberServiceOperation','GetUserMemberService','$location','ngDialog','GetCardInfoList','GetConfig','RedPacketCreate',
+    function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog,GetCardInfoList,GetConfig,RedPacketCreate) {
 
         //分享到朋友圈或者微信
         var loadShare = function(){
-            $scope.uuid = uuid();
             // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
             //     $scope.uuid = data.uuid;
             // });
             GetConfig.save({}, function (data) {
-                $scope.inviteUrlData = data.publicSystemInfo.inviteUrl;
+                $scope.inviteUrlData = data.publicSystemInfo.redPackageShareUrl;
 
-                redPacketCreate.save({"uuid":$scope.uuid},function (data) {
+                RedPacketCreate.save({"uuid":$scope.uuid},function (data) {
                     $scope.uuid = data.uuid;
-                    var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
+                    var share = $scope.inviteUrlData + $scope.openid+","+$scope.market+","+ $scope.uuid+",";//最后url=41，openid,marketer
 
                     // var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
                     // if(version=="a"){
@@ -55,7 +54,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                         title: '比比运气，大波红包等你抢~在这里可以免费咨询三甲医院儿科专家', // 分享标题
                                         link: share, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
-                                        success: function (res) {
+                                            success: function (res) {
                                             recordLogs("ZXYQ_YQY_SHARE");
                                             // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
                                             // });
@@ -89,6 +88,9 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
         //获取基本信息接口
         GetCardInfoList.save({},function(res){
             $scope.card=res.cardInfoVo;
+            $scope.openid=res.cardInfoVo.openid;
+            $scope.market=res.cardInfoVo.market;
+            loadShare();
         })
 
 

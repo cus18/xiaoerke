@@ -309,7 +309,7 @@ public class ActivitiesController {
     @ResponseBody
     public HashMap<String, Object> getCardInfoList(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
-        String openId = WechatUtil.getOpenId(session, request);
+        String openId = "2222";
         RedpackageActivityInfoVo vo = new RedpackageActivityInfoVo();
         if (StringUtils.isNotNull(openId)) {
             vo.setOpenId(openId);

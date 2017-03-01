@@ -18,5 +18,11 @@ define(['appWfdb'], function (app) {
         .factory('CreateInviteCardInfo',['$resource',function ($resource){
             return $resource(activity + 'createInviteCardInfo');
         }])
+        .factory('GetConfig',['$resource',function ($resource){
+            return $resource('util/getConfig');
+        }])
+        .factory('RedPacketCreate',['$resource',function ($resource){
+            return $resource(user_h5 + 'babyCoin/redPacketCreate');
+        }])
 
 })

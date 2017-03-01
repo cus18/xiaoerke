@@ -9,7 +9,7 @@
                         <div class="num">
                             {{item.moneyCount}}<span ng-show="item.type==1">元红包</span><span ng-show="item.type==0">元代金券</span>
                         </div>
-                        <div class="prizeStatus" ng-show="item.type==1">已放入微信零钱</div><div class="btnLook" ng-click="lookVoucher(this)" ng-show="item.type==0">点击查看</div>
+                        <div class="prizeStatus" ng-show="item.type==1">已放入微信零钱</div><div class="btnLook" ng-click="lookVoucher(item.urlData)" ng-show="item.type==0">点击查看</div>
                     </div>
                     <div class="prizeTime"><span>{{item.day}}</span><span>{{item.hour}}</span></div>
                 </li>
