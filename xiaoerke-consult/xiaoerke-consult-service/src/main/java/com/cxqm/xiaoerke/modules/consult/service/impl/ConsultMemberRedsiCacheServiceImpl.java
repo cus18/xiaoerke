@@ -165,10 +165,10 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             consultSessionPropertyVo.setCreateBy(openid);
             consultSessionPropertyService.insertUserConsultSessionProperty(consultSessionPropertyVo);
         }
-        //白名单用户
-        if (null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList() && sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid) == -1) {
-            return true;
-        }
+//        //白名单用户
+//        if (null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList() && sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid) == -1) {
+//            return true;
+//        }
         //正常逻辑
         Date nowDate = new Date();
         //检测当前用户会员是否过期(没有会员按未过期处理)
@@ -262,6 +262,11 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
     }
 
     public void sendNonRealTimeMsg(String openid,String token,String url){
+        //白名单用户
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        if (null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList() && sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid) == -1) {
+            return ;
+        }
         ConsultDoctorInfoVo doctorInfoVo = new ConsultDoctorInfoVo();
         doctorInfoVo.setOpenId(openid);
         doctorInfoVo.setNonrealtimeStatus("1");

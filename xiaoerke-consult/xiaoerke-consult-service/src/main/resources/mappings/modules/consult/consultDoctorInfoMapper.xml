@@ -386,7 +386,9 @@
       cdi.*,ncs.status,ncs.create_time,ncs.id sessionid
     from consult_doctor_info cdi
     left join
-    (SELECT * FROM (select * from non_real_time_consult_session ORDER BY create_time DESC) d GROUP BY cs_user_id ORDER BY create_time DESC
+    (SELECT * FROM (select * from non_real_time_consult_session
+    where user__id = #{openId,jdbcType=VARCHAR}
+    ORDER BY create_time DESC) d GROUP BY cs_user_id ORDER BY create_time DESC
     ) ncs
     on cdi.sys_user_id = ncs.cs_user_id
     where 1=1

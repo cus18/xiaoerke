@@ -94,4 +94,6 @@ public interface NonRealTimeConsultService {
     void sendRemindUser(NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo);
 
     NonRealTimeConsultSessionVo getSessionInfoById(Integer id);
+
+    void nonTimeConsultRefund();
 }

@@ -27,8 +27,6 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             $scope.isSelectedB = true;
             $scope.isSelectedG = false;
             $scope.babyId = "";
-            $scope.sexItem = 0;
-
             //微信js-sdk 初始化接口
             $scope.doRefresh = function(){
                 var timestamp;//时间戳
@@ -70,30 +68,30 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                 });
             };
 
-
-
             //页面数据请求
             $scope.NonTimeUserFirstConsultInit = function(){
                 $scope.doRefresh();
                 // 获取宝宝基本信息
                 BabyBaseInfo.save({},function (data) {
-
+                    $scope.babyId = data.babyId;
                     if(data.status == "error"){
                        alert (data.msg);
                         return;
                     }
                     if(data.babySex != ""){
-                        $scope.sexItem = data.babySex;
-                        if ($scope.sexItem == 0) {
-                            $scope.isSelectedB = true;
-                            $scope.isSelectedG = false;
+                        if("undefined" != data.babySex){
+                            $scope.sexItem = data.babySex;
                         }
-                        if ($scope.sexItem == 1) {
+                        if ($scope.sexItem == 0) {
                             $scope.isSelectedG = true;
                             $scope.isSelectedB = false;
                         }
+                        if ($scope.sexItem == 1) {
+                            $scope.isSelectedB = true;
+                            $scope.isSelectedG = false;
+                        }
                     }
-                    $scope.babyId = data.babyId;
+
                     if(data.babyBirthDay != ""){
                         $("#babyBirthday").val(data.babyBirthDay)
                     }
@@ -105,6 +103,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             };
             $scope.selectSex = function(sex) {
                 $scope.sexItem = sex;
+                $scope.babyId = "";
                 if ($scope.sexItem == 0) {
                     $scope.isSelectedG = true;
                     $scope.isSelectedB = false;
@@ -116,6 +115,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             };
 
             $scope.showInput = function() {
+                $scope.babyId = "";
                 var date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
                 $("#babyBirthday").mobiscroll().date();
                 //初始化日期控件

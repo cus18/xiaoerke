@@ -1538,7 +1538,7 @@ public class ScheduledTask {
     }
 
     public void nonRealtimeSessinTimeOut(){
-        nonRealTimeConsultService.sessinTimeOut();
+        nonRealTimeConsultService.nonTimeConsultRefund();
     }
 
 
