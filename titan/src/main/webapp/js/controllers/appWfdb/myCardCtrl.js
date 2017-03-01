@@ -1,7 +1,7 @@
 angular.module('controllers', ['ionic']).controller('myCardCtrl', [
     '$scope','$state','$stateParams','MyselfInfoAppointmentDetail',
-    'OrderPayMemberServiceOperation','GetUserMemberService','$location','GetCardInfoList','ChooseCard','UpdateRedPackageInfo','GetConfig','RedPacketCreate',
-    function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,GetCardInfoList,ChooseCard,UpdateRedPackageInfo,GetConfig,RedPacketCreate) {
+    'OrderPayMemberServiceOperation','GetUserMemberService','$location','GetCardInfoList','ChooseCard','UpdateRedPackageInfo','GetConfig',
+    function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,GetCardInfoList,ChooseCard,UpdateRedPackageInfo,GetConfig) {
         //分享到朋友圈或者微信
         var loadShare = function(){
             // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
@@ -10,9 +10,9 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
             GetConfig.save({}, function (data) {
                 $scope.inviteUrlData = data.publicSystemInfo.redPackageShareUrl;
 
-                RedPacketCreate.save({"uuid":$scope.uuid},function (data) {
-                    $scope.uuid = data.uuid;
-                    var share = $scope.inviteUrlData + $scope.openid+","+$scope.market+","+ $scope.uuid+",";//最后url=41，openid,marketer
+
+
+                    var share = $scope.inviteUrlData + $scope.openid+","+$scope.market+",";//最后url=41，openid,marketer
 
                     // var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
                     // if(version=="a"){
@@ -79,7 +79,7 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
                         error : function() {
                         }
                     });
-                })
+
             });
         };
 
