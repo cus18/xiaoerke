@@ -161,37 +161,77 @@ public class ActivitiesController {
         String tokenId = (String) userWechatParam.get("token");
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         String nickName = WechatUtil.getWechatName(tokenId, openId).getNickname();
+        String typeCard = String.valueOf(params.get("typeCard"));
         double ma = Math.random() * 100;
         if (ma < 10) {
             ma = ma * 10;
         }
         String randomString = String.valueOf(ma);
         int moneyNum = Integer.valueOf(randomString.substring(0, 1));
-        int type;
-        double moneyCount;
-        if (ma <= 80) {
-            type = 0;
-            if (ma <= 30) {
-                moneyCount = 5;
-            } else if (ma <= 50) {
-                moneyCount = 10;
-            } else if (ma <= 60) {
-                moneyCount = 20;
-            } else if (ma <= 70) {
-                moneyCount = 30;
-            } else {
-                moneyCount = 40;
-            }
-        } else {
+        int type = 0 ;
+        double moneyCount = 0;
+        if("0".equals(String.valueOf(typeCard))){
             type = 1;
-            if (ma <= 90) {
-                moneyCount = Double.valueOf("1." + moneyNum + "5");
-            } else if (ma <= 93) {
-                moneyCount = Double.valueOf("2." + moneyNum + "5");
-            } else if (ma <= 96) {
-                moneyCount = Double.valueOf("3." + moneyNum + "5");
+            if(moneyNum < 7){
+                if (ma <= 30) {
+                    moneyCount = Double.valueOf("5." + moneyNum + "5");
+                } else if (ma <= 60) {
+                    moneyCount = Double.valueOf("6." + moneyNum + "5");
+                } else if (ma <= 80) {
+                    moneyCount = Double.valueOf("7." + moneyNum + "5");
+                }else if (ma <= 95) {
+                    moneyCount = Double.valueOf("8." + moneyNum + "5");
+                } else{
+                    moneyCount = Double.valueOf("9." + moneyNum + "5");
+                }
+            }else{
+                if (ma <= 50) {
+                    moneyCount = Double.valueOf("10." + moneyNum + "5");
+                }else if (ma <= 60) {
+                    moneyCount = Double.valueOf("11." + moneyNum + "5");
+                }else if (ma <= 70) {
+                    moneyCount = Double.valueOf("12." + moneyNum + "5");
+                }else if (ma <= 75) {
+                    moneyCount = Double.valueOf("13." + moneyNum + "5");
+                }else if (ma <= 80) {
+                    moneyCount = Double.valueOf("14." + moneyNum + "5");
+                }else if (ma <= 87) {
+                    moneyCount = Double.valueOf("15." + moneyNum + "5");
+                }else if (ma <= 90) {
+                    moneyCount = Double.valueOf("16." + moneyNum + "5");
+                }else if (ma <= 94) {
+                    moneyCount = Double.valueOf("17." + moneyNum + "5");
+                }else if (ma <= 97) {
+                    moneyCount = Double.valueOf("18." + moneyNum + "5");
+                }else{
+                    moneyCount = Double.valueOf("19." + moneyNum + "5");
+                }
+            }
+        }else{
+            if (ma <= 80) {
+                type = 0;
+                if (ma <= 30) {
+                    moneyCount = 5;
+                } else if (ma <= 50) {
+                    moneyCount = 10;
+                } else if (ma <= 60) {
+                    moneyCount = 20;
+                } else if (ma <= 70) {
+                    moneyCount = 30;
+                } else {
+                    moneyCount = 40;
+                }
             } else {
-                moneyCount = Double.valueOf("4." + moneyNum + "5");
+                type = 1;
+                if (ma <= 90) {
+                    moneyCount = Double.valueOf("1." + moneyNum + "5");
+                } else if (ma <= 93) {
+                    moneyCount = Double.valueOf("2." + moneyNum + "5");
+                } else if (ma <= 96) {
+                    moneyCount = Double.valueOf("3." + moneyNum + "5");
+                } else {
+                    moneyCount = Double.valueOf("4." + moneyNum + "5");
+                }
             }
         }
         params.put("type", type);
