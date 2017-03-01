@@ -394,7 +394,6 @@ public class AccountServiceImpl implements AccountService {
         }
 
         order_price=(int)Double.parseDouble(order_price)+"";//format 返回的是字符串
-        order_price = "1";
         //生成的商户订单号
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
         String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串\
