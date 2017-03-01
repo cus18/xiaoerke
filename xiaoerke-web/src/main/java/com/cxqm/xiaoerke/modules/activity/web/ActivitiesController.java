@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.activity.web;
 
 import com.cxqm.xiaoerke.common.utils.IdGen;
+import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.account.exception.BalanceNotEnoughException;
@@ -14,8 +15,12 @@ import com.cxqm.xiaoerke.modules.activity.service.RedPackageResultsInfoService;
 import com.cxqm.xiaoerke.modules.alipay.util.httpClient.StringUtil;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.Log;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
+import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import groovy.transform.Synchronized;
 import org.activiti.engine.runtime.Execution;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -53,7 +59,12 @@ public class ActivitiesController {
     @Autowired
     private AccountService accountService;
 
+    private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
+
     private Lock lock = new ReentrantLock();
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
     /**
      * 邀请卡新用户点击生成页面
@@ -145,6 +156,11 @@ public class ActivitiesController {
     public HashMap<String, Object> chooseCard(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
         HashMap<String, Object> response = new HashMap<String, Object>();
         response.put("status", "failure");
+        String openId = String.valueOf(params.get("openId"));
+        Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+        String tokenId = (String) userWechatParam.get("token");
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        String nickName = WechatUtil.getWechatName(tokenId, openId).getNickname();
         double ma = Math.random() * 100;
         if (ma < 10) {
             ma = ma * 10;
@@ -187,6 +203,24 @@ public class ActivitiesController {
             businessPaymentExceeption.printStackTrace();
         } catch (BalanceNotEnoughException e) {
             e.printStackTrace();
+        }
+        if ("success".equalsIgnoreCase(String.valueOf(response.get("status")))) {
+            String first = "恭喜您抽中的现金礼到账啦~";
+            String keyword1 = nickName;
+            String keyword2;
+            if (type == 0) {
+                keyword2 = moneyCount + "元现金券";
+            } else {
+                keyword2 = moneyCount + "元";
+            }
+            String keyword3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+            String keyword4 = "";
+            String remark = "点击查看详情";
+            String token = tokenId;
+            String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl()+"/titan/appWfdb#/myCard/"+type+","+moneyCount;
+            String openid = openId;
+            String templateId = "U-0n4vv3HTXzOE4iD5hZ1siCjbpFVTPpFsXrxs4ASK8";
+            WechatMessageUtil.templateModel(first, keyword1, keyword2, keyword3, keyword4, remark, token, url, openid, templateId);
         }
         return response;
     }
