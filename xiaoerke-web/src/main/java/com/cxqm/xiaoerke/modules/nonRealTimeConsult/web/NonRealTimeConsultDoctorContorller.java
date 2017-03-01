@@ -196,7 +196,7 @@ public class NonRealTimeConsultDoctorContorller {
                 nonRealTimeConsultSessionVo.setLastMessageContent(lastMessageContent);
 
                 //查询宝宝信息
-                BabyBaseInfoVo babyBaseInfoVo = nonRealTimeConsultUserService.babyBaseInfo(nonRealTimeConsultSessionVo.getCsUserId());
+                BabyBaseInfoVo babyBaseInfoVo = nonRealTimeConsultUserService.babyBaseInfo(nonRealTimeConsultSessionVo.getUserId());
                 if (babyBaseInfoVo != null ) {
                     Date babyBirthday = babyBaseInfoVo.getBirthday();
                     int babyBirthdayYear = babyBirthday.getYear();
