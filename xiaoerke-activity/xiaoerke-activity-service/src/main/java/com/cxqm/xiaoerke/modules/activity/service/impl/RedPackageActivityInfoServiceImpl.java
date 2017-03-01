@@ -6,15 +6,15 @@ import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.account.exception.BalanceNotEnoughException;
 import com.cxqm.xiaoerke.modules.account.exception.BusinessPaymentExceeption;
-import com.cxqm.xiaoerke.modules.account.service.AccountService;
+import com.cxqm.xiaoerke.modules.account.service.impl.AccountServiceImpl;
 import com.cxqm.xiaoerke.modules.activity.dao.RedpackageActivityInfoDao;
 import com.cxqm.xiaoerke.modules.activity.entity.RedpackageActivityInfoVo;
 import com.cxqm.xiaoerke.modules.activity.entity.RedpackageResultsInfoVo;
 import com.cxqm.xiaoerke.modules.activity.service.RedPackageActivityInfoService;
 import com.cxqm.xiaoerke.modules.activity.service.RedPackageResultsInfoService;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
-import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,16 +34,19 @@ import java.util.Map;
 public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfoService {
 
     @Autowired
-    private RedpackageActivityInfoDao redpackageActivityInfoDao;
+    private RedpackageActivityInfoDao redpackageActivityInfoDao ;
 
     @Autowired
     private SystemService systemService;
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @Autowired
     private RedPackageResultsInfoService redPackageResultsInfoService;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
     @Override
     public int deleteByPrimaryKey(String id) {
@@ -185,7 +188,6 @@ public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfo
         response.put("payStatus", "failure");
         Integer takeCashOut = Integer.parseInt((String) params.get("moneyCount"));
         Float returnMoney = Float.valueOf(takeCashOut) * 100;
-        //判断用于余额
         String openid = String.valueOf(params.get("openId"));
         if (null == openid) {
             openid = CookieUtils.getCookie(request, "openId");
@@ -193,7 +195,7 @@ public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfo
         String ip = request.getRemoteAddr();
         String payResult = null;
         try {
-            payResult = accountService.returnPay(returnMoney, openid, ip);
+            payResult = accountService.payUserAmount(returnMoney, openid, ip);
         } catch (Exception e) {
             e.printStackTrace();
         }
