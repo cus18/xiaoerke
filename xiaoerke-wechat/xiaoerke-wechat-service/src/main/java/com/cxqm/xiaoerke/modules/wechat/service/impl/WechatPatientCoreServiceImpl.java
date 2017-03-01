@@ -1076,18 +1076,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                                     vo.setCardHealth(count);
                                 }else{
                                     double ma = Math.random()*100;
-                                    if(ma < 10){
-                                        ma = ma*10;
-                                    }
-                                    String randomString = String.valueOf(ma);
-                                    int randomNum = Integer.valueOf(randomString.substring(0, 2));
-                                    if(randomNum < 25){
+                                    if(ma < 25){
                                         count = vo.getCardHappy()+ 1;
                                         vo.setCardHappy(count);
-                                    }else if(randomNum < 50){
+                                    }else if(ma < 50){
                                         count = vo.getCardLove() + 1;
                                         vo.setCardLove(count);
-                                    }else if(randomNum < 75){
+                                    }else if(ma < 75){
                                         count = vo.getCardRuyi() + 1;
                                         vo.setCardRuyi(count);
                                     }else{
@@ -1108,16 +1103,15 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 }else{
                     System.out.print("获取锁失败");
                 }
+                // 邀请好友成功发送通知
                 String title = "恭喜您有好友加入啦~ ";
                 // 到账模板：U-0n4vv3HTXzOE4iD5hZ1siCjbpFVTPpFsXrxs4ASK8
                 String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg"; //生产环境 业务动态提醒ID
                 String keyword1 = "业务进度：您已成功邀请" + (vo.getTotalInvitation()+1) + "位好友";
                 String keyword2 = "业务状态：已集齐卡片" +(vo.getTotalInvitation()+1)/2 + "张，福利卡" + vo.getCardBig()+ "张";
                 String remark = "点击立即抽奖";
-                String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl()+ "titan/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_MBXX";
-//                    WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, oldOpenId, templateId);
-                String templateInfo = "\"first\": {\"value\":" + title + ",\"color\":\"#FF0000\"},\"keynote1\":{ \"value\":" + keyword1 + ",, \"color\":\"#000000\"},\"keynote2\": { \"value\":" + keyword2 + ", \"color\":\"#000000\" }, \"remark\":{ \"value\":" + remark + ",\"color\":\"#FF0000\"}";
-                WechatUtil.sendTemplateMsgToUser(token, vo.getOpenId(), templateId, templateInfo);
+                String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl()+ "/titan/appWfdb#/myCard";
+                WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, vo.getOpenId(), templateId);
             }
         }
     }
