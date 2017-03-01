@@ -1076,18 +1076,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                                     vo.setCardHealth(count);
                                 }else{
                                     double ma = Math.random()*100;
-                                    if(ma < 10){
-                                        ma = ma*10;
-                                    }
-                                    String randomString = String.valueOf(ma);
-                                    int randomNum = Integer.valueOf(randomString.substring(0, 2));
-                                    if(randomNum < 25){
+                                    if(ma < 25){
                                         count = vo.getCardHappy()+ 1;
                                         vo.setCardHappy(count);
-                                    }else if(randomNum < 50){
+                                    }else if(ma < 50){
                                         count = vo.getCardLove() + 1;
                                         vo.setCardLove(count);
-                                    }else if(randomNum < 75){
+                                    }else if(ma < 75){
                                         count = vo.getCardRuyi() + 1;
                                         vo.setCardRuyi(count);
                                     }else{
