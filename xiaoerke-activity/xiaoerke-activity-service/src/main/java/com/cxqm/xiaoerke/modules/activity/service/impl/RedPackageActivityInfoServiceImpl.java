@@ -119,35 +119,36 @@ public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfo
                     }
                     break;
                 case 1:
-                    if (redpackageActivityInfoVo.getCardHappy() > 0) {
-                        redpackageActivityInfoVo.setCardBig(redpackageActivityInfoVo.getCardHappy() - 1);
+                    if (redpackageActivityInfoVo.getCardRuyi() > 0) {
+                        redpackageActivityInfoVo.setCardRuyi(redpackageActivityInfoVo.getCardRuyi() - 1);
                         response.put("cardNum", "yes");
                     }
                     break;
                 case 2:
-                    if (redpackageActivityInfoVo.getCardHealth() > 0) {
-                        redpackageActivityInfoVo.setCardBig(redpackageActivityInfoVo.getCardHealth() - 1);
+                    if (redpackageActivityInfoVo.getCardYoushan() > 0) {
+                        redpackageActivityInfoVo.setCardYoushan(redpackageActivityInfoVo.getCardYoushan() - 1);
                         response.put("cardNum", "yes");
                     }
                     break;
                 case 3:
-                    if (redpackageActivityInfoVo.getCardLove() > 0) {
-                        redpackageActivityInfoVo.setCardBig(redpackageActivityInfoVo.getCardLove() - 1);
+                    if (redpackageActivityInfoVo.getCardHealth() > 0) {
+                        redpackageActivityInfoVo.setCardHealth(redpackageActivityInfoVo.getCardHealth() - 1);
                         response.put("cardNum", "yes");
                     }
                     break;
                 case 4:
-                    if (redpackageActivityInfoVo.getCardRuyi() > 0) {
-                        redpackageActivityInfoVo.setCardBig(redpackageActivityInfoVo.getCardRuyi() - 1);
+                    if (redpackageActivityInfoVo.getCardHappy() > 0) {
+                        redpackageActivityInfoVo.setCardHappy(redpackageActivityInfoVo.getCardHappy() - 1);
                         response.put("cardNum", "yes");
                     }
                     break;
                 default:
-                    if (redpackageActivityInfoVo.getCardYoushan() > 0) {
-                        redpackageActivityInfoVo.setCardBig(redpackageActivityInfoVo.getCardYoushan() - 1);
+                    if (redpackageActivityInfoVo.getCardLove() > 0) {
+                        redpackageActivityInfoVo.setCardLove(redpackageActivityInfoVo.getCardLove() - 1);
                         response.put("cardNum", "yes");
                     }
                     break;
+
             }
             if ("yes".equalsIgnoreCase(String.valueOf(response.get("cardNum")))) {
                 int num = updateByPrimaryKeySelective(redpackageActivityInfoVo);
