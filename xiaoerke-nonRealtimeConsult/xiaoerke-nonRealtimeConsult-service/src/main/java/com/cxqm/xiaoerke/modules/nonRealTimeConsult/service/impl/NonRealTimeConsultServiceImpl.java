@@ -182,6 +182,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         sessionVo.setLastMessageType(fromType);
         sessionVo.setLastMessageContent(content);
         sessionVo.setLastMessageTime(nowTime);
+        sessionVo.setBak1("isAnswer");
         nonRealTimeConsultSessionDao.updateByPrimaryKeySelective(sessionVo);
 
 
