@@ -753,7 +753,7 @@ public class PayNotificationController {
                     sessionVo.setStatus("ongoing");
                     nonRealTimeConsultService.updateConsultSessionInfo(sessionVo);
                     //通知相关医生来回答--模板消息
-                    nonRealTimeConsultService.sendRemindDoctor(sessionVo.getUserId(),sessionVo.getUserName(),String.valueOf(sessionVo.getId()));
+                    nonRealTimeConsultService.sendRemindDoctor(sessionVo.getCsUserId(),sessionVo.getUserName(),String.valueOf(sessionVo.getId()));
                 }
             }
             return XMLUtil.setXML("SUCCESS", "");
