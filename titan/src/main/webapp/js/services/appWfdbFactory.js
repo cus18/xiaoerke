@@ -18,5 +18,8 @@ define(['appWfdb'], function (app) {
         .factory('CreateInviteCardInfo',['$resource',function ($resource){
             return $resource(activity + 'createInviteCardInfo');
         }])
+        .factory('GetConfig',['$resource',function ($resource){
+            return $resource('util/getConfig');
+        }])
 
 })

@@ -1,4 +1,4 @@
-<ion-view view-title='宝大夫' scrollbar-y="false"  ng-init="invitePageInit()">
+<ion-view view-title='宝大夫' scrollbar-y="false"  ng-init="init_data()">
     <ion-content style="top:0px;">
         <div class="cardBox">
             <div class="mask">
@@ -30,6 +30,12 @@
                 <div ng-click="share_close()" ng-show="friends_share" class="invited">
                     <img class="share_arrow" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/invitePageShareMark.png" alt=""/>
                     <img class="share_img" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/home/share.png" alt=""/>
+                </div>
+
+                <div class="hecheng" ng-show="hecheng_status">
+                    <img class="close" ng-click="close()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/shut.png" alt=""/>
+                    <img class="synthesis" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/hecheng.png" alt=""/>
+                    <img class="sure_btn" ng-click="sure()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/sure.png" alt=""/>
                 </div>
 
             </div>
