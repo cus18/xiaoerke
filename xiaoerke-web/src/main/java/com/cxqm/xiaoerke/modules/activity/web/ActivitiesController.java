@@ -388,7 +388,7 @@ public class ActivitiesController {
             resultMap.put("status", "failure");
         }
         resultMap.put("cardInfoVo", vo);
-        resultMap.put("nickName", nickName);
+        resultMap.put("nickName", nickName); //昵称
         return resultMap;
     }
 }
