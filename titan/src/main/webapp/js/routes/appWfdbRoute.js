@@ -38,7 +38,7 @@ define(['appWfdb','swiper','appWfdbFactory'], function(app){
                     })
                    /* 奖品规则*/
                     .state('myCard', {
-                        url: '/myCard/:myCardInfo',
+                        url: '/myCard',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'myCardCtrl',
                         resolve: {

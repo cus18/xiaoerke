@@ -91,7 +91,6 @@ angular.module('controllers', [])
                 });
             };
 
-            loadShare();
             if($stateParams.isShow != ''){
                 $ionicScrollDelegate.scrollTop();
                 $scope.info.flag = true;

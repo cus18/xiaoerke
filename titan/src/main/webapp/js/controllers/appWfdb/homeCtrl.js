@@ -105,7 +105,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
         }
         //跳转我的卡片
         $scope.lookMyCard=function(){
-            $state.go('myCard',{"myCardInfo":JSON.stringify($scope.card)})
+            $state.go('myCard')
         }
         //查看规则
         $scope.lookRules=function(){

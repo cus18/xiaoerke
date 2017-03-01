@@ -1,18 +1,19 @@
-<ion-view ng-init="invitePageInit()">
+<ion-view>
     <ion-content style="top:0">
             <h3 class="title">我的奖品</h3>
             <ul class="list">
-                <li>
-                    <div class="pic"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/prizeList/hongbao_a_png_03.png" alt=""/></div>
+                <li ng-repeat="item in list">
+                    <div class="pic" ng-show="item.type==1"><img ng-src='{{hongbao}}' alt=""/></div>
+                    <div class="pic" ng-show="item.type==0"><img ng-src='{{quan}}' alt=""/></div>
                     <div class="con">
                         <div class="num">
-                            8.88<span ng-show="true">元红包</span><span ng-show="false">元代金券</span>
+                            {{item.moneyCount}}<span ng-show="item.type==1">元红包</span><span ng-show="item.type==0">元代金券</span>
                         </div>
-                        <div class="prizeStatus" ng-show="true">已放入微信零钱</div><div class="btnLook" ng-click="lookVoucher(this)" ng-show="false">点击查看</div>
+                        <div class="prizeStatus" ng-show="item.type==1">已放入微信零钱</div><div class="btnLook" ng-click="lookVoucher(this)" ng-show="item.type==0">点击查看</div>
                     </div>
-                    <div class="prizeTime"><span>2-11</span><span>23:44</span></div>
+                    <div class="prizeTime"><span>{{item.day}}</span><span>{{item.hour}}</span></div>
                 </li>
-                <li>
+                <!--<li>
                     <div class="pic"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/prizeList/quan_a_png_03.png" alt=""/></div>
                     <div class="con">
                         <div class="num">
@@ -111,7 +112,7 @@
                         <div class="prizeStatus" ng-show="true">已放入微信零钱</div><div class="btnLook" ng-click="lookVoucher(this)" ng-show="false">点击查看</div>
                     </div>
                     <div class="prizeTime"><span>2-11</span><span>23:44</span></div>
-                </li>
+                </li>-->
             </ul>
     </ion-content>
 </ion-view>
