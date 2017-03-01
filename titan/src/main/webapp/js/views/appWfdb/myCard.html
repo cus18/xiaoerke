@@ -1,4 +1,4 @@
-<ion-view view-title='宝大夫' scrollbar-y="false">
+<ion-view view-title='宝大夫' scrollbar-y="false"  ng-init="invitePageInit()">
     <ion-content style="top:0px;">
         <div class="cardBox">
             <div class="mask">
@@ -27,7 +27,7 @@
                 </div>
 
 
-                <div ng-click="share_close()" ng-show="share_status" class="invited">
+                <div ng-click="share_close()" ng-show="friends_share" class="invited">
                     <img class="share_arrow" src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/invitePageShareMark.png" alt=""/>
                     <img class="share_img" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/home/share.png" alt=""/>
                 </div>
