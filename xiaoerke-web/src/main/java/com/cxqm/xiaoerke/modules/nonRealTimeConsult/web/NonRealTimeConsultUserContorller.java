@@ -373,6 +373,7 @@ public class NonRealTimeConsultUserContorller {
         if(sessionInfo.size()>0){
             if(StringUtils.isNotNull(doctorId)){//医生回复消息
                 NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo = sessionInfo.get(0);
+                nonRealTimeConsultSessionVo.setBak1("isAnswer");
                 nonRealTimeConsultUserService.savenConsultRecord(sessionid,doctorId, source, content,msgType);
                 nonRealTimeConsultUserService.sendRemindUser(nonRealTimeConsultSessionVo);
 
