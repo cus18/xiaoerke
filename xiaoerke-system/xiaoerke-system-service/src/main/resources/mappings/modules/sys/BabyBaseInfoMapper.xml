@@ -28,6 +28,7 @@
     <include refid="Base_Column_List" />
     from sys_baby_baseInfo
     where openid = #{openid,jdbcType=VARCHAR}
+    order by createTime desc
     limit 1
   </select>
 
