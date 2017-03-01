@@ -3,6 +3,7 @@
   height:100%;
   background:url("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/home/home_bg.jpg")no-repeat;
   background-size:100%;
+  overflow:hidden;
 }
 .cardBox .mask{
   width:100%;
@@ -36,22 +37,68 @@
 
 .smallCard{
   width:92%;
-  height:auto;
+  height:20%;
   margin:0 auto;
   margin-top:16.4%;
 }
 .swiper-container {
   width: 100%;
   height: 100%;
+  overflow: visible;
 }
+
+.one{
+  background:url("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/fulika_a_png_03.png")no-repeat;
+}
+.two{
+  background:url("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/ru_gray.png")no-repeat;
+}
+.three{
+  background:url("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/shan_gray.png")no-repeat;
+}
+.four{
+  background:url("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/kang_gray.png")no-repeat;
+}
+.five{
+  background:url("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/le_gray.png")no-repeat;
+}
+.six{
+  background:url("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/ai_gray.png")no-repeat;
+}
+.swiper-slide{
+  background-size:100%;
+  height: 100vw;
+  position: relative;
+}
+
+
 .swiper-slide img{
   display: block;
   width:100%;
-  margin-bottom:12.5%;
+}
+.border_status{
+  border:solid 0.085333rem #7f0b1b;
 }
 .swiper-slide p{
+  position: absolute;
   width:100%;
   font-size:0.512rem;
   color:#fff;
   text-align: center;
+  top:18vw;
+}
+
+.swiper-slide .num{
+  display: block;
+  width:0.768rem;
+  height:0.768rem;
+  top:-0.384rem;
+  right:-0.384rem;
+  position:absolute;
+  z-index: 22;
+  background:#7f0b1b;
+  text-align: center;
+  line-height:0.768rem;
+  color:#fff;
+  border-radius: 50%;
 }

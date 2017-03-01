@@ -270,9 +270,9 @@ public class NonRealTimeConsultDoctorContorller {
         for(NonRealTimeConsultRecordVo vo:recodevoList){
             Map<String ,Object> recordMap = new HashMap<String, Object>();
             if(sessionVo.getCsUserId().equals(vo.getSenderId())){
-                recordMap.put("source","user");
-            }else{
                 recordMap.put("source","doctor");
+            }else{
+                recordMap.put("source","user");
             };
             String messageType = vo.getMessageType();
             recordMap.put("messageType",messageType);
@@ -298,7 +298,7 @@ public class NonRealTimeConsultDoctorContorller {
         //用户微信头像的信息
         Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
-        WechatBean wechatInfo = WechatUtil.getWechatName(token,openid);
+        WechatBean wechatInfo = WechatUtil.getWechatName(token,sessionVo.getUserId());
         resultMap.put("wechatImg",wechatInfo.getHeadimgurl());
         resultMap.put("messageList",messageList);
         return resultMap;

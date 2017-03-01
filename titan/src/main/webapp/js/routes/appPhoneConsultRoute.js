@@ -302,21 +302,7 @@ define(['appPhoneConsult'], function(app){
                             }
                         }
                      })
-                    .state('myDoctor', {
-                        url: '/myDoctor',
-                        templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'myDoctor',
-                        resolve: {
-                            load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.myDoctor',
-                                    [
-                                        'js/libs/lodash.min.js',
-                                        'js/controllers/phoneConsult/myDoctor.js',
-                                        'styles/phoneConsult/myDoctor.less?ver='+phoneConsultVersion],
-                                    'js/views/phoneConsult/myDoctor.html?ver='+phoneConsultVersion);
-                            }
-                        }
-                    })
+
                 $urlRouterProvider.otherwise('selfCenter');
             }])
         .run(function ($rootScope){

@@ -3,16 +3,16 @@
         <div class="cardBox">
             <div class="mask">
                 <div class="bigCard"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/di_png_03.png" alt=""/></div>
-                <div class="btn"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/btn_Invitation.png" alt=""/></div>
+                <div class="btn" ng-click="sss()"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/btn_Invitation.png" alt=""/></div>
                 <div class="smallCard">
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/fulika_a_png_03.png" alt=""/><p>福利卡</p></div>
-                            <div class="swiper-slide"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/ai_bright.png" alt=""/><p>爱心卡</p></div>
-                            <div class="swiper-slide"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/ai_bright.png" alt=""/><p>如意卡</p></div>
-                            <div class="swiper-slide"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/ai_bright.png" alt=""/><p>健康卡</p></div>
-                            <div class="swiper-slide"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/ai_bright.png" alt=""/><p>快乐卡</p></div>
-                            <div class="swiper-slide"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/ai_bright.png" alt=""/><p>友善卡</p></div>
+                            <div ng-if="card.cardBig!=0" ng-class="" ng-click="fuli_click()" class="swiper-slide one"><p>福利卡</p><span class="num" ng-hide="card.cardBig==0">{{card.cardBig}}</span></div>
+                            <div class="swiper-slide two"><img ng-hide="card.cardRuyi==0" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/ru_bright.png" alt=""/><p>如意卡</p><span class="num" ng-hide="card.cardRuyi==0">{{card.cardRuyi}}</span></div>
+                            <div class="swiper-slide three"><img ng-hide="card.cardYoushan==0" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/shan_bright.png" alt=""/><p>友善卡</p><span class="num" ng-hide="card.cardYoushan==0">{{card.cardYoushan}}</span></div>
+                            <div class="swiper-slide four"><img ng-hide="card.cardHealth==0" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/kang_bright.png" alt=""/><p>健康卡</p><span class="num" ng-hide="card.cardHealth==0">{{card.cardHealth}}</span></div>
+                            <div class="swiper-slide five"><img ng-hide="card.cardHappy==0" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/le_bright.png" alt=""/><p>快乐卡</p><span class="num" ng-hide="card.cardHappy==0">{{card.cardHappy}}</span></div>
+                            <div class="swiper-slide six"><img ng-hide="card.cardLove==0" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/ai_bright.png" alt=""/><p>爱心卡</p><span class="num" ng-hide="card.cardLove==0">{{card.cardLove}}</span></div>
                         </div>
                     </div>
                 </div>
