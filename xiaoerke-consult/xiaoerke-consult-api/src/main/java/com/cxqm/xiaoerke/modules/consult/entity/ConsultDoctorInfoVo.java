@@ -61,6 +61,11 @@ public class ConsultDoctorInfoVo {
 
     private String microMallAddress;
 
+    //会话状态
+    private Date createTime;
+    private String status;
+    private String sessionid;
+
     public String getStarDoctor() {
         return starDoctor;
     }
@@ -297,5 +302,29 @@ public class ConsultDoctorInfoVo {
 
     public void setNonrealtimeStatus(String nonrealtimeStatus) {
         this.nonrealtimeStatus = nonrealtimeStatus;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getSessionid() {
+        return sessionid;
+    }
+
+    public void setSessionid(String sessionid) {
+        this.sessionid = sessionid;
     }
 }

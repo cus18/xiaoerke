@@ -28,6 +28,9 @@
     <result column="sort" property="sort" jdbcType="VARCHAR" />
     <result column="microMallAddress" property="microMallAddress" jdbcType="VARCHAR" />
 
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="sessionid" property="sessionid" jdbcType="VARCHAR" />
 
   </resultMap>
   <sql id="Base_Column_List" >
@@ -380,7 +383,7 @@
   <!-- jiangzg add 查询具有某种权限的医生信息 2016-8-12 10:55:20-->
   <select id="findRecentTimeConusltInfo" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" resultMap="BaseResultMap">
     SELECT
-      cdi.*,ncs.status,ncs.create_time
+      cdi.*,ncs.status,ncs.create_time,ncs.id sessionid
     from consult_doctor_info cdi
     left join
     (SELECT * FROM (select * from non_real_time_consult_session ORDER BY create_time DESC) d GROUP BY cs_user_id ORDER BY create_time DESC
