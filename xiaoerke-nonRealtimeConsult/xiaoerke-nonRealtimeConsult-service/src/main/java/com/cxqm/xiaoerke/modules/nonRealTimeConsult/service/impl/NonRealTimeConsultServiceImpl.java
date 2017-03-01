@@ -310,7 +310,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         String token = (String) parameter.get("token");
         for(NonRealTimeConsultSessionVo vo : consultList){
             //根据session查询id 根据id值查找account的支付情况 然后退款
-            String title =  "医生未能在36小时内回复您，咨询我们平台，联系工作人员，将给您退款。\n" +
+            String title = vo.getCsUserName()+ "医生未能在36小时内回复您，咨询我们平台，联系工作人员，将给您退款。\n" +
                     "给你带来不便，忘谅解！";
             WechatUtil.sendMsgToWechat(token,vo.getUserId(),title);
         }
