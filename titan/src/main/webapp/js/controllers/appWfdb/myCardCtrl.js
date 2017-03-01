@@ -197,14 +197,14 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
 
 
 
-
+        $scope.friends_share=false;
         // 邀请好友点击事件
         $scope.invite_friend=function(){
-            share_status=true;
+            $scope.friends_share=true;
         }
         //关闭好友邀请弹窗
         $scope.share_close=function(){
-            share_status=false;
+            $scope.friends_share=false;
         }
 
         //兑换奖品点击事件
