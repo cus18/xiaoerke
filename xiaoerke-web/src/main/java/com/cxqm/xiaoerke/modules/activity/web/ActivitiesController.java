@@ -309,7 +309,10 @@ public class ActivitiesController {
     @ResponseBody
     public HashMap<String, Object> getCardInfoList(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
-        String openId = "2222";
+        String openId = WechatUtil.getOpenId(session, request);
+        Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+        String tokenId = (String) userWechatParam.get("token");
+        String nickName = WechatUtil.getWechatName(tokenId, openId).getNickname();
         RedpackageActivityInfoVo vo = new RedpackageActivityInfoVo();
         if (StringUtils.isNotNull(openId)) {
             vo.setOpenId(openId);
@@ -385,6 +388,7 @@ public class ActivitiesController {
             resultMap.put("status", "failure");
         }
         resultMap.put("cardInfoVo", vo);
+        resultMap.put("nickName", nickName); //昵称
         return resultMap;
     }
 }
