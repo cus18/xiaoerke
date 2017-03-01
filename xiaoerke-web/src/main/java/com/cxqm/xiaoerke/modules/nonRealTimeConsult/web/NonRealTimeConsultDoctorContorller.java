@@ -196,9 +196,8 @@ public class NonRealTimeConsultDoctorContorller {
                 nonRealTimeConsultSessionVo.setLastMessageContent(lastMessageContent);
 
                 //查询宝宝信息
-                List<BabyBaseInfoVo> babyInfoList = healthRecordsService.getUserBabyInfolistByOpenId(nonRealTimeConsultSessionVo.getCsUserId());
-                if (babyInfoList != null && babyInfoList.size() > 0) {
-                    BabyBaseInfoVo babyBaseInfoVo = babyInfoList.get(0);
+                BabyBaseInfoVo babyBaseInfoVo = nonRealTimeConsultUserService.babyBaseInfo(nonRealTimeConsultSessionVo.getCsUserId());
+                if (babyBaseInfoVo != null ) {
                     Date babyBirthday = babyBaseInfoVo.getBirthday();
                     int babyBirthdayYear = babyBirthday.getYear();
                     int babyBirthdayMonth = babyBirthday.getMonth();
@@ -291,7 +290,7 @@ public class NonRealTimeConsultDoctorContorller {
             }else{
                 recordMap.put("message",vo.getMessage());
             }
-            recordMap.put("messageTime",DateUtils.formatDateToStr(vo.getCreateTime(),"MM月dd日 HH:mm"));
+            recordMap.put("messageTime",DateUtils.formatDateToStr(vo.getCreateTime(), "MM月dd日 HH:mm"));
             messageList.add(recordMap);
         }
 
