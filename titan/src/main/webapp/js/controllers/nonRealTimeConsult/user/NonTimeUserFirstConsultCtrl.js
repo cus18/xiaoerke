@@ -27,8 +27,6 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             $scope.isSelectedB = true;
             $scope.isSelectedG = false;
             $scope.babyId = "";
-            $scope.sexItem = 0;
-
             //微信js-sdk 初始化接口
             $scope.doRefresh = function(){
                 var timestamp;//时间戳
@@ -70,8 +68,6 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                 });
             };
 
-
-
             //页面数据请求
             $scope.NonTimeUserFirstConsultInit = function(){
                 $scope.doRefresh();
@@ -83,7 +79,9 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                         return;
                     }
                     if(data.babySex != ""){
-                        $scope.sexItem = data.babySex;
+                        if("undefined" != data.babySex){
+                            $scope.sexItem = data.babySex;
+                        }
                         if ($scope.sexItem == 0) {
                             $scope.isSelectedB = true;
                             $scope.isSelectedG = false;
