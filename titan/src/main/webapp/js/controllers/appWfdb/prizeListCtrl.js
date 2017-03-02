@@ -7,6 +7,11 @@ angular.module('controllers', ['ionic']).controller('prizeListCtrl', [
 
         GetCardInfoList.save({},function(res){
             $scope.list=res.rewardsVo;
+            console.log($scope.list)
+            if($scope.list==undefined){
+                $scope.prize_status=true;
+                return;
+            }
             if($scope.list.length>0){
                 $scope.prize_status=false;
             }else{
