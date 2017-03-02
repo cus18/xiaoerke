@@ -344,6 +344,7 @@ public class ActivitiesController {
                 if (lock.tryLock()) {
                     try {
                         int totalNum = redPackageActivityInfoService.getRedPackageActivityTatalCount();
+                        totalNum++;
                         String market = "";
                         String value = String.valueOf(totalNum);
                         int len = value.length();
@@ -369,7 +370,7 @@ public class ActivitiesController {
                             default:
                                 market = "707" + value;
                         }
-                        vo.setMarket(Integer.valueOf(market));
+                        vo.setMarket(Integer.parseInt(market));
                         int num = redPackageActivityInfoService.insert(vo);
                         if (num > 0) {
                             resultMap.put("dataStatus", "insertSuccess");
