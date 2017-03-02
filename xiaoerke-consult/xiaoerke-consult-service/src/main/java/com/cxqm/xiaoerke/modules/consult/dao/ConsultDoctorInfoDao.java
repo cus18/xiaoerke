@@ -48,5 +48,5 @@ public interface ConsultDoctorInfoDao {
 
     List<ConsultDoctorInfoVo> findRecentTimeConusltInfo(ConsultDoctorInfoVo consultDoctorInfoVo);
 
-    String getLatestDoctorName(@Param("userId") String openid);
+    String getLatestDoctorName(@Param("openid") String openid);
 }
