@@ -10,9 +10,6 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
             // });
             GetConfig.save({}, function (data) {
                 $scope.inviteUrlData = data.publicSystemInfo.redPackageShareUrl;
-
-
-                    $scope.uuid = data.uuid;
                     var share = $scope.inviteUrlData + $scope.openid+","+$scope.market+",";//最后url=41，openid,marketer
 
                     // var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
@@ -91,6 +88,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
             $scope.openid=res.cardInfoVo.openId;
             $scope.market=res.cardInfoVo.market;
             $scope.minename=res.nickName;
+            console.log(res.cardInfoVo, $scope.openid,$scope.market)
             loadShare($scope);
         })
 
