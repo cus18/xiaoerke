@@ -267,7 +267,6 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
         if (null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList() && sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid) == -1) {
             return ;
         }
-
         String doctorName = consultDoctorInfoService.getLatestDoctorName(openid);
         if(StringUtils.isNotNull(doctorName)){
             WechatUtil.sendMsgToWechat(token,openid,doctorName+"不久前为您解答过问题，体验怎么样？\n<a href='" + url + "keeper/wechatInfo/fieldwork/wechat/author?url=" + url + "keeper/wechatInfo/getUserWechatMenId?url=50'>>>点击继续咨询TA</a>");
