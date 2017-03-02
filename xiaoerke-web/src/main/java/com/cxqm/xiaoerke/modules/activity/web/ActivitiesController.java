@@ -347,31 +347,31 @@ public class ActivitiesController {
                 if (lock.tryLock()) {
                     try {
                         int totalNum = redPackageActivityInfoService.getRedPackageActivityTatalCount();
-                        totalNum++;
+                        totalNum++ ;
                         String market = "";
                         String value = String.valueOf(totalNum);
                         int len = value.length();
                         switch (len) {
                             case 1:
-                                market = "707000000" + value;
+                                market = "177000000" + value;
                                 break;
                             case 2:
-                                market = "70700000" + value;
+                                market = "17700000" + value;
                                 break;
                             case 3:
-                                market = "7070000" + value;
+                                market = "1770000" + value;
                                 break;
                             case 4:
-                                market = "707000" + value;
+                                market = "177000" + value;
                                 break;
                             case 5:
-                                market = "70700" + value;
+                                market = "17700" + value;
                                 break;
                             case 6:
-                                market = "7070" + value;
+                                market = "1770" + value;
                                 break;
                             default:
-                                market = "707" + value;
+                                market = "177" + value;
                         }
                         vo.setMarket(Integer.parseInt(market));
                         int num = redPackageActivityInfoService.insert(vo);

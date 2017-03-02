@@ -1060,7 +1060,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     String templateInfo = "\"first\": {\"value\":" + title + ",\"color\":\"#FF0000\"},\"keynote1\":{ \"value\":" + keyword1 + ",, \"color\":\"#000000\"},\"keynote2\": { \"value\":" + keyword2 + ", \"color\":\"#000000\" }, \"remark\":{ \"value\":" + remark + ",\"color\":\"#FF0000\"}";
                     WechatUtil.sendTemplateMsgToUser(token, oldOpenId, templateId, templateInfo);
                 }
-            }else if(marketer.startsWith("707") && marketer.length() == 10){
+            }else if(marketer.startsWith("177") && marketer.length() == 10){
                 RedpackageActivityInfoVo vo = new RedpackageActivityInfoVo();
                 vo.setMarket(Integer.valueOf(marketer));
                 if(lock.tryLock()){
