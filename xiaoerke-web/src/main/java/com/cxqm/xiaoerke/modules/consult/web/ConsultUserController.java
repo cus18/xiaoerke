@@ -580,6 +580,7 @@ public class ConsultUserController extends BaseController {
                 source = "COOP_BHQ";
                 userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone"))) ? String.valueOf(params.get("patientPhone")) : "";
                 userName = StringUtils.isNotNull(String.valueOf(params.get("patientName"))) ? String.valueOf(params.get("patientName")) : "";
+                userName = Base64.getDecoder().decode(userName).toString();
                 if (StringUtils.isNotNull(userName)) {
                     userName = EmojiFilter.coverEmoji(userName);
                 }

@@ -115,13 +115,14 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
             }
             GetCardInfoList.save({},function(res){
                 $scope.card=res.cardInfoVo;
-                $scope.openid=res.cardInfoVo.openid;
+                $scope.openid=res.cardInfoVo.openId;
                 $scope.market=res.cardInfoVo.market;
-                $scope.minename=res.cardInfoVo.nickName;
+                $scope.minename=res.nickName;
                 loadShare();
                 $scope.card=res.cardInfoVo;
                 if($scope.card.cardRuyi>0 && $scope.card.cardYoushan>0 && $scope.card.cardHealth>0 && $scope.card.cardHappy>0 && $scope.card.cardLove>0 ){
                     $scope.hecheng_status=true;
+                    //点击确定合成
                     $scope.sure=function(){
                         $scope.card.cardRuyi--;
                         $scope.card.cardYoushan--;
@@ -131,9 +132,11 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
                         UpdateRedPackageInfo.save({id:$scope.card.id,openId:$scope.card.openId},function(res){
                             $scope.card.cardBig++;
                             $scope.hecheng_status=false;
+                            //如果可以合成多张的话，继续回调
                             $scope.init_data();
                         })
                     }
+                    //点击关闭合成，
                     $scope.close=function(){
                         $scope.hecheng_status=false;
                     }
@@ -181,7 +184,7 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
 
 
 
-
+        //按钮状态的封装；
         $scope.btn_status=function(num){
             switch (num){
                 case 1 :(function(){
