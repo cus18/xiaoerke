@@ -95,7 +95,6 @@ define(['appWfdb','swiper','appWfdbFactory'], function(app){
                             }
                         }
                     })
-
                 $urlRouterProvider.otherwise('home');
             }])
         .run(function ($rootScope){

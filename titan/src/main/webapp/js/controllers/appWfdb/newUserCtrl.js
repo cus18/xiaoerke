@@ -5,6 +5,6 @@ angular.module('controllers', ['ionic','ngDialog']).controller('newUserCtrl', [
         $scope.oldOpenId=$stateParams.oldFriendInfo.oldOpenId;
         $scope.market=$stateParams.oldFriendInfo.marketer;
         CreateInviteCardInfo.save({oldOpenId:$scope.oldOpenId,market:$scope.market},function(res){
-            $scope.information=res
+            $scope.information=res;
         })
     }])
