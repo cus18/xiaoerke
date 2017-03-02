@@ -38,7 +38,7 @@ define(['appWfdb','swiper','appWfdbFactory'], function(app){
                     })
                    /* 濂栧搧瑙勫垯*/
                     .state('myCard', {
-                        url: '/myCard/:cardInfo',
+                        url: '/myCard/:type,:moneyCount',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'myCardCtrl',
                         resolve: {
@@ -82,7 +82,7 @@ define(['appWfdb','swiper','appWfdbFactory'], function(app){
                     })
                     //新用户邀请好友页面
                     .state('newUser', {
-                        url: '/newUser/:oldFriendInfo',
+                        url: '/newUser/:oldOpenId,:marketer',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'newUserCtrl',
                         resolve: {

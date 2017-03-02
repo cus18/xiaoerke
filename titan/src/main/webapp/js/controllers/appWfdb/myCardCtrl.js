@@ -94,7 +94,7 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
 
         $scope.init_data=function(){
            // 初始化一些图片和按钮的状态，判断是否从推送夜进来的
-            if( $state.cardInfo==''){
+            if( $stateParams.type=='' && $stateParams.moneyCount==''){
                 console.log('我没传参数');
                 //大图初始化
                 $scope.bigCardImg=$scope.carImgUrl.yaoqing;
