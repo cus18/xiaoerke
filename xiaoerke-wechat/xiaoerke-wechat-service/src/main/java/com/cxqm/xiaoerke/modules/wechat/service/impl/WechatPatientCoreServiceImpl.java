@@ -1090,9 +1090,8 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                                         vo.setCardYoushan(count);
                                     }
                                 }
-                            }else{
-                                vo.setTotalInvitation(nowCount);
                             }
+                            vo.setTotalInvitation(nowCount);
                             redPackageActivityInfoService.updateByPrimaryKeySelective(vo);
                         }
                     }catch (Exception ex){
