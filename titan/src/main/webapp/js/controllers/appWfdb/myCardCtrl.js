@@ -3,7 +3,7 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
     'OrderPayMemberServiceOperation','GetUserMemberService','$location','GetCardInfoList','ChooseCard','UpdateRedPackageInfo','GetConfig',
     function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,GetCardInfoList,ChooseCard,UpdateRedPackageInfo,GetConfig) {
         //分享到朋友圈或者微信
-        var loadShare = function(){
+        var loadShare = function($scope){
             // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
             //     $scope.uuid = data.uuid;
             // });
@@ -118,7 +118,7 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
                 $scope.openid=res.cardInfoVo.openId;
                 $scope.market=res.cardInfoVo.market;
                 $scope.minename=res.nickName;
-                loadShare();
+                loadShare($scope);
                 $scope.card=res.cardInfoVo;
                 if($scope.card.cardRuyi>0 && $scope.card.cardYoushan>0 && $scope.card.cardHealth>0 && $scope.card.cardHappy>0 && $scope.card.cardLove>0 ){
                     $scope.hecheng_status=true;

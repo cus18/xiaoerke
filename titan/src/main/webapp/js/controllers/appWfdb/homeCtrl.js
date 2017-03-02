@@ -4,7 +4,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
     function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog,GetCardInfoList,GetConfig) {
 
         //分享到朋友圈或者微信
-        var loadShare = function(){
+        var loadShare = function($scope){
             // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
             //     $scope.uuid = data.uuid;
             // });
@@ -91,7 +91,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
             $scope.openid=res.cardInfoVo.openId;
             $scope.market=res.cardInfoVo.market;
             $scope.minename=res.nickName;
-            loadShare();
+            loadShare($scope);
         })
 
 
