@@ -1263,6 +1263,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             articleList.add(article);
             WechatUtil.senImgMsgToWechat(token, xmlEntity.getFromUserName(), articleList);
             memberService.sendExtendOldMemberWechatMessage(xmlEntity.getFromUserName());
+        }else if("37".equals(xmlEntity.getEventKey())){
+            Map parameter = systemService.getWechatParameter();
+            String token = (String) parameter.get("token");
+            WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6fewi6uvSqjml1-SXSNZsNBlI", 1);
         } else if ("36".equals(xmlEntity.getEventKey())) {
             List<Article> articleList = new ArrayList<Article>();
             // 创建图文消息
