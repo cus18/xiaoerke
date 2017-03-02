@@ -409,5 +409,6 @@
  where cs.sys_user_id = #{openid,jdbcType=VARCHAR}
  and cdi.nonrealtime_status = '1'
  order by cs.create_time desc
+ limit 1
   </select>
 </mapper>
