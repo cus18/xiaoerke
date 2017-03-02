@@ -6,23 +6,16 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.account.exception.BalanceNotEnoughException;
 import com.cxqm.xiaoerke.modules.account.exception.BusinessPaymentExceeption;
-import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.activity.entity.RedpackageActivityInfoVo;
 import com.cxqm.xiaoerke.modules.activity.entity.RedpackageResultsInfoVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.activity.service.RedPackageActivityInfoService;
 import com.cxqm.xiaoerke.modules.activity.service.RedPackageResultsInfoService;
-import com.cxqm.xiaoerke.modules.alipay.util.httpClient.StringUtil;
-import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
-import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
-import com.cxqm.xiaoerke.modules.sys.entity.Log;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
-import groovy.transform.Synchronized;
-import org.activiti.engine.runtime.Execution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +26,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -52,12 +48,6 @@ public class ActivitiesController {
 
     @Autowired
     private OlyGamesService olyGamesService;
-
-    @Autowired
-    private BabyCoinService babyCoinService;
-
-    @Autowired
-    private AccountService accountService;
 
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
@@ -346,34 +336,20 @@ public class ActivitiesController {
                 vo.setTotalInvitation(0);
                 if (lock.tryLock()) {
                     try {
-                        int totalNum = redPackageActivityInfoService.getRedPackageActivityTatalCount();
-                        totalNum++ ;
-                        String market = "";
-                        String value = String.valueOf(totalNum);
-                        int len = value.length();
-                        switch (len) {
-                            case 1:
-                                market = "177000000" + value;
-                                break;
-                            case 2:
-                                market = "17700000" + value;
-                                break;
-                            case 3:
-                                market = "1770000" + value;
-                                break;
-                            case 4:
-                                market = "177000" + value;
-                                break;
-                            case 5:
-                                market = "17700" + value;
-                                break;
-                            case 6:
-                                market = "1770" + value;
-                                break;
-                            default:
-                                market = "177" + value;
+//                        int totalNum = redPackageActivityInfoService.getRedPackageActivityTatalCount();
+//                        totalNum++ ;
+                        List<RedpackageActivityInfoVo> redpackageActivityInfoVos = redPackageActivityInfoService.getLastOneRedPackageActivity();
+                        int totalNum = 1770000001;
+                        if(redpackageActivityInfoVos != null){
+                            if(redpackageActivityInfoVos.size()>0){
+                                totalNum = redpackageActivityInfoVos.get(0).getMarket();
+                                totalNum++ ;
+                            }
+                        }else{
+                            resultMap.put("status", "failure");
+                            return resultMap;
                         }
-                        vo.setMarket(Integer.parseInt(market));
+                        vo.setMarket(totalNum);
                         int num = redPackageActivityInfoService.insert(vo);
                         if (num > 0) {
                             resultMap.put("dataStatus", "insertSuccess");

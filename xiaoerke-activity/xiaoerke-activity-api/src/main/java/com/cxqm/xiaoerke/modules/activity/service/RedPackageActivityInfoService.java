@@ -35,4 +35,5 @@ public interface RedPackageActivityInfoService {
 
     Map<String,Object> payRedPackageToUser(Map<String, Object> params, Map<String, Object> response, HttpServletRequest request, HttpSession session) throws BalanceNotEnoughException, BusinessPaymentExceeption;
 
+    List<RedpackageActivityInfoVo> getLastOneRedPackageActivity();
 }
