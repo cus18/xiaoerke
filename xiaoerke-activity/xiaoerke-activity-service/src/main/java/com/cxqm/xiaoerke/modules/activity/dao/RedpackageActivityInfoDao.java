@@ -22,4 +22,6 @@ public interface RedpackageActivityInfoDao {
     List<RedpackageActivityInfoVo> getRedpackageActivityBySelective(RedpackageActivityInfoVo vo);
 
     int getRedPackageActivityTatalCount();
+
+    List<RedpackageActivityInfoVo> getLastOneRedPackageActivity();
 }
