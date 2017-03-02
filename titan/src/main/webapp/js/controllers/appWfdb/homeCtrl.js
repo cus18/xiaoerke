@@ -4,15 +4,12 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
     function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog,GetCardInfoList,GetConfig) {
 
         //分享到朋友圈或者微信
-        var loadShare = function(){
+        var loadShare = function($scope){
             // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
             //     $scope.uuid = data.uuid;
             // });
             GetConfig.save({}, function (data) {
                 $scope.inviteUrlData = data.publicSystemInfo.redPackageShareUrl;
-
-
-                    $scope.uuid = data.uuid;
                     var share = $scope.inviteUrlData + $scope.openid+","+$scope.market+",";//最后url=41，openid,marketer
 
                     // var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
@@ -91,7 +88,8 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
             $scope.openid=res.cardInfoVo.openId;
             $scope.market=res.cardInfoVo.market;
             $scope.minename=res.nickName;
-            loadShare();
+            console.log(res.cardInfoVo, $scope.openid,$scope.market)
+            loadShare($scope);
         })
 
 
