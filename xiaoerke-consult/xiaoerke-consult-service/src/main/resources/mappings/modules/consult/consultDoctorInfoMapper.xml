@@ -399,6 +399,15 @@
     select DISTINCT sys_user_id_cs from consult_session cs
       where cs.sys_user_id = #{openId,jdbcType=VARCHAR}
     )
-    order by cdi.create_date desc
+    order by ncs.create_time desc
+  </select>
+
+  <select id="getLatestDoctorName" parameterType="java.lang.String">
+ select cdi.`name` from consult_session cs
+ left join consult_doctor_info cdi
+ on cs.sys_user_id_cs = cdi.sys_user_id
+ where cs.sys_user_id = #{openId,jdbcType=VARCHAR}
+ and cdi.nonrealtime_status = '1'
+ order by cs.create_time desc
   </select>
 </mapper>
