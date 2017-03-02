@@ -82,7 +82,7 @@ define(['appWfdb','swiper','appWfdbFactory'], function(app){
                     })
                     //新用户邀请好友页面
                     .state('newUser', {
-                        url: '/newUser',
+                        url: '/newUser/:oldFriendInfo',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'newUserCtrl',
                         resolve: {
