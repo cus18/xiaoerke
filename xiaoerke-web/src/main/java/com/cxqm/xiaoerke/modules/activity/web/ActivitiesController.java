@@ -80,6 +80,9 @@ public class ActivitiesController {
         String openId = WechatUtil.getOpenId(session, request);//"oogbDwD_2BTQpftPu9QClr-mCw7U"
         String oldOpenId = String.valueOf(params.get("oldOpenId"));
         String marketer = String.valueOf(params.get("market"));
+        Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+        String tokenId = (String) userWechatParam.get("token");
+        String nickName = WechatUtil.getWechatName(tokenId, openId).getNickname();
         RedpackageActivityInfoVo vo = new RedpackageActivityInfoVo();
         vo.setOpenId(oldOpenId);
         List<RedpackageActivityInfoVo> result = redPackageActivityInfoService.getRedpackageActivityBySelective(vo);
@@ -94,7 +97,7 @@ public class ActivitiesController {
         } else {
             response.put("headImgUrl", "http://img5.imgtn.bdimg.com/it/u=1846948884,880298315&fm=21&gp=0.jpg");
         }
-        response.put("redPackageVo", vo);
+        response.put("nickName",nickName);
         return response;
     }
 

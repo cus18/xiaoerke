@@ -10,8 +10,6 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
             GetConfig.save({}, function (data) {
                 $scope.inviteUrlData = data.publicSystemInfo.redPackageShareUrl;
 
-
-                $scope.uuid = data.uuid;
                 var share = $scope.inviteUrlData + $scope.openid+","+$scope.market+",";//最后url=41，openid,marketer
 
                 // var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
@@ -54,7 +52,6 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                     success: function (res) {
-                                        recordLogs("ZXYQ_YQY_SHARE");
                                         // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
                                         // });
                                     },
@@ -67,7 +64,6 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                     success: function (res) {
-                                        recordLogs("ZXYQ_YQY_SHARE");
                                     },
                                     fail: function (res) {
                                     }

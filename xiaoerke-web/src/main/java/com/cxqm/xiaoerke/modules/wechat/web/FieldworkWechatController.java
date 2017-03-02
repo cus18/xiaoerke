@@ -316,7 +316,7 @@ public class FieldworkWechatController {
             }
         }else {//老用户
             if(marketer.startsWith("707")){  //集卡活动
-                url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/appWfdb#/oldUser/";
+                url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/appWfdb#/oldUser";
             }else{//宝宝币
                 url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteOld/"+oldOpenId+","+marketer+","+redPacketId;
                 LogUtils.saveLog("ZXYQ_YQK_OLD","openid="+openid);
