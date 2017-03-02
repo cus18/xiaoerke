@@ -340,11 +340,11 @@ public class ActivitiesController {
 //                        totalNum++ ;
                         List<RedpackageActivityInfoVo> redpackageActivityInfoVos = redPackageActivityInfoService.getLastOneRedPackageActivity();
                         int totalNum = 1770000001;
-                        if(redpackageActivityInfoVos != null && redpackageActivityInfoVos.size()>0){
-                            totalNum = redpackageActivityInfoVos.get(0).getMarket();
-                            totalNum++ ;
-                        }else if(redpackageActivityInfoVos.size() == 0){
-
+                        if(redpackageActivityInfoVos != null){
+                            if(redpackageActivityInfoVos.size()>0){
+                                totalNum = redpackageActivityInfoVos.get(0).getMarket();
+                                totalNum++ ;
+                            }
                         }else{
                             resultMap.put("status", "failure");
                             return resultMap;
