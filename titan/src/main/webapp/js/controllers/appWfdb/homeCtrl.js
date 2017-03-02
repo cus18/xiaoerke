@@ -52,7 +52,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                         link: share, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                             success: function (res) {
-                                            recordLogs("ZXYQ_YQY_SHARE");
+                                            //recordLogs("ZXYQ_YQY_SHARE");
                                             // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
                                             // });
                                         },
@@ -65,7 +65,6 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                         link: share, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                         success: function (res) {
-                                            recordLogs("ZXYQ_YQY_SHARE");
                                         },
                                         fail: function (res) {
                                         }
@@ -88,7 +87,6 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
             $scope.openid=res.cardInfoVo.openId;
             $scope.market=res.cardInfoVo.market;
             $scope.minename=res.nickName;
-            console.log(res.cardInfoVo, $scope.openid,$scope.market)
             loadShare($scope);
         })
 
