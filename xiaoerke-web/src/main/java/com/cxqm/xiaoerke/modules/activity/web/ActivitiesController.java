@@ -82,7 +82,7 @@ public class ActivitiesController {
         String marketer = String.valueOf(params.get("market"));
         Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         String tokenId = (String) userWechatParam.get("token");
-        String nickName = WechatUtil.getWechatName(tokenId, openId).getNickname();
+        String nickName = WechatUtil.getWechatName(tokenId, oldOpenId).getNickname();
         RedpackageActivityInfoVo vo = new RedpackageActivityInfoVo();
         vo.setOpenId(oldOpenId);
         List<RedpackageActivityInfoVo> result = redPackageActivityInfoService.getRedpackageActivityBySelective(vo);
