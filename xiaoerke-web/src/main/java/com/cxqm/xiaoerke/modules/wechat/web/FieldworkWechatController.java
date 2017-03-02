@@ -309,7 +309,7 @@ public class FieldworkWechatController {
 
         if(attention == null || attention.getDate() == null){//新用户
             if(marketer.startsWith("707")){  //集卡活动
-                url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/appWfdb#/newUser"+oldOpenId+","+marketer;
+                url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/appWfdb#/newUser/"+oldOpenId+","+marketer;
             }else{//宝宝币
                 url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteNew/"+oldOpenId+","+marketer;
                 LogUtils.saveLog("ZXYQ_YQK_NEW","oldOpenId="+oldOpenId+"openid="+openid+"marketer"+marketer);
