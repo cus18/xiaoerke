@@ -70,4 +70,6 @@ public interface ConsultDoctorInfoService {
 
     //2016-12-5 17:29:40 add jiangzg
     List<ConsultDoctorDepartmentVo> getConsultDoctorDepartmentShow() ;
+
+    String getLatestDoctorName(String openid);
 }

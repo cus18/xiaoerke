@@ -26,4 +26,5 @@ public interface ConsultMemberDao {
     Page<ConsultMemberVo> findConsultMemberList(ConsultMemberVo vo,Page<ConsultMemberVo> page);
 
     List<ConsultMemberVo> getConsultMemberList(ConsultMemberVo vo);
+
 }

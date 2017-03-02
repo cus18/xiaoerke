@@ -267,16 +267,10 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
         if (null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList() && sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid) == -1) {
             return ;
         }
-        ConsultDoctorInfoVo doctorInfoVo = new ConsultDoctorInfoVo();
-        doctorInfoVo.setOpenId(openid);
-        doctorInfoVo.setNonrealtimeStatus("1");
-        List<ConsultDoctorInfoVo> list =  consultDoctorInfoService.getRecentTimeList(doctorInfoVo);
-        String doctorName = "";
-        if(null !=list&&list.size()>0){
-            ConsultDoctorInfoVo vo = list.get(0);
-            doctorName = vo.getName();
+        String doctorName = consultDoctorInfoService.getLatestDoctorName(openid);
+        if(StringUtils.isNotNull(doctorName)){
+            WechatUtil.sendMsgToWechat(token,openid,doctorName+"不久前为您解答过问题，体验怎么样？\n<a href='" + url + "keeper/wechatInfo/fieldwork/wechat/author?url=" + url + "keeper/wechatInfo/getUserWechatMenId?url=50'>>>点击继续咨询TA</a>");
+            LogUtils.saveLog("ZXTS_ZXJL");
         }
-        WechatUtil.sendMsgToWechat(token,openid,doctorName+"不久前为您解答过问题，体验怎么样？\n<a href='" + url + "keeper/wechatInfo/fieldwork/wechat/author?url=" + url + "keeper/wechatInfo/getUserWechatMenId?url=50'>>>点击继续咨询TA</a>");
-        LogUtils.saveLog("ZXTS_ZXJL");
     }
 }

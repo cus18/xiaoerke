@@ -80,6 +80,9 @@ public class ActivitiesController {
         String openId = WechatUtil.getOpenId(session, request);//"oogbDwD_2BTQpftPu9QClr-mCw7U"
         String oldOpenId = String.valueOf(params.get("oldOpenId"));
         String marketer = String.valueOf(params.get("market"));
+        Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+        String tokenId = (String) userWechatParam.get("token");
+        String nickName = WechatUtil.getWechatName(tokenId, openId).getNickname();
         RedpackageActivityInfoVo vo = new RedpackageActivityInfoVo();
         vo.setOpenId(oldOpenId);
         List<RedpackageActivityInfoVo> result = redPackageActivityInfoService.getRedpackageActivityBySelective(vo);
@@ -94,7 +97,7 @@ public class ActivitiesController {
         } else {
             response.put("headImgUrl", "http://img5.imgtn.bdimg.com/it/u=1846948884,880298315&fm=21&gp=0.jpg");
         }
-        response.put("redPackageVo", vo);
+        response.put("nickName",nickName);
         return response;
     }
 
@@ -344,31 +347,31 @@ public class ActivitiesController {
                 if (lock.tryLock()) {
                     try {
                         int totalNum = redPackageActivityInfoService.getRedPackageActivityTatalCount();
-                        totalNum++;
+                        totalNum++ ;
                         String market = "";
                         String value = String.valueOf(totalNum);
                         int len = value.length();
                         switch (len) {
                             case 1:
-                                market = "707000000" + value;
+                                market = "177000000" + value;
                                 break;
                             case 2:
-                                market = "70700000" + value;
+                                market = "17700000" + value;
                                 break;
                             case 3:
-                                market = "7070000" + value;
+                                market = "1770000" + value;
                                 break;
                             case 4:
-                                market = "707000" + value;
+                                market = "177000" + value;
                                 break;
                             case 5:
-                                market = "70700" + value;
+                                market = "17700" + value;
                                 break;
                             case 6:
-                                market = "7070" + value;
+                                market = "1770" + value;
                                 break;
                             default:
-                                market = "707" + value;
+                                market = "177" + value;
                         }
                         vo.setMarket(Integer.parseInt(market));
                         int num = redPackageActivityInfoService.insert(vo);

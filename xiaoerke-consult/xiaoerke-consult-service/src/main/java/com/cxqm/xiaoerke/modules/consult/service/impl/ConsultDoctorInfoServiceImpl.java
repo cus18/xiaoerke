@@ -195,6 +195,11 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
     }
 
     @Override
+    public String getLatestDoctorName(String openid) {
+        return consultDoctorInfoDao.getLatestDoctorName(openid);
+    }
+
+    @Override
     public ConsultDoctorInfoVo getConsultDoctorInfoByUserId(String userId) {
         ConsultDoctorInfoVo consultDoctorInfoVo = consultDoctorInfoDao.getConsultDoctorInfoByUserId(userId);
         if(consultDoctorInfoVo !=null){
