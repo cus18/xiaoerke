@@ -88,9 +88,9 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
         //获取基本信息接口
         GetCardInfoList.save({},function(res){
             $scope.card=res.cardInfoVo;
-            $scope.openid=res.cardInfoVo.openid;
+            $scope.openid=res.cardInfoVo.openId;
             $scope.market=res.cardInfoVo.market;
-            $scope.minename=res.cardInfoVo.nickName;
+            $scope.minename=res.nickName;
             loadShare();
         })
 
