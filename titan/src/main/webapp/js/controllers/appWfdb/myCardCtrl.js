@@ -341,15 +341,16 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
 
         //兑换奖品点击事件
         $scope.draw_prize=function(){
-            switch ($scope.typeCard){
-                case 0:$scope.card.cardBig--;break;
-                case 1:$scope.card.cardRuyi--;break;
-                case 2:$scope.card.cardYoushan--;break;
-                case 3:$scope.card.cardHealth--;break;
-                case 4:$scope.card.cardHappy--;break;
-                case 5:$scope.card.cardLove--;break;
-            }
+
             ChooseCard.save({openId:$scope.card.openId,id:$scope.card.id,typeCard:$scope.typeCard},function(res){
+                switch ($scope.typeCard){
+                    case 0:$scope.card.cardBig--;break;
+                    case 1:$scope.card.cardRuyi--;break;
+                    case 2:$scope.card.cardYoushan--;break;
+                    case 3:$scope.card.cardHealth--;break;
+                    case 4:$scope.card.cardHappy--;break;
+                    case 5:$scope.card.cardLove--;break;
+                }
                 if(res.status=="success"){
                     if(res.type==0){
                         //大图显示状态初始化
