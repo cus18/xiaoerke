@@ -19,6 +19,9 @@
             console.log($scope.doctorInfo[index].doctorId);
             location.href="consultDoctorHome#/consultDoctorHome/"+$scope.doctorInfo[index].userId;
         }
+        $scope.nonRealTimeOngoing = function (index) {
+            $state.go("NonTimeUserConversation",{"sessionId":index});
+        }
 
         $scope.nonRealTimeConsult = function (userid) {
             $state.go("NonTimeUserFirstConsult",{"doctorId":userid});
