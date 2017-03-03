@@ -25,7 +25,7 @@ public interface ConsultMemberRedsiCacheService {
 
     boolean cheackConsultMember(String key);
 
-    boolean useFreeChance(String openid,String timeLength);
+    boolean useFreeChance(String openid,String timeLength,String token);
 
     void payConsultMember(String openid,String timeLength,String totalFee,String token);
 

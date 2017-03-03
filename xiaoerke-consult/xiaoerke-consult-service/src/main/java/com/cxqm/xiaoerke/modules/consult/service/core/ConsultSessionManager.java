@@ -493,7 +493,7 @@ public enum ConsultSessionManager {
                             boolean bool = consultMemberRedsiCacheService.cheackMemberTimeOut(consultSession.getUserId());
                             if(!bool) {
                                 SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-                                consultMemberRedsiCacheService.useFreeChance(consultSession.getUserId(),sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
+                                consultMemberRedsiCacheService.useFreeChance(consultSession.getUserId(),sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime(),token);
                             }
                         }catch (Exception e){
                             e.printStackTrace();

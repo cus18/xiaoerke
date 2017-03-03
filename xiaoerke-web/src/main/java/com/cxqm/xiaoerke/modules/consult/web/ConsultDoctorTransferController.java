@@ -218,7 +218,7 @@ public class ConsultDoctorTransferController extends BaseController {
 //                        增加机会
                                 SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
                                 if (!consultMemberRedsiCacheService.cheackMemberTimeOut(consultSession.getUserId())) {
-                                    consultMemberRedsiCacheService.useFreeChance(consultSession.getUserId(), sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime());
+                                    consultMemberRedsiCacheService.useFreeChance(consultSession.getUserId(), sysPropertyVoWithBLOBsVo.getFreeConsultMemberTime(),token);
                                 }
                             }
                             ;
