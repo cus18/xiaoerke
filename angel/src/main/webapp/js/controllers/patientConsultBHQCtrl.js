@@ -18,7 +18,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             var patientImg ;
             $scope.fucengLock = true;//第一次进入页面的浮层
             $scope.alertFlag = false;
-            $scope.remoteBabyUrl = "http://coapi.baohuquan.com/baodaifu";
+            $scope.remoteBabyUrl = "http://test3rd.baohuquan.com:20000/baodaifu";
             $scope.imgBarFlag = false;
 
             function randomString(len) {
@@ -66,7 +66,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                                  $scope.consultContent.push(val);*/
                                 var now = moment().format("YYYY-MM-DD HH:mm:ss");
                                 GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,
-                                    "pageSize":10,"token":""},function (data) {
+                                    "pageSize":10,"token":'',"bhqUserImg":$scope.patientImg},function (data) {
                                     if(data.consultDataList.length!=0){
                                         $scope.lookMore = true;
                                         $scope.fucengLock = false;
@@ -90,7 +90,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     //$scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     //ws://s201.xiaork.com:2048;
-                    $scope.socketServer = new WebSocket("ws://s132.baodf.com/wsbackend/ws&user&"
+                    $scope.socketServer = new WebSocket("ws://101.201.154.201:2048/ws&user&"
                         + $scope.patientId +"&h5bhq");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {

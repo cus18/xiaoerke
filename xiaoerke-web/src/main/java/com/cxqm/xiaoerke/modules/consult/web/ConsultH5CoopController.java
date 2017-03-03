@@ -372,6 +372,9 @@ public class ConsultH5CoopController {
                 }
             }
         }
+        if(params.containsKey("bhqUserImg") && StringUtils.isNotNull(String.valueOf(params.get("bhqUserImg")))){
+            imgUrl = String.valueOf(params.get("bhqUserImg"));
+        }
         List<ConsultRecordMongoVo> currentUserHistoryRecord = null;
         Date date = null;
         if (dateTime.indexOf("-") != -1) {
@@ -428,7 +431,7 @@ public class ConsultH5CoopController {
     JSONObject theInterfaceOfBHQ(@RequestBody Map params) {
         JSONObject jsonObject = new JSONObject();
         if (params != null) {
-            if (params.containsKey("action") && "evaluteDocker".equalsIgnoreCase(String.valueOf(params.get("action")))) {
+            if (params.containsKey("action") && "evaluteDocter".equalsIgnoreCase(String.valueOf(params.get("action")))) {
                 jsonObject = this.consultEvaluateUserByCoop(params);
             } else if (params.containsKey("action") && "getConsultDataByCoop".equalsIgnoreCase(String.valueOf(params.get("action")))) {
                 jsonObject = this.getConsultDataByCoop(params);
