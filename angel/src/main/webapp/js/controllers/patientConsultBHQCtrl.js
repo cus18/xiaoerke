@@ -66,7 +66,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                                  $scope.consultContent.push(val);*/
                                 var now = moment().format("YYYY-MM-DD HH:mm:ss");
                                 GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,
-                                    "pageSize":10,"token":'',"bhqUserImg":$scope.patientImg},function (data) {
+                                    "pageSize":10,"token":"","bhqUserImg":$scope.patientImg},function (data) {
                                     if(data.consultDataList.length!=0){
                                         $scope.lookMore = true;
                                         $scope.fucengLock = false;
@@ -159,7 +159,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                 if($scope.consultContent[0]!=undefined){
                     now = $scope.consultContent[0].dateTime;
                 }
-                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":10,"token":""},function (data) {
+                GetWJYHistoryRecord.save({"userId":$scope.patientId,"dateTime":now,"pageSize":10,"token":"","bhqUserImg":$scope.patientImg},function (data) {
                     $.each(data.consultDataList,function (index,value) {
                         filterMediaData(value);
                         $scope.consultContent.splice(0,0,value);
