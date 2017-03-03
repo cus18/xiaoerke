@@ -21,11 +21,11 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
         //代金券状态
         $scope.coupon=function(num){
             switch(num){
-                case "5.0" : $scope.bigCardImg=$scope.carImgUrl.wu;console.log(5);break;
-                case "10.0" : $scope.bigCardImg=$scope.carImgUrl.shi;console.log(10);break;
-                case "20.0" : $scope.bigCardImg=$scope.carImgUrl.ershi;console.log(20);break;
-                case "30.0" : $scope.bigCardImg=$scope.carImgUrl.sanshi;console.log(30);break;
-                case "40.0" : $scope.bigCardImg=$scope.carImgUrl.sishi;console.log(40);break;
+                case "5.0" : $scope.bigCardImg=$scope.carImgUrl.wu;break;
+                case "10.0" : $scope.bigCardImg=$scope.carImgUrl.shi;break;
+                case "20.0" : $scope.bigCardImg=$scope.carImgUrl.ershi;break;
+                case "30.0" : $scope.bigCardImg=$scope.carImgUrl.sanshi;break;
+                case "40.0" : $scope.bigCardImg=$scope.carImgUrl.sishi;break;
             }
 
         }
@@ -160,7 +160,6 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
         $scope.init_data=function(){
            // 初始化一些图片和按钮的状态，判断是否从推送夜进来的
             if( $stateParams.type=='' && $stateParams.moneyCount==''){
-                console.log('我没传参数');
                 //大图初始化
                 $scope.bigCardImg=$scope.carImgUrl.yaoqing;
                 //大图显示状态初始化
@@ -172,13 +171,12 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
                 $scope.receive_prize_status=false;
 
             }else{
-                console.log('我传参数了',$stateParams);
-
                 if($stateParams.type==0){
-                    $scope.btn_status(2);
+                    $scope.btn_status(3);
                     $scope.bigCard_status=true;
                     $scope.cash_status=false;
                     $scope.coupon($stateParams.moneyCount+".0");
+                    $scope.quan=$stateParams.moneyCount+".0";
                 }else if($stateParams.type==1){
                     $scope.btn_status(4);
                     $scope.bigCard_status=false;
@@ -389,7 +387,6 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
 
         //领取奖品点击事件
         $scope.receive_prize=function(){
-            console.log( $scope.quan);
            switch ( $scope.quan){
                case "5.0" : window.location.href='https://h5.youzan.com/v2/ump/promocard/fetch?alias=qmohxwgt';break;
                case "10.0" : window.location.href='https://h5.youzan.com/v2/ump/promocard/fetch?alias=pv3jvvzn';break;
