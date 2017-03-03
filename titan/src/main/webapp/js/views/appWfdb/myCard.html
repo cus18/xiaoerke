@@ -5,7 +5,7 @@
 
                 <!--控制显示大图片-->
                 <div class="bigCard" ng-show="bigCard_status"><img ng-src="{{bigCardImg}}" alt=""/></div>
-                <div class="cashBigCard" ng-show="cash_status"><div><b>8.88</b><span>元</span></div></div>
+                <div class="cashBigCard" ng-show="cash_status"><div><b>{{cash}}</b><span>元</span></div></div>
 
                 <!--控制显示按钮-->
                 <div class="btn" ng-show="invite_friend_status" ><img ng-click="invite_friend()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/btn_Invitation.png" alt=""/></div>

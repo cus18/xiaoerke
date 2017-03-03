@@ -107,7 +107,17 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
                 $scope.receive_prize_status=false;
 
             }else{
-                console.log('我是推送页面进来的')
+                if($stateParams.type==0){
+                    $scope.btn_status(2);
+                    $scope.bigCard_status=true;
+                    $scope.cash_status=false;
+                    $scope.coupon($stateParams.moneyCount);
+                }else if($stateParams.type==1){
+                    $scope.btn_status(4);
+                    $scope.bigCard_status=false;
+                    $scope.cash_status=true;
+                    $scope.cash=$stateParams.moneyCount;
+                }
             }
             GetCardInfoList.save({},function(res){
                 $scope.card=res.cardInfoVo;
@@ -364,6 +374,7 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
                         $scope.bigCard_status=true;
                         $scope.cash_status=false;
                         $scope.btn_status(4);
+                        $scope.cash=res.moneyCount;
                     }
                 }else{
                     alert('服务器错误')
