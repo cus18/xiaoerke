@@ -175,8 +175,8 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
                     $scope.btn_status(3);
                     $scope.bigCard_status=true;
                     $scope.cash_status=false;
-                    $scope.coupon($stateParams.moneyCount+".0");
-                    $scope.quan=$stateParams.moneyCount+".0";
+                    $scope.coupon($stateParams.moneyCount);
+                    $scope.quan=$stateParams.moneyCount;
                 }else if($stateParams.type==1){
                     $scope.btn_status(4);
                     $scope.bigCard_status=false;
