@@ -175,8 +175,8 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
                     $scope.btn_status(3);
                     $scope.bigCard_status=true;
                     $scope.cash_status=false;
-                    $scope.coupon($stateParams.moneyCount+".0");
-                    $scope.quan=$stateParams.moneyCount+".0";
+                    $scope.coupon($stateParams.moneyCount);
+                    $scope.quan=$stateParams.moneyCount;
                 }else if($stateParams.type==1){
                     $scope.btn_status(4);
                     $scope.bigCard_status=false;
@@ -354,17 +354,17 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
 
         //兑换奖品点击事件
         $scope.draw_prize=function(){
-
             ChooseCard.save({openId:$scope.card.openId,id:$scope.card.id,typeCard:$scope.typeCard},function(res){
-                switch ($scope.typeCard){
-                    case 0:$scope.card.cardBig--;break;
-                    case 1:$scope.card.cardRuyi--;break;
-                    case 2:$scope.card.cardYoushan--;break;
-                    case 3:$scope.card.cardHealth--;break;
-                    case 4:$scope.card.cardHappy--;break;
-                    case 5:$scope.card.cardLove--;break;
-                }
+
                 if(res.status=="success"){
+                    switch ($scope.typeCard){
+                        case 0:$scope.card.cardBig--;break;
+                        case 1:$scope.card.cardRuyi--;break;
+                        case 2:$scope.card.cardYoushan--;break;
+                        case 3:$scope.card.cardHealth--;break;
+                        case 4:$scope.card.cardHappy--;break;
+                        case 5:$scope.card.cardLove--;break;
+                    }
                     if(res.type==0){
                         //大图显示状态初始化
                         $scope.bigCard_status=true;

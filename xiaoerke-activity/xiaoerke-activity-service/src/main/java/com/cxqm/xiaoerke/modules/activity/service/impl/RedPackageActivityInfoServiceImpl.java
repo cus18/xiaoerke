@@ -182,7 +182,7 @@ public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfo
     public Map<String, Object> payRedPackageToUser(Map<String, Object> params, Map<String, Object> response, HttpServletRequest request, HttpSession session)
             throws BalanceNotEnoughException, BusinessPaymentExceeption {
         response.put("payStatus", "failure");
-        Integer takeCashOut = Integer.parseInt((String) params.get("moneyCount"));
+        String takeCashOut = String.valueOf(params.get("moneyCount"));
         Float returnMoney = Float.valueOf(takeCashOut) * 100;
         String openid = String.valueOf(params.get("openId"));
         if (null == openid) {
