@@ -104,7 +104,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
     }
 
     @Override
-    public boolean useFreeChance(String openid, String timeLength) {
+    public boolean useFreeChance(String openid, String timeLength,String token) {
         //检测该用户是否当天首次咨询,如果是则增加会员时间 并记录
         String latestConsultTime = getConsultMember(openid + memberRedisCachVo.LATEST_CONSULT_TIME);
         Date nowDate = new Date();
@@ -113,6 +113,9 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
         if (null == latestConsultTime || !datetime.equals(latestConsultTime)) {
             saveConsultMember(openid + memberRedisCachVo.LATEST_CONSULT_TIME, datetime);
             saveConsultMember(openid + memberRedisCachVo.MEMBER_END_DATE, DateUtils.DateToStr(afterDate, "datetime"));
+
+            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+            sendNonRealTimeMsg(openid,token,sysPropertyVoWithBLOBsVo.getKeeperWebUrl());
         }
         return false;
     }
@@ -211,7 +214,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                     String content = "时间真快，您本月的免费咨询机会已用完\n更多咨询机会请\n<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=35&from=fdsa'>>>猛戳这里购买吧！</a>";
                     content += "\n----------\n别怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
                     if (prompt) WechatUtil.sendMsgToWechat(token, openid, content);
-//                    sendNonRealTimeMsg(openid,token,sysPropertyVoWithBLOBsVo.getKeeperWebUrl());
+                    sendNonRealTimeMsg(openid,token,sysPropertyVoWithBLOBsVo.getKeeperWebUrl());
 
                     LogUtils.saveLog("ZXTS_MYMFJH", openid);
                     return false;
@@ -222,7 +225,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 //            WechatUtil.sendMsgToWechat(token, openid, content);
             content += "\n\n没问够、不想掏钱？还可以\n戳戳手指，邀请个好友加入宝大夫，减免机会就来咯~\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
             WechatUtil.sendMsgToWechat(token, openid, content);
-            sendNonRealTimeMsg(openid,token,sysPropertyVoWithBLOBsVo.getKeeperWebUrl());
+//            sendNonRealTimeMsg(openid,token,sysPropertyVoWithBLOBsVo.getKeeperWebUrl());
             LogUtils.saveLog("ZXTS_SYMFJH", openid);
             return false;
         }
