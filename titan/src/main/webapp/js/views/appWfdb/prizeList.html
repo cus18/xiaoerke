@@ -1,6 +1,7 @@
 <ion-view>
     <ion-content style="top:0">
             <h3 class="title">我的奖品</h3>
+            <img class="noPrize" ng-show="prize_status" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/prizeList/noPrize.png" alt=""/>
             <ul class="list">
                 <li ng-repeat="item in list">
                     <div class="pic" ng-show="item.type==1"><img ng-src='{{hongbao}}' alt=""/></div>

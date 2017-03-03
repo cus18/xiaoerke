@@ -2,6 +2,71 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
     '$scope','$state','$stateParams','MyselfInfoAppointmentDetail',
     'OrderPayMemberServiceOperation','GetUserMemberService','$location','GetCardInfoList','ChooseCard','UpdateRedPackageInfo','GetConfig',
     function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,GetCardInfoList,ChooseCard,UpdateRedPackageInfo,GetConfig) {
+        //图片地址
+        $scope.carImgUrl={
+            yaoqing:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/di_png_03.png',
+            fu:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/big_fu.png',
+            big_ru:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/big_ru.png',
+            big_shan:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/big_shan.png",
+            big_kang:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/big_kang.png',
+            big_le:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/big_le.png",
+            big_ai:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/big_ai.png',
+            //红包
+            wu:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/5.png',
+            shi:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/10.png',
+            ershi:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/20.png',
+            sanshi:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/30.png',
+            sishi:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/40.png'
+        }
+        //代金券状态
+        $scope.coupon=function(num){
+            switch(num){
+                case "5.0" : $scope.bigCardImg=$scope.carImgUrl.wu;break;
+                case "10.0" : $scope.bigCardImg=$scope.carImgUrl.shi;break;
+                case "20.0" : $scope.bigCardImg=$scope.carImgUrl.ershi;break;
+                case "30.0" : $scope.bigCardImg=$scope.carImgUrl.sanshi;break;
+                case "40.0" : $scope.bigCardImg=$scope.carImgUrl.sishi;break;
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+
+        //按钮状态的封装；
+        $scope.btn_status=function(num){
+            switch (num){
+                case 1 :(function(){
+                    $scope.invite_friend_status=true;
+                    $scope.draw_prize_status=false;
+                    $scope.receive_prize_status=false;
+                })(); break;
+                case 2 :(function(){
+                    $scope.invite_friend_status=false;
+                    $scope.draw_prize_status=true;
+                    $scope.receive_prize_status=false;
+                })(); break;
+                case 3 :(function(){
+                    $scope.invite_friend_status=false;
+                    $scope.draw_prize_status=false;
+                    $scope.receive_prize_status=true;
+                })(); break;
+                case 4 :(function(){
+                    $scope.invite_friend_status=false;
+                    $scope.draw_prize_status=false;
+                    $scope.receive_prize_status=false;
+                })(); break;
+            }
+        }
+
+
+
         //分享到朋友圈或者微信
         var loadShare = function($scope){
             // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
@@ -95,7 +160,6 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
         $scope.init_data=function(){
            // 初始化一些图片和按钮的状态，判断是否从推送夜进来的
             if( $stateParams.type=='' && $stateParams.moneyCount==''){
-                console.log('我没传参数');
                 //大图初始化
                 $scope.bigCardImg=$scope.carImgUrl.yaoqing;
                 //大图显示状态初始化
@@ -107,7 +171,18 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
                 $scope.receive_prize_status=false;
 
             }else{
-                console.log('我是推送页面进来的')
+                if($stateParams.type==0){
+                    $scope.btn_status(3);
+                    $scope.bigCard_status=true;
+                    $scope.cash_status=false;
+                    $scope.coupon($stateParams.moneyCount+".0");
+                    $scope.quan=$stateParams.moneyCount+".0";
+                }else if($stateParams.type==1){
+                    $scope.btn_status(4);
+                    $scope.bigCard_status=false;
+                    $scope.cash_status=true;
+                    $scope.cash=$stateParams.moneyCount;
+                }
             }
             GetCardInfoList.save({},function(res){
                 $scope.card=res.cardInfoVo;
@@ -143,68 +218,6 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
         };
 
 
-        //图片地址
-        $scope.carImgUrl={
-            yaoqing:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/di_png_03.png',
-            fu:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/big_fu.png',
-            big_ru:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/big_ru.png',
-            big_shan:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/big_shan.png",
-            big_kang:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/big_kang.png',
-            big_le:"http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/big_le.png",
-            big_ai:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/big_ai.png',
-            //红包
-            wu:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/5.png',
-            shi:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/10.png',
-            ershi:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/20.png',
-            sanshi:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/30.png',
-            sishi:'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/40.png'
-        }
-        //代金券状态
-        $scope.coupon=function(num){
-            switch(num){
-                case "5.0" : $scope.bigCardImg=$scope.carImgUrl.wu;console.log(5);break;
-                case "10.0" : $scope.bigCardImg=$scope.carImgUrl.shi;console.log(10);break;
-                case "20.0" : $scope.bigCardImg=$scope.carImgUrl.ershi;console.log(20);break;
-                case "30.0" : $scope.bigCardImg=$scope.carImgUrl.sanshi;console.log(30);break;
-                case "40.0" : $scope.bigCardImg=$scope.carImgUrl.sishi;console.log(40);break;
-            }
-
-        }
-
-
-
-
-
-
-
-
-
-
-        //按钮状态的封装；
-        $scope.btn_status=function(num){
-            switch (num){
-                case 1 :(function(){
-                    $scope.invite_friend_status=true;
-                    $scope.draw_prize_status=false;
-                    $scope.receive_prize_status=false;
-                })(); break;
-                case 2 :(function(){
-                    $scope.invite_friend_status=false;
-                    $scope.draw_prize_status=true;
-                    $scope.receive_prize_status=false;
-                })(); break;
-                case 3 :(function(){
-                    $scope.invite_friend_status=false;
-                    $scope.draw_prize_status=false;
-                    $scope.receive_prize_status=true;
-                })(); break;
-                case 4 :(function(){
-                    $scope.invite_friend_status=false;
-                    $scope.draw_prize_status=false;
-                    $scope.receive_prize_status=false;
-                })(); break;
-            }
-        }
 
         setTimeout(function(){
             var  swiper = new Swiper('.swiper-container', {
@@ -341,15 +354,16 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
 
         //兑换奖品点击事件
         $scope.draw_prize=function(){
-            switch ($scope.typeCard){
-                case 0:$scope.card.cardBig--;break;
-                case 1:$scope.card.cardRuyi--;break;
-                case 2:$scope.card.cardYoushan--;break;
-                case 3:$scope.card.cardHealth--;break;
-                case 4:$scope.card.cardHappy--;break;
-                case 5:$scope.card.cardLove--;break;
-            }
+
             ChooseCard.save({openId:$scope.card.openId,id:$scope.card.id,typeCard:$scope.typeCard},function(res){
+                switch ($scope.typeCard){
+                    case 0:$scope.card.cardBig--;break;
+                    case 1:$scope.card.cardRuyi--;break;
+                    case 2:$scope.card.cardYoushan--;break;
+                    case 3:$scope.card.cardHealth--;break;
+                    case 4:$scope.card.cardHappy--;break;
+                    case 5:$scope.card.cardLove--;break;
+                }
                 if(res.status=="success"){
                     if(res.type==0){
                         //大图显示状态初始化
@@ -363,6 +377,7 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
                         $scope.bigCard_status=true;
                         $scope.cash_status=false;
                         $scope.btn_status(4);
+                        $scope.cash=res.moneyCount;
                     }
                 }else{
                     alert('服务器错误')
@@ -372,7 +387,6 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
 
         //领取奖品点击事件
         $scope.receive_prize=function(){
-            console.log( $scope.quan);
            switch ( $scope.quan){
                case "5.0" : window.location.href='https://h5.youzan.com/v2/ump/promocard/fetch?alias=qmohxwgt';break;
                case "10.0" : window.location.href='https://h5.youzan.com/v2/ump/promocard/fetch?alias=pv3jvvzn';break;

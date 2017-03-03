@@ -3,8 +3,20 @@ angular.module('controllers', ['ionic']).controller('prizeListCtrl', [
     'OrderPayMemberServiceOperation','GetUserMemberService','$location','$http','GetCardInfoList',
     function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,$http,GetCardInfoList) {
        /*查看代金券*/
+        $scope.prize_status=false;
+
         GetCardInfoList.save({},function(res){
             $scope.list=res.rewardsVo;
+            console.log($scope.list)
+            if($scope.list==undefined){
+                $scope.prize_status=true;
+                return;
+            }
+            if($scope.list.length>0){
+                $scope.prize_status=false;
+            }else{
+                $scope.prize_status=true;
+            }
             for(var i=0;i<$scope.list.length;i++){
                 $scope.list[i].day=getDate( $scope.list[i].createTime,'-')
                 $scope.list[i].hour=getHour( $scope.list[i].createTime,'-')

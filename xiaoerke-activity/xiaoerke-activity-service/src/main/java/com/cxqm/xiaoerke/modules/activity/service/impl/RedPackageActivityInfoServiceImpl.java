@@ -12,7 +12,6 @@ import com.cxqm.xiaoerke.modules.activity.entity.RedpackageActivityInfoVo;
 import com.cxqm.xiaoerke.modules.activity.entity.RedpackageResultsInfoVo;
 import com.cxqm.xiaoerke.modules.activity.service.RedPackageActivityInfoService;
 import com.cxqm.xiaoerke.modules.activity.service.RedPackageResultsInfoService;
-import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +43,6 @@ public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfo
 
     @Autowired
     private RedPackageResultsInfoService redPackageResultsInfoService;
-
-    @Autowired
-    private SysPropertyServiceImpl sysPropertyService;
 
     @Override
     public int deleteByPrimaryKey(String id) {
@@ -208,6 +204,12 @@ public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfo
             response.put("payStatus", "success");
         }
         return response;
+    }
+
+    @Override
+    public List<RedpackageActivityInfoVo> getLastOneRedPackageActivity() {
+        List<RedpackageActivityInfoVo> resultList = redpackageActivityInfoDao.getLastOneRedPackageActivity();
+        return resultList ;
     }
 
 }

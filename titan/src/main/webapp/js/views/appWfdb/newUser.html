@@ -2,12 +2,13 @@
     <ion-content style="top:0px;">
         <div class="new_box">
             <div class="new_head">
-                <span><img ng-src="information.headImgUrl" alt=""/></span>
+                <span><img ng-src="{{information.headImgUrl}}" alt=""/></span>
             </div>
             <div class="friend"><span>您的好友</span><b>{{information.nickName}}</b></div>
             <div class="new_con"></div>
             <div class="new_foot">
-                <div class="twoCode"><img ng-src="information.userQRCode" alt=""/></div>
+                <span></span>
+                <div class="twoCode"><img data-tap-disabled="true" ng-src="{{information.userQRCode}}" alt=""/></div>
             </div>
         </div>
     </ion-content>
