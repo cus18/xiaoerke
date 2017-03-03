@@ -15,7 +15,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             $scope.loseConnectionFlag = false;
             var heartBeatNum = 0;
             $scope.lookMore = false;//查看更多
-            var patientImg ;
+            var patientImg = "" ;
             $scope.fucengLock = true;//第一次进入页面的浮层
             $scope.alertFlag = false;
             $scope.remoteBabyUrl = "http://test3rd.baohuquan.com:20000/baodaifu";
