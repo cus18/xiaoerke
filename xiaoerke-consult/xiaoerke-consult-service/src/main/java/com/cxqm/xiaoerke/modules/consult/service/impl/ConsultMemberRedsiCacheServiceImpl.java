@@ -145,7 +145,12 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             consultMemberVo.setNickname(wa.getNickname());
         }
         saveConsultMemberInfo(consultMemberVo);
-        saveConsultMember(openid + memberRedisCachVo.MEMBER_END_DATE, DateUtils.DateToStr(consultMemberVo.getEndTime(), "datetime"));
+        int loopNum = 0;
+        do{
+            loopNum ++;
+            saveConsultMember(openid + memberRedisCachVo.MEMBER_END_DATE, DateUtils.DateToStr(consultMemberVo.getEndTime(), "datetime"));
+        }while (!DateUtils.DateToStr(consultMemberVo.getEndTime()).equals(getConsultMember(openid + memberRedisCachVo.MEMBER_END_DATE))&&loopNum<5);
+
         WechatUtil.sendMsgToWechat(token, openid, " 购买成功啦！\n亲爱的，现在可以开始咨询啦，赶紧和医生对话吧~\n会员有效期:" + DateUtils.DateToStr(new Date(), "yyyy年MM月dd日 HH时mm分") + "至" + DateUtils.DateToStr(consultMemberVo.getEndTime(), "yyyy年MM月dd日 HH时mm分"));
         LogUtils.saveLog("ZXTS_GMCG", openid);
     }
@@ -206,7 +211,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                     String content = "时间真快，您本月的免费咨询机会已用完\n更多咨询机会请\n<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=35&from=fdsa'>>>猛戳这里购买吧！</a>";
                     content += "\n----------\n别怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
                     if (prompt) WechatUtil.sendMsgToWechat(token, openid, content);
-                    sendNonRealTimeMsg(openid,token,sysPropertyVoWithBLOBsVo.getKeeperWebUrl());
+//                    sendNonRealTimeMsg(openid,token,sysPropertyVoWithBLOBsVo.getKeeperWebUrl());
 
                     LogUtils.saveLog("ZXTS_MYMFJH", openid);
                     return false;
