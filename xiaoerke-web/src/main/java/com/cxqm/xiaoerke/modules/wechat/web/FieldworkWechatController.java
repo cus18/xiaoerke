@@ -346,6 +346,8 @@ public class FieldworkWechatController {
         config.put("payType1UseBabycoin", sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());
         config.put("payType2SumMoney", sysPropertyVoWithBLOBsVo.getPayType2SumMoney());
         config.put("payType2UseBabycoin",sysPropertyVoWithBLOBsVo.getPayType2UseBabycoin());
+        config.put("payType3SumMoney", sysPropertyVoWithBLOBsVo.getPayType3SumMoney());
+        config.put("payType3UseBabycoin",sysPropertyVoWithBLOBsVo.getPayType3UseBabycoin());
         config.put("angelWebUrl",sysPropertyVoWithBLOBsVo.getAngelWebUrl());
         return config;
     }
