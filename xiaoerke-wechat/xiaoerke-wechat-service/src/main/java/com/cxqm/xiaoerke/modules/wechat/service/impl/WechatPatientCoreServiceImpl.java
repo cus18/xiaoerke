@@ -1266,31 +1266,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             Map parameter = systemService.getWechatParameter();
             String token = (String) parameter.get("token");
             WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6fewi6uvSqjml1-SXSNZsNBlI", 1);
-        } else if ("36".equals(xmlEntity.getEventKey())) {
-            List<Article> articleList = new ArrayList<Article>();
-            // 创建图文消息
-            NewsMessage newsMessage = new NewsMessage();
-            newsMessage.setToUserName(xmlEntity.getFromUserName());
-            newsMessage.setFromUserName(xmlEntity.getToUserName());
-            newsMessage.setCreateTime(new Date().getTime());
-            newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-            newsMessage.setFuncFlag(0);
-            Article article = new Article();
-            article.setTitle("咨询大夫，请关注最新公众账号!");
-            article.setDescription("公告：本公众号将于2015年8月9日起停止服务。需要咨询大夫，" +
-                    "请妈妈们识别二维码关注最新的公众号（微信号：BaodfWX）。专业的大夫在线等您来咨询哦！");
-            article.setPicUrl("http://mmbiz.qpic.cn/mmbiz/dGa0GvlZMicotZvyd4ZkHKjYe3ERsP5OD0spQbFz1CPTd" +
-                    "qqWjrP1s5pr4BpDxvM97NgYNm4PiazfHv37t6kbP9dw/640?wx_fmt=jpeg&wxfrom=5");
-            article.setUrl("http://mp.weixin.qq.com/s?__biz=MzI0MjAwNjY0Nw==&mid=208340985&idx=1&sn=2beb0d78fc9097f10d073e182f1cb6c1&scene=0#rd");
-            articleList.add(article);
-            // 设置图文消息个数
-            newsMessage.setArticleCount(articleList.size());
-            // 设置图文消息包含的图文集合
-            newsMessage.setArticles(articleList);
-            // 将图文消息对象转换成xml字符串
-            respMessage = MessageUtil.newsMessageToXml(newsMessage);
+        }else if("36".equals(xmlEntity.getEventKey())){
+            Map parameter = systemService.getWechatParameter();
+            String token = (String) parameter.get("token");
+            WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6feyWoBTwEtsQ_wxFttviR7cI", 1);
         }
-
         return respMessage;
     }
 
