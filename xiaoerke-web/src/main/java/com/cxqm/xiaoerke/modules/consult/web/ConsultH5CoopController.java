@@ -507,6 +507,8 @@ public class ConsultH5CoopController {
                 source = "h5bhq";
             }else if("COOP_YKDL".equalsIgnoreCase(source)){
                 source = "h5ykdl";
+            }else if("COOP_BTQ".equalsIgnoreCase(source)){
+                source = "h5mtq";
             }
             if (currentHour > 0 && currentHour < 6) {
                 if (secCodeNow.equalsIgnoreCase(secCode)) {

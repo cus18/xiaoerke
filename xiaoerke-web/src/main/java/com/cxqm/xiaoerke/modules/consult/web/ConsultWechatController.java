@@ -34,6 +34,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
@@ -81,6 +82,8 @@ public class ConsultWechatController extends BaseController {
 
     @Autowired
     private ConsultVoiceRecordMongoServiceImpl consultVoiceRecordMongoService;
+
+    private static volatile java.util.concurrent.atomic.AtomicInteger atomicInteger = new AtomicInteger();
 
     @RequestMapping(value = "/conversation", method = {RequestMethod.POST, RequestMethod.GET})
     public

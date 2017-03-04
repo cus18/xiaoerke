@@ -179,6 +179,21 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         }
     }
 
+    /**
+     * 获取咨询医生所有科室 isShow
+     * @author jiangzg
+     * 2016-12-5 17:23:59
+     */
+    @Override
+    public List<ConsultDoctorDepartmentVo> getConsultDoctorDepartmentShow() {
+        List<ConsultDoctorDepartmentVo> consultDoctorDepartmentVos= consultDoctorDepartmentDao.getShowDepartmentList();
+        if(consultDoctorDepartmentVos != null && consultDoctorDepartmentVos.size() > 0){
+            return consultDoctorDepartmentVos;
+        }else{
+            return null;
+        }
+    }
+
     @Override
     public ConsultDoctorInfoVo getConsultDoctorInfoByUserId(String userId) {
         ConsultDoctorInfoVo consultDoctorInfoVo = consultDoctorInfoDao.getConsultDoctorInfoByUserId(userId);

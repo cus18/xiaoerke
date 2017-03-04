@@ -1,6 +1,5 @@
 package com.cxqm.xiaoerke.modules.activity.service.impl;
 
-import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.activity.dao.OlyBabyGameDetailDao;
 import com.cxqm.xiaoerke.modules.activity.dao.OlyBabyGamesDao;
@@ -116,7 +115,7 @@ public class OlyGamesServiceImpl implements OlyGamesService {
     @Override
     public String getLastNewMarkter(){
         String result = olyBabyGamesDao.getLastNewMarkter();
-        if(StringUtils.isNotNull(result)){
+        if(!"".equals(result) && result != null){
             return result;
         }else{
             return null;

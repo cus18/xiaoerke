@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.activity.dao.RedpackageActivityInfoDao">
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.activity.entity.RedpackageActivityInfoVo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="card_ruyi" jdbcType="INTEGER" property="cardRuyi" />
+    <result column="card_youshan" jdbcType="INTEGER" property="cardYoushan" />
+    <result column="card_health" jdbcType="INTEGER" property="cardHealth" />
+    <result column="card_happy" jdbcType="INTEGER" property="cardHappy" />
+    <result column="card_love" jdbcType="INTEGER" property="cardLove" />
+    <result column="card_big" jdbcType="INTEGER" property="cardBig" />
+    <result column="total_invitation" jdbcType="INTEGER" property="totalInvitation" />
+    <result column="del_state" jdbcType="INTEGER" property="delState" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="market" jdbcType="INTEGER" property="market" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, open_id, create_time, card_ruyi, card_youshan, card_health, card_happy, card_love, 
+    card_big, total_invitation, del_state, update_time,market
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from redpackage_activity_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from redpackage_activity_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.activity.entity.RedpackageActivityInfoVo">
+    insert into redpackage_activity_info (id, open_id, create_time, 
+      card_ruyi, card_youshan, card_health, 
+      card_happy, card_love, card_big, 
+      total_invitation, del_state, update_time, market
+      )
+    values (#{id,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{cardRuyi,jdbcType=INTEGER}, #{cardYoushan,jdbcType=INTEGER}, #{cardHealth,jdbcType=INTEGER}, 
+      #{cardHappy,jdbcType=INTEGER}, #{cardLove,jdbcType=INTEGER}, #{cardBig,jdbcType=INTEGER}, 
+      #{totalInvitation,jdbcType=INTEGER}, #{delState,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP},
+      #{market,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.RedpackageActivityInfoVo">
+    insert into redpackage_activity_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="cardRuyi != null">
+        card_ruyi,
+      </if>
+      <if test="cardYoushan != null">
+        card_youshan,
+      </if>
+      <if test="cardHealth != null">
+        card_health,
+      </if>
+      <if test="cardHappy != null">
+        card_happy,
+      </if>
+      <if test="cardLove != null">
+        card_love,
+      </if>
+      <if test="cardBig != null">
+        card_big,
+      </if>
+      <if test="totalInvitation != null">
+        total_invitation,
+      </if>
+      <if test="delState != null">
+        del_state,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="market != null">
+        market,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cardRuyi != null">
+        #{cardRuyi,jdbcType=INTEGER},
+      </if>
+      <if test="cardYoushan != null">
+        #{cardYoushan,jdbcType=INTEGER},
+      </if>
+      <if test="cardHealth != null">
+        #{cardHealth,jdbcType=INTEGER},
+      </if>
+      <if test="cardHappy != null">
+        #{cardHappy,jdbcType=INTEGER},
+      </if>
+      <if test="cardLove != null">
+        #{cardLove,jdbcType=INTEGER},
+      </if>
+      <if test="cardBig != null">
+        #{cardBig,jdbcType=INTEGER},
+      </if>
+      <if test="totalInvitation != null">
+        #{totalInvitation,jdbcType=INTEGER},
+      </if>
+      <if test="delState != null">
+        #{delState,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="market != null">
+        #{market,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.RedpackageActivityInfoVo">
+    update redpackage_activity_info
+    <set>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cardRuyi != null">
+        card_ruyi = #{cardRuyi,jdbcType=INTEGER},
+      </if>
+      <if test="cardYoushan != null">
+        card_youshan = #{cardYoushan,jdbcType=INTEGER},
+      </if>
+      <if test="cardHealth != null">
+        card_health = #{cardHealth,jdbcType=INTEGER},
+      </if>
+      <if test="cardHappy != null">
+        card_happy = #{cardHappy,jdbcType=INTEGER},
+      </if>
+      <if test="cardLove != null">
+        card_love = #{cardLove,jdbcType=INTEGER},
+      </if>
+      <if test="cardBig != null">
+        card_big = #{cardBig,jdbcType=INTEGER},
+      </if>
+      <if test="totalInvitation != null">
+        total_invitation = #{totalInvitation,jdbcType=INTEGER},
+      </if>
+      <if test="delState != null">
+        del_state = #{delState,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="">
+        market = #{market,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.activity.entity.RedpackageActivityInfoVo">
+    update redpackage_activity_info
+    set open_id = #{openId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      card_ruyi = #{cardRuyi,jdbcType=INTEGER},
+      card_youshan = #{cardYoushan,jdbcType=INTEGER},
+      card_health = #{cardHealth,jdbcType=INTEGER},
+      card_happy = #{cardHappy,jdbcType=INTEGER},
+      card_love = #{cardLove,jdbcType=INTEGER},
+      card_big = #{cardBig,jdbcType=INTEGER},
+      total_invitation = #{totalInvitation,jdbcType=INTEGER},
+      del_state = #{delState,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      market = #{market,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="getRedpackageActivityBySelective" parameterMap="com.cxqm.xiaoerke.modules.activity.entity.RedpackageActivityInfoVo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from redpackage_activity_info
+    where 1=1
+    <if test="id != null">
+      and id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="openId != null">
+      and open_id = #{openId,jdbcType=VARCHAR}
+    </if>
+    <if test="market != null">
+      and market = #{market,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="getRedPackageActivityTatalCount" resultType="java.lang.Integer">
+    select
+    COUNT (*)
+    from redpackage_activity_info
+    where 1=1 and del_state = 0
+  </select>
+</mapper>

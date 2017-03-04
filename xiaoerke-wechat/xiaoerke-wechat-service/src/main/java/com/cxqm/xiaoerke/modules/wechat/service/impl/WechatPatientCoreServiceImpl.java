@@ -2,6 +2,8 @@ package com.cxqm.xiaoerke.modules.wechat.service.impl;
 
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
+import com.cxqm.xiaoerke.modules.activity.entity.RedpackageActivityInfoVo;
+import com.cxqm.xiaoerke.modules.activity.service.RedPackageActivityInfoService;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.interaction.dao.PatientRegisterPraiseDao;
@@ -41,6 +43,8 @@ import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
@@ -133,8 +137,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     @Autowired
     private PatientRegisterPraiseService patientRegisterPraiseService;
 
+    @Autowired
+    private RedPackageActivityInfoService redPackageActivityInfoService ;
+
     private static ExecutorService threadExecutorSingle = Executors.newSingleThreadExecutor();
     private static ExecutorService threadExecutorCash = Executors.newCachedThreadPool();
+
+    private Lock lock = new ReentrantLock();
 
 
     /**
@@ -989,7 +998,6 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     ;
 
     private void babyCoinHandler(ReceiveXmlEntity xmlEntity, String token, String marketer) {
-        if (marketer.startsWith("110")) {
             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
             String newOpenId = xmlEntity.getFromUserName();
             SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
@@ -997,7 +1005,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
             //新用户从来没有关注过的
             if (wechatAttentionVo == null) {
-
+            if (marketer.startsWith("110")) {
                 BabyCoinVo olderUser = new BabyCoinVo();
                 String cash = sysPropertyVoWithBLOBsVo.getBabyCoin();
 //                synchronized (this) {
@@ -1051,9 +1059,65 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //                    WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, oldOpenId, templateId);
                     String templateInfo = "\"first\": {\"value\":" + title + ",\"color\":\"#FF0000\"},\"keynote1\":{ \"value\":" + keyword1 + ",, \"color\":\"#000000\"},\"keynote2\": { \"value\":" + keyword2 + ", \"color\":\"#000000\" }, \"remark\":{ \"value\":" + remark + ",\"color\":\"#FF0000\"}";
                     WechatUtil.sendTemplateMsgToUser(token, oldOpenId, templateId, templateInfo);
-
                 }
-
+            }else if(marketer.startsWith("707") && marketer.length() == 10){
+                RedpackageActivityInfoVo vo = new RedpackageActivityInfoVo();
+                vo.setMarket(Integer.valueOf(marketer));
+                if(lock.tryLock()){
+                    try{
+                        List<RedpackageActivityInfoVo> list = redPackageActivityInfoService.getRedpackageActivityBySelective(vo);
+                        if(list !=null && list.size() > 0){
+                            vo = list.get(0);
+                            int nowCount = vo.getTotalInvitation() + 1;
+                            int count ;
+                            if(nowCount % 2 == 0){
+                                if(nowCount % 10 == 0){
+                                    count = vo.getCardHealth() + 1;
+                                    vo.setCardHealth(count);
+                                }else{
+                                    double ma = Math.random()*100;
+                                    if(ma < 10){
+                                        ma = ma*10;
+                                    }
+                                    String randomString = String.valueOf(ma);
+                                    int randomNum = Integer.valueOf(randomString.substring(0, 2));
+                                    if(randomNum < 25){
+                                        count = vo.getCardHappy()+ 1;
+                                        vo.setCardHappy(count);
+                                    }else if(randomNum < 50){
+                                        count = vo.getCardLove() + 1;
+                                        vo.setCardLove(count);
+                                    }else if(randomNum < 75){
+                                        count = vo.getCardRuyi() + 1;
+                                        vo.setCardRuyi(count);
+                                    }else{
+                                        count = vo.getCardYoushan() + 1;
+                                        vo.setCardYoushan(count);
+                                    }
+                                }
+                            }else{
+                                vo.setTotalInvitation(nowCount);
+                            }
+                            redPackageActivityInfoService.updateByPrimaryKeySelective(vo);
+                        }
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                    }finally{
+                        lock.unlock();   //释放锁
+                    }
+                }else{
+                    System.out.print("获取锁失败");
+                }
+                String title = "恭喜您有好友加入啦~ ";
+                // 到账模板：U-0n4vv3HTXzOE4iD5hZ1siCjbpFVTPpFsXrxs4ASK8
+                String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg"; //生产环境 业务动态提醒ID
+                String keyword1 = "业务进度：您已成功邀请" + (vo.getTotalInvitation()+1) + "位好友";
+                String keyword2 = "业务状态：已集齐卡片" +(vo.getTotalInvitation()+1)/2 + "张，福利卡" + vo.getCardBig()+ "张";
+                String remark = "点击立即抽奖";
+                String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl()+ "titan/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_MBXX";
+//                    WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, oldOpenId, templateId);
+                String templateInfo = "\"first\": {\"value\":" + title + ",\"color\":\"#FF0000\"},\"keynote1\":{ \"value\":" + keyword1 + ",, \"color\":\"#000000\"},\"keynote2\": { \"value\":" + keyword2 + ", \"color\":\"#000000\" }, \"remark\":{ \"value\":" + remark + ",\"color\":\"#FF0000\"}";
+                WechatUtil.sendTemplateMsgToUser(token, vo.getOpenId(), templateId, templateInfo);
             }
         }
     }

@@ -67,4 +67,7 @@ public interface ConsultDoctorInfoService {
     void consultDoctorDepartmentOper(ConsultDoctorDepartmentVo vo);
 
     void deleteDepartment(ConsultDoctorDepartmentVo vo);
+
+    //2016-12-5 17:29:40 add jiangzg
+    List<ConsultDoctorDepartmentVo> getConsultDoctorDepartmentShow() ;
 }

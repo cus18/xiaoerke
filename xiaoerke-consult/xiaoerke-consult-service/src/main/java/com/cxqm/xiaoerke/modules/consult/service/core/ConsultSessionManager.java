@@ -272,18 +272,26 @@ public enum ConsultSessionManager {
             /**
              * 当用户来自宝护圈时，给宝护圈发送接入成功提示
              */
-            if(source != null && "h5bhq".equalsIgnoreCase(source)){
-                String currentUrl = sysPropertyVoWithBLOBsVo.getCoopBhqUrl();
-                if(StringUtils.isNull(currentUrl)){
-                    currentUrl = "http://coapi.baohuquan.com/baodaifu";
-                }
-                String method = "POST";
-                String dataType="json";
-                String contentJson = "{\"action\":\"sessionOpen\",\"uid\":'"+consultSession.getUserId()+"',\"sessionId\":'"+sessionId+"'}";
-                String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, contentJson, 4);
-                net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
-                if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
-                    CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, contentJson, 4);    //一次推送失败后，再推一次
+            if(source != null ){
+                if("h5bhq".equalsIgnoreCase(source)){
+                    String currentUrl = sysPropertyVoWithBLOBsVo.getCoopBhqUrl();
+                    if(StringUtils.isNull(currentUrl)){
+                        currentUrl = "http://coapi.baohuquan.com/baodaifu";
+                    }
+                    String method = "POST";
+                    String dataType="json";
+                    String contentJson = "{\"action\":\"sessionOpen\",\"uid\":'"+consultSession.getUserId()+"',\"sessionId\":'"+sessionId+"'}";
+                    String str = CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, contentJson, 4);
+                    net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(str);
+                    if(jsonObject.containsKey("error_code") && (Integer)jsonObject.get("error_code") != 0 ){
+                        CoopConsultUtil.getCurrentUserInfo(currentUrl, method, dataType, null, contentJson, 4);    //一次推送失败后，再推一次
+                    }
+                }else if("h5mtq".equalsIgnoreCase(source)){
+                    /*JSONObject jsonObj = new JSONObject();
+                    jsonObj.put("type", "4");
+                    jsonObj.put("notifyType", "1005");
+                    TextWebSocketFrame heartBeatCsUser = new TextWebSocketFrame(jsonObj.toJSONString());
+                    channel.writeAndFlush(heartBeatCsUser.retain());*/
                 }
             }
             JSONObject csobj = new JSONObject();
@@ -296,7 +304,7 @@ public enum ConsultSessionManager {
         }else{
             int currentNum = consultSession.getConsultNum() + 1;
             consultSession.setConsultNum(currentNum);
-            sessionRedisCache.putSessionIdConsultSessionPair(sessionId , consultSession);
+            sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
         }
         return consultSession;
     }

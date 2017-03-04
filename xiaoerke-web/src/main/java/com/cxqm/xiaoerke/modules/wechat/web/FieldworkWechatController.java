@@ -289,12 +289,14 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/vaccine/main.html#/"+openid+","+QRCode;
         }else if(url.equals("49")){
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/baoFansCamp#/story2016Index";
+        }else if(url.startsWith("50")){  //集卡活动
+            url = getBabyCoinURL(request, openid,sysPropertyVoWithBLOBsVo);
         }
         return "redirect:" + url;
     }
 
     private String getBabyCoinURL(HttpServletRequest request, String openid,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) throws UnsupportedEncodingException {
-        String url;//判断新老用户
+        String url = "";//判断新老用户
         WechatAttention attention = wechatAttentionService.getAttentionByOpenId(openid);
         String[] parameters = request.getQueryString().split(",");
         String oldOpenId = java.net.URLDecoder.decode(parameters[1], "utf-8");
@@ -306,11 +308,19 @@ public class FieldworkWechatController {
         }
 
         if(attention == null || attention.getDate() == null){//新用户
-            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteNew/"+oldOpenId+","+marketer;
-            LogUtils.saveLog("ZXYQ_YQK_NEW","oldOpenId="+oldOpenId+"openid="+openid+"marketer"+marketer);
+            if(marketer.startsWith("707")){  //集卡活动
+
+            }else{//宝宝币
+                url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteNew/"+oldOpenId+","+marketer;
+                LogUtils.saveLog("ZXYQ_YQK_NEW","oldOpenId="+oldOpenId+"openid="+openid+"marketer"+marketer);
+            }
         }else {//老用户
-            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteOld/"+oldOpenId+","+marketer+","+redPacketId;
-            LogUtils.saveLog("ZXYQ_YQK_OLD","openid="+openid);
+            if(marketer.startsWith("707")){  //集卡活动
+
+            }else{//宝宝币
+                url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteOld/"+oldOpenId+","+marketer+","+redPacketId;
+                LogUtils.saveLog("ZXYQ_YQK_OLD","openid="+openid);
+            }
         }
         return url;
     }
