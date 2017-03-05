@@ -1,9 +1,8 @@
 <ion-view view-title={{title}} >
-	<ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
-	<!--<div bdf-head="title"></div>-->
-	<ion-content class="selfCenter"  overflow-scroll="true" >
+	<ion-content class="selfCenter"  overflow-scroll="true" style="top:0;background:#fff" >
 		<ion-scroll direction="y" has-bouncing="true">
 			<div class="top">最近咨询</div>
+			<div class="nonDoctor" ng-show="doctorInfo.size==0"></div>
 			<ul class="doctorList">
 				<li ng-repeat="item in doctorInfo" ng-show="item.size >0 ">
 					<div class="left">
