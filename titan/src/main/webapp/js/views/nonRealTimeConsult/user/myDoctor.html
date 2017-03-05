@@ -5,7 +5,7 @@
 		<ion-scroll direction="y" has-bouncing="true">
 			<div class="top">最近咨询</div>
 			<ul class="doctorList">
-				<li ng-repeat="item in doctorInfo">
+				<li ng-repeat="item in doctorInfo" ng-show="item.size >0 ">
 					<div class="left">
 				<span class="head-portrait" ng-click="checkDoctorInformation($index)">
                     <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.userId}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
@@ -19,39 +19,11 @@
 							<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_07.png" alt=""/>好评率{{item.evaluate}}%</span>
 						</div>
 						<div class="bottom">
-							<span ng-click="nonRealTimeConsult(item.userId)" ng-if="item.status != ongoing">再次咨询</span>
-							<span ng-click="nonRealTimeOngoing(item.sessionid)" ng-if="item.status == ongoing">正在咨询</span>
+							<span ng-click="nonRealTimeConsult(item.userId)" ng-if="item.status != 'ongoing'">再次咨询</span>
+							<span ng-click="nonRealTimeOngoing(item.sessionid)" ng-if="item.status == 'ongoing'">正在咨询</span>
 						</div>
 					</div>
 				</li>
-				<!--<li>-->
-					<!--<div class="left">-->
-						<!--<span><img src=""/></span>-->
-						<!--<div class="time">14:45</div>-->
-					<!--</div>-->
-					<!--<div class="right">-->
-						<!--<div class="doctorDetail">-->
-							<!--<div class="nameDetail"><span class="name">梁医生</span><span>妇科</span><span>主任医师</span></div>-->
-							<!--<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_10.png" alt=""/>已帮助过33人</span>-->
-							<!--<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_07.png" alt=""/>好评率99%</span>-->
-						<!--</div>-->
-						<!--<div class="bottom"><span ng-click="">再次咨询</span></div>-->
-					<!--</div>-->
-				<!--</li>-->
-				<!--<li>-->
-					<!--<div class="left">-->
-						<!--<span><img src=""/></span>-->
-						<!--<div class="time">14:45</div>-->
-					<!--</div>-->
-					<!--<div class="right">-->
-						<!--<div class="doctorDetail">-->
-							<!--<div class="nameDetail"><span class="name">梁医生</span><span>妇科</span><span>主任医师</span></div>-->
-							<!--<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_10.png" alt=""/>已帮助过33人</span>-->
-							<!--<span class="help"><img src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult%2Fuser%2Fa_07.png" alt=""/>好评率99%</span>-->
-						<!--</div>-->
-						<!--<div class="bottom"><span ng-click="">再次咨询</span></div>-->
-					<!--</div>-->
-				<!--</li>-->
 			</ul>
 		</ion-scroll>
 	</ion-content>
