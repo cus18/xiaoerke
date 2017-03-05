@@ -269,7 +269,7 @@ public class NonRealTimeConsultDoctorContorller {
         List<Map> messageList = new ArrayList<Map>();
         for(NonRealTimeConsultRecordVo vo:recodevoList){
             Map<String ,Object> recordMap = new HashMap<String, Object>();
-            if(openid.equals(vo.getSenderId())){
+            if(sessionVo.getCsUserId().equals(vo.getSenderId())){
                 recordMap.put("source","user");
             }else{
                 recordMap.put("source","doctor");
