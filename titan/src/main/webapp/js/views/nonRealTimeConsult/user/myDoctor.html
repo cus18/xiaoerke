@@ -9,7 +9,7 @@
 				<span class="head-portrait" ng-click="checkDoctorInformation($index)">
                     <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{item.userId}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
                 </span>
-						<div class="time">14:45</div>
+						<div class="time" ng-if="item.createTime != null">{{item.createTime| date:'HH:mm:ss'}}</div>
 					</div>
 					<div class="right">
 						<div class="doctorDetail">
