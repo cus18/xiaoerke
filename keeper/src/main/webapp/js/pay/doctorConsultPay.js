@@ -453,11 +453,11 @@ $(document).ready(function(){
                             paySign: obj.paySign,  // 支付签名
                             success: function (res) {
                                 if (res.errMsg == "chooseWXPay:ok") {
-                                    var consultTime ="";
-                                    if(parseInt(moneys) <= parseInt(payType1SumMoney))
+                                    /*var consultTime ="";
+                                    if(parseInt(endCoin) <= parseInt(payType1SumMoney))
                                         consultTime = "30";
                                     else
-                                        consultTime = "1440"
+                                        consultTime = "1440"*/
                                     window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+consultTime;
                                 } else {
                                     alert("支付失败,请重新支付")
