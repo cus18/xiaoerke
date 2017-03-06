@@ -55,6 +55,8 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
     private String PayType1UseBabycoin;//50宝宝币
     private String PayType2SumMoney;//25元
     private String PayType2UseBabycoin;//125宝宝币
+    private String PayType3SumMoney;//128元
+    private String PayType3UseBabycoin;//640宝宝币
 
     private String nonRealTimeConsultUrl;
 
@@ -335,5 +337,21 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     public void setNonRealTimeConsultUrl(String nonRealTimeConsultUrl) {
         this.nonRealTimeConsultUrl = nonRealTimeConsultUrl;
+    }
+
+    public String getPayType3SumMoney() {
+        return PayType3SumMoney;
+    }
+
+    public void setPayType3SumMoney(String payType3SumMoney) {
+        PayType3SumMoney = payType3SumMoney;
+    }
+
+    public String getPayType3UseBabycoin() {
+        return PayType3UseBabycoin;
+    }
+
+    public void setPayType3UseBabycoin(String payType3UseBabycoin) {
+        PayType3UseBabycoin = payType3UseBabycoin;
     }
 }
