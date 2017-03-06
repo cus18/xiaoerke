@@ -241,6 +241,8 @@ public class FieldworkWechatController {
         }else if(url.startsWith("51")){
             String[] parameters = request.getQueryString().split(",");
             url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wxPay/patientPay.do?serviceType=nonRealTime&consultId="+parameters[1];
+        }else if(url.startsWith("52")){  //集卡活动
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/appWfdb";
         }
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +
@@ -289,7 +291,7 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/vaccine/main.html#/"+openid+","+QRCode;
         }else if(url.equals("49")){
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/baoFansCamp#/story2016Index";
-        }else if(url.startsWith("50")){  //集卡活动
+        }else if(url.startsWith("53")){  //集卡活动
             url = getBabyCoinURL(request, openid,sysPropertyVoWithBLOBsVo);
         }
         return "redirect:" + url;
@@ -316,7 +318,7 @@ public class FieldworkWechatController {
             }
         }else {//老用户
             if(marketer.startsWith("177")){  //集卡活动
-                url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/appWfdb#/oldUser";
+                url = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=52";
             }else{//宝宝币
                 url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteOld/"+oldOpenId+","+marketer+","+redPacketId;
                 LogUtils.saveLog("ZXYQ_YQK_OLD","openid="+openid);
