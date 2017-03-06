@@ -503,6 +503,7 @@ $(document).ready(function(){
             switchMethod(oSwitch)
         }else{
             oSwitch=false;
+            $('.lack').attr({'display':'inline'})
             switchMethod(oSwitch)
         }
         $('#btn span').html(endCoin);
