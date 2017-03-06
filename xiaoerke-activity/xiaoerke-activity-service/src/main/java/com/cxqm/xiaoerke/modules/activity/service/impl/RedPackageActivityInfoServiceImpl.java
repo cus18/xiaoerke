@@ -183,7 +183,15 @@ public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfo
             throws BalanceNotEnoughException, BusinessPaymentExceeption {
         response.put("payStatus", "failure");
         String takeCashOut = String.valueOf(params.get("moneyCount"));
-        Float returnMoney = Float.valueOf(takeCashOut) * 100;
+        if(takeCashOut.contains(".")){
+            takeCashOut = takeCashOut.replace(".","");
+            if(takeCashOut.length() == 2){
+                takeCashOut = takeCashOut +"0";
+            }else if(takeCashOut.length() == 1){
+                takeCashOut = takeCashOut +"00";
+            }
+        }
+        Float returnMoney = Float.valueOf(takeCashOut);
         String openid = String.valueOf(params.get("openId"));
         if (null == openid) {
             openid = CookieUtils.getCookie(request, "openId");
@@ -211,5 +219,4 @@ public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfo
         List<RedpackageActivityInfoVo> resultList = redpackageActivityInfoDao.getLastOneRedPackageActivity();
         return resultList ;
     }
-
 }

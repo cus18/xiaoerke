@@ -104,7 +104,7 @@
     <!--</set>-->
     <!--</property>-->
     <!--</bean>-->
-    <!-- -->
+
     <!--<bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"-->
     <!--p:password="${redis.sentinel.password}">-->
     <!--<constructor-arg name="sentinelConfig" ref="sentinelConfiguration"></constructor-arg>-->
