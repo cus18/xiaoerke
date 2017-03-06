@@ -484,6 +484,7 @@ $(document).ready(function(){
     }
     //方式选择调用函数
     function callBack(num){
+        console.log(cashNum1,cashNum2,cashNum3)
         if(num==1){
             cash=cash1;
             cashNum=cashNum1;
