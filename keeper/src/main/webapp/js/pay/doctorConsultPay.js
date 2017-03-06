@@ -544,7 +544,7 @@ $(document).ready(function(){
     });
 
     //是否选择使用babyCoin
-    $('.babyCoinSmall i').click(function(){
+    $('.babyCoinSmall').find('i').click(function(){
         console.log(oSwitch,cashTotal,cashNum)
         if(cashTotal<cashNum){
             oSwitch=false;
