@@ -7,11 +7,11 @@
                 <img ng-if="item.source=='doctor'" class="radius" width="43" height="43"  ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{pageData.doctorId}}" err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png" alt="" />
                  <span class="word ">
                      <img class="triangle" width="12" height="17" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/{{item.source=='user' ? 'triangle1.png':'triangle2.png'}}" />
-                     <span ng-if="item.messageType=='createSession'">{{item.babyBaseInfo}}</br>
+                     <span ng-if="item.messageType=='createSession'" >{{item.babyBaseInfo}}</br>
                          {{item.message}}<br></span>
                      <a ng-if="item.messageType=='text'" ng-bind-html="item.message|emotionReceive:item.messageType"></a>
-                     <img ng-click="previewImage(prop)" ng-if="item.messageType=='createSession'" class="pic-talk" ng-if="item.imgPath.length>0" width="50" height="50" ng-repeat="prop in item.imgPath" ng-src="{{prop}}" />
-                     <img ng-click="previewImage(item.message)" ng-if="item.messageType=='img'" class="pic-talk"  width="100%" height="auto" ng-src="{{item.message}}" />
+                     <img ng-click="previewImage(prop)" ng-if="item.messageType=='createSession'" class="pic-talk" ng-if="item.imgPath.length>0" width="50" height="50" ng-repeat="prop in item.imgPath" ng-src="{{prop}}" onclick="return false"/>
+                     <img ng-click="previewImage(item.message)" ng-if="item.messageType=='img'" class="pic-talk"  width="100%" height="auto" ng-src="{{item.message}}" onclick="return false"/>
                 </span>
             </div>
         </div>
