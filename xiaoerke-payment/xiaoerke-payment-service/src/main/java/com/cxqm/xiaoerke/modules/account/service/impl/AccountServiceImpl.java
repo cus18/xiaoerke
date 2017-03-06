@@ -587,7 +587,7 @@ public class AccountServiceImpl implements AccountService {
      */
     public String payUserAmount(Float returnMoney, String openid,String ip) throws BusinessPaymentExceeption, BalanceNotEnoughException {
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-        if (returnMoney > 10000) {
+        if (returnMoney < 10000) {
             String partner_trade_no = IdGen.uuid();//生成随机字符串
             WithdrawRecord withdrawRecord = buildWithdrawRecord(openid, returnMoney);
             withdrawRecord.setId(partner_trade_no);//将本地数据库和商户平台关联
