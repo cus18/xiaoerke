@@ -43,8 +43,12 @@
             };
             /* 我的医生*/
             $scope.myDoctor = function(){
-                window.location.href='http://localhost:8080/titan/nonRealTimeConsult#/myDoctor'
+                window.location.href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=50'
             };
+            $scope.nonRealtime = function () {
+                window.location.href='http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=40'
+            }
+
             /* 预约挂号订单*/
             $scope.appointOrder = function(){
                 RecordLogs.get({logContent:encodeURI("DHZX_HYZX_YYGH")},function(){})
