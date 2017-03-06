@@ -428,56 +428,49 @@ $(document).ready(function(){
             payLock = true;
         }
         if (payLock) {
-            if (moneys != "0" && moneys != "") {
                 $.ajax({
                     url: "account/user/doctorConsultPay",
                     type: 'get',
                     data: {
-                        payPrice: moneys,
-                        babyCoinNumber: babyCoinNumber
+                        payPrice:endCoin ,
+                        babyCoinNumber: cashNum
                     },
                     cache: false,
                     success: function (data) {
-                        if(data == "false"){
-                            alert("对不起，宝宝币不足，请选择其他支付方式！");
-                        }else{
-                            $('#payButton').removeAttr("disabled");
-                            var obj = eval('(' + data + ')');
-                            if (parseInt(obj.agent) < 5) {
-                                alert("您的微信版本低于5.0无法使用微信支付");
-                                return;
-                            }
-                            //打开微信支付控件
-                            wx.chooseWXPay({
-                                appId: obj.appId,
-                                timestamp: obj.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-                                nonceStr: obj.nonceStr,  // 支付签名随机串，不长于 32 位
-                                package: obj.package,// 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-                                signType: obj.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-                                paySign: obj.paySign,  // 支付签名
-                                success: function (res) {
-                                    if (res.errMsg == "chooseWXPay:ok") {
-                                        var consultTime ="";
-                                        if(parseInt(moneys) <= parseInt(payType1SumMoney))
-                                            consultTime = "30";
-                                        else
-                                            consultTime = "1440"
-                                        window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+consultTime;
-                                    } else {
-                                        alert("支付失败,请重新支付")
-                                    }
-                                },
-                                fail: function (res) {
-                                    alert(res.errMsg)
-                                }
-                            });
+                        $('#btn').removeAttr("disabled");
+                        var obj = eval('(' + data + ')');
+                        if (parseInt(obj.agent) < 5) {
+                            alert("您的微信版本低于5.0无法使用微信支付");
+                            return;
                         }
+                        //打开微信支付控件
+                        wx.chooseWXPay({
+                            appId: obj.appId,
+                            timestamp: obj.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                            nonceStr: obj.nonceStr,  // 支付签名随机串，不长于 32 位
+                            package: obj.package,// 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+                            signType: obj.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                            paySign: obj.paySign,  // 支付签名
+                            success: function (res) {
+                                if (res.errMsg == "chooseWXPay:ok") {
+                                    var consultTime ="";
+                                    if(parseInt(moneys) <= parseInt(payType1SumMoney))
+                                        consultTime = "30";
+                                    else
+                                        consultTime = "1440"
+                                    window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+consultTime;
+                                } else {
+                                    alert("支付失败,请重新支付")
+                                }
+                            },
+                            fail: function (res) {
+                                alert(res.errMsg)
+                            }
+                        });
                     },
                     error: function () {
                     }
                 });
-            } else {
-            }
         } else {
             payLock = true;
         }
@@ -577,4 +570,17 @@ $(document).ready(function(){
             endCoin=cash;
         }
     }
+
+
+    //提交支付
+    $('#btn').click(function(){
+        $('#btn').attr('disabled')
+        if(oSwitch){
+            wechatPay()
+        }else{
+            cashNum=0;
+            wechatPay();
+        }
+    })
+
 })
