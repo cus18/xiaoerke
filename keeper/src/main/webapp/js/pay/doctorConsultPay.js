@@ -563,10 +563,10 @@ $(document).ready(function(){
     //宝宝币是否选择
     function switchMethod(oSwitch){
         if(oSwitch){
-            $('.babyCoinSmall i').className='choose1';
+            $('.babyCoinSmall').find('i').className='choose1';
             endCoin=cash-cashNum;
         }else{
-            $('.babyCoinSmall i').className='choose2';
+            $('.babyCoinSmall').find('i').className='choose2';
             endCoin=cash;
         }
     }
