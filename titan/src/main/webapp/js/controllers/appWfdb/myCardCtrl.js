@@ -376,8 +376,8 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
                         $scope.coupon(res.moneyCount)
                     }else if(res.type==1){
                         //大图显示状态初始化
-                        $scope.bigCard_status=true;
-                        $scope.cash_status=false;
+                        $scope.bigCard_status=false;
+                        $scope.cash_status=true;
                         $scope.btn_status(4);
                         $scope.cash=res.moneyCount;
                     }
