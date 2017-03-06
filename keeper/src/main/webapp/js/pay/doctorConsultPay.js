@@ -394,7 +394,7 @@ $(document).ready(function(){
                     cash3 = data.payType3SumMoney;
                     cashNum3 = data.payType3UseBabycoin/10;
                     //默认第二种方式
-                    callBack(service)
+                    setTimeout(callBack(service),0)
                     //微信配置
                     wx.config({
                         debug: false,
