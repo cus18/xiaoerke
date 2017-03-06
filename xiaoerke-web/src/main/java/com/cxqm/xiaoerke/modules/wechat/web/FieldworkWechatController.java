@@ -226,7 +226,7 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/patient/consult#/patientConsultNoFee";
         }else if("40".equals(url)){
             //非及时咨询
-            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeUserFindDoctor";
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeUserConsultList";
         }else if("43".equals(url)){
             String doctorId  = URLEncoder.encode(url.replace("doctorId",""), "UTF-8");
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/consultDoctorHome/"+doctorId;
