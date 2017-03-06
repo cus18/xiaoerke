@@ -6,12 +6,12 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
         $scope.msgType = "text";
         $scope.sendLock = false;
         var picList=[];
-        $scope.previewImage=function(curSrc){
-            wx.previewImage({
-                current:curSrc, // 当前显示图片的http链接
-                urls: picList // 需要预览的图片http链接列表
-            });
-        };
+        // $scope.previewImage=function(curSrc){
+        //     wx.previewImage({
+        //         current:curSrc, // 当前显示图片的http链接
+        //         urls: picList // 需要预览的图片http链接列表
+        //     });
+        // };
         //微信js-sdk 初始化接口
         $scope.doRefresh = function(){
             var timestamp;//时间戳
@@ -39,7 +39,6 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
                             nonceStr: nonceStr,
                             signature: signature,
                             jsApiList: [
-                                'previewImage',
                                 'chooseImage',
                                 'uploadImage'
                             ] // 功能列表
