@@ -9,7 +9,7 @@
 
                 <!--控制显示按钮-->
                 <div class="btn" ng-show="invite_friend_status" ><img ng-click="invite_friend()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/btn_Invitation.png" alt=""/></div>
-                <div ng-disabled="draw_status" class="btn" ng-show="draw_prize_status" ><img ng-click="draw_prize()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/btn_draw.png" alt=""/></div>
+                <div class="btn" ng-show="draw_prize_status" ><img ng-click="draw_status||draw_prize()"  ng-disabled="draw_status" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/btn_draw.png" alt=""/></div>
                 <div class="btn" ng-show="receive_prize_status" ><img ng-click="receive_prize()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appWfdb/myCard/btn_receive.png" alt=""/></div>
 
                 <!--我的卡片的显示区域-->
