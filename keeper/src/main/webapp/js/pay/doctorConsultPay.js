@@ -556,11 +556,13 @@ $(document).ready(function(){
             switchMethod(oSwitch);
         }else if(cashTotal>=cashNum){
             if( oSwitch==true){
-                switchMethod(oSwitch);
                 oSwitch=false;
-            }else{
                 switchMethod(oSwitch);
+
+            }else{
                 oSwitch=true;
+                switchMethod(oSwitch);
+
             }
         }
         $('#btn span').html(endCoin);
