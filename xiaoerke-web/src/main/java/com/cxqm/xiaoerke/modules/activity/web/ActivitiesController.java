@@ -303,10 +303,6 @@ public class ActivitiesController {
     public HashMap<String, Object> getCardInfoList(@RequestBody Map<String, Object> params, HttpSession session, HttpServletRequest request) {
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
         String openId = WechatUtil.getOpenId(session, request);
-        if(StringUtils.isNull(openId)){
-            authToUser(session,request);
-            openId = WechatUtil.getOpenId(session, request);
-        }
         Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         String tokenId = (String) userWechatParam.get("token");
         String nickName = WechatUtil.getWechatName(tokenId, openId).getNickname();
@@ -375,11 +371,4 @@ public class ActivitiesController {
         resultMap.put("nickName", nickName); //昵称
         return resultMap;
     }
-
-    @RequestMapping(value = "/authToUser", method = {RequestMethod.POST, RequestMethod.GET})
-    @ResponseBody
-    public String authToUser(HttpSession session, HttpServletRequest request) {
-        return "redirect:http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=50,";
-    }
-
 }

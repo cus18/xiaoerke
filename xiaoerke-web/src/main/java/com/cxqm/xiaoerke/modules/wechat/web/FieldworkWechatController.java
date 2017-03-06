@@ -318,7 +318,7 @@ public class FieldworkWechatController {
             }
         }else {//老用户
             if(marketer.startsWith("177")){  //集卡活动
-                url = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=52";
+                url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=52";
             }else{//宝宝币
                 url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteOld/"+oldOpenId+","+marketer+","+redPacketId;
                 LogUtils.saveLog("ZXYQ_YQK_OLD","openid="+openid);
