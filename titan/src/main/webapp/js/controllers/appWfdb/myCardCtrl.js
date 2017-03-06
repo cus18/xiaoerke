@@ -351,13 +351,14 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
         $scope.share_close=function(){
             $scope.friends_share=false;
         }
-
+        $scope.draw_status=false;
         //兑换奖品点击事件
         $scope.draw_prize=function(){
+            $scope.draw_status=true;
             ChooseCard.save({openId:$scope.card.openId,id:$scope.card.id,typeCard:$scope.typeCard},function(res){
 
                 if(res.status=="success"){
-                    console.log($scope.typeCard)
+                    $scope.draw_status=false;
                     switch ($scope.typeCard){
                         case 0:$scope.card.cardBig--;break;
                         case 1:$scope.card.cardRuyi--;break;
