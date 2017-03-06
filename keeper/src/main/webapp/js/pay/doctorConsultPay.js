@@ -384,7 +384,7 @@ $(document).ready(function(){
                     signature = data.signature;//得到签名
                     appid = data.appid;//appid
                     recordLogs("consult_charge_twice_information_payclick");
-                    getBabyCoin()
+
                     cash1 = data.payType1SumMoney;
                     cashNum1 = data.payType1UseBabycoin/10;
 
@@ -393,8 +393,8 @@ $(document).ready(function(){
 
                     cash3 = data.payType3SumMoney;
                     cashNum3 = data.payType3UseBabycoin/10;
-                    //默认第二种方式
-                    setTimeout(callBack(service),0)
+                    getBabyCoin()
+
                     //微信配置
                     wx.config({
                         debug: false,
@@ -515,6 +515,8 @@ $(document).ready(function(){
             dataType: "json",
             success: function (data) {
                 cashTotal=data.babyCoinVo.cash;
+                //默认第二种方式
+                callBack(service)
             },
             error: function (jqXHR) {
                 console.log("发生错误：" + jqXHR.status);
