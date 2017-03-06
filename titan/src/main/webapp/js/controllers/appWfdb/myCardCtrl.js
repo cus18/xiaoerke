@@ -357,6 +357,7 @@ angular.module('controllers', ['ionic']).controller('myCardCtrl', [
             ChooseCard.save({openId:$scope.card.openId,id:$scope.card.id,typeCard:$scope.typeCard},function(res){
 
                 if(res.status=="success"){
+                    console.log($scope.typeCard)
                     switch ($scope.typeCard){
                         case 0:$scope.card.cardBig--;break;
                         case 1:$scope.card.cardRuyi--;break;

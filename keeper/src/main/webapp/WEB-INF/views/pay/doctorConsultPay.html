@@ -9,14 +9,15 @@
       content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
 <title>咨询医生</title>
 <script src="js/libs/jquery-2.1.3.min.js"></script>
+<script src="js/libs/rem.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="js/pay/doctorConsultPay.js"></script>
 <link rel="stylesheet" href="/keeper/styles/main.less" type="text/css"/>
 <link rel="stylesheet" href="/keeper/styles/pay/commonPay.less" type="text/css"/>
 <link rel="stylesheet" href="/keeper/styles/pay/doctorConsultPay.less" type="text/css"/>
-<body onload="doRefresh()">
+<body onload="">
 <div class="doctorConsultPay bg1">
-    <div>
+   <!-- <div>
         <br> <br>
 
         <p align="center"><img
@@ -26,11 +27,28 @@
                       width="35%" height="1%"/>
         </p>
 
-        <p align="center">&nbsp;</p>
+       <p align="center">&nbsp;</p>
     </div>
-    <br>
-
-    <div id="10MoneyPay" style="display: none;" onclick="selectPayMoney(25)" class="selectPay10Money();">
+    <br>-->
+    <div class="top">
+        <i></i>
+        <span>请选择服务</span>
+        <i></i>
+    </div>
+    <div class="chooseService">
+        <div class="service1"></div>
+        <div class="service2 active2"></div>
+        <div class="service3"></div>
+    </div>
+    <div class="babyCoin">
+        <div class="babyCoinSmall">
+            <p class="babyCoin_L">亲，您有宝宝币可减免<span id="coin">5.0</span>元</p><i class="choose1"></i><p class="babyCoin_R">使用</p>
+        </div>
+    </div>
+    <p class="detail">购买一次，开始咨询后，<span>24小时</span>内医生都会回复</p>
+    <div id="btn">确认支付¥<span>4.9</span></div>
+    <div class="date"></div>
+<!--    <div id="10MoneyPay" style="display: none;" onclick="selectPayMoney(25)" class="selectPay10Money();">
         <p align="center"><img
                 src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultPayVersion1.2%2FselectPay9.9.png"
                 width="90%" height="6%"/></p>
@@ -79,7 +97,7 @@
     </div>
     <div id="payButton" class="button"><a onclick="wechatPay()" class="change"><span id="payConfirm">确认支付</span></a>
     </div>
-    <div class="date"></div>
+    <div class="date"></div>-->
 </div>
 </body>
 </html>
