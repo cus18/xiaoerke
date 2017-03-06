@@ -499,6 +499,7 @@ $(document).ready(function(){
         //判断宝宝币选中状态
         if(cashTotal>=cashNum){
             oSwitch=true;
+            $('.lack').hide();
             switchMethod(oSwitch)
         }else{
             oSwitch=false;
