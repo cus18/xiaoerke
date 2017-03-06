@@ -426,7 +426,7 @@ and cv.evaluateSource = 'nonRealtimeConsult'
   </select>
 
 
-  <select id="unAnswerConsult" parameterType="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo">
+  <select id="unAnswerConsult" resultMap="ResultMapWithBLOBs" parameterType="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo">
   SELECT
   ntc.cs_user_name,ntc.id,ntc.user__id
   FROM
