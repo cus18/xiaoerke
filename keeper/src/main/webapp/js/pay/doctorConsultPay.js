@@ -513,7 +513,7 @@ $(document).ready(function(){
             url: 'http://' + window.location.host + "/keeper/babyCoin/babyCoinInit",
             dataType: "json",
             success: function (data) {
-                cashTotal=data.cash;
+                cashTotal=data.babyCoinVo.cash;
             },
             error: function (jqXHR) {
                 console.log("发生错误：" + jqXHR.status);
