@@ -152,8 +152,14 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
         do{
             loopNum ++;
             saveConsultMember(openid + memberRedisCachVo.MEMBER_END_DATE, DateUtils.DateToStr(consultMemberVo.getEndTime(), "datetime"));
+            LogUtils.saveLog("更新reids会员时间",DateUtils.DateToStr(consultMemberVo.getEndTime(), "datetime"));
+            try {
+                Thread.sleep(1000l);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }while (!DateUtils.DateToStr(consultMemberVo.getEndTime(), "datetime").equals(getConsultMember(openid + memberRedisCachVo.MEMBER_END_DATE))&&loopNum<5);
-
+        LogUtils.saveLog("reids会员时间更新成功",DateUtils.DateToStr(consultMemberVo.getEndTime(), "datetime"));
         WechatUtil.sendMsgToWechat(token, openid, " 购买成功啦！\n亲爱的，现在可以开始咨询啦，赶紧和医生对话吧~\n会员有效期:" + DateUtils.DateToStr(new Date(), "yyyy年MM月dd日 HH时mm分") + "至" + DateUtils.DateToStr(consultMemberVo.getEndTime(), "yyyy年MM月dd日 HH时mm分"));
         LogUtils.saveLog("ZXTS_GMCG", openid);
     }
