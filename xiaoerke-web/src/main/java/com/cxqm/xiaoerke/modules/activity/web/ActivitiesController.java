@@ -305,6 +305,7 @@ public class ActivitiesController {
         String openId = WechatUtil.getOpenId(session, request);
         if(StringUtils.isNull(openId)){
             authToUser(session,request);
+            openId = WechatUtil.getOpenId(session, request);
         }
         Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         String tokenId = (String) userWechatParam.get("token");
