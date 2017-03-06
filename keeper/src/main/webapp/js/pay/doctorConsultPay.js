@@ -386,13 +386,13 @@ $(document).ready(function(){
                     recordLogs("consult_charge_twice_information_payclick");
                     getBabyCoin()
                     cash1 = data.payType1SumMoney;
-                    cashNum1 = data.payType1UseBabycoin;
+                    cashNum1 = data.payType1UseBabycoin/10;
 
                     cash2 = data.payType2SumMoney;
-                    cashNum2 = data.payType2UseBabycoin;
+                    cashNum2 = data.payType2UseBabycoin/10;
 
                     cash3 = data.payType3SumMoney;
-                    cashNum3 = data.payType3UseBabycoin;
+                    cashNum3 = data.payType3UseBabycoin/10;
                     //默认第二种方式
                     callBack(service)
                     //微信配置
