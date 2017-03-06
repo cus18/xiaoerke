@@ -516,7 +516,7 @@ $(document).ready(function(){
             url: 'http://' + window.location.host + "/keeper/babyCoin/babyCoinInit",
             dataType: "json",
             success: function (data) {
-                cashTotal=data.babyCoinVo.cash;
+                cashTotal=data.babyCoinVo.cash/10;
                 //默认第二种方式
                 callBack(service)
             },
