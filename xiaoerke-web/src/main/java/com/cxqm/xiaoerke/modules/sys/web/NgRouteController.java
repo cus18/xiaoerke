@@ -120,13 +120,19 @@ public class NgRouteController extends BaseController {
     }
 
     /**
-     *appWfdb 疫苗站主页
+     *appWfdb 五福夺宝
      */
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/appWfdb",method = {RequestMethod.POST, RequestMethod.GET})
     public String appWfdbIndex() {
         return "angular/appWfdbIndex";
     }
+    /**
+     *appWfdb 五福夺宝
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/share",method = {RequestMethod.POST, RequestMethod.GET})
+    public String appSharePullNewIndex() { return "angular/appSharePullNewIndex"; }
     /*
         wisdom 项目
     */
