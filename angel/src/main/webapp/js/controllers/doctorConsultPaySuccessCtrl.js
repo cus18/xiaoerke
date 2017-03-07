@@ -3,10 +3,14 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
         function ($scope,$stateParams) {
             $scope.consultTime = $stateParams.consultTime;
             $scope.doctorConsultPaySuccess = function () {
-                if($scope.consultTime == "30")
+                if($scope.consultTime == "1") {
                     $scope.consultTime = "30分钟";
-                else
+                }else if ($scope.consultTime == "2") {
                     $scope.consultTime = "24小时";
+                }else {
+                    $scope.consultTime = "一个月";
+                }
+
 
             };
             $scope.closeDoctorConsultPaySuccess = function () {
