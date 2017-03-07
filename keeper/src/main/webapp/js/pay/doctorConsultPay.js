@@ -421,13 +421,6 @@ $(document).ready(function(){
     //确认支付
     function wechatPay() {
         recordLogs("consult_charge_twice_paypage_paybutton");
-        var u = navigator.userAgent, app = navigator.appVersion;
-        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('linux') > -1; //g
-        var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-        if (isAndroid) {
-            payLock = true;
-        }
-        if (payLock) {
                 $.ajax({
                     url: "account/user/doctorConsultPay",
                     type: 'get',
@@ -471,9 +464,6 @@ $(document).ready(function(){
                     error: function () {
                     }
                 });
-        } else {
-            payLock = true;
-        }
     }
     //方式选择调用函数
     function callBack(num){
