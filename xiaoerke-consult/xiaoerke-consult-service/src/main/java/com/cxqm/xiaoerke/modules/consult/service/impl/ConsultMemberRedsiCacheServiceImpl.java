@@ -21,7 +21,9 @@ import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -86,14 +88,6 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
     @Override
     public String getConsultMember(String match) {
-//        String key = null;
-//        ScanOptions.ScanOptionsBuilder b =  new ScanOptions.ScanOptionsBuilder();
-//        b.match(match);
-//        ScanOptions ops = b.build();
-//        Cursor<Object> memberInfo =  redisTemplate.opsForValue().(CONUSLT_BASEIBFO,ops);
-//        while (memberInfo.hasNext()) {
-//            key = (String) memberInfo.next();
-//        }
         redisTemplate.setValueSerializer(new GenericToStringSerializer<String>(String.class));
         return (String) redisTemplate.opsForValue().get(match);
     }
@@ -122,22 +116,22 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
     @Override
     public void payConsultMember(String openid, String timeLength, String totalFee, String token) {
-        //                   mysql 增加会员记录,延长redis的时间
-//        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-//        if(null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList()&&sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid)==-1){
-//            return;
-//        }
         LogUtils.saveLog("增加会员时间", openid);
         ConsultMemberVo consultMemberVo = getConsultMemberInfo(openid);
         Integer memberEndTime = Integer.parseInt(timeLength);
+        Calendar calendar   =   new GregorianCalendar();
+
         if (null == consultMemberVo) {
             consultMemberVo = new ConsultMemberVo();
-            consultMemberVo.setEndTime(new Date(new Date().getTime() + memberEndTime * 1000 * 60));
+            calendar.setTime(new Date());
+            calendar.add(calendar.MINUTE,Integer.parseInt(timeLength) );
         } else {
             Date nowTime = new Date();
             Date oldMemberTime = consultMemberVo.getEndTime().getTime() > nowTime.getTime() ? consultMemberVo.getEndTime() : nowTime;
-            consultMemberVo.setEndTime(new Date(oldMemberTime.getTime() + memberEndTime * 1000 * 60));
+            calendar.setTime(oldMemberTime);
+            calendar.add(calendar.MINUTE, Integer.parseInt(timeLength));
         }
+        consultMemberVo.setEndTime(calendar.getTime());
         consultMemberVo.setId(null);
         consultMemberVo.setCreateDate(new Date());
         consultMemberVo.setOpenid(openid);
