@@ -539,11 +539,11 @@ public class PayNotificationController {
                 Double PayType3UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType3UseBabycoin());
                 Double payType3ActualMoney = ((PayType3SumMoney * 10 - PayType3UseBabycoin) * 10);
 
-                if(payCount == PayType1SumMoney||payCount == payType1ActualMoney) {
+                if(payCount == PayType1SumMoney*100||payCount == payType1ActualMoney) {
                     totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType2();
-                } else if (payCount == PayType2SumMoney||payCount == payType2ActualMoney){
+                } else if (payCount == PayType2SumMoney*100||payCount == payType2ActualMoney){
                     totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTime();
-                } else if (payCount == PayType3SumMoney||payCount == payType3ActualMoney) {
+                } else if (payCount == PayType3SumMoney*100||payCount == payType3ActualMoney) {
                     totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType3();
                 }
                     consultMemberRedsiCacheService.payConsultMember(openid, totleTime, (String) map.get("total_fee"), token);
