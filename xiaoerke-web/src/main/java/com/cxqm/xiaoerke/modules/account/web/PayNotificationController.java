@@ -525,14 +525,36 @@ public class PayNotificationController {
 
                     Map parameter = systemService.getWechatParameter();
                     String token = (String) parameter.get("token");
-                    double PayType1SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney())*100;
-                    double PayType1UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());
-                    double payType1ActualMoney = (double) (PayType1SumMoney  - PayType1UseBabycoin*10);
-                    if ((subCash == 0 && payRecord.getAmount() == PayType1SumMoney) || (subCash == PayType1UseBabycoin) && payRecord.getAmount() == payType1ActualMoney) //支付9.0免费咨询30分钟
-                        consultMemberRedsiCacheService.payConsultMember(openid, sysPropertyVoWithBLOBsVo.getConsultMemberTimeType2(), (String) map.get("total_fee"), token);
-                    else //支付25免费咨询30分钟
-                        consultMemberRedsiCacheService.payConsultMember(openid, sysPropertyVoWithBLOBsVo.getConsultMemberTime(), (String) map.get("total_fee"), token);
+//                    double PayType1SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney())*100;
+//                    double PayType1UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());
+//                    double payType1ActualMoney = (double) (PayType1SumMoney  - PayType1UseBabycoin*10);
+                    String totleTime  = "";
+                    switch (payRecord.getAmount().intValue()) {
+                        case 490:
+                        case 990:
+                            totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTime();
+                            break;
+                        case 2500:
+                        case 1250:
+                            totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTime();
+                            break;
+                        case 12800:
+                        case 6400:
+                            totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTime();
+                            break;
+                        default:
+                    }
+                    consultMemberRedsiCacheService.payConsultMember(openid, sysPropertyVoWithBLOBsVo.getConsultMemberTime(), (String) map.get("total_fee"), token);
 
+//                    if ((subCash == 0 && payRecord.getAmount() == PayType1SumMoney) || (subCash == PayType1UseBabycoin) && payRecord.getAmount() == payType1ActualMoney){
+//                        //支付9.0免费咨询30分钟
+//
+//                    } else if(true){
+//                        //支付25免费咨询30分钟
+//
+//                    }else {
+//
+//                    }
 //                   mysql 增加会员记录,延长redis的时间
                     BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
 //                    babyCoinRecordVo.setSessionId(sessionId);
