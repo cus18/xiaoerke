@@ -36,7 +36,6 @@ define(['appSharePullNew','swiper','appSharePullNewFactory'], function(app){
                             }
                         }
                     })
-                $stateProvider
                     .state('haveRecord', {
                         url: '/haveRecord',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -51,6 +50,7 @@ define(['appSharePullNew','swiper','appSharePullNewFactory'], function(app){
                             }
                         }
                     })
+
                 $urlRouterProvider.otherwise('home');
             }])
         .run(function ($rootScope){
