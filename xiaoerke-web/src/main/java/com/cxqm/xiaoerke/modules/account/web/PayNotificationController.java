@@ -527,13 +527,31 @@ public class PayNotificationController {
                     String token = (String) parameter.get("token");
 
                     String totleTime  = "";
-                    if(payRecord.getAmount() == (Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney())*100)||payRecord.getAmount() == (Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney())*50)) {
-                        totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTime();
-                    }else if(payRecord.getAmount() == (Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney())*100)||payRecord.getAmount() == (Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType2SumMoney())*50)) {
-                        totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType2();
-                    }else if(payRecord.getAmount() == (Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney())*100)||payRecord.getAmount() == (Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType3SumMoney())*50)){
-                        totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType3();
-                    }
+
+                float payCount = payRecord.getAmount();
+
+
+                Double PayType1SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney());//全额
+                Double PayType1UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());//宝宝币抵价
+                Double payType1ActualMoney = (PayType1SumMoney * 10 - PayType1UseBabycoin) * 100;//剩余金额
+
+                Double PayType2SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType2SumMoney());
+                Double PayType2UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType2UseBabycoin());
+                Double payType2ActualMoney = (PayType2SumMoney * 10 - PayType2UseBabycoin) * 100;
+
+                Double PayType3SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType3SumMoney());
+                Double PayType3UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType3UseBabycoin());
+                Double payType3ActualMoney = ((PayType3SumMoney * 10 - PayType3UseBabycoin) * 100);
+
+
+
+                if(payCount == PayType1SumMoney||payCount == payType1ActualMoney) {
+                    totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTime();
+                } else if (payCount == PayType2SumMoney||payCount == payType2ActualMoney){
+                    totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType2();
+                } else if (payCount == PayType3SumMoney||payCount == payType3ActualMoney) {
+                    totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType3();
+                }
                     consultMemberRedsiCacheService.payConsultMember(openid, sysPropertyVoWithBLOBsVo.getConsultMemberTime(), (String) map.get("total_fee"), token);
 //                   mysql 增加会员记录,延长redis的时间
                     BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
