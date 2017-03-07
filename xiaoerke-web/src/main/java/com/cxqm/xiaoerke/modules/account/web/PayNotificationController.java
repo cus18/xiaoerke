@@ -529,21 +529,15 @@ public class PayNotificationController {
                     String totleTime  = "";
 
                 float payCount = payRecord.getAmount();
-
-
                 Double PayType1SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney());//全额
                 Double PayType1UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());//宝宝币抵价
                 Double payType1ActualMoney = (PayType1SumMoney * 10 - PayType1UseBabycoin) * 10;//剩余金额
-
                 Double PayType2SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType2SumMoney());
                 Double PayType2UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType2UseBabycoin());
                 Double payType2ActualMoney = (PayType2SumMoney * 10 - PayType2UseBabycoin) * 10;
-
                 Double PayType3SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType3SumMoney());
                 Double PayType3UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType3UseBabycoin());
                 Double payType3ActualMoney = ((PayType3SumMoney * 10 - PayType3UseBabycoin) * 10);
-
-
 
                 if(payCount == PayType1SumMoney||payCount == payType1ActualMoney) {
                     totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTime();
@@ -552,7 +546,7 @@ public class PayNotificationController {
                 } else if (payCount == PayType3SumMoney||payCount == payType3ActualMoney) {
                     totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType3();
                 }
-                    consultMemberRedsiCacheService.payConsultMember(openid, sysPropertyVoWithBLOBsVo.getConsultMemberTime(), (String) map.get("total_fee"), token);
+                    consultMemberRedsiCacheService.payConsultMember(openid, totleTime, (String) map.get("total_fee"), token);
 //                   mysql 增加会员记录,延长redis的时间
                     BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
 //                    babyCoinRecordVo.setSessionId(sessionId);
