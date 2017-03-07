@@ -88,14 +88,6 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
     @Override
     public String getConsultMember(String match) {
-//        String key = null;
-//        ScanOptions.ScanOptionsBuilder b =  new ScanOptions.ScanOptionsBuilder();
-//        b.match(match);
-//        ScanOptions ops = b.build();
-//        Cursor<Object> memberInfo =  redisTemplate.opsForValue().(CONUSLT_BASEIBFO,ops);
-//        while (memberInfo.hasNext()) {
-//            key = (String) memberInfo.next();
-//        }
         redisTemplate.setValueSerializer(new GenericToStringSerializer<String>(String.class));
         return (String) redisTemplate.opsForValue().get(match);
     }
@@ -124,11 +116,6 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
 
     @Override
     public void payConsultMember(String openid, String timeLength, String totalFee, String token) {
-        //                   mysql 增加会员记录,延长redis的时间
-//        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-//        if(null != sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList()&&sysPropertyVoWithBLOBsVo.getConsultMemberWhiteList().indexOf(openid)==-1){
-//            return;
-//        }
         LogUtils.saveLog("增加会员时间", openid);
         ConsultMemberVo consultMemberVo = getConsultMemberInfo(openid);
         Integer memberEndTime = Integer.parseInt(timeLength);
