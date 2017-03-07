@@ -540,9 +540,9 @@ public class PayNotificationController {
                 Double payType3ActualMoney = ((PayType3SumMoney * 10 - PayType3UseBabycoin) * 10);
 
                 if(payCount == PayType1SumMoney||payCount == payType1ActualMoney) {
-                    totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTime();
-                } else if (payCount == PayType2SumMoney||payCount == payType2ActualMoney){
                     totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType2();
+                } else if (payCount == PayType2SumMoney||payCount == payType2ActualMoney){
+                    totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTime();
                 } else if (payCount == PayType3SumMoney||payCount == payType3ActualMoney) {
                     totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType3();
                 }
