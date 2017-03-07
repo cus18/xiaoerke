@@ -580,7 +580,11 @@ public class ConsultUserController extends BaseController {
                 source = "COOP_BHQ";
                 userPhone = StringUtils.isNotNull(String.valueOf(params.get("patientPhone"))) ? String.valueOf(params.get("patientPhone")) : "";
                 userName = StringUtils.isNotNull(String.valueOf(params.get("patientName"))) ? String.valueOf(params.get("patientName")) : "";
-                userName = Base64.getDecoder().decode(userName).toString();
+                try {
+                    userName = new String(org.springframework.security.crypto.codec.Base64.decode(userName.getBytes("utf-8")),"utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 if (StringUtils.isNotNull(userName)) {
                     userName = EmojiFilter.coverEmoji(userName);
                 }
