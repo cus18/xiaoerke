@@ -533,15 +533,15 @@ public class PayNotificationController {
 
                 Double PayType1SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney());//全额
                 Double PayType1UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());//宝宝币抵价
-                Double payType1ActualMoney = (PayType1SumMoney * 10 - PayType1UseBabycoin) * 100;//剩余金额
+                Double payType1ActualMoney = (PayType1SumMoney * 10 - PayType1UseBabycoin) * 10;//剩余金额
 
                 Double PayType2SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType2SumMoney());
                 Double PayType2UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType2UseBabycoin());
-                Double payType2ActualMoney = (PayType2SumMoney * 10 - PayType2UseBabycoin) * 100;
+                Double payType2ActualMoney = (PayType2SumMoney * 10 - PayType2UseBabycoin) * 10;
 
                 Double PayType3SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType3SumMoney());
                 Double PayType3UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType3UseBabycoin());
-                Double payType3ActualMoney = ((PayType3SumMoney * 10 - PayType3UseBabycoin) * 100);
+                Double payType3ActualMoney = ((PayType3SumMoney * 10 - PayType3UseBabycoin) * 10);
 
 
 
