@@ -349,6 +349,8 @@ $(document).ready(function(){
     var oSwitch=true;
     //最终需要支付的金额
     var endCoin;
+// 成功支付跳转页面
+    var angelWebUrl = "";
     //打日志
     var recordLogs = function (val) {
         $.ajax({
@@ -383,6 +385,7 @@ $(document).ready(function(){
                     nonceStr = data.nonceStr;//得到随机字符串
                     signature = data.signature;//得到签名
                     appid = data.appid;//appid
+                    angelWebUrl = data.angelWebUrl;
                     recordLogs("consult_charge_twice_information_payclick");
 
                     cash1 = data.payType1SumMoney;
