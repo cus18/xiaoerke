@@ -226,7 +226,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public String returnPay(Float returnMoney, String openid, String ip) throws BusinessPaymentExceeption, BalanceNotEnoughException {
-        openid = "o3_NPwnpYevGPIQU4uXAK3RqNRe8";
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         //向withDraw表添加提现记录
         String userId = UserUtils.getUser().getId();
@@ -605,8 +604,8 @@ public class AccountServiceImpl implements AccountService {
                 parameters.put("nonce_str", nonce_str);
                 parameters.put("partner_trade_no", partner_trade_no);
                 parameters.put("check_name", "NO_CHECK");
-                parameters.put("amount", returnMoney.toString());//金额
-                parameters.put("desc", "退款");
+                parameters.put("amount",String.valueOf( returnMoney.intValue()));//金额
+                parameters.put("desc", "五福集宝");
                 parameters.put("spbill_create_ip", ip);
                 parameters.put("openid", openid);
                 String sign = JsApiTicketUtil.createSign("UTF-8", parameters,sysPropertyVoWithBLOBsVo);
