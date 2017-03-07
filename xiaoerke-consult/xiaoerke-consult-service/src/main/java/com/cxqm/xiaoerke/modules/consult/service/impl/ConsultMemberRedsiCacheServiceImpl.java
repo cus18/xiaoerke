@@ -21,7 +21,9 @@ import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -130,14 +132,19 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
         LogUtils.saveLog("增加会员时间", openid);
         ConsultMemberVo consultMemberVo = getConsultMemberInfo(openid);
         Integer memberEndTime = Integer.parseInt(timeLength);
+        Calendar calendar   =   new GregorianCalendar();
+
         if (null == consultMemberVo) {
             consultMemberVo = new ConsultMemberVo();
-            consultMemberVo.setEndTime(new Date(new Date().getTime() + memberEndTime * 1000 * 60));
+            calendar.setTime(new Date());
+            calendar.add(calendar.MINUTE,Integer.parseInt(timeLength) );
         } else {
             Date nowTime = new Date();
             Date oldMemberTime = consultMemberVo.getEndTime().getTime() > nowTime.getTime() ? consultMemberVo.getEndTime() : nowTime;
-            consultMemberVo.setEndTime(new Date(oldMemberTime.getTime() + memberEndTime * 1000 * 60));
+            calendar.setTime(oldMemberTime);
+            calendar.add(calendar.MINUTE, Integer.parseInt(timeLength));
         }
+        consultMemberVo.setEndTime(calendar.getTime());
         consultMemberVo.setId(null);
         consultMemberVo.setCreateDate(new Date());
         consultMemberVo.setOpenid(openid);
