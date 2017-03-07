@@ -50,6 +50,7 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
     private String redPacketNum;
 
     private String consultMemberTimeType2;
+    private String consultMemberTimeType3;
 
     private String PayType1SumMoney;//9.9元
     private String PayType1UseBabycoin;//50宝宝币
@@ -353,5 +354,13 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     public void setPayType3UseBabycoin(String payType3UseBabycoin) {
         PayType3UseBabycoin = payType3UseBabycoin;
+    }
+
+    public String getConsultMemberTimeType3() {
+        return consultMemberTimeType3;
+    }
+
+    public void setConsultMemberTimeType3(String consultMemberTimeType3) {
+        this.consultMemberTimeType3 = consultMemberTimeType3;
     }
 }

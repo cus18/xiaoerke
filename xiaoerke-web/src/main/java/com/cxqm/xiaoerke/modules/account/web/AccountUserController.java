@@ -268,11 +268,22 @@ public class AccountUserController {
         float PayType2SumMoney = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType2SumMoney());
         float PayType2UseBabycoin = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType2UseBabycoin());
         float payType2ActualMoney = (float) ((PayType2SumMoney * 10 - PayType2UseBabycoin) / 10 * 100) / 100;
+
+        float PayType3SumMoney = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType3SumMoney());
+        float PayType3UseBabycoin = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType3UseBabycoin());
+        float payType3ActualMoney = (float) ((PayType3SumMoney * 10 - PayType3UseBabycoin) / 10 * 100) / 100;
+
+
+
         //此支付只有四种情况 1、9.9金额 0宝宝币 2、4.9金额 50宝宝币 3、25金额 0宝宝币  4、12.5金额 125宝宝币
+        //新增一种支付 128元 0宝宝币 64元   640宝宝币
+
         boolean canPay1 = (payCount == PayType1SumMoney && babyCoinNumber == 0f);
         boolean canPay2 = (payCount == payType1ActualMoney && babyCoinNumber == PayType1UseBabycoin) && PayType1SumMoney * 10 < babyCoinVo.getCash();
         boolean canPay3 = payCount == PayType2SumMoney && babyCoinNumber == 0f;
         boolean canPay4 = (payCount == payType2ActualMoney && babyCoinNumber == PayType2UseBabycoin && PayType2SumMoney * 10 < babyCoinVo.getCash());
+        boolean canPay5 = payCount == PayType3SumMoney && babyCoinNumber == 0f;
+        boolean canPay6 = (payCount == payType3ActualMoney && babyCoinNumber == PayType3UseBabycoin && PayType3SumMoney * 10 < babyCoinVo.getCash());
 
         if (canPay1 || canPay2 || canPay3 || canPay4) {
             //获取统一支付接口参数

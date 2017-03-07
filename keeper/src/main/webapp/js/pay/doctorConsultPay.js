@@ -349,6 +349,8 @@ $(document).ready(function(){
     var oSwitch=true;
     //最终需要支付的金额
     var endCoin;
+// 成功支付跳转页面
+    var angelWebUrl = "";
     //打日志
     var recordLogs = function (val) {
         $.ajax({
@@ -383,6 +385,7 @@ $(document).ready(function(){
                     nonceStr = data.nonceStr;//得到随机字符串
                     signature = data.signature;//得到签名
                     appid = data.appid;//appid
+                    angelWebUrl = data.angelWebUrl;
                     recordLogs("consult_charge_twice_information_payclick");
 
                     cash1 = data.payType1SumMoney;
@@ -421,13 +424,6 @@ $(document).ready(function(){
     //确认支付
     function wechatPay() {
         recordLogs("consult_charge_twice_paypage_paybutton");
-        var u = navigator.userAgent, app = navigator.appVersion;
-        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('linux') > -1; //g
-        var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-        if (isAndroid) {
-            payLock = true;
-        }
-        if (payLock) {
                 $.ajax({
                     url: "account/user/doctorConsultPay",
                     type: 'get',
@@ -471,9 +467,6 @@ $(document).ready(function(){
                     error: function () {
                     }
                 });
-        } else {
-            payLock = true;
-        }
     }
     //方式选择调用函数
     function callBack(num){
