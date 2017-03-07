@@ -226,6 +226,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public String returnPay(Float returnMoney, String openid, String ip) throws BusinessPaymentExceeption, BalanceNotEnoughException {
+        openid = "o3_NPwnpYevGPIQU4uXAK3RqNRe8";
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         //向withDraw表添加提现记录
         String userId = UserUtils.getUser().getId();
@@ -252,7 +253,7 @@ public class AccountServiceImpl implements AccountService {
             parameters.put("nonce_str", nonce_str);
             parameters.put("partner_trade_no", partner_trade_no);
             parameters.put("check_name", "NO_CHECK");
-            parameters.put("amount", returnMoney.toString());//金额
+            parameters.put("amount",String.valueOf( returnMoney.intValue()));//金额
             parameters.put("desc", "退款");
             parameters.put("spbill_create_ip", ip);
             parameters.put("openid", openid);
@@ -387,13 +388,15 @@ public class AccountServiceImpl implements AccountService {
         //获取需要支付的金额  单位(分)
         String order_price = "";
         if(request.getAttribute("payPrice")!=null){
-            float price = (Float.valueOf(request.getAttribute("payPrice").toString()))*100;
-            order_price = String.valueOf((int) price);
+//            float price = (Float.valueOf(request.getAttribute("payPrice")))*100;
+            Double price = Double.valueOf(String.valueOf(request.getParameter("payPrice")))*100;//支付的金额
+            order_price = String.valueOf((Double) price);
         }else{
             order_price = request.getParameter("payPrice");
         }
 
         order_price=(int)Double.parseDouble(order_price)+"";//format 返回的是字符串
+//        order_price = "1";
         //生成的商户订单号
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
         String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串\
