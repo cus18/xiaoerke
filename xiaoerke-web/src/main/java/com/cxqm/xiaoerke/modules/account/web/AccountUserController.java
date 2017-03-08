@@ -284,7 +284,6 @@ public class AccountUserController {
         boolean canPay4 = (payCount == payType2ActualMoney && babyCoinNumber == PayType2UseBabycoin && babyCoinNumber  <= babyCoinVo.getCash());
         boolean canPay5 = payCount == PayType3SumMoney && babyCoinNumber == 0f;
         boolean canPay6 = (payCount == payType3ActualMoney && babyCoinNumber == PayType3UseBabycoin && babyCoinNumber  <= babyCoinVo.getCash());
-
         if (canPay1 || canPay2 || canPay3 || canPay4 || canPay5 || canPay6) {
             //获取统一支付接口参数
             request.setAttribute("payPrice", Float.valueOf(payCount));
