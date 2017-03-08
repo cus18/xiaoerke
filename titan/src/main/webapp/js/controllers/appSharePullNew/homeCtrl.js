@@ -1,9 +1,6 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
-    '$scope','$state','$stateParams','MyselfInfoAppointmentDetail',
-    'OrderPayMemberServiceOperation','GetUserMemberService','$location','ngDialog',
-    function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog) {
-
-
+    '$scope','$state','$stateParams',"GetConfig",
+    function ($scope,$state,$stateParams,GetConfig) {
         //安卓手机执行
         $(document).ready(function(){
             var Height=$(window).height();
@@ -47,10 +44,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
             })
         });
         //分享到朋友圈或者微信
-       /* var loadShare = function($scope){
-            // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
-            //     $scope.uuid = data.uuid;
-            // });
+       var loadShare = function($scope){
             GetConfig.save({}, function (data) {
                 $scope.inviteUrlData = data.publicSystemInfo.redPackageShareUrl;
                     var share = $scope.inviteUrlData + $scope.openid+","+$scope.market+",";//最后url=41，openid,marketer
@@ -122,8 +116,4 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
 
             });
         };
-*/
-
-
-
     }])

@@ -279,13 +279,12 @@ public class AccountUserController {
         //新增一种支付 128元 0宝宝币 64元   640宝宝币
 
         boolean canPay1 = (payCount == PayType1SumMoney && babyCoinNumber == 0f);
-        boolean canPay2 = (payCount == payType1ActualMoney && babyCoinNumber == PayType1UseBabycoin) && PayType1SumMoney * 10 < babyCoinVo.getCash();
+        boolean canPay2 = (payCount == payType1ActualMoney && babyCoinNumber == PayType1UseBabycoin) && babyCoinNumber  <= babyCoinVo.getCash();
         boolean canPay3 = payCount == PayType2SumMoney && babyCoinNumber == 0f;
-        boolean canPay4 = (payCount == payType2ActualMoney && babyCoinNumber == PayType2UseBabycoin && PayType2SumMoney * 10 < babyCoinVo.getCash());
+        boolean canPay4 = (payCount == payType2ActualMoney && babyCoinNumber == PayType2UseBabycoin && babyCoinNumber  <= babyCoinVo.getCash());
         boolean canPay5 = payCount == PayType3SumMoney && babyCoinNumber == 0f;
-        boolean canPay6 = (payCount == payType3ActualMoney && babyCoinNumber == PayType3UseBabycoin && PayType3SumMoney * 10 < babyCoinVo.getCash());
-
-        if (canPay1 || canPay2 || canPay3 || canPay4) {
+        boolean canPay6 = (payCount == payType3ActualMoney && babyCoinNumber == PayType3UseBabycoin && babyCoinNumber  <= babyCoinVo.getCash());
+        if (canPay1 || canPay2 || canPay3 || canPay4 || canPay5 || canPay6) {
             //获取统一支付接口参数
             request.setAttribute("payPrice", Float.valueOf(payCount));
             request.setAttribute("feeType", "doctorConsultPay");
