@@ -429,7 +429,7 @@ $(document).ready(function(){
                     type: 'get',
                     data: {
                         payPrice:endCoin ,
-                        babyCoinNumber: cashNum
+                        babyCoinNumber: cashNum*10
                     },
                     cache: false,
                     success: function (data) {
