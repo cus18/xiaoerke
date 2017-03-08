@@ -1,0 +1,15 @@
+<ion-view view-title='真假老公' >
+    <ion-content style="top:0px;">
+        <div class="testBox">
+            <ul>
+                <li ng-repeat="item in data">
+                    <h3>{{item.question}}</h3>
+                    <div class="answer">
+                        <span ng-repeat="list in item.answer" ng-click="choose($index,item)">{{list}}</span>
+                    </div>
+                </li>
+            </ul>
+            <img ng-click="Submit()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appHusband/test/btn.png" alt=""/>
+        </div>
+    </ion-content>
+</ion-view>

@@ -127,8 +127,19 @@ public class NgRouteController extends BaseController {
     public String appWfdbIndex() {
         return "angular/appWfdbIndex";
     }
+
     /**
-     *appWfdb 五福夺宝
+     *appHusband 真假老公
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/appHusband",method = {RequestMethod.POST, RequestMethod.GET})
+    public String appHusbandIndex() {
+        return "angular/appHusbandIndex";
+    }
+
+
+    /**
+     *appSharePullNew 分享拉新
      */
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/share",method = {RequestMethod.POST, RequestMethod.GET})
