@@ -1,6 +1,6 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
-    '$scope','$state','$stateParams','CheackAttention',
-    function ($scope,$state,$stateParams,CheackAttention) {
+    '$scope','$state','$stateParams','$ionicScrollDelegate','CheackAttention',
+    function ($scope,$state,$stateParams,$ionicScrollDelegate,CheackAttention) {
 
 
         $scope.maskStatus=false;//遮罩层
