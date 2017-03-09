@@ -40,8 +40,8 @@
             <div class="receiveBox" ng-if="receiveLock">
                 <img width="100%" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/modifyShare/banner.png">
                 <div class="text">
-                    <div class="head"><img src="" alt=""/></div>
-                    <span class="giver">{{}}送给您</span>
+                    <div class="head"><img ng-src="{{headImgUrl}}" alt=""/></div>
+                    <span class="giver">{{headImgNickName}}送给您</span>
                     <b class="babyCoin">宝宝币：{{balance}}枚=￥{{balance/10}}元</b>
                 </div>
             </div>
