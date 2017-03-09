@@ -1,7 +1,7 @@
 angular.module('controllers', ['ionic']).controller('picSpreadResultCtrl', [
     '$scope','$state','$stateParams','PicSpread',
     function ($scope,$state,$stateParams,PicSpread) {
-        $scope.title ="童言趣语小故事";
+        $scope.title ="我的爱国心";
         $scope.pageLoading =true;// 页面加载是否完成
         $scope.picUrl = "";
 
