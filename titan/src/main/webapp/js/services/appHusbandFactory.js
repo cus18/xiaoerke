@@ -13,6 +13,6 @@ define(['appHusband'], function (app) {
             return $resource('util/getConfig');
         }])
         .factory('CheackAttention',['$resource',function ($resource){
-            return $resource('isAttention');
+            return $resource(activity+'isAttention');
         }])
 })
