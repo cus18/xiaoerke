@@ -244,6 +244,7 @@ public class BabyCoinServiceImpl implements BabyCoinService {
                 redPacketInfoService.upsert((queryInLog),
                         new Update().update("balance", vo.getBalance()-shareCoin));
                 resultMap.put("packetstatus","share");
+                recordVoList.add(recordVo);
                 resultMap.put("recordVoList",recordVoList);
             }else{
                 resultMap.put("packetstatus","isend");
