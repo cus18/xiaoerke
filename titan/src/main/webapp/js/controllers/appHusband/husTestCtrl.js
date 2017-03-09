@@ -76,14 +76,14 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
             $scope.maskStatus=false;
         }
         //分享到朋友圈或者微信
-       /* var loadShare = function($scope){
+       var loadShare = function($scope){
             // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
             //     $scope.uuid = data.uuid;
             // });
             GetConfig.save({}, function (data) {
                 $scope.inviteUrlData = data.publicSystemInfo.redPackageShareUrl;
-                var share = $scope.inviteUrlData + $scope.openid+","+$scope.market+",";//最后url=41，openid,marketer
-
+                //var share = $scope.inviteUrlData + $scope.openid+","+$scope.market+",";//最后url=41，openid,marketer
+                var share='http://192.168.1.166:8080/titan/appHusband#/guide'
                 // var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
                 // if(version=="a"){
                 version="a";
@@ -122,7 +122,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                                 wx.onMenuShareTimeline({
                                     title: '', // 分享标题
                                     link: share, // 分享链接
-                                    imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
+                                    imgUrl: 'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appHusband/test/share.jpg', // 分享图标
                                     success: function (res) {
 
                                     },
@@ -133,7 +133,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                                     title: '', // 分享标题
                                     desc: '',// 分享描述
                                     link: share, // 分享链接
-                                    imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
+                                    imgUrl: 'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appHusband/test/share.jpg', // 分享图标
                                     success: function (res) {
 
                                     },
@@ -149,8 +149,8 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                 });
 
             });
-        };*/
-
+        };
+        loadShare();
 
         setTimeout(function(){
             $('.mask').height($('.testBox').height())
