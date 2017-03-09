@@ -1,8 +1,11 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
     '$scope','$state','$stateParams','MyselfInfoAppointmentDetail',
-    'OrderPayMemberServiceOperation','GetUserMemberService','$location','ngDialog',
-    function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog) {
-       $scope.data=[{
+    'OrderPayMemberServiceOperation','GetUserMemberService','$location','ngDialog','$ionicScrollDelegate','GetConfig',
+    function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog,$ionicScrollDelegate,GetConfig) {
+
+
+        $scope.maskStatus=false;//遮罩层
+        $scope.data=[{
            question:'1,情人节你老公会',
            answer:['A、忘记了','B、从来不过','C、送花送礼物','D、为你准备了惊喜'],
            mark:0
@@ -40,8 +43,10 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                 $(this).addClass('cur').siblings().removeClass('cur');
             })
         },1000);
+        $scope.resultNum;
         $scope.sum=0;
         $scope.Submit=function(){
+
             for(var i=0;i<$scope.data.length;i++){
                 if($scope.data[i].mark==0){
                     $scope.sum=0;
@@ -51,9 +56,103 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                     $scope.sum+=$scope.data[i].mark;
                 }
             }
-            alert($scope.sum);
+            if($scope.sum<=60){
+                $scope.resultNum=1;
+            }else if($scope.sum>60 && $scope.sum<=75){
+                $scope.resultNum=2;
+            }else if($scope.sum>75 && $scope.sum<=90){
+                $scope.resultNum=3;
+            }else if($scope.sum>90){
+                $scope.resultNum=4;
+            }
+
+            $scope.maskStatus=true;
+            $ionicScrollDelegate.scrollTop();
+            $('.view-container').animate({scrollTop:0}, 0);
             $scope.sum=0;
         }
+        $scope.shutMask=function(){
+            $scope.maskStatus=false;
+        }
+        //分享到朋友圈或者微信
+       /* var loadShare = function($scope){
+            // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
+            //     $scope.uuid = data.uuid;
+            // });
+            GetConfig.save({}, function (data) {
+                $scope.inviteUrlData = data.publicSystemInfo.redPackageShareUrl;
+                var share = $scope.inviteUrlData + $scope.openid+","+$scope.market+",";//最后url=41，openid,marketer
 
+                // var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
+                // if(version=="a"){
+                version="a";
+                var timestamp;//时间戳
+                var nonceStr;//随机字符串
+                var signature;//得到的签名
+                var appid;//得到的签名
+                $.ajax({
+                    url:"wechatInfo/getConfig",// 跳转到 action
+                    async:true,
+                    type:'get',
+                    data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+                    cache:false,
+                    dataType:'json',
+                    success:function(data) {
+                        if(data!=null ){
+                            timestamp=data.timestamp;//得到时间戳
+                            nonceStr=data.nonceStr;//得到随机字符串
+                            signature=data.signature;//得到签名
+                            appid=data.appid;//appid
+                            //微信配置
+                            wx.config({
+                                debug: false,
+                                appId: appid,
+                                timestamp:timestamp,
+                                nonceStr: nonceStr,
+                                signature: signature,
+                                jsApiList: [
+                                    'onMenuShareTimeline',
+                                    'onMenuShareAppMessage',
+                                    'previewImage'
+                                ] // 功能列表
+                            });
+                            wx.ready(function () {
+                                // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+                                wx.onMenuShareTimeline({
+                                    title: '', // 分享标题
+                                    link: share, // 分享链接
+                                    imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
+                                    success: function (res) {
+
+                                    },
+                                    fail: function (res) {
+                                    }
+                                });
+                                wx.onMenuShareAppMessage({
+                                    title: '', // 分享标题
+                                    desc: '',// 分享描述
+                                    link: share, // 分享链接
+                                    imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
+                                    success: function (res) {
+
+                                    },
+                                    fail: function (res) {
+                                    }
+                                });
+                            })
+                        }else{
+                        }
+                    },
+                    error : function() {
+                    }
+                });
+
+            });
+        };*/
+
+
+        setTimeout(function(){
+            $('.mask').height($('.testBox').height())
+        },300)
 
     }])

@@ -6,6 +6,8 @@
   min-height: 100%;
   background-color: #85cfea;
   padding-bottom:1.408rem;
+  position: relative;
+  overflow: hidden;
 }
 .testBox ul{
   width:15.466667rem;
@@ -52,10 +54,24 @@
 }
 
 
-.testBox img{
+.testBox .Button{
   display: block;
   width:12.16rem;
   hieght:2.133333rem;
   margin: 0 auto;
   margin-top:0.64rem;
+}
+
+.mask{
+  width:100%;
+  height:100%;
+  background-color: rgba(0, 0, 0, .88);
+  position:fixed;
+  z-index: 1000;
+  top:0;
+}
+
+.mask img{
+  width:80%;
+  height:12rem;
 }
