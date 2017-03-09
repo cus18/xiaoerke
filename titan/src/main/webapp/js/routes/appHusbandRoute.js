@@ -65,9 +65,8 @@ define(['appHusband','swiper','appHusbandFactory'], function(app){
                             }
                         }
                     })
-                    //老用户邀请好友页面
                     .state('husResult', {
-                        url: '/husResult',
+                        url: '/husResult:/id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'husResultCtrl',
                         resolve: {

@@ -2,7 +2,7 @@
  * 取得实际位置
  * 调用方式：geoFactory.getGeo();
  */
-var activity='activity/'
+var activity='cheakHusband/'
 
 define(['appHusband'], function (app) {
     app
@@ -11,5 +11,8 @@ define(['appHusband'], function (app) {
         }])
         .factory('GetConfig',['$resource',function ($resource){
             return $resource('util/getConfig');
+        }])
+        .factory('CheackAttention',['$resource',function ($resource){
+            return $resource('isAttention');
         }])
 })

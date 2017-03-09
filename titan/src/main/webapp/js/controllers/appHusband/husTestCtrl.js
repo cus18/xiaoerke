@@ -1,7 +1,6 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
-    '$scope','$state','$stateParams','MyselfInfoAppointmentDetail',
-    'OrderPayMemberServiceOperation','GetUserMemberService','$location','ngDialog','$ionicScrollDelegate','GetConfig',
-    function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog,$ionicScrollDelegate,GetConfig) {
+    '$scope','$state','$stateParams','CheackAttention',
+    function ($scope,$state,$stateParams,CheackAttention) {
 
 
         $scope.maskStatus=false;//遮罩层
@@ -77,16 +76,8 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
         }
         //分享到朋友圈或者微信
        var loadShare = function($scope){
-            // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
-            //     $scope.uuid = data.uuid;
-            // });
-            GetConfig.save({}, function (data) {
-                $scope.inviteUrlData = data.publicSystemInfo.redPackageShareUrl;
-                //var share = $scope.inviteUrlData + $scope.openid+","+$scope.market+",";//最后url=41，openid,marketer
+
                 var share='http://192.168.1.166:8080/titan/appHusband#/guide'
-                // var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
-                // if(version=="a"){
-                version="a";
                 var timestamp;//时间戳
                 var nonceStr;//随机字符串
                 var signature;//得到的签名
@@ -113,8 +104,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                                 signature: signature,
                                 jsApiList: [
                                     'onMenuShareTimeline',
-                                    'onMenuShareAppMessage',
-                                    'previewImage'
+                                    'onMenuShareAppMessage'
                                 ] // 功能列表
                             });
                             wx.ready(function () {
@@ -124,7 +114,13 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appHusband/test/share.jpg', // 分享图标
                                     success: function (res) {
-
+                                        CheackAttention.save({},function (data) {
+                                            if("isattention" == data.status){
+                                                $state.go("husResult",{"id":$scope.resultNum});
+                                            } else {
+                                                //提示关注
+                                            }
+                                        })
                                     },
                                     fail: function (res) {
                                     }
@@ -135,7 +131,13 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appHusband/test/share.jpg', // 分享图标
                                     success: function (res) {
-
+                                        CheackAttention.save({},function (data) {
+                                            if("isattention" == data.status){
+                                                $state.go("husResult",{"id":$scope.resultNum});
+                                            } else {
+                                                //提示关注
+                                            }
+                                        })
                                     },
                                     fail: function (res) {
                                     }
@@ -147,8 +149,6 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                     error : function() {
                     }
                 });
-
-            });
         };
         loadShare();
 
