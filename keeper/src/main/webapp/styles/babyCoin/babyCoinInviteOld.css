@@ -91,7 +91,7 @@
     left:50%;
     margin-left:-129.5px;
 }
-.babyCoinInviteOld .new-edition .top .text{
+/*.babyCoinInviteOld .new-edition .top .text{
     position: absolute;
     width:100%;
     bottom:50px;
@@ -103,7 +103,60 @@
 .babyCoinInviteOld .new-edition .top .store {
     font-weight: 300;
     margin-top:10px;
- }
+ }*/
+
+.babyCoinInviteOld .new-edition .receiveBox{
+    width:100%;
+    height:auto;
+}
+.babyCoinInviteOld .new-edition .receiveBox .text{
+    width:80%;
+    height: 90px;
+    margin:0 auto;
+    margin-top:-30px;
+    background: url('http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/modifyShare/black.png')no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+}
+.babyCoinInviteOld .new-edition .receiveBox .text .head{
+    width:45px;
+    height:45px;
+    border:solid 2px #f6961e;
+    border-radius: 50%;
+    position: absolute;
+    top:-22.5px;
+    left:50%;
+    margin-left:-22.5px;
+    z-index: 100;
+    overflow: hidden;
+}
+.babyCoinInviteOld .new-edition .receiveBox .text .head img{
+    width:100%;
+    height:100%;
+}
+.babyCoinInviteOld .new-edition .receiveBox .text .giver{
+    display: block;
+    width:100%;
+    text-align: center;
+    position: absolute;
+    top:37.5px;
+    font-size: 13px;
+    color:#666;
+}
+.babyCoinInviteOld .new-edition .receiveBox .text .babyCoin{
+    display: block;
+    width:100%;
+    text-align: center;
+    position: absolute;
+    bottom:15px;
+    font-size:17px;
+    color:#ff5237;
+}
+
+
+
+
+
 .babyCoinInviteOld .new-edition .friend-list{
     margin:44px 24px 0;
     position: relative;
@@ -152,4 +205,70 @@
 }
 .bottom-btn-coin div.no{
     background-color:#1975cf;
+}
+.reciveBtn{
+    background:none;
+    display: flex;
+    justify-content: space-between;
+    width:90%;
+    left:50%;
+    margin-left:-45%;
+}
+.reciveBtn div{
+    float: left;
+    width:45%;
+    ;
+    border-radius: 5px;
+}
+.reciveBtn div:nth-child(1){
+    background:#ff5237;
+}
+.reciveBtn div:nth-child(2){
+    background:#379aff;
+}
+.mask{
+    width:100%;
+    height:100%;
+    position: absolute;
+    top:0;
+    z-index: 10000;
+    background: rgba(0,0,0,.88);
+}
+
+.mask .code{
+    width:225px;
+    height:225px;
+    background:url("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/modifyShare/mask.png")no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top:100px;
+    left:50%;
+    margin-left:-112.5px;
+}
+.mask .code img{
+    width:150px;
+    height:150px;
+    position: absolute;
+    bottom:15px;
+    left:50%;
+    margin-left:-75px;
+}
+.mask .codeTop{
+    display: block;
+    width:100%;
+    text-align: center;
+    height:58px;
+    line-height: 60px;
+    font-size: 14px;
+    color:#fff;
+}
+
+.mask .close{
+    width:30px;
+    height:30px;
+    position: absolute;
+    top:-15px;
+    right:-15px;
+    background:url("http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/modifyShare/close.png")no-repeat;
+    background-size: 100% 100%;
 }

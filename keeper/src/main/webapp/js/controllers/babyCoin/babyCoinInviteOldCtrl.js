@@ -90,12 +90,12 @@ angular.module('controllers', [])
             /*点击最下面 立即使用 按钮*/
             $scope.goUse = function () {
                 recordLogs("ZUYQ_LJYQ");
-                $state.go("babyCoinTicketList");
+               // $state.go("babyCoinTicketList");
             };
             /*点击最下面 我来发红包 按钮*/
             $scope.sendRedPackets = function () {
                 recordLogs("ZUYQ_WLFHB");
-                $state.go("babyCoinInvitePage");
+               // $state.go("babyCoinInvitePage");
             };
             $scope.invitePageInit = function () {
                 CreateInviteCard.save({"marketer":$scope.marketer,"oldOpenId":$scope.oldOpenId}, function (data) {
@@ -132,7 +132,7 @@ angular.module('controllers', [])
             };
             $scope.linkInvitePage = function () {
                 recordLogs("ZXYQ_YQK_YQGZ");
-                $state.go("babyCoinInvitePage");
+               // $state.go("babyCoinInvitePage");
             };
 
             //分享到朋友圈或者微信
@@ -205,5 +205,13 @@ angular.module('controllers', [])
                 })
 
             };
+
+            $scope.maskStatus=false;
+            $scope.maskShow=function(){
+                $scope.maskStatus=true;
+            }
+            $scope.maskHide=function(){
+                $scope.maskStatus=false;
+            }
 
         }])

@@ -23,18 +23,27 @@
         <!--一下是之前版本-->
         <div class="new-edition">
             <!--未领取-->
-            <div class="top tc receive-gone" ng-if="!receiveLock" >
+            <div class="top tc receive-gone" ng-if="!receiveLock" ><!--!receiveLock-->
                 <img width="100%" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/receiveNo1.png">
                 <img class="text-pic my-img2" width="196" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/receiveNo2.png">
             </div>
             <!--已领取-->
-            <div class="top tc" ng-if="receiveLock">
+          <!-- <div class="top tc" ng-if="receiveLock">
                 <img width="100%" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/receive1.png">
                 <div class="text tc">
-                    <div class="key f3 c5">成功领到</div>
+                    <div class="key f3 c5">{{}}送给您</div>
                     <div class="f7 coin">宝宝币：{{balance}}枚=￥{{balance/10}}元</div>
                 </div>
                 <div class="store f2 c5">宝宝币已放入宝大夫个人中心</div>
+            </div>-->
+
+            <div class="receiveBox" ng-if="receiveLock">
+                <img width="100%" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/modifyShare/banner.png">
+                <div class="text">
+                    <div class="head"><img src="" alt=""/></div>
+                    <span class="giver">{{}}送给您</span>
+                    <b class="babyCoin">宝宝币：{{balance}}枚=￥{{balance/10}}元</b>
+                </div>
             </div>
 
             <div class="friend-list">
@@ -54,7 +63,8 @@
     <div ng-if="!receiveLock" class="bottom-btn bottom-btn-coin" ng-click="sendRedPackets()">
         <div class="no">我来发红包</div>
     </div>
-    <div ng-if="receiveLock" class="bottom-btn bottom-btn-coin" ng-click="goUse()">
-        <div>立即使用</div>
+    <div ng-if="receiveLock" class="bottom-btn reciveBtn">
+        <div ng-click="maskShow()">立即咨询</div> <div  ng-click="goUse()">立即兑换</div>
     </div>
+    <div class="mask" ng-show="maskStatus"><div class="code"><i ng-click="maskHide()" class="close"></i><span class="codeTop">长按识别二维码，直接可以咨询</span><img data-tap-disabled="true" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appHusband/result/twoCode.jpg" alt=""/></div></div>
 </ion-view>
