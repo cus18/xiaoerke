@@ -2,7 +2,7 @@ angular.module('controllers', ['ionic']).controller('picSpreadIndexCtrl', [
     '$scope','$state','$stateParams',
     function ($scope,$state,$stateParams) {
 
-        $scope.title ="童言趣语小故事";
+        $scope.title ="我的爱国心";
         $scope.info = {};
         var recordLogs = function(val){
             $.ajax({
