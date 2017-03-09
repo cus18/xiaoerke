@@ -6,8 +6,8 @@ var activity='activity/'
 
 define(['appSharePullNew'], function (app) {
     app
-        .factory('GetCardInfoList',['$resource',function ($resource){
-            return $resource(activity + 'getCardInfoList');
+        .factory('GetConfig',['$resource',function ($resource){
+            return $resource('util/getConfig');
         }])
 
 })
