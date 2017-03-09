@@ -46,41 +46,41 @@ public class CheakHusbandController {
         WechatAttention attention = wechatAttentionService.getAttentionByOpenId(openid);
         if(attention == null || attention.getDate() == null){//新用户
             responseMap.put("status","notattention");
+            redisTemplate.opsForValue().set("husbandCheack"+openid, type,10, TimeUnit.DAYS);
         }else {//老用户
             responseMap.put("status","isattention");
         }
-        redisTemplate.opsForValue().set("husbandCheack"+openid, type,10, TimeUnit.DAYS);
         return responseMap;
     }
 
 
-    /**
-     * 用于关注后展示测试结果
-     * @param
-     * @return map
-     */
-    @RequestMapping(value = "/showCheackInfo", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    Map<String,Object> showCheackInfo(HttpServletRequest request,  HttpSession session){
-        Map<String,Object> responseMap = new HashMap<String, Object>();
-        String openid = WechatUtil.getOpenId(session,request);
-        String type = (String) redisTemplate.opsForValue().get("husbandCheack"+openid);
-        responseMap.put("type",type);
-        return responseMap;
-    }
-
-
-    /**
-     * 保存评测结果
-     * */
-    @RequestMapping(value = "/saveCheackInfo", method = {RequestMethod.POST, RequestMethod.GET})
-    public
-    @ResponseBody
-    Map<String,Object> saveCheackInfo(HttpServletRequest request,  HttpSession session,String type){
-        Map<String,Object> responseMap = new HashMap<String, Object>();
-        String openid = WechatUtil.getOpenId(session,request);
-        redisTemplate.opsForValue().set("husbandCheack"+openid, type,10, TimeUnit.DAYS);
-        return responseMap;
-    }
+//    /**
+//     * 用于关注后展示测试结果
+//     * @param
+//     * @return map
+//     */
+//    @RequestMapping(value = "/showCheackInfo", method = {RequestMethod.POST, RequestMethod.GET})
+//    public
+//    @ResponseBody
+//    Map<String,Object> showCheackInfo(HttpServletRequest request,  HttpSession session){
+//        Map<String,Object> responseMap = new HashMap<String, Object>();
+//        String openid = WechatUtil.getOpenId(session,request);
+//        String type = (String) redisTemplate.opsForValue().get("husbandCheack"+openid);
+//        responseMap.put("type",type);
+//        return responseMap;
+//    }
+//
+//
+//    /**
+//     * 保存评测结果
+//     * */
+//    @RequestMapping(value = "/saveCheackInfo", method = {RequestMethod.POST, RequestMethod.GET})
+//    public
+//    @ResponseBody
+//    Map<String,Object> saveCheackInfo(HttpServletRequest request,  HttpSession session,String type){
+//        Map<String,Object> responseMap = new HashMap<String, Object>();
+//        String openid = WechatUtil.getOpenId(session,request);
+//        redisTemplate.opsForValue().set("husbandCheack"+openid, type,10, TimeUnit.DAYS);
+//        return responseMap;
+//    }
 }
