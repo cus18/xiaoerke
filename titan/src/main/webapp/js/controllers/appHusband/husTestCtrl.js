@@ -63,7 +63,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                 $scope.resultNum=3;
             }else if($scope.sum>120){
                 $scope.resultNum=4;
-            }headImgUrl
+            }
             loadShare($scope);
             $scope.maskStatus=true;
             $ionicScrollDelegate.scrollTop();
