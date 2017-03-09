@@ -5,7 +5,7 @@
                 <div class="con txt">
                     <textarea id="txt" placeholder="说点什么吧～" draggable="false" maxlength=200></textarea>
                 </div>
-                <div class="share_con"><span class="agree">同时分享我和医生的咨询记录（不包含隐私信息）</span></div>
+                <div class="share_con" ng-click=""><span ng-class="{{agree:agree,disagree:!argee}}agree">同时分享我和医生的咨询记录（不包含隐私信息）</span></div>
                 <div class="foot">分享给宝妈们</div>
             </div>
     </ion-content>
