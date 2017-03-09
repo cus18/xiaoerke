@@ -23,7 +23,7 @@ define(['appSharePullNew','swiper','appSharePullNewFactory'], function(app){
                 /*首页*/
                 $stateProvider
                     .state('home', {
-                        url: '/home',
+                        url: '/home/:sessionid',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'homeCtrl',
                         resolve: {
