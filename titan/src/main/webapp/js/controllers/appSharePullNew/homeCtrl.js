@@ -1,7 +1,6 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
     '$scope','$state','$stateParams',"GetConfig",
     function ($scope,$state,$stateParams,GetConfig) {
-
         $scope.maskStatus=false;
         //安卓手机执行
         $(document).ready(function(){
