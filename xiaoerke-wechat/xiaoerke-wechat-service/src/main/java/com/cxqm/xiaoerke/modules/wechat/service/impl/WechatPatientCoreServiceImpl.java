@@ -29,9 +29,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -139,6 +141,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
     @Autowired
     private RedPackageActivityInfoService redPackageActivityInfoService ;
+
+    @Resource(name = "redisTemplate")
+    private RedisTemplate<String, Object> redisTemplate;
 
     private static ExecutorService threadExecutorSingle = Executors.newSingleThreadExecutor();
     private static ExecutorService threadExecutorCash = Executors.newCachedThreadPool();
@@ -658,7 +663,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=44";
             Map parameter = systemService.getWechatParameter();
             String token = (String) parameter.get("token");
-            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), "来吧，各位小宝贝们，一起来接受圣诞老人的祝福吧！\n\n<a href='" + url + "'>接祝福喽>></a>");
+            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), "我们都是960万平方公里的一名中国人，\n当国家安全利益受侵害时，我们更应团结起来一致对外，\n点击链接加入抵制萨德的队伍中，\n<a href='" + url + "'>让外国人看看我们也不是好欺负的>></a>");
         } else if (EventKey.indexOf("PD_YQKFC") > -1) {
 //             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
             LogUtils.saveLog("TPCB_GZTS", xmlEntity.getFromUserName());
@@ -671,6 +676,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String shopId = xmlEntity.getShopId();
             String openid = xmlEntity.getFromUserName();
             LogUtils.saveLog("WifiConnected",openid+"_"+shopId);
+        }else if(EventKey.indexOf("YYHD_BDF_ZJLG") > -1){
+            Map parameter = systemService.getWechatParameter();
+            String token = (String) parameter.get("token");
+            String type = (String) redisTemplate.opsForValue().get("husbandCheack"+xmlEntity.getFromUserName());
+            String msg = "亲，你咋才来捏~不知道3.15也开始打击“假老公了”吗？想要知道你是不是也嫁了个假老公\n<a href='"+sysPropertyVoWithBLOBsVo.getTitanWebUrl()+"/titan/appHusband#/husResult/"+type+"'>麻利的赶紧点击链接》》</a>";
+            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), msg);
         }
 
 
