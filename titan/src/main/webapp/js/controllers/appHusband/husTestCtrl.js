@@ -119,6 +119,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                                                 $state.go("husResult",{"id": $scope.resultNum});
                                             } else {
                                                 //提示关注
+                                                $state.go("husFollow");
                                             }
                                         })
                                     },
@@ -136,6 +137,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                                                 $state.go("husResult",{"id": $scope.resultNum});
                                             } else {
                                                 //提示关注
+                                                $state.go("husFollow");
                                             }
                                         })
                                     },
