@@ -1,6 +1,8 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
     '$scope','$state','$stateParams',"GetConfig",
     function ($scope,$state,$stateParams,GetConfig) {
+
+        $scope.maskStatus=false;
         //安卓手机执行
         $(document).ready(function(){
             var Height=$(window).height();
@@ -43,6 +45,22 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                 }, 50)
             })
         });
+
+
+        $scope.agree=true;
+        $scope.choose=function(){
+            if($scope.agree){
+                $scope.agree=false;
+            }else{
+                $scope.agree=true;
+            }
+        }
+        $scope.maskShow=function(){
+            $scope.maskStatus=true;
+        }
+        $scope.maskHide=function(){
+            $scope.maskStatus=false;
+        }
         //分享到朋友圈或者微信
        var loadShare = function($scope){
             GetConfig.save({}, function (data) {
