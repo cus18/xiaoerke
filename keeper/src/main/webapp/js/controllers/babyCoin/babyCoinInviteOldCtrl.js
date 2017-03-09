@@ -104,6 +104,7 @@ angular.module('controllers', [])
                         'background-size': '100% 100%'
                     };
                     $scope.headImgNickName = data.babyCoinVo.nickName;
+                    $scope.headImgUrl = data.headImgUrl;
                     /*$scope.userQRCode = {
                      'background': 'url(' + data.userQRCode + ')',
                      'background-size': '100% 100%'
