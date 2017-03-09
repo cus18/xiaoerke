@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +38,9 @@ public class CheakHusbandController {
      * @return map
      */
     @RequestMapping(value = "/isAttention", method = {RequestMethod.POST, RequestMethod.GET})
-    public Map<String,Object> isAttention(HttpServletRequest request,  HttpSession session,@RequestParam String type){
+    public
+    @ResponseBody
+    Map<String,Object> isAttention(HttpServletRequest request,  HttpSession session,@RequestParam String type){
         String openid = WechatUtil.getOpenId(session,request);
         Map<String,Object> responseMap = new HashMap<String, Object>();
         WechatAttention attention = wechatAttentionService.getAttentionByOpenId(openid);
@@ -57,7 +60,9 @@ public class CheakHusbandController {
      * @return map
      */
     @RequestMapping(value = "/showCheackInfo", method = {RequestMethod.POST, RequestMethod.GET})
-    public Map<String,Object> showCheackInfo(HttpServletRequest request,  HttpSession session){
+    public
+    @ResponseBody
+    Map<String,Object> showCheackInfo(HttpServletRequest request,  HttpSession session){
         Map<String,Object> responseMap = new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session,request);
         String type = (String) redisTemplate.opsForValue().get("husbandCheack"+openid);
@@ -70,7 +75,9 @@ public class CheakHusbandController {
      * 保存评测结果
      * */
     @RequestMapping(value = "/saveCheackInfo", method = {RequestMethod.POST, RequestMethod.GET})
-    public Map<String,Object> saveCheackInfo(HttpServletRequest request,  HttpSession session,String type){
+    public
+    @ResponseBody
+    Map<String,Object> saveCheackInfo(HttpServletRequest request,  HttpSession session,String type){
         Map<String,Object> responseMap = new HashMap<String, Object>();
         String openid = WechatUtil.getOpenId(session,request);
         redisTemplate.opsForValue().set("husbandCheack"+openid, type,10, TimeUnit.DAYS);
