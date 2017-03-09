@@ -114,9 +114,9 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appHusband/test/share.jpg', // 分享图标
                                     success: function (res) {
-                                        CheackAttention.save({},function (data) {
+                                        CheackAttention.get({"type": $scope.resultNum},function (data) {
                                             if("isattention" == data.status){
-                                                $state.go("husResult",{"id":$scope.resultNum});
+                                                $state.go("husResult",{"id": $scope.resultNum});
                                             } else {
                                                 //提示关注
                                             }
@@ -131,9 +131,9 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appHusband/test/share.jpg', // 分享图标
                                     success: function (res) {
-                                        CheackAttention.save({},function (data) {
+                                        CheackAttention.get({"type": $scope.resultNum},function (data) {
                                             if("isattention" == data.status){
-                                                $state.go("husResult",{"id":$scope.resultNum});
+                                                $state.go("husResult",{"id": $scope.resultNum});
                                             } else {
                                                 //提示关注
                                             }
