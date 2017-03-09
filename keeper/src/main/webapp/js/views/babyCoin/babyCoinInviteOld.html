@@ -23,7 +23,7 @@
         <!--一下是之前版本-->
         <div class="new-edition">
             <!--未领取-->
-            <div class="top tc receive-gone" ng-if="!receiveLock" ><!--!receiveLock-->
+            <div class="top tc receive-gone" ng-if="noReceiveLock" ><!--!receiveLock-->
                 <img width="100%" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/receiveNo1.png">
                 <img class="text-pic my-img2" width="196" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/babyCoin/receiveNo2.png">
             </div>
@@ -60,7 +60,7 @@
             </div>
         </div>
     </ion-content>
-    <div ng-if="!receiveLock" class="bottom-btn bottom-btn-coin" ng-click="sendRedPackets()">
+    <div ng-if="noReceiveLock" class="bottom-btn bottom-btn-coin" ng-click="sendRedPackets()">
         <div class="no">我来发红包</div>
     </div>
     <div ng-if="receiveLock" class="bottom-btn reciveBtn">

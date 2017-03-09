@@ -2,6 +2,8 @@ angular.module('controllers', [])
     .controller('babyCoinInviteOldCtrl',
     ['$scope','$state','CreateInviteCard','$stateParams','GetConfig','$ionicScrollDelegate','redPacketShare',
         function ($scope,$state,CreateInviteCard,$stateParams,GetConfig,$ionicScrollDelegate,redPacketShare) {
+            $scope.receiveLock=false;
+            $scope.noReceiveLock=false;
             var recordLogs = function(val){
                 $.ajax({
                     url:"util/recordLogs",// 跳转到 action
@@ -35,14 +37,17 @@ angular.module('controllers', [])
                 // 已经领取
                 if(data.packetstatus == "receive"){
                     $scope.receiveLock = true;//未领取
+                    $scope.noReceiveLock=false;
                     $scope.balance = data.balance;//领取金额
                     $scope.recordVoList = data.recordVoList;//红包分配情况
                 }else if(data.packetstatus == "share"){
                     $scope.receiveLock = true;//未领取
+                    $scope.noReceiveLock=false;
                     $scope.balance = data.balance;//领取金额
                     $scope.recordVoList = data.recordVoList;//红包分配情况
                 }else if(data.packetstatus == "isend"){
                     $scope.receiveLock = false;//未领取
+                    $scope.noReceiveLock=true;
                     $scope.recordVoList = data.recordVoList;//红包分配情况
                 }
 
