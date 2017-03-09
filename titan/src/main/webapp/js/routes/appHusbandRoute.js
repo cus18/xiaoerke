@@ -66,7 +66,7 @@ define(['appHusband','swiper','appHusbandFactory'], function(app){
                         }
                     })
                     .state('husResult', {
-                        url: '/husResult:/id',
+                        url: '/husResult/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'husResultCtrl',
                         resolve: {
