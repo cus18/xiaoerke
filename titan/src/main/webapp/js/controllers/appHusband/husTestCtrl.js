@@ -72,6 +72,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
             $scope.sum=0;
         }
         $scope.shutMask=function(){
+            console.log(123)
             $scope.maskStatus=false;
         }
         //分享到朋友圈或者微信
