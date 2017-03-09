@@ -55,15 +55,15 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                     $scope.sum+=$scope.data[i].mark;
                 }
             }
-            if($scope.sum<=60){
+            if($scope.sum<=70){
                 $scope.resultNum=1;
-            }else if($scope.sum>60 && $scope.sum<=75){
+            }else if($scope.sum>70 && $scope.sum<=100){
                 $scope.resultNum=2;
-            }else if($scope.sum>75 && $scope.sum<=90){
+            }else if($scope.sum>100 && $scope.sum<=120){
                 $scope.resultNum=3;
-            }else if($scope.sum>90){
+            }else if($scope.sum>120){
                 $scope.resultNum=4;
-            }
+            }headImgUrl
             loadShare($scope);
             $scope.maskStatus=true;
             $ionicScrollDelegate.scrollTop();
