@@ -45,9 +45,9 @@ public class CheakHusbandController {
         Map<String,Object> responseMap = new HashMap<String, Object>();
         WechatAttention attention = wechatAttentionService.getAttentionByOpenId(openid);
         if(attention == null || attention.getDate() == null){//新用户
-            responseMap.put("status","isattention");
-        }else {//老用户
             responseMap.put("status","notattention");
+        }else {//老用户
+            responseMap.put("status","isattention");
         }
         redisTemplate.opsForValue().set("husbandCheack"+openid, type,10, TimeUnit.DAYS);
         return responseMap;
