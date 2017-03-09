@@ -1,7 +1,6 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
-    '$scope','$state','$stateParams','MyselfInfoAppointmentDetail',
-    'OrderPayMemberServiceOperation','GetUserMemberService','$location','ngDialog','$ionicScrollDelegate','GetConfig',
-    function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog,$ionicScrollDelegate,GetConfig) {
+    '$scope','$state','$stateParams','$ionicScrollDelegate','CheackAttention',
+    function ($scope,$state,$stateParams,$ionicScrollDelegate,CheackAttention) {
 
 
         $scope.maskStatus=false;//遮罩层
@@ -65,7 +64,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
             }else if($scope.sum>90){
                 $scope.resultNum=4;
             }
-
+            loadShare($scope);
             $scope.maskStatus=true;
             $ionicScrollDelegate.scrollTop();
             $('.view-container').animate({scrollTop:0}, 0);
@@ -77,16 +76,8 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
         }
         //分享到朋友圈或者微信
        var loadShare = function($scope){
-            // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
-            //     $scope.uuid = data.uuid;
-            // });
-            GetConfig.save({}, function (data) {
-                $scope.inviteUrlData = data.publicSystemInfo.redPackageShareUrl;
-                //var share = $scope.inviteUrlData + $scope.openid+","+$scope.market+",";//最后url=41，openid,marketer
-                var share='http://192.168.1.166:8080/titan/appHusband#/guide'
-                // var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
-                // if(version=="a"){
-                version="a";
+
+                var share='http://s68.baodf.com/titan/appHusband#/guide'
                 var timestamp;//时间戳
                 var nonceStr;//随机字符串
                 var signature;//得到的签名
@@ -113,29 +104,42 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                                 signature: signature,
                                 jsApiList: [
                                     'onMenuShareTimeline',
-                                    'onMenuShareAppMessage',
-                                    'previewImage'
+                                    'onMenuShareAppMessage'
                                 ] // 功能列表
                             });
                             wx.ready(function () {
                                 // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                 wx.onMenuShareTimeline({
-                                    title: '', // 分享标题
+                                    title: '别以为3.15没曝光就是正品了，好多“假老公”已经被四海八荒的消协特战组带走返厂了，你家那位还好吗？', // 分享标题
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appHusband/test/share.jpg', // 分享图标
                                     success: function (res) {
-
+                                        CheackAttention.get({"type": $scope.resultNum},function (data) {
+                                            if("isattention" == data.status){
+                                                $state.go("husResult",{"id": $scope.resultNum});
+                                            } else {
+                                                //提示关注
+                                                $state.go("husFollow");
+                                            }
+                                        })
                                     },
                                     fail: function (res) {
                                     }
                                 });
                                 wx.onMenuShareAppMessage({
-                                    title: '', // 分享标题
-                                    desc: '',// 分享描述
+                                    title: '晕~我竟嫁了个“假老公”，鬼知道我经历了什么', // 分享标题
+                                    desc: '这么多年过去了，我才发现我居然嫁了个“嫁老公”，点击链接，赶快看看你家老公合格吗？',// 分享描述
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appHusband/test/share.jpg', // 分享图标
                                     success: function (res) {
-
+                                        CheackAttention.get({"type": $scope.resultNum},function (data) {
+                                            if("isattention" == data.status){
+                                                $state.go("husResult",{"id": $scope.resultNum});
+                                            } else {
+                                                //提示关注
+                                                $state.go("husFollow");
+                                            }
+                                        })
                                     },
                                     fail: function (res) {
                                     }
@@ -147,11 +151,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husTestCtrl', [
                     error : function() {
                     }
                 });
-
-            });
         };
-        loadShare();
-
         setTimeout(function(){
             $('.mask').height($('.testBox').height())
         },300)

@@ -392,10 +392,28 @@ public class ConsultDoctorController extends BaseController {
     @ResponseBody
     Map<String, Object> sessionEnd(@RequestParam(required = true) String sessionId,
                                    @RequestParam(required = true) String userId) {
+        LogUtils.saveLog(sessionId,userId);
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         System.out.println("close session========" + sessionId + "==========userId========" + userId);
-        LogUtils.saveLog(sessionId,userId);
+        if(StringUtils.isNotNull(userId)){
+            if(userId.startsWith("doctorId=") && userId.contains("userId=")){
+                userId = userId.split("=")[2];
+            }
+            if(userId.contains("userId")){
+                if(userId.contains("=")){
+                    String[] str = userId.split("=");
+                    for(int i=0;i<str.length;i++){
+                        if(str[i].contains("userId")){
+                            userId = str[i+1];
+                            break ;
+                        }
+                    }
+                }else{
+                    userId = userId.substring(userId.indexOf("userId")+6);
+                }
+            }
+        }
         Map<String, Object> params = new HashMap<String, Object>();
         Map<String, Object> response = new HashMap<String, Object>();
         params.put("openid", userId);
@@ -548,7 +566,7 @@ public class ConsultDoctorController extends BaseController {
                     noReadMsg.put("uid",richConsultSession.getUserId());
                     String currentUrl = sysPropertyVoWithBLOBsVo.getCoopBhqUrl();
                     if(StringUtils.isNull(currentUrl)){
-                        currentUrl = "http://coapi.baohuquan.com/baodaifu";
+                        currentUrl = "http://3rd.baohuquan.com:20000/baodaifu";
                     }
                     String method = "POST";
                     String dataType="json";
@@ -590,7 +608,7 @@ public class ConsultDoctorController extends BaseController {
                 noReadMsg.put("uid",richConsultSession.getUserId());
                 String currentUrl = sysPropertyVoWithBLOBsVo.getCoopBhqUrl();
                 if(StringUtils.isNull(currentUrl)){
-                    currentUrl = "http://coapi.baohuquan.com/baodaifu";
+                    currentUrl = "http://3rd.baohuquan.com:20000/baodaifu";
                 }
                 String method = "POST";
                 String dataType="json";
@@ -691,7 +709,7 @@ public class ConsultDoctorController extends BaseController {
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("doctorId",userId);
         param.put("startRowNo",pageNo*10);
-        param.put("pageSize",pageSize);
+        param.put("pageSize", pageSize);
         response = consultDoctorInfoService.findDoctorAllEvaluation(param);
         return response;
     }

@@ -243,6 +243,8 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wxPay/patientPay.do?serviceType=nonRealTime&consultId="+parameters[1];
         }else if(url.startsWith("52")){  //集卡活动
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/appWfdb";
+        }else if(url.startsWith("54")){  //集卡活动
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/appHusband#/husGuide";
         }
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +

@@ -4,6 +4,5 @@ angular.module('controllers', ['ionic','ngDialog']).controller('husGuideCtrl', [
     function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog) {
         $scope.goTest=function(){
             $state.go('husTest');
-            alert(111)
         }
     }])
