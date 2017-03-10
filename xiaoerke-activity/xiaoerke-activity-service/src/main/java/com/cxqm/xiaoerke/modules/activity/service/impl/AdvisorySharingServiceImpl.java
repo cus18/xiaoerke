@@ -60,6 +60,14 @@ public class AdvisorySharingServiceImpl implements AdvisorySharingService{
         Query query = new Query(where("sessionId").is(sessionid)).with(new Sort(Sort.Direction.ASC, "createDate"));
         PaginationVo<ConsultRecordMongoVo> pagination = consultRecordService.getRecordDetailInfo(pageNo, pageSize, query, "permanent");
         List<ConsultRecordMongoVo> recordList  = pagination.getDatas();
+        recordList.addAll(recordList);
+        recordList.addAll(recordList);
+        recordList.addAll(recordList);
+        recordList.addAll(recordList);
+        recordList.addAll(recordList);
+        recordList.addAll(recordList);
+
+
         resultMap.put("recordList",recordList);
         //医生信息
         ConsultSession consultSession = consultSessionService.selectByPrimaryKey(Integer.parseInt(sessionid));
