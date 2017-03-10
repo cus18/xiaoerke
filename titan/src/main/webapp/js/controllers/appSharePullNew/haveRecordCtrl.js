@@ -1,90 +1,62 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('haveRecordCtrl', [
-    '$scope','$state','$stateParams','ConversationRecord',
-    function ($scope,$state,$stateParams,ConversationRecord) {
-        ConversationRecord.save({"sessionId":$stateParams.sessionId,"pageNum":1,"pageSize":10},function (data) {
+    '$scope','$state','$stateParams','ConversationRecord','$ionicScrollDelegate',
+    function ($scope,$state,$stateParams,ConversationRecord,$ionicScrollDelegate) {
+
+        //有聊天记录的状态
+        $scope.recordStatus=false;
+        //没有聊天记录的状态
+        $scope.noRecordStatus=false;
+
+        if($stateParams.status=='true'){
+            $scope.recordStatus=true;
+            $scope.noRecordStatus=false;
+        }else if($stateParams.status=='false'){
+            $scope.recordStatus=false;
+            $scope.noRecordStatus=true;
+            console.log($scope.noRecordStatus)
+        }
+        //查看全部的按钮状态
+        $scope.lookStatus=true;
+
+
+        ConversationRecord.save({"sessionId":$stateParams.sessionId,"pageNum":1,"pageSize":10000},function (data) {
+            //聊天记录
             $scope.recordList = data.recordList;
+
+
+            //用户昵称
+            $scope.nickname=data.attentionInfo.nickname;
+
+
+            //医生的信息
+            $scope.doctorInfo=data.doctorInfoVo;
+
+
+            //用户的头像
+            $scope.headImgUrl=data.headImgUrl;
+
+
+            //头像判断
+            //放到聊天记录里
+            for(var i=0;i<$scope.recordList.length;i++){
+                if($scope.recordList[i].senderId==$scope.recordList[i].userId){
+                    $scope.recordList[i].headurl= $scope.headImgUrl;
+                }else{
+                    $scope.recordList[i].headurl='http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/'+$scope.doctorInfo.userId;
+                }
+            }
+
+            $scope.twoRecord=$scope.recordList.slice(0,2)
+            $scope.record=$scope.twoRecord;
         });
 
+        $scope.lookAll=function(){
+            $scope.record=$scope.recordList;
+            $scope.lookStatus=false;
 
-
-        //分享到朋友圈或者微信
-       /* var loadShare = function($scope){
-            // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
-            //     $scope.uuid = data.uuid;
-            // });
-            GetConfig.save({}, function (data) {
-                $scope.inviteUrlData = data.publicSystemInfo.redPackageShareUrl;
-                    var share = $scope.inviteUrlData + $scope.openid+","+$scope.market+",";//最后url=41，openid,marketer
-
-                    // var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
-                    // if(version=="a"){
-                    version="a";
-                    var timestamp;//时间戳
-                    var nonceStr;//随机字符串
-                    var signature;//得到的签名
-                    var appid;//得到的签名
-                    $.ajax({
-                        url:"wechatInfo/getConfig",// 跳转到 action
-                        async:true,
-                        type:'get',
-                        data:{url:location.href.split('#')[0]},//得到需要分享页面的url
-                        cache:false,
-                        dataType:'json',
-                        success:function(data) {
-                            if(data!=null ){
-                                timestamp=data.timestamp;//得到时间戳
-                                nonceStr=data.nonceStr;//得到随机字符串
-                                signature=data.signature;//得到签名
-                                appid=data.appid;//appid
-                                //微信配置
-                                wx.config({
-                                    debug: false,
-                                    appId: appid,
-                                    timestamp:timestamp,
-                                    nonceStr: nonceStr,
-                                    signature: signature,
-                                    jsApiList: [
-                                        'onMenuShareTimeline',
-                                        'onMenuShareAppMessage',
-                                        'previewImage'
-                                    ] // 功能列表
-                                });
-                                wx.ready(function () {
-                                    // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
-                                    wx.onMenuShareTimeline({
-                                        title: '感恩妈妈节，在这里可以免费咨询三甲医院儿科专家,还有机会赢现金大礼', // 分享标题
-                                        link: share, // 分享链接
-                                        imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
-                                            success: function (res) {
-                                            //recordLogs("ZXYQ_YQY_SHARE");
-                                            // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
-                                            // });
-                                        },
-                                        fail: function (res) {
-                                        }
-                                    });
-                                    wx.onMenuShareAppMessage({
-                                        title: $scope.minename  + '向你推荐', // 分享标题
-                                        desc: '感恩妈妈节，在这里可以免费咨询三甲医院儿科专家,还有机会赢现金大礼 ',// 分享描述
-                                        link: share, // 分享链接
-                                        imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
-                                        success: function (res) {
-                                        },
-                                        fail: function (res) {
-                                        }
-                                    });
-                                })
-                            }else{
-                            }
-                        },
-                        error : function() {
-                        }
-                    });
-
-            });
-        };
-*/
-
-
-
+        }
+        //去底部
+        $scope.goBottom=function(){
+            $ionicScrollDelegate.scrollBottom([true]);
+        }
     }])

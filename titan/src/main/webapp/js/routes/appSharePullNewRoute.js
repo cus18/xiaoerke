@@ -37,7 +37,7 @@ define(['appSharePullNew','swiper','appSharePullNewFactory'], function(app){
                         }
                     })
                     .state('haveRecord', {
-                        url: '/haveRecord/:sessionId',
+                        url: '/haveRecord/:sessionId,:status',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'haveRecordCtrl',
                         resolve: {
@@ -51,7 +51,7 @@ define(['appSharePullNew','swiper','appSharePullNewFactory'], function(app){
                         }
                     })
 
-                $urlRouterProvider.otherwise('home');
+                $urlRouterProvider.otherwise('home/');
             }])
         .run(function ($rootScope){
             $rootScope.unBindUserPhoneNum = '';

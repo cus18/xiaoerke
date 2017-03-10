@@ -3,7 +3,7 @@
         <div class="record_box">
             <!---------------------------头部----------------------------------->
             <div class="share_box">
-                <div class="head"><span>某女子。</span></div>
+                <div class="head"><span>{{nickname}}</span></div>
             </div>
             <!---------------------------内容----------------------------------->
             <div class="share_con">
@@ -13,25 +13,24 @@
                 <!--医生信息-->
                 <div class="doctor">
                     <div class="doctorHead">
-                        <img src="" alt=""/>
+                        <img ng-src="http://xiaoerke-doctor-pic.oss-cn-beijing.aliyuncs.com/{{doctorInfo.userId}}"  err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/>
                     </div>
                     <div class="doctorDetail">
-                        <div class="doctorName"><span>梁平</span><span>儿内科</span></div>
-                        <div class="doctorCon"><div class="serve">服务人次：888</div><div class="goodSay">好评率：99%</div></div>
+                        <div class="doctorName"><span>{{doctorInfo.name}}</span><span>{{doctorInfo.department}}</span></div>
+                        <div class="doctorCon"><div class="serve">服务人次：{{doctorInfo.consult_num}}</div><div class="goodSay">好评率：{{doctorInfo.evaluate}}%</div></div>
                     </div>
                 </div>
 
                 <!--聊天内容-->
                 <div class="chat">
-                    <img ng-show="true" class="chat_head" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSharePullNew/haveRecord/chat.png" alt=""/>
-                    <div ng-show="true" class="chat_con">
+                    <img ng-if="recordStatus" class="chat_head" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSharePullNew/haveRecord/chat.png" alt=""/>
+                    <div ng-if="recordStatus" class="chat_con">
                         <ul>
-                            <li class="userSay"><img class="smallImg" ng-src="" alt=""/><div><i></i><span>医生您好,我是一个中国人我真的想试试</span></div></li>
-                            <li class="doctorSay"><img class="smallImg" ng-src="" alt=""/><div><i></i><span>您好，有什么可以帮您</span></div></li>
-                            <div class="btn_all">点击查看全部</div>
+                            <li ng-repeat="item in record" ng-class="{userSay:item.senderId==item.userId,doctorSay:item.senderId!=item.userId}"><img class="smallImg" ng-src="{{item.headurl}}"  err-src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png" alt=""/><div><i></i><span>{{item.message}}</span></div></li>
+                            <div ng-click="lookAll()" ng-show="lookStatus" class="btn_all">点击查看全部</div>
                         </ul>
                     </div>
-                    <img ng-show="false" class="noRecord" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSharePullNew/haveRecord/noRecord.png" alt=""/>
+                    <img ng-if="noRecordStatus" class="noRecord" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSharePullNew/haveRecord/noRecord.png" alt=""/>
                 </div>
 
                 <img class="bottom" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSharePullNew/haveRecord/chatBottom.png" alt=""/>
@@ -45,7 +44,7 @@
                         <img class="code" data-tap-disabled="true" ng-src="" alt=""/>
                     </div>
                     <div class="userInfo">
-                        <p>我是【某女子。】<br/>和我一起陪伴宝宝成长</p>
+                        <p>我是【{{nickname}}】<br/>和我一起陪伴宝宝成长</p>
                         <h3>长按识别二维码<br/>立即咨询三甲医院儿科专家</h3>
                     </div>
                 </div>
@@ -53,4 +52,5 @@
 
         </div>
     </ion-content>
+    <img ng-click="goBottom()" class="goBottom" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSharePullNew/haveRecord/goBottom.png" alt=""/>
 </ion-view>
