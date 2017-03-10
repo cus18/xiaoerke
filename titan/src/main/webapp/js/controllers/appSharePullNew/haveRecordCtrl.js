@@ -1,7 +1,7 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('haveRecordCtrl', [
     '$scope','$state','$stateParams','ConversationRecord','$ionicScrollDelegate',
     function ($scope,$state,$stateParams,ConversationRecord,$ionicScrollDelegate) {
-
+        $scope.btnStatus=false;
         //有聊天记录的状态
         $scope.recordStatus=false;
         //没有聊天记录的状态
@@ -13,7 +13,6 @@ angular.module('controllers', ['ionic','ngDialog']).controller('haveRecordCtrl',
         }else if($stateParams.status=='false'){
             $scope.recordStatus=false;
             $scope.noRecordStatus=true;
-            console.log($scope.noRecordStatus)
         }
         //查看全部的按钮状态
         $scope.lookStatus=true;
@@ -53,6 +52,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('haveRecordCtrl',
         $scope.lookAll=function(){
             $scope.record=$scope.recordList;
             $scope.lookStatus=false;
+            $scope.btnStatus=true;
 
         }
         //去底部
