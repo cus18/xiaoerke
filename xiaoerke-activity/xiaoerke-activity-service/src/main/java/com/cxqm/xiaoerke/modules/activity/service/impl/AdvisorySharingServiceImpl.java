@@ -1,6 +1,8 @@
 package com.cxqm.xiaoerke.modules.activity.service.impl;
 
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.activity.service.AdvisorySharingService;
+import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultRecordMongoVo;
 import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
@@ -47,6 +49,9 @@ public class AdvisorySharingServiceImpl implements AdvisorySharingService{
     @Autowired
     private WechatAttentionService wechatAttentionService;
 
+    @Autowired
+    private OlyGamesService olyGamesService;
+
     @Override
     public Map<String ,Object> conversationRecord(String sessionid,int pageNo,int pageSize) {
         Map<String ,Object> resultMap = new HashMap<String, Object>();
@@ -62,6 +67,12 @@ public class AdvisorySharingServiceImpl implements AdvisorySharingService{
         resultMap.put("doctorInfoVo",doctorInfoVo);
         //患者信息
         WechatAttention attentionInfo = wechatAttentionService.getAttentionByOpenId(consultSession.getUserId());
+        String headImgUrl = olyGamesService.getWechatMessage(consultSession.getUserId());//头像
+        if(StringUtils.isNotNull(headImgUrl)){
+            resultMap.put("headImgUrl", headImgUrl);
+        }else {
+            resultMap.put("headImgUrl", "http://img5.imgtn.bdimg.com/it/u=1846948884,880298315&fm=21&gp=0.jpg");
+        }
         resultMap.put("attentionInfo",attentionInfo);
         return resultMap;
     }
