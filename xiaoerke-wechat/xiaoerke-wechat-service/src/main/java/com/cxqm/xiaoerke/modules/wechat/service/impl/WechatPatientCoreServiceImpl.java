@@ -663,7 +663,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=44";
             Map parameter = systemService.getWechatParameter();
             String token = (String) parameter.get("token");
-            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), "我们都是960万平方公里的一名中国人，\n当国家安全利益受侵害时，我们更应团结起来一致对外，\n点击链接加入抵制萨德的队伍中，\n<a href='" + url + "'>让外国人看看我们也不是好欺负的>></a>");
+            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), "我们都是960万平方公里的一名中国人，\n 当国家安全利益受侵害时，我们更应团结起来一致对外，\n点击链接加入抵制萨德的队伍中，\n<a href='" + url + "'>让外国人看看我们也不是好欺负的>></a>");
         } else if (EventKey.indexOf("PD_YQKFC") > -1) {
 //             SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
             LogUtils.saveLog("TPCB_GZTS", xmlEntity.getFromUserName());
