@@ -1,7 +1,11 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('haveRecordCtrl', [
-    '$scope','$state','$stateParams','MyselfInfoAppointmentDetail',
-    'OrderPayMemberServiceOperation','GetUserMemberService','$location','ngDialog',
-    function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog) {
+    '$scope','$state','$stateParams','ConversationRecord',
+    function ($scope,$state,$stateParams,ConversationRecord) {
+        ConversationRecord.save({"sessionId":$stateParams.id,"pageNum":1,"pageSize":10},function (data) {
+            $scope.recordList = data.recordList;
+        });
+
+
 
         //分享到朋友圈或者微信
        /* var loadShare = function($scope){

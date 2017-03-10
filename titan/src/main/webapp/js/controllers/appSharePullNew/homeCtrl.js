@@ -1,6 +1,6 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
-    '$scope','$state','$stateParams',"GetConfig",
-    function ($scope,$state,$stateParams,GetConfig) {
+    '$scope','$state','$stateParams',"GetConfig","SharSeConsult",
+    function ($scope,$state,$stateParams,GetConfig,SharSeConsult) {
         $scope.maskStatus=false;
         //安卓手机执行
         $(document).ready(function(){
@@ -96,7 +96,6 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                     jsApiList: [
                                         'onMenuShareTimeline',
                                         'onMenuShareAppMessage',
-                                        'previewImage'
                                     ] // 功能列表
                                 });
                                 wx.ready(function () {
@@ -106,9 +105,12 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                         link: share, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                             success: function (res) {
-                                            //recordLogs("ZXYQ_YQY_SHARE");
-                                            // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
-                                            // });
+                                                if($scope.agree){
+                                                    SharSeConsult.save({"sessionId":$stateParams.id},function (data) {
+                                                        
+                                                    });
+                                                }
+                                            
                                         },
                                         fail: function (res) {
                                         }
@@ -119,6 +121,11 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                         link: share, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                         success: function (res) {
+                                            if($scope.agree){
+                                                SharSeConsult.save({"sessionId":$stateParams.id},function (data) {
+
+                                                });
+                                            }
                                         },
                                         fail: function (res) {
                                         }
