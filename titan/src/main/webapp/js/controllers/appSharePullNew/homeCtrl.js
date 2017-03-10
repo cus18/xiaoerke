@@ -106,7 +106,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                             success: function (res) {
                                                 if($scope.agree){
-                                                    SharSeConsult.save({"sessionId":$stateParams.id},function (data) {
+                                                    SharSeConsult.save({"sessionId":$stateParams.sessionId},function (data) {
                                                         
                                                     });
                                                 }
@@ -122,7 +122,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                         success: function (res) {
                                             if($scope.agree){
-                                                SharSeConsult.save({"sessionId":$stateParams.id},function (data) {
+                                                SharSeConsult.save({"sessionId":$stateParams.sessionId},function (data) {
 
                                                 });
                                             }

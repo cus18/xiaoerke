@@ -1,7 +1,7 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('haveRecordCtrl', [
     '$scope','$state','$stateParams','ConversationRecord',
     function ($scope,$state,$stateParams,ConversationRecord) {
-        ConversationRecord.save({"sessionId":$stateParams.id,"pageNum":1,"pageSize":10},function (data) {
+        ConversationRecord.save({"sessionId":$stateParams.sessionId,"pageNum":1,"pageSize":10},function (data) {
             $scope.recordList = data.recordList;
         });
 

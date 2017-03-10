@@ -23,7 +23,7 @@ define(['appSharePullNew','swiper','appSharePullNewFactory'], function(app){
                 /*首页*/
                 $stateProvider
                     .state('home', {
-                        url: '/home/:sessionid',
+                        url: '/home/:sessionId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'homeCtrl',
                         resolve: {
@@ -37,7 +37,7 @@ define(['appSharePullNew','swiper','appSharePullNewFactory'], function(app){
                         }
                     })
                     .state('haveRecord', {
-                        url: '/haveRecord',
+                        url: '/haveRecord/:sessionId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'haveRecordCtrl',
                         resolve: {
