@@ -65,6 +65,10 @@ public class AdvisorySharingServiceImpl implements AdvisorySharingService{
         ConsultSession consultSession = consultSessionService.selectByPrimaryKey(Integer.parseInt(sessionid));
         ConsultDoctorInfoVo doctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(consultSession.getCsUserId());
         resultMap.put("doctorInfoVo",doctorInfoVo);
+        //留言信息
+        String content = (String) redisTemplate.opsForValue().get(sessionid);
+        content = StringUtils.isNotNull(content)?content:"你的宝宝也需要这样一个医生哦～";
+        resultMap.put("content",content);
         //患者信息
         WechatAttention attentionInfo = wechatAttentionService.getAttentionByOpenId(consultSession.getUserId());
         String headImgUrl = olyGamesService.getWechatMessage(consultSession.getUserId());//头像

@@ -22,6 +22,8 @@ angular.module('controllers', ['ionic','ngDialog']).controller('haveRecordCtrl',
             //聊天记录
             $scope.recordList = data.recordList;
 
+            //留言
+            $scope.content = data.content;
 
             //用户昵称
             $scope.nickname=data.attentionInfo.nickname;
