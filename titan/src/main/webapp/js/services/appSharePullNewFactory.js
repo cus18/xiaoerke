@@ -16,4 +16,8 @@ define(['appSharePullNew'], function (app) {
             return $resource(activity+'sharSeConsult');
         }])
 
+        .factory('BabyEnglish',['$resource',function ($resource){
+            return $resource('cheakHusband/babyEnglish');
+        }])
+
 })

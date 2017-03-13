@@ -295,6 +295,8 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/baoFansCamp#/story2016Index";
         }else if(url.startsWith("53")){  //集卡活动
             url = getBabyCoinURL(request, openid,sysPropertyVoWithBLOBsVo);
+        }else if(url.startsWith("55")){  //集卡活动
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/share#/addGroup";
         }
         return "redirect:" + url;
     }
