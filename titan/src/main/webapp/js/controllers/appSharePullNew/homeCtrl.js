@@ -134,6 +134,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                     });
             });
         };
+        loadShare($scope);
     }])
 function lookLength(x){
     console.log(x)
