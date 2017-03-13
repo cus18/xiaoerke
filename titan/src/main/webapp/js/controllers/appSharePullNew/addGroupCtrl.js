@@ -2,7 +2,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('addGroupCtrl', [
     '$scope','$state','$stateParams',"GetConfig","SharSeConsult",
     function ($scope,$state,$stateParams,GetConfig,SharSeConsult) {
 
-$scope.init = function () {
+$scope.loadShare = function () {
     $.ajax({
         url:"wechatInfo/getConfig",// 跳转到 action
         async:true,
