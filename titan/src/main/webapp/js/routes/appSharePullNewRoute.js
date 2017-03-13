@@ -50,6 +50,19 @@ define(['appSharePullNew','swiper','appSharePullNewFactory'], function(app){
                             }
                         }
                     })
+                    .state('addGroup', {
+                        url: '/addGroup',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'addGroupCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.addGroupCtrl',
+                                    [ 'js/controllers/appSharePullNew/addGroupCtrl.js',
+                                        'js/libs/lodash.min.js'],
+                                    'js/views/appSharePullNew/addGroup.html?ver='+marketVersion);
+                            }
+                        }
+                    })
 
                 $urlRouterProvider.otherwise('home/');
             }])
