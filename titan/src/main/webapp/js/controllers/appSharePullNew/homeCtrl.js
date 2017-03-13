@@ -1,6 +1,12 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
     '$scope','$state','$stateParams',"GetConfig","SharSeConsult",
     function ($scope,$state,$stateParams,GetConfig,SharSeConsult) {
+        $scope.$watch('contentSay',function(newValue,oldValue){
+            console.log(newValue)
+            /*if(newValue.length>=49){
+             alert()
+             }*/
+        },true)
         $scope.maskStatus=false;
         //安卓手机执行
         $(document).ready(function(){
@@ -44,7 +50,6 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                 }, 50)
             })
         });
-
 
         $scope.agree=true;
         $scope.choose=function(){
@@ -134,4 +139,11 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                     });
             });
         };
+
     }])
+function lookLength(x){
+    console.log(x)
+    if(x.value.length>=50){
+        alert('最多可输入50个字')
+    }
+}

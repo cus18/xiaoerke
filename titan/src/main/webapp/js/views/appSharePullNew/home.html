@@ -3,7 +3,7 @@
             <div class="share_box">
                 <div class="head"><img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSharePullNew/home/home_top.png" alt=""/></div>
                 <div class="con txt">
-                    <textarea id="txt" placeholder="说点什么吧～" draggable="false" maxlength=200></textarea>
+                    <textarea id="txt" oninput="lookLength(this)" placeholder="说点什么吧～" draggable="false" maxlength=50></textarea>
                 </div>
                 <div class="share_con" ng-click="choose()"><span ng-class="{true:'agree',false:'disagree'}[agree]">同时分享我和医生的咨询记录（不包含隐私信息）</span></div>
                 <div class="foot" ng-click="maskShow()">分享给宝妈们</div>
