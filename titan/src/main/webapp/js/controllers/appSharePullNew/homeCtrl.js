@@ -63,7 +63,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
         //分享到朋友圈或者微信
        var loadShare = function($scope){
             GetConfig.save({}, function (data) {
-                    var share = "http://s201.xiaork.com/titan/share#/haveRecord/"+$stateParams.sessionId;//最后url=41，openid,marketer
+                    var share = "http://s201.xiaork.com/titan/share#/haveRecord/"+$stateParams.sessionId+","+$scope.agree;//最后url=41，openid,marketer
                     var timestamp;//时间戳
                     var nonceStr;//随机字符串
                     var signature;//得到的签名
