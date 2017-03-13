@@ -63,6 +63,8 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String redPackageShareUrl;
 
+    private String babyEnglishList;
+
     public String getRedPackageShareUrl() {
         return redPackageShareUrl;
     }
@@ -362,5 +364,12 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     public void setConsultMemberTimeType3(String consultMemberTimeType3) {
         this.consultMemberTimeType3 = consultMemberTimeType3;
+    }
+    public String getBabyEnglishList() {
+        return babyEnglishList;
+    }
+
+    public void setBabyEnglishList(String babyEnglishList) {
+        this.babyEnglishList = babyEnglishList;
     }
 }
