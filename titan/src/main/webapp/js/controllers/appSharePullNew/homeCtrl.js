@@ -2,6 +2,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
     '$scope','$state','$stateParams',"GetConfig","SharSeConsult",
     function ($scope,$state,$stateParams,GetConfig,SharSeConsult) {
         $scope.maskStatus=false;
+        $scope.content="";
         //安卓手机执行
         $(document).ready(function(){
             var Height=$(window).height();
@@ -100,8 +101,9 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                         link: share, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                             success: function (res) {
+                                                var content = $("#txt").value
                                                 if($scope.agree){
-                                                    SharSeConsult.save({"sessionId":$stateParams.sessionId},function (data) {
+                                                    SharSeConsult.save({"sessionId":$stateParams.sessionId,"content":content},function (data) {
                                                         
                                                     });
                                                 }
@@ -116,8 +118,9 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                         link: share, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                         success: function (res) {
+                                            var content = $("#txt").value
                                             if($scope.agree){
-                                                SharSeConsult.save({"sessionId":$stateParams.sessionId},function (data) {
+                                                SharSeConsult.save({"sessionId":$stateParams.sessionId,"content":content},function (data) {
 
                                                 });
                                             }
