@@ -33,7 +33,7 @@ public class AdvisorySharingController {
         Map<String,Object> responseMap = new HashMap<String, Object>();
         String sessionId = (String) params.get("sessionId");
         String content = (String) params.get("content");
-        advisorySharingService.sharSeConsult(sessionId,content);
+        advisorySharingService.sharSeConsult("haveRecord"+sessionId,content);
         return responseMap;
     }
 

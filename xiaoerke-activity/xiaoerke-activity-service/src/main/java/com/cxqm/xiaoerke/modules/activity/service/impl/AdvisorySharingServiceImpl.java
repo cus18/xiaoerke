@@ -66,7 +66,7 @@ public class AdvisorySharingServiceImpl implements AdvisorySharingService{
         ConsultDoctorInfoVo doctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(consultSession.getCsUserId());
         resultMap.put("doctorInfoVo",doctorInfoVo);
         //留言信息
-        String content = (String) redisTemplate.opsForValue().get(sessionid);
+        String content = (String) redisTemplate.opsForValue().get("haveRecord"+sessionid);
         content = StringUtils.isNotNull(content)?content:"你的宝宝也需要这样一个医生哦～";
         resultMap.put("content",content);
         //患者信息
