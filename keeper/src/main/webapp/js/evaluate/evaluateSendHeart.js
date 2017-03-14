@@ -154,7 +154,7 @@ function commitEvaluate(){
                                     //     window.location.href = "http://s201.xiaork.com/titan/share#/home/"+sessionId;
                                     // }
                                     recordLogs("ZXPJ_DS_FX");
-                                    window.location.href = "http://s201.xiaork.com/titan/share#/home/"+sessionId;
+                                    window.location.href = "http://s68.baodf.com/titan/share#/home/"+sessionId;
                                 },
                                 error : function(res) {
                                     recordLogs("PAY_ERROR1:"+res.errMsg);
