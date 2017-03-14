@@ -55,6 +55,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
             }else{
                 $scope.agree=true;
             }
+            $scope.loadShare();
         }
         $scope.maskShow=function(){
             $scope.maskStatus=true;
@@ -63,7 +64,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
             $scope.maskStatus=false;
         }
         //分享到朋友圈或者微信
-       var loadShare = function($scope){
+       $scope.loadShare = function(){
             GetConfig.save({}, function (data) {
                     var share = "http://s201.xiaork.com/titan/share#/haveRecord/"+$stateParams.sessionId;//最后url=41，openid,marketer
                     var timestamp;//时间戳
@@ -144,7 +145,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                     });
             });
         };
-        loadShare($scope);
+        $scope.loadShare();
     }])
 function lookLength(x){
     console.log(x)
