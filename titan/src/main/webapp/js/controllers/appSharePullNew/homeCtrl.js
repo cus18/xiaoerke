@@ -1,6 +1,6 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
-    '$scope','$state','$stateParams',"GetConfig","SharSeConsult",
-    function ($scope,$state,$stateParams,GetConfig,SharSeConsult) {
+    '$scope','$state','$stateParams',"GetConfig","SharSeConsult",'BabyCoinInit',
+    function ($scope,$state,$stateParams,GetConfig,SharSeConsult,BabyCoinInit) {
         $scope.maskStatus=false;
         $scope.content="";
         //安卓手机执行
@@ -47,6 +47,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
         });
 
 
+
         $scope.agree=true;
         $scope.choose=function(){
             if($scope.agree){
@@ -69,6 +70,12 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                     var nonceStr;//随机字符串
                     var signature;//得到的签名
                     var appid;//得到的签名
+                BabyCoinInit.save({},function(data){
+                    $scope.minename = data.babyCoinVo.nickName;
+                    if($scope.minename == undefined || $scope.minename==''){
+                        $scope.minename = '您的朋友';
+                    }
+                });
                     $.ajax({
                         url:"wechatInfo/getConfig",// 跳转到 action
                         async:true,
@@ -97,7 +104,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                 wx.ready(function () {
                                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                     wx.onMenuShareTimeline({
-                                        title: '感恩妈妈节，在这里可以免费咨询三甲医院儿科专家,还有机会赢现金大礼', // 分享标题
+                                        title: '我和可爱亲民的医生聊了会天， 解决了我的难题，你也来试试吧~', // 分享标题
                                         link: share+","+$scope.agree, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                             success: function (res) {
@@ -113,8 +120,8 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                         }
                                     });
                                     wx.onMenuShareAppMessage({
-                                        title: $scope.minename  + '向你推荐', // 分享标题
-                                        desc: '感恩妈妈节，在这里可以免费咨询三甲医院儿科专家,还有机会赢现金大礼 ',// 分享描述
+                                        title: $scope.minename  + '分享给你', // 分享标题
+                                        desc: '和可爱亲民的医生聊了会天，解决了的难题~你也来试试吧',// 分享描述
                                         link: share+","+$scope.agree, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                         success: function (res) {
