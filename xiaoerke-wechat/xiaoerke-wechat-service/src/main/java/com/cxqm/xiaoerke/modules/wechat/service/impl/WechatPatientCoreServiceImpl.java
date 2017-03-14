@@ -682,6 +682,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             String type = (String) redisTemplate.opsForValue().get("husbandCheack"+xmlEntity.getFromUserName());
             String msg = "亲，你咋才来捏~不知道3.15也开始打击“假老公了”吗？想要知道你是不是也嫁了个假老公\n<a href='"+sysPropertyVoWithBLOBsVo.getTitanWebUrl()+"/titan/appHusband#/husResult/"+type+"'>麻利的赶紧点击链接》》</a>";
             WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), msg);
+        }else if(EventKey.indexOf("PD_HPFX") > -1){
+            Map parameter = systemService.getWechatParameter();
+            String token = (String) parameter.get("token");
+            String msg = "亲爱的，体验一次和可爱亲民的医生聊会天吧~  \n" +
+                    "点击左下角小键盘立即咨询》";
+            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), msg);
         }
 
 
