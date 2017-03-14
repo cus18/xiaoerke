@@ -143,16 +143,18 @@ function commitEvaluate(){
                                 contentType: "application/json; charset=utf-8",
                                 dataType:'json',
                                 success:function(data) {
-                                    if(data=="1"){
-                                        recordLogs("ZXPJSXY_SXY");
-                                        recordLogs("ZXPJSXY_PJ");
-                                        /* window.location.href = "playtour#/playtourShare/"+3;*/
-                                        window.location.href = "http://s201.xiaork.com/titan/share#/home/"+sessionId;
-                                    }
-                                    if(data=="2"){
-                                        // window.location.href = "playtour#/evaluateSuccess";
-                                        window.location.href = "http://s201.xiaork.com/titan/share#/home/"+sessionId;
-                                    }
+                                    // if(data=="1"){
+                                    //     recordLogs("ZXPJSXY_SXY");
+                                    //     recordLogs("ZXPJSXY_PJ");
+                                    //     /* window.location.href = "playtour#/playtourShare/"+3;*/
+                                    //     window.location.href = "http://s201.xiaork.com/titan/share#/home/"+sessionId;
+                                    // }
+                                    // if(data=="2"){
+                                    //     // window.location.href = "playtour#/evaluateSuccess";
+                                    //     window.location.href = "http://s201.xiaork.com/titan/share#/home/"+sessionId;
+                                    // }
+                                    recordLogs("ZXPJ_DS_FX");
+                                    window.location.href = "http://s201.xiaork.com/titan/share#/home/"+sessionId;
                                 },
                                 error : function(res) {
                                     recordLogs("PAY_ERROR1:"+res.errMsg);
