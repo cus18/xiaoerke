@@ -19,5 +19,8 @@ define(['appSharePullNew'], function (app) {
         .factory('BabyEnglish',['$resource',function ($resource){
             return $resource('cheakHusband/babyEnglish');
         }])
+        .factory('BabyCoinInit',['$resource',function ($resource){
+            return $resource('babyCoin/babyCoinInit');
+        }])
 
 })
