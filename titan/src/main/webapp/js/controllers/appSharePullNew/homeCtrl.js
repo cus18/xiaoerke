@@ -64,7 +64,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
         //分享到朋友圈或者微信
        var loadShare = function($scope){
             GetConfig.save({}, function (data) {
-                    var share = "http://s201.xiaork.com/titan/share#/haveRecord/"+$stateParams.sessionId+","+$scope.agree;//最后url=41，openid,marketer
+                    var share = "http://s201.xiaork.com/titan/share#/haveRecord/"+$stateParams.sessionId;//最后url=41，openid,marketer
                     var timestamp;//时间戳
                     var nonceStr;//随机字符串
                     var signature;//得到的签名
@@ -98,7 +98,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                     // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                                     wx.onMenuShareTimeline({
                                         title: '感恩妈妈节，在这里可以免费咨询三甲医院儿科专家,还有机会赢现金大礼', // 分享标题
-                                        link: share, // 分享链接
+                                        link: share+","+$scope.agree, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                             success: function (res) {
                                                 var content = document.getElementById("txt").value;
@@ -115,7 +115,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                     wx.onMenuShareAppMessage({
                                         title: $scope.minename  + '向你推荐', // 分享标题
                                         desc: '感恩妈妈节，在这里可以免费咨询三甲医院儿科专家,还有机会赢现金大礼 ',// 分享描述
-                                        link: share, // 分享链接
+                                        link: share+","+$scope.agree, // 分享链接
                                         imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                                         success: function (res) {
                                             var content = document.getElementById("txt").value;
