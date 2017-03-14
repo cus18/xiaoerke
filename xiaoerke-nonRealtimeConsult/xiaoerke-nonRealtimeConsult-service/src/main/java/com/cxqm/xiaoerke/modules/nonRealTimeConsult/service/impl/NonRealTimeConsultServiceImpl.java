@@ -146,7 +146,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         resultMap.put("sessionId",sessionVo.getId());
 
         //通知相关医生来回答--模板消息
-//        sendRemindDoctor(csUserId,sessionVo.getUserName(),String.valueOf(sessionVo.getId()));
+        sendRemindDoctor(csUserId,sessionVo.getUserName(),String.valueOf(sessionVo.getId()));
         return resultMap;
     }
 
