@@ -81,11 +81,9 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                     imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                     success: function (res) {
                         var content = document.getElementById("txt").value;
-                        if($scope.agree){
                             SharSeConsult.save({"sessionId":$stateParams.sessionId,"content":content},function (data) {
 
                             });
-                        }
 
                     },
                     fail: function (res) {
@@ -98,11 +96,9 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                     imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
                     success: function (res) {
                         var content = document.getElementById("txt").value;
-                        if($scope.agree){
                             SharSeConsult.save({"sessionId":$stateParams.sessionId,"content":content},function (data) {
 
                             });
-                        }
                     },
                     fail: function (res) {
                     }
