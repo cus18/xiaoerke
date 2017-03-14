@@ -63,14 +63,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
         $scope.maskHide=function(){
             $scope.maskStatus=false;
         }
-
-        BabyCoinInit.save({},function(data){
-            $scope.minename = data.babyCoinVo.nickName;
-            if($scope.minename == undefined || $scope.minename==''){
-                $scope.minename = '您的朋友';
-            }
-        });
-
+        
         $scope.wxInit = function () {
             var share = "http://s201.xiaork.com/titan/share#/haveRecord/"+$stateParams.sessionId;//最后url=41，openid,marketer
             wx.ready(function () {
@@ -108,6 +101,13 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
 
         //分享到朋友圈或者微信
        $scope.loadShare = function(){
+           BabyCoinInit.save({},function(data){
+               $scope.minename = data.babyCoinVo.nickName;
+               if($scope.minename == undefined || $scope.minename==''){
+                   $scope.minename = '您的朋友';
+               }
+           });
+
             GetConfig.save({}, function (data) {
                     var timestamp;//时间戳
                     var nonceStr;//随机字符串
