@@ -72,6 +72,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
         });
 
         $scope.wxInit = function () {
+            var share = "http://s201.xiaork.com/titan/share#/haveRecord/"+$stateParams.sessionId;//最后url=41，openid,marketer
             wx.ready(function () {
                 // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
                 wx.onMenuShareTimeline({
@@ -112,7 +113,6 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
         //分享到朋友圈或者微信
        $scope.loadShare = function(){
             GetConfig.save({}, function (data) {
-                    var share = "http://s201.xiaork.com/titan/share#/haveRecord/"+$stateParams.sessionId;//最后url=41，openid,marketer
                     var timestamp;//时间戳
                     var nonceStr;//随机字符串
                     var signature;//得到的签名
