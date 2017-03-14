@@ -55,7 +55,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
             }else{
                 $scope.agree=true;
             }
-            $scope.loadShare();
+            $scope.wxInit();
         }
         $scope.maskShow=function(){
             $scope.maskStatus=true;
@@ -63,6 +63,52 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
         $scope.maskHide=function(){
             $scope.maskStatus=false;
         }
+
+        BabyCoinInit.save({},function(data){
+            $scope.minename = data.babyCoinVo.nickName;
+            if($scope.minename == undefined || $scope.minename==''){
+                $scope.minename = '您的朋友';
+            }
+        });
+
+        $scope.wxInit = function () {
+            wx.ready(function () {
+                // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+                wx.onMenuShareTimeline({
+                    title: '我和可爱亲民的医生聊了会天， 解决了我的难题，你也来试试吧~', // 分享标题
+                    link: share+","+$scope.agree, // 分享链接
+                    imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
+                    success: function (res) {
+                        var content = document.getElementById("txt").value;
+                        if($scope.agree){
+                            SharSeConsult.save({"sessionId":$stateParams.sessionId,"content":content},function (data) {
+
+                            });
+                        }
+
+                    },
+                    fail: function (res) {
+                    }
+                });
+                wx.onMenuShareAppMessage({
+                    title: $scope.minename  + '分享给你', // 分享标题
+                    desc: '和可爱亲民的医生聊了会天，解决了的难题~你也来试试吧',// 分享描述
+                    link: share+","+$scope.agree, // 分享链接
+                    imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
+                    success: function (res) {
+                        var content = document.getElementById("txt").value;
+                        if($scope.agree){
+                            SharSeConsult.save({"sessionId":$stateParams.sessionId,"content":content},function (data) {
+
+                            });
+                        }
+                    },
+                    fail: function (res) {
+                    }
+                });
+            })
+        }
+
         //分享到朋友圈或者微信
        $scope.loadShare = function(){
             GetConfig.save({}, function (data) {
@@ -71,12 +117,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                     var nonceStr;//随机字符串
                     var signature;//得到的签名
                     var appid;//得到的签名
-                BabyCoinInit.save({},function(data){
-                    $scope.minename = data.babyCoinVo.nickName;
-                    if($scope.minename == undefined || $scope.minename==''){
-                        $scope.minename = '您的朋友';
-                    }
-                });
+
                     $.ajax({
                         url:"wechatInfo/getConfig",// 跳转到 action
                         async:true,
@@ -102,41 +143,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                         'onMenuShareAppMessage',
                                     ] // 功能列表
                                 });
-                                wx.ready(function () {
-                                    // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
-                                    wx.onMenuShareTimeline({
-                                        title: '我和可爱亲民的医生聊了会天， 解决了我的难题，你也来试试吧~', // 分享标题
-                                        link: share+","+$scope.agree, // 分享链接
-                                        imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
-                                            success: function (res) {
-                                                var content = document.getElementById("txt").value;
-                                                if($scope.agree){
-                                                    SharSeConsult.save({"sessionId":$stateParams.sessionId,"content":content},function (data) {
-                                                        
-                                                    });
-                                                }
-                                            
-                                        },
-                                        fail: function (res) {
-                                        }
-                                    });
-                                    wx.onMenuShareAppMessage({
-                                        title: $scope.minename  + '分享给你', // 分享标题
-                                        desc: '和可爱亲民的医生聊了会天，解决了的难题~你也来试试吧',// 分享描述
-                                        link: share+","+$scope.agree, // 分享链接
-                                        imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
-                                        success: function (res) {
-                                            var content = document.getElementById("txt").value;
-                                            if($scope.agree){
-                                                SharSeConsult.save({"sessionId":$stateParams.sessionId,"content":content},function (data) {
-
-                                                });
-                                            }
-                                        },
-                                        fail: function (res) {
-                                        }
-                                    });
-                                })
+                                $scope.wxInit();
                             }else{
                             }
                         },
