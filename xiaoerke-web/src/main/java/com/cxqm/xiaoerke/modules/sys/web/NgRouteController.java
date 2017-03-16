@@ -144,6 +144,12 @@ public class NgRouteController extends BaseController {
     @SystemControllerLog(description = "00000079")
     @RequestMapping(value ="/share",method = {RequestMethod.POST, RequestMethod.GET})
     public String appSharePullNewIndex() { return "angular/appSharePullNewIndex"; }
+    /**
+     *appSharePullNew 分享拉新
+     */
+    @SystemControllerLog(description = "00000079")
+    @RequestMapping(value ="/sign",method = {RequestMethod.POST, RequestMethod.GET})
+    public String appSignIndex() { return "angular/appSignIndex"; }
     /*
         wisdom 项目
     */
