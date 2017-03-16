@@ -1,0 +1,112 @@
+<ion-view view-title='打卡赚钱' >
+    <ion-content style="top:0px;background:#fff">
+        <div class="signHomeBox">
+            <div class="userHead" ng-click="goCenter()"><img src="" alt=""/></div>
+            <span class="top_R">打卡次数：<b>0</b></span>
+
+            <img class="homeTop" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/homeTop.png" alt=""/>
+            <div class="homeCon">
+                <div class="totalNum">参加挑战人数：<span>1233</span><br/>累计挑战金：<span>1555</span></div>
+                <img class="rules" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/rules.png" alt=""/>
+                <!--参加打卡-->
+                <img ng-show="true" ng-click="goJoin()" class="join" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/join.png" alt=""/>
+                <!--我要打卡-->
+                <img ng-show="false" ng-click="goSign()" class="join" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/sign.png" alt=""/>
+                <div class="conBottom">下滑查看大家的打卡记录</div>
+            </div>
+            <div class="allRecord">
+                <div class="allRecordTop">
+                    <span>3月6日</span>
+                    <span><b>111</b>人成功</span>
+                    <span><b>23</b>人失败</span>
+                </div>
+                <div class="RecordTop">3月6日打卡结束</div>
+                <ul>
+                    <li><div class="headImg">
+                            <img src="" alt=""/>
+                        </div>
+                        <div class="recordCon">
+                            <div class="name_time"><span>无敌金刚</span><span>7:59</span></div>
+                            <div class="day">连续打卡<span>1天</span>,累计奖励<span>1.03元</span></div>
+                        </div>
+                    </li>
+                    <li><div class="headImg">
+                            <img src="" alt=""/>
+                        </div>
+                        <div class="recordCon">
+                            <div class="name_time"><span>无敌金刚</span><span>7:59</span></div>
+                            <div class="day">连续打卡<span>1天</span>,累计奖励<span>1.03元</span></div>
+                        </div>
+                    </li>
+                    <li><div class="headImg">
+                            <img src="" alt=""/>
+                        </div>
+                        <div class="recordCon">
+                            <div class="name_time"><span>无敌金刚</span><span>7:59</span></div>
+                            <div class="day">连续打卡<span>1天</span>,累计奖励<span>1.03元</span></div>
+                        </div>
+                    </li>
+                    <li><div class="headImg">
+                            <img src="" alt=""/>
+                        </div>
+                        <div class="recordCon">
+                            <div class="name_time"><span>无敌金刚</span><span>7:59</span></div>
+                            <div class="day">连续打卡<span>1天</span>,累计奖励<span>1.03元</span></div>
+                        </div>
+                    </li>
+                    <div class="lookMore" ng-click="lookMore()">点击加载更早打卡记录</div>
+                </ul>
+            </div>
+
+
+
+            <!--去支付的弹窗-->
+            <div class="mask" ng-show="start_status">
+                <div class="goPay">
+                    <img class="bg" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/mask/payImg.png" alt=""/>
+                    <img class="close" ng-click="close()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/mask/close.png" alt=""/>
+                    <img class="btn" ng-click="goPay()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/payButton.png" alt=""/>
+                </div>
+            </div>
+            <!--支付完成启动的弹窗-->
+            <div class="mask" ng-show="pay_status">
+                <div class="payOver">
+                    <img class="bg" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/mask/payBegin.png" alt=""/>
+                    <img class="close" ng-click="close()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/mask/close.png" alt=""/>
+                    <img class="btn" ng-click="goShare()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/invite.png" alt=""/>
+                </div>
+            </div>
+
+
+            <!--打卡时间提示弹窗-->
+            <div class="mask" ng-show="time_status">
+                <div class="signTime">
+                    <img class="bg" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/mask/payTime.png" alt=""/>
+                    <img class="close" ng-click="close()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/mask/close.png" alt=""/>
+                </div>
+            </div>
+            <!--打卡完成提示弹窗-->
+            <div class="mask" ng-show="sign_status">
+                <div class="signOver">
+                    <img class="bg" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/mask/signOver.png" alt=""/>
+                    <img class="close" ng-click="close()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/mask/close.png" alt=""/>
+                    <img class="btn" ng-click="goShare()" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/invite.png" alt=""/>
+                </div>
+            </div>
+
+
+
+            <!--分享弹窗-->
+            <div class="mask" ng-show="share_status">
+                <div class="share">
+                    <img class="arrow" src="" alt=""/>
+                    <img class="shareImg" src="" alt=""/>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </ion-content>
+</ion-view>
