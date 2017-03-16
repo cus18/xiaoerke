@@ -76,19 +76,23 @@ public class CheakHusbandController {
         String imgUrl = "";
         Integer imgIndex = 0;
         String openid = WechatUtil.getOpenId(session,request);
-        String imgType = (String) redisTemplate.opsForValue().get("babyEnglish_"+openid);
-        if(imgType != null){
-            imgIndex =Integer.parseInt(imgType);
-            if(englishImg.length>Integer.parseInt(imgType)){
-                imgUrl = englishImg[imgIndex];
+        try{
+            String imgType = (String) redisTemplate.opsForValue().get("babyEnglish_"+openid);
+            if(imgType != null){
+                imgIndex =Integer.parseInt(imgType);
+                if(englishImg.length>=Integer.parseInt(imgType)){
+                    imgUrl = englishImg[imgIndex];
+                }
+            }else{
+                Set<String> keySet = redisTemplate.keys("babyEnglish_");
+                imgIndex = keySet.size()>100?(keySet.size()/100):0;
+                redisTemplate.opsForValue().set("babyEnglish_"+openid,imgIndex+"",7,TimeUnit.DAYS);
+                if(englishImg.length>=imgIndex){
+                    imgUrl = englishImg[imgIndex];
+                }
             }
-        }else{
-            Set<String> keySet = redisTemplate.keys("babyEnglish_");
-            imgIndex = keySet.size()>100?(210/100):0;
-            redisTemplate.opsForValue().set("babyEnglish_"+openid,imgIndex+"");
-            if(englishImg.length>imgIndex){
-                imgUrl = englishImg[imgIndex];
-            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         responseMap.put("imgPath",imgUrl);
         return responseMap;

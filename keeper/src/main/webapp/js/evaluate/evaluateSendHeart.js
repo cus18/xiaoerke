@@ -6,6 +6,20 @@ var starNum1=3;//对医生的评价，0无评价 1不满意 3满意 5非常满�
 var redPacket =0; // 最终支付钱数
 
 var consultStatus = "" ;
+var recordLogs = function(val){
+    $.ajax({
+        url:"util/recordLogs",// 跳转到 action
+        async:true,
+        type:'get',
+        data:{logContent:encodeURI(val)},
+        cache:false,
+        dataType:'json',
+        success:function(data) {
+        },
+        error : function() {
+        }
+    });
+};
 
 var sendHeartInit= function (){
     customerId=GetQueryString("customerId");
@@ -154,7 +168,7 @@ function commitEvaluate(){
                                     //     window.location.href = "http://s201.xiaork.com/titan/share#/home/"+sessionId;
                                     // }
                                     recordLogs("ZXPJ_DS_FX");
-                                    window.location.href = "http://s201.xiaork.com/titan/share#/home/"+sessionId;
+                                    window.location.href = "http://s68.baodf.com/titan/share#/home/"+sessionId;
                                 },
                                 error : function(res) {
                                     recordLogs("PAY_ERROR1:"+res.errMsg);
@@ -189,7 +203,7 @@ function commitEvaluate(){
                 if(data=="1"){
                     recordLogs("ZXPJSXY_PJ");
                     /* window.location.href = "playtour#/playtourShare/"+3;*/
-                    window.location.href = "http://s201.xiaork.com/titan/share#/home/"+sessionId;
+                    window.location.href = "http://s68.baodf.com/titan/share#/home/"+sessionId;
                     // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD,fda";
                 }
                 if(data=="2"){
@@ -247,20 +261,7 @@ var weChatInit = function(){
     });
 }
 
-var recordLogs = function(val){
-    $.ajax({
-        url:"util/recordLogs",// 跳转到 action
-        async:true,
-        type:'get',
-        data:{logContent:encodeURI(val)},
-        cache:false,
-        dataType:'json',
-        success:function(data) {
-        },
-        error : function() {
-        }
-    });
-};
+
 
 var  giveCoin = function (val) {
     var data = {'count':val};

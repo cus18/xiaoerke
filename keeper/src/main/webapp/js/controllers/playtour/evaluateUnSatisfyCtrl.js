@@ -129,7 +129,7 @@ angular.module('controllers', ['ionic']).controller('evaluateUnSatisfyCtrl', [
                         recordLogs("ZXPJSXY_PJ");
                        /* window.location.href = "playtour#/playtourShare/"+3;*/
                         // window.location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_YQY_WXCD,fda";
-                        window.location.href = "http://s201.xiaork.com/titan/share#/home/"+$scope.sessionId;
+                        window.location.href = "http://s68.baodf.com/titan/share#/home/"+$scope.sessionId;
                     }
                     if(data=="2"){
                         window.location.href = "playtour#/evaluateSuccess";
