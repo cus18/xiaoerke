@@ -45,6 +45,11 @@ public interface NonRealTimeConsultService {
     /**
      * 获取用户宝宝信息
      * */
+    BabyBaseInfoVo getBabyInfoById(String id);
+
+    /**
+     * 获取用户宝宝信息
+     * */
     int saveBabyBaseInfo(BabyBaseInfoVo babyBaseInfoVo);
 
     /**

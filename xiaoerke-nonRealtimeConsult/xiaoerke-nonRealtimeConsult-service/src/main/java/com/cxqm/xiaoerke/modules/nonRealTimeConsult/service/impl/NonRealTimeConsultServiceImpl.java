@@ -105,6 +105,14 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         return babyBaseInfoService.insertSelective(babyBaseInfoVo);
     }
 
+    /**
+     * 获取用户宝宝信息
+     * */
+    @Override
+    public BabyBaseInfoVo getBabyInfoById(String id){
+        return babyBaseInfoService.selectByPrimaryKey(Integer.parseInt(id));
+    }
+
     @Override
     public HashMap<String, Object> createSession(String babyId,String csUserId,String openid,String content) {
         HashMap<String,Object> resultMap = new HashMap<String, Object>();
