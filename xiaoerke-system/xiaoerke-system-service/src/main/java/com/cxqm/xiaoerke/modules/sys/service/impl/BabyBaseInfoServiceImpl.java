@@ -91,4 +91,9 @@ public class BabyBaseInfoServiceImpl implements BabyBaseInfoService {
     public BabyBaseInfoVo selectLastBabyInfo(String openid) {
         return babyBaseInfoDao.selectLastBabyInfo(openid);
     }
+
+    @Override
+    public BabyBaseInfoVo insertssBean(BabyBaseInfoVo record) {
+        return babyBaseInfoDao.insertBean(record);
+    }
 }

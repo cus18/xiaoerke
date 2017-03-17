@@ -14,6 +14,7 @@ import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultSe
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
+import com.cxqm.xiaoerke.modules.sys.service.BabyBaseInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,9 @@ public class NonRealTimeConsultUserContorller {
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
+
+    @Autowired
+    private BabyBaseInfoService babyBaseInfoService;
 
 
     @RequestMapping(value = "/getDepartmentList", method = {RequestMethod.POST, RequestMethod.GET})
@@ -156,8 +160,9 @@ public class NonRealTimeConsultUserContorller {
             }
             vo.setSex((String) params.get("sex"));
             vo.setOpenid(openid);
-            int idBaby = nonRealTimeConsultUserService.saveBabyBaseInfo(vo);
-            babyId = idBaby+"";
+//            int idBaby = nonRealTimeConsultUserService.saveBabyBaseInfo(vo);
+            BabyBaseInfoVo babyInfo = babyBaseInfoService.insertssBean(vo);
+            babyId = babyInfo.getId()+"";
 //            创建评价记录
         }
         HashMap<String, Object>  sessionMap = nonRealTimeConsultUserService.createSession(babyId,csUserId,openid,content);
