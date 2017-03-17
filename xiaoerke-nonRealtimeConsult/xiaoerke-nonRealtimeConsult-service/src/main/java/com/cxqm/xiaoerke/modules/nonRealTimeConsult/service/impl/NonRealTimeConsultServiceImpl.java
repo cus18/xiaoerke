@@ -101,12 +101,12 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
     }
 
     @Override
-    public void saveBabyBaseInfo(BabyBaseInfoVo babyBaseInfoVo) {
-        babyBaseInfoService.insertSelective(babyBaseInfoVo);
+    public int saveBabyBaseInfo(BabyBaseInfoVo babyBaseInfoVo) {
+        return babyBaseInfoService.insertSelective(babyBaseInfoVo);
     }
 
     @Override
-    public HashMap<String, Object> createSession(String csUserId,String openid,String content) {
+    public HashMap<String, Object> createSession(String babyId,String csUserId,String openid,String content) {
         HashMap<String,Object> resultMap = new HashMap<String, Object>();
 //        查询医生基本信息
         ConsultDoctorInfoVo doctorvo = consultDoctorInfoService.getConsultDoctorInfoByUserId(csUserId);
@@ -129,6 +129,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         sessionVo.setCsUserName(doctorvo.getName());
         sessionVo.setUserId(openid);
         sessionVo.setUserName(attentionInfo.getNickname());
+        sessionVo.setBak2(babyId);
         nonRealTimeConsultSessionDao.insertSelective(sessionVo);
 
         //创建新聊天内容

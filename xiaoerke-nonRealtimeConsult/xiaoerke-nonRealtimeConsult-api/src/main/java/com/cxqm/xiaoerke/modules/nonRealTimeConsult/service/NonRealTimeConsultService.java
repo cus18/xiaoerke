@@ -45,12 +45,12 @@ public interface NonRealTimeConsultService {
     /**
      * 获取用户宝宝信息
      * */
-    void saveBabyBaseInfo(BabyBaseInfoVo babyBaseInfoVo);
+    int saveBabyBaseInfo(BabyBaseInfoVo babyBaseInfoVo);
 
     /**
      * 创建会话。保存宝宝问诊信息
      * */
-    HashMap<String, Object> createSession(String csUserId,String openid,String content);
+    HashMap<String, Object> createSession(String babyId,String csUserId,String openid,String content);
 
     /**
      * 定时器- 每天一次
