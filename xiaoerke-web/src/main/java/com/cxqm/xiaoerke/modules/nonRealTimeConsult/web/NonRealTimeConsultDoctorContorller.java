@@ -196,29 +196,31 @@ public class NonRealTimeConsultDoctorContorller {
                 nonRealTimeConsultSessionVo.setLastMessageContent(lastMessageContent);
 
                 //查询宝宝信息
-                BabyBaseInfoVo babyBaseInfoVo = nonRealTimeConsultUserService.babyBaseInfo(nonRealTimeConsultSessionVo.getUserId());
-                if (babyBaseInfoVo != null ) {
-                    Date babyBirthday = babyBaseInfoVo.getBirthday();
-                    int babyBirthdayYear = babyBirthday.getYear();
-                    int babyBirthdayMonth = babyBirthday.getMonth();
-                    Date nowDate = new Date();
-                    int nowDateYear = nowDate.getYear();
-                    int nowDateMonth = nowDate.getMonth();
-                    int chaDate = 0;
-                    if (nowDateMonth > babyBirthdayMonth) {
-                        chaDate = nowDateMonth - babyBirthdayMonth;
-                    } else if (babyBirthdayMonth > nowDateMonth) {
-                        chaDate = babyBirthdayMonth - nowDateMonth;
-                    }
-                    String babyName = babyBaseInfoVo.getName();
-                    if (StringUtils.isNotNull(babyName)) {
-                        babyName = babyBaseInfoVo.getName() + ",";
-                    } else {
-                        babyName = "";
-                    }
-                    sex = babyBaseInfoVo.getSex().equals("1") ? "女" : "男";
+                if(StringUtils.isNotNull(nonRealTimeConsultSessionVo.getBak2())){
+                    BabyBaseInfoVo babyBaseInfoVo = nonRealTimeConsultUserService.getBabyInfoById(nonRealTimeConsultSessionVo.getBak2());
+                    if (babyBaseInfoVo != null ) {
+                        Date babyBirthday = babyBaseInfoVo.getBirthday();
+                        int babyBirthdayYear = babyBirthday.getYear();
+                        int babyBirthdayMonth = babyBirthday.getMonth();
+                        Date nowDate = new Date();
+                        int nowDateYear = nowDate.getYear();
+                        int nowDateMonth = nowDate.getMonth();
+                        int chaDate = 0;
+                        if (nowDateMonth > babyBirthdayMonth) {
+                            chaDate = nowDateMonth - babyBirthdayMonth;
+                        } else if (babyBirthdayMonth > nowDateMonth) {
+                            chaDate = babyBirthdayMonth - nowDateMonth;
+                        }
+                        String babyName = babyBaseInfoVo.getName();
+                        if (StringUtils.isNotNull(babyName)) {
+                            babyName = babyBaseInfoVo.getName() + ",";
+                        } else {
+                            babyName = "";
+                        }
+                        sex = babyBaseInfoVo.getSex().equals("1") ? "女" : "男";
 
-                    babyInfo = sex + babyName + (nowDateYear - babyBirthdayYear) + "岁" + chaDate + "个月";
+                        babyInfo = sex + babyName + (nowDateYear - babyBirthdayYear) + "岁" + chaDate + "个月";
+                    }
                 }
                 babyInfo = StringUtils.isNull(babyInfo) ? "暂无数据" : babyInfo;
 

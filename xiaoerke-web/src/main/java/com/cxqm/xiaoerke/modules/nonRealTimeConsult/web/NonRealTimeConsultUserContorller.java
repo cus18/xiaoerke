@@ -131,6 +131,7 @@ public class NonRealTimeConsultUserContorller {
         }
         String csUserId = (String )params.get("csUserId");
         String content =  (String) params.get("sex")+"#"+(String )params.get("birthday")+"#"+(String )params.get("describeIllness");
+        String babyId = (String) params.get("babyId");
         List<String> imgList = (List)params.get("imgList");
         if(imgList.size()>0){
             for(String str:imgList){
@@ -144,7 +145,7 @@ public class NonRealTimeConsultUserContorller {
                 }
             }
         }
-        if(null ==params.get("babyId")){
+        if(!StringUtils.isNotNull(babyId)){
             BabyBaseInfoVo vo = new BabyBaseInfoVo();
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
             try {
@@ -155,10 +156,11 @@ public class NonRealTimeConsultUserContorller {
             }
             vo.setSex((String) params.get("sex"));
             vo.setOpenid(openid);
-            nonRealTimeConsultUserService.saveBabyBaseInfo(vo);
+            int idBaby = nonRealTimeConsultUserService.saveBabyBaseInfo(vo);
+            babyId = idBaby+"";
 //            创建评价记录
         }
-        HashMap<String, Object>  sessionMap = nonRealTimeConsultUserService.createSession(csUserId,openid,content);
+        HashMap<String, Object>  sessionMap = nonRealTimeConsultUserService.createSession(babyId,csUserId,openid,content);
         nonRealTimeConsultUserService.saveCustomerEvaluation(openid,csUserId,(Integer) sessionMap.get("sessionId")+"");
         return sessionMap;
     }
