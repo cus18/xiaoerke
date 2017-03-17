@@ -42,4 +42,6 @@ public interface BabyBaseInfoService {
     int updateBabyInfoByUserId(BabyBaseInfoVo vo);
 
     BabyBaseInfoVo selectLastBabyInfo(String  openid);
+
+    BabyBaseInfoVo insertssBean(BabyBaseInfoVo record);
 }

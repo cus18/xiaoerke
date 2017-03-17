@@ -16,6 +16,8 @@ public interface BabyBaseInfoDao {
 
     BabyBaseInfoVo selectByPrimaryKey(Integer id);
 
+    BabyBaseInfoVo insertBean(BabyBaseInfoVo record);
+
     List<BabyBaseInfoVo> selectByUserId(String userId);
 
     int updateByPrimaryKeySelective(BabyBaseInfoVo record);
