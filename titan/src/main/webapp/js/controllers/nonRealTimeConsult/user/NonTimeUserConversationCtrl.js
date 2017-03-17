@@ -81,14 +81,17 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
                     $scope.messageList = $scope.pageData.messageList;
                     var imgList=[];
                     for(var i=0;i<$scope.messageList.length;i++){
-                        if($scope.messageList[i].messageType=='img'){
-                            imgList.push($scope.messageList[i].message)
+                        if($scope.messageList[i].imgPath){
+                            imgList.concat($scope.messageList[i].imgPath)
                         }
                     }
-                    wx.previewImage({
-                        current: '', // 当前显示图片的http链接
-                        urls: imgList // 需要预览的图片http链接列表
-                    });
+                    $scope.lookBig=function(item2){
+                        wx.previewImage({
+                            current: 'item2', // 当前显示图片的http链接
+                            urls: imgList // 需要预览的图片http链接列表
+                        });
+                    }
+
                 })
             };
             //发送消息

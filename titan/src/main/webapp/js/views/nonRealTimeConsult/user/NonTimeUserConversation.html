@@ -23,7 +23,7 @@
                         {{item.babyBaseInfo}}</br>
                         {{item.message}}</br>
                         <div ng-style="item.imgPath?{'display':'block'}:{'display':'none'}" >
-                            <img width="40px" height="40px" ng-repeat="item2 in item.imgPath" ng-src="{{item2}}" alt=""/>
+                            <img ng-click="lookBig(item2)" width="40px" height="40px" ng-repeat="item2 in item.imgPath" ng-src="{{item2}}" alt=""/>
                         </div>
                     </div>
                     <div ng-style="item.messageType=='text'?{'display':'block'}:{'display':'none'}" class="content fr w70 b-box bgg">
@@ -45,7 +45,7 @@
                     <div ng-style="item.messageType=='createSession'?{'display':'block'}:{'display':'none'}" class="content fl w70 b-box bgf">
                         {{item.message}}</br>
                         <div ng-style="item.imgPath?{'display':'block'}:{'display':'none'}">
-                            <img width="40px" height="40px" ng-repeat="item2 in item.imgPath" ng-src="{{item2}}" alt=""/>
+                            <img  ng-click="lookBig(item2)" width="40px" height="40px" ng-repeat="item2 in item.imgPath" ng-src="{{item2}}" alt=""/>
                         </div>
                     </div>
                     <div ng-style="item.messageType=='text'?{'display':'block'}:{'display':'none'}" class="content fl w70 b-box bgf">
