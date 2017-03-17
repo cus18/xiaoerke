@@ -66,10 +66,10 @@
         <div class="home_friend" hidden>
             <div>患友圈</div>
         </div>
-        <!--<div class="goConsultDoctor">-->
-            <!--<div class="consultDoctor" ng-click="goConsultDoctor()" >-->
-                <!--咨询医生-->
-            <!--</div>-->
-        <!--</div>-->
+        <div class="goConsultDoctor" ng-if = "nonConsultStatus==1">
+            <div class="consultDoctor" ng-click="goConsultDoctor()" >
+                咨询医生
+            </div>
+        </div>
     </ion-content>
 </ion-view>
