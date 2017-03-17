@@ -84,7 +84,7 @@ public class CheakHusbandController {
                     imgUrl = englishImg[imgIndex];
                 }
             }else{
-                Set<String> keySet = redisTemplate.keys("babyEnglish_");
+                Set<String> keySet = redisTemplate.keys("babyEnglish_*");
                 imgIndex = keySet.size()>100?(keySet.size()/100):0;
                 redisTemplate.opsForValue().set("babyEnglish_"+openid,imgIndex+"",7,TimeUnit.DAYS);
                 if(englishImg.length>=imgIndex){
