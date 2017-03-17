@@ -297,6 +297,8 @@ public class FieldworkWechatController {
             url = getBabyCoinURL(request, openid,sysPropertyVoWithBLOBsVo);
         }else if(url.startsWith("55")){  //集卡活动
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/share#/addGroup";
+        }else if(url.startsWith("56")){
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeUserFindDoctor";
         }
         return "redirect:" + url;
     }
