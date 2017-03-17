@@ -67,6 +67,7 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
             }
 
 
+
             $scope.NonTimeUserConversationInit = function(){
                 $scope.doRefresh();
                 $scope.getQQExpression();
@@ -78,6 +79,16 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
                     $scope.pageData = data;
                     $scope.mindPath = data.mindPath
                     $scope.messageList = $scope.pageData.messageList;
+                    var imgList=[];
+                    for(var i=0;i<$scope.messageList.length;i++){
+                        if($scope.messageList[i].messageType=='img'){
+                            imgList.push($scope.messageList[i].message)
+                        }
+                    }
+                    wx.previewImage({
+                        current: '', // 当前显示图片的http链接
+                        urls: imgList // 需要预览的图片http链接列表
+                    });
                 })
             };
             //发送消息
