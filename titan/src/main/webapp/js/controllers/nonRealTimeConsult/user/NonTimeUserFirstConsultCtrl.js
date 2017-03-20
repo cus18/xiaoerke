@@ -73,7 +73,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                 $scope.doRefresh();
                 // 获取宝宝基本信息
                 BabyBaseInfo.save({},function (data) {
-                    $scope.babyId = data.babyId;
+                    $scope.babyId = data.babyId+"";
                     if(data.status == "error"){
                        alert (data.msg);
                         return;
@@ -173,7 +173,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                     "sex": $scope.sexItem+"",
                     "birthday": $("#babyBirthday").val(),
                     "describeIllness": $scope.info.describeIllness,
-                    "babyId": $scope.babyId,
+                    "babyId": $scope.babyId+"",
                     "imgList":$scope.photoList
                 };
 
