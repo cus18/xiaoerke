@@ -146,43 +146,48 @@ public class BabyCoinServiceImpl implements BabyCoinService {
 
     @Override
     public int giveBabyCoin(String openid, Long count) {
-        BabyCoinVo babyCoinVo = new BabyCoinVo();
-        babyCoinVo.setOpenId(openid);
-        babyCoinVo = selectByBabyCoinVo(babyCoinVo);
-        SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
-        sysWechatAppintInfoVo.setOpen_id(openid);
-        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-        SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
-        if (babyCoinVo == null || babyCoinVo.getCash() == null) {
-            synchronized (this) {
-                babyCoinVo = new BabyCoinVo();
-                babyCoinVo.setCash(count);
-                babyCoinVo.setCreateBy(openid);
-                babyCoinVo.setCreateTime(new Date());
-                babyCoinVo.setOpenId(openid);
-                BabyCoinVo lastBabyCoinUser = new BabyCoinVo();
-                lastBabyCoinUser.setCreateTime(new Date());
-                lastBabyCoinUser = selectByBabyCoinVo(lastBabyCoinUser);
-                if (wechatAttentionVo != null && wechatAttentionVo.getWechat_name() != null) {
-                    babyCoinVo.setNickName(wechatAttentionVo.getWechat_name());
+        try {
+            BabyCoinVo babyCoinVo = new BabyCoinVo();
+            babyCoinVo.setOpenId(openid);
+            babyCoinVo = selectByBabyCoinVo(babyCoinVo);
+            SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+            sysWechatAppintInfoVo.setOpen_id(openid);
+            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+            SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+            if (babyCoinVo == null || babyCoinVo.getCash() == null) {
+                synchronized (this) {
+                    babyCoinVo = new BabyCoinVo();
+                    babyCoinVo.setCash(count);
+                    babyCoinVo.setCreateBy(openid);
+                    babyCoinVo.setCreateTime(new Date());
+                    babyCoinVo.setOpenId(openid);
+                    BabyCoinVo lastBabyCoinUser = new BabyCoinVo();
+                    lastBabyCoinUser.setCreateTime(new Date());
+                    lastBabyCoinUser = selectByBabyCoinVo(lastBabyCoinUser);
+                    if (wechatAttentionVo != null && wechatAttentionVo.getWechat_name() != null) {
+                        babyCoinVo.setNickName(wechatAttentionVo.getWechat_name());
+                    }
+                    if (lastBabyCoinUser == null || lastBabyCoinUser.getMarketer() == null) {
+                        babyCoinVo.setMarketer("110000000");//初始值
+                    } else {
+                        babyCoinVo.setMarketer(String.valueOf(Integer.valueOf(lastBabyCoinUser.getMarketer()) + 1));
+                    }
+                    insertBabyCoinSelective(babyCoinVo);
                 }
-                if (lastBabyCoinUser == null || lastBabyCoinUser.getMarketer() == null) {
-                    babyCoinVo.setMarketer("110000000");//初始值
-                } else {
-                    babyCoinVo.setMarketer(String.valueOf(Integer.valueOf(lastBabyCoinUser.getMarketer()) + 1));
-                }
-                insertBabyCoinSelective(babyCoinVo);
+            } else {
+                babyCoinVo.setCash(babyCoinVo.getCash() + count);
+                updateBabyCoinByOpenId(babyCoinVo);
             }
-        }else{
-            babyCoinVo.setCash(babyCoinVo.getCash()+count);
-            updateBabyCoinByOpenId(babyCoinVo);
+            //发消息
+            String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=48";
+            Map parameter = systemService.getWechatParameter();
+            String token = (String) parameter.get("token");
+            WechatMessageUtil.templateModel("亲！有宝宝币入账啦", wechatAttentionVo.getWechat_name(), count + "枚", DateUtils.DateToStr(new Date(), "yyyy年MM月dd日"), "", "时间有限，宝宝币要抓紧使用哦，不要过期浪费啦~\n" +
+                    "点击进入宝宝币兑换中心", token, url, openid, "U-0n4vv3HTXzOE4iD5hZ1siCjbpFVTPpFsXrxs4ASK8");
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        //发消息
-        String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=48";
-        Map parameter = systemService.getWechatParameter();
-        String token = (String) parameter.get("token");
-        WechatMessageUtil.templateModel("亲！有宝宝币入账啦",wechatAttentionVo.getWechat_name(),count+"枚", DateUtils.DateToStr(new Date(),"yyyy年MM月dd日"),"","时间有限，宝宝币要抓紧使用哦，不要过期浪费啦~\n" +
-                "点击进入宝宝币兑换中心",token,url,openid,"U-0n4vv3HTXzOE4iD5hZ1siCjbpFVTPpFsXrxs4ASK8");
         return 0;
     }
 
