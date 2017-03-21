@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.activity.dao.PunchCardDataDao">
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.activity.entity.PunchCardDataVo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="success" jdbcType="INTEGER" property="success" />
+    <result column="failure" jdbcType="INTEGER" property="failure" />
+    <result column="total_cash" jdbcType="INTEGER" property="totalCash" />
+    <result column="total_num" jdbcType="INTEGER" property="totalNum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_time, update_time, success, failure, total_cash, total_num
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from punch_card_data
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from punch_card_data
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardDataVo">
+    insert into punch_card_data (id, create_time, update_time, 
+      success, failure, total_cash, 
+      total_num)
+    values (#{id,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{success,jdbcType=INTEGER}, #{failure,jdbcType=INTEGER}, #{totalCash,jdbcType=INTEGER}, 
+      #{totalNum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardDataVo">
+    insert into punch_card_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="success != null">
+        success,
+      </if>
+      <if test="failure != null">
+        failure,
+      </if>
+      <if test="totalCash != null">
+        total_cash,
+      </if>
+      <if test="totalNum != null">
+        total_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="success != null">
+        #{success,jdbcType=INTEGER},
+      </if>
+      <if test="failure != null">
+        #{failure,jdbcType=INTEGER},
+      </if>
+      <if test="totalCash != null">
+        #{totalCash,jdbcType=INTEGER},
+      </if>
+      <if test="totalNum != null">
+        #{totalNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardDataVo">
+    update punch_card_data
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="success != null">
+        success = #{success,jdbcType=INTEGER},
+      </if>
+      <if test="failure != null">
+        failure = #{failure,jdbcType=INTEGER},
+      </if>
+      <if test="totalCash != null">
+        total_cash = #{totalCash,jdbcType=INTEGER},
+      </if>
+      <if test="totalNum != null">
+        total_num = #{totalNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardDataVo">
+    update punch_card_data
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      success = #{success,jdbcType=INTEGER},
+      failure = #{failure,jdbcType=INTEGER},
+      total_cash = #{totalCash,jdbcType=INTEGER},
+      total_num = #{totalNum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="getLastOneData" resultMap="BaseResultMap">
+    select * from punch_card_data
+    where 1=1
+    order by create_time desc ;
+  </select>
+</mapper>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.activity.dao.PunchCardRecordsDao">
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRecordsVo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="dayth" jdbcType="INTEGER" property="dayth" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, open_id, create_time, update_time, del_flag, dayth ,nick_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from punch_card_records
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from punch_card_records
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRecordsVo">
+    insert into punch_card_records (id, open_id, create_time, 
+      update_time, del_flag, dayth,nick_name)
+    values (#{id,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, #{dayth,jdbcType=INTEGER},#{nickName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRecordsVo">
+    insert into punch_card_records
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="dayth != null">
+        dayth,
+      </if>
+      <if test="nickName != null">
+        nick_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="dayth != null">
+        #{dayth,jdbcType=INTEGER},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRecordsVo">
+    update punch_card_records
+    <set>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="dayth != null">
+        dayth = #{dayth,jdbcType=INTEGER},
+      </if>
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRecordsVo">
+    update punch_card_records
+    set open_id = #{openId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      del_flag = #{delFlag,jdbcType=INTEGER},
+      dayth = #{dayth,jdbcType=INTEGER},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="getSelfPunchCardCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select COUNT(*)
+    from punch_card_records
+    where 1=1 and del_flag = 0
+    and open_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getSelfPunchCardRecords" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRecordsVo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from punch_card_records
+    where 1=1
+    <if test="id != null">
+      and id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="openId != null">
+      and open_id = #{openId,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="getLastPunchCardRecord" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRecordsVo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from punch_card_records
+    where 1=1
+    <if test="openId != null">
+      and open_id = #{openId,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime != null">
+      and create_time <![CDATA[ > #{createTime,jdbcType=TIMESTAMP} ]]>
+    </if>
+    order by create_time desc
+  </select>
+  <select id="getTodayPunchCardRecords" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select rec.open_id as openId , rec.nick_name as nickName , rec.dayth as dayTh
+    from punch_card_records rec ,
+    (select * from punch_card_records
+    where 1=1
+    <if test="firstStart != null">
+      and create_time <![CDATA[ >= #{firstStart,jdbcType=TIMESTAMP} ]]>
+    </if>
+    <if test="firstEnd != null">
+      and create_time <![CDATA[ <= #{firstEnd,jdbcType=TIMESTAMP} ]]>
+    </if>)record2
+    where rec.open_id = record2.open_id
+    <if test="secondStart != null">
+      and create_time <![CDATA[ >= #{secondStart,jdbcType=TIMESTAMP} ]]>
+    </if>
+    <if test="secondEnd != null">
+      and create_time <![CDATA[ <= #{secondEnd,jdbcType=TIMESTAMP} ]]>
+    </if>)
+  </select>
+
+</mapper>

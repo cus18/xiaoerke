@@ -199,7 +199,11 @@ public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfo
         String ip = request.getRemoteAddr();
         String payResult = null;
         try {
-            payResult = accountService.payUserAmount(returnMoney, openid, ip);
+            if(params.containsKey("desc")){
+                payResult = accountService.payUserAmountCommon(returnMoney, openid, ip,String.valueOf(params.get("desc")));
+            }else{
+                payResult = accountService.payUserAmount(returnMoney, openid, ip);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -631,4 +631,49 @@ public class AccountServiceImpl implements AccountService {
 
         }
     }
+
+    public String payUserAmountCommon(Float returnMoney, String openid,String ip,String desc) throws BusinessPaymentExceeption, BalanceNotEnoughException {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        if (returnMoney < 10000) {
+            String partner_trade_no = IdGen.uuid();//生成随机字符串
+            WithdrawRecord withdrawRecord = buildWithdrawRecord(openid, returnMoney);
+            withdrawRecord.setId(partner_trade_no);//将本地数据库和商户平台关联
+            //保存用户提取记录
+            int status = withdrawRecordDao.insertSelective(withdrawRecord);
+            if(status > 0){
+                //调用企业统一支付接口对用户进行退款
+                SortedMap<Object, Object> parameters = new TreeMap<Object, Object>();
+                parameters.put("mch_appid", sysPropertyVoWithBLOBsVo.getAppId());//APPid
+                parameters.put("mchid",sysPropertyVoWithBLOBsVo.getPartner());
+                String nonce_str = IdGen.uuid(); //Sha1Util.getNonceStr();//商户订单号
+                parameters.put("nonce_str", nonce_str);
+                parameters.put("partner_trade_no", partner_trade_no);
+                parameters.put("check_name", "NO_CHECK");
+                parameters.put("amount",String.valueOf( returnMoney.intValue()));//金额
+                parameters.put("desc", desc);
+                parameters.put("spbill_create_ip", ip);
+                parameters.put("openid", openid);
+                String sign = JsApiTicketUtil.createSign("UTF-8", parameters,sysPropertyVoWithBLOBsVo);
+                parameters.put("sign", sign);
+                String requestXML = JsApiTicketUtil.getRequestXml(parameters);
+                try {
+                    String result = HttpRequestUtil.clientCustomSSLS(sysPropertyVoWithBLOBsVo.getTransfers(), requestXML,sysPropertyVoWithBLOBsVo);
+                    Map<String, String> returnMap = XMLUtil.doXMLParse(result);//解析微信返回的信息，以Map形式存储便于取值
+                    if (!"SUCCESS".equals(returnMap.get("result_code"))) {
+                        LogUtils.saveLog(Servlets.getRequest(), "00000040", "用户微信提现失败:" + result);//用户微信提现失败
+                        throw new BusinessPaymentExceeption();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new BusinessPaymentExceeption();
+                }
+                //判断返回值状态,如果失败则抛出异常 回滚事物
+                LogUtils.saveLog(Servlets.getRequest(), "00000041", "用户微信提现:" + partner_trade_no);
+            }
+            return "success";
+        } else {
+            throw new BusinessPaymentExceeption();
+
+        }
+    }
 }

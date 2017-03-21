@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.activity.dao.PunchCardInfoDao">
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.activity.entity.PunchCardInfoVo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="total_days" jdbcType="INTEGER" property="totalDays" />
+    <result column="marketer" jdbcType="INTEGER" property="marketer" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, open_id, create_time, update_time, del_flag, total_days, marketer
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from punch_card_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from punch_card_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardInfoVo">
+    insert into punch_card_info (id, open_id, create_time, 
+      update_time, del_flag, total_days, 
+      marketer)
+    values (#{id,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, #{totalDays,jdbcType=INTEGER}, 
+      #{marketer,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardInfoVo">
+    insert into punch_card_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="totalDays != null">
+        total_days,
+      </if>
+      <if test="marketer != null">
+        marketer,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="totalDays != null">
+        #{totalDays,jdbcType=INTEGER},
+      </if>
+      <if test="marketer != null">
+        #{marketer,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardInfoVo">
+    update punch_card_info
+    <set>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="totalDays != null">
+        total_days = #{totalDays,jdbcType=INTEGER},
+      </if>
+      <if test="marketer != null">
+        marketer = #{marketer,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardInfoVo">
+    update punch_card_info
+    set open_id = #{openId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      del_flag = #{delFlag,jdbcType=INTEGER},
+      total_days = #{totalDays,jdbcType=INTEGER},
+      marketer = #{marketer,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getPunchCardInfoBySelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardInfoVo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from punch_card_info
+    where 1=1
+    <if test="id != null">
+      and id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="openId != null">
+      and open_id = #{openId,jdbcType=VARCHAR}
+    </if>
+    <if test="marketer != null">
+      and marketer = #{marketer,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getLastOnePunchCardInfoVo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from punch_card_info where 1=1
+    order by create_time desc
+  </select>
+
+</mapper>

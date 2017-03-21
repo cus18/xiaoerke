@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.activity.dao.PunchCardRewardsDao">
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardsVo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="cash_amount" jdbcType="REAL" property="cashAmount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, open_id, nick_name, create_time, update_time, del_flag, cash_amount
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from punch_card_rewards
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from punch_card_rewards
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardsVo">
+    insert into punch_card_rewards (id, open_id, nick_name, 
+      create_time, update_time, del_flag, 
+      cash_amount)
+    values (#{id,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
+      #{cashAmount,jdbcType=REAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardsVo">
+    insert into punch_card_rewards
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="nickName != null">
+        nick_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="cashAmount != null">
+        cash_amount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="cashAmount != null">
+        #{cashAmount,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardsVo">
+    update punch_card_rewards
+    <set>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="cashAmount != null">
+        cash_amount = #{cashAmount,jdbcType=REAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardsVo">
+    update punch_card_rewards
+    set open_id = #{openId,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      del_flag = #{delFlag,jdbcType=INTEGER},
+      cash_amount = #{cashAmount,jdbcType=REAL}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="getSelfRewardsInfo" parameterType="java.lang.String" resultMap="java.util.Map">
+    select count(*) as totalNum , sum(cash_amount) as totalCash
+    FROM punch_card_rewards
+    WHERE open_id = #{openId,jdbcType=VARCHAR}
+  </select>
+  <select id="getPunchCardRewards" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardsVo" resultMap="java.util.Map">
+    select rewards.nick_name as nickName,rewards.open_id as openId,rewards.cash_amount as cashAmount , records.update_time as updateTime,records.dayth as dayTh
+    from punch_card_rewards rewards , (select * from (select * from punch_card_records records order by create_time desc) pcr group by open_id) records
+    where 1=1 and rewards.open_id = records.open_id
+    <if test="createTime != null">
+      and rewards.create_time <![CDATA[ > #{createTime,jdbcType=TIMESTAMP} ]]>
+    </if>
+    order by rewards.create_time desc
+  </select>
+  <insert id="batchInsertPunchCardRewards" parameterType="java.util.List">
+    INSERT INTO punch_card_rewards (id, open_id, nick_name,create_time, del_flag,cash_amount)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator="," >
+      (#{item.id},#{item.openId},#{item.nickName},#{item.createTime},#{item.delFlag},#{item.cashAmount})
+    </foreach>
+  </insert>
+</mapper>
