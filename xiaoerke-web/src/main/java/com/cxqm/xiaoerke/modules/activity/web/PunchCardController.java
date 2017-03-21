@@ -104,6 +104,7 @@ public class PunchCardController {
     HashMap<String, Object> getPunchCardPage(HttpServletRequest request, HttpSession session) {
         HashMap<String, Object> responseMap = new HashMap<String, Object>();
         String openId = WechatUtil.getOpenId(session, request);
+        responseMap.put("openId",openId);
         if (StringUtils.isNotNull(openId)) {
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
             String tokenId = (String) userWechatParam.get("token");
@@ -410,7 +411,6 @@ public class PunchCardController {
     @ResponseBody
     String payPunchCardCash(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpSession session) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-
         //获取统一支付接口参数
         Map prepayInfo = accountService.getPrepayInfo(request, session, "punchCardActivity");
         prepayInfo.put("feeType", "punchCardActivity");
