@@ -36,7 +36,7 @@ require.config({
             exports: 'angular-sanitize'
         },
         'ngDialog':{
-            deps: ['angular'],   //依赖�?么模�?
+            deps: ['angular'],   //以来什么模块
             exports: 'ngDialog'
         },
         'ocLazyLoad': ['angular'],
