@@ -127,47 +127,52 @@ public class NonRealTimeConsultUserContorller {
     @ResponseBody
     public Map<String,Object> createSession(HttpSession session, HttpServletRequest request,@RequestBody Map<String, Object> params) {
         String openid = WechatUtil.getOpenId(session,request);
-        if(!StringUtils.isNotNull(openid)){
-            Map<String,Object> resultMap = new HashMap<String, Object>();
-            resultMap.put("status","error");
-            resultMap.put("msg","未获取到用户的先关信息,请重新打开页面");
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        if (!StringUtils.isNotNull(openid)) {
+            resultMap.put("status", "error");
+            resultMap.put("msg", "未获取到用户的先关信息,请重新打开页面");
             return resultMap;
         }
-        String csUserId = (String )params.get("csUserId");
-        String content =  (String) params.get("sex")+"#"+(String )params.get("birthday")+"#"+(String )params.get("describeIllness");
-        String babyId = (String) params.get("babyId");
-        List<String> imgList = (List)params.get("imgList");
-        if(imgList.size()>0){
-            for(String str:imgList){
-                Map parameter = systemService.getWechatParameter();
-                String token = (String) parameter.get("token");
-                try {
-                    String mediaURL = WechatUtil.downloadMediaFromWx(token,str, "image",null);
-                    content +="#"+mediaURL;
-                } catch (IOException e) {
-                    e.printStackTrace();
+        try {
+            String csUserId = (String) params.get("csUserId");
+            String content = (String) params.get("sex") + "#" + (String) params.get("birthday") + "#" + (String) params.get("describeIllness");
+            String babyId = (String) params.get("babyId");
+            List<String> imgList = (List) params.get("imgList");
+            if (imgList.size() > 0) {
+                for (String str : imgList) {
+                    Map parameter = systemService.getWechatParameter();
+                    String token = (String) parameter.get("token");
+                    try {
+                        String mediaURL = WechatUtil.downloadMediaFromWx(token, str, "image", null);
+                        content += "#" + mediaURL;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-        }
-        if(!StringUtils.isNotNull(babyId)){
-            BabyBaseInfoVo vo = new BabyBaseInfoVo();
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                Date dfa =sdf.parse((String )params.get("birthday"));
-                vo.setBirthday(dfa);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            vo.setSex((String) params.get("sex"));
-            vo.setOpenid(openid);
+            if (!StringUtils.isNotNull(babyId)) {
+                BabyBaseInfoVo vo = new BabyBaseInfoVo();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    Date dfa = sdf.parse((String) params.get("birthday"));
+                    vo.setBirthday(dfa);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                vo.setSex((String) params.get("sex"));
+                vo.setOpenid(openid);
 //            int idBaby = nonRealTimeConsultUserService.saveBabyBaseInfo(vo);
-            BabyBaseInfoVo babyInfo = babyBaseInfoService.insertssBean(vo);
-            babyId = babyInfo.getId()+"";
+                BabyBaseInfoVo babyInfo = babyBaseInfoService.insertssBean(vo);
+                babyId = babyInfo.getId() + "";
 //            创建评价记录
+            }
+            resultMap = nonRealTimeConsultUserService.createSession(babyId, csUserId, openid, content);
+            nonRealTimeConsultUserService.saveCustomerEvaluation(openid, csUserId, (Integer) resultMap.get("sessionId") + "");
+        }catch (Exception e){
+            resultMap.put("status", "error");
+            resultMap.put("msg", "未获取到用户的相关信息,请重新打开页面");
         }
-        HashMap<String, Object>  sessionMap = nonRealTimeConsultUserService.createSession(babyId,csUserId,openid,content);
-        nonRealTimeConsultUserService.saveCustomerEvaluation(openid,csUserId,(Integer) sessionMap.get("sessionId")+"");
-        return sessionMap;
+        return resultMap;
     }
 
 
