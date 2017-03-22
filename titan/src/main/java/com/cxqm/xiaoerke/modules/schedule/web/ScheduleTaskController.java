@@ -128,6 +128,7 @@ public class ScheduleTaskController extends BaseController {
                 String nickName = String.valueOf(recordVos.get(i).get("nickName"));
                 String dayTh = String.valueOf(recordVos.get(i).get("dayTh"));
                 /**
+                 * 2017-3-22 14:46:25
                  * 批量插入以及微信付款
                  */
                 Map<String,Object> map = new HashMap<String, Object>();
