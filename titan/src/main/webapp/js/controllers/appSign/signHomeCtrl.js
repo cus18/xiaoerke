@@ -60,7 +60,6 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         GetPunchCardPage.save({},function(res){
             console.log(res)
         })
-
         //初始化微信
         var doRefresh = function () {
             var timestamp;//时间戳
