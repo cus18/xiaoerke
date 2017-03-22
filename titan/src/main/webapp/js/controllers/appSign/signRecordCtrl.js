@@ -4,5 +4,4 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signRecordCtrl',
         FindPunchCardBySelf.save({openId:''},function(res){
             console.log(res)
         })
-
     }])

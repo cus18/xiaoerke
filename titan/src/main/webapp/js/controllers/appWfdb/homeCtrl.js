@@ -58,6 +58,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                         },
                                         fail: function (res) {
                                         }
+
                                     });
                                     wx.onMenuShareAppMessage({
                                         title: $scope.minename  + '向你推荐', // 分享标题

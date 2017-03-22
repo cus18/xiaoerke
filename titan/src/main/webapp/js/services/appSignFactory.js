@@ -24,4 +24,5 @@ define(['appSign'], function (app) {
         .factory('PayPunchCardCash',['$resource',function ($resource){
             return $resource(activity+'payPunchCardCash');
         }])
+
 })
