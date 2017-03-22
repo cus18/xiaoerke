@@ -18,7 +18,7 @@ define(['appSign'], function (app) {
         .factory('TakePunchCardActivity',['$resource',function ($resource){
             return $resource(activity+'takePunchCardActivity');
         }])
-        .factory('TindPunchCardBySelf',['$resource',function ($resource){
+        .factory('FindPunchCardBySelf',['$resource',function ($resource){
             return $resource(activity+'findPunchCardBySelf');
         }])
         .factory('PayPunchCardCash',['$resource',function ($resource){
