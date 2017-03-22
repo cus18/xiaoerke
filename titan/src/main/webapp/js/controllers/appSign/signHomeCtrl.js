@@ -66,8 +66,8 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                 data: {url: location.href},//得到需要分享页面的url
                 cache: false,
                 dataType: 'json',
-                success: function (data) {
-                    if (data != null) {
+                success: function (data){
+                    if (data != null){
                         timestamp = data.timestamp;//得到时间戳
                         nonceStr = data.nonceStr;//得到随机字符串
                         signature = data.signature;//得到签名
