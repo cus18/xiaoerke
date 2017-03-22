@@ -80,6 +80,8 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                             nonceStr: nonceStr,
                             signature: signature,
                             jsApiList: [
+                                'onMenuShareTimeline',
+                                'onMenuShareAppMessage',
                                 'chooseWXPay'
                             ] // 功能列表
                         });
