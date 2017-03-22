@@ -11,7 +11,7 @@
                          {{item.message}}<br></span>
                      <a ng-if="item.messageType=='text'" ng-bind-html="item.message|emotionReceive:item.messageType"></a>
                      <img  ng-show="item.messageType=='createSession'" ng-click="lookBig(prop,item.imgPath)" class="pic-talk" ng-if="item.imgPath.length>0" width="50" height="50" ng-repeat="prop in item.imgPath" ng-src="{{prop}}" />
-                     <img  ng-show="item.messageType=='img'" class="pic-talk"  width="100%" height="auto" ng-src="{{item.message}}" onclick="return false"/>
+                     <img  ng-show="item.messageType=='img'" class="pic-talk"  width="100%" height="auto" ng-src="{{item.message}}" ng-click="lookBig(item.message,false)"/>
                 </span>
             </div>
         </div>
