@@ -139,10 +139,10 @@
     <if test="openId != null">
       and open_id = #{openId,jdbcType=VARCHAR}
     </if>
-    <if test="createTime != null">
-      and create_time <![CDATA[ > #{createTime,jdbcType=TIMESTAMP} ]]>
+    <if test="createTime != null and createTime != ''">
+      and create_time <![CDATA[ > #{createTime} ]]>
     </if>
-    order by create_time desc
+      order by create_time desc
   </select>
   <select id="getTodayPunchCardRecords" parameterType="java.util.Map" resultMap="BaseResultMap">
     select rec.open_id as openId , rec.nick_name as nickName , rec.dayth as dayTh
