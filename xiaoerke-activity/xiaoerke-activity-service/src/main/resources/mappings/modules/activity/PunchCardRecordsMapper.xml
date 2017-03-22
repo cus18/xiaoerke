@@ -140,7 +140,7 @@
       and open_id = #{openId,jdbcType=VARCHAR}
     </if>
     <if test="createTime != null">
-      and create_time <![CDATA[ > #{createTime,jdbcType=TIMESTAMP} ]]>
+      and create_time <![CDATA[ < #{createTime,jdbcType=TIMESTAMP} ]]>
     </if>
     order by create_time desc
   </select>
