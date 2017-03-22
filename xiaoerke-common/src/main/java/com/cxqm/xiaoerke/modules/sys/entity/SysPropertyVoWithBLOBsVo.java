@@ -65,6 +65,16 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String babyEnglishList;
 
+    private String punchCardShareUrl;
+
+    public String getPunchCardShareUrl() {
+        return punchCardShareUrl;
+    }
+
+    public void setPunchCardShareUrl(String punchCardShareUrl) {
+        this.punchCardShareUrl = punchCardShareUrl;
+    }
+
     public String getRedPackageShareUrl() {
         return redPackageShareUrl;
     }

@@ -13,6 +13,8 @@ import com.cxqm.xiaoerke.modules.activity.service.PunchCardRecordsService;
 import com.cxqm.xiaoerke.modules.activity.service.PunchCardRewardsService;
 import com.cxqm.xiaoerke.modules.activity.service.RedPackageActivityInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -46,6 +48,11 @@ public class ScheduleTaskController extends BaseController {
 
     @Autowired
     private RedPackageActivityInfoService redPackageActivityInfoService ;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService ;
+
+    SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
 
     /**
      * 每天早晨5：59初始化数据表
@@ -147,7 +154,7 @@ public class ScheduleTaskController extends BaseController {
                         "任务名称："+takeTime+"6:00-8:00早起打卡 \n"+
                         "任务类别：打卡挑战\n"+
                         "任务奖励金额："+userCash+"\n");
-                msg.append("<a href=''>" + "加油！参加下次挑战》》</a>");
+                msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>"+ "加油！参加下次挑战》》</a>");
                 String sendResult = WechatUtil.sendMsgToWechat(tokenId, openId, msg.toString());
                 LogUtils.saveLog("ZQTZ_TKTZ", openId + "--" + msg.toString());
             }
@@ -177,7 +184,7 @@ public class ScheduleTaskController extends BaseController {
                 msg.append("起来啦！起来啦！\n" +
                         "距离挑战结束还有2个小时，请在8:00\n"+
                         "前完成早起打卡。\n");
-                msg.append("<a href=''>" + "去打卡》》</a>");
+                msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>"+ "去打卡》》</a>");
                 String sendResult = WechatUtil.sendMsgToWechat(tokenId, openId, msg.toString());
                 LogUtils.saveLog("ZQTZ_QDK", openId + "--" + msg.toString());
             }
@@ -205,7 +212,7 @@ public class ScheduleTaskController extends BaseController {
                 msg.append("挑战提醒：\n" +
                         "明早上的“早起挑战”可以报名参加了！\n"+
                         "和小伙伴们一起早起迎接美好的时光。\n");
-                msg.append("<a href=''>" + "参加挑战》》</a>");
+                msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>"+ "参加挑战》》</a>");
                 String sendResult = WechatUtil.sendMsgToWechat(tokenId, openId, msg.toString());
                 LogUtils.saveLog("ZQTZ_TZTX", openId + "--" + msg.toString());
             }

@@ -245,6 +245,8 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/appWfdb";
         }else if(url.startsWith("54")){  //集卡活动
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/appHusband#/husGuide";
+        }else if(url.startsWith("57")){  //打卡活动
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/sign#signHome";
         }
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid=APPID" +
@@ -299,6 +301,8 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/share#/addGroup";
         }else if(url.startsWith("56")){
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeUserFindDoctor";
+        }else if(url.startsWith("58")){  //打卡活动
+            url = getBabyCoinURL(request, openid,sysPropertyVoWithBLOBsVo);
         }
         return "redirect:" + url;
     }
@@ -318,6 +322,8 @@ public class FieldworkWechatController {
         if(attention == null || attention.getDate() == null){//新用户
             if(marketer.startsWith("177")){  //集卡活动
                 url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/appWfdb#/newUser/"+oldOpenId+","+marketer;
+            }else if(marketer.startsWith("147")){  //打卡活动
+                url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/sign#/signNewUser/"+oldOpenId+","+marketer;
             }else{//宝宝币
                 url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteNew/"+oldOpenId+","+marketer;
                 LogUtils.saveLog("ZXYQ_YQK_NEW","oldOpenId="+oldOpenId+"openid="+openid+"marketer"+marketer);
@@ -325,6 +331,8 @@ public class FieldworkWechatController {
         }else {//老用户
             if(marketer.startsWith("177")){  //集卡活动
                 url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=52";
+            }else if(marketer.startsWith("147")){  //打卡活动
+                url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57";
             }else{//宝宝币
                 url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/playtour#/babyCoinInviteOld/"+oldOpenId+","+marketer+","+redPacketId;
                 LogUtils.saveLog("ZXYQ_YQK_OLD","openid="+openid);
