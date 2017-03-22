@@ -1,7 +1,8 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('signRecordCtrl', [
-    '$scope','$state','$stateParams','MyselfInfoAppointmentDetail',
-    'OrderPayMemberServiceOperation','GetUserMemberService','$location','ngDialog',
-    function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog) {
-
+    '$scope','$state','$stateParams', 'OrderPayMemberServiceOperation','GetUserMemberService','$location','ngDialog','FindPunchCardBySelf',
+    function ($scope,$state,$stateParams,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog,FindPunchCardBySelf) {
+        FindPunchCardBySelf.save({openId:''},function(res){
+            console.log(res)
+        })
 
     }])

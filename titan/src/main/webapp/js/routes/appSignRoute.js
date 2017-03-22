@@ -52,7 +52,7 @@ define(['appSign','appSignFactory'], function(app){
                         }
                     })
                     .state('signNewUser', {
-                        url: '/signNewUser',
+                        url: '/signNewUser/:oldOpenId,:marketer',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'signNewUserCtrl',
                         resolve: {

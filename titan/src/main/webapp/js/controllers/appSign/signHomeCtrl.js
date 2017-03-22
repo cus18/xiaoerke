@@ -1,7 +1,7 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
     '$scope','$state','$stateParams',
-    'OrderPayMemberServiceOperation','GetUserMemberService','$ionicScrollDelegate','$location','ngDialog','GetPunchCardPage',
-    function ($scope,$state,$stateParams,OrderPayMemberServiceOperation,GetUserMemberService,$ionicScrollDelegate,$location,ngDialog,GetPunchCardPage) {
+    'OrderPayMemberServiceOperation','GetUserMemberService','$ionicScrollDelegate','$location','ngDialog','GetPunchCardPage','TakePunchCardActivity','PayPunchCardCash','GetConfig',
+    function ($scope,$state,$stateParams,OrderPayMemberServiceOperation,GetUserMemberService,$ionicScrollDelegate,$location,ngDialog,GetPunchCardPage,TakePunchCardActivity,PayPunchCardCash,GetConfig) {
         //前往个人中心
         $scope.goCenter=function(){
             $state.go('signRecord')
@@ -26,12 +26,20 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         //支付按钮点击事件
         $scope.goPay=function(){
             $ionicScrollDelegate.scrollTop();
-
+            PayPunchCardCash.save({},function(res){
+                console.log(res)
+            })
         }
         //喊朋友一起来参加
         $scope.goShare=function(){
             $ionicScrollDelegate.scrollTop();
             $scope.share_status=true;
+        }
+        //我要打卡
+        $scope.goSign=function(){
+            TakePunchCardActivity.save({openId:''},function(res){
+                console.log(res)
+            })
         }
         //关闭按钮
         $scope.close=function(){
@@ -131,11 +139,11 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                                 alert("支付失败,请重新支付")
                             }
                         },
-                fail: function (res) {
-                alert(res.errMsg)
-            }
-        });
-    },
+                        fail: function (res) {
+                            alert(res.errMsg)
+                        }
+                    });
+                },
                 error: function () {
                 }
             });
