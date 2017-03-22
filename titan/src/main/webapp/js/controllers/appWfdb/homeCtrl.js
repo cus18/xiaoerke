@@ -57,6 +57,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('homeCtrl', [
                                             // });
                                         },
                                         fail: function (res) {
+
                                         }
                                     });
                                     wx.onMenuShareAppMessage({
