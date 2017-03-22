@@ -67,7 +67,6 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
             var nonceStr;//随机字符串
             var signature;//得到的签名
             var appid;//得到的签名
-
             $.ajax({
                 url: "wechatInfo/getConfig",// 跳转到 action
                 async: true,

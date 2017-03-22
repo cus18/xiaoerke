@@ -65,7 +65,6 @@ define(['appSign','appSignFactory'], function(app){
                             }
                         }
                     })
-
                 $urlRouterProvider.otherwise('signHome');
             }])
         .run(function ($rootScope){
