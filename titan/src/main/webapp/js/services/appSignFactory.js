@@ -2,7 +2,7 @@
  * 取得实际位置
  * 调用方式：geoFactory.getGeo();
  */
-var activity='punchCard/'
+var activity='punchCard/';
 
 define(['appSign'], function (app) {
     app
