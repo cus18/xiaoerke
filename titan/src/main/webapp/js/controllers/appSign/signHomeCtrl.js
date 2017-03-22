@@ -1,7 +1,7 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
-    '$scope','$state','$stateParams','MyselfInfoAppointmentDetail',
-    'OrderPayMemberServiceOperation','GetUserMemberService','$ionicScrollDelegate','$location','ngDialog',
-    function ($scope,$state,$stateParams,MyselfInfoAppointmentDetail,OrderPayMemberServiceOperation,GetUserMemberService,$ionicScrollDelegate,$location,ngDialog) {
+    '$scope','$state','$stateParams',
+    'OrderPayMemberServiceOperation','GetUserMemberService','$ionicScrollDelegate','$location','ngDialog','GetPunchCardPage',
+    function ($scope,$state,$stateParams,OrderPayMemberServiceOperation,GetUserMemberService,$ionicScrollDelegate,$location,ngDialog,GetPunchCardPage) {
         //前往个人中心
         $scope.goCenter=function(){
             $state.go('signRecord')
@@ -49,7 +49,9 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         $scope.lookMore=function(){
 
         }
-
+        GetPunchCardPage.save({},function(res){
+            console.log(res)
+        })
 
         //初始化微信
         var doRefresh = function () {

@@ -2,17 +2,26 @@
  * 取得实际位置
  * 调用方式：geoFactory.getGeo();
  */
-var activity='cheakHusband/'
+var activity='punchCard/'
 
 define(['appSign'], function (app) {
     app
-        .factory('GetCardInfoList',['$resource',function ($resource){
-            return $resource(activity + 'getCardInfoList');
+        .factory('MakeNewInviteCard',['$resource',function ($resource){
+            return $resource(activity + 'makeNewInviteCard');
         }])
         .factory('GetConfig',['$resource',function ($resource){
             return $resource('util/getConfig');
         }])
-        .factory('CheackAttention',['$resource',function ($resource){
-            return $resource(activity+'isAttention');
+        .factory('GetPunchCardPage',['$resource',function ($resource){
+            return $resource(activity+'getPunchCardPage');
+        }])
+        .factory('TakePunchCardActivity',['$resource',function ($resource){
+            return $resource(activity+'takePunchCardActivity');
+        }])
+        .factory('TindPunchCardBySelf',['$resource',function ($resource){
+            return $resource(activity+'findPunchCardBySelf');
+        }])
+        .factory('PayPunchCardCash',['$resource',function ($resource){
+            return $resource(activity+'payPunchCardCash');
         }])
 })
