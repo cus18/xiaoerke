@@ -140,7 +140,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     private PatientRegisterPraiseService patientRegisterPraiseService;
 
     @Autowired
-    private RedPackageActivityInfoService redPackageActivityInfoService ;
+    private RedPackageActivityInfoService redPackageActivityInfoService;
 
     @Resource(name = "redisTemplate")
     private RedisTemplate<String, Object> redisTemplate;
@@ -185,7 +185,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 //                babyVaccineRemind(xmlEntity, token, sysPropertyVoWithBLOBsVo);
                 //微量元素检测
 //                traceElementsDetection(xmlEntity, token);
-                send2016StoryEvent(xmlEntity,sysPropertyVoWithBLOBsVo);
+                send2016StoryEvent(xmlEntity, sysPropertyVoWithBLOBsVo);
                 /**
                  *  疫苗站关注提醒 2016年12月12日11:23:52 jiangzg
                  */
@@ -197,7 +197,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 //扫描关注公众号或者搜索关注公众号都在其中
                 respMessage = processSubscribeEvent(xmlEntity, request, response, sysPropertyVoWithBLOBsVo);
 
-                send2016StoryEvent(xmlEntity,sysPropertyVoWithBLOBsVo);
+                send2016StoryEvent(xmlEntity, sysPropertyVoWithBLOBsVo);
                 //疫苗提醒
 //                babyVaccineRemind(xmlEntity, token, sysPropertyVoWithBLOBsVo);
 
@@ -671,18 +671,18 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             Map parameter = systemService.getWechatParameter();
             String token = (String) parameter.get("token");
             WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), "点击左下角小键盘，赶快咨询吧~");
-        }else if(EventKey.indexOf("WifiConnected") > -1){
+        } else if (EventKey.indexOf("WifiConnected") > -1) {
             //该用户链接wifi
             String shopId = xmlEntity.getShopId();
             String openid = xmlEntity.getFromUserName();
-            LogUtils.saveLog("WifiConnected",openid+"_"+shopId);
-        }else if(EventKey.indexOf("YYHD_BDF_ZJLG") > -1){
+            LogUtils.saveLog("WifiConnected", openid + "_" + shopId);
+        } else if (EventKey.indexOf("YYHD_BDF_ZJLG") > -1) {
             Map parameter = systemService.getWechatParameter();
             String token = (String) parameter.get("token");
-            String type = (String) redisTemplate.opsForValue().get("husbandCheack"+xmlEntity.getFromUserName());
-            String msg = "亲，你咋才来捏~不知道3.15也开始打击“假老公了”吗？想要知道你是不是也嫁了个假老公\n<a href='"+sysPropertyVoWithBLOBsVo.getTitanWebUrl()+"/titan/appHusband#/husResult/"+type+"'>麻利的赶紧点击链接》》</a>";
+            String type = (String) redisTemplate.opsForValue().get("husbandCheack" + xmlEntity.getFromUserName());
+            String msg = "亲，你咋才来捏~不知道3.15也开始打击“假老公了”吗？想要知道你是不是也嫁了个假老公\n<a href='" + sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appHusband#/husResult/" + type + "'>麻利的赶紧点击链接》》</a>";
             WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), msg);
-        }else if(EventKey.indexOf("PD_HPFX") > -1){
+        } else if (EventKey.indexOf("PD_HPFX") > -1) {
             Map parameter = systemService.getWechatParameter();
             String token = (String) parameter.get("token");
             String msg = "亲爱的，体验一次和可爱亲民的医生聊会天吧~  \n" +
@@ -918,7 +918,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
         String marketer = "";
         String openId = xmlEntity.getFromUserName();
-        LogUtils.saveLog(openId,"ZX_NYBBDGS");
+        LogUtils.saveLog(openId, "ZX_NYBBDGS");
         Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         String token = (String) userWechatParam.get("token");
         String EventKey = xmlEntity.getEventKey();
@@ -927,9 +927,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         }
         String url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=49";
 
-        if(marketer.startsWith("PD_NDGS")){
-            String message = "快来看下2016你和宝宝在宝大夫的秘密故事吧<a href='"+url+"'>》》点击查看</a>";
-            WechatUtil.sendMsgToWechat(token,openId , message);
+        if (marketer.startsWith("PD_NDGS")) {
+            String message = "快来看下2016你和宝宝在宝大夫的秘密故事吧<a href='" + url + "'>》》点击查看</a>";
+            WechatUtil.sendMsgToWechat(token, openId, message);
         }
     }
 
@@ -1015,13 +1015,13 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
     ;
 
     private void babyCoinHandler(ReceiveXmlEntity xmlEntity, String token, String marketer) {
-            SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-            String newOpenId = xmlEntity.getFromUserName();
-            SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
-            sysWechatAppintInfoVo.setOpen_id(newOpenId);
-            SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
-            //新用户从来没有关注过的
-            if (wechatAttentionVo == null) {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        String newOpenId = xmlEntity.getFromUserName();
+        SysWechatAppintInfoVo sysWechatAppintInfoVo = new SysWechatAppintInfoVo();
+        sysWechatAppintInfoVo.setOpen_id(newOpenId);
+        SysWechatAppintInfoVo wechatAttentionVo = wechatAttentionService.findAttentionInfoByOpenId(sysWechatAppintInfoVo);
+        //新用户从来没有关注过的
+        if (wechatAttentionVo == null) {
             if (marketer.startsWith("110")) {
                 BabyCoinVo olderUser = new BabyCoinVo();
                 String cash = sysPropertyVoWithBLOBsVo.getBabyCoin();
@@ -1077,32 +1077,32 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     String templateInfo = "\"first\": {\"value\":" + title + ",\"color\":\"#FF0000\"},\"keynote1\":{ \"value\":" + keyword1 + ",, \"color\":\"#000000\"},\"keynote2\": { \"value\":" + keyword2 + ", \"color\":\"#000000\" }, \"remark\":{ \"value\":" + remark + ",\"color\":\"#FF0000\"}";
                     WechatUtil.sendTemplateMsgToUser(token, oldOpenId, templateId, templateInfo);
                 }
-            }else if(marketer.startsWith("177") && marketer.length() == 10){
+            } else if (marketer.startsWith("177") && marketer.length() == 10) {
                 RedpackageActivityInfoVo vo = new RedpackageActivityInfoVo();
                 vo.setMarket(Integer.valueOf(marketer));
-                if(lock.tryLock()){
-                    try{
+                if (lock.tryLock()) {
+                    try {
                         List<RedpackageActivityInfoVo> list = redPackageActivityInfoService.getRedpackageActivityBySelective(vo);
-                        if(list !=null && list.size() > 0){
+                        if (list != null && list.size() > 0) {
                             vo = list.get(0);
                             int nowCount = vo.getTotalInvitation() + 1;
-                            int count ;
-                            if(nowCount % 2 == 0){
-                                if(nowCount % 10 == 0){
+                            int count;
+                            if (nowCount % 2 == 0) {
+                                if (nowCount % 10 == 0) {
                                     count = vo.getCardHealth() + 1;
                                     vo.setCardHealth(count);
-                                }else{
-                                    double ma = Math.random()*100;
-                                    if(ma < 25){
-                                        count = vo.getCardHappy()+ 1;
+                                } else {
+                                    double ma = Math.random() * 100;
+                                    if (ma < 25) {
+                                        count = vo.getCardHappy() + 1;
                                         vo.setCardHappy(count);
-                                    }else if(ma < 50){
+                                    } else if (ma < 50) {
                                         count = vo.getCardLove() + 1;
                                         vo.setCardLove(count);
-                                    }else if(ma < 75){
+                                    } else if (ma < 75) {
                                         count = vo.getCardRuyi() + 1;
                                         vo.setCardRuyi(count);
-                                    }else{
+                                    } else {
                                         count = vo.getCardYoushan() + 1;
                                         vo.setCardYoushan(count);
                                     }
@@ -1111,12 +1111,12 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                             vo.setTotalInvitation(nowCount);
                             redPackageActivityInfoService.updateByPrimaryKeySelective(vo);
                         }
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         ex.printStackTrace();
-                    }finally{
+                    } finally {
                         lock.unlock();   //释放锁
                     }
-                }else{
+                } else {
                     System.out.print("获取锁失败");
                 }
                 // 邀请好友成功发送通知
@@ -1124,10 +1124,18 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 // 到账模板：U-0n4vv3HTXzOE4iD5hZ1siCjbpFVTPpFsXrxs4ASK8
                 String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg"; //生产环境 业务动态提醒ID
                 String keyword1 = "您已成功邀请" + vo.getTotalInvitation() + "位好友";
-                String keyword2 = "已集齐卡片" +vo.getTotalInvitation()/2 + "张，福利卡" + vo.getCardBig()+ "张";
+                String keyword2 = "已集齐卡片" + vo.getTotalInvitation() / 2 + "张，福利卡" + vo.getCardBig() + "张";
                 String remark = "点击立即抽奖";
-                String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl()+ "/titan/appWfdb#/myCard";
+                String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appWfdb#/myCard";
                 WechatMessageUtil.templateModel(title, keyword1, keyword2, "", "", remark, token, url, vo.getOpenId(), templateId);
+            } else if (marketer.startsWith("147") && marketer.length() == 10) {
+                StringBuffer msg = new StringBuffer();
+                msg.append("福利来啦：\n" +
+                        "一起来加入我们赢取大量挑战金吧！\n");
+                msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>" + "参加挑战》》</a>");
+                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                String sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), newOpenId, msg.toString());
+                LogUtils.saveLog("ZQTZ_XYH", newOpenId+ "--" + msg.toString());
             }
         }
     }
@@ -1279,11 +1287,11 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             articleList.add(article);
             WechatUtil.senImgMsgToWechat(token, xmlEntity.getFromUserName(), articleList);
             memberService.sendExtendOldMemberWechatMessage(xmlEntity.getFromUserName());
-        }else if("37".equals(xmlEntity.getEventKey())){
+        } else if ("37".equals(xmlEntity.getEventKey())) {
             Map parameter = systemService.getWechatParameter();
             String token = (String) parameter.get("token");
             WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6fewi6uvSqjml1-SXSNZsNBlI", 1);
-        }else if("36".equals(xmlEntity.getEventKey())){
+        } else if ("36".equals(xmlEntity.getEventKey())) {
             Map parameter = systemService.getWechatParameter();
             String token = (String) parameter.get("token");
             WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6feyWoBTwEtsQ_wxFttviR7cI", 1);

@@ -13,6 +13,8 @@ import com.cxqm.xiaoerke.modules.activity.entity.PunchCardRecordsVo;
 import com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardsVo;
 import com.cxqm.xiaoerke.modules.activity.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +61,9 @@ public class PunchCardController {
     //用户分的奖励
     @Autowired
     private PunchCardRewardsService punchCardRewardsService;
+
+    @Autowired
+    private SysPropertyServiceImpl sysPropertyService;
 
     private Lock lock = new ReentrantLock();
 
@@ -276,6 +281,7 @@ public class PunchCardController {
     @ResponseBody
     HashMap<String, Object> takePunchCardActivity(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpSession session) {
         HashMap<String, Object> resultMap = new HashMap<String, Object>();
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         resultMap.put("status", "failure");
         String openId = String.valueOf(params.get("openId"));
         Calendar calendar = Calendar.getInstance();
@@ -349,7 +355,7 @@ public class PunchCardController {
             String takeTime = sdf.format(calendar.getTime());
             msg.append(takeTime + "早起打卡失败，不要气馁，" +
                     "继续 \n");
-            msg.append("<a href=''>" + "加油！参加下次挑战》》</a>");
+            msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>" + "加油！参加下次挑战》》</a>");
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
             String sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), openId, msg.toString());
             LogUtils.saveLog("ZQTZ_DKSB", openId + "--" + msg.toString());
@@ -361,7 +367,7 @@ public class PunchCardController {
             msg.append(takeTime + "完成早起打卡" +
                     "连续"+vo.getDayth()+"天挑战成功！你将会收到平分的挑战金。\n"+
                     "24小时内发送至微信钱包。\n");
-            msg.append("<a href=''>" + "加油！参加下次挑战》》</a>");
+            msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>"+ "加油！参加下次挑战》》</a>");
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
             String sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), openId, msg.toString());
             LogUtils.saveLog("ZQTZ_WCDK", openId+ "--" + msg.toString());
@@ -411,6 +417,7 @@ public class PunchCardController {
     @ResponseBody
     String payPunchCardCash(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpSession session) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         //获取统一支付接口参数
         Map prepayInfo = accountService.getPrepayInfo(request, session, "punchCardActivity");
         prepayInfo.put("feeType", "punchCardActivity");
@@ -453,7 +460,7 @@ public class PunchCardController {
                         "完成挑战。\n" +
                         "提示：大波挑战金，千万不要错过………\n");
             }
-            msg.append("<a href=''>" + "去打卡》》</a>");
+            msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>" + "去打卡》》</a>");
             String sendResult = WechatUtil.sendMsgToWechat(tokenId, userId, msg.toString());
             LogUtils.saveLog("ZQTZ_QDK", userId + "--" + msg.toString());
         }
