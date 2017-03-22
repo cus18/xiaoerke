@@ -131,11 +131,11 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                                 alert("支付失败,请重新支付")
                             }
                         },
-                        fail: function (res) {
-                            alert(res.errMsg)
-                        }
-                    });
-                },
+                fail: function (res) {
+                alert(res.errMsg)
+            }
+        });
+    },
                 error: function () {
                 }
             });
