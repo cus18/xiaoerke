@@ -154,14 +154,14 @@
     </if>
     <if test="firstEnd != null">
       and create_time <![CDATA[ <= #{firstEnd,jdbcType=TIMESTAMP} ]]>
-    </if>)record2
+    </if>) record2
     where rec.open_id = record2.open_id
     <if test="secondStart != null">
       and create_time <![CDATA[ >= #{secondStart,jdbcType=TIMESTAMP} ]]>
     </if>
     <if test="secondEnd != null">
       and create_time <![CDATA[ <= #{secondEnd,jdbcType=TIMESTAMP} ]]>
-    </if>)
+    </if>
   </select>
 
 </mapper>

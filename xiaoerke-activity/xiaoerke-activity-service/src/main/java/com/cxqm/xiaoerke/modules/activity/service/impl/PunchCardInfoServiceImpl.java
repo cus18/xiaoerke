@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.modules.activity.entity.PunchCardInfoVo;
 import com.cxqm.xiaoerke.modules.activity.service.PunchCardInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * Created by jiangzhongge on 2017-3-17.
  */
 @Service
+@Transactional(readOnly = false)
 public class PunchCardInfoServiceImpl implements PunchCardInfoService {
 
         @Autowired

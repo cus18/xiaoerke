@@ -115,8 +115,10 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="getLastOneData" resultMap="BaseResultMap">
-    select * from punch_card_data
+    select
+    <include refid="Base_Column_List" />
+    from punch_card_data
     where 1=1
-    order by create_time desc ;
+    order by create_time desc
   </select>
 </mapper>

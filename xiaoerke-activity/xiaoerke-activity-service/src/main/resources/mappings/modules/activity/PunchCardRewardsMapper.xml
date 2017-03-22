@@ -121,7 +121,7 @@
   </select>
   <select id="getPunchCardRewards" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardsVo" resultMap="java.util.Map">
     select rewards.nick_name as nickName,rewards.open_id as openId,rewards.cash_amount as cashAmount , records.update_time as updateTime,records.dayth as dayTh
-    from punch_card_rewards rewards , (select * from (select * from punch_card_records records order by create_time desc) pcr group by open_id) records
+    from punch_card_rewards rewards , (select * from (select * from punch_card_records order by create_time desc) pcr group by pcr.open_id) records
     where 1=1 and rewards.open_id = records.open_id
     <if test="createTime != null">
       and rewards.create_time <![CDATA[ > #{createTime,jdbcType=TIMESTAMP} ]]>

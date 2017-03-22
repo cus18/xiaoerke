@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.modules.activity.entity.PunchCardRecordsVo;
 import com.cxqm.xiaoerke.modules.activity.service.PunchCardRecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
  * Created by jiangzhongge on 2017-3-17.
  */
 @Service
+@Transactional(readOnly = false)
 public class PunchCardRecordsServiceImpl implements PunchCardRecordsService {
 
         @Autowired

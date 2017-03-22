@@ -52,8 +52,6 @@ public class ScheduleTaskController extends BaseController {
     @Autowired
     private SysPropertyServiceImpl sysPropertyService ;
 
-    SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-
     /**
      * 每天早晨5：59初始化数据表
      */
@@ -73,6 +71,7 @@ public class ScheduleTaskController extends BaseController {
     public void punchCardCashToUser(){
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         float userCash = 0 ;
         int personNum = 0 ;
         int cashNum = 0;
@@ -165,6 +164,7 @@ public class ScheduleTaskController extends BaseController {
      * 每天早晨6：00 提醒打卡
      */
     public void pushRemindPunchCardMsg(){
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.add(Calendar.DATE,-1);
@@ -194,6 +194,7 @@ public class ScheduleTaskController extends BaseController {
      * 每天晚上22：00 挑战提醒
      */
     public void sendPunchCardChallengeMsg(){
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.set(Calendar.HOUR_OF_DAY, 6);
