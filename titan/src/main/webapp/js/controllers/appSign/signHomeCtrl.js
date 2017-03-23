@@ -44,6 +44,14 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         $scope.goShare=function(){
             $ionicScrollDelegate.scrollTop();
             $scope.share_status=true;
+            //启动状态判断
+            $scope.start_status=false;
+            //支付状态判断
+            $scope.pay_status=false;
+            //打卡时间提示状态
+            $scope.time_status=false;
+            //打卡成功提示状态
+            $scope.sign_status=false;
         }
         //我要打卡
         $scope.goSign=function(){
