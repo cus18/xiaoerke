@@ -62,9 +62,13 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         $scope.goSign=function(){
             TakePunchCardActivity.save({openId:$scope.openId},function(res){
                 if(res.status=="failure"){
+                    $ionicScrollDelegate.scrollTop();
                     $scope.time_status=true;
                 }else{
+                    $ionicScrollDelegate.scrollTop();
                     $scope.sign_status=true;
+                    $scope.goJoinStatus=true;
+                    $scope.goSignStatus=false;
                 }
             })
         }
