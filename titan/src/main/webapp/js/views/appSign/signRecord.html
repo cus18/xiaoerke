@@ -23,12 +23,8 @@
                 <div class="list">
                     <div class="listHead">打卡成功记录</div>
                     <ul>
-                        <li><b>3月6日</b><span>我在6:30起床,累计早起<b>6</b>天了！</span></li>
-                        <li><b>3月5日</b><span>我在6:30起床,累计早起<b>5</b>天了！</span></li>
-                        <li><b>3月4日</b><span>我在6:30起床,累计早起<b>4</b>天了！</span></li>
-                        <li><b>3月3日</b><span>我在6:30起床,累计早起<b>3</b>天了！</span></li>
-                        <li><b>3月2日</b><span>我在6:30起床,累计早起<b>2</b>天了！</span></li>
-                        <li><b>3月1日</b><span>我在6:30起床,累计早起<b>1</b>天了！</span></li>
+                        <li ng-repeat="item in list"><b>{{item.day}}</b><span>我在{{item.hour}}起床,累计早起<b>{{item.dayth}}</b>天了！</span></li>
+
                     </ul>
                 </div>
             </div>
