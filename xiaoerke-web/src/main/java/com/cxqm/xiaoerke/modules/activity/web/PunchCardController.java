@@ -109,7 +109,7 @@ public class PunchCardController {
         responseMap.put("openId",openId);
         if (StringUtils.isNotNull(openId)) {
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-            String tokenId = (String) userWechatParam.get("token");
+            String tokenId = String.valueOf(userWechatParam.get("token"));
             String nickName = WechatUtil.getWechatName(tokenId, openId).getNickname();
             Date date = null;
             Calendar calendarOld = Calendar.getInstance();
