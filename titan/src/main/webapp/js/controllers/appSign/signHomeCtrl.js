@@ -35,7 +35,10 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         $scope.goPay=function(){
             $ionicScrollDelegate.scrollTop();
             PayPunchCardCash.save({payPrice:$scope.oData.punchCount},function(res){
-                console.log(res)
+                if(res.resultCode){
+                    alert('服务器错误');
+                    $scope.start_status=false;
+                }
             })
         }
         //喊朋友一起来参加
