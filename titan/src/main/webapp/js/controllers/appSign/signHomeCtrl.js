@@ -34,7 +34,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         //支付按钮点击事件
         $scope.goPay=function(){
             $ionicScrollDelegate.scrollTop();
-            window.location.href='http://s201.xiaork.com/keeper/webapp/WEB-INF/views/pay/signPay.html';
+            window.location.href='http://s201.xiaork.com/keeper/src/main/webapp/WEB-INF/views/pay/signPay.html';
         }
         //喊朋友一起来参加
         $scope.goShare=function(){
@@ -72,7 +72,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                 if(res.isOrNotPay=='no'){
                     $scope.goJoinStatus=true;
                     $scope.goSignStatus=false;
-                }else{
+                }else if(res.isOrNotPay=='yes'){
                     $scope.goJoinStatus=false;
                     $scope.goSignStatus=true;
                 }
