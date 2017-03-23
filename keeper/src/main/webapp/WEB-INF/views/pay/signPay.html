@@ -78,7 +78,7 @@
                     paySign: obj.paySign,  // 支付签名
                     success: function (res) {
                         if (res.errMsg == "chooseWXPay:ok") {
-
+                            window.history.go(-1);
                         } else {
                             alert("支付失败,请重新支付")
                         }
