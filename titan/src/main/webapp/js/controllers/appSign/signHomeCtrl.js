@@ -62,7 +62,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         $scope.goSign=function(){
             TakePunchCardActivity.save({openId:$scope.openId},function(res){
                 if(res.status=="failure"){
-                    alert('打卡失败')
+                    $scope.time_status=true;
                 }else{
                     $scope.sign_status=true;
                 }
