@@ -85,10 +85,11 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                     $scope.goJoinStatus=false;
                     $scope.goSignStatus=true;
                 }
+                $scope.doRefresh();
             }
         })
         //初始化微信
-        var doRefresh = function ($scope) {
+         $scope.doRefresh = function () {
             GetConfig.save({}, function (data) {
                 $scope.inviteUrlData = data.publicSystemInfo.redPackageShareUrl;
                 var share = $scope.inviteUrlData + $scope.openid + "," + $scope.market + ",";//最后url=41，openid,marketer
