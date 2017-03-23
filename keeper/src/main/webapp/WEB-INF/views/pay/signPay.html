@@ -1,7 +1,7 @@
 <html>
 <head>
 </head>
-<base href="/titan/"/>
+<base href="/keeper/"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
 <meta content="yes" name="apple-mobile-web-app-capable">
@@ -79,7 +79,7 @@
                     paySign: obj.paySign,  // 支付签名
                     success: function (res) {
                         if (res.errMsg == "chooseWXPay:ok") {
-                            window.history.go(-1);
+                            window.location.href='http://s201.xiaork.com/titan/sign#/signHome/true';
                         } else {
                             alert("支付失败,请重新支付")
                         }

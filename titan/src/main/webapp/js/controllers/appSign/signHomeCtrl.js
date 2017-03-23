@@ -25,7 +25,11 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         //分享弹窗状态
         $scope.share_status=false;
 
-
+        if($stateParams.id=='false'){
+            $scope.sign_status=false;
+        }else if($stateParams.id=='true'){
+            $scope.sign_status=true;
+        }
         //加入的点击事件
         $scope.goJoin=function(){
             $ionicScrollDelegate.scrollTop();
@@ -43,8 +47,12 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         }
         //我要打卡
         $scope.goSign=function(){
-            TakePunchCardActivity.save({openId:''},function(res){
-                console.log(res)
+            TakePunchCardActivity.save({openId:$scope.openId},function(res){
+                if(res.status=="failure"){
+                    alert('打卡失败')
+                }else{
+                    $scope.sign_status=true;
+                }
             })
         }
         //关闭按钮
