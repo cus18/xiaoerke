@@ -34,9 +34,8 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         //支付按钮点击事件
         $scope.goPay=function(){
             $ionicScrollDelegate.scrollTop();
-            PayPunchCardCash.save({},function(res){
-
-
+            PayPunchCardCash.save({payPrice:$scope.oData.punchCount},function(res){
+                console.log(res)
             })
         }
         //喊朋友一起来参加
@@ -72,9 +71,12 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
             }else{
                 $scope.oData=res;
                 $scope.openId=res.openId;
-                if(res.isOrNotPay=='none'){
+                if(res.isOrNotPay=='no'){
                     $scope.goJoinStatus=true;
                     $scope.goSignStatus=false;
+                }else{
+                    $scope.goJoinStatus=false;
+                    $scope.goSignStatus=true;
                 }
             }
         })
