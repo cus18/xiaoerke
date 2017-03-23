@@ -2,10 +2,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
     '$scope','$state','$stateParams',
     'OrderPayMemberServiceOperation','GetUserMemberService','$ionicScrollDelegate','$location','ngDialog','GetPunchCardPage','TakePunchCardActivity','PayPunchCardCash','GetConfig','FindPunchCardBySelf',
     function ($scope,$state,$stateParams,OrderPayMemberServiceOperation,GetUserMemberService,$ionicScrollDelegate,$location,ngDialog,GetPunchCardPage,TakePunchCardActivity,PayPunchCardCash,GetConfig,FindPunchCardBySelf) {
-        //前往个人中心
-        $scope.goCenter=function(){
-            $state.go('signRecord',{openId:$scope.openId})
-        }
+
         //参加打卡按钮的状态
         $scope.goJoinStatus=false;
         //我要打卡按钮的状态
@@ -106,6 +103,10 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                 FindPunchCardBySelf.save({openId:$scope.openId},function(res){
                     $scope.totalNum=res.rewardsInfo.totalNum;
                 })
+                //前往个人中心
+                $scope.goCenter=function(){
+                    $state.go('signRecord',{openId:$scope.openId})
+                }
                 $scope.doRefresh();
             }
         })
