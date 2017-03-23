@@ -175,6 +175,8 @@ public class PayController {
         }else if("nonRealTime".equals(serviceType)){
             model.addAttribute("payPrice",8);
             return "pay/nonRealTimeConsultPay";
+        }else if("payPunchCardCash".equals(serviceType)){
+            return "pay/signPay";
         }
         else{
             return null;
