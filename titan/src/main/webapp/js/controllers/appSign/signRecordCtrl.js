@@ -24,7 +24,7 @@ function getDay(time){
         if(dSeconds<10){
             dSeconds='0'+dSeconds
         };
-        return  dMonth + 'ÔÂ' + dDate+'ÈÕ';
+        return  dMonth + 'æœˆ' + dDate+'æ—¥';
     }
 }
 
@@ -65,7 +65,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signRecordCtrl',
             $scope.list=res.dataList;
             for(var i= 0;i<$scope.list.length;i++){
                 $scope.list[i].day=getDay( $scope.list[i].createTime);
-                $scope.list[i].hour=getDay( $scope.list[i].updateTime)
+                $scope.list[i].hour=getHour( $scope.list[i].updateTime)
             }
         })
     }])
