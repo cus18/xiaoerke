@@ -1,10 +1,10 @@
 angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
     '$scope','$state','$stateParams',
-    'OrderPayMemberServiceOperation','GetUserMemberService','$ionicScrollDelegate','$location','ngDialog','GetPunchCardPage','TakePunchCardActivity','PayPunchCardCash','GetConfig',
-    function ($scope,$state,$stateParams,OrderPayMemberServiceOperation,GetUserMemberService,$ionicScrollDelegate,$location,ngDialog,GetPunchCardPage,TakePunchCardActivity,PayPunchCardCash,GetConfig) {
+    'OrderPayMemberServiceOperation','GetUserMemberService','$ionicScrollDelegate','$location','ngDialog','GetPunchCardPage','TakePunchCardActivity','PayPunchCardCash','GetConfig','FindPunchCardBySelf',
+    function ($scope,$state,$stateParams,OrderPayMemberServiceOperation,GetUserMemberService,$ionicScrollDelegate,$location,ngDialog,GetPunchCardPage,TakePunchCardActivity,PayPunchCardCash,GetConfig,FindPunchCardBySelf) {
         //前往个人中心
         $scope.goCenter=function(){
-            $state.go('signRecord')
+            $state.go('signRecord',{openId:$scope.openId})
         }
         //参加打卡按钮的状态
         $scope.goJoinStatus=false;
@@ -102,6 +102,10 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                     $scope.goJoinStatus=false;
                     $scope.goSignStatus=true;
                 }
+                //获取自己的打卡次数
+                FindPunchCardBySelf.save({openId:$scope.openId},function(res){
+                    $scope.totalNum=res.rewardsInfo.totalNum;
+                })
                 $scope.doRefresh();
             }
         })

@@ -37,7 +37,7 @@ define(['appSign','appSignFactory'], function(app){
                         }
                     })
                     .state('signRecord', {
-                        url: '/signRecord',
+                        url: '/signRecord/:openId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'signRecordCtrl',
                         resolve: {
