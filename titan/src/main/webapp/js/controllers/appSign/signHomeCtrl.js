@@ -53,6 +53,11 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
             //打卡成功提示状态
             $scope.sign_status=false;
         }
+        //关闭分享弹窗
+        $scope.close_share=function(){
+            $scope.share_status=false;
+        }
+
         //我要打卡
         $scope.goSign=function(){
             TakePunchCardActivity.save({openId:$scope.openId},function(res){
