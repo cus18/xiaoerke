@@ -114,12 +114,12 @@
       cash_amount = #{cashAmount,jdbcType=REAL}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="getSelfRewardsInfo" parameterType="java.lang.String" resultMap="java.util.Map">
+  <select id="getSelfRewardsInfo" parameterType="java.lang.String" resultType="java.util.Map">
     select count(*) as totalNum , sum(cash_amount) as totalCash
     FROM punch_card_rewards
     WHERE open_id = #{openId,jdbcType=VARCHAR}
   </select>
-  <select id="getPunchCardRewards" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardsVo" resultMap="java.util.Map">
+  <select id="getPunchCardRewards" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardsVo" resultType="java.util.Map">
     select rewards.nick_name as nickName,rewards.open_id as openId,rewards.cash_amount as cashAmount , records.update_time as updateTime,records.dayth as dayTh
     from punch_card_rewards rewards , (select * from (select * from punch_card_records order by create_time desc) pcr group by pcr.open_id) records
     where 1=1 and rewards.open_id = records.open_id

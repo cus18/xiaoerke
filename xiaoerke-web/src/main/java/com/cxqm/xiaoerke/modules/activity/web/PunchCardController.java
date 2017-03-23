@@ -2,10 +2,7 @@ package com.cxqm.xiaoerke.modules.activity.web;
 
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
-import com.cxqm.xiaoerke.common.utils.IdGen;
-import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.activity.entity.PunchCardDataVo;
 import com.cxqm.xiaoerke.modules.activity.entity.PunchCardInfoVo;
@@ -112,7 +109,7 @@ public class PunchCardController {
         responseMap.put("openId",openId);
         if (StringUtils.isNotNull(openId)) {
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-            String tokenId = (String) userWechatParam.get("token");
+            String tokenId = String.valueOf(userWechatParam.get("token"));
             String nickName = WechatUtil.getWechatName(tokenId, openId).getNickname();
             Date date = null;
             Calendar calendarOld = Calendar.getInstance();
@@ -154,7 +151,7 @@ public class PunchCardController {
                 responseMap.put("punchCount", vo.getDayth());
             } else {
                 responseMap.put("isOrNotPay", "no");
-                responseMap.put("isOrNotPay", punchCardRecordsService.getSelfPunchCardCount(openId));
+                responseMap.put("punchCount", punchCardRecordsService.getSelfPunchCardCount(openId));
             }
             //获奖人数数据及成功失败数
             if (currentHour >= 9) {
@@ -204,7 +201,7 @@ public class PunchCardController {
                 }
                 if (currentHour >= 9) {
                     List<PunchCardDataVo> punchCardDataVos = punchCardDataService.getLastOneData();
-                    if (punchCardDataVos != null && punchCardDataVos.size() >= 1) {
+                    if (punchCardDataVos != null && punchCardDataVos.size() > 1) {
                         responseMap.put("failNum", punchCardDataVos.get(1).getFailure());
                         responseMap.put("successNum", punchCardDataVos.get(1).getSuccess());
                     } else if (punchCardDataVos.size() >= 0) {
