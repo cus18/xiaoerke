@@ -34,10 +34,30 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         //支付按钮点击事件
         $scope.goPay=function(){
             $ionicScrollDelegate.scrollTop();
-            PayPunchCardCash.save({payPrice:$scope.oData.punchCount},function(res){
+            PayPunchCardCash.save({payPrice:$scope.oData.punchCount.toString()},function(res){
                 if(res.resultCode){
                     alert('服务器错误');
                     $scope.start_status=false;
+                }else{
+                    //打开微信支付控件
+                    wx.chooseWXPay({
+                        appId: obj.appId,
+                        timestamp: obj.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                        nonceStr: obj.nonceStr,  // 支付签名随机串，不长于 32 位
+                        package: obj.package,// 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+                        signType: obj.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                        paySign: obj.paySign,  // 支付签名
+                        success: function (res) {
+                            if (res.errMsg == "chooseWXPay:ok") {
+
+                            } else {
+                                alert("支付失败,请重新支付")
+                            }
+                        },
+                        fail: function (res) {
+                            alert(res.errMsg)
+                        }
+                    });
                 }
             })
         }
@@ -146,25 +166,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                         alert("您的微信版本低于5.0无法使用微信支付");
                         return;
                     }
-                    //打开微信支付控件
-                    wx.chooseWXPay({
-                        appId: obj.appId,
-                        timestamp: obj.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-                        nonceStr: obj.nonceStr,  // 支付签名随机串，不长于 32 位
-                        package: obj.package,// 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-                        signType: obj.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-                        paySign: obj.paySign,  // 支付签名
-                        success: function (res) {
-                            if (res.errMsg == "chooseWXPay:ok") {
 
-                            } else {
-                                alert("支付失败,请重新支付")
-                            }
-                        },
-                        fail: function (res) {
-                            alert(res.errMsg)
-                        }
-                    });
                 },
                 error: function () {
                 }
