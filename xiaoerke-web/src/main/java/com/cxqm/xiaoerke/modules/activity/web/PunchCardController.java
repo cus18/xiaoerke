@@ -412,7 +412,7 @@ public class PunchCardController {
     @RequestMapping(value = "payPunchCardCash", method = {RequestMethod.GET, RequestMethod.POST})
     public
     @ResponseBody
-    String payPunchCardCash(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpSession session) {
+    String payPunchCardCash(HttpServletRequest request, HttpSession session) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         //获取统一支付接口参数
