@@ -6,6 +6,14 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         $scope.goCenter=function(){
             $state.go('signRecord')
         }
+        //参加打卡按钮的状态
+        $scope.goJoinStatus=false;
+        //我要打卡按钮的状态
+        $scope.goSignStatus=false;
+
+
+
+
         //启动状态判断
         $scope.start_status=false;
         //支付状态判断
@@ -27,7 +35,8 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         $scope.goPay=function(){
             $ionicScrollDelegate.scrollTop();
             PayPunchCardCash.save({},function(res){
-                console.log(res)
+
+
             })
         }
         //喊朋友一起来参加
@@ -58,7 +67,16 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
 
         }
         GetPunchCardPage.save({},function(res){
-            console.log(res)
+            if(res.resultCode==9999){
+                alert('服务器错误')
+            }else{
+                $scope.oData=res;
+                $scope.openId=res.openId;
+                if(res.isOrNotPay=='none'){
+                    $scope.goJoinStatus=true;
+                    $scope.goSignStatus=false;
+                }
+            }
         })
         //初始化微信
         var doRefresh = function () {

@@ -6,19 +6,19 @@
 
             <img class="homeTop" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/homeTop.png" alt=""/>
             <div class="homeCon">
-                <div class="totalNum">参加挑战人数：<span>1233</span><br/>累计挑战金：<span>1555</span></div>
+                <div class="totalNum">参加挑战人数：<span>{{oData.totalPersonNum}}</span><br/>累计挑战金：<span>{{oData.totalCashNum}}</span></div>
                 <img class="rules" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/rules.png" alt=""/>
                 <!--参加打卡-->
-                <img ng-show="true" ng-click="goJoin()" class="join" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/join.png" alt=""/>
+                <img ng-show="goJoinStatus" ng-click="goJoin()" class="join" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/join.png" alt=""/>
                 <!--我要打卡-->
-                <img ng-show="false" ng-click="goSign()" class="join" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/sign.png" alt=""/>
+                <img ng-show="goSignStatus" ng-click="goSign()" class="join" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/sign.png" alt=""/>
                 <div class="conBottom">下滑查看大家的打卡记录</div>
             </div>
             <div class="allRecord">
                 <div class="allRecordTop">
                     <span>3月6日</span>
-                    <span><b>111</b>人成功</span>
-                    <span><b>23</b>人失败</span>
+                    <span><b>{{oData.successNum}}</b>人成功</span>
+                    <span><b>{{oData.failNum}}</b>人失败</span>
                 </div>
                 <div class="RecordTop">3月6日打卡结束</div>
                 <ul>
