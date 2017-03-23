@@ -23,7 +23,7 @@ define(['appSign','appSignFactory'], function(app){
                 /*首页*/
                 $stateProvider
                     .state('signHome', {
-                        url: '/signHome',
+                        url: '/signHome/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'signHomeCtrl',
                         resolve: {
@@ -36,7 +36,6 @@ define(['appSign','appSignFactory'], function(app){
                             }
                         }
                     })
-                   /* 奖品规则*/
                     .state('signRecord', {
                         url: '/signRecord',
                         templateProvider: function() { return lazyDeferred.promise; },

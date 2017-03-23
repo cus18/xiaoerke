@@ -79,7 +79,7 @@
                     paySign: obj.paySign,  // 支付签名
                     success: function (res) {
                         if (res.errMsg == "chooseWXPay:ok") {
-                            window.history.go(-1);
+                            window.location.href='http://s201.xiaork.com/titan/sign#/signHome/true';
                         } else {
                             alert("支付失败,请重新支付")
                         }
