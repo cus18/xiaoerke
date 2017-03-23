@@ -188,6 +188,8 @@ public enum ConsultSessionManager {
             } else {
                 if("h5mtq".equalsIgnoreCase(source)){
                     consultSession.setUserName("MTQ-"+userId);
+                }else if("h5YouZan".equalsIgnoreCase(source)){
+                    consultSession.setUserName("H5YZ-"+userId);
                 }else{
                     consultSession.setUserName(userId);
                 }
@@ -276,7 +278,7 @@ public enum ConsultSessionManager {
                 if("h5bhq".equalsIgnoreCase(source)){
                     String currentUrl = sysPropertyVoWithBLOBsVo.getCoopBhqUrl();
                     if(StringUtils.isNull(currentUrl)){
-                        currentUrl = "http://coapi.baohuquan.com/baodaifu";
+                        currentUrl = "http://3rd.baohuquan.com:20000/baodaifu";
                     }
                     String method = "POST";
                     String dataType="json";

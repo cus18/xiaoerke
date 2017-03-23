@@ -157,9 +157,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             }
             //更新会话操作时间
             consultRecordService.saveConsultSessionStatus(richConsultSession);
-        }
-        //如果sessionId为空，首先看，消息，是不是从一个用户的H5channel过来的
-        else if (sessionId == null) {
+        }else if (sessionId == null) { //如果sessionId为空，首先看，消息，是不是从一个用户的H5channel过来的
             LogUtils.saveLog("sessionIdNull",String.valueOf(msgMap.get("source")));
             RichConsultSession consultSession = new RichConsultSession();
             if (msgMap.get("source").equals("h5cxqmUser") && msgMap.get("senderId") != null) {
@@ -172,6 +170,8 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                 consultSession = ConsultSessionManager.INSTANCE.createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5ykdl");
             }else if(msgMap.get("source").equals("h5mtqUser") && msgMap.get("senderId") != null){
                 consultSession = ConsultSessionManager.INSTANCE.createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5mtq");
+            }else if(msgMap.get("source").equals("h5YZUser") && msgMap.get("senderId") != null){
+                consultSession = ConsultSessionManager.INSTANCE.createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5YouZan");
             }
             //保存聊天记录
             if (consultSession != null) {
@@ -198,15 +198,13 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
     private boolean doctorSendToUser(TextWebSocketFrame msg, Map<String, Object> msgMap, SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo, int msgType, Map userWechatParam, RichConsultSession richConsultSession, String csUserId, String userId) {
         //渠道来源H5
-        if (richConsultSession.getSource().equals("h5cxqm")||richConsultSession.getSource().equals("h5wjy") || richConsultSession.getSource().equals("h5bhq") || richConsultSession.getSource().equals("h5ykdl") || richConsultSession.getSource().equals("h5mtq")) {
+        if (richConsultSession.getSource().startsWith("h5")){
             Channel userChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(userId);
             //channel是活跃的状态
             if (userChannel != null && userChannel.isActive()) {
                 if (channelAlive(msg, msgMap, sysPropertyVoWithBLOBsVo, msgType, richConsultSession, csUserId, userId, userChannel))
                     return true;
-            }
-            //channel不是活跃的状态
-            else{
+            }else{ //channel不是活跃的状态
                 channelDead(msgMap, sysPropertyVoWithBLOBsVo, msgType, richConsultSession, csUserId, userId);
             }
         }
@@ -241,7 +239,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             noReadMsg.put("doctorId",csUserId);
             String currentUrl = sysPropertyVoWithBLOBsVo.getCoopBhqUrl();
             if(StringUtils.isNull(currentUrl)){
-                currentUrl = "http://coapi.baohuquan.com/baodaifu";
+                currentUrl = "http://3rd.baohuquan.com:20000/baodaifu";
             }
             String method = "POST";
             String dataType="json";
@@ -447,9 +445,9 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             newConsultMap.put("consultNum", richConsultSession.getConsultNum());
             TextWebSocketFrame frame =  new TextWebSocketFrame(JSONUtils.toJSONString(newConsultMap));
             csChannel.writeAndFlush(frame.retain());
-            //保存聊天记录
-            consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), richConsultSession);
         }
+        //保存聊天记录
+        consultRecordService.buildRecordMongoVo(userId, String.valueOf(msgType), (String) msgMap.get("content"), richConsultSession);
     }
 
     //消息过滤
