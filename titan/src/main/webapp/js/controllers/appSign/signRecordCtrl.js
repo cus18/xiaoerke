@@ -80,5 +80,6 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signRecordCtrl',
                     $scope.list[i].hour=getHour( $scope.list[i].updateTime)
                 }
             }
+
         })
     }])
