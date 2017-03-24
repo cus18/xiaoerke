@@ -407,30 +407,30 @@ public class PunchCardController {
                     }
                 }
             }
-        }
-        //推送：打卡失败文案
-        if ("failure".equals(resultMap.get("status"))) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            StringBuffer msg = new StringBuffer();
-            String takeTime = sdf.format(calendar.getTime());
-            msg.append(takeTime + "早起打卡失败，不要气馁，" +
-                    "继续 \n");
-            msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>" + "加油！参加下次挑战》》</a>");
-            Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-            String sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), openId, msg.toString());
-            LogUtils.saveLog("ZQTZ_DKSB", openId + "--" + msg.toString());
-        } else {
-            //推送完成打卡
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            StringBuffer msg = new StringBuffer();
-            String takeTime = sdf.format(calendar.getTime());
-            msg.append(takeTime + "完成早起打卡" +
-                    "连续"+vo.getDayth()+"天挑战成功！你将会收到平分的挑战金。\n"+
-                    "24小时内发送至微信钱包。\n");
-            msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>"+ "加油！参加下次挑战》》</a>");
-            Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-            String sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), openId, msg.toString());
-            LogUtils.saveLog("ZQTZ_WCDK", openId+ "--" + msg.toString());
+            //推送：打卡失败文案
+            if ("failure".equals(resultMap.get("status"))) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                StringBuffer msg = new StringBuffer();
+                String takeTime = sdf.format(calendar.getTime());
+                msg.append(takeTime + "早起打卡失败，不要气馁，" +
+                        "继续 \n");
+                msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>" + "加油！参加下次挑战》》</a>");
+                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                String sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), openId, msg.toString());
+                LogUtils.saveLog("ZQTZ_DKSB", openId + "--" + msg.toString());
+            } else {
+                //推送完成打卡
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                StringBuffer msg = new StringBuffer();
+                String takeTime = sdf.format(calendar.getTime());
+                msg.append(takeTime + "完成早起打卡" +
+                        "连续"+vo.getDayth()+"天挑战成功！你将会收到平分的挑战金。\n"+
+                        "24小时内发送至微信钱包。\n");
+                msg.append("<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=57'>" + "加油！参加下次挑战》》</a>");
+                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                String sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), openId, msg.toString());
+                LogUtils.saveLog("ZQTZ_WCDK", openId+ "--" + msg.toString());
+            }
         }
         return resultMap;
     }
@@ -537,7 +537,7 @@ public class PunchCardController {
             int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
             StringBuffer msg = new StringBuffer();
             Date date = null;
-            if (currentHour <= 8) {
+            if (currentHour >=0 && currentHour < 8) {
                 date = calendar.getTime();
                 String takeTime = sdf.format(date);
                 msg.append("请于" + takeTime + " 6:00-8:00早起打卡，\n" +
