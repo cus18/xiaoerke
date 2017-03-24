@@ -448,7 +448,6 @@ public class PunchCardController {
     @ResponseBody
     HashMap<String, Object> findPunchCardBySelf(@RequestBody Map<String, Object> params, HttpServletRequest request, HttpSession session) {
         HashMap<String, Object> responseMap = new HashMap<String, Object>();
-        responseMap.put("status", "success");
         String openId = String.valueOf(params.get("openId"));
         String headImgUrl = olyGamesService.getWechatMessage(openId);
         responseMap.put("headImgUrl",headImgUrl);
@@ -461,7 +460,13 @@ public class PunchCardController {
             if (result != null && !result.isEmpty()) {
                 responseMap.put("rewardsInfo", result);
             }
-            responseMap.put("status", "success");
+        }else{
+            Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+            String tokenId = (String) userWechatParam.get("token");
+            String nickName = WechatUtil.getWechatName(tokenId, openId).getNickname();
+            responseMap.put("nickName",nickName);
+            responseMap.put("dataList", new ArrayList());
+            responseMap.put("rewardsInfo", new ArrayList());
         }
         return responseMap;
     }
