@@ -482,21 +482,44 @@ public class PunchCardController {
     @RequestMapping(value = "payPunchCardCash", method = {RequestMethod.GET, RequestMethod.POST})
     public
     @ResponseBody
-    String payPunchCardCash(HttpServletRequest request, HttpSession session) {
+    HashMap<String,Object>  payPunchCardCash(HttpServletRequest request, HttpSession session) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+        HashMap<String,Object> resultMap = new HashMap<String,Object>();
+        resultMap.put("status","failure");
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         //获取统一支付接口参数
-        Map prepayInfo = accountService.getPrepayInfo(request, session, "punchCardActivity");
-        prepayInfo.put("feeType", "punchCardActivity");
-        System.out.println("feeType:" + prepayInfo.get("feeType").toString());
-        //拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
+        try{
+            Map prepayInfo = accountService.getPrepayInfo(request, session, "punchCardActivity");
+            prepayInfo.put("feeType", "punchCardActivity");
+            System.out.println("feeType:" + prepayInfo.get("feeType").toString());
+            //拼装jsPay所需参数,如果prepay_id生成成功则将信息放入account_pay_record表
+            String userId = WechatUtil.getOpenId(session, request);
+            Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+            String tokenId = (String) userWechatParam.get("token");
+            String nickName = WechatUtil.getWechatName(tokenId, userId).getNickname();
+            //patientRegisterService.getUserIdByPatientRegisterId(patientRegisterId);
+            String payParameter = accountService.assemblyPayParameter(request, prepayInfo, session, userId, null);
+            resultMap.put("payParameter",payParameter);
+            resultMap.put("status","success");
+            LogUtils.saveLog("punchCard-" + userId, payParameter);
+        }catch (Exception e){
+            resultMap.put("status","failure");
+            e.printStackTrace();
+        }
+        return resultMap;
+    }
+
+    @RequestMapping(value = "pushMsgToPayUser", method = {RequestMethod.GET, RequestMethod.POST})
+    public
+    @ResponseBody
+    HashMap<String,Object> pushMsgToPayUser(HttpServletRequest request, HttpSession session) {
+        HashMap<String,Object> resultMap = new HashMap<String,Object>();
+        resultMap.put("status","failure");
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         String userId = WechatUtil.getOpenId(session, request);
         Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         String tokenId = (String) userWechatParam.get("token");
         String nickName = WechatUtil.getWechatName(tokenId, userId).getNickname();
-        //patientRegisterService.getUserIdByPatientRegisterId(patientRegisterId);
-        String payParameter = accountService.assemblyPayParameter(request, prepayInfo, session, userId, null);
-        LogUtils.saveLog("punchCard-" + userId, payParameter);
         PunchCardRecordsVo punchCardRecordsVo = new PunchCardRecordsVo();
         punchCardRecordsVo.setCreateTime(new Date());
         punchCardRecordsVo.setDayth(punchCardRecordsService.getSelfPunchCardCount(userId));
@@ -531,8 +554,9 @@ public class PunchCardController {
             msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>" + "去打卡》》</a>");
             String sendResult = WechatUtil.sendMsgToWechat(tokenId, userId, msg.toString());
             LogUtils.saveLog("ZQTZ_QDK", userId + "--" + msg.toString());
+            resultMap.put("status", "success");
         }
-        return payParameter;
+        return resultMap;
     }
 
     /**
