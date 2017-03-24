@@ -117,6 +117,12 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         $scope.lookMore=function(){
             GetPunchCardRewards.save({pageNo:++$scope.pageNum,pageSize:10},function(res){
                 $scope.dataList=$scope.dataList.concat(res.personRewardsList);
+                for(var i=0;i<$scope.dataList.length;i++){
+                    $scope.dataList[i].hour=getHour($scope.dataList[i].updateTime);
+                    if($scope.dataList[i].headImgUrl==''||$scope.dataList[i].headImgUrl==null){
+                        $scope.dataList[i].headImgUrl='http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf/consult/yonghumoren.png';
+                    }
+                }
             })
         }
         GetPunchCardPage.save({pageNo:0,pageSize:10},function(res){
