@@ -55,9 +55,9 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         $scope.share_status=false;
 
         if($stateParams.id=='false'){
-            $scope.sign_status=false;
+            $scope.pay_status=false;
         }else if($stateParams.id=='true'){
-            $scope.sign_status=true;
+            $scope.pay_status=true;
             //参加打卡按钮的状态
             $scope.goJoinStatus=false;
             //我要打卡按钮的状态
