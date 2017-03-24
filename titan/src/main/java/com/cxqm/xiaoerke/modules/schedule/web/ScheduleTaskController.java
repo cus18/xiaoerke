@@ -53,7 +53,7 @@ public class ScheduleTaskController extends BaseController {
     private SysPropertyServiceImpl sysPropertyService ;
 
     /**
-     * 每天早晨5：59初始化数据表
+     * 每天早晨5：50初始化数据表
      */
     public void initPunchCardDataTable(){
         PunchCardDataVo vo = new PunchCardDataVo();
@@ -175,7 +175,7 @@ public class ScheduleTaskController extends BaseController {
         Date date = calendar.getTime();
         PunchCardRecordsVo vo = new PunchCardRecordsVo();
         vo.setCreateTime(date);
-        vo.setState(1);
+        vo.setState(0);
         List<PunchCardRecordsVo> punchCardRecordsVos = punchCardRecordsService.getLastPunchCardRecord(vo);
         if(punchCardRecordsVos !=null && punchCardRecordsVos.size()>0){
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");

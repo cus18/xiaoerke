@@ -23,4 +23,6 @@ public interface PunchCardDataService {
 
     List<PunchCardDataVo> getLastOneData();
 
+    int updatePunchCardNum(PunchCardDataVo vo);
+
 }

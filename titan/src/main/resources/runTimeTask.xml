@@ -21,7 +21,7 @@
 	</bean>
 	<bean id="createPunchCardDataTableTask" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="createPunchCardDataTableQuarzTask"/>
-		<property name="cronExpression" value="0 59 5 * * ?"/>
+		<property name="cronExpression" value="0 50 5 * * ?"/>
 	</bean>
 
 	<bean id="punchCardCashToUserQuarzTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">

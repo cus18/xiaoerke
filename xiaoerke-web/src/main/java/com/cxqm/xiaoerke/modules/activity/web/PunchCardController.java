@@ -4,6 +4,7 @@ import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
+import com.cxqm.xiaoerke.modules.activity.dao.PunchCardDataDao;
 import com.cxqm.xiaoerke.modules.activity.entity.PunchCardDataVo;
 import com.cxqm.xiaoerke.modules.activity.entity.PunchCardInfoVo;
 import com.cxqm.xiaoerke.modules.activity.entity.PunchCardRecordsVo;
@@ -178,7 +179,8 @@ public class PunchCardController {
                 calendarOld.set(Calendar.YEAR, currentYear);
                 calendarOld.set(Calendar.MONTH, currentMonth);
                 calendarOld.set(Calendar.DAY_OF_MONTH, currentDay);
-                calendarOld.set(Calendar.HOUR_OF_DAY, 6);
+                calendarOld.add(Calendar.DATE, -1);
+                calendarOld.set(Calendar.HOUR_OF_DAY, 8);
                 calendarOld.set(Calendar.MINUTE, 0);
                 calendarOld.set(Calendar.SECOND, 0);
                 date = calendarOld.getTime();
@@ -343,11 +345,10 @@ public class PunchCardController {
         resultMap.put("status", "failure");
         String openId = String.valueOf(params.get("openId"));
         Calendar calendar = Calendar.getInstance();
-        Date nowDate = new Date();
-        calendar.setTime(nowDate);
+        calendar.setTime(new Date());
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         PunchCardRecordsVo vo = new PunchCardRecordsVo();
-        if (currentHour >= 6 && currentHour <= 8) {
+        if (currentHour >= 6 && currentHour < 8) {
             if (StringUtils.isNotNull(openId)) {
                 PunchCardInfoVo punchCardInfoVo = new PunchCardInfoVo();
                 punchCardInfoVo.setOpenId(openId);
@@ -365,6 +366,21 @@ public class PunchCardController {
                         num = punchCardRecordsService.updateByPrimaryKeySelective(vo);
                         if (num > 0) {
                             resultMap.put("status", "success");
+                            if(lock.tryLock()){
+                                try {
+                                    calendar.set(Calendar.HOUR_OF_DAY, 5);
+                                    calendar.set(Calendar.MINUTE, 50);
+                                    calendar.set(Calendar.SECOND, 0);
+                                    Date date = calendar.getTime();
+                                    PunchCardDataVo punchCardDataVo = new PunchCardDataVo();
+                                    punchCardDataVo.setCreateTime(date);
+                                    punchCardDataService.updatePunchCardNum(punchCardDataVo);
+                                } catch (Exception ex) {
+                                    System.out.print(ex.getStackTrace());
+                                } finally {
+                                    lock.unlock();   //释放锁
+                                }
+                            }
                         }
                     }
                 } else {
@@ -482,12 +498,11 @@ public class PunchCardController {
     @RequestMapping(value = "payPunchCardCash", method = {RequestMethod.GET, RequestMethod.POST})
     public
     @ResponseBody
-    HashMap<String,Object>  payPunchCardCash(HttpServletRequest request, HttpSession session) {
+    String payPunchCardCash(HttpServletRequest request, HttpSession session) {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
-        HashMap<String,Object> resultMap = new HashMap<String,Object>();
-        resultMap.put("status","failure");
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         //获取统一支付接口参数
+        String payParameter = "" ;
         try{
             Map prepayInfo = accountService.getPrepayInfo(request, session, "punchCardActivity");
             prepayInfo.put("feeType", "punchCardActivity");
@@ -498,15 +513,12 @@ public class PunchCardController {
             String tokenId = (String) userWechatParam.get("token");
             String nickName = WechatUtil.getWechatName(tokenId, userId).getNickname();
             //patientRegisterService.getUserIdByPatientRegisterId(patientRegisterId);
-            String payParameter = accountService.assemblyPayParameter(request, prepayInfo, session, userId, null);
-            resultMap.put("payParameter",payParameter);
-            resultMap.put("status","success");
+            payParameter = accountService.assemblyPayParameter(request, prepayInfo, session, userId, null);
             LogUtils.saveLog("punchCard-" + userId, payParameter);
         }catch (Exception e){
-            resultMap.put("status","failure");
             e.printStackTrace();
         }
-        return resultMap;
+        return payParameter;
     }
 
     @RequestMapping(value = "pushMsgToPayUser", method = {RequestMethod.GET, RequestMethod.POST})

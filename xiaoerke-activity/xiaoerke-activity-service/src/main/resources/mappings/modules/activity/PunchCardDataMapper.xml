@@ -121,4 +121,10 @@
     where 1=1
     order by create_time desc
   </select>
+  <update id="updatePunchCardNum" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardDataVo">
+    update punch_card_data
+    set total_cash = total_cash + 1,
+    total_num = total_num + 1
+    where create_time <![CDATA[ >= #{createTime,jdbcType=TIMESTAMP} ]]>
+  </update>
 </mapper>
