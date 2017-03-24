@@ -22,36 +22,12 @@
                 </div>
                 <div class="RecordTop">3月6日打卡结束</div>
                 <ul>
-                    <li><div class="headImg">
-                            <img src="" alt=""/>
+                    <li ng-repeat="item in dataList"><div class="headImg">
+                            <img ng-src="{{item.}}" alt=""/>
                         </div>
                         <div class="recordCon">
-                            <div class="name_time"><span>无敌金刚</span><span>7:59</span></div>
-                            <div class="day">连续打卡<span>1天</span>,累计奖励<span>1.03元</span></div>
-                        </div>
-                    </li>
-                    <li><div class="headImg">
-                            <img src="" alt=""/>
-                        </div>
-                        <div class="recordCon">
-                            <div class="name_time"><span>无敌金刚</span><span>7:59</span></div>
-                            <div class="day">连续打卡<span>1天</span>,累计奖励<span>1.03元</span></div>
-                        </div>
-                    </li>
-                    <li><div class="headImg">
-                            <img src="" alt=""/>
-                        </div>
-                        <div class="recordCon">
-                            <div class="name_time"><span>无敌金刚</span><span>7:59</span></div>
-                            <div class="day">连续打卡<span>1天</span>,累计奖励<span>1.03元</span></div>
-                        </div>
-                    </li>
-                    <li><div class="headImg">
-                            <img src="" alt=""/>
-                        </div>
-                        <div class="recordCon">
-                            <div class="name_time"><span>无敌金刚</span><span>7:59</span></div>
-                            <div class="day">连续打卡<span>1天</span>,累计奖励<span>1.03元</span></div>
+                            <div class="name_time"><span>{{item.nickName}}</span><span>{{item.hour}}</span></div>
+                            <div class="day">连续打卡<span>{{item.dayTh}}天</span>,累计奖励<span>{{item.cashAmount}}元</span></div>
                         </div>
                     </li>
                     <div class="lookMore" ng-click="lookMore()">点击加载更早打卡记录</div>

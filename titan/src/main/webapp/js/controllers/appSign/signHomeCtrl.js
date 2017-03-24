@@ -1,7 +1,37 @@
+function getHour(time){
+    if(time==null||time==''){
+        return '';
+    }else{
+        var date=new Date(parseInt(time));
+        var dYear = date.getFullYear();
+        var dMonth = date.getMonth()+1;
+        var dDate = date.getDate();
+        var dHours = date.getHours();
+        var dMinutes = date.getMinutes();
+        var dSeconds = date.getSeconds();
+        if(dMonth<10){
+            dMonth='0'+dMonth
+        };
+        if(dDate<10){
+            dDate='0'+dDate
+        };
+        if(dHours<10){
+            dHours='0'+dHours
+        };
+        if(dMinutes<10){
+            dMinutes='0'+dMinutes
+        };
+        if(dSeconds<10){
+            dSeconds='0'+dSeconds
+        };
+        return dHours + ':' + dMinutes
+    }
+}
+
 angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
     '$scope','$state','$stateParams',
-    'OrderPayMemberServiceOperation','GetUserMemberService','$ionicScrollDelegate','$location','ngDialog','GetPunchCardPage','TakePunchCardActivity','PayPunchCardCash','GetConfig','FindPunchCardBySelf',
-    function ($scope,$state,$stateParams,OrderPayMemberServiceOperation,GetUserMemberService,$ionicScrollDelegate,$location,ngDialog,GetPunchCardPage,TakePunchCardActivity,PayPunchCardCash,GetConfig,FindPunchCardBySelf) {
+    'OrderPayMemberServiceOperation','GetUserMemberService','$ionicScrollDelegate','$location','ngDialog','GetPunchCardPage','TakePunchCardActivity','PayPunchCardCash','GetConfig','FindPunchCardBySelf','GetPunchCardRewards',
+    function ($scope,$state,$stateParams,OrderPayMemberServiceOperation,GetUserMemberService,$ionicScrollDelegate,$location,ngDialog,GetPunchCardPage,TakePunchCardActivity,PayPunchCardCash,GetConfig,FindPunchCardBySelf,GetPunchCardRewards) {
 
         //参加打卡按钮的状态
         $scope.goJoinStatus=false;
@@ -9,6 +39,8 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         $scope.goSignStatus=false;
 
 
+
+        $scope.pageNum=0;
 
 
         //启动状态判断
@@ -83,7 +115,9 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
 
         //查看更多记录
         $scope.lookMore=function(){
+            GetPunchCardRewards.save({pageNo:$scope.pageNum++,pageSize:10},function(res){
 
+            })
         }
         GetPunchCardPage.save({},function(res){
             if(res.resultCode==9999){
@@ -92,6 +126,13 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                 $scope.oData=res;
                 $scope.openId=res.openId;
                 $scope.market=res.market;
+                $scope.dataList=res.personRewardsList;
+                for(var i=0;i<$scope.dataList.length;i++){
+                    $scope.dataList[i].hour=getHour($scope.dataList[i].updateTime);
+                    if($scope.dataList[i].headImgUrl==''||$scope.dataList[i].headImgUrl==null){
+                        $scope.dataList[i].headImgUrl='http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf/consult/yonghumoren.png';
+                    }
+                }
                 if(res.isOrNotPay=='no'){
                     $scope.goJoinStatus=true;
                     $scope.goSignStatus=false;
