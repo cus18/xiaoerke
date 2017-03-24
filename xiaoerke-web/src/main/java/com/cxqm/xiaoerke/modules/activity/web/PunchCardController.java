@@ -346,109 +346,95 @@ public class PunchCardController {
         String openId = String.valueOf(params.get("openId"));
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentYear = calendar.get(Calendar.YEAR);
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         PunchCardRecordsVo vo = new PunchCardRecordsVo();
         if (currentHour >= 6 && currentHour < 8) {
             if (StringUtils.isNotNull(openId)) {
-                PunchCardInfoVo punchCardInfoVo = new PunchCardInfoVo();
-                punchCardInfoVo.setOpenId(openId);
-                List<PunchCardInfoVo> list = punchCardInfoService.getPunchCardInfoBySelective(punchCardInfoVo);
-                if (list != null && list.size() > 0) {
-                    punchCardInfoVo = list.get(0);
-                    punchCardInfoVo.setTotalDays(punchCardInfoVo.getTotalDays() + 1);
-                    int num = punchCardInfoService.updateByPrimaryKeySelective(punchCardInfoVo);
-                    if (num > 0) {
-                        vo.setOpenId(openId);
-                        List<PunchCardRecordsVo> vos = punchCardRecordsService.getLastPunchCardRecord(vo);
-                        vo = vos.get(0);
-                        vo.setState(1);
-                        vo.setDayth(vo.getDayth() + 1);
-                        num = punchCardRecordsService.updateByPrimaryKeySelective(vo);
+                calendar.clear();
+                calendar.set(Calendar.YEAR, currentYear);
+                calendar.set(Calendar.MONTH, currentMonth);
+                calendar.set(Calendar.DAY_OF_MONTH, currentDay);
+                calendar.set(Calendar.HOUR_OF_DAY, 6);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
+                Date date = calendar.getTime();
+                PunchCardRecordsVo punchCardRecordsVo = new PunchCardRecordsVo();
+                punchCardRecordsVo.setUpdateTime(date);
+                punchCardRecordsVo.setOpenId(openId);
+                punchCardRecordsVo.setState(1);
+                List<PunchCardRecordsVo> resultList = punchCardRecordsService.getLastPunchCardRecord(punchCardRecordsVo);
+                if(resultList != null && resultList.size() > 0){
+                    System.out.println("打过一次卡，请明天再来");
+                }else{
+                    PunchCardInfoVo punchCardInfoVo = new PunchCardInfoVo();
+                    punchCardInfoVo.setOpenId(openId);
+                    List<PunchCardInfoVo> list = punchCardInfoService.getPunchCardInfoBySelective(punchCardInfoVo);
+                    if (list != null && list.size() > 0) {
+                        punchCardInfoVo = list.get(0);
+                        punchCardInfoVo.setTotalDays(punchCardInfoVo.getTotalDays() + 1);
+                        int num = punchCardInfoService.updateByPrimaryKeySelective(punchCardInfoVo);
                         if (num > 0) {
-                            resultMap.put("status", "success");
-                            if(lock.tryLock()){
-                                try {
-                                    calendar.set(Calendar.HOUR_OF_DAY, 5);
-                                    calendar.set(Calendar.MINUTE, 50);
-                                    calendar.set(Calendar.SECOND, 0);
-                                    Date date = calendar.getTime();
-                                    PunchCardDataVo punchCardDataVo = new PunchCardDataVo();
-                                    punchCardDataVo.setCreateTime(date);
-                                    punchCardDataService.updatePunchCardNum(punchCardDataVo);
-                                } catch (Exception ex) {
-                                    System.out.print(ex.getStackTrace());
-                                } finally {
-                                    lock.unlock();   //释放锁
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    punchCardInfoVo.setCreateTime(new Date());
-                    punchCardInfoVo.setDelFlag(0);
-                    punchCardInfoVo.setId(IdGen.uuid());
-                    punchCardInfoVo.setTotalDays(1);
-                    if (lock.tryLock()) {
-                        try {
-                            List<PunchCardInfoVo> punchCardInfoVos = punchCardInfoService.getLastOnePunchCardInfoVo();
-                            int totalNum = 1470000001;
-                            if (punchCardInfoVos != null) {
-                                if (punchCardInfoVos.size() > 0) {
-                                    totalNum = punchCardInfoVos.get(0).getMarketer();
-                                    totalNum++;
-                                }
-                            } else {
-                                return resultMap;
-                            }
-                            punchCardInfoVo.setMarketer(totalNum);
-                            int num = punchCardInfoService.insert(punchCardInfoVo);
+                            vo.setOpenId(openId);
+                            List<PunchCardRecordsVo> vos = punchCardRecordsService.getLastPunchCardRecord(vo);
+                            vo = vos.get(0);
+                            vo.setState(1);
+                            vo.setDayth(vo.getDayth() + 1);
+                            num = punchCardRecordsService.updateByPrimaryKeySelective(vo);
                             if (num > 0) {
-                                if (num > 0) {
-                                    vo.setOpenId(openId);
-                                    vo.setState(1);
-                                    List<PunchCardRecordsVo> vos = punchCardRecordsService.getLastPunchCardRecord(vo);
-                                    vo = vos.get(0);
-                                    vo.setDayth(vo.getDayth() + 1);
-                                    num = punchCardRecordsService.updateByPrimaryKeySelective(vo);
-                                    if (num > 0) {
-                                        resultMap.put("status", "success");
+                                resultMap.put("status", "success");
+                                if(lock.tryLock()){
+                                    try {
+                                        calendar.clear();
+                                        calendar.set(Calendar.YEAR, currentYear);
+                                        calendar.set(Calendar.MONTH, currentMonth);
+                                        calendar.set(Calendar.DAY_OF_MONTH, currentDay);
+                                        calendar.set(Calendar.HOUR_OF_DAY, 5);
+                                        calendar.set(Calendar.MINUTE, 50);
+                                        calendar.set(Calendar.SECOND, 0);
+                                        date = calendar.getTime();
+                                        PunchCardDataVo punchCardDataVo = new PunchCardDataVo();
+                                        punchCardDataVo.setCreateTime(date);
+                                        punchCardDataService.updatePunchCardNum(punchCardDataVo);
+                                    } catch (Exception ex) {
+                                        System.out.print(ex.getStackTrace());
+                                    } finally {
+                                        lock.unlock();   //释放锁
                                     }
                                 }
+                                //推送：打卡失败文案
+                                if ("failure".equals(resultMap.get("status"))) {
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                    StringBuffer msg = new StringBuffer();
+                                    String takeTime = sdf.format(calendar.getTime());
+                                    msg.append(takeTime + "早起打卡失败，不要气馁，" +
+                                            "继续 \n");
+                                    msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>" + "加油！参加下次挑战》》</a>");
+                                    Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                                    String sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), openId, msg.toString());
+                                    LogUtils.saveLog("ZQTZ_DKSB", openId + "--" + msg.toString());
+                                } else {
+                                    //推送完成打卡
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    StringBuffer msg = new StringBuffer();
+                                    String takeTime = sdf.format(calendar.getTime());
+                                    msg.append(takeTime + "完成早起打卡" +
+                                            "连续"+vo.getDayth()+"天挑战成功！你将会收到平分的挑战金。\n"+
+                                            "24小时内发送至微信钱包。\n");
+                                    msg.append("<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=57'>" + "加油！参加下次挑战》》</a>");
+                                    Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+                                    String sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), openId, msg.toString());
+                                    LogUtils.saveLog("ZQTZ_WCDK", openId+ "--" + msg.toString());
+                                }
                             }
-                        } catch (Exception ex) {
-                            System.out.print(ex.getStackTrace());
-                        } finally {
-                            lock.unlock();   //释放锁
                         }
                     }
                 }
             }
-            //推送：打卡失败文案
-            if ("failure".equals(resultMap.get("status"))) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                StringBuffer msg = new StringBuffer();
-                String takeTime = sdf.format(calendar.getTime());
-                msg.append(takeTime + "早起打卡失败，不要气馁，" +
-                        "继续 \n");
-                msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>" + "加油！参加下次挑战》》</a>");
-                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                String sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), openId, msg.toString());
-                LogUtils.saveLog("ZQTZ_DKSB", openId + "--" + msg.toString());
-            } else {
-                //推送完成打卡
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                StringBuffer msg = new StringBuffer();
-                String takeTime = sdf.format(calendar.getTime());
-                msg.append(takeTime + "完成早起打卡" +
-                        "连续"+vo.getDayth()+"天挑战成功！你将会收到平分的挑战金。\n"+
-                        "24小时内发送至微信钱包。\n");
-                msg.append("<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=57'>" + "加油！参加下次挑战》》</a>");
-                Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
-                String sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), openId, msg.toString());
-                LogUtils.saveLog("ZQTZ_WCDK", openId+ "--" + msg.toString());
-            }
         }
-        return resultMap;
+        return resultMap ;
     }
 
     /**
@@ -552,14 +538,14 @@ public class PunchCardController {
             if (currentHour >=0 && currentHour < 8) {
                 date = calendar.getTime();
                 String takeTime = sdf.format(date);
-                msg.append("请于" + takeTime + " 6:00-8:00早起打卡，\n" +
+                msg.append("请于" + takeTime + " 6:00-8:00早起打卡，" +
                         "完成挑战。\n" +
-                        "提示：大波挑战金，千万不要错过………");
+                        "提示：大波挑战金，千万不要错过………\n");
             } else {
                 calendar.add(Calendar.DATE, 1);
                 date = calendar.getTime();
                 String takeTime = sdf.format(date);
-                msg.append("请于" + takeTime + " 6:00-8:00早起打卡，\n" +
+                msg.append("请于" + takeTime + " 6:00-8:00早起打卡，" +
                         "完成挑战。\n" +
                         "提示：大波挑战金，千万不要错过………\n");
             }

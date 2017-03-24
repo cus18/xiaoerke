@@ -141,6 +141,7 @@
     <if test="openId != null">
       and open_id = #{openId,jdbcType=VARCHAR}
     </if>
+    order by create_time desc
   </select>
   <select id="getLastPunchCardRecord" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRecordsVo" resultMap="BaseResultMap">
     select
@@ -152,6 +153,9 @@
     </if>
     <if test="createTime != null and createTime != ''">
       AND create_time <![CDATA[ > #{createTime} ]]>
+    </if>
+    <if test="updateTime != null and updateTime != ''">
+      AND update_time <![CDATA[ >= #{updateTime} ]]>
     </if>
     <if test="state != null">
       AND state = #{state,jdbcType=INTEGER}

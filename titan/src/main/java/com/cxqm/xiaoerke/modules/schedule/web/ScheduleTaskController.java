@@ -105,7 +105,23 @@ public class ScheduleTaskController extends BaseController {
                 personNum = punchCardDataVo.getTotalCash() - 10000 ;
             }
         }
-        userCash = Float.valueOf(String.valueOf(cashNum / personNum).format("%.2f"));
+        String str =  String.valueOf(cashNum / personNum);
+        if(str.contains(".")){
+            String[] splitStr = str.split(".");
+            if("0".endsWith(splitStr[0])){
+
+            }else{
+                str = str.replace(".","");
+                if(str.length() > 3){
+                    str = str.substring(0,3);
+                }
+            }
+        }else{
+            if(str.length() > 3){
+                str = str.substring(0,3);
+            }
+        }
+        userCash = Float.valueOf(str);
         List<Map<String,Object>> recordVos = punchCardRecordsService.getTodayPunchCardRecords(requestMap);
         //成功人数
         int successNum = recordVos.size();
@@ -140,7 +156,7 @@ public class ScheduleTaskController extends BaseController {
                 batchInsert.add(map);
                 Map params = map;
                 params.put("desc","打卡活动");
-                params.put("moneyCount",userCash);
+                params.put("moneyCount",str);
                 try {
                     redPackageActivityInfoService.payCashToUser(map, new HashMap<String, Object>());
                 } catch (BalanceNotEnoughException e) {
@@ -184,7 +200,7 @@ public class ScheduleTaskController extends BaseController {
                 String openId = punchCardRecordsVos.get(i).getOpenId();
                 StringBuffer msg = new StringBuffer();
                 msg.append("起来啦！起来啦！\n" +
-                        "距离挑战结束还有2个小时，请在8:00\n"+
+                        "距离挑战结束还有2个小时，请在8:00"+
                         "前完成早起打卡。\n");
                 msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>"+ "去打卡》》</a>");
                 String sendResult = WechatUtil.sendMsgToWechat(tokenId, openId, msg.toString());
@@ -204,7 +220,7 @@ public class ScheduleTaskController extends BaseController {
         calendar.set(Calendar.SECOND, 0);
         Date date = calendar.getTime();
         PunchCardRecordsVo vo = new PunchCardRecordsVo();
-        vo.setCreateTime(date);
+        vo.setUpdateTime(date);
         vo.setState(1);
         List<PunchCardRecordsVo> punchCardRecordsVos = punchCardRecordsService.getLastPunchCardRecord(vo);
         if(punchCardRecordsVos !=null && punchCardRecordsVos.size()>0){
