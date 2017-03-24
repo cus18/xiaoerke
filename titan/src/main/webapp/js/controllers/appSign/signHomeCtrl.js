@@ -99,10 +99,6 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                     $scope.goJoinStatus=false;
                     $scope.goSignStatus=true;
                 }
-                //获取自己的打卡次数
-                FindPunchCardBySelf.save({openId:$scope.openId},function(res){
-                    $scope.totalNum=res.rewardsInfo.totalNum;
-                })
                 //前往个人中心
                 $scope.goCenter=function(){
                     $state.go('signRecord',{openId:$scope.openId})
