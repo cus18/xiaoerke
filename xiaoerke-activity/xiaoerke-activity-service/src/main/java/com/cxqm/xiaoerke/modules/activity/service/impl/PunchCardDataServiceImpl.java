@@ -54,4 +54,9 @@ public class PunchCardDataServiceImpl implements PunchCardDataService {
         public List<PunchCardDataVo> getLastOneData() {
                 return punchCardDataDao.getLastOneData();
         }
+
+        @Override
+        public int updatePunchCardNum(PunchCardDataVo vo) {
+                return punchCardDataDao.updatePunchCardNum(vo);
+        }
 }

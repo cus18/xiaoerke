@@ -21,4 +21,6 @@ public interface PunchCardDataDao {
     int updateByPrimaryKey(PunchCardDataVo record);
 
     List<PunchCardDataVo> getLastOneData();
+
+    int updatePunchCardNum(PunchCardDataVo vo);
 }
