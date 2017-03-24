@@ -22,32 +22,32 @@ public class PunchCardDataServiceImpl implements PunchCardDataService {
 
         @Override
         public int deleteByPrimaryKey(String id) {
-                return 0;
+                return punchCardDataDao.deleteByPrimaryKey(id);
         }
 
         @Override
         public int insert(PunchCardDataVo record) {
-                return 0;
+                return punchCardDataDao.insert(record);
         }
 
         @Override
         public int insertSelective(PunchCardDataVo record) {
-                return 0;
+                return punchCardDataDao.insertSelective(record);
         }
 
         @Override
         public PunchCardDataVo selectByPrimaryKey(String id) {
-                return null;
+                return punchCardDataDao.selectByPrimaryKey(id);
         }
 
         @Override
         public int updateByPrimaryKeySelective(PunchCardDataVo record) {
-                return 0;
+                return punchCardDataDao.updateByPrimaryKeySelective(record);
         }
 
         @Override
         public int updateByPrimaryKey(PunchCardDataVo record) {
-                return 0;
+                return punchCardDataDao.updateByPrimaryKey(record);
         }
 
         @Override
