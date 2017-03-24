@@ -28,4 +28,6 @@ define(['appSign'], function (app) {
             return $resource(activity+'getPunchCardRewards ');
         }])
 
+
+
 })
