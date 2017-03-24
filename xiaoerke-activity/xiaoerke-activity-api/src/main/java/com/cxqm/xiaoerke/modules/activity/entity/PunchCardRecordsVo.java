@@ -16,6 +16,18 @@ public class PunchCardRecordsVo {
 
     private Integer dayth;
 
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    private String nickName ;
+
+    private Integer state ;
+
     public String getNickName() {
         return nickName;
     }
@@ -23,8 +35,6 @@ public class PunchCardRecordsVo {
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
-
-    private String nickName ;
 
     public Integer getDayth() {
         return dayth;
