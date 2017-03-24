@@ -191,9 +191,9 @@ public class PunchCardController {
             if (list != null && list.size() > 0) {
                 vo = list.get(0);
                 if(vo.getState() == 1){
-                    responseMap.put("isOrNotPay", "yes");
-                }else{
                     responseMap.put("isOrNotPay", "no");
+                }else{
+                    responseMap.put("isOrNotPay", "yes");
                 }
                 responseMap.put("punchCount", vo.getDayth());
             } else {
