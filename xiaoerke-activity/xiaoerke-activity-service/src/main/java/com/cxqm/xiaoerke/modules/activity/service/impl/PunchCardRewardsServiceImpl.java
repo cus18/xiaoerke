@@ -75,7 +75,7 @@ public class PunchCardRewardsServiceImpl implements PunchCardRewardsService {
     }
 
     @Override
-    public Page<Map<String, Object>> findPunchCardRewardsByPage(Page<PunchCardRewardsVo> page, HashMap<String, Object> hashMap) {
+    public Page<Map<String, Object>> findPunchCardRewardsByPage(Page<Map<String,Object>> page, HashMap<String, Object> hashMap) {
         return punchCardRewardsDao.findPunchCardRewardsByPage(page, hashMap);
     }
 
@@ -84,7 +84,7 @@ public class PunchCardRewardsServiceImpl implements PunchCardRewardsService {
         String pageNo = String.valueOf(params.get("pageNo"));
         String pageSize = String.valueOf(params.get("pageSize"));
         //设值
-        Page<PunchCardRewardsVo> page = FrontUtils.generatorPage(pageNo, pageSize);//暂设设固定值
+        Page<Map<String,Object>> page = FrontUtils.generatorPage(pageNo, pageSize);//暂设设固定值
         //取数据
         Page<Map<String, Object>> resultPage = this.findPunchCardRewardsByPage(page, params);
         response.put("pageNo", resultPage.getPageNo());
