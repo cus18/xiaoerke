@@ -58,6 +58,11 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
             $scope.sign_status=false;
         }else if($stateParams.id=='true'){
             $scope.sign_status=true;
+            //参加打卡按钮的状态
+            $scope.goJoinStatus=false;
+            //我要打卡按钮的状态
+            $scope.goSignStatus=true;
+
         }
         //加入的点击事件
         $scope.goJoin=function(){
