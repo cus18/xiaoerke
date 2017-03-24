@@ -9,6 +9,7 @@ import com.cxqm.xiaoerke.modules.activity.entity.PunchCardInfoVo;
 import com.cxqm.xiaoerke.modules.activity.entity.PunchCardRecordsVo;
 import com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardsVo;
 import com.cxqm.xiaoerke.modules.activity.service.*;
+import com.cxqm.xiaoerke.modules.activity.service.impl.PunchCardRewardsServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
@@ -57,7 +58,7 @@ public class PunchCardController {
 
     //用户分的奖励
     @Autowired
-    private PunchCardRewardsService punchCardRewardsService;
+    private PunchCardRewardsServiceImpl punchCardRewardsService;
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
@@ -103,14 +104,47 @@ public class PunchCardController {
     @RequestMapping(value = "getPunchCardPage", method = {RequestMethod.GET, RequestMethod.POST})
     public
     @ResponseBody
-    HashMap<String, Object> getPunchCardPage(HttpServletRequest request, HttpSession session) {
+    HashMap<String, Object> getPunchCardPage(@RequestBody HashMap<String, Object> params ,HttpServletRequest request, HttpSession session) {
         HashMap<String, Object> responseMap = new HashMap<String, Object>();
         String openId = WechatUtil.getOpenId(session, request);
+        String headImgUrl = olyGamesService.getWechatMessage(openId);
         responseMap.put("openId",openId);
+        responseMap.put("headImgUrl",headImgUrl);
         if (StringUtils.isNotNull(openId)) {
+            PunchCardInfoVo punchCardInfoVo = new PunchCardInfoVo();
+            punchCardInfoVo.setOpenId(openId);
+            List<PunchCardInfoVo> reList = punchCardInfoService.getPunchCardInfoBySelective(punchCardInfoVo);
+            if(reList != null &&reList.size() > 0){
+
+            }else{
+                punchCardInfoVo.setCreateTime(new Date());
+                punchCardInfoVo.setDelFlag(0);
+                punchCardInfoVo.setId(IdGen.uuid());
+                punchCardInfoVo.setTotalDays(0);
+                if (lock.tryLock()) {
+                    try {
+                        List<PunchCardInfoVo> punchCardInfoVos = punchCardInfoService.getLastOnePunchCardInfoVo();
+                        int totalNum = 1470000001;
+                        if (punchCardInfoVos != null) {
+                            if (punchCardInfoVos.size() > 0) {
+                                totalNum = punchCardInfoVos.get(0).getMarketer();
+                                totalNum++;
+                            }
+                        }
+                        punchCardInfoVo.setMarketer(totalNum);
+                        int num = punchCardInfoService.insert(punchCardInfoVo);
+                    } catch (Exception ex) {
+                        System.out.print(ex.getStackTrace());
+                    } finally {
+                        lock.unlock();   //释放锁
+                    }
+                }
+            }
+            responseMap.put("marketer",punchCardInfoVo.getMarketer());
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
             String tokenId = String.valueOf(userWechatParam.get("token"));
             String nickName = WechatUtil.getWechatName(tokenId, openId).getNickname();
+            responseMap.put("nickName",nickName);
             Date date = null;
             Calendar calendarOld = Calendar.getInstance();
             Calendar calendar = Calendar.getInstance();
@@ -129,13 +163,22 @@ public class PunchCardController {
                 calendarOld.set(Calendar.SECOND, 0);
                 date = calendarOld.getTime();
 
-            } else {
+            } else if (currentHour >= 0 && currentHour < 6){
                 calendarOld.clear();
                 calendarOld.set(Calendar.YEAR, currentYear);
                 calendarOld.set(Calendar.MONTH, currentMonth);
                 calendarOld.set(Calendar.DAY_OF_MONTH, currentDay);
                 calendarOld.add(Calendar.DATE, -1);
                 calendarOld.set(Calendar.HOUR_OF_DAY, 8);
+                calendarOld.set(Calendar.MINUTE, 0);
+                calendarOld.set(Calendar.SECOND, 0);
+                date = calendarOld.getTime();
+            }else{
+                calendarOld.clear();
+                calendarOld.set(Calendar.YEAR, currentYear);
+                calendarOld.set(Calendar.MONTH, currentMonth);
+                calendarOld.set(Calendar.DAY_OF_MONTH, currentDay);
+                calendarOld.set(Calendar.HOUR_OF_DAY, 6);
                 calendarOld.set(Calendar.MINUTE, 0);
                 calendarOld.set(Calendar.SECOND, 0);
                 date = calendarOld.getTime();
@@ -179,11 +222,24 @@ public class PunchCardController {
             PunchCardRewardsVo punchCardRewardsVo = new PunchCardRewardsVo();
             punchCardRewardsVo.setCreateTime(date);
             List<Map<String, Object>> punchCardRewardsVos = punchCardRewardsService.getPunchCardRewards(punchCardRewardsVo);
+            Map resMap= punchCardRewardsService.getPunchCardRewardByPage(params);
             if (punchCardRewardsVos != null && punchCardRewardsVos.size() > 0) {
-                responseMap.put("personRewardsList", punchCardRewardsVos);
+                if(resMap != null && resMap.size()>0){
+                    responseMap.put("personRewardsList", resMap.get("personRewardsList"));
+                    responseMap.put("pageNo", resMap.get("pageNo"));
+                    responseMap.put("pageSize", resMap.get("pageSize"));
+                }else{
+                    responseMap.put("personRewardsList", new ArrayList());
+                }
                 responseMap.put("personRewardsSize", punchCardRewardsVos.size());
             } else {
-                responseMap.put("personRewardsList", new ArrayList());
+                if(resMap != null && resMap.size()>0){
+                    responseMap.put("personRewardsList", resMap.get("personRewardsList"));
+                    responseMap.put("pageNo", resMap.get("pageNo"));
+                    responseMap.put("pageSize", resMap.get("pageSize"));
+                }else{
+                    responseMap.put("personRewardsList", new ArrayList());
+                }
                 responseMap.put("personRewardsSize", 0);
             }
             //查询总数   定时任务每天五点跑：创建punch_card_data表
@@ -387,6 +443,8 @@ public class PunchCardController {
         HashMap<String, Object> responseMap = new HashMap<String, Object>();
         responseMap.put("status", "success");
         String openId = String.valueOf(params.get("openId"));
+        String headImgUrl = olyGamesService.getWechatMessage(openId);
+        responseMap.put("headImgUrl",headImgUrl);
         PunchCardRecordsVo punchCardRecordsVo = new PunchCardRecordsVo();
         punchCardRecordsVo.setOpenId(openId);
         List<PunchCardRecordsVo> resultList = punchCardRecordsService.getSelfPunchCardRecords(punchCardRecordsVo);
@@ -404,7 +462,7 @@ public class PunchCardController {
     /**
      * 用户支付JS
      *
-     * @param params
+     * @param
      * @param request
      * @param session
      * @return
@@ -464,4 +522,48 @@ public class PunchCardController {
         return payParameter;
     }
 
+    /**
+     * 分页获取获奖信息
+     * @param request
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "getPunchCardRewards", method = {RequestMethod.GET, RequestMethod.POST})
+    public
+    @ResponseBody
+    Map<String,Object> getPunchCardRewards(@RequestBody HashMap<String, Object> params , HttpServletRequest request, HttpSession session) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        Date date = null;
+        if (currentHour >= 9) {
+            //昨天数据
+            calendar.clear();
+            calendar.set(Calendar.YEAR, currentYear);
+            calendar.set(Calendar.MONTH, currentMonth);
+            calendar.set(Calendar.DAY_OF_MONTH, currentDay);
+            calendar.set(Calendar.HOUR_OF_DAY, 8);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            date = calendar.getTime();
+        } else {
+            //前天数据
+            calendar.clear();
+            calendar.set(Calendar.YEAR, currentYear);
+            calendar.set(Calendar.MONTH, currentMonth);
+            calendar.set(Calendar.DAY_OF_MONTH, currentDay);
+            calendar.add(Calendar.DATE, -1);
+            calendar.set(Calendar.HOUR_OF_DAY, 8);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            date = calendar.getTime();
+        }
+        PunchCardRewardsVo punchCardRewardsVo = new PunchCardRewardsVo();
+        punchCardRewardsVo.setCreateTime(date);
+        Map responseMap= punchCardRewardsService.getPunchCardRewardByPage(params);
+        return responseMap;
+    }
 }

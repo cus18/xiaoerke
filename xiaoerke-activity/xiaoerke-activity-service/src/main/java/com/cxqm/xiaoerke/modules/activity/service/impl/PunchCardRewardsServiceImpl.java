@@ -1,5 +1,7 @@
 package com.cxqm.xiaoerke.modules.activity.service.impl;
 
+import com.cxqm.xiaoerke.common.persistence.Page;
+import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.modules.activity.dao.PunchCardRewardsDao;
 import com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardsVo;
 import com.cxqm.xiaoerke.modules.activity.service.PunchCardRewardsService;
@@ -7,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,5 +69,30 @@ public class PunchCardRewardsServiceImpl implements PunchCardRewardsService {
                 return punchCardRewardsDao.batchInsertPunchCardRewards(list);
         }
 
+        @Override
+        public Page<Map<String,Object>> findPunchCardRewardsByPage(Page<PunchCardRewardsVo> page, HashMap<String, Object> hashMap) {
+                return punchCardRewardsDao.findPunchCardRewardsByPage(page, hashMap);
+        }
+
+        public HashMap<String, Object> getPunchCardRewardByPage(HashMap<String, Object> params){
+                HashMap<String,Object> response = new HashMap<String, Object>();
+                String pageNo = String.valueOf(params.get("pageNo"));
+                String pageSize = String.valueOf(params.get("pageSize"));
+                //设值
+                Page<PunchCardRewardsVo> page = FrontUtils.generatorPage(pageNo, pageSize);//暂设设固定值
+                //取数据
+                Page<Map<String,Object>> resultPage = this.findPunchCardRewardsByPage(page, params);
+                response.put("pageNo", resultPage.getPageNo());
+                response.put("pageSize", resultPage.getPageSize());
+                long tmp = FrontUtils.generatorTotalPage(resultPage);
+                response.put("pageTotal", tmp + "");
+                List<Map<String,Object>> list = resultPage.getList();
+                if(list !=null && list.size() > 0){
+                        response.put("personRewardsList",list);
+                }else{
+                        response.put("personRewardsList",new ArrayList());
+                }
+                return response;
+        }
 
 }
