@@ -12,6 +12,7 @@ import com.cxqm.xiaoerke.modules.activity.service.PunchCardDataService;
 import com.cxqm.xiaoerke.modules.activity.service.PunchCardRecordsService;
 import com.cxqm.xiaoerke.modules.activity.service.PunchCardRewardsService;
 import com.cxqm.xiaoerke.modules.activity.service.RedPackageActivityInfoService;
+import com.cxqm.xiaoerke.modules.activity.service.impl.RedPackageActivityInfoServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
@@ -47,7 +48,7 @@ public class ScheduleTaskController extends BaseController {
     private SessionRedisCache sessionRedisCache = SpringContextHolder.getBean("sessionRedisCacheImpl");
 
     @Autowired
-    private RedPackageActivityInfoService redPackageActivityInfoService ;
+    private RedPackageActivityInfoServiceImpl redPackageActivityInfoService ;
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService ;
@@ -69,8 +70,6 @@ public class ScheduleTaskController extends BaseController {
      * 每天早晨8:10 开始分发打卡金
      */
     public void punchCardCashToUser(){
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        HttpSession session = request.getSession();
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         float userCash = 0 ;
         int personNum = 0 ;
@@ -140,9 +139,10 @@ public class ScheduleTaskController extends BaseController {
                 map.put("createTime",new Date());
                 batchInsert.add(map);
                 Map params = map;
-                map.put("desc","打卡活动");
+                params.put("desc","打卡活动");
+                params.put("moneyCount",userCash);
                 try {
-                    redPackageActivityInfoService.payRedPackageToUser(map,new HashMap<String, Object>(), request, session);
+                    redPackageActivityInfoService.payCashToUser(map, new HashMap<String, Object>());
                 } catch (BalanceNotEnoughException e) {
                     e.printStackTrace();
                 } catch (BusinessPaymentExceeption businessPaymentExceeption) {

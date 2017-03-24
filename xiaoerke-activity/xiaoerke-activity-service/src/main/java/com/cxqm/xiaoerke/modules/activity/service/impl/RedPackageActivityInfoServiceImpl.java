@@ -223,4 +223,48 @@ public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfo
         List<RedpackageActivityInfoVo> resultList = redpackageActivityInfoDao.getLastOneRedPackageActivity();
         return resultList ;
     }
+
+    /**
+     * 调用企业支付接口,实现用户提现功能
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Map<String, Object> payCashToUser(Map<String, Object> params, Map<String, Object> response)
+            throws BalanceNotEnoughException, BusinessPaymentExceeption {
+        response.put("payStatus", "failure");
+        String takeCashOut = String.valueOf(params.get("moneyCount"));
+        if(takeCashOut.contains(".")){
+            takeCashOut = takeCashOut.replace(".","");
+            if(takeCashOut.length() == 2){
+                takeCashOut = takeCashOut +"0";
+            }else if(takeCashOut.length() == 1){
+                takeCashOut = takeCashOut +"00";
+            }
+        }
+        Float returnMoney = Float.valueOf(takeCashOut);
+        String openid = String.valueOf(params.get("openId"));
+        String ip = "127.0.0.1";
+        String payResult = null;
+        if(StringUtils.isNull(openid)){
+            throw new BusinessPaymentExceeption();
+        }else{
+            try {
+                if(params.containsKey("desc")){
+                    payResult = accountService.payUserAmountCommon(returnMoney, openid, ip,String.valueOf(params.get("desc")));
+                }else{
+                    payResult = accountService.payUserAmount(returnMoney, openid, ip);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            response.put("return_msg", payResult);
+            response.put("amount", returnMoney);
+            if ("SUCCESS".equals(payResult.toUpperCase())) {
+                Map tokenMap = systemService.getWechatParameter();
+                String token = (String) tokenMap.get("token");
+                PatientMsgTemplate.withdrawalsSuccess2Wechat(openid, token, "", String.valueOf(returnMoney / 100), DateUtils.DateToStr(new Date(), "date"));
+                response.put("payStatus", "success");
+            }
+        }
+        return response;
+    }
 }
