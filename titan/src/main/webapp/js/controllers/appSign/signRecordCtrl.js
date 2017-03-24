@@ -62,6 +62,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signRecordCtrl',
     '$scope','$state','$stateParams', 'OrderPayMemberServiceOperation','GetUserMemberService','$location','ngDialog','FindPunchCardBySelf',
     function ($scope,$state,$stateParams,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog,FindPunchCardBySelf) {
         FindPunchCardBySelf.save({openId:$stateParams.openId},function(res){
+            $scope.total=res.rewardsInfo;
             $scope.list=res.dataList;
             for(var i= 0;i<$scope.list.length;i++){
                 $scope.list[i].day=getDay( $scope.list[i].createTime);
