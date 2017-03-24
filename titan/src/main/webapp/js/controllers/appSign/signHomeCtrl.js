@@ -116,7 +116,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         //查看更多记录
         $scope.lookMore=function(){
             GetPunchCardRewards.save({pageNo:$scope.pageNum++,pageSize:10},function(res){
-
+                console.log(res)
             })
         }
         GetPunchCardPage.save({},function(res){
