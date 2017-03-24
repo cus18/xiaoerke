@@ -71,7 +71,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signRecordCtrl',
             $scope.total=res.rewardsInfo;
             if(res.dataList==null||res.dataList==''){
                 $scope.noRecordStatus=true;
-                $scope.nickname=res.key;
+                $scope.nickname=res.nickName;
             }else{
                 $scope.list=res.dataList;
                 $scope.nickname=$scope.list[0].nickname;
