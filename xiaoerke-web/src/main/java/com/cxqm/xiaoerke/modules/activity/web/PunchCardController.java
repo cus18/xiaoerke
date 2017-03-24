@@ -190,7 +190,11 @@ public class PunchCardController {
             List<PunchCardRecordsVo> list = punchCardRecordsService.getLastPunchCardRecord(vo);
             if (list != null && list.size() > 0) {
                 vo = list.get(0);
-                responseMap.put("isOrNotPay", "yes");
+                if(vo.getState() == 1){
+                    responseMap.put("isOrNotPay", "yes");
+                }else{
+                    responseMap.put("isOrNotPay", "no");
+                }
                 responseMap.put("punchCount", vo.getDayth());
             } else {
                 responseMap.put("isOrNotPay", "no");
@@ -355,6 +359,7 @@ public class PunchCardController {
                         vo.setOpenId(openId);
                         List<PunchCardRecordsVo> vos = punchCardRecordsService.getLastPunchCardRecord(vo);
                         vo = vos.get(0);
+                        vo.setState(1);
                         vo.setDayth(vo.getDayth() + 1);
                         num = punchCardRecordsService.updateByPrimaryKeySelective(vo);
                         if (num > 0) {
@@ -383,6 +388,7 @@ public class PunchCardController {
                             if (num > 0) {
                                 if (num > 0) {
                                     vo.setOpenId(openId);
+                                    vo.setState(1);
                                     List<PunchCardRecordsVo> vos = punchCardRecordsService.getLastPunchCardRecord(vo);
                                     vo = vos.get(0);
                                     vo.setDayth(vo.getDayth() + 1);
@@ -492,6 +498,7 @@ public class PunchCardController {
         punchCardRecordsVo.setId(IdGen.uuid());
         punchCardRecordsVo.setOpenId(userId);
         punchCardRecordsVo.setNickName(nickName);
+        punchCardRecordsVo.setState(0);
         int num = punchCardRecordsService.insertSelective(punchCardRecordsVo);
         if (num > 0) {
             // 推送：挑战已开启文案
