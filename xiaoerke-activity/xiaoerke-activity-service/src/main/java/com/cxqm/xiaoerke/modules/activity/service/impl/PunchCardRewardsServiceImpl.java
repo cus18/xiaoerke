@@ -3,7 +3,9 @@ package com.cxqm.xiaoerke.modules.activity.service.impl;
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.FrontUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.modules.activity.dao.PunchCardRecordsDao;
 import com.cxqm.xiaoerke.modules.activity.dao.PunchCardRewardsDao;
+import com.cxqm.xiaoerke.modules.activity.entity.PunchCardRecordsVo;
 import com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardsVo;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.activity.service.PunchCardRewardsService;
@@ -11,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by jiangzhongge on 2017-3-17.
@@ -25,6 +24,9 @@ public class PunchCardRewardsServiceImpl implements PunchCardRewardsService {
 
     @Autowired
     private PunchCardRewardsDao punchCardRewardsDao;
+
+    @Autowired
+    private PunchCardRecordsDao punchCardRecordsDao;
 
     @Autowired
     private OlyGamesService olyGamesService ;
@@ -94,8 +96,10 @@ public class PunchCardRewardsServiceImpl implements PunchCardRewardsService {
         List<Map<String, Object>> list = resultPage.getList();
         List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
         if (list != null && list.size() > 0) {
+            PunchCardRecordsVo record = new PunchCardRecordsVo();
             for (int i = 0; i < list.size(); i++) {
-                Map<String, Object> map = list.get(i);
+                Map<String, Object> map =new HashMap<String, Object>();
+                PunchCardRewardsVo vo = (PunchCardRewardsVo) list.get(i);
                 if(map != null && map.size()>0){
                     String openId = String.valueOf(map.get("openId"));
                     String headImgUrl = olyGamesService.getWechatMessage(openId);
@@ -103,6 +107,18 @@ public class PunchCardRewardsServiceImpl implements PunchCardRewardsService {
                         map.put("headImgUrl",headImgUrl);
                     }else {
                         map.put("headImgUrl","");
+                    }
+                    map.put("nickName",vo.getNickName());
+                    map.put("cashAmount",vo.getCashAmount());
+                    record.setOpenId(openId);
+                    record.setState(1);
+                    List<PunchCardRecordsVo> result = punchCardRecordsDao.getLastPunchCardRecord(record);
+                    if(result != null && result.size() >0){
+                        map.put("dayTh",result.get(0).getDayth());
+                        map.put("dateTime",result.get(0).getUpdateTime());
+                    }else{
+                        map.put("dayTh",1);
+                        map.put("dateTime",new Date());
                     }
                     resultList.add(map);
                 }
