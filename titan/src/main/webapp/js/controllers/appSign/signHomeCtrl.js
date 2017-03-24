@@ -191,7 +191,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                                 wx.onMenuShareTimeline({
                                     title: '早起挑战，大波现金等你来领走～在这里可以免费咨询三甲医院儿科专家', // 分享标题
                                     link: share, // 分享链接
-                                    imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
+                                    imgUrl: 'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/111.png', // 分享图标
                                     success: function (res) {
                                         //recordLogs("ZXYQ_YQY_SHARE");
                                         // redPacketCreate.save({"uuid":$scope.uuid},function (data) {
@@ -205,7 +205,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                                     title: $scope.minename + '向你推荐', // 分享标题
                                     desc: '早起挑战，大波现金等你来领走～在这里可以免费咨询三甲医院儿科专家 ',// 分享描述
                                     link: share, // 分享链接
-                                    imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
+                                    imgUrl: 'http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/111.png', // 分享图标
                                     success: function (res) {
                                     },
                                     fail: function (res) {
