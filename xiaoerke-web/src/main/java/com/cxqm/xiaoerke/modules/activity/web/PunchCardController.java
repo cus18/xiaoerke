@@ -115,7 +115,7 @@ public class PunchCardController {
             punchCardInfoVo.setOpenId(openId);
             List<PunchCardInfoVo> reList = punchCardInfoService.getPunchCardInfoBySelective(punchCardInfoVo);
             if(reList != null &&reList.size() > 0){
-
+                punchCardInfoVo = reList.get(0);
             }else{
                 punchCardInfoVo.setCreateTime(new Date());
                 punchCardInfoVo.setDelFlag(0);
