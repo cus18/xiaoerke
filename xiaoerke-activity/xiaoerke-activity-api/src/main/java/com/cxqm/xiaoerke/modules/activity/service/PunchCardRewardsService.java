@@ -1,7 +1,9 @@
 package com.cxqm.xiaoerke.modules.activity.service;
 
+import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardsVo;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,5 +29,8 @@ public interface PunchCardRewardsService {
     List<Map<String,Object>> getPunchCardRewards(PunchCardRewardsVo vo);
 
     int batchInsertPunchCardRewards(List list);
+
+    Page<Map<String,Object>> findPunchCardRewardsByPage(Page<PunchCardRewardsVo> page,
+                                                        HashMap<String, Object> hashMap);
 
 }
