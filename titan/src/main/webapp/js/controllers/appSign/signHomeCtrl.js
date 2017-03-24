@@ -119,7 +119,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                 console.log(res)
             })
         }
-        GetPunchCardPage.save({},function(res){
+        GetPunchCardPage.save({pageNo:0,pageSize:10},function(res){
             if(res.resultCode==9999){
                 alert('服务器错误')
             }else{
