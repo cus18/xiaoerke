@@ -115,7 +115,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
 
         //查看更多记录
         $scope.lookMore=function(){
-            GetPunchCardRewards.save({pageNo:$scope.pageNum++,pageSize:10},function(res){
+            GetPunchCardRewards.save({pageNo:++$scope.pageNum,pageSize:10},function(res){
                 console.log(res)
             })
         }
@@ -125,7 +125,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
             }else{
                 $scope.oData=res;
                 $scope.openId=res.openId;
-                $scope.market=res.market;
+                $scope.market=res.marketer;
                 $scope.dataList=res.personRewardsList;
                 for(var i=0;i<$scope.dataList.length;i++){
                     $scope.dataList[i].hour=getHour($scope.dataList[i].updateTime);
