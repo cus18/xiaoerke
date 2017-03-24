@@ -226,6 +226,7 @@ public class PunchCardController {
             PunchCardRewardsVo punchCardRewardsVo = new PunchCardRewardsVo();
             punchCardRewardsVo.setCreateTime(date);
             List<Map<String, Object>> punchCardRewardsVos = punchCardRewardsService.getPunchCardRewards(punchCardRewardsVo);
+            params.put("createTime",date);
             Map resMap= punchCardRewardsService.getPunchCardRewardByPage(params);
             if (punchCardRewardsVos != null && punchCardRewardsVos.size() > 0) {
                 if(resMap != null && resMap.size()>0){
@@ -570,6 +571,7 @@ public class PunchCardController {
         }
         PunchCardRewardsVo punchCardRewardsVo = new PunchCardRewardsVo();
         punchCardRewardsVo.setCreateTime(date);
+        params.put("createTime",date);
         Map responseMap= punchCardRewardsService.getPunchCardRewardByPage(params);
         return responseMap;
     }

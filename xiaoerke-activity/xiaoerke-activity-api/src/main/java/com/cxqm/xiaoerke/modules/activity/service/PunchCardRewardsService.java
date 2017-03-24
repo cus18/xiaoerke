@@ -30,7 +30,7 @@ public interface PunchCardRewardsService {
 
     int batchInsertPunchCardRewards(List list);
 
-    Page<Map<String,Object>> findPunchCardRewardsByPage(Page<PunchCardRewardsVo> page,
+    Page<Map<String,Object>> findPunchCardRewardsByPage(Page<Map<String,Object>> page,
                                                         HashMap<String, Object> hashMap);
 
 }
