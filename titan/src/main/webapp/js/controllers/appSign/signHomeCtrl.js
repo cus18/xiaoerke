@@ -123,6 +123,11 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
             if(res.resultCode==9999){
                 alert('服务器错误')
             }else{
+                if(res.headImgUrl==''||res.headImgUrl==null){
+                    $scope.headImgUrl='http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf/consult/yonghumoren.png';
+                }else{
+                    $scope.headImgUrl=res.headImgUrl;
+                }
                 $scope.oData=res;
                 $scope.openId=res.openId;
                 $scope.market=res.marketer;

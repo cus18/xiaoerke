@@ -63,6 +63,11 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signRecordCtrl',
     function ($scope,$state,$stateParams,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog,FindPunchCardBySelf) {
         $scope.noRecordStatus=false;
         FindPunchCardBySelf.save({openId:$stateParams.openId},function(res){
+            if(res.headImgUrl==''||res.headImgUrl==null){
+                $scope.headImgUrl='http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf/consult/yonghumoren.png';
+            }else{
+                $scope.headImgUrl=res.headImgUrl;
+            }
             $scope.total=res.rewardsInfo;
             if(res.dataList==null||res.dataList==''){
                 $scope.noRecordStatus=true;
