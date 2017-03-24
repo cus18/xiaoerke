@@ -24,6 +24,10 @@
                     <div class="listHead">打卡成功记录</div>
                     <ul>
                         <li ng-repeat="item in list"><b>{{item.day}}</b><span>我在{{item.hour}}起床,累计早起<b>{{item.dayth}}</b>天了！</span></li>
+                        <div ng-show="noRecordStatus" class="noRecord">
+                            <img src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/appSign/zz_png.png" alt=""/>
+                            <p>您还没有打过卡，赶紧去打卡吧</p>
+                        </div>
                     </ul>
                 </div>
             </div>

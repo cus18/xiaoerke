@@ -126,6 +126,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                 $scope.oData=res;
                 $scope.openId=res.openId;
                 $scope.market=res.marketer;
+                $scope.minename=res.nickName;
                 $scope.dataList=res.personRewardsList;
                 for(var i=0;i<$scope.dataList.length;i++){
                     $scope.dataList[i].hour=getHour($scope.dataList[i].updateTime);

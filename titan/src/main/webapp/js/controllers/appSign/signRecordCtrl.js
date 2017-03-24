@@ -61,12 +61,19 @@ function getHour(time){
 angular.module('controllers', ['ionic','ngDialog']).controller('signRecordCtrl', [
     '$scope','$state','$stateParams', 'OrderPayMemberServiceOperation','GetUserMemberService','$location','ngDialog','FindPunchCardBySelf',
     function ($scope,$state,$stateParams,OrderPayMemberServiceOperation,GetUserMemberService,$location,ngDialog,FindPunchCardBySelf) {
+        $scope.noRecordStatus=false;
         FindPunchCardBySelf.save({openId:$stateParams.openId},function(res){
             $scope.total=res.rewardsInfo;
-            $scope.list=res.dataList;
-            for(var i= 0;i<$scope.list.length;i++){
-                $scope.list[i].day=getDay( $scope.list[i].createTime);
-                $scope.list[i].hour=getHour( $scope.list[i].updateTime)
+            if(res.dataList==null||res.dataList==''){
+                $scope.noRecordStatus=true;
+                $scope.nickname=res.key;
+            }else{
+                $scope.list=res.dataList;
+                $scope.nickname=$scope.list[0].nickname;
+                for(var i= 0;i<$scope.list.length;i++){
+                    $scope.list[i].day=getDay( $scope.list[i].createTime);
+                    $scope.list[i].hour=getHour( $scope.list[i].updateTime)
+                }
             }
         })
     }])
