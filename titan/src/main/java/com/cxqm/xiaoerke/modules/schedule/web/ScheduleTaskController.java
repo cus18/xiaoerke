@@ -175,6 +175,7 @@ public class ScheduleTaskController extends BaseController {
         Date date = calendar.getTime();
         PunchCardRecordsVo vo = new PunchCardRecordsVo();
         vo.setCreateTime(date);
+        vo.setState(1);
         List<PunchCardRecordsVo> punchCardRecordsVos = punchCardRecordsService.getLastPunchCardRecord(vo);
         if(punchCardRecordsVos !=null && punchCardRecordsVos.size()>0){
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
@@ -204,6 +205,7 @@ public class ScheduleTaskController extends BaseController {
         Date date = calendar.getTime();
         PunchCardRecordsVo vo = new PunchCardRecordsVo();
         vo.setCreateTime(date);
+        vo.setState(1);
         List<PunchCardRecordsVo> punchCardRecordsVos = punchCardRecordsService.getLastPunchCardRecord(vo);
         if(punchCardRecordsVos !=null && punchCardRecordsVos.size()>0){
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
