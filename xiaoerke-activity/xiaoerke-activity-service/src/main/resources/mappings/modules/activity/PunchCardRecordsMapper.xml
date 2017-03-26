@@ -162,7 +162,7 @@
     </if>
       order by create_time desc
   </select>
-  <select id="getTodayPunchCardRecords" parameterType="java.util.Map" resultMap="java.util.Map">
+  <select id="getTodayPunchCardRecords" parameterType="java.util.Map" resultType="java.util.Map">
     select rec.open_id as openId , rec.nick_name as nickName , rec.dayth as dayTh
     from punch_card_records rec ,
     (select * from punch_card_records
@@ -181,8 +181,8 @@
       and rec.update_time <![CDATA[ <= #{secondEnd,jdbcType=TIMESTAMP} ]]>
     </if>
   </select>
-  <select id="getTodayPayPersonNum" parameterType="java.util.Map" resultMap="java.util.Map">
-    select rec.open_id as openId , rec.nick_name as nickName , rec.dayth as dayTh
+  <select id="getTodayPayPersonNum" parameterType="java.util.Map" resultType="java.util.Map">
+    select open_id as openId , nick_name as nickName , dayth as dayTh
     from punch_card_records
     where 1=1 and state = 1
     <if test="secondStart != null">
