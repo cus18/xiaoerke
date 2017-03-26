@@ -168,11 +168,11 @@ public class ScheduleTaskController extends BaseController {
         userCash = Float.valueOf(str);
         List<Map<String,Object>> records = punchCardRecordsService.getTodayPunchCardRecords(requestMap);
         //成功人数
-        int successNum = records.size()+10000;
+        int successNum = records.size();
         //失败人数
         int failureNum = personNum - successNum ;
         punchCardDataVo.setFailure(failureNum);
-        punchCardDataVo.setSuccess(successNum);
+        punchCardDataVo.setSuccess(successNum+10000);
         punchCardDataService.updateByPrimaryKeySelective(punchCardDataVo);
         List<Map<String,Object>> recordVos = punchCardRecordsService.getTodayPayPersonNum(requestMap);
         List batchInsert = new ArrayList();
