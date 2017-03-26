@@ -31,4 +31,6 @@ public interface PunchCardRecordsService {
 
     List<Map<String,Object>> getTodayPunchCardRecords(Map map);
 
+    List<Map<String,Object>> getTodayPayPersonNum(Map map);
+
 }

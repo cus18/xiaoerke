@@ -162,24 +162,40 @@
     </if>
       order by create_time desc
   </select>
-  <select id="getTodayPunchCardRecords" parameterType="java.util.Map" resultMap="BaseResultMap">
+  <select id="getTodayPunchCardRecords" parameterType="java.util.Map" resultMap="java.util.Map">
     select rec.open_id as openId , rec.nick_name as nickName , rec.dayth as dayTh
     from punch_card_records rec ,
     (select * from punch_card_records
     where 1=1 and state = 1
     <if test="firstStart != null">
-      and create_time <![CDATA[ >= #{firstStart,jdbcType=TIMESTAMP} ]]>
+      and update_time <![CDATA[ >= #{firstStart,jdbcType=TIMESTAMP} ]]>
     </if>
     <if test="firstEnd != null">
-      and create_time <![CDATA[ <= #{firstEnd,jdbcType=TIMESTAMP} ]]>
-    </if>) record2
+      and update_time <![CDATA[ <= #{firstEnd,jdbcType=TIMESTAMP} ]]>
+    </if>)record2
     where rec.open_id = record2.open_id and rec.state = 1
+    <if test="secondStart != null">
+      and rec.update_time <![CDATA[ >= #{secondStart,jdbcType=TIMESTAMP} ]]>
+    </if>
+    <if test="secondEnd != null">
+      and rec.update_time <![CDATA[ <= #{secondEnd,jdbcType=TIMESTAMP} ]]>
+    </if>
+  </select>
+  <select id="getTodayPayPersonNum" parameterType="java.util.Map" resultMap="java.util.Map">
+    select rec.open_id as openId , rec.nick_name as nickName , rec.dayth as dayTh
+    from punch_card_records
+    where 1=1 and state = 1
     <if test="secondStart != null">
       and create_time <![CDATA[ >= #{secondStart,jdbcType=TIMESTAMP} ]]>
     </if>
-    <if test="secondEnd != null">
-      and create_time <![CDATA[ <= #{secondEnd,jdbcType=TIMESTAMP} ]]>
+    <if test="firstStart != null">
+      and create_time <![CDATA[ < #{firstStart,jdbcType=TIMESTAMP} ]]>
+    </if>
+    <if test="firstStart != null">
+      and update_time <![CDATA[ >= #{firstStart,jdbcType=TIMESTAMP} ]]>
+    </if>
+    <if test="firstEnd != null">
+      and update_time <![CDATA[ <= #{firstEnd,jdbcType=TIMESTAMP} ]]>
     </if>
   </select>
-
 </mapper>

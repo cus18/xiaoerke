@@ -69,4 +69,9 @@ public class PunchCardRecordsServiceImpl implements PunchCardRecordsService {
         public List<Map<String,Object>> getTodayPunchCardRecords(Map map) {
                 return punchCardRecordsDao.getTodayPunchCardRecords(map);
         }
+
+        @Override
+        public List<Map<String, Object>> getTodayPayPersonNum(Map map) {
+                return punchCardRecordsDao.getTodayPayPersonNum(map);
+        }
 }

@@ -74,19 +74,176 @@ public class ScheduleTaskController extends BaseController {
         float userCash = 0 ;
         int personNum = 0 ;
         int cashNum = 0;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        calendar.set(Calendar.HOUR_OF_DAY, 6);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date firstStart = calendar.getTime();  // 今日5点
+        calendar.clear();
+        calendar.set(Calendar.YEAR, currentYear);
+        calendar.set(Calendar.MONTH, currentMonth);
+        calendar.set(Calendar.DAY_OF_MONTH, currentDay);
+        calendar.set(Calendar.HOUR_OF_DAY, 8);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date firstEnd = calendar.getTime();    // 今日8点
+        calendar.clear();
+        calendar.set(Calendar.YEAR, currentYear);
+        calendar.set(Calendar.MONTH, currentMonth);
+        calendar.set(Calendar.DAY_OF_MONTH, currentDay);
+        calendar.add(Calendar.DATE, -1);
+        calendar.set(Calendar.HOUR_OF_DAY, 8);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date secondEnd = calendar.getTime();   //昨日八点
+        calendar.clear();
+        calendar.set(Calendar.YEAR, currentYear);
+        calendar.set(Calendar.MONTH, currentMonth);
+        calendar.set(Calendar.DAY_OF_MONTH, currentDay);
+        calendar.add(Calendar.DATE, -1);
+        calendar.set(Calendar.HOUR_OF_DAY, 6);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date secondStart = calendar.getTime(); //昨日六点
+
+        Map<String,Object> requestMap = new HashMap<String,Object>();
+        requestMap.put("firstStart",firstStart);
+        requestMap.put("firstEnd",firstEnd);
+        requestMap.put("secondStart",secondStart);
+        requestMap.put("secondEnd",secondEnd);
+
+        List<PunchCardDataVo> punchCardDataVos = punchCardDataService.getLastOneData();
+        PunchCardDataVo punchCardDataVo = null ;
+        if(punchCardDataVos !=null && punchCardDataVos.size()>0){
+            if(punchCardDataVos.size() == 1){
+                punchCardDataVo = punchCardDataVos.get(0);
+                cashNum = punchCardDataVo.getTotalCash() - 10000 ;
+                personNum = punchCardDataVo.getTotalNum() - 10000 ;
+            }else{
+                punchCardDataVo = punchCardDataVos.get(1);
+                cashNum = punchCardDataVo.getTotalCash() - 10000 ;
+                personNum = punchCardDataVo.getTotalNum() - 10000 ;
+            }
+        }
+        String str =  String.valueOf(cashNum / personNum);
+        if(str.contains(".")){
+            String[] splitStr = str.split(".");
+            if("0".startsWith(splitStr[0])){
+                if(splitStr[1].length() == 1){
+                    str = splitStr[1]+"0";
+                }else if(splitStr[1].length() == 2){
+                    str = splitStr[1];
+                }else if(splitStr[1].length() >=3){
+                    str = splitStr[1].substring(0,2);
+                }else{
+                    str = "0";
+                }
+            }else{
+                str = str.replace(".","");
+                if(str.length() == 1){
+                    str = str+"00";
+                }else if(str.length() == 2){
+                    str = str+"0";
+                }else if(str.length() >= 3){
+                    str = str.substring(0,3);
+                }
+            }
+        }else{
+            if(str.length() == 1){
+                str = str+"00";
+            }else if(str.length() == 2){
+                str = str+"0";
+            }else if(str.length() >= 3){
+                str = str.substring(0,3);
+            }else{
+                str = "0";
+            }
+        }
+        userCash = Float.valueOf(str);
+        List<Map<String,Object>> records = punchCardRecordsService.getTodayPunchCardRecords(requestMap);
+        //成功人数
+        int successNum = records.size();
+        //失败人数
+        int failureNum = personNum - successNum ;
+        punchCardDataVo.setFailure(failureNum);
+        punchCardDataVo.setSuccess(successNum);
+        punchCardDataService.updateByPrimaryKeySelective(punchCardDataVo);
+        List<Map<String,Object>> recordVos = punchCardRecordsService.getTodayPayPersonNum(requestMap);
+        List batchInsert = new ArrayList();
+        if(recordVos != null && recordVos.size()>0){
+            Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+            String tokenId = (String) userWechatParam.get("token");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            calendar.clear();
+            calendar.setTime(new Date());
+            String takeTime = sdf.format(calendar.getTime());
+            for(int i=0;i<recordVos.size();i++){
+                String openId = String.valueOf(recordVos.get(i).get("openId"));
+                String nickName = String.valueOf(recordVos.get(i).get("nickName"));
+                String dayTh = String.valueOf(recordVos.get(i).get("dayTh"));
+                /**
+                 * 2017-3-22 14:46:25
+                 * 批量插入以及微信付款
+                 */
+                Map<String,Object> map = new HashMap<String, Object>();
+                map.put("id", IdGen.uuid());
+                map.put("openId",openId);
+                map.put("nickName", nickName);
+                map.put("cashAmount",userCash);
+                map.put("delFlag", 0);
+                map.put("createTime",new Date());
+                batchInsert.add(map);
+                Map params = map;
+                params.put("desc","打卡活动");
+                params.put("moneyCount",str);
+                try {
+                    redPackageActivityInfoService.payCashToUser(map, new HashMap<String, Object>());
+                } catch (BalanceNotEnoughException e) {
+                    e.printStackTrace();
+                } catch (BusinessPaymentExceeption businessPaymentExceeption) {
+                    businessPaymentExceeption.printStackTrace();
+                }
+                //推送分钱
+                StringBuffer msg = new StringBuffer();
+                msg.append("你的早起打卡奖励已到账，请在微信钱包查收。\n" +
+                        "任务名称："+takeTime+"6:00-8:00早起打卡 \n"+
+                        "任务类别：打卡挑战\n"+
+                        "任务奖励金额："+userCash+"\n");
+                msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>"+ "加油！参加下次挑战》》</a>");
+                String sendResult = WechatUtil.sendMsgToWechat(tokenId, openId, msg.toString());
+                LogUtils.saveLog("ZQTZ_TKTZ", openId + "--" + msg.toString());
+            }
+            punchCardRewardsService.batchInsertPunchCardRewards(batchInsert);
+        }
+    }
+
+    /** 最初设计删
+     * 每天早晨8:10 开始分发打卡金
+     */
+/*    public void punchCardCashToUser(){
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        float userCash = 0 ;
+        int personNum = 0 ;
+        int cashNum = 0;
         int todayPerson = 0;
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.set(Calendar.HOUR_OF_DAY, 6);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
-        Date firstStart = calendar.getTime();
+        Date firstStart = calendar.getTime();  // 今日6点
         calendar.set(Calendar.HOUR_OF_DAY, 8);
-        Date firstEnd = calendar.getTime();
-        calendar.add(Calendar.DATE,-1);
-        Date secondEnd = calendar.getTime();
+        Date firstEnd = calendar.getTime();    // 今日8点
+        calendar.add(Calendar.DATE, -1);
+        Date secondEnd = calendar.getTime();   //昨日八点
         calendar.set(Calendar.HOUR_OF_DAY, 6);
-        Date secondStart = calendar.getTime();
+        Date secondStart = calendar.getTime(); //昨日六点
         Map<String,Object> requestMap = new HashMap<String,Object>();
         requestMap.put("firstStart",firstStart);
         requestMap.put("firstEnd",firstEnd);
@@ -142,10 +299,10 @@ public class ScheduleTaskController extends BaseController {
                 String openId = String.valueOf(recordVos.get(i).get("openId"));
                 String nickName = String.valueOf(recordVos.get(i).get("nickName"));
                 String dayTh = String.valueOf(recordVos.get(i).get("dayTh"));
-                /**
+                *//**
                  * 2017-3-22 14:46:25
                  * 批量插入以及微信付款
-                 */
+                 *//*
                 Map<String,Object> map = new HashMap<String, Object>();
                 map.put("id", IdGen.uuid());
                 map.put("openId",openId);
@@ -176,7 +333,8 @@ public class ScheduleTaskController extends BaseController {
             }
             punchCardRewardsService.batchInsertPunchCardRewards(batchInsert);
         }
-    }
+    }*/
+
     /**
      * 每天早晨6：00 提醒打卡
      */

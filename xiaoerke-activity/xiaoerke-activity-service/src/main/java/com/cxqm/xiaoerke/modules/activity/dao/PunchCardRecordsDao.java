@@ -29,4 +29,7 @@ public interface PunchCardRecordsDao {
     List<PunchCardRecordsVo> getLastPunchCardRecord(PunchCardRecordsVo vo);
 
     List<Map<String,Object>> getTodayPunchCardRecords(Map map);
+
+    List<Map<String,Object>> getTodayPayPersonNum(Map map);
+
 }
