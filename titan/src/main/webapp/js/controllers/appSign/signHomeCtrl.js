@@ -1,3 +1,32 @@
+function getDay(time){
+    if(time==null||time==''){
+        return '';
+    }else{
+        var date=new Date(parseInt(time));
+        var dYear = date.getFullYear();
+        var dMonth = date.getMonth()+1;
+        var dDate = date.getDate();
+        var dHours = date.getHours();
+        var dMinutes = date.getMinutes();
+        var dSeconds = date.getSeconds();
+        if(dMonth<10){
+            dMonth='0'+dMonth
+        };
+        if(dDate<10){
+            dDate='0'+dDate
+        };
+        if(dHours<10){
+            dHours='0'+dHours
+        };
+        if(dMinutes<10){
+            dMinutes='0'+dMinutes
+        };
+        if(dSeconds<10){
+            dSeconds='0'+dSeconds
+        };
+        return  dMonth + '月' + dDate+'日';
+    }
+}
 function getHour(time){
     if(time==null||time==''){
         return '';
@@ -144,7 +173,11 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                 }else if(res.punchCardSwitch=='off'){
                     $scope.pageNum=1;
                 }
+
+
                 $scope.oData=res;
+                //显示结束时间
+                $scope.day=getDay(res.personRewardsList[0].updateTime)
                 $scope.openId=res.openId;
                 $scope.market=res.marketer;
                 $scope.minename=res.nickName;
