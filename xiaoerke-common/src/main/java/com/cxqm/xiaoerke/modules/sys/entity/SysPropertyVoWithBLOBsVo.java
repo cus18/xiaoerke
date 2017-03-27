@@ -67,6 +67,16 @@ public class SysPropertyVoWithBLOBsVo extends SysPropertyVo {
 
     private String punchCardShareUrl;
 
+    public String getPunchCardDataSwitch() {
+        return punchCardDataSwitch;
+    }
+
+    public void setPunchCardDataSwitch(String punchCardDataSwitch) {
+        this.punchCardDataSwitch = punchCardDataSwitch;
+    }
+
+    private String punchCardDataSwitch;
+
     public String getPunchCardShareUrl() {
         return punchCardShareUrl;
     }

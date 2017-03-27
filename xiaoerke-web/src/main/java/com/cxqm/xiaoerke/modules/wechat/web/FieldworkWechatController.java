@@ -2,6 +2,9 @@ package com.cxqm.xiaoerke.modules.wechat.web;
 
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.Servlets;
+import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
+import com.cxqm.xiaoerke.modules.alipay.util.httpClient.StringUtil;
+import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
 import com.cxqm.xiaoerke.modules.sys.entity.Article;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
@@ -9,6 +12,7 @@ import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.interceptor.SystemControllerLog;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
@@ -46,6 +50,14 @@ public class FieldworkWechatController {
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
 
+    @Autowired
+    private UserInfoService userInfoService;
+
+    @Autowired
+    private SessionRedisCache sessionRedisCache;
+
+    @Autowired
+    private OlyGamesService olyGamesService ;
 
     /**
      * 医生公众号菜单引导页
@@ -272,7 +284,7 @@ public class FieldworkWechatController {
 
             openid = wechat.getOpenid();
             session.setAttribute("openId", openid);
-            CookieUtils.setCookie(response, "openId", openid==null?"":openid,60*60*24*30,sysPropertyVoWithBLOBsVo.getBaodfDomainValue());
+            CookieUtils.setCookie(response, "openId", openid == null ? "" : openid, 60 * 60 * 24 * 30, sysPropertyVoWithBLOBsVo.getBaodfDomainValue());
             memberService.sendExtendOldMemberWechatMessage(openid);
         }
         if(url.startsWith("41")){
@@ -303,8 +315,45 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeUserFindDoctor";
         }else if(url.startsWith("58")){  //打卡活动
             url = getBabyCoinURL(request, openid,sysPropertyVoWithBLOBsVo);
+        }else if(url.startsWith("77177")){
+            url = getCoopConsultUserURL(request, openid, sysPropertyVoWithBLOBsVo);
         }
         return "redirect:" + url;
+    }
+
+    private String getCoopConsultUserURL(HttpServletRequest request, String openid,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo){
+        String url = "";
+        String[] parameters = request.getQueryString().split(",");
+        String source = String.valueOf(parameters[1]);
+        if(StringUtils.isNotNull(source)){
+          if(StringUtils.isNotNull(openid)){
+              Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
+              String tokenId = (String) userWechatParam.get("token");
+              String userName = "";
+              HashMap<String,Object> reqMap = new HashMap<String, Object>();
+              if("h5mtq".equalsIgnoreCase(source)){
+                  userName = WechatUtil.getWechatName(tokenId, openid).getNickname();
+                  if (StringUtils.isNotNull(userName)) {
+                      userName = EmojiFilter.coverEmoji(userName);
+                  }
+                  String headImgUrl = olyGamesService.getWechatMessage(openid);//头像
+                  reqMap.put("source", source);
+                  reqMap.put("userPhone", openid);
+                  reqMap.put("userName", userName);
+                  reqMap.put("sys_user_id",openid);
+                  Map result = userInfoService.createOrUpdateThirdPartPatientInfo(reqMap);
+                  System.out.println("========================patientId=" + result.get("sys_user_id") + "==result==" + result.get("result"));
+                  if (result != null && result.size() > 0) {
+                      if("1".equalsIgnoreCase(String.valueOf(result.get("status"))) ||"0".equalsIgnoreCase(String.valueOf(result.get("status")))){
+                          url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#"+"/patientConsultMontageUnique/"+result.get("sys_user_id")+","+userName+","+headImgUrl;
+                      }
+                  }
+              }else{
+                  //第三方微信接入接口
+              }
+          }
+        }
+        return url ;
     }
 
     private String getBabyCoinURL(HttpServletRequest request, String openid,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo) throws UnsupportedEncodingException {

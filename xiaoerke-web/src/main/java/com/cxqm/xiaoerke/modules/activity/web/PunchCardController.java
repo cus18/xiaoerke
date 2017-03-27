@@ -2,20 +2,18 @@ package com.cxqm.xiaoerke.modules.activity.web;
 
 import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
-import com.cxqm.xiaoerke.common.utils.*;
+import com.cxqm.xiaoerke.common.utils.IdGen;
+import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
+import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
-import com.cxqm.xiaoerke.modules.activity.dao.PunchCardDataDao;
-import com.cxqm.xiaoerke.modules.activity.entity.PunchCardDataVo;
-import com.cxqm.xiaoerke.modules.activity.entity.PunchCardInfoVo;
-import com.cxqm.xiaoerke.modules.activity.entity.PunchCardRecordsVo;
-import com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardsVo;
+import com.cxqm.xiaoerke.modules.activity.entity.*;
 import com.cxqm.xiaoerke.modules.activity.service.*;
 import com.cxqm.xiaoerke.modules.activity.service.impl.PunchCardRewardsServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
-import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,6 +62,9 @@ public class PunchCardController {
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
 
+    @Autowired
+    private PunchCardRewardDataService punchCardRewardDataService ;
+
     private Lock lock = new ReentrantLock();
 
     /**
@@ -109,6 +110,7 @@ public class PunchCardController {
         HashMap<String, Object> responseMap = new HashMap<String, Object>();
         String openId = WechatUtil.getOpenId(session, request);
         String headImgUrl = olyGamesService.getWechatMessage(openId);
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         responseMap.put("openId",openId);
         responseMap.put("headImgUrl",headImgUrl);
         if (StringUtils.isNotNull(openId)) {
@@ -159,7 +161,7 @@ public class PunchCardController {
                 calendarOld.set(Calendar.YEAR, currentYear);
                 calendarOld.set(Calendar.MONTH, currentMonth);
                 calendarOld.set(Calendar.DAY_OF_MONTH, currentDay);
-                calendarOld.set(Calendar.HOUR_OF_DAY, 8);
+                calendarOld.set(Calendar.HOUR_OF_DAY, 6);
                 calendarOld.set(Calendar.MINUTE, 0);
                 calendarOld.set(Calendar.SECOND, 0);
                 date = calendarOld.getTime();
@@ -170,7 +172,7 @@ public class PunchCardController {
                 calendarOld.set(Calendar.MONTH, currentMonth);
                 calendarOld.set(Calendar.DAY_OF_MONTH, currentDay);
                 calendarOld.add(Calendar.DATE, -1);
-                calendarOld.set(Calendar.HOUR_OF_DAY, 8);
+                calendarOld.set(Calendar.HOUR_OF_DAY, 6);
                 calendarOld.set(Calendar.MINUTE, 0);
                 calendarOld.set(Calendar.SECOND, 0);
                 date = calendarOld.getTime();
@@ -180,7 +182,7 @@ public class PunchCardController {
                 calendarOld.set(Calendar.MONTH, currentMonth);
                 calendarOld.set(Calendar.DAY_OF_MONTH, currentDay);
                 calendarOld.add(Calendar.DATE, -1);
-                calendarOld.set(Calendar.HOUR_OF_DAY, 8);
+                calendarOld.set(Calendar.HOUR_OF_DAY, 6);
                 calendarOld.set(Calendar.MINUTE, 0);
                 calendarOld.set(Calendar.SECOND, 0);
                 date = calendarOld.getTime();
@@ -189,6 +191,7 @@ public class PunchCardController {
             vo.setOpenId(openId);
             vo.setCreateTime(date);
             vo.setNickName(nickName);
+            vo.setState(0);
             List<PunchCardRecordsVo> list = punchCardRecordsService.getLastPunchCardRecord(vo);
             if (list != null && list.size() > 0) {
                 vo = list.get(0);
@@ -225,31 +228,71 @@ public class PunchCardController {
                 calendarOld.set(Calendar.SECOND, 0);
                 date = calendarOld.getTime();
             }
+            /**
+             * 假数据开关
+             */
             PunchCardRewardsVo punchCardRewardsVo = new PunchCardRewardsVo();
             punchCardRewardsVo.setCreateTime(date);
             List<Map<String, Object>> punchCardRewardsVos = punchCardRewardsService.getPunchCardRewards(punchCardRewardsVo);
-            params.put("createTime",date);
-            Map resMap= punchCardRewardsService.getPunchCardRewardByPage(params);
-            if (punchCardRewardsVos != null && punchCardRewardsVos.size() > 0) {
-                if(resMap != null && resMap.size()>0){
-                    responseMap.put("personRewardsList", resMap.get("personRewardsList"));
-                    responseMap.put("pageNo", resMap.get("pageNo"));
-                    responseMap.put("pageSize", resMap.get("pageSize"));
+            if("on".equalsIgnoreCase(sysPropertyVoWithBLOBsVo.getPunchCardDataSwitch())){
+                responseMap.put("punchCardSwitch", "on");
+                if(currentHour >=9){
+                    calendarOld.clear();
+                    calendarOld.set(Calendar.YEAR, currentYear);
+                    calendarOld.set(Calendar.MONTH, currentMonth);
+                    calendarOld.set(Calendar.DAY_OF_MONTH, currentDay);
+                    calendarOld.set(Calendar.HOUR_OF_DAY, 7);
+                    calendarOld.set(Calendar.MINUTE, 59);
+                    calendarOld.set(Calendar.SECOND, 0);
+                    date = calendarOld.getTime();
+                }else{
+                    calendarOld.set(Calendar.YEAR, currentYear);
+                    calendarOld.set(Calendar.MONTH, currentMonth);
+                    calendarOld.set(Calendar.DAY_OF_MONTH, currentDay);
+                    calendarOld.add(Calendar.DATE, -1);
+                    calendarOld.set(Calendar.HOUR_OF_DAY, 7);
+                    calendarOld.set(Calendar.MINUTE, 59);
+                    calendarOld.set(Calendar.SECOND, 0);
+                    date = calendarOld.getTime();
+                }
+                PunchCardRewardDataVo punchCardRewardDataVo = new PunchCardRewardDataVo();
+                punchCardRewardDataVo.setCreateTime(date);
+                List<PunchCardRewardDataVo> punchCardRewardDataVos = punchCardRewardDataService.getMoreDataBySelective(punchCardRewardDataVo);
+                if(punchCardRewardDataVos !=null && punchCardRewardDataVos.size()>0){
+                    responseMap.put("personRewardsList", punchCardRewardDataVos);
+                    responseMap.put("personRewardsSize", punchCardRewardsVos.size());
                 }else{
                     responseMap.put("personRewardsList", new ArrayList());
+                    responseMap.put("personRewardsSize", 0);
                 }
-                responseMap.put("personRewardsSize", punchCardRewardsVos.size());
-            } else {
-                if(resMap != null && resMap.size()>0){
-                    responseMap.put("personRewardsList", resMap.get("personRewardsList"));
-                    responseMap.put("pageNo", resMap.get("pageNo"));
-                    responseMap.put("pageSize", resMap.get("pageSize"));
-                }else{
-                    responseMap.put("personRewardsList", new ArrayList());
+                responseMap.put("pageNo", params.get("pageNo"));
+                responseMap.put("pageSize", params.get("pageSize"));
+            }else{
+                responseMap.put("punchCardSwitch", "off");
+                params.put("createTime",date);
+                Map resMap= punchCardRewardsService.getPunchCardRewardByPage(params);
+                if (punchCardRewardsVos != null && punchCardRewardsVos.size() > 0) {
+                    if(resMap != null && resMap.size()>0){
+                        responseMap.put("personRewardsList", resMap.get("personRewardsList"));
+                        responseMap.put("pageNo", resMap.get("pageNo"));
+                        responseMap.put("pageSize", resMap.get("pageSize"));
+                    }else{
+                        responseMap.put("personRewardsList", new ArrayList());
+                    }
+                    responseMap.put("personRewardsSize", punchCardRewardsVos.size());
+                } else {
+                    if(resMap != null && resMap.size()>0){
+                        responseMap.put("personRewardsList", resMap.get("personRewardsList"));
+                        responseMap.put("pageNo", resMap.get("pageNo"));
+                        responseMap.put("pageSize", resMap.get("pageSize"));
+                    }else{
+                        responseMap.put("personRewardsList", new ArrayList());
+                    }
+                    responseMap.put("personRewardsSize", 0);
                 }
-                responseMap.put("personRewardsSize", 0);
             }
-            //查询总数   定时任务每天五点跑：创建punch_card_data表
+
+            //查询总数   定时任务每天五点五十跑：创建punch_card_data表
             if (currentHour >= 6) {
                 //今天数据
                 PunchCardDataVo punchCardDataVo = null;

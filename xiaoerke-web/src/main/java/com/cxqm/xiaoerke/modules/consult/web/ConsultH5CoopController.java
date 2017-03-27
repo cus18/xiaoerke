@@ -374,6 +374,8 @@ public class ConsultH5CoopController {
         }
         if(params.containsKey("bhqUserImg") && StringUtils.isNotNull(String.valueOf(params.get("bhqUserImg")))){
             imgUrl = String.valueOf(params.get("bhqUserImg"));
+        }else if(params.containsKey("mtqUserImg") && StringUtils.isNotNull(String.valueOf(params.get("mtqUserImg")))){
+            imgUrl = String.valueOf(params.get("mtqUserImg"));
         }
         List<ConsultRecordMongoVo> currentUserHistoryRecord = null;
         Date date = null;
@@ -401,6 +403,8 @@ public class ConsultH5CoopController {
                             dataMap.put("senderName", "微家园-"+dataVo.getSenderName());
                         }else if(dataVo.getSource().contains("bhq")){
                             dataMap.put("senderName", "宝护圈-"+dataVo.getSenderName());
+                        }else if(dataVo.getSource().contains("mtq")){
+                            dataMap.put("senderName", dataVo.getSenderName());
                         }else{
                             dataMap.put("senderName", dataVo.getSenderName());
                         }
