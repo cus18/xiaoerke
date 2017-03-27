@@ -152,7 +152,7 @@
       AND open_id = #{openId,jdbcType=VARCHAR}
     </if>
     <if test="createTime != null and createTime != ''">
-      AND create_time <![CDATA[ > #{createTime} ]]>
+      AND create_time <![CDATA[ >= #{createTime} ]]>
     </if>
     <if test="updateTime != null and updateTime != ''">
       AND update_time <![CDATA[ >= #{updateTime} ]]>

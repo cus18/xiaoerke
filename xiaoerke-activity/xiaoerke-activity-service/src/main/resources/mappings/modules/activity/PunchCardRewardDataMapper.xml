@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxqm.xiaoerke.modules.activity.dao.PunchCardRewardDataDao">
+  <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardDataVo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="cash_amount" jdbcType="REAL" property="cashAmount" />
+    <result column="day_num" jdbcType="INTEGER" property="dayNum" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, open_id, nick_name, create_time, update_time, del_flag, cash_amount, day_num,image
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from punch_card_reward_data
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from punch_card_reward_data
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardDataVo">
+    insert into punch_card_reward_data (id, open_id, nick_name, 
+      create_time, update_time, del_flag, 
+      cash_amount, day_num,image)
+    values (#{id,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
+      #{cashAmount,jdbcType=REAL}, #{dayNum,jdbcType=INTEGER},#{image,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardDataVo">
+    insert into punch_card_reward_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="nickName != null">
+        nick_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="cashAmount != null">
+        cash_amount,
+      </if>
+      <if test="dayNum != null">
+        day_num,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="cashAmount != null">
+        #{cashAmount,jdbcType=REAL},
+      </if>
+      <if test="dayNum != null">
+        #{dayNum,jdbcType=INTEGER},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardDataVo">
+    update punch_card_reward_data
+    <set>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="cashAmount != null">
+        cash_amount = #{cashAmount,jdbcType=REAL},
+      </if>
+      <if test="dayNum != null">
+        day_num = #{dayNum,jdbcType=INTEGER},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardDataVo">
+    update punch_card_reward_data
+    set open_id = #{openId,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      del_flag = #{delFlag,jdbcType=INTEGER},
+      cash_amount = #{cashAmount,jdbcType=REAL},
+      day_num = #{dayNum,jdbcType=INTEGER},
+      image = #{image,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="getMoreDataBySelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardDataVo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from punch_card_reward_data
+    where 1=1
+    <if test="createTime !=null and createTime !=''">
+      and create_time <![CDATA[ >= #{createTime,jdbcType=TIMESTAMP} ]]>
+    </if>
+  </select>
+  <insert id="batchInsertPunchCardData" parameterType="java.util.List">
+    INSERT INTO punch_card_reward_data (id, open_id, nick_name,create_time, del_flag,cash_amount,day_num,image)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator="," >
+      (#{item.id},#{item.openId},#{item.nickName},#{item.createTime},#{item.delFlag},#{item.cashAmount},#{item.dayNum},#{item.image})
+    </foreach>
+  </insert>
+</mapper>

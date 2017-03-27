@@ -10,20 +10,15 @@ import com.cxqm.xiaoerke.modules.activity.entity.PunchCardDataVo;
 import com.cxqm.xiaoerke.modules.activity.entity.PunchCardRecordsVo;
 import com.cxqm.xiaoerke.modules.activity.service.PunchCardDataService;
 import com.cxqm.xiaoerke.modules.activity.service.PunchCardRecordsService;
+import com.cxqm.xiaoerke.modules.activity.service.PunchCardRewardDataService;
 import com.cxqm.xiaoerke.modules.activity.service.PunchCardRewardsService;
-import com.cxqm.xiaoerke.modules.activity.service.RedPackageActivityInfoService;
 import com.cxqm.xiaoerke.modules.activity.service.impl.RedPackageActivityInfoServiceImpl;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.RequestContextListener;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -52,6 +47,9 @@ public class ScheduleTaskController extends BaseController {
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService ;
+
+    @Autowired
+    private PunchCardRewardDataService punchCardRewardDataService ;
 
     /**
      * 每天早晨5：50初始化数据表
@@ -176,6 +174,31 @@ public class ScheduleTaskController extends BaseController {
         punchCardDataService.updateByPrimaryKeySelective(punchCardDataVo);
         List<Map<String,Object>> recordVos = punchCardRecordsService.getTodayPayPersonNum(requestMap);
         List batchInsert = new ArrayList();
+        if("on".equalsIgnoreCase(sysPropertyVoWithBLOBsVo.getPunchCardDataSwitch())){
+            List batchFalseData = new ArrayList();
+            calendar.clear();
+            calendar.set(Calendar.YEAR, currentYear);
+            calendar.set(Calendar.MONTH, currentMonth);
+            calendar.set(Calendar.DAY_OF_MONTH, currentDay);
+            calendar.set(Calendar.HOUR_OF_DAY, 7);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 0);
+            Date nowTime = calendar.getTime();
+            for(int i=0;i<10;i++){
+                Map falseMap = new HashMap();
+                falseMap.put("id",IdGen.uuid());
+                falseMap.put("openId",""+i+i);
+                falseMap.put("nickName","匿名用户"+i);
+                falseMap.put("createTime",nowTime);
+                falseMap.put("delFlag",0);
+                falseMap.put("cashAmount",userCash);
+                falseMap.put("dayNum",i);
+                falseMap.put("image","http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf/consult/yonghumoren.png");
+                batchFalseData.add(falseMap);
+            }
+            int num = punchCardRewardDataService.batchInsertPunchCardData(batchFalseData);
+            System.out.println(num+"===========================");
+        }
         if(recordVos != null && recordVos.size()>0){
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
             String tokenId = (String) userWechatParam.get("token");
