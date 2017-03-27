@@ -40,9 +40,6 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
 
 
 
-        $scope.pageNum=0;
-
-
         //启动状态判断
         $scope.start_status=false;
         //支付状态判断
@@ -119,16 +116,19 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
 
         //查看更多记录
         $scope.lookMore=function(){
-            GetPunchCardRewards.save({pageNo:++$scope.pageNum,pageSize:10},function(res){
-                $scope.dataList=$scope.dataList.concat(res.personRewardsList);
-                for(var i=0;i<$scope.dataList.length;i++){
-                    $scope.dataList[i].hour=getHour($scope.dataList[i].updateTime);
-                    if($scope.dataList[i].headImgUrl==''||$scope.dataList[i].headImgUrl==null){
-                        $scope.dataList[i].headImgUrl='http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf/consult/yonghumoren.png';
+            GetPunchCardRewards.save({pageNo:$scope.pageNum++,pageSize:10},function(res){
+                var moreList=res.personRewardsList;
+                for(var i=0;i<moreList.length;i++){
+                    moreList[i].hour=getHour(moreList[i].updateTime);
+                    if(moreList[i].headImgUrl==''||moreList[i].headImgUrl==null){
+                        moreList[i].headImgUrl='http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf/consult/yonghumoren.png';
                     }
                 }
+                $scope.dataList=$scope.dataList.concat(res.personRewardsList);
             })
         }
+
+        //获取本页初始化数据
         GetPunchCardPage.save({pageNo:0,pageSize:10},function(res){
             if(res.resultCode==9999){
                 alert('服务器错误')
@@ -137,6 +137,12 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                     $scope.headImgUrl='http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf/consult/yonghumoren.png';
                 }else{
                     $scope.headImgUrl=res.headImgUrl;
+                }
+                //判断数据
+                if(res.punchCardSwitch=='on'){
+                    $scope.pageNum=0;
+                }else if(res.punchCardSwitch=='off'){
+                    $scope.pageNum=1;
                 }
                 $scope.oData=res;
                 $scope.openId=res.openId;
