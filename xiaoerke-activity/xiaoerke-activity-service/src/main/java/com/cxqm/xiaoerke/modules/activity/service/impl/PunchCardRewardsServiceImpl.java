@@ -100,7 +100,7 @@ public class PunchCardRewardsServiceImpl implements PunchCardRewardsService {
             for (int i = 0; i < list.size(); i++) {
                 Map<String, Object> map =new HashMap<String, Object>();
                 PunchCardRewardsVo vo = (PunchCardRewardsVo) list.get(i);
-                if(map != null && map.size()>0){
+                if(vo != null){
                     String openId = String.valueOf(map.get("openId"));
                     String headImgUrl = olyGamesService.getWechatMessage(openId);
                     if(StringUtils.isNotNull(headImgUrl)){
