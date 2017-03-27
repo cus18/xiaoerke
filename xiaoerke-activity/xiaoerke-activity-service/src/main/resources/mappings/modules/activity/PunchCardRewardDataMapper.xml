@@ -13,7 +13,7 @@
     <result column="image" jdbcType="VARCHAR" property="headImgUrl" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, open_id, nick_name, create_time, update_time, del_flag, cash_amount, dayTh,image
+    id, open_id, nick_name, create_time, update_time, del_flag, cash_amount, day_num,image
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
