@@ -129,6 +129,7 @@ public class WechatMessageUtil {
                 System.out.println("发送模板消息成功！");
             }else{
                 System.out.println(jsonObject.getString("errcode"));
+                LogUtils.saveLog("wechatMsgError",jsonobj);
             }
         }
     }
