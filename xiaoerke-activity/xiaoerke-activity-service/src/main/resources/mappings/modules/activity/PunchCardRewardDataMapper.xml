@@ -9,11 +9,11 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
     <result column="cash_amount" jdbcType="REAL" property="cashAmount" />
-    <result column="day_num" jdbcType="INTEGER" property="dayNum" />
-    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="day_num" jdbcType="INTEGER" property="dayTh" />
+    <result column="image" jdbcType="VARCHAR" property="headImgUrl" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, open_id, nick_name, create_time, update_time, del_flag, cash_amount, day_num,image
+    id, open_id, nick_name, create_time, update_time, del_flag, cash_amount, dayTh,image
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -31,7 +31,7 @@
       cash_amount, day_num,image)
     values (#{id,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
-      #{cashAmount,jdbcType=REAL}, #{dayNum,jdbcType=INTEGER},#{image,jdbcType=VARCHAR})
+      #{cashAmount,jdbcType=REAL}, #{dayTh,jdbcType=INTEGER},#{headImgUrl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardDataVo">
     insert into punch_card_reward_data
@@ -57,10 +57,10 @@
       <if test="cashAmount != null">
         cash_amount,
       </if>
-      <if test="dayNum != null">
+      <if test="dayTh != null">
         day_num,
       </if>
-      <if test="image != null">
+      <if test="headImgUrl != null">
         image,
       </if>
     </trim>
@@ -86,11 +86,11 @@
       <if test="cashAmount != null">
         #{cashAmount,jdbcType=REAL},
       </if>
-      <if test="dayNum != null">
-        #{dayNum,jdbcType=INTEGER},
+      <if test="dayTh != null">
+        #{dayTh,jdbcType=INTEGER},
       </if>
-      <if test="image != null">
-        #{image,jdbcType=VARCHAR},
+      <if test="headImgUrl != null">
+        #{headImgUrl,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -115,11 +115,11 @@
       <if test="cashAmount != null">
         cash_amount = #{cashAmount,jdbcType=REAL},
       </if>
-      <if test="dayNum != null">
-        day_num = #{dayNum,jdbcType=INTEGER},
+      <if test="dayTh != null">
+        day_num = #{dayTh,jdbcType=INTEGER},
       </if>
-      <if test="image != null">
-        image = #{image,jdbcType=VARCHAR},
+      <if test="headImgUrl != null">
+        image = #{headImgUrl,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -132,8 +132,8 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       del_flag = #{delFlag,jdbcType=INTEGER},
       cash_amount = #{cashAmount,jdbcType=REAL},
-      day_num = #{dayNum,jdbcType=INTEGER},
-      image = #{image,jdbcType=VARCHAR}
+      day_num = #{dayTh,jdbcType=INTEGER},
+      image = #{headImgUrl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="getMoreDataBySelective" parameterType="com.cxqm.xiaoerke.modules.activity.entity.PunchCardRewardDataVo" resultMap="BaseResultMap">
@@ -146,10 +146,10 @@
     </if>
   </select>
   <insert id="batchInsertPunchCardData" parameterType="java.util.List">
-    INSERT INTO punch_card_reward_data (id, open_id, nick_name,create_time, del_flag,cash_amount,day_num,image)
+    INSERT INTO punch_card_reward_data (id, open_id, nick_name,create_time, del_flag,cash_amount,day_num,image,update_time)
     VALUES
     <foreach collection="list" item="item" index="index" separator="," >
-      (#{item.id},#{item.openId},#{item.nickName},#{item.createTime},#{item.delFlag},#{item.cashAmount},#{item.dayNum},#{item.image})
+      (#{item.id},#{item.openId},#{item.nickName},#{item.createTime},#{item.delFlag},#{item.cashAmount},#{item.dayNum},#{item.image},#{item.updateTime})
     </foreach>
   </insert>
 </mapper>

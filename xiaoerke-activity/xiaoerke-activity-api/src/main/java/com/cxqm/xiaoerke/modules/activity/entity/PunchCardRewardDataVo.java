@@ -20,17 +20,17 @@ public class PunchCardRewardDataVo {
 
     private Float cashAmount;
 
-    private Integer dayNum;
+    private Integer dayTh;
 
-    public String getImage() {
-        return image;
+    public String getHeadImgUrl() {
+        return headImgUrl;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setHeadImgUrl(String headImgUrl) {
+        this.headImgUrl = headImgUrl;
     }
 
-    private String image ;
+    private String headImgUrl ;
 
     public String getId() {
         return id;
@@ -88,11 +88,11 @@ public class PunchCardRewardDataVo {
         this.cashAmount = cashAmount;
     }
 
-    public Integer getDayNum() {
-        return dayNum;
+    public Integer getDayTh() {
+        return dayTh;
     }
 
-    public void setDayNum(Integer dayNum) {
-        this.dayNum = dayNum;
+    public void setDayTh(Integer dayTh) {
+        this.dayTh = dayTh;
     }
 }

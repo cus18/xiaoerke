@@ -190,6 +190,7 @@ public class ScheduleTaskController extends BaseController {
                 falseMap.put("openId",""+i+i);
                 falseMap.put("nickName","匿名用户"+i);
                 falseMap.put("createTime",nowTime);
+                falseMap.put("updateTime",nowTime);
                 falseMap.put("delFlag",0);
                 falseMap.put("cashAmount",userCash);
                 falseMap.put("dayNum",i);
