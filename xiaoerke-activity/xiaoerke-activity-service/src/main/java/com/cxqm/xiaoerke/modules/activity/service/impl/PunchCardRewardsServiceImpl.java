@@ -100,8 +100,8 @@ public class PunchCardRewardsServiceImpl implements PunchCardRewardsService {
             for (int i = 0; i < list.size(); i++) {
                 Map<String, Object> map =new HashMap<String, Object>();
                 PunchCardRewardsVo vo = (PunchCardRewardsVo) list.get(i);
-                if(map != null && map.size()>0){
-                    String openId = String.valueOf(map.get("openId"));
+                if(vo != null){
+                    String openId = String.valueOf(vo.getOpenId());
                     String headImgUrl = olyGamesService.getWechatMessage(openId);
                     if(StringUtils.isNotNull(headImgUrl)){
                         map.put("headImgUrl",headImgUrl);
@@ -115,10 +115,10 @@ public class PunchCardRewardsServiceImpl implements PunchCardRewardsService {
                     List<PunchCardRecordsVo> result = punchCardRecordsDao.getLastPunchCardRecord(record);
                     if(result != null && result.size() >0){
                         map.put("dayTh",result.get(0).getDayth());
-                        map.put("dateTime",result.get(0).getUpdateTime());
+                        map.put("updateTime",result.get(0).getUpdateTime());
                     }else{
                         map.put("dayTh",1);
-                        map.put("dateTime",new Date());
+                        map.put("updateTime",new Date());
                     }
                     resultList.add(map);
                 }
