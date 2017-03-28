@@ -185,6 +185,7 @@ public class ScheduleTaskController extends BaseController {
             calendar.set(Calendar.SECOND, 0);
             Date nowTime = calendar.getTime();
             String[] nickNames = {"奋斗的小蜗牛","成长的风雨","无限的能量","红豆峡","塞塞","舍得","慧明","开心小当家","罗兰西","皮带","浅浅","上神","明天会更好","未来无极限","美丽大无边","幸运树","你好，明天","我的未来不是梦","相信你","我的开心果"};
+            String imageUrl = "http://xiaoerke-remain-pic.oss-cn-beijing.aliyuncs.com/activity/dataPic/";
             int j;
             if(currentDay % 5 == 0){
                 j = 0;
@@ -206,8 +207,8 @@ public class ScheduleTaskController extends BaseController {
                 falseMap.put("updateTime",nowTime);
                 falseMap.put("delFlag",0);
                 falseMap.put("cashAmount",userCash);
-                falseMap.put("dayNum",i);
-                falseMap.put("image","http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf/consult/yonghumoren.png");
+                falseMap.put("dayNum", i);
+                falseMap.put("image", imageUrl+(j+1)+".jpg");
                 batchFalseData.add(falseMap);
                 if(currentDay % 5 == 4){
                     j--;
