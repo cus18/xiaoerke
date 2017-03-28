@@ -18,7 +18,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
             var patientImg = "" ;
             $scope.fucengLock = true;//第一次进入页面的浮层
             $scope.alertFlag = false;
-            $scope.remoteBabyUrl = "http://test3rd.baohuquan.com:20000/baodaifu";
+            $scope.remoteBabyUrl = "http://3rd.baohuquan.com:20000/baodaifu";
             $scope.imgBarFlag = false;
 
             function randomString(len) {
@@ -90,7 +90,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload','ionic'])
                     //$scope.socketServer = new ReconnectingWebSocket("ws://s202.xiaork.com/wsbackend/ws&user&"
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     //ws://s201.xiaork.com:2048;
-                    $scope.socketServer = new WebSocket("ws://101.201.154.201:2048/ws&user&"
+                    $scope.socketServer = new WebSocket("ws://s132.baodf.com/wsbackend/ws&user&"
                         + $scope.patientId +"&h5bhq");//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function(event) {
