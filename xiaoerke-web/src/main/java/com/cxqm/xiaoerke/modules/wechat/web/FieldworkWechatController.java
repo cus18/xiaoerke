@@ -324,7 +324,12 @@ public class FieldworkWechatController {
     private String getCoopConsultUserURL(HttpServletRequest request, String openid,SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo){
         String url = "";
         String[] parameters = request.getQueryString().split(",");
-        String source = String.valueOf(parameters[1]);
+        String source ="";
+        if(parameters[1].contains("&")){
+            source = String.valueOf(parameters[1].split("&")[0]);
+        }else{
+            source =  String.valueOf(parameters[1]);
+        }
         if(StringUtils.isNotNull(source)){
           if(StringUtils.isNotNull(openid)){
               Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
@@ -337,6 +342,11 @@ public class FieldworkWechatController {
                       userName = EmojiFilter.coverEmoji(userName);
                   }
                   String headImgUrl = olyGamesService.getWechatMessage(openid);//头像
+                  try {
+                      headImgUrl = new String(org.springframework.security.crypto.codec.Base64.encode(headImgUrl.getBytes("utf-8")),"utf-8");
+                  } catch (UnsupportedEncodingException e) {
+                      e.printStackTrace();
+                  }
                   reqMap.put("source", source);
                   reqMap.put("userPhone", openid);
                   reqMap.put("userName", userName);
@@ -344,7 +354,7 @@ public class FieldworkWechatController {
                   Map result = userInfoService.createOrUpdateThirdPartPatientInfo(reqMap);
                   System.out.println("========================patientId=" + result.get("sys_user_id") + "==result==" + result.get("result"));
                   if (result != null && result.size() > 0) {
-                      if("1".equalsIgnoreCase(String.valueOf(result.get("status"))) ||"0".equalsIgnoreCase(String.valueOf(result.get("status")))){
+                      if("1".equalsIgnoreCase(String.valueOf(result.get("result"))) ||"0".equalsIgnoreCase(String.valueOf(result.get("result")))){
                           url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#"+"/patientConsultMontageUnique/"+result.get("sys_user_id")+","+userName+","+headImgUrl;
                       }
                   }

@@ -1,5 +1,5 @@
 angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
-    .controller('patientConsultBHQCtrl', ['$scope', '$location', '$anchorScroll',
+    .controller('patientConsultMontageUnique', ['$scope', '$location', '$anchorScroll',
         'GetSessionId', 'GetUserLoginStatus', '$upload', '$sce', '$stateParams',
         'CreateOrUpdateWJYPatientInfo', 'GetUserCurrentConsultContent', '$http', 'GetWJYHistoryRecord', '$ionicScrollDelegate',
         function ($scope, $location, $anchorScroll, GetSessionId, GetUserLoginStatus, $upload, $sce, $stateParams,
@@ -43,7 +43,8 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
                 if($stateParams.headImg == null || $stateParams.headImg == ''){
                     patientImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
                 }else{
-                    patientImg = $stateParams.headImg;
+                    patientImg = $.base64.decode($stateParams.headImg);
+                    console.log(patientImg);
                 }
                 $scope.patientName = $stateParams.name == null ? $stateParams.userId : $stateParams.name;
                 $scope.patientId = id;

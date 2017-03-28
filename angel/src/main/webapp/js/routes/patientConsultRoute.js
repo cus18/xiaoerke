@@ -87,7 +87,7 @@ define(['appPatientConsult'], function(app){
                                     ['js/controllers/patientConsultMontageUnique.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
                                         'js/libs/jquery.qqFace.js',"js/libs/jquery.browser.min.js",
-                                        'js/styles/patientConsultWJY.css'],
+                                        'js/styles/patientConsultWJY.css','js/libs/jquery.base64.js'],
                                     'js/views/patientConsultMontageUnique.html?ver='+patientConsultVersion);
                             }
                         },
