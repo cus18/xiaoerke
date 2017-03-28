@@ -239,6 +239,10 @@ public class RedPackageActivityInfoServiceImpl implements RedPackageActivityInfo
             }else if(takeCashOut.length() == 1){
                 takeCashOut = takeCashOut +"00";
             }
+        }else{
+            if(!"0".equalsIgnoreCase(takeCashOut)){
+                takeCashOut = takeCashOut+"00";
+            }
         }
         Float returnMoney = Float.valueOf(takeCashOut);
         String openid = String.valueOf(params.get("openId"));

@@ -133,32 +133,27 @@ public class ScheduleTaskController extends BaseController {
         if(str.contains(".")){
             String[] splitStr = str.split(".");
             if("0".startsWith(splitStr[0])){
-                if(splitStr[1].length() == 1){
-                    str = splitStr[1]+"0";
-                }else if(splitStr[1].length() == 2){
-                    str = splitStr[1];
-                }else if(splitStr[1].length() >=3){
+                if(splitStr[1].length() >=3){
                     str = splitStr[1].substring(0,2);
+                }else if(splitStr[1].length() >0 && splitStr[1].length() <=2){
+                    str = splitStr[1];
                 }else{
                     str = "0";
                 }
             }else{
-                str = str.replace(".","");
-                if(str.length() == 1){
-                    str = str+"00";
-                }else if(str.length() == 2){
-                    str = str+"0";
-                }else if(str.length() >= 3){
-                    str = str.substring(0,3);
+                if(splitStr[1].length() >= 3){
+                    str = ""+splitStr[0]+splitStr[1].substring(0,2);
+                }else if(splitStr[1].length() > 0 && splitStr[1].length() <= 2){
+                    str = ""+splitStr[0]+splitStr[1];
+                }else{
+                    str = "0";
                 }
             }
         }else{
-            if(str.length() == 1){
-                str = str+"00";
-            }else if(str.length() == 2){
-                str = str+"0";
-            }else if(str.length() >= 3){
+            if(str.length() >= 3){
                 str = str.substring(0,3);
+            }else if(str.length() >0 && str.length() <=2){
+
             }else{
                 str = "0";
             }
