@@ -184,11 +184,20 @@ public class ScheduleTaskController extends BaseController {
             calendar.set(Calendar.MINUTE, 59);
             calendar.set(Calendar.SECOND, 0);
             Date nowTime = calendar.getTime();
+            String[] nickNames = {"奋斗的小蜗牛","成长的风雨","无限的能量","红豆峡","塞塞","舍得","慧明","开心小当家","罗兰西","皮带","浅浅","上神","明天会更好","未来无极限","美丽大无边","幸运树","你好，明天","我的未来不是梦","相信你","我的开心果"};
+            int j;
+            if(currentDay % 3 == 0){
+                j = 0;
+            }else if(currentDay % 3 == 1){
+                j = 6;
+            }else{
+                j = 10;
+            }
             for(int i=0;i<10;i++){
                 Map falseMap = new HashMap();
                 falseMap.put("id",IdGen.uuid());
-                falseMap.put("openId",""+i+i);
-                falseMap.put("nickName","匿名用户"+i);
+                falseMap.put("openId","909"+i+i+j);
+                falseMap.put("nickName",nickNames[j]);
                 falseMap.put("createTime",nowTime);
                 falseMap.put("updateTime",nowTime);
                 falseMap.put("delFlag",0);
@@ -196,6 +205,7 @@ public class ScheduleTaskController extends BaseController {
                 falseMap.put("dayNum",i);
                 falseMap.put("image","http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf/consult/yonghumoren.png");
                 batchFalseData.add(falseMap);
+                j++;
             }
             int num = punchCardRewardDataService.batchInsertPunchCardData(batchFalseData);
             System.out.println(num+"===========================");
