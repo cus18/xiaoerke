@@ -19,6 +19,8 @@ import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.BabyBaseInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
+import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
@@ -64,6 +66,9 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
 
     @Autowired
     private SystemService systemService;
+
+    @Autowired
+    private UserInfoService userInfoService;
 
 
     @Autowired
@@ -286,7 +291,10 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         String token = (String) parameter.get("token");
         ConsultDoctorInfoVo doctorInfoVo = consultDoctorInfoService.getConsultDoctorInfoByUserId(doctorId);
         LogUtils.saveLog("wechatMsgSend",null == doctorInfoVo?"":doctorInfoVo.getUserId());
+        //加入短信通知
        if(doctorInfoVo!=null){
+           HashMap<String, Object> perInfo = userInfoService.findPersonDetailInfoByUserId(doctorInfoVo.getUserId());
+           DoctorMsgTemplate.nonRealtimeConsult2Sms((String) perInfo.get("login_name"),doctorInfoVo.getName(),userName);
            String title = null==doctorInfoVo.getName()?"":doctorInfoVo.getName()+"医生您好， 您有新消息\n";
            String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeDoctorConversation/"+sessionId;
            WechatMessageUtil.templateModel(title, userName+"向您咨询，请尽快回复。\n", "", "", "", "\n很高哦^_^", token, url, doctorInfoVo.getOpenId(), sysPropertyVoWithBLOBsVo.getTemplateIdForDoc());
