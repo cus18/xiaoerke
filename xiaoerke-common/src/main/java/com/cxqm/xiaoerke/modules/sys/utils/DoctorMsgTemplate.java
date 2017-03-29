@@ -15,6 +15,11 @@ public class DoctorMsgTemplate {
     SMSMessageUtil.sendMsg(doctorPhone,content);
   }
 
+  public static void nonRealtimeConsult2Sms(String doctorPhone,String doctorName,String userName){
+      String content = "【图文咨询】"+doctorName+"医生您好，"+userName+"向您咨询，请尽快回复哦~";
+      SMSMessageUtil.sendMsg(doctorPhone,content);
+  }
+
   public static void doctorAppointmentRemindAtNight2Wechat(String date,String num,String nameList,String token,String url,String openid){
       WechatMessageUtil.templateModel("明日接诊一览", date, num, nameList, "", "若您因紧急情况不能按时出诊，请联系客服：400-623-7120。宝大夫祝您工作顺利。", token, url, openid, WechatMessageUtil.DOC_APPINTMENT_REMIND_ATNIGHT);
   }
