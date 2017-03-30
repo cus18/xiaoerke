@@ -29,7 +29,7 @@ import java.util.*;
  * @version 2017-03-21
  */
 
-public class ScheduleTaskController extends BaseController {
+public class ScheduleTaskController {
 
     @Autowired
     private PunchCardDataService punchCardDataService ;
@@ -129,7 +129,13 @@ public class ScheduleTaskController extends BaseController {
                 personNum = punchCardDataVo.getTotalNum() - 10000 ;
             }
         }
-        String str =  String.valueOf(cashNum / personNum);
+        String str ;
+        if(personNum == 0){
+            str = "0";
+        }else{
+            str =  String.valueOf(cashNum / personNum);
+        }
+
         if(str.contains(".")){
             String[] splitStr = str.split(".");
             if("0".startsWith(splitStr[0])){
@@ -193,7 +199,7 @@ public class ScheduleTaskController extends BaseController {
             }else{
                 j = 19;
             }
-            for(int i=0;i<10;i++){
+            for(int i=1;i<=10;i++){
                 Map falseMap = new HashMap();
                 falseMap.put("id",IdGen.uuid());
                 falseMap.put("openId","909"+i+i+j);
@@ -214,6 +220,7 @@ public class ScheduleTaskController extends BaseController {
             int num = punchCardRewardDataService.batchInsertPunchCardData(batchFalseData);
             System.out.println(num+"===========================");
         }
+        LogUtils.saveLog("punchCardCashToUser",userCash+"==="+recordVos.size());
         if(recordVos != null && recordVos.size()>0){
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
             String tokenId = (String) userWechatParam.get("token");
@@ -235,29 +242,45 @@ public class ScheduleTaskController extends BaseController {
                 map.put("nickName", nickName);
                 map.put("cashAmount",userCash);
                 map.put("delFlag", 0);
-                map.put("createTime",new Date());
+                map.put("createTime", new Date());
                 batchInsert.add(map);
                 Map params = map;
-                params.put("desc","打卡活动");
-                params.put("moneyCount",str);
+                params.put("desc", "打卡活动");
+                params.put("moneyCount", str);
+                LogUtils.saveLog("punchCardCashToUser", "openId="+openId + "=nickName=" + nickName);
                 try {
+                    LogUtils.saveLog("punchCardCashToUser", "准备付钱");
                     redPackageActivityInfoService.payCashToUser(map, new HashMap<String, Object>());
+                    LogUtils.saveLog("punchCardCashToUser", "已经付钱");
                 } catch (BalanceNotEnoughException e) {
+                    LogUtils.saveLog("punchCardCashToUser", "异常1："+e.getMessage());
                     e.printStackTrace();
                 } catch (BusinessPaymentExceeption businessPaymentExceeption) {
+                    LogUtils.saveLog("punchCardCashToUser", "异常2："+businessPaymentExceeption.getMessage());
                     businessPaymentExceeption.printStackTrace();
                 }
                 //推送分钱
+                LogUtils.saveLog("punchCardCashToUser", "准备分钱推送" + openId);
                 StringBuffer msg = new StringBuffer();
                 msg.append("你的早起打卡奖励已到账，请在微信钱包查收。\n" +
                         "任务名称："+takeTime+"6:00-8:00早起打卡 \n"+
                         "任务类别：打卡挑战\n"+
                         "任务奖励金额："+userCash+"\n");
-                msg.append("<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/fieldwork/wechat/author?url="+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wechatInfo/getUserWechatMenId?url=57'>"+ "加油！参加下次挑战》》</a>");
-                String sendResult = WechatUtil.sendMsgToWechat(tokenId, openId, msg.toString());
+                msg.append("<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=57'>" + "加油！参加下次挑战》》</a>");
+                LogUtils.saveLog("punchCardCashToUser", "推送消息："+msg.toString()+"=token="+tokenId);
+                String sendResult = "";
+                try{
+                    sendResult = WechatUtil.sendMsgToWechat(tokenId, openId, msg.toString());
+                }catch (Exception e){
+                    LogUtils.saveLog("punchCardCashToUser","推送报错："+e.getMessage());
+                    e.printStackTrace();
+                }
+                LogUtils.saveLog("punchCardCashToUser", "推送消息结束："+sendResult);
                 LogUtils.saveLog("ZQTZ_TKTZ", openId + "--" + msg.toString());
             }
-            punchCardRewardsService.batchInsertPunchCardRewards(batchInsert);
+            LogUtils.saveLog("punchCardCashToUser", "插入获奖信息开始");
+            int num = punchCardRewardsService.batchInsertPunchCardRewards(batchInsert);
+            LogUtils.saveLog("punchCardCashToUser", "插入获奖信息结束=="+num);
         }
     }
 

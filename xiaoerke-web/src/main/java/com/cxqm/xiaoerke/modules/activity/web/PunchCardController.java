@@ -310,7 +310,7 @@ public class PunchCardController {
                     if (punchCardDataVos != null && punchCardDataVos.size() > 1) {
                         responseMap.put("failNum", punchCardDataVos.get(1).getFailure());
                         responseMap.put("successNum", punchCardDataVos.get(1).getSuccess());
-                    } else if (punchCardDataVos.size() >= 0) {
+                    } else if (punchCardDataVos.size() == 1) {
                         responseMap.put("failNum", punchCardDataVos.get(0).getFailure());
                         responseMap.put("successNum", punchCardDataVos.get(0).getSuccess());
                     } else {
