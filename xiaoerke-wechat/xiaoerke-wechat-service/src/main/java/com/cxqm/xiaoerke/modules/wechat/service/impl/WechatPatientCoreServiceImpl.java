@@ -1209,7 +1209,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                     "宝大夫全新用户送您价值18.8元的两次咨询机会\n\n宝贝疾病或者育儿知识都可以哦,既专业又及时~!\uD83D\uDE80\n\n快来体验下吧!点击:<a href='http://mp.weixin.qq.com/s?__biz=MzI2MDAxOTY3OQ==&mid=504236660&idx=1&sn=10d923526047a5276dd9452b7ed1e302&scene=1&srcid=0612OCo7d5ASBoGRr2TDgjfR#rd'>咨询大夫</a>";
             WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), welcomeMsg);
 
-            String path = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=40";
+            String path = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=56";
             welcomeMsg = "\uE022点名咨询医生\n\n问题不急？点他成为你的专属医生哦~\n\n点击：<a href='"+path+"'>点名咨询医生</a>";
             WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), welcomeMsg);
 
