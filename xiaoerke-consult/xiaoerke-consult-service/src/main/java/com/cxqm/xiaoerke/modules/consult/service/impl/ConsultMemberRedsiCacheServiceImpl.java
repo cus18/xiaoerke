@@ -211,7 +211,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                     if ((null == consultSessionStatusVo2) || (null != consultSessionStatusVo2 && prompt && !ConsultSession.STATUS_ONGOING.equals(consultSessionStatusVo2.getStatus())) && StringUtils.isNotNull(content))
                         WechatUtil.sendMsgToWechat(token, openid, content);
 
-                    WechatUtil.sendMsgToWechat(token, openid, content);
+//                    WechatUtil.sendMsgToWechat(token, openid, content);
                     LogUtils.saveLog("ZXTS_YMFJH", openid);
                     return true;
                 } else {
