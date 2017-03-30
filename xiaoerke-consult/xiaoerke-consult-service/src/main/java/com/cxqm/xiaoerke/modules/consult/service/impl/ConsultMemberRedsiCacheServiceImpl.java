@@ -201,7 +201,9 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                 ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query2);
                 if (null != propertyVo && (propertyVo.getPermTimes() + propertyVo.getMonthTimes()) > 0) {
 //             用户有咨询机会
-                    WechatUtil.sendMsgToWechat(token, openid, " 亲爱的新朋友，您还有"+propertyVo.getPermTimes() + propertyVo.getMonthTimes()+"次免费机会未启用！本次咨询免费~\n ——为减少其他生病宝宝的焦急等待，从医生接入开始计时");
+                    WechatUtil.sendMsgToWechat(token, openid, " 亲爱的新朋友，您还有"+propertyVo.getPermTimes() + propertyVo.getMonthTimes()+"次免费机会未启用！本次咨询免费~\n" +
+                            "\n" +
+                            " （免费时长：30分钟， 24小时内可用一次）\n\n ——为减少其他生病宝宝的焦急等待，从医生接入开始计时");
                     String content = templatevo != null ? templatevo.getInfo2() : "";
                     if ((propertyVo.getPermTimes() + propertyVo.getMonthTimes()) == 1)
                         content += "\n----------\n别怕！邀请个好友加入宝大夫，免费机会立刻有！\n" + "<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
@@ -217,7 +219,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                     String content = "亲爱的，快速问诊避免焦急等待，请您\n\n<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=35&from=fdsa'>>>猛戳这里购买吧！</a>";
                     if (prompt) WechatUtil.sendMsgToWechat(token, openid, content);
                     String path = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=40";
-                    content = "问题不急， 尝试下点名咨询哦\n<a href=" + path +">>>点名咨询医生</a>\n\n不想掏钱？ 还可以 戳戳手指，邀请好友关注宝大夫， 减免/免费机会就来喽！\n\n<a href=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
+                    content = "问题不急， 尝试下点名咨询哦\n<a href='" + path +"'>>>点名咨询医生</a>\n\n不想掏钱？ 还可以 戳戳手指，邀请好友关注宝大夫， 减免/免费机会就来喽！\n\n<a href=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
                     if (prompt) WechatUtil.sendMsgToWechat(token, openid, content);
 //                    sendNonRealTimeMsg(openid,token,sysPropertyVoWithBLOBsVo.getKeeperWebUrl());
                     LogUtils.saveLog("ZXTS_MYMFJH", openid);
@@ -227,7 +229,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             String content = "亲爱的，快速问诊避免焦急等待，请您\n\n<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=35&from=fdsa'>>>猛戳这里购买吧！</a>";
             WechatUtil.sendMsgToWechat(token, openid, content);
             String path = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=40";
-            content = "问题不急， 尝试下点名咨询哦\n<a href=" + path +">>>点名咨询医生</a>\n\n不想掏钱？ 还可以 戳戳手指，邀请好友关注宝大夫， 减免/免费机会就来喽！\n\n<a href=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
+            content = "问题不急， 尝试下点名咨询哦\n<a href='" + path +"'>>>点名咨询医生</a>\n\n不想掏钱？ 还可以 戳戳手指，邀请好友关注宝大夫， 减免/免费机会就来喽！\n\n<a href=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
             WechatUtil.sendMsgToWechat(token, openid, content);
             LogUtils.saveLog("ZXTS_SYMFJH", openid);
             return false;
