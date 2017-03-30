@@ -129,7 +129,13 @@ public class ScheduleTaskController {
                 personNum = punchCardDataVo.getTotalNum() - 10000 ;
             }
         }
-        String str =  String.valueOf(cashNum / personNum);
+        String str ;
+        if(personNum == 0){
+            str = "0";
+        }else{
+            str =  String.valueOf(cashNum / personNum);
+        }
+
         if(str.contains(".")){
             String[] splitStr = str.split(".");
             if("0".startsWith(splitStr[0])){
