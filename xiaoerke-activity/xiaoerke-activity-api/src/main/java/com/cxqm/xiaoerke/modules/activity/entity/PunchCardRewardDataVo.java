@@ -3,7 +3,7 @@ package com.cxqm.xiaoerke.modules.activity.entity;
 import java.util.Date;
 
 /**
- * ¼ÙÊı¾İ
+ * å‡æ•°æ®
  */
 public class PunchCardRewardDataVo {
     private String id;

@@ -97,7 +97,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         //支付按钮点击事件
         $scope.goPay=function(){
             $ionicScrollDelegate.scrollTop();
-            window.location.href='http://s201.xiaork.com/keeper/wxPay/patientPay.do?serviceType=payPunchCardCash';
+            window.location.href='http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=payPunchCardCash';
         }
         //喊朋友一起来参加
         $scope.goShare=function(){
@@ -174,10 +174,13 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
                     $scope.pageNum=1;
                 }
 
-
                 $scope.oData=res;
                 //显示结束时间
-                $scope.day=getDay(res.personRewardsList[0].updateTime)
+                if(res.personRewardsList.length >0){
+                    $scope.day=getDay(res.personRewardsList[0].updateTime);
+                }else{
+                    $scope.day=getDay(new Date().getTime());
+                }
                 $scope.openId=res.openId;
                 $scope.market=res.marketer;
                 $scope.minename=res.nickName;
@@ -205,7 +208,7 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signHomeCtrl', [
         //初始化微信
          $scope.doRefresh = function () {
             GetConfig.save({}, function (data) {
-                $scope.inviteUrlData = data.publicSystemInfo.redPackageShareUrl;
+                $scope.inviteUrlData = data.publicSystemInfo.punchCardShareUrl;
                 var share = $scope.inviteUrlData + $scope.openId + "," + $scope.market + ",";//最后url=41，openid,marketer
 
                 // var share = $scope.inviteUrlData + $scope.openid+","+$scope.marketer+","+ $scope.uuid+",";//最后url=41，openid,marketer
