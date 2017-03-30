@@ -201,7 +201,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                 ConsultSessionStatusVo consultSessionStatusVo2 = consultRecordService.findOneConsultSessionStatusVo(query2);
                 if (null != propertyVo && (propertyVo.getPermTimes() + propertyVo.getMonthTimes()) > 0) {
 //             用户有咨询机会
-                    WechatUtil.sendMsgToWechat(token, openid, " 亲爱的新朋友，您还有"+propertyVo.getPermTimes() + propertyVo.getMonthTimes()+"次免费机会未启用！本次咨询免费~\n" +
+                    WechatUtil.sendMsgToWechat(token, openid, " 亲爱的新朋友，您还有"+(propertyVo.getPermTimes() + propertyVo.getMonthTimes())+"次免费机会未启用！本次咨询免费~\n" +
                             "\n" +
                             " （免费时长：30分钟， 24小时内可用一次）\n\n ——为减少其他生病宝宝的焦急等待，从医生接入开始计时");
                     String content = templatevo != null ? templatevo.getInfo2() : "";
