@@ -68,7 +68,11 @@ angular.module('controllers', ['ionic','ngDialog']).controller('signRecordCtrl',
             }else{
                 $scope.headImgUrl=res.headImgUrl;
             }
-            $scope.total=res.rewardsInfo;
+            if(res.rewardsInfo == null || res.rewardsInfo == ''){
+                $scope.total={"totalCash":"0","totalNum":"0"};
+            }else{
+                $scope.total=res.rewardsInfo;
+            }
             if(res.dataList==null||res.dataList==''){
                 $scope.noRecordStatus=true;
                 $scope.nickname=res.nickName;
