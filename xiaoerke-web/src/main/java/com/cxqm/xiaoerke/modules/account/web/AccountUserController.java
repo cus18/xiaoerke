@@ -7,14 +7,17 @@ import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
+import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultMemberRedsiCacheService;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.sys.entity.PerAppDetInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
+import com.cxqm.xiaoerke.modules.sys.service.SystemService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import net.sf.json.JSONObject;
@@ -27,10 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -60,6 +60,12 @@ public class AccountUserController {
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
+
+    @Autowired
+    private ConsultMemberRedsiCacheService consultMemberRedsiCacheService;
+
+    @Autowired
+    private SystemService systemService;
 
     private static Lock lock = new ReentrantLock();
 
@@ -257,10 +263,11 @@ public class AccountUserController {
         String openId = WechatUtil.getOpenId(session, request);
         float payCount = Float.valueOf(String.valueOf(request.getParameter("payPrice")));//支付的金额
         float babyCoinNumber = Float.valueOf(String.valueOf(request.getParameter("babyCoinNumber")));//使用宝宝币抵扣的金额
-
+        BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
         BabyCoinVo babyCoinVo = new BabyCoinVo();
         babyCoinVo.setOpenId(openId);
         babyCoinVo = babyCoinService.getBabyCoin(response, openId);
+        String totleTime  = "";
 
         float PayType1SumMoney = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney());
         float PayType1UseBabycoin = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());
@@ -284,7 +291,7 @@ public class AccountUserController {
         boolean canPay4 = (payCount == payType2ActualMoney && babyCoinNumber == PayType2UseBabycoin && babyCoinNumber  <= babyCoinVo.getCash());
         boolean canPay5 = payCount == PayType3SumMoney && babyCoinNumber == 0f;
         boolean canPay6 = (payCount == payType3ActualMoney && babyCoinNumber == PayType3UseBabycoin && babyCoinNumber  <= babyCoinVo.getCash());
-        if (canPay1 || canPay2 || canPay3 || canPay4 || canPay5 || canPay6) {
+        if (canPay1 || canPay3 || canPay5) {
             //获取统一支付接口参数
             request.setAttribute("payPrice", Float.valueOf(payCount));
             request.setAttribute("feeType", "doctorConsultPay");
@@ -298,11 +305,34 @@ public class AccountUserController {
             String payParameter = accountService.assemblyPayParameter(request, prepayInfo, session, userId, null);
 
             return payParameter;
-        } else {
-            return "false";
+        } else if (canPay2) {
+           //用宝宝币全额支付
+            babyCoinVo.setCash(babyCoinVo.getCash() - (long)PayType1UseBabycoin);
+            babyCoinRecordVo.setBalance(-PayType1UseBabycoin);
+            totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType2();
+        }else if (canPay4) {
+            babyCoinVo.setCash(babyCoinVo.getCash() - (long)PayType2UseBabycoin);
+            babyCoinRecordVo.setBalance(-PayType2UseBabycoin);
+            totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTime();
+        }else if (canPay6) {
+            babyCoinVo.setCash(babyCoinVo.getCash() - (long)PayType3UseBabycoin);
+            babyCoinRecordVo.setBalance(-PayType3UseBabycoin);
+            totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType3();
         }
-
+        babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
+        babyCoinRecordVo.setCreateTime(new Date());
+        babyCoinRecordVo.setCreateBy(openId);
+        babyCoinRecordVo.setOpenId(openId);
+        babyCoinRecordVo.setSessionId(sessionRedisCache.getSessionIdByUserId(openId));
+        babyCoinRecordVo.setSource("consultPay");
+        babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
+        Map parameter = systemService.getWechatParameter();
+        String token = (String) parameter.get("token");
+        consultMemberRedsiCacheService.payConsultMember(openId, totleTime, "0", token);
+//                   mysql 增加会员记录,延长redis的时间
+        return "payByBabycoin";
     }
+
 
     /**
      * js支付
@@ -322,5 +352,4 @@ public class AccountUserController {
         String payParameter = accountService.assemblyPayParameter(request, prepayInfo, session, userId, null);
         return payParameter;
     }
-
 }
