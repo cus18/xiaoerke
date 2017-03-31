@@ -490,12 +490,14 @@ $(document).ready(function(){
             oSwitch=true;
             $('.lack').hide();
             switchMethod(oSwitch);
-            $('#use').html("本次可用"+cashNum+"枚")
+            $('#use').removeClass("red");
+            $('#use').html("本次可用"+cashNum+"枚");
         }else{
             oSwitch=false;
             $('.lack').show();
             switchMethod(oSwitch);
-            $('#use').html("满"+cashNum+"枚可抵用")
+            $('#use').html("满"+cashNum+"枚可抵用");
+            $('#use').addClass("red");
         }
         $('#btn span').html(endCoin);
     }
