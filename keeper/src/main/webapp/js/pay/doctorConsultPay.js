@@ -476,7 +476,7 @@ $(document).ready(function(){
         if(num==1){
             cash=cash1;
             cashNum=cashNum1;
-            $('#coin').html(cashNum)
+            /*$('#coin').html(cashNum)*/
         }else if(num==2){
             cash=cash2;
             cashNum=cashNum2;
@@ -484,16 +484,18 @@ $(document).ready(function(){
             cash=cash3;
             cashNum=cashNum3;
         }
-        $('#coin').html(cashNum)
+       /* $('#coin').html(cashNum)*/
         //判断宝宝币选中状态
         if(cashTotal>=cashNum){
             oSwitch=true;
             $('.lack').hide();
-            switchMethod(oSwitch)
+            switchMethod(oSwitch);
+            $('#use').html("本次可用"+cashNum+"枚")
         }else{
             oSwitch=false;
             $('.lack').show();
-            switchMethod(oSwitch)
+            switchMethod(oSwitch);
+            $('#use').html("满"+cashNum+"枚可抵用")
         }
         $('#btn span').html(endCoin);
     }
@@ -505,6 +507,8 @@ $(document).ready(function(){
             dataType: "json",
             success: function (data) {
                 cashTotal=data.babyCoinVo.cash/10;
+                $('#coin').html(cashTotal);
+
                 //默认第二种方式
                 callBack(service)
             },
