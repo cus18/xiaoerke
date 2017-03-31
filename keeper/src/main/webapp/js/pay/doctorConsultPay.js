@@ -424,6 +424,9 @@ $(document).ready(function(){
     //确认支付
     function wechatPay() {
         recordLogs("consult_charge_twice_paypage_paybutton");
+
+        // 先判断是不是使用的宝宝币支付
+
                 $.ajax({
                     url: "account/user/doctorConsultPay",
                     type: 'get',
@@ -433,6 +436,7 @@ $(document).ready(function(){
                     },
                     cache: false,
                     success: function (data) {
+                        if("payByBabycoin" == data){
                         $('#btn').removeAttr("disabled");
                         var obj = eval('(' + data + ')');
                         if (parseInt(obj.agent) < 5) {
@@ -458,6 +462,9 @@ $(document).ready(function(){
                                 alert(res.errMsg)
                             }
                         });
+                    }else {
+                            window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+service;
+                    }
                     },
                     error: function () {
                     }
@@ -570,5 +577,33 @@ $(document).ready(function(){
             wechatPay();
         }
     })
+
+
+    // var userBabyCoinPay = function () {
+    //
+    //     $.ajax({
+    //         type: "get",
+    //         url: 'http://' + window.location.host + "/keeper/babyCoin/babyCoinInit",
+    //         dataType: "json",
+    //         success: function (data) {
+    //             cash = data.babyCoinVo.cash;//现有宝宝币总数
+    //             if (payCount == payType1SumMoney) {
+    //
+    //
+    //
+    //             else {
+    //
+    //              }
+    //
+    //             } else {
+    //
+    //             }
+    //
+    //         },
+    //         error: function (jqXHR) {
+    //             console.log("发生错误：" + jqXHR.status);
+    //         },
+    //     });
+    // };
 
 })
