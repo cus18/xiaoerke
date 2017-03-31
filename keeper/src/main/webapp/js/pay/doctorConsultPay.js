@@ -436,7 +436,7 @@ $(document).ready(function(){
                     },
                     cache: false,
                     success: function (data) {
-                        if("payByBabycoin" == data){
+                        if(data == 'payByBabycoin'){
                         $('#btn').removeAttr("disabled");
                         var obj = eval('(' + data + ')');
                         if (parseInt(obj.agent) < 5) {
