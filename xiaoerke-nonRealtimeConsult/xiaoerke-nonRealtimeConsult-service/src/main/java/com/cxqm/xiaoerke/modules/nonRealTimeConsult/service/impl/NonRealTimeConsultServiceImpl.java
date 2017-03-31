@@ -242,6 +242,14 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
     }
 
     @Override
+    public List<ConsultDoctorInfoVo> getRecentTimeListByName(String doctorName) {
+        ConsultDoctorInfoVo doctorInfoVo = new ConsultDoctorInfoVo();
+        doctorInfoVo.setName(doctorName);
+        doctorInfoVo.setNonrealtimeStatus("1");
+        return consultDoctorInfoService.getRecentTimeList(doctorInfoVo);
+    }
+
+    @Override
     public void sessinTimeOut() {
 //        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
 //        Map parameter = systemService.getWechatParameter();
