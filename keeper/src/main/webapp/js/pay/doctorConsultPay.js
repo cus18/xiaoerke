@@ -387,6 +387,7 @@ $(document).ready(function(){
                     appid = data.appid;//appid
                     angelWebUrl = data.angelWebUrl;
                     recordLogs("consult_charge_twice_information_payclick");
+                    console.log("后台数据显示：",data);
 
                     cash1 = data.payType1SumMoney;
                   /*  cashNum1 = data.payType1UseBabycoin/10;*/
@@ -435,7 +436,8 @@ $(document).ready(function(){
                     type: 'get',
                     data: {
                         payPrice:endCoin ,
-                        babyCoinNumber: cashNum*10
+                        /*babyCoinNumber: cashNum*10*/
+                        babyCoinNumber: cashNum
                     },
                     cache: false,
                     success: function (data) {
