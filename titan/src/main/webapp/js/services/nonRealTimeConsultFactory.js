@@ -47,6 +47,10 @@ define(['appNonRealTimeConsult'], function (app) {
         .factory('ConversationInfo',['$resource',function ($resource){
             return $resource(path_user + 'conversationInfo');
         }])
+        .factory('SearchDoctorInfoByName',['$resource',function ($resource){
+            return $resource(path_user + 'searchDoctorInfoByName');
+        }])
+
 
         .factory('ConversationDoctorInfo',['$resource',function ($resource){
             return $resource(path_doc + 'conversationDoctorInfo');
@@ -69,6 +73,8 @@ define(['appNonRealTimeConsult'], function (app) {
         .factory('DoctorBindingUrl', function() {
             return "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getDoctorWechatMenId?url=6";
         })
+
+
         .factory('GetConfig',['$resource',function ($resource){
             return $resource('util/getConfig');
         }]);

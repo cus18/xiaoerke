@@ -2,6 +2,8 @@ angular.module('controllers', []).controller('NonTimeUserFindDoctorCtrl', [
     '$scope', '$state','DepartmentList','StarDoctorList',
     function ($scope,$state,DepartmentList,StarDoctorList) {
 
+        $scope.info = {};
+
         var recordLogs = function(val){
             $.ajax({
                 url:"util/recordLogs",// 跳转到 action
@@ -49,4 +51,8 @@ angular.module('controllers', []).controller('NonTimeUserFindDoctorCtrl', [
             recordLogs("FSS_YHD_MXYS"+$scope.doctorList[index].userId);
             location.href="consultDoctorHome#/consultDoctorHome/"+$scope.doctorList[index].userId
         }
+        $scope.searchDoctorName = function () {
+            $state.go("NonTimeUserDoctorList", {doctorName: $scope.info.doctorName});
+        }
+        
     }]);

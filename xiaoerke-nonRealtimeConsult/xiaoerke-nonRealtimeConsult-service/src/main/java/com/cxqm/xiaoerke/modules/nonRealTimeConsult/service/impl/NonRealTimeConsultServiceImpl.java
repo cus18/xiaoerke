@@ -246,7 +246,7 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         ConsultDoctorInfoVo doctorInfoVo = new ConsultDoctorInfoVo();
         doctorInfoVo.setName(doctorName);
         doctorInfoVo.setNonrealtimeStatus("1");
-        return consultDoctorInfoService.getRecentTimeList(doctorInfoVo);
+        return consultDoctorInfoService.findManagerDoctorInfoBySelective(doctorInfoVo);
     }
 
     @Override
