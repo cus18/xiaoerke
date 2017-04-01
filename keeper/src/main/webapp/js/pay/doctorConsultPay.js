@@ -389,13 +389,16 @@ $(document).ready(function(){
                     recordLogs("consult_charge_twice_information_payclick");
 
                     cash1 = data.payType1SumMoney;
-                    cashNum1 = data.payType1UseBabycoin/10;
+                  /*  cashNum1 = data.payType1UseBabycoin/10;*/
+                    cashNum1 = data.payType1UseBabycoin;
 
                     cash2 = data.payType2SumMoney;
-                    cashNum2 = data.payType2UseBabycoin/10;
+                   /* cashNum2 = data.payType2UseBabycoin/10;*/
+                    cashNum2 = data.payType2UseBabycoin;
 
                     cash3 = data.payType3SumMoney;
-                    cashNum3 = data.payType3UseBabycoin/10;
+                    /*cashNum3 = data.payType3UseBabycoin/10;*/
+                    cashNum3 = data.payType3UseBabycoin;
                     getBabyCoin()
 
                     //微信配置
@@ -508,7 +511,8 @@ $(document).ready(function(){
             url: 'http://' + window.location.host + "/keeper/babyCoin/babyCoinInit",
             dataType: "json",
             success: function (data) {
-                cashTotal=data.babyCoinVo.cash/10;
+                /*cashTotal=data.babyCoinVo.cash/10;*/
+                cashTotal=data.babyCoinVo.cash;
                 $('#coin').html(cashTotal);
 
                 //默认第二种方式
