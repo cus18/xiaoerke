@@ -583,33 +583,4 @@ $(document).ready(function(){
             wechatPay();
         }
     })
-
-
-    // var userBabyCoinPay = function () {
-    //
-    //     $.ajax({
-    //         type: "get",
-    //         url: 'http://' + window.location.host + "/keeper/babyCoin/babyCoinInit",
-    //         dataType: "json",
-    //         success: function (data) {
-    //             cash = data.babyCoinVo.cash;//现有宝宝币总数
-    //             if (payCount == payType1SumMoney) {
-    //
-    //
-    //
-    //             else {
-    //
-    //              }
-    //
-    //             } else {
-    //
-    //             }
-    //
-    //         },
-    //         error: function (jqXHR) {
-    //             console.log("发生错误：" + jqXHR.status);
-    //         },
-    //     });
-    // };
-
 })
