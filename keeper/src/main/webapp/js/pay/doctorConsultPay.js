@@ -517,6 +517,8 @@ $(document).ready(function(){
                 cashTotal=data.babyCoinVo.cash;
                 $('#coin').html(cashTotal);
 
+                console.log("宝宝币总数：",cashTotal);
+
                 //默认第二种方式
                 callBack(service)
             },
