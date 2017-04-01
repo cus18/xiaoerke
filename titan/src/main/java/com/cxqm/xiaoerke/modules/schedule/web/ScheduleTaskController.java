@@ -121,12 +121,12 @@ public class ScheduleTaskController {
         if(punchCardDataVos !=null && punchCardDataVos.size()>0){
             if(punchCardDataVos.size() == 1){
                 punchCardDataVo = punchCardDataVos.get(0);
-                cashNum = punchCardDataVo.getTotalCash() - 10000 ;
-                personNum = punchCardDataVo.getTotalNum() - 10000 ;
+                cashNum = punchCardDataVo.getTotalCash() ;
+                personNum = punchCardDataVo.getTotalNum();
             }else{
                 punchCardDataVo = punchCardDataVos.get(1);
-                cashNum = punchCardDataVo.getTotalCash() - 10000 ;
-                personNum = punchCardDataVo.getTotalNum() - 10000 ;
+                cashNum = punchCardDataVo.getTotalCash() ;
+                personNum = punchCardDataVo.getTotalNum() ;
             }
         }
         String str ;
@@ -169,7 +169,7 @@ public class ScheduleTaskController {
         //成功人数
         int successNum = records.size();
         //失败人数
-        int failureNum = personNum - successNum ;
+        int failureNum = personNum - successNum - 10000;
         punchCardDataVo.setFailure(failureNum);
         punchCardDataVo.setSuccess(successNum+10000);
         punchCardDataService.updateByPrimaryKeySelective(punchCardDataVo);
@@ -258,25 +258,29 @@ public class ScheduleTaskController {
                 } catch (BusinessPaymentExceeption businessPaymentExceeption) {
                     LogUtils.saveLog("punchCardCashToUser", "异常2："+businessPaymentExceeption.getMessage());
                     businessPaymentExceeption.printStackTrace();
+                }catch(Exception ex){
+                    LogUtils.saveLog("punchCardCashToUser", "异常3："+ex.getMessage());
+                    ex.printStackTrace();
+                }finally{
+                    //推送分钱
+                    LogUtils.saveLog("punchCardCashToUser", "准备分钱推送" + openId);
+                    StringBuffer msg = new StringBuffer();
+                    msg.append("你的早起打卡奖励已到账，请在微信钱包查收。\n" +
+                            "任务名称："+takeTime+" 6:00-8:00早起打卡 \n"+
+                            "任务类别：打卡挑战\n"+
+                            "任务奖励金额："+userCash+"\n");
+                    msg.append("<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=57'>" + "加油！参加下次挑战》》</a>");
+                    LogUtils.saveLog("punchCardCashToUser", "推送消息："+msg.toString()+"=token="+tokenId);
+                    String sendResult = "";
+                    try{
+                        sendResult = WechatUtil.sendMsgToWechat(tokenId, openId, msg.toString());
+                    }catch (Exception e){
+                        LogUtils.saveLog("punchCardCashToUser","推送报错："+e.getMessage());
+                        e.printStackTrace();
+                    }
+                    LogUtils.saveLog("punchCardCashToUser", "推送消息结束："+sendResult);
+                    LogUtils.saveLog("ZQTZ_TKTZ", openId + "--" + msg.toString());
                 }
-                //推送分钱
-                LogUtils.saveLog("punchCardCashToUser", "准备分钱推送" + openId);
-                StringBuffer msg = new StringBuffer();
-                msg.append("你的早起打卡奖励已到账，请在微信钱包查收。\n" +
-                        "任务名称："+takeTime+"6:00-8:00早起打卡 \n"+
-                        "任务类别：打卡挑战\n"+
-                        "任务奖励金额："+userCash+"\n");
-                msg.append("<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=57'>" + "加油！参加下次挑战》》</a>");
-                LogUtils.saveLog("punchCardCashToUser", "推送消息："+msg.toString()+"=token="+tokenId);
-                String sendResult = "";
-                try{
-                    sendResult = WechatUtil.sendMsgToWechat(tokenId, openId, msg.toString());
-                }catch (Exception e){
-                    LogUtils.saveLog("punchCardCashToUser","推送报错："+e.getMessage());
-                    e.printStackTrace();
-                }
-                LogUtils.saveLog("punchCardCashToUser", "推送消息结束："+sendResult);
-                LogUtils.saveLog("ZQTZ_TKTZ", openId + "--" + msg.toString());
             }
             LogUtils.saveLog("punchCardCashToUser", "插入获奖信息开始");
             int num = punchCardRewardsService.batchInsertPunchCardRewards(batchInsert);
