@@ -16,7 +16,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
             if(arr==false){
                 wx.previewImage({
                     current: item2, // 当前显示图片的http链接
-                    urls:[arr] // 需要预览的图片http链接列表
+                    urls:[item2] // 需要预览的图片http链接列表
                 });
             }else{
                 wx.previewImage({
