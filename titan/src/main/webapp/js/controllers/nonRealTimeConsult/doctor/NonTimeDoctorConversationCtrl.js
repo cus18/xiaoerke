@@ -13,17 +13,17 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
         //     });
         // };
         $scope.lookBig=function(item2,arr){
-            if(arr==false){
-                wx.previewImage({
-                    current: item2, // 当前显示图片的http链接
-                    urls:[] // 需要预览的图片http链接列表
-                });
-            }else{
+            // if(arr==false){
+            //     wx.previewImage({
+            //         current: item2, // 当前显示图片的http链接
+            //         urls:[] // 需要预览的图片http链接列表
+            //     });
+            // }else{
                 wx.previewImage({
                     current: item2, // 当前显示图片的http链接
                     urls: arr // 需要预览的图片http链接列表
                 });
-            }
+            // }
 
         }
         //微信js-sdk 初始化接口
