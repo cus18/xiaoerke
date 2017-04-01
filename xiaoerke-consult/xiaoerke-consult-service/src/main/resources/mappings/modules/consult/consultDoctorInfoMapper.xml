@@ -364,6 +364,9 @@
     <if test="nonrealtimeStatus != null and nonrealtimeStatus != ''">
       and nonrealtime_status = #{nonrealtimeStatus,jdbcType=VARCHAR}
     </if>
+    <if test="name != null and name != ''">
+      and name = #{name,jdbcType=VARCHAR}
+    </if>
 
   </select>
 
@@ -394,6 +397,9 @@
     where 1=1
     <if test="nonrealtimeStatus != null and nonrealtimeStatus != ''">
       and nonrealtime_status = #{nonrealtimeStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="name != null and name != ''">
+      and name = #{name,jdbcType=VARCHAR}
     </if>
     and sys_user_id in(
     select DISTINCT sys_user_id_cs from consult_session cs
