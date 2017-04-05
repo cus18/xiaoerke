@@ -157,11 +157,13 @@ $(document).ready(function(){
             oSwitch=true;
             switchMethod(oSwitch);
             $('#use').removeClass("red");
+            $('.babyCoinSmall').find('i').show();
             $('#use').html("本次可用"+cashNum+"枚");
         }else{
             oSwitch=false;
             switchMethod(oSwitch);
             $('#use').html("满"+cashNum+"枚可抵用");
+            $('.babyCoinSmall').find('i').hide();
             $('#use').addClass("red");
         }
         $('#btn span').html(endCoin);
@@ -202,7 +204,7 @@ $(document).ready(function(){
     $('#btn').click(function(){
         $('#btn').attr('disabled');
         if(oSwitch){
-            wechatPay()
+            wechatPay();
         }else{
             cashNum=0;
             wechatPay();
