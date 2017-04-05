@@ -72,5 +72,7 @@ public interface AccountService {
 
     boolean checkAppointmentPayState(String out_trade_no);
 
+//    boolean updatePayInfoByBabyCoin(BabyCoinVo babyCoinVo, String openId,float babyCoin);
+
 
 }
