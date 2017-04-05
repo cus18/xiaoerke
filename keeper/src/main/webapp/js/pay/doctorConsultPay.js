@@ -157,6 +157,7 @@ $(document).ready(function(){
             oSwitch=true;
             switchMethod(oSwitch);
             $('#use').removeClass("red");
+            $('.babyCoinSmall').find('i').show();
             $('#use').html("本次可用"+cashNum+"枚");
         }else{
             oSwitch=false;
