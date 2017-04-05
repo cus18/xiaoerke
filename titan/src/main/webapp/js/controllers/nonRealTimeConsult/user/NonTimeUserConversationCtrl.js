@@ -1,5 +1,5 @@
 var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserConversationCtrl', [
-        '$scope','$state','$stateParams','$upload','ConversationInfo','UpdateReCode',',$sce',
+        '$scope','$state','$stateParams','$upload','ConversationInfo','UpdateReCode','$sce',
         function ($scope,$state,$stateParams,$upload,ConversationInfo,UpdateReCode,$sce) {
 
             var recordLogs = function(val){
