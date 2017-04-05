@@ -387,15 +387,19 @@ $(document).ready(function(){
                     appid = data.appid;//appid
                     angelWebUrl = data.angelWebUrl;
                     recordLogs("consult_charge_twice_information_payclick");
+                    console.log("后台数据显示：",data);
 
                     cash1 = data.payType1SumMoney;
-                    cashNum1 = data.payType1UseBabycoin/10;
+                  /*  cashNum1 = data.payType1UseBabycoin/10;*/
+                    cashNum1 = data.payType1UseBabycoin;
 
                     cash2 = data.payType2SumMoney;
-                    cashNum2 = data.payType2UseBabycoin/10;
+                   /* cashNum2 = data.payType2UseBabycoin/10;*/
+                    cashNum2 = data.payType2UseBabycoin;
 
                     cash3 = data.payType3SumMoney;
-                    cashNum3 = data.payType3UseBabycoin/10;
+                    /*cashNum3 = data.payType3UseBabycoin/10;*/
+                    cashNum3 = data.payType3UseBabycoin;
                     getBabyCoin()
 
                     //微信配置
@@ -432,7 +436,8 @@ $(document).ready(function(){
                     type: 'get',
                     data: {
                         payPrice:endCoin ,
-                        babyCoinNumber: cashNum*10
+                        /*babyCoinNumber: cashNum*10*/
+                        babyCoinNumber: cashNum
                     },
                     cache: false,
                     success: function (data) {
@@ -508,8 +513,11 @@ $(document).ready(function(){
             url: 'http://' + window.location.host + "/keeper/babyCoin/babyCoinInit",
             dataType: "json",
             success: function (data) {
-                cashTotal=data.babyCoinVo.cash/10;
+                /*cashTotal=data.babyCoinVo.cash/10;*/
+                cashTotal=data.babyCoinVo.cash;
                 $('#coin').html(cashTotal);
+
+                console.log("宝宝币总数：",cashTotal);
 
                 //默认第二种方式
                 callBack(service)
