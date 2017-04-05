@@ -573,10 +573,12 @@ $(document).ready(function(){
     function switchMethod(oSwitch){
         if(oSwitch){
             $('.babyCoinSmall').find('i').removeClass('choose2').addClass('choose1');
-            endCoin=cash-cashNum;
+            /*endCoin=cash-cashNum;*/
+            endCoin=0;
         }else{
             $('.babyCoinSmall').find('i').removeClass('choose1').addClass('choose2');
-            endCoin=cash;
+           /* endCoin=cash;*/
+            endCoin=cashNum-cashTotal;
         }
     }
 
