@@ -151,7 +151,10 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
                     }, function (data) {
                         console.log("会话信息列表", data)
                         $scope.pageData = data;
-                        $scope.messageList = data.messageList;
+                        for(var i=0;i<data.messageList.length;i++){
+                            data.messageList[i].message = $sce.trustAsHtml(angular.copy(data.messageList[i].message));
+                        }
+                        $scope.messageList = $scope.pageData.messageList;
                         $scope.doctorId = $scope.pageData.doctorId;
                         $('.pic-talk').each(function(){
                             picList.push($(this).attr('src'));
