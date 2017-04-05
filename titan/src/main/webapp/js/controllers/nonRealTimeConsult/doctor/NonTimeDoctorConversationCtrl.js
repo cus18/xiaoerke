@@ -1,6 +1,6 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConversationCtrl', [
-    '$scope', '$state', '$stateParams', '$timeout', '$http', '$upload', 'ConversationDoctorInfo', 'GetDoctorLoginStatus', 'UpdateReCode','GetConfig',
-    function ($scope, $state, $stateParams, $timeout, $http, $upload, ConversationDoctorInfo, GetDoctorLoginStatus, UpdateReCode,GetConfig) {
+    '$scope', '$state', '$stateParams', '$timeout', '$http', '$upload', 'ConversationDoctorInfo', 'GetDoctorLoginStatus', 'UpdateReCode','GetConfig','$sce',
+    function ($scope, $state, $stateParams, $timeout, $http, $upload, ConversationDoctorInfo, GetDoctorLoginStatus, UpdateReCode,GetConfig,$sce) {
         $scope.info = {};
         $scope.info.content = "";
         $scope.msgType = "text";
@@ -101,7 +101,11 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeDoctorConvers
         //发送文本消息
         $scope.sendTextMsg = function(){
             $scope.info.content =  $('#saytext').val();
-            $scope.sendMsg("text",$scope.info.content);
+            if($scope.info.content.indexOf("http")>-1){
+                $scope.sendMsg("url",$scope.info.content);
+            }else{
+                $scope.sendMsg("text",$scope.info.content);
+            }
         };
         //发送消息
         $scope.sendMsg = function (messageType, content) {
