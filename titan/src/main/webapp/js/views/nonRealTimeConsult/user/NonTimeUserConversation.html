@@ -29,6 +29,9 @@
                     <div ng-style="item.messageType=='text'?{'display':'block'}:{'display':'none'}" class="content fr w70 b-box bgg">
                         <div ng-bind-html="item.message|emotionReceive:item.messageType"></div>
                     </div>
+                    <div ng-style="item.messageType=='url'?{'display':'block'}:{'display':'none'}" class="content fr w70 b-box bgg">
+                        <div ng-bind-html="item.message"></div>
+                    </div>
                     <div ng-style="item.messageType=='img'?{'display':'block'}:{'display':'none'}" class="content fr w70 b-box bgg">
                         <img width="100%" ng-src="{{item.message}}" alt=""/>
                     </div>
@@ -50,6 +53,9 @@
                     </div>
                     <div ng-style="item.messageType=='text'?{'display':'block'}:{'display':'none'}" class="content fl w70 b-box bgf">
                         <div ng-bind-html="item.message|emotionReceive:item.messageType"></div>
+                    </div>
+                    <div ng-style="item.messageType=='url'?{'display':'block'}:{'display':'none'}" class="content fl w70 b-box bgf">
+                        <div ng-bind-html="item.message"></div>
                     </div>
                     <div ng-style="item.messageType=='img'?{'display':'block'}:{'display':'none'}" class="content fl w70 b-box bgf">
                             <img  width="100%" height="auto"  ng-src="{{item.message}}" alt=""/>
