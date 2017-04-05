@@ -1,6 +1,6 @@
 var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserConversationCtrl', [
-        '$scope','$state','$stateParams','$upload','ConversationInfo','UpdateReCode',
-        function ($scope,$state,$stateParams,$upload,ConversationInfo,UpdateReCode) {
+        '$scope','$state','$stateParams','$upload','ConversationInfo','UpdateReCode',',$sce',
+        function ($scope,$state,$stateParams,$upload,ConversationInfo,UpdateReCode,$sce) {
 
             var recordLogs = function(val){
                 $.ajax({
@@ -83,6 +83,9 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
                     }
                     $scope.pageData = data;
                     $scope.mindPath = data.mindPath
+                    for(var i=0;i<data.messageList.length;i++){
+                        data.messageList[i].message = $sce.trustAsHtml(angular.copy(data.messageList[i].message));
+                    }
                     $scope.messageList = $scope.pageData.messageList;
                 })
             };
@@ -142,7 +145,12 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
             //发送消息
             $scope.sendTextMsg = function(){
                 $scope.info.content =  $('#saytext').val();
-                $scope.sendMsg("text",$scope.info.content);
+                if($scope.info.content.indexOf("http")>-1){
+                    $scope.sendMsg("url",$scope.info.content);
+                }else{
+                    $scope.sendMsg("text",$scope.info.content);
+                }
+
             };
             //发送表情
             $scope.getQQExpression = function () {
