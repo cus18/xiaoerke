@@ -175,6 +175,9 @@ public class ScheduleTaskController {
         punchCardDataService.updateByPrimaryKeySelective(punchCardDataVo);
         List<Map<String,Object>> recordVos = punchCardRecordsService.getTodayPayPersonNum(requestMap);
         List batchInsert = new ArrayList();
+        if("0".equalsIgnoreCase(str) || "0.0".equalsIgnoreCase(str) || "0.00".equalsIgnoreCase(str) ){
+            userCash = 1 ;
+        }
         if("on".equalsIgnoreCase(sysPropertyVoWithBLOBsVo.getPunchCardDataSwitch())){
             List batchFalseData = new ArrayList();
             calendar.clear();

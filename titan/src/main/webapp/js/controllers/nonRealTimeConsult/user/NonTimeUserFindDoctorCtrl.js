@@ -51,8 +51,11 @@ angular.module('controllers', []).controller('NonTimeUserFindDoctorCtrl', [
             recordLogs("FSS_YHD_MXYS"+$scope.doctorList[index].userId);
             location.href="consultDoctorHome#/consultDoctorHome/"+$scope.doctorList[index].userId
         }
-        $scope.searchDoctorName = function () {
-            $state.go("NonTimeUserDoctorList", {doctorName: $scope.info.doctorName});
+        $scope.searchDoctorName = function (e) {
+            var keycode = window.event?e.keyCode:e.which;
+            if(keycode==13) {
+                $state.go("NonTimeUserDoctorList", {doctorName: $scope.info.doctorName});
+            }
         }
         
     }]);
