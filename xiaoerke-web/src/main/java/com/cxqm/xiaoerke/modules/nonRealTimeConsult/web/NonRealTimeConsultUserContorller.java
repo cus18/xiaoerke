@@ -365,6 +365,8 @@ public class NonRealTimeConsultUserContorller {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else if("url".equals(msgType)){
+            content = "<a href='"+content+"'>"+content+"</a>";
         }
 
         if (!StringUtils.isNotNull(openid)) {
