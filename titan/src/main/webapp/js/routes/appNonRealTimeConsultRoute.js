@@ -142,7 +142,7 @@ define(['appNonRealTimeConsult'], function(app){
                     })
                     /*医生列表*/
                     .state('NonTimeUserDoctorList', {
-                        url: '/NonTimeUserDoctorList/:department',
+                        url: '/NonTimeUserDoctorList/:department,:doctorName',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'NonTimeUserDoctorListCtrl',
                         resolve: {
