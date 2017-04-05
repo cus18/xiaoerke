@@ -14,6 +14,8 @@ import com.cxqm.xiaoerke.modules.account.exception.AccountNotExistException;
 import com.cxqm.xiaoerke.modules.account.exception.BalanceNotEnoughException;
 import com.cxqm.xiaoerke.modules.account.exception.BusinessPaymentExceeption;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
+import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
+import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
@@ -585,6 +587,23 @@ public class AccountServiceImpl implements AccountService {
         }
         return false;
     }
+//
+//    @Override
+//    public boolean updatePayInfoByBabyCoin(BabyCoinVo babyCoinVo, String openId,float babyCoin) {
+//        babyCoinVo.setCash(babyCoinVo.getCash() - (long)babyCoin);
+//        babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
+//        BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
+//        babyCoinRecordVo.setBalance(-babyCoin);
+//        babyCoinRecordVo.setCreateTime(new Date());
+//        babyCoinRecordVo.setCreateBy(openId);
+//        babyCoinRecordVo.setOpenId(openId);
+//        babyCoinRecordVo.setSessionId(sessionRedisCache.getSessionIdByUserId(openId));
+//        babyCoinRecordVo.setSource("consultPay");
+//        babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
+//
+//
+//        return false;
+//    }
 
     /**
      * jiangzg 2017-3-1 16:56:43 发红包、退款
