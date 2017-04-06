@@ -125,8 +125,8 @@ public class AccountServiceImpl implements AccountService {
     @Transactional(rollbackFor = Exception.class)
     public void returnUserMoney(Map<String, Object> params, Map<String, Object> response, HttpServletRequest request, HttpSession session)
             throws BalanceNotEnoughException, BusinessPaymentExceeption {
-        Integer takeCashOut = Integer.parseInt((String) params.get("takeCashOut"));
-        Float returnMoney = Float.valueOf(takeCashOut) * 100;
+        Double takeCashOut = Double.valueOf((String) params.get("takeCashOut"));
+        Float returnMoney = takeCashOut.floatValue() * 100;
         //判断用于余额
         Float accountMoney = accountFund(UserUtils.getUser().getId());
         if (accountMoney >= returnMoney) {
