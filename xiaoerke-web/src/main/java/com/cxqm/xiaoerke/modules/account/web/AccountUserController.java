@@ -262,8 +262,8 @@ public class AccountUserController {
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         HashMap<String, Object> response = new HashMap<String, Object>();
         String openId = WechatUtil.getOpenId(session, request);
-        float payCount = Float.valueOf(String.valueOf(request.getParameter("payPrice")));//支付的金额
-        float babyCoinNumber = Float.valueOf(String.valueOf(request.getParameter("babyCoinNumber")));//使用宝宝币抵扣的金额
+        Double payCount = Double.valueOf(String.valueOf(request.getParameter("payPrice")));//支付的金额
+        Double babyCoinNumber = Double.valueOf(String.valueOf(request.getParameter("babyCoinNumber")));//使用宝宝币抵扣的金额
         BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
         BabyCoinVo babyCoinVo = new BabyCoinVo();
         babyCoinVo.setOpenId(openId);
@@ -285,16 +285,15 @@ public class AccountUserController {
 
         //此支付只有四种情况 1、9.9金额 0宝宝币 2、4.9金额 50宝宝币 3、25金额 0宝宝币  4、12.5金额 125宝宝币
         //新增一种支付 128元 0宝宝币 64元   640宝宝币
-
-        boolean canPay1 = (payCount == PayType1SumMoney && babyCoinNumber == 0f);
-        boolean canPay2 = (payCount == payType1ActualMoney && babyCoinNumber == PayType1UseBabycoin) && babyCoinNumber  <= babyCoinVo.getCash();
-        boolean canPay3 = payCount == PayType2SumMoney && babyCoinNumber == 0f;
-        boolean canPay4 = (payCount == payType2ActualMoney && babyCoinNumber == PayType2UseBabycoin && babyCoinNumber  <= babyCoinVo.getCash());
-        boolean canPay5 = payCount == PayType3SumMoney && babyCoinNumber == 0f;
-        boolean canPay6 = (payCount == payType3ActualMoney && babyCoinNumber == PayType3UseBabycoin && babyCoinNumber  <= babyCoinVo.getCash());
+        boolean canPay1 = (payCount.equals(PayType1SumMoney) && babyCoinNumber == 0f);
+        boolean canPay2 = (payCount.equals(payType1ActualMoney) && babyCoinNumber == PayType1UseBabycoin) && babyCoinNumber  <= babyCoinVo.getCash();
+        boolean canPay3 = payCount.equals(PayType2SumMoney)&& babyCoinNumber == 0f;
+        boolean canPay4 = (payCount.equals(payType2ActualMoney) && babyCoinNumber == PayType2UseBabycoin && babyCoinNumber  <= babyCoinVo.getCash());
+        boolean canPay5 = payCount.equals(PayType3SumMoney) && babyCoinNumber == 0f;
+        boolean canPay6 = (payCount.equals(payType3ActualMoney) && babyCoinNumber == PayType3UseBabycoin && babyCoinNumber  <= babyCoinVo.getCash());
         if (canPay1 || canPay3 || canPay5) {
             //获取统一支付接口参数
-            request.setAttribute("payPrice", Float.valueOf(payCount));
+            request.setAttribute("payPrice", payCount.floatValue());
             request.setAttribute("feeType", "doctorConsultPay");
             Map prepayInfo = accountService.getPrepayInfo(request, session, "doctorConsultPay");
 
@@ -307,7 +306,7 @@ public class AccountUserController {
 
             return payParameter;
         } else if (canPay2) {
-           //用宝宝币全额支付
+            //用宝宝币全额支付
             babyCoinVo.setCash(babyCoinVo.getCash() - PayType1UseBabycoin.longValue());
             babyCoinRecordVo.setBalance(-PayType1UseBabycoin);
             totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType2();
