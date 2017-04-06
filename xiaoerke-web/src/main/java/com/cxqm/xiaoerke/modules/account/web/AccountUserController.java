@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.xml.crypto.dom.DOMCryptoContext;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -269,16 +270,16 @@ public class AccountUserController {
         babyCoinVo = babyCoinService.getBabyCoin(response, openId);
         String totleTime  = "";
 
-        float PayType1SumMoney = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney());
-        float PayType1UseBabycoin = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());
-        float payType1ActualMoney = (float) (PayType1SumMoney * 10 - PayType1UseBabycoin) / 10 * 100 / 100;
-        float PayType2SumMoney = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType2SumMoney());
-        float PayType2UseBabycoin = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType2UseBabycoin());
-        float payType2ActualMoney = (float) ((PayType2SumMoney * 10 - PayType2UseBabycoin) / 10 * 100) / 100;
+        Double PayType1SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney());
+        Double PayType1UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());
+        Double payType1ActualMoney = (Double) (PayType1SumMoney * 10 - PayType1UseBabycoin) / 10 * 100 / 100;
+        Double PayType2SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType2SumMoney());
+        Double PayType2UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType2UseBabycoin());
+        Double payType2ActualMoney = (Double) ((PayType2SumMoney * 10 - PayType2UseBabycoin) / 10 * 100) / 100;
 
-        float PayType3SumMoney = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType3SumMoney());
-        float PayType3UseBabycoin = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType3UseBabycoin());
-        float payType3ActualMoney = (float) ((PayType3SumMoney * 10 - PayType3UseBabycoin) / 10 * 100) / 100;
+        Double PayType3SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType3SumMoney());
+        Double PayType3UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType3UseBabycoin());
+        Double payType3ActualMoney = (Double) ((PayType3SumMoney * 10 - PayType3UseBabycoin) / 10 * 100) / 100;
 
 
 
@@ -307,15 +308,15 @@ public class AccountUserController {
             return payParameter;
         } else if (canPay2) {
            //用宝宝币全额支付
-            babyCoinVo.setCash(babyCoinVo.getCash() - (long)PayType1UseBabycoin);
+            babyCoinVo.setCash(babyCoinVo.getCash() - PayType1UseBabycoin.longValue());
             babyCoinRecordVo.setBalance(-PayType1UseBabycoin);
             totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType2();
         }else if (canPay4) {
-            babyCoinVo.setCash(babyCoinVo.getCash() - (long)PayType2UseBabycoin);
+            babyCoinVo.setCash(babyCoinVo.getCash() - PayType2UseBabycoin.longValue());
             babyCoinRecordVo.setBalance(-PayType2UseBabycoin);
             totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTime();
         }else if (canPay6) {
-            babyCoinVo.setCash(babyCoinVo.getCash() - (long)PayType3UseBabycoin);
+            babyCoinVo.setCash(babyCoinVo.getCash() - PayType3UseBabycoin.longValue());
             babyCoinRecordVo.setBalance(-PayType3UseBabycoin);
             totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType3();
         }
