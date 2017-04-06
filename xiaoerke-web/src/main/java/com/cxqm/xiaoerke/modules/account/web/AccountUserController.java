@@ -286,11 +286,11 @@ public class AccountUserController {
         //此支付只有四种情况 1、9.9金额 0宝宝币 2、4.9金额 50宝宝币 3、25金额 0宝宝币  4、12.5金额 125宝宝币
         //新增一种支付 128元 0宝宝币 64元   640宝宝币
         boolean canPay1 = (payCount.equals(PayType1SumMoney) && babyCoinNumber == 0f);
-        boolean canPay2 = (payCount.equals(payType1ActualMoney) && babyCoinNumber == PayType1UseBabycoin) && babyCoinNumber  <= babyCoinVo.getCash();
+        boolean canPay2 = (payCount.equals(payType1ActualMoney) && babyCoinNumber.equals(PayType1UseBabycoin)) && babyCoinNumber  <= babyCoinVo.getCash();
         boolean canPay3 = payCount.equals(PayType2SumMoney)&& babyCoinNumber == 0f;
-        boolean canPay4 = (payCount.equals(payType2ActualMoney) && babyCoinNumber == PayType2UseBabycoin && babyCoinNumber  <= babyCoinVo.getCash());
+        boolean canPay4 = (payCount.equals(payType2ActualMoney) && babyCoinNumber.equals(PayType2UseBabycoin) && babyCoinNumber  <= babyCoinVo.getCash());
         boolean canPay5 = payCount.equals(PayType3SumMoney) && babyCoinNumber == 0f;
-        boolean canPay6 = (payCount.equals(payType3ActualMoney) && babyCoinNumber == PayType3UseBabycoin && babyCoinNumber  <= babyCoinVo.getCash());
+        boolean canPay6 = (payCount.equals(payType3ActualMoney) && babyCoinNumber.equals(PayType3UseBabycoin) && babyCoinNumber  <= babyCoinVo.getCash());
         if (canPay1 || canPay3 || canPay5) {
             //获取统一支付接口参数
             request.setAttribute("payPrice", payCount.floatValue());
