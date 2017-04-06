@@ -84,7 +84,9 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
                     $scope.pageData = data;
                     $scope.mindPath = data.mindPath
                     for(var i=0;i<data.messageList.length;i++){
-                        data.messageList[i].message = $sce.trustAsHtml(angular.copy(data.messageList[i].message));
+                        if("url" == data.messageList[i].messageType){
+                            data.messageList[i].message = $sce.trustAsHtml(angular.copy(data.messageList[i].message));
+                        }
                     }
                     $scope.messageList = $scope.pageData.messageList;
                 })
