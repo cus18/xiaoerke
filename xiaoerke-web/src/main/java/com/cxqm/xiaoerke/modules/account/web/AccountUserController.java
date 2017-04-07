@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.xml.crypto.dom.DOMCryptoContext;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -261,39 +262,38 @@ public class AccountUserController {
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         HashMap<String, Object> response = new HashMap<String, Object>();
         String openId = WechatUtil.getOpenId(session, request);
-        float payCount = Float.valueOf(String.valueOf(request.getParameter("payPrice")));//支付的金额
-        float babyCoinNumber = Float.valueOf(String.valueOf(request.getParameter("babyCoinNumber")));//使用宝宝币抵扣的金额
+        Double payCount = Double.valueOf(String.valueOf(request.getParameter("payPrice")));//支付的金额
+        Double babyCoinNumber = Double.valueOf(String.valueOf(request.getParameter("babyCoinNumber")));//使用宝宝币抵扣的金额
         BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
         BabyCoinVo babyCoinVo = new BabyCoinVo();
         babyCoinVo.setOpenId(openId);
         babyCoinVo = babyCoinService.getBabyCoin(response, openId);
         String totleTime  = "";
 
-        float PayType1SumMoney = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney());
-        float PayType1UseBabycoin = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());
-        float payType1ActualMoney = (float) (PayType1SumMoney * 10 - PayType1UseBabycoin) / 10 * 100 / 100;
-        float PayType2SumMoney = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType2SumMoney());
-        float PayType2UseBabycoin = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType2UseBabycoin());
-        float payType2ActualMoney = (float) ((PayType2SumMoney * 10 - PayType2UseBabycoin) / 10 * 100) / 100;
+        Double PayType1SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1SumMoney());
+        Double PayType1UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType1UseBabycoin());
+        Double payType1ActualMoney = (Double) (PayType1SumMoney * 10 - PayType1UseBabycoin) / 10 * 100 / 100;
+        Double PayType2SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType2SumMoney());
+        Double PayType2UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType2UseBabycoin());
+        Double payType2ActualMoney = (Double) ((PayType2SumMoney * 10 - PayType2UseBabycoin) / 10 * 100) / 100;
 
-        float PayType3SumMoney = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType3SumMoney());
-        float PayType3UseBabycoin = Float.valueOf(sysPropertyVoWithBLOBsVo.getPayType3UseBabycoin());
-        float payType3ActualMoney = (float) ((PayType3SumMoney * 10 - PayType3UseBabycoin) / 10 * 100) / 100;
+        Double PayType3SumMoney = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType3SumMoney());
+        Double PayType3UseBabycoin = Double.valueOf(sysPropertyVoWithBLOBsVo.getPayType3UseBabycoin());
+        Double payType3ActualMoney = (Double) ((PayType3SumMoney * 10 - PayType3UseBabycoin) / 10 * 100) / 100;
 
 
 
         //此支付只有四种情况 1、9.9金额 0宝宝币 2、4.9金额 50宝宝币 3、25金额 0宝宝币  4、12.5金额 125宝宝币
         //新增一种支付 128元 0宝宝币 64元   640宝宝币
-
-        boolean canPay1 = (payCount == PayType1SumMoney && babyCoinNumber == 0f);
-        boolean canPay2 = (payCount == payType1ActualMoney && babyCoinNumber == PayType1UseBabycoin) && babyCoinNumber  <= babyCoinVo.getCash();
-        boolean canPay3 = payCount == PayType2SumMoney && babyCoinNumber == 0f;
-        boolean canPay4 = (payCount == payType2ActualMoney && babyCoinNumber == PayType2UseBabycoin && babyCoinNumber  <= babyCoinVo.getCash());
-        boolean canPay5 = payCount == PayType3SumMoney && babyCoinNumber == 0f;
-        boolean canPay6 = (payCount == payType3ActualMoney && babyCoinNumber == PayType3UseBabycoin && babyCoinNumber  <= babyCoinVo.getCash());
+        boolean canPay1 = (payCount.equals(PayType1SumMoney) && babyCoinNumber == 0f);
+        boolean canPay2 = (payCount.equals(payType1ActualMoney) && babyCoinNumber.equals(PayType1UseBabycoin)) && babyCoinNumber  <= babyCoinVo.getCash();
+        boolean canPay3 = payCount.equals(PayType2SumMoney)&& babyCoinNumber == 0f;
+        boolean canPay4 = (payCount.equals(payType2ActualMoney) && babyCoinNumber.equals(PayType2UseBabycoin) && babyCoinNumber  <= babyCoinVo.getCash());
+        boolean canPay5 = payCount.equals(PayType3SumMoney) && babyCoinNumber == 0f;
+        boolean canPay6 = (payCount.equals(payType3ActualMoney) && babyCoinNumber.equals(PayType3UseBabycoin) && babyCoinNumber  <= babyCoinVo.getCash());
         if (canPay1 || canPay3 || canPay5) {
             //获取统一支付接口参数
-            request.setAttribute("payPrice", Float.valueOf(payCount));
+            request.setAttribute("payPrice", payCount.floatValue());
             request.setAttribute("feeType", "doctorConsultPay");
             Map prepayInfo = accountService.getPrepayInfo(request, session, "doctorConsultPay");
 
@@ -306,16 +306,16 @@ public class AccountUserController {
 
             return payParameter;
         } else if (canPay2) {
-           //用宝宝币全额支付
-            babyCoinVo.setCash(babyCoinVo.getCash() - (long)PayType1UseBabycoin);
+            //用宝宝币全额支付
+            babyCoinVo.setCash(babyCoinVo.getCash() - PayType1UseBabycoin.longValue());
             babyCoinRecordVo.setBalance(-PayType1UseBabycoin);
             totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType2();
         }else if (canPay4) {
-            babyCoinVo.setCash(babyCoinVo.getCash() - (long)PayType2UseBabycoin);
+            babyCoinVo.setCash(babyCoinVo.getCash() - PayType2UseBabycoin.longValue());
             babyCoinRecordVo.setBalance(-PayType2UseBabycoin);
             totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTime();
         }else if (canPay6) {
-            babyCoinVo.setCash(babyCoinVo.getCash() - (long)PayType3UseBabycoin);
+            babyCoinVo.setCash(babyCoinVo.getCash() - PayType3UseBabycoin.longValue());
             babyCoinRecordVo.setBalance(-PayType3UseBabycoin);
             totleTime = sysPropertyVoWithBLOBsVo.getConsultMemberTimeType3();
         }
