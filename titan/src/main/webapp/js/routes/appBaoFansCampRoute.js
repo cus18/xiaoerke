@@ -273,6 +273,24 @@ define(['appBaoFansCamp'], function(app){
                             }
                         }
                     })
+                    /* 2016您与宝大夫的故事*/
+                    .state('recruitShopkeeper', {
+                        url: '/recruitShopkeeper',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'recruitShopkeeperCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.recruitShopkeeperCtrl',
+                                    ['js/controllers/baoFansCamp/recruit/recruitShopkeeperCtrl.js',
+                                        'js/libs/swiper.min.js',
+                                        'js/libs/swiper.animate.min.js',
+                                        'styles/baoFansCamp/story2016/swiper.min.css?ver'+baoFansCampVersion,
+                                        'styles/baoFansCamp/story2016/animate.min.css?ver'+baoFansCampVersion,
+                                        'styles/baoFansCamp/recruit/recruitShopkeeper.less?ver'+baoFansCampVersion],
+                                    'js/views/baoFansCamp/recruit/recruitShopkeeper.html?ver='+baoFansCampVersion);
+                            }
+                        }
+                    })
 
 
 
