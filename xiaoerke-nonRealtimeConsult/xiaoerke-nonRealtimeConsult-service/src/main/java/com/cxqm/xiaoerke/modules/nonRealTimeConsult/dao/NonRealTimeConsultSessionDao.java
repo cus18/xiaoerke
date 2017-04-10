@@ -34,4 +34,6 @@ public interface NonRealTimeConsultSessionDao {
     List<Map<String,Object>> getTimeOutSessionInfo();
 
     List<NonRealTimeConsultSessionVo> unAnswerConsult();
+
+    List<NonRealTimeConsultSessionVo> getNoReplytList();
 }
