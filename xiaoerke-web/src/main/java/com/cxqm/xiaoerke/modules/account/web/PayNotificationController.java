@@ -29,6 +29,8 @@ import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
+import com.cxqm.xiaoerke.modules.sys.utils.DoctorMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.PatientMsgTemplate;
 import com.cxqm.xiaoerke.modules.sys.utils.WechatMessageUtil;
@@ -111,6 +113,9 @@ public class PayNotificationController {
 
     @Autowired
     private NonRealTimeConsultService nonRealTimeConsultService;
+
+    @Autowired
+    private UserInfoService userInfoService;
 
     private static Lock lock = new ReentrantLock();
 
@@ -768,6 +773,9 @@ public class PayNotificationController {
                     nonRealTimeConsultService.updateConsultSessionInfo(sessionVo);
                     //通知相关医生来回答--模板消息
                     nonRealTimeConsultService.sendRemindDoctor(sessionVo.getCsUserId(),sessionVo.getUserName(),String.valueOf(sessionVo.getId()));
+
+                    HashMap<String, Object> perInfo = userInfoService.findPersonDetailInfoByUserId(sessionVo.getCsUserId());
+                    DoctorMsgTemplate.nonRealtimeConsult2Sms((String) perInfo.get("login_name"),sessionVo.getCsUserName(),sessionVo.getUserName());
                 }
             }
             return XMLUtil.setXML("SUCCESS", "");
