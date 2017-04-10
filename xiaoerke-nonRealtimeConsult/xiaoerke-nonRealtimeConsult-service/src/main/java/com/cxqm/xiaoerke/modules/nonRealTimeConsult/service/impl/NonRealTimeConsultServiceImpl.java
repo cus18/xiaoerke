@@ -344,4 +344,10 @@ public class NonRealTimeConsultServiceImpl implements NonRealTimeConsultService 
         nonRealTimeConsultSessionDao.sessinTimeOut();
     }
 
+    @Override
+    public List<NonRealTimeConsultSessionVo> getNoReplytList() {
+        return nonRealTimeConsultSessionDao.getNoReplytList();
+    }
+
+
 }
