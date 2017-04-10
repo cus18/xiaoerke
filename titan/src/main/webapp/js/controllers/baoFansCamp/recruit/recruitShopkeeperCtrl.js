@@ -12,28 +12,26 @@
         $scope.skipTop =function(){
             $(".slide61").hide();
             $(".swiper-pagination").hide();
-           /* $(".fillWrap").css("top","20px");
-            $scope.topValue=$(".fillWrap").css();*/
+
         };
         // 输入框数 失去焦点事件
         $scope.skipOriginal =function(){
             $(".slide61").show();
             $(".swiper-pagination").show();
-           /* $(".fillWrap").css("top",$scope.topValue+"px");*/
         };
 
 
         $scope.$on('$ionicView.enter',function() {
-            /*var pageHeight=document.body.clientHeight;*/
+
             var pageHeight=$(window).height();
              $(".swiper-container").css("height",pageHeight+"px");
             console.log("手机屏幕高度",pageHeight);
 
-            getUser2016Data.save({},function (data) {
+           /* getUser2016Data.save({},function (data) {
                 console.log("2016数据",data);
 
 
-            });
+            });*/
             var scaleW=window.innerWidth/320;
             var scaleH=window.innerHeight/480;
             var resizes = document.querySelectorAll('.resize');
