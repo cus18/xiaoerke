@@ -3,10 +3,25 @@
     function ($scope,$state,$stateParams,getUser2016Data) {
         $scope.dataShopkeeper = {};//店长填写的信息
         $scope.topValue = "";//填写框距离顶部的值
+        var recordLogs = function(val){
+            $.ajax({
+                url:"util/recordLogs",// 跳转到 action
+                async:true,
+                type:'get',
+                data:{logContent:encodeURI(val)},
+                cache:false,
+                dataType:'json',
+                success:function(data) {
+                },
+                error : function() {
+                }
+            });
+        }
 
         // 点击 立即申请
         $scope.commitInfo =function(){
             console.log("店长填写信息显示", $scope.dataShopkeeper);
+            recordLogs("dianzhang_"+$scope.dataShopkeeper);
         };
         // 输入框 获取焦点事件
         $scope.skipTop =function(){

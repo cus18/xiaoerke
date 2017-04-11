@@ -12,11 +12,13 @@ import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultRec
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo;
 import com.cxqm.xiaoerke.modules.nonRealTimeConsult.service.NonRealTimeConsultService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
+import com.cxqm.xiaoerke.modules.sys.entity.Log;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
 import com.cxqm.xiaoerke.modules.sys.entity.WechatBean;
 import com.cxqm.xiaoerke.modules.sys.service.BabyBaseInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -170,8 +172,10 @@ public class NonRealTimeConsultUserContorller {
             resultMap = nonRealTimeConsultUserService.createSession(babyId, csUserId, openid, content);
             nonRealTimeConsultUserService.saveCustomerEvaluation(openid, csUserId, (Integer) resultMap.get("sessionId") + "");
         } catch (Exception e) {
+            LogUtils.saveLog("createSessionError",e.getMessage());
+            e.printStackTrace();
             resultMap.put("status", "error");
-            resultMap.put("msg", "未获取到用户的相关信息,请重新打开页面");
+            resultMap.put("msg", "创建会话失败,请联系客服人员");
         }
         return resultMap;
     }

@@ -103,4 +103,6 @@ public interface NonRealTimeConsultService {
     NonRealTimeConsultSessionVo getSessionInfoById(Integer id);
 
     void nonTimeConsultRefund();
+
+    List<NonRealTimeConsultSessionVo> getNoReplytList();
 }

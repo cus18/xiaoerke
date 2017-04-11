@@ -436,4 +436,14 @@ and cv.evaluateSource = 'nonRealtimeConsult'
   and ntc.bak_1 is null
   and ntc.`status` = 'ongoing'
   </select>
+
+  <select id="getNoReplytList" resultMap="ResultMapWithBLOBs" parameterType="com.cxqm.xiaoerke.modules.nonRealTimeConsult.entity.NonRealTimeConsultSessionVo">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    non_real_time_consult_session ntc
+    WHERE
+    and ntc.bak_1 is null
+    and ntc.`status` = 'ongoing'
+  </select>
 </mapper>
