@@ -21,7 +21,7 @@
         // 点击 立即申请
         $scope.commitInfo =function(){
             console.log("店长填写信息显示", $scope.dataShopkeeper);
-            recordLogs("dianzhang_"+$scope.dataShopkeeper);
+            recordLogs("dianzhang_"+$scope.dataShopkeeper.name+"|"+$scope.dataShopkeeper.tel+"|"+$scope.dataShopkeeper.wechat);
         };
         // 输入框 获取焦点事件
         $scope.skipTop =function(){
