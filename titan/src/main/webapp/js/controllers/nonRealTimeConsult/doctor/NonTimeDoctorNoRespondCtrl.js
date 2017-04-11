@@ -1,14 +1,7 @@
 angular.module('controllers', []).controller('NonTimeDoctorNoRespondCtrl', [
     '$scope', '$state', '$timeout', '$http', 'GetDoctorLoginStatus','GetDoctorService','GetConfig',
     function ($scope, $state, $timeout, $http, GetDoctorLoginStatus,GetDoctorService,GetConfig) {
-        $scope.selectItem = "cur";
-        // 选择 头部的当前服务和全部服务
-        $scope.selectService = function (item) {
-            $scope.selectItem = item;
-        };
-        $scope.goConversationPage = function (sessionid){
-            $state.go('NonTimeDoctorConversation',{"sessionId":sessionid});
-        }//http://s201.xiaork.com/titan/nonRealTimeConsult#/NonTimeDoctorConversation,95
+
         //页面初始化
         $scope.NonTimeDoctorNoRespondInit = function () {
             //校验是否登陆
