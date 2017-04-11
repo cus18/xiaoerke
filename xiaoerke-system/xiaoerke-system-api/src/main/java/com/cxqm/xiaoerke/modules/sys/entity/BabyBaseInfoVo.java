@@ -17,6 +17,8 @@ public class BabyBaseInfoVo {
 
     private String userid;
 
+    private Date creatTime;
+
     public Integer getId() {
         return id;
     }
@@ -71,5 +73,13 @@ public class BabyBaseInfoVo {
 
     public void setUserid(String userid) {
         this.userid = userid;
+    }
+
+    public Date getCreatTime() {
+        return creatTime;
+    }
+
+    public void setCreatTime(Date creatTime) {
+        this.creatTime = creatTime;
     }
 }
