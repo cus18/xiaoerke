@@ -153,7 +153,6 @@ public class NonRealTimeConsultUserContorller {
                     }
                 }
             }
-            babyId = null;
             if (!StringUtils.isNotNull(babyId)) {
                 BabyBaseInfoVo vo = new BabyBaseInfoVo();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
