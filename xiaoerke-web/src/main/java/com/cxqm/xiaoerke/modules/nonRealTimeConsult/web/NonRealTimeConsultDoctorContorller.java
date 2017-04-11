@@ -174,6 +174,8 @@ public class NonRealTimeConsultDoctorContorller {
                 nonRealTimeConsultService.selectByNonRealTimeConsultSessionVo(realTimeConsultSessionVo);
         if (nonRealTimeConsultSessionVos != null && nonRealTimeConsultSessionVos.size() > 0) {
             for (NonRealTimeConsultSessionVo nonRealTimeConsultSessionVo : nonRealTimeConsultSessionVos) {
+                if("wait".equals(nonRealTimeConsultSessionVo.getStatus())) continue;
+
                 if (DateUtils.pastHour(nonRealTimeConsultSessionVo.getLastMessageTime()) > 24) {
                     nonRealTimeConsultSessionVo.setDispalyTimes(DateUtils.DateToStr(nonRealTimeConsultSessionVo.getLastMessageTime(), "monthDate"));
                 } else {
