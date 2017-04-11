@@ -164,9 +164,8 @@ public class NonRealTimeConsultUserContorller {
                 }
                 vo.setSex((String) params.get("sex"));
                 vo.setOpenid(openid);
-//            int idBaby = nonRealTimeConsultUserService.saveBabyBaseInfo(vo);
-                BabyBaseInfoVo babyInfo = babyBaseInfoService.insertssBean(vo);
-                babyId = babyInfo.getId() + "";
+                babyBaseInfoService.insertssBean(vo);
+                babyId = vo.getId()+ "";
 //            创建评价记录
             }
             resultMap = nonRealTimeConsultUserService.createSession(babyId, csUserId, openid, content);

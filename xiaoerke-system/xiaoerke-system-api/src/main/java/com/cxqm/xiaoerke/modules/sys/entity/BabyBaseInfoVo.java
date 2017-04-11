@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.sys.entity;
 import java.util.Date;
 
 public class BabyBaseInfoVo {
+
     private Integer id;
 
     private String name;
@@ -16,6 +17,8 @@ public class BabyBaseInfoVo {
     private String state;
 
     private String userid;
+
+    private Date creatTime;
 
     public Integer getId() {
         return id;
@@ -71,5 +74,13 @@ public class BabyBaseInfoVo {
 
     public void setUserid(String userid) {
         this.userid = userid;
+    }
+
+    public Date getCreatTime() {
+        return creatTime;
+    }
+
+    public void setCreatTime(Date creatTime) {
+        this.creatTime = creatTime;
     }
 }

@@ -23,7 +23,7 @@
                     </li>
                 </ul>
                 <ul class="all" ng-if="selectItem=='all'">
-                    <li class="bg1" ng-repeat="item in allServiceList" ng-click="goConversationPage(item.id)" ng-hide="item.status=='wait'>
+                    <li class="bg1" ng-repeat="item in allServiceList" ng-click="goConversationPage(item.id)" ng-hide="item.status=='wait'">
                         <img ng-if="item.status=='sessionend'" class="state" width="37" height="37" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/state0.png">
                         <img  ng-if="item.status=='ongoing'" class="state" width="37" height="37" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/{{item.lastMessageType=='doctor' ? 'state2': 'state1'}}.png">
                         <div class="pic tc" >
