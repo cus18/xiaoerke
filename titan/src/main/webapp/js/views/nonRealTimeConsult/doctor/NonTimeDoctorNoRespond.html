@@ -1,0 +1,27 @@
+<ion-view view-title="消息列表" ng-init="NonTimeDoctorNoRespondInit()">
+    <ion-spinner ng-show="pageLoading" icon="bubbles"  class="loadPic"></ion-spinner>
+    <ion-content class="NonTimeDoctorNoRespond historyList" style="top:0;">
+        <ion-scroll direction="y" has-bouncing="true">
+            <div class="message-list">
+                <ul class="" >
+                    <li class="bg1" ng-repeat="item in allServiceList"  ng-if="item.status=='ongoing' && item.lastMessageType=='doctor'">
+                        <div class="which-doctor f4 c3">
+                            宝妈（微信名）向<span class="bold">梁平</span>医生提问
+                            <img  class="state" width="44" height="44" ng-src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/state1.png">
+                        </div>
+                        <div class="question-detail">
+                            <div class="pic tc" >
+                                <img class="radius" width="50" height="50" ng-src="{{item.headImgUrl}}">
+                                <div class="f2 c4">{{item.dispalyTimes}}</div>
+                            </div>
+                            <div class="text" >
+                                <div class="info f4 c3">{{item.babyInfo}}</div>
+                                <div class="message f4 c3" ng-bind-html="item.lastMessageContent|emotionReceive:'text'"></div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>

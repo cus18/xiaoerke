@@ -72,6 +72,26 @@ define(['appNonRealTimeConsult'], function(app){
                             }
                         }
                     })
+                    .state('NonTimeDoctorNoRespond', {
+                        url: '/NonTimeDoctorNoRespond',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'NonTimeDoctorNoRespondCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.NonTimeDoctorNoRespondCtrl',
+                                    [
+                                        'js/libs/lodash.min.js',
+                                        'js/libs/scrollglue.js',
+                                        'js/libs/angular-file-upload-shim.min.js',
+                                        'js/libs/angular-file-upload.min.js',
+                                        'js/libs/jquery.qqFace.js',
+                                        'js/controllers/nonRealTimeConsult/doctor/NonTimeDoctorNoRespondCtrl.js?ver='+nonRealTimeConsultVersion,
+                                        'styles/nonRealTimeConsult/doctor/NonTimeHistoryRecord.less?ver='+nonRealTimeConsultVersion,
+                                        'styles/nonRealTimeConsult/doctor/NonTimeDoctorNoRespond.less?ver='+nonRealTimeConsultVersion],
+                                    'js/views/nonRealTimeConsult/doctor/NonTimeDoctorNoRespond.html?ver='+nonRealTimeConsultVersion);
+                            }
+                        }
+                    })
                    /* 用户端*/
                     /*咨询详情*/
                     .state('NonTimeUserConversation', {
