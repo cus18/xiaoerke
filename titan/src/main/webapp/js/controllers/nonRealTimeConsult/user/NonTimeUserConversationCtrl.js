@@ -89,6 +89,8 @@ var app = angular.module('controllers', ['ngFileUpload']).controller('NonTimeUse
                         }
                     }
                     $scope.messageList = $scope.pageData.messageList;
+                    console.log(" $scope.messageList 数据显示", $scope.messageList);
+                    console.log(" $scope.pageData.messageList; 数据显示", $scope.pageData.messageList);
                 })
             };
             //发送消息
