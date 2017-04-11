@@ -43,5 +43,5 @@ public interface BabyBaseInfoService {
 
     BabyBaseInfoVo selectLastBabyInfo(String  openid);
 
-    BabyBaseInfoVo insertssBean(BabyBaseInfoVo record);
+    Integer insertssBean(BabyBaseInfoVo record);
 }

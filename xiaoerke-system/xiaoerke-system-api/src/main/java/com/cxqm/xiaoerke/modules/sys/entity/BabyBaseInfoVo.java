@@ -3,6 +3,7 @@ package com.cxqm.xiaoerke.modules.sys.entity;
 import java.util.Date;
 
 public class BabyBaseInfoVo {
+
     private Integer id;
 
     private String name;
