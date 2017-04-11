@@ -93,7 +93,7 @@ public class BabyBaseInfoServiceImpl implements BabyBaseInfoService {
     }
 
     @Override
-    public BabyBaseInfoVo insertssBean(BabyBaseInfoVo record) {
+    public Integer insertssBean(BabyBaseInfoVo record) {
         return babyBaseInfoDao.insertBean(record);
     }
 }
