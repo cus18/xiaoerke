@@ -273,7 +273,7 @@ define(['appBaoFansCamp'], function(app){
                             }
                         }
                     })
-                    /* 2016您与宝大夫的故事*/
+                    /* 店长招聘*/
                     .state('recruitShopkeeper', {
                         url: '/recruitShopkeeper',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -291,6 +291,21 @@ define(['appBaoFansCamp'], function(app){
                             }
                         }
                     })
+                    /* 英语活动*/
+                    .state('activityEnglish', {
+                        url: '/activityEnglish',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'activityEnglishCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.activityEnglishCtrl',
+                                    ['js/controllers/baoFansCamp/other/activityEnglishCtrl.js',
+                                        'styles/baoFansCamp/other/activityEnglish.less?ver'+baoFansCampVersion],
+                                    'js/views/baoFansCamp/other/activityEnglish.html?ver='+baoFansCampVersion);
+                            }
+                        }
+                    })
+
 
 
 
