@@ -2,7 +2,8 @@
     '$scope','$state','$stateParams','getUser2016Data',
     function ($scope,$state,$stateParams,getUser2016Data) {
         $scope.dataShopkeeper = {};//店长填写的信息
-        $scope.topValue = "";//填写框距离顶部的值
+        $scope.dataShopkeeper = {};//店长填写的信息
+        $scope.remindLock = false;//提示完成 的框是否显示
         var recordLogs = function(val){
             $.ajax({
                 url:"util/recordLogs",// 跳转到 action
@@ -20,9 +21,32 @@
 
         // 点击 立即申请
         $scope.commitInfo =function(){
-            console.log("店长填写信息显示", $scope.dataShopkeeper);
-            recordLogs("dianzhang_"+$scope.dataShopkeeper.name+"|"+$scope.dataShopkeeper.tel+"|"+$scope.dataShopkeeper.wechat);
+            console.log("点击提交时 店长填写信息显示", $scope.dataShopkeeper);
+            if($scope.dataShopkeeper.name==" " || $scope.dataShopkeeper.name==undefined){
+                alert("请填写 联系人姓名");
+            }
+            else if($scope.dataShopkeeper.tel==" "|| $scope.dataShopkeeper.tel==undefined){
+                alert("请填写 手机号");
+            }
+            else if($scope.dataShopkeeper.wechat==""|| $scope.dataShopkeeper.wechat==undefined){
+                alert("请填写 微信名");
+            }
+            else{
+                $(".c-shadow").fadeIn(500,function(){
+                });
+                $(".remind-finish").fadeIn(800,function(){
+                });
+                setTimeout(myFadeOut, 5000);
+
+                console.log("全部填写完 店长填写信息显示", $scope.dataShopkeeper);
+                recordLogs("dianzhang_"+$scope.dataShopkeeper.name+"|"+$scope.dataShopkeeper.tel+"|"+$scope.dataShopkeeper.wechat);
+            }
+
         };
+        var myFadeOut=function(){
+            $(".remind-finish").fadeOut(500,function(){});
+            $(".c-shadow").fadeOut(500,function(){});
+        }
         // 输入框 获取焦点事件
         $scope.skipTop =function(){
             $(".slide61").hide();
@@ -42,11 +66,6 @@
              $(".swiper-container").css("height",pageHeight+"px");
             console.log("手机屏幕高度",pageHeight);
 
-           /* getUser2016Data.save({},function (data) {
-                console.log("2016数据",data);
-
-
-            });*/
             var scaleW=window.innerWidth/320;
             var scaleH=window.innerHeight/480;
             var resizes = document.querySelectorAll('.resize');
