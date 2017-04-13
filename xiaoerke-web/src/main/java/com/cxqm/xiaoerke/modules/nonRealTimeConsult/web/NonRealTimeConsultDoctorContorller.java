@@ -349,7 +349,10 @@ public class NonRealTimeConsultDoctorContorller {
         Map parameter = systemService.getWechatParameter();
         String token = (String) parameter.get("token");
         for(NonRealTimeConsultSessionVo vo : list){
-//            String[] messageInfo = vo.getLastMessageContent().split("\\#");
+            String[] messageInfo = vo.getLastMessageContent().split("\\#");
+            if(messageInfo.length == 3){
+                vo.setLastMessageContent(messageInfo[2]);
+            }
             String babyBaseInfo = "";
             BabyBaseInfoVo babyBaseInfoVo = nonRealTimeConsultUserService.getBabyInfoById(vo.getBak2());
             if(null != babyBaseInfoVo){
