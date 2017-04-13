@@ -7,20 +7,20 @@ angular.module('controllers', []).controller('NonTimeDoctorNoRespondCtrl', [
             //校验是否登陆
             GetDoctorLoginStatus.save({}, function (data) {
                 $scope.pageLoading = false;
-                if (data.status == "failure") {
-                    GetConfig.save({}, function (data) {
-                        window.location.href = data.publicSystemInfo.nonRealtimeLoginUrl;
-                    })
-                }else if(data.status == "success"){
+                // if (!data.status == "failure") {
+                    // GetConfig.save({}, function (data) {
+                    //     window.location.href = data.publicSystemInfo.nonRealtimeLoginUrl;
+                    // })
+                // }else if(!data.status == "success"){
 
                     GetNoReplytList.save({}, function (data) {
                         $scope.allServiceList = data.ListInfo;
                         console.log("allService 数据显示 ",data.ListInfo);
                     });
 
-                }else {
-                    alert("非系统咨询医生，请联系接诊员！");
-                }
+                // }else {
+                //     alert("非系统咨询医生，请联系接诊员！");
+                // }
             });
         };
 

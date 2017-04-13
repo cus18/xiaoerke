@@ -346,7 +346,7 @@ public class NonRealTimeConsultDoctorContorller {
     public Map getNoReplytList() {
         Map<String, Object> response = new HashMap<String, Object>();
         List<NonRealTimeConsultSessionVo> list = nonRealTimeConsultService.getNoReplytList();
-        response.put("list",list);
+        response.put("ListInfo",list);
         return response;
     }
 
