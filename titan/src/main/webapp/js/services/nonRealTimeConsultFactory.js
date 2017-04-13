@@ -74,6 +74,11 @@ define(['appNonRealTimeConsult'], function (app) {
             return "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getDoctorWechatMenId?url=6";
         })
 
+        //未回复会话列表
+        .factory('GetNoReplytList',['$resource',function ($resource){
+            return $resource(path_doc + 'getNoReplytList');
+        }])
+
 
         .factory('GetConfig',['$resource',function ($resource){
             return $resource('util/getConfig');

@@ -1,6 +1,6 @@
 angular.module('controllers', []).controller('NonTimeDoctorNoRespondCtrl', [
-    '$scope', '$state', '$timeout', '$http', 'GetDoctorLoginStatus','GetDoctorService','GetConfig',
-    function ($scope, $state, $timeout, $http, GetDoctorLoginStatus,GetDoctorService,GetConfig) {
+    '$scope', '$state', '$timeout', '$http', 'GetDoctorLoginStatus','GetNoReplytList','GetConfig',
+    function ($scope, $state, $timeout, $http, GetDoctorLoginStatus,GetNoReplytList,GetConfig) {
 
         //页面初始化
         $scope.NonTimeDoctorNoRespondInit = function () {
@@ -13,7 +13,7 @@ angular.module('controllers', []).controller('NonTimeDoctorNoRespondCtrl', [
                     })
                 }else if(data.status == "success"){
 
-                    GetDoctorService.save({serviceType:"allService",csUserId:data.csUserId}, function (data) {
+                    GetNoReplytList.save({}, function (data) {
                         $scope.allServiceList = data.ListInfo;
                         console.log("allService 数据显示 ",data.ListInfo);
                     });
