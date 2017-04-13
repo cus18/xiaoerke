@@ -346,6 +346,17 @@ public class NonRealTimeConsultDoctorContorller {
     public Map getNoReplytList() {
         Map<String, Object> response = new HashMap<String, Object>();
         List<NonRealTimeConsultSessionVo> list = nonRealTimeConsultService.getNoReplytList();
+        Map parameter = systemService.getWechatParameter();
+        String token = (String) parameter.get("token");
+        for(NonRealTimeConsultSessionVo vo : list){
+            String[] messageInfo = vo.getLastMessageContent().split("\\#");
+            String babyBaseInfo = "";
+            BabyBaseInfoVo babyBaseInfoVo = nonRealTimeConsultUserService.getBabyInfoById(vo.getBak2());
+            babyBaseInfo = babyBaseInfoVo.getSex().equals("0") ? "女  " + messageInfo[1] : "男  " +DateUtils.DateToStr(babyBaseInfoVo.getBirthday(),"yyyy-MM-dd");
+            vo.setBak1(babyBaseInfo);
+            WechatBean wechatInfo = WechatUtil.getWechatName(token, vo.getUserId());
+            vo.setHeadImgUrl(wechatInfo.getHeadimgurl());
+        }
         response.put("ListInfo",list);
         return response;
     }
