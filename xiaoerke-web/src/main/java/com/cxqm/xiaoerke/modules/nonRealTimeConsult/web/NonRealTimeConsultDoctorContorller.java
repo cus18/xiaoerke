@@ -337,4 +337,18 @@ public class NonRealTimeConsultDoctorContorller {
     }
 
 
+    /**
+     * 获取未回复会话状态
+     * @return
+     */
+    @RequestMapping(value = "/getNoReplytList", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public Map getNoReplytList() {
+        Map<String, Object> response = new HashMap<String, Object>();
+        List<NonRealTimeConsultSessionVo> list = nonRealTimeConsultService.getNoReplytList();
+        response.put("list",list);
+        return response;
+    }
+
+
 }
