@@ -353,7 +353,6 @@ public class NonRealTimeConsultDoctorContorller {
             String babyBaseInfo = "";
             BabyBaseInfoVo babyBaseInfoVo = nonRealTimeConsultUserService.getBabyInfoById(vo.getBak2());
             if(null != babyBaseInfoVo){
-//                babyBaseInfo = babyBaseInfoVo.getSex().equals("0") ? "女  " : "男  " +DateUtils.DateToStr(babyBaseInfoVo.getBirthday(),"yyyy-MM-dd");
                 Date babyBirthday = babyBaseInfoVo.getBirthday();
                 int babyBirthdayYear = babyBirthday.getYear();
                 int babyBirthdayMonth = babyBirthday.getMonth();
@@ -372,7 +371,7 @@ public class NonRealTimeConsultDoctorContorller {
                 } else {
                     babyName = "";
                 }
-                String sex = babyBaseInfoVo.getSex().equals("1") ? "女" : "男";
+                String sex = babyBaseInfoVo.getSex().equals("1") ? "男" : "女";
 
                 babyBaseInfo = sex + babyName + (nowDateYear - babyBirthdayYear) + "岁" + chaDate + "个月";
             }
