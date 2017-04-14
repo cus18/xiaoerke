@@ -2,7 +2,9 @@ package com.cxqm.xiaoerke.modules.wechat.service.impl;
 
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
+import com.cxqm.xiaoerke.modules.activity.entity.EnglishActivityVo;
 import com.cxqm.xiaoerke.modules.activity.entity.RedpackageActivityInfoVo;
+import com.cxqm.xiaoerke.modules.activity.service.EnglishActivityService;
 import com.cxqm.xiaoerke.modules.activity.service.RedPackageActivityInfoService;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.*;
@@ -88,6 +90,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
 
     @Autowired
     LoveMarketingService loveMarketingService;
+
+    @Autowired
+    private EnglishActivityService englishActivityService;
 
 //    @Autowired
 //    private VaccineService vaccineService;
@@ -1136,6 +1141,15 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
                 String sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), newOpenId, msg.toString());
                 LogUtils.saveLog("ZQTZ_XYH", newOpenId+ "--" + msg.toString());
+            }else if (marketer.startsWith("188")) {
+                //退消息 邀请书加1
+                Map parameter = systemService.getBaoEnglishParameter();
+                token = (String) parameter.get("token");
+                EnglishActivityVo vo = englishActivityService.selectByPrimaryKey(Integer.parseInt(marketer));
+                vo.setInviteNum(vo.getInviteNum()+1);
+                englishActivityService.updateByPrimaryKeySelective(vo);
+                String param = "宝妈你好,你已邀请"+vo.getInviteNum()+"宝妈加入";
+                WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),param);
             }
         }
     }
