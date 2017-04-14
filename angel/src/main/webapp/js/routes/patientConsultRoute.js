@@ -77,6 +77,22 @@ define(['appPatientConsult'], function(app){
                             public: true
                         }
                     })
+                    .state('helpYouChooseFromYouZan', {
+                        url: '/helpYouChooseFromYouZan',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'helpYouChooseFromYouZanCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'helpYouChooseFromYouZanCtrl',
+                                    ['js/controllers/helpYouChooseFromYouZanCtrl.js',
+                                        'js/styles/helpYouChooseFromYouZan.css'],
+                                    'js/views/helpYouChooseFromYouZan.html?ver='+patientConsultVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
                     .state('patientConsultMontageUnique', {
                         url: '/patientConsultMontageUnique/:userId,:name,:headImg',
                         templateProvider: function() { return lazyDeferred.promise; },
