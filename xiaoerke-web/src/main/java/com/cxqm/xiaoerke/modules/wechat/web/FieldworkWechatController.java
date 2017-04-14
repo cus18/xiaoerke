@@ -494,7 +494,7 @@ public class FieldworkWechatController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/fieldwork/wechat/doctorAuthor", method = RequestMethod.GET)
+    @RequestMapping(value = "/fieldwork/wechat/babyEnglisAuthor", method = RequestMethod.GET)
     public String babyEnglisAuthor(HttpServletRequest request) {
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         String backUrl = request.getParameter("url");
