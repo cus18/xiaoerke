@@ -1,6 +1,6 @@
 ﻿angular.module('controllers', ['ionic']).controller('activityEnglishCtrl', [
-        '$scope','$state','$stateParams',
-        function ($scope,$state,$stateParams) {
+        '$scope','$state','$stateParams','Englisactivity',
+        function ($scope,$state,$stateParams,Englisactivity) {
 
 
             /*调用微信分享*/
@@ -84,5 +84,9 @@
 
             $scope.$on('$ionicView.enter', function(){
                 $scope.loadShare();
+                Englisactivity.save({},function (data) {
+                    $scope.market = data.market;
+                    $scope.userQRCode = data.userQRCode;
+                })
             })
     }])
