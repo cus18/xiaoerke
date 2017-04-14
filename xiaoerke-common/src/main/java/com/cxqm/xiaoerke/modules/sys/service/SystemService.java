@@ -415,6 +415,10 @@ public class SystemService extends BaseService {
 	public Map<String, Object> getDoctorWechatParameter(){
 		return systemDao.getDoctorWechatParameter();
 	}
+
+	public Map<String, Object> getBaoEnglishParameter(){
+		return systemDao.getDoctorWechatParameter();
+	}
 	
 	public List<String> findPermissionsByUserId(String id) {
         List<String> permissions = new ArrayList<String>();
