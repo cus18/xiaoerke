@@ -181,6 +181,22 @@ public class OlyGamesServiceImpl implements OlyGamesService {
     }
 
     /**
+     * 获取邀请卡二维码链接
+     * @param id
+     * @return
+     */
+    @Override
+    public String getUserQRCode(String id,String token) {
+        String url= "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+token;
+        String jsonData="{\"expire_seconds\": 604800, \"action_name\": \"QR_SCENE\",\"action_info\": {\"scene\": {\"scene_id\"" + ":" + Integer.parseInt(id) + "}}}";
+        String reJson=this.post(url, jsonData,"POST");
+        System.out.println(reJson);
+        JSONObject jb=JSONObject.fromObject(reJson);
+        String qrTicket=jb.getString("ticket");
+        String QRCodeURI="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+qrTicket;
+        return QRCodeURI;
+    }
+    /**
      * 发送HttpPost请求
      *
      * @param strURL

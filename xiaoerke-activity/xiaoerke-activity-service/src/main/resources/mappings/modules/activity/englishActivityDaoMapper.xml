@@ -17,6 +17,14 @@
     from english_activity
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByopenId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from english_activity
+    where openid = #{openid,jdbcType=INTEGER}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from english_activity
     where id = #{id,jdbcType=INTEGER}
