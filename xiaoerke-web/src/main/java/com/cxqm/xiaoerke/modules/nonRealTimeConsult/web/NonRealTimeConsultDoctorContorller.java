@@ -350,9 +350,34 @@ public class NonRealTimeConsultDoctorContorller {
         String token = (String) parameter.get("token");
         for(NonRealTimeConsultSessionVo vo : list){
             String[] messageInfo = vo.getLastMessageContent().split("\\#");
+            if(messageInfo.length == 3){
+                vo.setLastMessageContent(messageInfo[2]);
+            }
             String babyBaseInfo = "";
             BabyBaseInfoVo babyBaseInfoVo = nonRealTimeConsultUserService.getBabyInfoById(vo.getBak2());
-            babyBaseInfo = babyBaseInfoVo.getSex().equals("0") ? "女  " + messageInfo[1] : "男  " +DateUtils.DateToStr(babyBaseInfoVo.getBirthday(),"yyyy-MM-dd");
+            if(null != babyBaseInfoVo){
+                Date babyBirthday = babyBaseInfoVo.getBirthday();
+                int babyBirthdayYear = babyBirthday.getYear();
+                int babyBirthdayMonth = babyBirthday.getMonth();
+                Date nowDate = new Date();
+                int nowDateYear = nowDate.getYear();
+                int nowDateMonth = nowDate.getMonth();
+                int chaDate = 0;
+                if (nowDateMonth > babyBirthdayMonth) {
+                    chaDate = nowDateMonth - babyBirthdayMonth;
+                } else if (babyBirthdayMonth > nowDateMonth) {
+                    chaDate = babyBirthdayMonth - nowDateMonth;
+                }
+                String babyName = babyBaseInfoVo.getName();
+                if (StringUtils.isNotNull(babyName)) {
+                    babyName = babyBaseInfoVo.getName() + ",";
+                } else {
+                    babyName = "";
+                }
+                String sex = babyBaseInfoVo.getSex().equals("1") ? "男" : "女";
+
+                babyBaseInfo = sex + babyName + (nowDateYear - babyBirthdayYear) + "岁" + chaDate + "个月";
+            }
             vo.setBak1(babyBaseInfo);
             WechatBean wechatInfo = WechatUtil.getWechatName(token, vo.getUserId());
             vo.setHeadImgUrl(wechatInfo.getHeadimgurl());
