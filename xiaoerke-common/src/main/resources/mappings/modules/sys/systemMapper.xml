@@ -9,5 +9,9 @@
     <select id="getDoctorWechatParameter" resultType="java.util.HashMap">
         SELECT sw.token, sw.ticket FROM  sys_wechatparameter sw WHERE  sw.id = '2'
     </select>
+
+    <select id="getBaoEnglishParameter" resultType="java.util.HashMap">
+        SELECT sw.token, sw.ticket FROM  sys_wechatparameter sw WHERE  sw.id = '3'
+    </select>
        
 </mapper>

@@ -109,6 +109,10 @@ public class SysPropertyVo {
 
     private String vaccineUrl;
 
+    private String baoTeacherCorpid;
+
+    private String baoTeacherSectet;
+
     public Integer getId() {
         return id;
     }
@@ -541,4 +545,19 @@ public class SysPropertyVo {
         this.doctorSectet = doctorSectet;
     }
 
+    public String getBaoTeacherCorpid() {
+        return baoTeacherCorpid;
+    }
+
+    public void setBaoTeacherCorpid(String baoTeacherCorpid) {
+        this.baoTeacherCorpid = baoTeacherCorpid;
+    }
+
+    public String getBaoTeacherSectet() {
+        return baoTeacherSectet;
+    }
+
+    public void setBaoTeacherSectet(String baoTeacherSectet) {
+        this.baoTeacherSectet = baoTeacherSectet;
+    }
 }

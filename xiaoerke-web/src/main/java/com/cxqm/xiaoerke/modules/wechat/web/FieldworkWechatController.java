@@ -341,6 +341,7 @@ public class FieldworkWechatController {
                   if (StringUtils.isNotNull(userName)) {
                       userName = EmojiFilter.coverEmoji(userName);
                   }
+                  userName = "MTQ-"+userName;
                   String headImgUrl = olyGamesService.getWechatMessage(openid);//头像
                   try {
                       headImgUrl = new String(org.springframework.security.crypto.codec.Base64.encode(headImgUrl.getBytes("utf-8")),"utf-8");
@@ -352,7 +353,6 @@ public class FieldworkWechatController {
                   reqMap.put("userName", userName);
                   reqMap.put("sys_user_id",openid);
                   Map result = userInfoService.createOrUpdateThirdPartPatientInfo(reqMap);
-                  System.out.println("========================patientId=" + result.get("sys_user_id") + "==result==" + result.get("result"));
                   if (result != null && result.size() > 0) {
                       if("1".equalsIgnoreCase(String.valueOf(result.get("result"))) ||"0".equalsIgnoreCase(String.valueOf(result.get("result")))){
                           url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#"+"/patientConsultMontageUnique/"+result.get("sys_user_id")+","+userName+","+headImgUrl;

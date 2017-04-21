@@ -59,6 +59,9 @@ public class WechatUtil {
         } else if (type.equals("doctor")) {
             return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
                     sysPropertyVoWithBLOBsVo.getDoctorCorpid() + "&redirect_uri=" + backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
+        } else if (type.equals("babyEnglish")) {
+            return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
+                    sysPropertyVoWithBLOBsVo.getBaoTeacherCorpid() + "&redirect_uri=" + backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
         }
         return null;
     }
@@ -755,7 +758,7 @@ public class WechatUtil {
 
     /**
      * 获取所有的关注用户
-     * @param nextOpenId start with nextOpenId
+     * @param
      * @author deliang
      * @return
      */

@@ -297,6 +297,10 @@ define(['appBaoFansCamp'], function (app) {
         .factory('addDoctorCase',['$resource',function ($resource){
             return $resource(healthRecord + 'addDoctorCase');
         }])
+        //宝宝英语
+        .factory('Englisactivity',['$resource',function ($resource){
+            return $resource('englisactivity/createInviteCardInfo');
+        }])
        //2016您与宝大夫的故事
         .factory('getUser2016Data',['$resource',function ($resource){
             return $resource(user_h5 + 'consult/active/getUser2016Data');

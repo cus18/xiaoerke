@@ -21,4 +21,6 @@ public interface SystemDao {
 	HashMap<String,Object> getWechatParameter();
 
     HashMap<String,Object> getDoctorWechatParameter();
+
+    HashMap<String,Object> getBaoEnglishParameter();
 }

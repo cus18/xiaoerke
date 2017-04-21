@@ -60,6 +60,8 @@ public interface OlyGamesService {
 
     int getNewAttentionByOpenId(String userId);
 
+    String getUserQRCode(String id, String token);
+
     String uploadMedia(InputStream in);
 
     int updateByPrimaryKeySelective(OlyBabyGamesVo record);
