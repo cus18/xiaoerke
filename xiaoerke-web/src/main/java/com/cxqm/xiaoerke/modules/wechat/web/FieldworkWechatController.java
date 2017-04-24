@@ -59,7 +59,6 @@ public class FieldworkWechatController {
     @Autowired
     private OlyGamesService olyGamesService ;
 
-
     /**
      * 医生公众号菜单引导页
      */
@@ -342,6 +341,7 @@ public class FieldworkWechatController {
                   if (StringUtils.isNotNull(userName)) {
                       userName = EmojiFilter.coverEmoji(userName);
                   }
+                  userName = "MTQ-"+userName;
                   String headImgUrl = olyGamesService.getWechatMessage(openid);//头像
                   try {
                       headImgUrl = new String(org.springframework.security.crypto.codec.Base64.encode(headImgUrl.getBytes("utf-8")),"utf-8");
@@ -353,7 +353,6 @@ public class FieldworkWechatController {
                   reqMap.put("userName", userName);
                   reqMap.put("sys_user_id",openid);
                   Map result = userInfoService.createOrUpdateThirdPartPatientInfo(reqMap);
-                  System.out.println("========================patientId=" + result.get("sys_user_id") + "==result==" + result.get("result"));
                   if (result != null && result.size() > 0) {
                       if("1".equalsIgnoreCase(String.valueOf(result.get("result"))) ||"0".equalsIgnoreCase(String.valueOf(result.get("result")))){
                           url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#"+"/patientConsultMontageUnique/"+result.get("sys_user_id")+","+userName+","+headImgUrl;
@@ -401,39 +400,6 @@ public class FieldworkWechatController {
         return url;
     }
 
-    /**
-     * 医生公众号菜单引导页
-     */
-    @RequestMapping(value = "/getBaoTeacherWechatMenu", method = {RequestMethod.POST, RequestMethod.GET})
-    public String getBaoTeacherWechatMenu(HttpServletRequest request,HttpServletResponse response, HttpSession session) throws Exception {
-        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-
-        String code = request.getParameter("code");
-        String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
-        String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                "appid=APPID" +
-                "&secret=SECRET&" +
-                "code=CODE&grant_type=authorization_code";
-        get_access_token_url = get_access_token_url.replace("APPID", sysPropertyVoWithBLOBsVo.getDoctorCorpid());
-        get_access_token_url = get_access_token_url.replace("SECRET", sysPropertyVoWithBLOBsVo.getDoctorSectet());
-        get_access_token_url = get_access_token_url.replace("CODE", code);
-        String access_token = "";
-        String openid = "";
-        if (access_token.isEmpty() && openid.isEmpty()) {
-            String json = HttpRequestUtil.getConnectionResult(get_access_token_url, "GET", "");
-            WechatBean wechat = JsonUtil.getObjFromJsonStr(json, WechatBean.class);
-            openid = wechat.getOpenid();
-            session.setAttribute("openId", openid);
-            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30, sysPropertyVoWithBLOBsVo.getBaodfDomainValue());
-        }
-        if ("1".equals(url)) {
-            //引导页
-            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/guide";
-            LogUtils.saveLog("引导页");
-        }
-
-        return "redirect:"  + url;
-    }
 
     /**
      * 用户端微信JS-SDK获得初始化参数
@@ -486,20 +452,6 @@ public class FieldworkWechatController {
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         String backUrl = request.getParameter("url");
         String oauth2Url = WechatUtil.getOauth2Url("doctor",backUrl,sysPropertyVoWithBLOBsVo);
-        return "redirect:" + oauth2Url;
-    }
-
-    /**
-     * 验证主入口
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/fieldwork/wechat/babyEnglisAuthor", method = RequestMethod.GET)
-    public String babyEnglisAuthor(HttpServletRequest request) {
-        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
-        String backUrl = request.getParameter("url");
-        String oauth2Url = WechatUtil.getOauth2Url("babyEnglish",backUrl,sysPropertyVoWithBLOBsVo);
         return "redirect:" + oauth2Url;
     }
 
