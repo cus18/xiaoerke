@@ -15,6 +15,7 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
             $scope.evaluationList = [];
             $scope.commentList = [];//保存评论列表
             GetConsultDoctorHomepageInfo.get({"userId":$stateParams.id},function (data) {
+                console.log("医生数据信息",data);
                 $scope.doctorName = data.doctorName;//医生名字
                 $scope.department = data.department;//医生科室
                 $scope.title = data.title;//医生职位
