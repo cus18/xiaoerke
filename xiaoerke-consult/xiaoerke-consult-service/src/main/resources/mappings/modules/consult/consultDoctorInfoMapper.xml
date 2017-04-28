@@ -20,6 +20,7 @@
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="nonRealPayPrice" property="nonRealPayPrice" jdbcType="VARCHAR" />
 
     <result column="consult_num" property="consult_num" jdbcType="VARCHAR" />
     <result column="evaluate" property="evaluate" jdbcType="VARCHAR" />
@@ -35,7 +36,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, sys_user_id, password,gender,name, title, hospital, department,practitionerCertificateNo, skill, description, grab_session, send_message, receive_differential_notification,
-    create_date, update_date,type,open_id,consult_num,evaluate,nonrealtime_status,star_doctor,sort,microMallAddress
+    create_date, update_date,type,open_id,consult_num,evaluate,nonrealtime_status,star_doctor,sort,microMallAddress,nonRealPayPrice
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

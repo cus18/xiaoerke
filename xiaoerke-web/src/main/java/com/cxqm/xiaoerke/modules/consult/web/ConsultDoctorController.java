@@ -525,6 +525,12 @@ public class ConsultDoctorController extends BaseController {
                 WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
                 LogUtils.saveLog("ZXYQ_RK_TS_N3", userId);
                 babyCoinService.giveBabyCoin(userId,10l);
+
+                st = "感谢您对宝大夫的信任和支持。[爱心]现在再免费送您2周时间的外教亲子英语启蒙的课程。一起为宝宝的启蒙教育加把劲儿！[奋斗]\n" +
+                        "\n" +
+                        "识别下方二维码，进群学习。[拳头][爱心]";
+                WechatUtil.sendMsgToWechat((String) wechatParam.get("token"), userId, st);
+                WechatUtil.sendNoTextMsgToWechat((String) wechatParam.get("token"), userId, "XdHp8YKja_ft7lQr3o6fewi6uvSqjml1-SXSNZsNBlI", 1);
             }
             //分享的代码
 //                    patientRegisterPraiseService.sendRemindMsgToUser(userId,sessionId);

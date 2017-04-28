@@ -61,6 +61,8 @@ public class ConsultDoctorInfoVo {
 
     private String microMallAddress;
 
+    private String nonRealPayPrice;
+
     //会话状态
     private Date createTime;
     private String status;
@@ -326,5 +328,13 @@ public class ConsultDoctorInfoVo {
 
     public void setSessionid(String sessionid) {
         this.sessionid = sessionid;
+    }
+
+    public String getNonRealPayPrice() {
+        return nonRealPayPrice;
+    }
+
+    public void setNonRealPayPrice(String nonRealPayPrice) {
+        this.nonRealPayPrice = nonRealPayPrice;
     }
 }
