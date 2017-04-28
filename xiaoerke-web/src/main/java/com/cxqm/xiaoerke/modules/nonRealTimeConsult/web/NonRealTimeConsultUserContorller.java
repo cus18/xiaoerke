@@ -131,6 +131,7 @@ public class NonRealTimeConsultUserContorller {
     public Map<String, Object> createSession(HttpSession session, HttpServletRequest request, @RequestBody Map<String, Object> params) {
         String openid = WechatUtil.getOpenId(session, request);
         Map<String, Object> resultMap = new HashMap<String, Object>();
+        openid = "o8gDqvuFoAJA8WBgfL0H3ZlApe3w";
         if (!StringUtils.isNotNull(openid)) {
             resultMap.put("status", "error");
             resultMap.put("msg", "未获取到用户的先关信息,请重新打开页面");

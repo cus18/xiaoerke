@@ -252,7 +252,7 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/myDoctor";
         }else if(url.startsWith("51")){
             String[] parameters = request.getQueryString().split(",");
-            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wxPay/patientPay.do?serviceType=nonRealTime&consultId="+parameters[1];
+            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wxPay/patientPay.do?serviceType=nonRealTime&consultId="+parameters[1]+"&nonRealPayPrice"+parameters[2];
         }else if(url.startsWith("52")){  //集卡活动
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/appWfdb";
         }else if(url.startsWith("54")){  //集卡活动
@@ -400,6 +400,39 @@ public class FieldworkWechatController {
         return url;
     }
 
+    /**
+     * 医生公众号菜单引导页
+     */
+    @RequestMapping(value = "/getBaoTeacherWechatMenu", method = {RequestMethod.POST, RequestMethod.GET})
+    public String getBaoTeacherWechatMenu(HttpServletRequest request,HttpServletResponse response, HttpSession session) throws Exception {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+
+        String code = request.getParameter("code");
+        String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
+        String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
+                "appid=APPID" +
+                "&secret=SECRET&" +
+                "code=CODE&grant_type=authorization_code";
+        get_access_token_url = get_access_token_url.replace("APPID", sysPropertyVoWithBLOBsVo.getDoctorCorpid());
+        get_access_token_url = get_access_token_url.replace("SECRET", sysPropertyVoWithBLOBsVo.getDoctorSectet());
+        get_access_token_url = get_access_token_url.replace("CODE", code);
+        String access_token = "";
+        String openid = "";
+        if (access_token.isEmpty() && openid.isEmpty()) {
+            String json = HttpRequestUtil.getConnectionResult(get_access_token_url, "GET", "");
+            WechatBean wechat = JsonUtil.getObjFromJsonStr(json, WechatBean.class);
+            openid = wechat.getOpenid();
+            session.setAttribute("openId", openid);
+            CookieUtils.setCookie(response, "openId", openid, 60 * 60 * 24 * 30, sysPropertyVoWithBLOBsVo.getBaodfDomainValue());
+        }
+        if ("1".equals(url)) {
+            //引导页
+            url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/appoint#/guide";
+            LogUtils.saveLog("引导页");
+        }
+
+        return "redirect:"  + url;
+    }
 
     /**
      * 用户端微信JS-SDK获得初始化参数
@@ -452,6 +485,20 @@ public class FieldworkWechatController {
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
         String backUrl = request.getParameter("url");
         String oauth2Url = WechatUtil.getOauth2Url("doctor",backUrl,sysPropertyVoWithBLOBsVo);
+        return "redirect:" + oauth2Url;
+    }
+
+    /**
+     * 验证主入口
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/fieldwork/wechat/babyEnglisAuthor", method = RequestMethod.GET)
+    public String babyEnglisAuthor(HttpServletRequest request) {
+        SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        String backUrl = request.getParameter("url");
+        String oauth2Url = WechatUtil.getOauth2Url("babyEnglish",backUrl,sysPropertyVoWithBLOBsVo);
         return "redirect:" + oauth2Url;
     }
 

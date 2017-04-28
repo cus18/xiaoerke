@@ -6,6 +6,7 @@ var GetQueryString = function(name)
     if(r!=null)return  unescape(r[2]); return null;
 }
 var consultId = GetQueryString("consultId");
+var nonRealPayPrice = GetQueryString("nonRealPayPrice");
 var doRefresh = function(){
     var timestamp;//时间戳
     var nonceStr;//随机字符串
@@ -58,7 +59,7 @@ var wechatPay = function(){
         url:"account/user/nonRealTimeConsultPay",// 跳转到 action
         async:true,
         type:'get',
-        data:{patientRegisterId:consultId,payPrice:660},
+        data:{patientRegisterId:consultId,payPrice:nonRealPayPrice},
         cache:false,
         success:function(data) {
             $('#payButton').removeAttr("disabled");
