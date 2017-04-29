@@ -252,7 +252,7 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/myDoctor";
         }else if(url.startsWith("51")){
             String[] parameters = request.getQueryString().split(",");
-            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wxPay/patientPay.do?serviceType=nonRealTime&consultId="+parameters[1]+"&nonRealPayPrice"+parameters[2];
+            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wxPay/patientPay.do?serviceType=nonRealTime&consultId="+parameters[1]+"&nonRealPayPrice="+parameters[2];
         }else if(url.startsWith("52")){  //集卡活动
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/appWfdb";
         }else if(url.startsWith("54")){  //集卡活动
