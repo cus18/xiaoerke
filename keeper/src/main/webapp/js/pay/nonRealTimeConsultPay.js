@@ -59,7 +59,7 @@ var wechatPay = function(){
         url:"account/user/nonRealTimeConsultPay",// 跳转到 action
         async:true,
         type:'get',
-        data:{patientRegisterId:consultId,payPrice:nonRealPayPrice},
+        data:{patientRegisterId:consultId,payPrice:parseInt(nonRealPayPrice)*100},
         cache:false,
         success:function(data) {
             $('#payButton').removeAttr("disabled");
