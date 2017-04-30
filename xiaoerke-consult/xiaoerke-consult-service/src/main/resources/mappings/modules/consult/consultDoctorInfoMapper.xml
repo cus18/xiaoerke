@@ -280,6 +280,9 @@
       <if test="microMallAddress != null" >
         microMallAddress = #{microMallAddress,jdbcType=TIMESTAMP},
       </if>
+      <if test="nonRealPayPrice != null" >
+        nonRealPayPrice = #{nonRealPayPrice,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>

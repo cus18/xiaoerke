@@ -142,6 +142,6 @@
     <if test="createTime != null">
       and rewards.create_time <![CDATA[ > #{createTime,jdbcType=TIMESTAMP} ]]>
     </if>
-    order by rewards.create_time desc
+    order by records.update_time desc
   </select>
 </mapper>

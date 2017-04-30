@@ -104,7 +104,7 @@
 			$.ajax({
 	             type: "post",
 	             url: "${ctx}/consult/doctorInfoOper",
-	             data: {userId:"${user.id}",password:$("#password").val(),name:"${user.name}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),practitionerCertificateNo:$("#practitionerCertificateNo").val(),skill:$("#skill").val(),description:$("#description").val(),sort:$("#sort").val(),starDoctor:$('input:radio[name="starDoctor"]:checked').val(),microMallAddress:$("#microMallAddress").val()},
+	             data: {userId:"${user.id}",password:$("#password").val(),name:"${user.name}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),practitionerCertificateNo:$("#practitionerCertificateNo").val(),skill:$("#skill").val(),description:$("#description").val(),sort:$("#sort").val(),starDoctor:$('input:radio[name="starDoctor"]:checked').val(),microMallAddress:$("#microMallAddress").val(),"nonRealPayPrice":$("#nonRealPayPrice").val()},
 	             dataType: "json",
 	             success: function(data){
 	             	if("suc"==data.result){
