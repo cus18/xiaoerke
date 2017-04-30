@@ -353,6 +353,15 @@
 					<input id="starDoctorno" name="starDoctor" value="0" type="radio"><label for="starDoctorno">否</label>
 				</div>
 			</div>
+
+			<div class="control-group">
+				<label class="control-label">非实时收费:</label>
+				<div class="controls">
+					<input id="nonRealPayPrice" value="${doctor.nonRealPayPrice}" htmlEscape="false" maxlength="50" class="input-medium"/>
+					<span class="help-inline">非实时咨询价格</span>
+				</div>
+			</div>
+
 			<div class="control-group">
 				<label class="control-label">排序:</label>
 				<div class="controls">
