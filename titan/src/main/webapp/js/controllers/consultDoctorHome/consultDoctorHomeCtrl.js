@@ -7,6 +7,7 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
         $scope.commentList = [];//保存评论列表
         $scope.goDetails = false;//评论详情页
         $scope.goNonTimeConsult=function(){
+            window.location.href="nonRealTimeConsult#/NonTimeUserFirstConsult/"+$stateParams.id+","+$scope.nonRealPayPrice;
 
         };
 
