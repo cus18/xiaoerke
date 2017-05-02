@@ -190,7 +190,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                     }
                     recordLogs("FSS_YHD_TWY_TW");
                     //$state.go("NonTimeUserConversation",{"sessionId":data.sessionId})
-                    location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=51,"+data.sessionId+","+$stateParams.nonRealPayPrice;
+                    location.href = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=51,"+data.sessionId+","+$stateParams.nonRealPayPrice;
                 })
             };
     }]);
