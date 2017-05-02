@@ -1,7 +1,7 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstConsultCtrl', [
-        '$scope','$upload','$state','$stateParams','BabyBaseInfo','CreateSession',
-        function ($scope,$upload,$state,$stateParams,BabyBaseInfo,CreateSession) {
-
+        '$scope','$upload','$state','$stateParams','BabyBaseInfo','CreateSession','GetConsultDoctorHomepageInfo',
+        function ($scope,$upload,$state,$stateParams,BabyBaseInfo,CreateSession,GetConsultDoctorHomepageInfo) {
+            $scope.nonRealPayPrice="6.6";
             var recordLogs = function(val){
                 $.ajax({
                     url:"util/recordLogs",// 跳转到 action
@@ -71,6 +71,8 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             //页面数据请求
             $scope.NonTimeUserFirstConsultInit = function(){
                 $scope.doRefresh();
+
+                $scope.nonRealPayPrice = $stateParams.nonRealPayPrice;// 获取医生图文咨询的价格
                 // 获取宝宝基本信息
                 BabyBaseInfo.save({},function (data) {
                     $scope.babyId = data.babyId+"";
