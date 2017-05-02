@@ -1,7 +1,7 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstConsultCtrl', [
-        '$scope','$upload','$state','$stateParams','BabyBaseInfo','CreateSession','GetConsultDoctorHomepageInfo',
-        function ($scope,$upload,$state,$stateParams,BabyBaseInfo,CreateSession,GetConsultDoctorHomepageInfo) {
-            $scope.nonRealPayPrice="6.6";
+        '$scope','$upload','$state','$stateParams','BabyBaseInfo','CreateSession',
+        function ($scope,$upload,$state,$stateParams,BabyBaseInfo,CreateSession) {
+            $scope.nonRealPayPrice="6.6";//doctor price;
             var recordLogs = function(val){
                 $.ajax({
                     url:"util/recordLogs",// 跳转到 action
@@ -70,9 +70,9 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
 
             //页面数据请求
             $scope.NonTimeUserFirstConsultInit = function(){
+                $scope.nonRealPayPrice=$stateParams.nonRealPayPrice;// get doctor price;
+                console.log("doctor price", $scope.nonRealPayPrice);
                 $scope.doRefresh();
-
-                $scope.nonRealPayPrice = $stateParams.nonRealPayPrice;// 获取医生图文咨询的价格
                 // 获取宝宝基本信息
                 BabyBaseInfo.save({},function (data) {
                     $scope.babyId = data.babyId+"";
@@ -190,7 +190,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                     }
                     recordLogs("FSS_YHD_TWY_TW");
                     //$state.go("NonTimeUserConversation",{"sessionId":data.sessionId})
-                    location.href = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=51,"+data.sessionId+","+$stateParams.nonRealPayPrice;
+                    location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=51,"+data.sessionId;
                 })
             };
     }]);
