@@ -1,6 +1,6 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstConsultCtrl', [
         '$scope','$upload','$state','$stateParams','BabyBaseInfo','CreateSession','GetConsultDoctorHomepageInfo',
-        function ($scope,$upload,$state,$stateParams,BabyBaseInfo,CreateSession,GetConsultDoctorHomepageInfo) {
+    function ($scope,$upload,$state,$stateParams,BabyBaseInfo,CreateSession,GetConsultDoctorHomepageInfo) {
             $scope.nonRealPayPrice="6.6";//doctor price;
             var recordLogs = function(val){
                 $.ajax({
