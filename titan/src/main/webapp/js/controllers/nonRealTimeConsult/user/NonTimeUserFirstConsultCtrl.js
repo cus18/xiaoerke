@@ -1,6 +1,6 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstConsultCtrl', [
-        '$scope','$upload','$state','$stateParams','BabyBaseInfo','CreateSession',
-    function ($scope,$upload,$state,$stateParams,BabyBaseInfo,CreateSession) {
+        '$scope','$upload','$state','$stateParams','BabyBaseInfo','CreateSession','GetConsultDoctorHomepageInfo',
+    function ($scope,$upload,$state,$stateParams,BabyBaseInfo,CreateSession,GetConsultDoctorHomepageInfo) {
             $scope.nonRealPayPrice="6.6";//doctor price;
             var recordLogs = function(val){
                 $.ajax({
@@ -195,10 +195,10 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
             $scope.$on('$ionicView.beforeEnter',function() {
                 console.log("医生数据信息1111");
                 //获取医生图文咨询的价格
-               /* GetConsultDoctorHomepageInfo.get({"userId":$stateParams.doctorId},function (data) {
+                GetConsultDoctorHomepageInfo.get({"userId":$stateParams.doctorId},function (data) {
                     console.log("医生数据信息", data);
                     $scope.nonRealPayPrice = data.nonRealPayPrice;//医生价格
-                    /!*$scope.nonRealPayPrice=$stateParams.nonRealPayPrice;// get doctor price;*!/
-                });*/
+                    /*$scope.nonRealPayPrice=$stateParams.nonRealPayPrice;// get doctor price;*/
+                });
             });
     }]);

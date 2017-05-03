@@ -82,6 +82,12 @@ define(['appNonRealTimeConsult'], function (app) {
 
         .factory('GetConfig',['$resource',function ($resource){
             return $resource('util/getConfig');
-        }]);
+        }])
+        //获取 页面医生的相关信息
+        .factory('GetConsultDoctorHomepageInfo',['$resource',function ($resource){
+            return $resource(doctor + 'getConsultDoctorHomepageInfo');
+        }])
+    ;
+
 
 })
