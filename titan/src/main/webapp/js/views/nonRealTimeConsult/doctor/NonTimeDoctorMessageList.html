@@ -37,9 +37,9 @@
                     </li>
                 </ul>
                 <div class="noService tc" ng-if="curServiceList.length==0 || allServiceList.length==0">
-                    <img mg-if="" class="" width="89" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/noService.png">
-                    <p ng-if="curServiceList.length==0 && allServiceList.length!=0" class="f5 c5">您暂时无当前服务</p>
-                    <p ng-if="allServiceList.length==0" class="f5 c5">您暂时无任何服务</p>
+                    <img  class="" width="89" height="auto" src="http://xiaoerke-appoint.oss-cn-beijing.aliyuncs.com/nonRealTimeConsult/doctor/noService.png">
+                    <p ng-if="curServiceList.length==0 && selectItem=='cur'" class="f5 c5">您暂时无当前服务</p>
+                    <p ng-if="allServiceList.length==0 && selectItem=='all'" class="f5 c5">您暂时无任何服务</p>
                 </div>
             </div>
         </ion-scroll>
