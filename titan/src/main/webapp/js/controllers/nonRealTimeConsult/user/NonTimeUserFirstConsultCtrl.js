@@ -70,13 +70,6 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
 
             //页面数据请求
             $scope.NonTimeUserFirstConsultInit = function(){
-                GetConsultDoctorHomepageInfo.get({"userId":$stateParams.id},function (data) {
-                    console.log("医生数据信息", data);
-                    $scope.nonRealPayPrice = data.nonRealPayPrice;//医生价格
-                    /*$scope.nonRealPayPrice=$stateParams.nonRealPayPrice;// get doctor price;*/
-                    console.log("doctor price", $scope.nonRealPayPrice);
-                });
-
                 $scope.doRefresh();
                 // 获取宝宝基本信息
                 BabyBaseInfo.save({},function (data) {
@@ -199,4 +192,13 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                     location.href = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=51,"+data.sessionId+","+$scope.nonRealPayPrice;
                 })
             };
+            $scope.$on('$ionicView.beforeEnter',function() {
+                //获取医生图文咨询的价格
+                GetConsultDoctorHomepageInfo.get({"userId":$stateParams.id},function (data) {
+                    console.log("医生数据信息", data);
+                    $scope.nonRealPayPrice = data.nonRealPayPrice;//医生价格
+                    /*$scope.nonRealPayPrice=$stateParams.nonRealPayPrice;// get doctor price;*/
+                    console.log("doctor price", $scope.nonRealPayPrice);
+                });
+            });
     }]);
