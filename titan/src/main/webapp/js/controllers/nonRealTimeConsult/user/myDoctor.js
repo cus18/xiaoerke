@@ -29,6 +29,7 @@
         }
 
         $scope.nonRealTimeConsult = function (userid) {
-            $state.go("NonTimeUserFirstConsult",{"doctorId":userid,"nonRealPayPrice":$scope.nonRealPayPrice});
+            $state.go("NonTimeUserFirstConsult",{"doctorId":userid});
+          /*  $state.go("NonTimeUserFirstConsult",{"doctorId":userid,"nonRealPayPrice":$scope.nonRealPayPrice});*/
         }
     }]);
