@@ -1,10 +1,14 @@
 ﻿angular.module('controllers', []).controller('myDoctor', [
-    '$scope','$stateParams','$state','recentTimeList',
-    function ($scope,$stateParams,$state,recentTimeList) {
+    '$scope','$stateParams','$state','recentTimeList','GetConsultDoctorHomepageInfo',
+    function ($scope,$stateParams,$state,recentTimeList,GetConsultDoctorHomepageInfo) {
         $scope.title='我的医生';
         $scope.doctorInfo = {};
 
         $scope.$on('$ionicView.enter',function() {
+            GetConsultDoctorHomepageInfo.get({"userId":$stateParams.id},function (data) {
+                console.log("医生数据信息", data);
+                $scope.nonRealPayPrice = data.nonRealPayPrice;//医生价格
+            });
             // 我咨询记录的数据
             recentTimeList.save({},function (data) {
                 if("success" == data.status){
@@ -26,5 +30,6 @@
 
         $scope.nonRealTimeConsult = function (userid) {
             $state.go("NonTimeUserFirstConsult",{"doctorId":userid});
+          /*  $state.go("NonTimeUserFirstConsult",{"doctorId":userid,"nonRealPayPrice":$scope.nonRealPayPrice});*/
         }
     }]);

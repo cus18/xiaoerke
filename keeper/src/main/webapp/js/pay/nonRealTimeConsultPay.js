@@ -9,6 +9,8 @@ var consultId = GetQueryString("consultId");
 var nonRealPayPrice = GetQueryString("nonRealPayPrice");
 
 var doRefresh = function(){
+
+    $("#price").html("图文咨询服务费￥"+nonRealPayPrice);
     var timestamp;//时间戳
     var nonceStr;//随机字符串
     var signature;//得到的签名

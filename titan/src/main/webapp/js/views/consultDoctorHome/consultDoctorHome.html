@@ -25,7 +25,7 @@
                 <div class="com_color6 com_font18" ng-repeat="item in description" ng-if="(description.length)!=$index">{{item}}</div>
             </div>
         </div>
-        <div class="home_interactiveService home_introduce ">
+        <div class="home_interactiveService home_introduce " ng-if = "nonConsultStatus==1">
             <div class="introduce_title com_font15 com_color3"><span>互动服务</span></div>
             <div class="content" ng-click="goNonTimeConsult()">
                 <img width="40" height="40" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/icon_interactiveService.png">

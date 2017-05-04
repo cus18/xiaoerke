@@ -2,8 +2,9 @@
  * 取得实际位置
  * 调用方式：geoFactory.getGeo();
  */
-var path_user = 'nonRealTimeConsultUser/'
-var path_doc = 'nonRealTimeConsultDoctor/'
+var path_user = 'nonRealTimeConsultUser/';
+var path_doc = 'nonRealTimeConsultDoctor/';
+var doctor ='consult/doctor/';
 define(['appNonRealTimeConsult'], function (app) {
     app
         .factory('ListHospitalDoctor',['$resource',function ($resource){
@@ -82,6 +83,12 @@ define(['appNonRealTimeConsult'], function (app) {
 
         .factory('GetConfig',['$resource',function ($resource){
             return $resource('util/getConfig');
-        }]);
+        }])
+        //获取 页面医生的相关信息
+        .factory('GetConsultDoctorHomepageInfo',['$resource',function ($resource){
+            return $resource(doctor + 'getConsultDoctorHomepageInfo');
+        }])
+    ;
+
 
 })
