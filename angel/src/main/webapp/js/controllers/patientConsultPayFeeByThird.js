@@ -1,5 +1,5 @@
 angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
-    .controller('patientConsultMontageUnique', ['$scope', '$location', '$anchorScroll',
+    .controller('patientConsultPayFeeByThird', ['$scope', '$location', '$anchorScroll',
         'GetSessionId', 'GetUserLoginStatus', '$upload', '$sce', '$stateParams',
         'CreateOrUpdateWJYPatientInfo', 'GetUserCurrentConsultContent', '$http', 'GetWJYHistoryRecord', '$ionicScrollDelegate',
         function ($scope, $location, $anchorScroll, GetSessionId, GetUserLoginStatus, $upload, $sce, $stateParams,
@@ -11,7 +11,7 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
             $scope.sessionId = "";
             $scope.socketServer = "";
             $scope.glued = true;
-            $scope.source = "h5mtqUser";
+            $scope.source = $stateParams.source;
             $scope.loseConnectionFlag = false;
             var heartBeatNum = 0;
             $scope.lookMore = false;//查看更多
@@ -67,7 +67,6 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
                             "pageSize": 10, "token": "", "mtqUserImg": patientImg
                         }, function (data) {
                             if (data.consultDataList.length != 0) {
-//                                $scope.lookMore = true;
 //                                $scope.fucengLock = false;
                             } else {
                                 $scope.lookMore = false;
@@ -89,7 +88,7 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
                     //    + $scope.patientId +"&h5cxqm");//cs,user,distributor
                     //ws://s201.xiaork.com:2048;
                     $scope.socketServer = new WebSocket("ws://101.201.154.201:2048/ws&user&"
-                        + $scope.patientId + "&h5mtq");//cs,user,distributor*/
+                        + $scope.patientId + "&"+$scope.source);//cs,user,distributor*/
 
                     $scope.socketServer.onmessage = function (event) {
                         var consultData = JSON.parse(event.data);
@@ -190,10 +189,50 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
                     //有医生或者接诊员在线1001
                     $scope.sessionId = notifyData.sessionId;
                     console.log("有医生或者接诊员在线");
-                } else if (notifyData.notifyType == "1002") {
+                }else if (notifyData.notifyType == "1002") {
                     //没有医生或者接诊员在线1002
                     console.log("没有医生或者接诊员在线");
-                } else if (notifyData.notifyType == "1003") {
+                }else if(notifyData.notifyType == "7777"){
+                    //本次咨询时间已到，如需继续咨询请您payfee
+                    var doctorValMessage = {
+                        'type': "4",
+                        'notifyType':"7777",
+                        'dateTime': new Date(),
+                        'senderName': "客服提醒",
+                        "avatar": "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
+                    };
+                    $scope.consultContent.push(doctorValMessage);
+                }else if(notifyData.notifyType == "8888"){
+                    //快速问诊避免焦急等待,请付费
+                    var doctorValMessage = {
+                        'type': "4",
+                        'notifyType':"8888",
+                        'dateTime': new Date(),
+                        'senderName': "客服提醒",
+                        "avatar": "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
+                    };
+                    $scope.consultContent.push(doctorValMessage);
+                    //var doctorValMessage = {
+                    //    'type': "0",
+                    //    'content': notifyData.sendMsg,
+                    //    'dateTime': new Date(),
+                    //    'senderId': "1",
+                    //    'senderName': "客服提醒",
+                    //    'sessionId': 1,
+                    //    "avatar": "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
+                    //};
+                    //$scope.consultContent.push(doctorValMessage);
+                }else if(notifyData.notifyType == "9999"){
+                    //首次咨询赠送您一次免费体验机会
+                    var doctorValMessage = {
+                        'type': "4",
+                        'notifyType':"9999",
+                        'dateTime': new Date(),
+                        'senderName': "客服提醒",
+                        "avatar": "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyishengmoren.png"
+                    };
+                    $scope.consultContent.push(doctorValMessage);
+                }else if (notifyData.notifyType == "1003") {
                     //没有医生或者接诊员在线1003
                     console.log("没有医生或者接诊员在线");
                 } else if (notifyData.notifyType == "0100") {
@@ -299,6 +338,7 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
                         "senderName": $scope.patientName,
                         "sessionId": parseInt($scope.sessionId),
                         "source": $scope.source,
+                        "payStatus":"payFee",
                         "avatar": patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                     };
                     if (!window.WebSocket) {
@@ -547,8 +587,7 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
             //让输入框在失去焦点的时候，重新获取焦点，输入键盘就会一直存在
             $scope.getautoFocus = function () {
                 $("#saytext").focus();
-                $scope.lookMore = true;
                 $scope.fucengLock = false;
+                $scope.lookMore = true;
             }
-
         }]);

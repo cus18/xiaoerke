@@ -102,6 +102,7 @@ public enum ConsultSessionManager {
     private ConsultMemberRedsiCacheServiceImpl consultMemberRedsiCacheService = SpringContextHolder.getBean("consultMemberRedsiCacheServiceImpl");
 
 
+
     private ConsultSessionManager() {
         User user = new User();
         user.setUserType("distributor");
@@ -167,8 +168,43 @@ public enum ConsultSessionManager {
     }
 
     public RichConsultSession createUserH5ConsultSession(String userId, Channel channel, String source) {
-
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        if(StringUtils.isNotNull(source)){
+            if("h5GuoWei".equalsIgnoreCase(source)){
+                ConsultMemberVo consultMemberVo = consultMemberRedsiCacheService.getConsultMemberInfo(userId);
+                String sendMsg = "";
+                if(consultMemberVo == null){  //第一次咨询
+                    Query query = (new Query()).addCriteria(where("userId").is(userId)).with(new Sort(Sort.Direction.DESC, "createDate"));
+                    ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
+                    // 推送消息
+                    if(consultSessionStatusVo == null){
+                        //推送第一次进入消息
+                        sendMsg = "亲爱的新朋友，首次咨询赠送您一次免费体验机会~ \n"+
+                                "(免费时长：30分钟，24小时内可用一次) \n"+
+                                "——为减少其他生病宝宝的焦急等待，从医生接入开始计时";
+                        JSONObject jsonObj = new JSONObject();
+                        jsonObj.put("type", "4");
+                        jsonObj.put("notifyType","9999");
+                        jsonObj.put("sendMsg",sendMsg);
+                        TextWebSocketFrame payFeeRemindMsg = new TextWebSocketFrame(jsonObj.toJSONString());
+                        channel.writeAndFlush(payFeeRemindMsg.retain());
+                    }
+                }else{
+                    boolean flag = consultMemberRedsiCacheService.cheackMemberTimeOut(userId);
+                    if(!flag){   //会员过期
+                        sendMsg = "亲爱的，快速问诊避免焦急等待，请您\n"+
+                                "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>戳这里购买服务》</a>";
+                        JSONObject jsonObj = new JSONObject();
+                        jsonObj.put("type", "4");
+                        jsonObj.put("notifyType","8888");
+                        jsonObj.put("sendMsg",sendMsg);
+                        TextWebSocketFrame payFeeRemindMsg = new TextWebSocketFrame(jsonObj.toJSONString());
+                        channel.writeAndFlush(payFeeRemindMsg.retain());
+                        return null;
+                    }
+                }
+            }
+        }
         Integer sessionId = sessionRedisCache.getSessionIdByUserId(userId);
         RichConsultSession consultSession = null;
         Channel distributorChannel = null;

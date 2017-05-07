@@ -1,10 +1,15 @@
 package com.cxqm.xiaoerke.modules.wechat.web;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
 import com.cxqm.xiaoerke.modules.alipay.util.httpClient.StringUtil;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultMemberVo;
+import com.cxqm.xiaoerke.modules.consult.entity.ConsultSessionStatusVo;
+import com.cxqm.xiaoerke.modules.consult.entity.memberRedisCachVo;
 import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.service.core.ConsultSessionManager;
 import com.cxqm.xiaoerke.modules.member.service.MemberService;
 import com.cxqm.xiaoerke.modules.sys.entity.Article;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
@@ -16,7 +21,11 @@ import com.cxqm.xiaoerke.modules.sys.service.UserInfoService;
 import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.wechat.entity.WechatAttention;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
+import io.netty.channel.Channel;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +37,8 @@ import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 /**
  * 微信页面参数获取相关的控制类
@@ -356,6 +367,31 @@ public class FieldworkWechatController {
                   if (result != null && result.size() > 0) {
                       if("1".equalsIgnoreCase(String.valueOf(result.get("result"))) ||"0".equalsIgnoreCase(String.valueOf(result.get("result")))){
                           url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#"+"/patientConsultMontageUnique/"+result.get("sys_user_id")+","+userName+","+headImgUrl;
+                      }
+                  }
+              }else if(source.startsWith("h5PayThird")){  //第三方微信付费H5接口 h5PayThird-GuoWei
+                  userName = WechatUtil.getWechatName(tokenId, openid).getNickname();
+                  if (StringUtils.isNotNull(userName)) {
+                      userName = EmojiFilter.coverEmoji(userName);
+                  }
+                  String headImgUrl = olyGamesService.getWechatMessage(openid);//头像
+                  try {
+                      headImgUrl = new String(org.springframework.security.crypto.codec.Base64.encode(headImgUrl.getBytes("utf-8")),"utf-8");
+                  } catch (UnsupportedEncodingException e) {
+                      e.printStackTrace();
+                  }
+                  if(source.contains("-")){
+                      source = "h5"+source.split("-")[1];
+                      userName = source.split("-")[1]+"-"+userName;
+                  }
+                  reqMap.put("source", source);
+                  reqMap.put("userPhone", openid);
+                  reqMap.put("userName", userName);
+                  reqMap.put("sys_user_id",openid);
+                  Map result = userInfoService.createOrUpdateThirdPartPatientInfo(reqMap);
+                  if (result != null && result.size() > 0) {
+                      if("1".equalsIgnoreCase(String.valueOf(result.get("result"))) ||"0".equalsIgnoreCase(String.valueOf(result.get("result")))){
+                          url = sysPropertyVoWithBLOBsVo.getAngelWebUrl()+"angel/patient/consult#"+"/patientConsultPayFeeByThird/"+result.get("sys_user_id")+","+userName+","+source+","+headImgUrl;
                       }
                   }
               }else{

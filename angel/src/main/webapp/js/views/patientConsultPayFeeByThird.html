@@ -37,6 +37,25 @@
             <div ng-if="item.type=='4'&&item.notifyType=='1003'">
                 亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1003
             </div>
+            <div ng-if="item.type=='4'&&item.notifyType=='7777'">
+                <div class="message" >
+                    亲爱的，本次咨询时间已到，如需继续咨询请您</br>
+                    <a href="http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=doctorConsultPay">戳这里购买服务》</a>
+                </div>
+            </div>
+            <div ng-if="item.type=='4'&&item.notifyType=='8888'">
+                <div class="message" >
+                    亲爱的，快速问诊避免焦急等待，请您</br>
+                    <a href="http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=doctorConsultPay">戳这里购买服务》</a>
+                </div>
+            </div>
+           <div ng-if="item.type=='4'&&item.notifyType=='9999'">
+               <div class="message" >
+                   亲爱的新朋友，首次咨询赠送您一次免费体验机会~</br>
+                   (免费时长：30分钟，24小时内可用一次)</br>
+                   ——为减少其他生病宝宝的焦急等待，从医生接入开始计时!
+               </div>
+             </div>
         </div>
         <!--<div class="magnifyImg" ng-show='showFlag.magnifyImg' ng-click="tapShowButton('magnifyImg')">-->
         <!--<img width="400px" ng-src="{{imageSrc}}">-->
@@ -56,7 +75,7 @@
         </div>
     </div>
     <div class="wjy_fuceng" ng-if="fucengLock">
-        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_fu1.png" width="217" height="161"/>
+        <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_fu.png" width="217" height="161"/>
         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_fu2.png" width="228" height="237"/>
     </div>
     <div class="wjy_alert" ng-if="alertFlag">

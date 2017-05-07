@@ -6,13 +6,8 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.cxqm.xiaoerke.common.config.Global;
 import com.cxqm.xiaoerke.common.utils.*;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo;
-import com.cxqm.xiaoerke.modules.consult.entity.ConsultSession;
-import com.cxqm.xiaoerke.modules.consult.entity.RichConsultSession;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultRecordService;
-import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionService;
-import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
+import com.cxqm.xiaoerke.modules.consult.entity.*;
+import com.cxqm.xiaoerke.modules.consult.service.*;
 import com.cxqm.xiaoerke.modules.consult.service.impl.ConsultDoctorInfoServiceImpl;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
@@ -27,8 +22,13 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.*;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 
@@ -47,6 +47,8 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
     private SysPropertyServiceImpl sysPropertyService = SpringContextHolder.getBean("sysPropertyServiceImpl");
 
     private ConsultDoctorInfoServiceImpl consultDoctorInfoService  = SpringContextHolder.getBean("consultDoctorInfoServiceImpl");
+
+    private ConsultMemberRedsiCacheService consultMemberRedsiCacheService = SpringContextHolder.getBean("consultMemberRedsiCacheServiceImpl");
 
 
     public TextWebSocketFrameHandler() {
@@ -71,6 +73,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         Channel channel = ctx.channel();
         Map<String, Object> msgMap = null;
         SysPropertyVoWithBLOBsVo sysPropertyVoWithBLOBsVo = sysPropertyService.querySysProperty();
+        Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         try {
             msgMap = (Map<String, Object>) JSON.parse(msgText);
 
@@ -83,6 +86,58 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                 null : (Integer) msgMap.get(ConsultSessionManager.KEY_SESSION_ID);
         int msgType = msgMap.get(ConsultSessionManager.KEY_REQUEST_TYPE) == null ?
                 0 : (Integer) msgMap.get(ConsultSessionManager.KEY_REQUEST_TYPE);
+
+        if(msgMap.containsKey("payStatus")){
+            if("payFee".equalsIgnoreCase(String.valueOf(msgMap.get("payStatus")))){
+                String userId = String.valueOf(msgMap.get("senderId"));
+                String userSource = String.valueOf(msgMap.get("source"));
+                String sendMsg = "";
+                ConsultMemberVo consultMemberVo = consultMemberRedsiCacheService.getConsultMemberInfo(userId);
+                if(consultMemberVo == null){  //第一次咨询
+                     //List<ConsultSessionStatusVo> consultSessionStatusVoList = consultRecordService.querySessionStatusList(new Query().addCriteria(new Criteria().where("userId").is(userId).and("source").regex(userSource)).with(new Sort(Sort.Direction.DESC, "createDate")));
+                    Query query = (new Query()).addCriteria(where("userId").is(userId)).with(new Sort(Sort.Direction.DESC, "createDate"));
+                    ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
+                    // 推送消息
+                    if(consultSessionStatusVo == null){
+
+                    }else{
+                        Date nowDate = new Date();
+                        long timeLong = nowDate.getTime();
+                        if(timeLong - consultSessionStatusVo.getCreateDate().getTime() > 30*60*1000){
+                            //咨询时间到，如继续咨询请付费
+                            sendMsg = "亲爱的，本次咨询时间已到，如需继续咨询请您\n"+
+                                    "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>戳这里购买服务》</a>";
+                            JSONObject jsonObj = new JSONObject();
+                            jsonObj.put("type", "4");
+                            jsonObj.put("notifyType","7777");
+                            jsonObj.put("sendMsg",sendMsg);
+                            TextWebSocketFrame payFeeRemindMsg = new TextWebSocketFrame(jsonObj.toJSONString());
+                            channel.writeAndFlush(payFeeRemindMsg.retain());
+                            return ;
+                        }
+                    }
+                }else{
+                    boolean flag = consultMemberRedsiCacheService.cheackMemberTimeOut(userId);
+                    if(flag){ //会员过期提醒
+                        Date nowDate = new Date();
+                        long timeLong = nowDate.getTime();
+                        String memberTime = consultMemberRedsiCacheService.getConsultMember(userId + memberRedisCachVo.MEMBER_END_DATE);
+                        long meTime = Long.valueOf(memberTime);
+                        if(timeLong > meTime){  //咨询时间到
+                            sendMsg = "亲爱的，本次咨询时间已到，如需继续咨询请您\n"+
+                                    "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>戳这里购买服务》</a>";
+                            JSONObject jsonObj = new JSONObject();
+                            jsonObj.put("type", "4");
+                            jsonObj.put("notifyType","7777");
+                            jsonObj.put("sendMsg",sendMsg);
+                            TextWebSocketFrame payFeeRemindMsg = new TextWebSocketFrame(jsonObj.toJSONString());
+                            channel.writeAndFlush(payFeeRemindMsg.retain());
+                            return ;
+                        }
+                    }
+                }
+            }
+        }
 
         if (msgType == 5) {
             String csUserId = (String) msgMap.get("csUserId");
@@ -136,7 +191,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             return;
         }
 
-        Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
         //sessionId不为空  得良抽取，有问题随时沟通
         if (sessionId != null) {
             RichConsultSession richConsultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);

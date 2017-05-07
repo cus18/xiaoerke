@@ -111,6 +111,24 @@ define(['appPatientConsult'], function(app){
                             public: true
                         }
                     })
+                    .state('patientConsultPayFeeByThird', {
+                        url: '/patientConsultPayFeeByThird/:userId,:name,:source,:headImg',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'patientConsultPayFeeByThird',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultPayFeeByThird',
+                                    ['js/controllers/patientConsultPayFeeByThird.js',
+                                        'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                        'js/libs/jquery.qqFace.js',"js/libs/jquery.browser.min.js",
+                                        'js/styles/patientConsultWJY.css','js/libs/jquery.base64.js'],
+                                    'js/views/patientConsultPayFeeByThird.html?ver='+patientConsultVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
                     .state('patientConsultMontage', {
                         url: '/patientConsultMontage',
                         templateProvider: function() { return lazyDeferred.promise; },
