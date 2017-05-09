@@ -253,10 +253,10 @@ $(document).ready(function(){
                         success: function (res) {
                             if (res.errMsg == "chooseWXPay:ok") {
                                 if(thirdName=="GuoWei"){
-                                    window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+service+","+thirdName;
+                                    window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+service+"/"+thirdName;
                                 }
                                 else{
-                                    window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+service+","+"";
+                                    window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+service+"/"+"no";
                                 }
                             } else {
                                 alert("支付失败,请重新支付")
