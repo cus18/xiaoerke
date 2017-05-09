@@ -282,3 +282,17 @@ input {
     font-size: 17px;
     color: #08b7c2;
 }
+.patientConsultPayFeeByThird .remind{
+    color:#666;
+    line-height: 20px;
+}
+.patientConsultPayFeeByThird .remind1{
+    padding:5px 15px;
+    font-size:13px;
+}
+.patientConsultPayFeeByThird .remind2 .message {
+    font-size:13px;
+}
+.patientConsultPayFeeByThird .remind2 a{
+    color:#fe717b;
+}

@@ -1,5 +1,5 @@
 <ion-view  ng-init="patientConsultFirst()">
-    <ion-content class="patientConsultBHQ">
+    <ion-content class="patientConsultBHQ patientConsultPayFeeByThird">
         <div class="wjy_lookmore" ng-if="lookMore" ng-click="goLookMore()">
             查看更多...
         </div>
@@ -28,28 +28,28 @@
                     <img width="100px" ng-src="{{item.content}}" ng-click="showImageBar(item.content)">
                 </div>
             </div>
-            <div ng-if="item.type=='4'&&item.notifyType=='1001'">
+            <div class="remind remind1" ng-if="item.type=='4'&&item.notifyType=='1001'">
                 亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1001
             </div>
-            <div ng-if="item.type=='4'&&item.notifyType=='1002'">
+            <div class="remind remind1" ng-if="item.type=='4'&&item.notifyType=='1002'">
                 亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1002
             </div>
-            <div ng-if="item.type=='4'&&item.notifyType=='1003'">
+            <div class="remind remind1" ng-if="item.type=='4'&&item.notifyType=='1003'">
                 亲，非常抱歉，由于目前没有医生在线，请您稍后再来，谢谢！！^_^1003
             </div>
-            <div ng-if="item.type=='4'&&item.notifyType=='7777'">
+            <div class="remind remind2" ng-if="item.type=='4'&&item.notifyType=='7777'">
                 <div class="message" >
-                    亲爱的，本次咨询时间已到，如需继续咨询请您</br>
+                    亲爱的，本次咨询时间已到，如需继续咨询请您</br></br>
                     <a href="http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=doctorConsultPay">戳这里购买服务》</a>
                 </div>
             </div>
-            <div ng-if="item.type=='4'&&item.notifyType=='8888'">
+            <div class="remind remind2" ng-if="item.type=='4'&&item.notifyType=='8888'">
                 <div class="message" >
-                    亲爱的，快速问诊避免焦急等待，请您</br>
+                    亲爱的，快速问诊避免焦急等待，请您</br></br>
                     <a href="http://s251.baodf.com/keeper/wxPay/patientPay.do?serviceType=doctorConsultPay">戳这里购买服务》</a>
                 </div>
             </div>
-           <div ng-if="item.type=='4'&&item.notifyType=='9999'">
+           <div class="remind remind2" ng-if="item.type=='4'&&item.notifyType=='9999'">
                <div class="message" >
                    亲爱的新朋友，首次咨询赠送您一次免费体验机会~</br>
                    (免费时长：30分钟，24小时内可用一次)</br>

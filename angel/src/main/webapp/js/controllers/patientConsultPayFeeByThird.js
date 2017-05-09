@@ -586,7 +586,7 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
 
             //让输入框在失去焦点的时候，重新获取焦点，输入键盘就会一直存在
             $scope.getautoFocus = function () {
-                $("#saytext").focus();
+               /* $("#saytext").focus();*/
                 $scope.fucengLock = false;
                 $scope.lookMore = true;
             }
