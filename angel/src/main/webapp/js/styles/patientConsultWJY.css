@@ -296,3 +296,18 @@ input {
 .patientConsultPayFeeByThird .remind2 a{
     color:#fe717b;
 }
+.imgBar{
+    position: absolute;
+    z-index:8;
+    width:100%;
+    height:100%;
+    text-align: center;
+}
+.imgBar img{
+
+}
+.wjy_fuceng{
+    width:100%;
+    margin-top:15px;
+    text-align: center;
+}
