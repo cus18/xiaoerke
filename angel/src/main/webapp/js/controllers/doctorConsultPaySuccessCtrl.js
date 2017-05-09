@@ -15,7 +15,7 @@ angular.module('controllers', ['luegg.directives','ngFileUpload'])
 
             };
             $scope.closeDoctorConsultPaySuccess = function () {
-                if( $scope.thirdName=="guowei"){
+                if( $scope.thirdName=="GuoWei"){
                    //window.location.href= "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=77177,h5PayThird-GuoWei";
                    window.location.href= "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=77177,h5PayThird-GuoWei";
                 }

@@ -252,7 +252,7 @@ $(document).ready(function(){
                         paySign: obj.paySign,  // 支付签名
                         success: function (res) {
                             if (res.errMsg == "chooseWXPay:ok") {
-                                if(thirdName="guowei"){
+                                if(thirdName=="GuoWei"){
                                     window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+service+","+thirdName;
                                 }
                                 else{
