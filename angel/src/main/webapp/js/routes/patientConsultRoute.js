@@ -183,7 +183,7 @@ define(['appPatientConsult'], function(app){
                         }
                     })
                     .state('doctorConsultPaySuccess', {
-                        url: '/doctorConsultPaySuccess/:consultTime',
+                        url: '/doctorConsultPaySuccess/:consultTime,:thirdName',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'doctorConsultPaySuccessCtrl',
                         resolve: {

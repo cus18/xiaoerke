@@ -1,4 +1,12 @@
+var GetQueryString = function(name)
+{
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return  unescape(r[2]); return null;
+}
+
 $(document).ready(function(){
+    var thirdName=GetQueryString("thirdName");
     //我剩余的宝宝币
     var cashTotal;
     //需要支付的金额
@@ -244,7 +252,12 @@ $(document).ready(function(){
                         paySign: obj.paySign,  // 支付签名
                         success: function (res) {
                             if (res.errMsg == "chooseWXPay:ok") {
-                                window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+service;
+                                if(thirdName="guowei"){
+                                    window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+service+","+thirdName;
+                                }
+                                else{
+                                    window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+service+","+"";
+                                }
                             } else {
                                 alert("支付失败,请重新支付")
                             }
