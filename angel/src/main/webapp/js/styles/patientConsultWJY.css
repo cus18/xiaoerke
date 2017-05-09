@@ -246,14 +246,14 @@ input {
 }
 .wjy_input{
     position: fixed;
-    bottom: 10px;
+    bottom:1px;
     width: 95%;
     left: 2%;
     margin: 0 auto;
     padding: 14px 0 15px 0;
     background-color: #FFFFFF;
     border-radius: 5px;
-    z-index: 555;
+    z-index: 5;
 }
 .wjy_input input{
     width: 97%;
