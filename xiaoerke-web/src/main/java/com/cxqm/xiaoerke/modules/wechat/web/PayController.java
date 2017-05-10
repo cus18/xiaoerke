@@ -177,7 +177,10 @@ public class PayController {
             return "pay/nonRealTimeConsultPay";
         }else if("payPunchCardCash".equals(serviceType)){
             return "pay/signPay";
+        }else if("telConsultPay".equals(serviceType)){
+            return "pay/telConsultPay";
         }
+
         else{
             return null;
         }
