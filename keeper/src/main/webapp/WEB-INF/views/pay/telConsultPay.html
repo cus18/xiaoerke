@@ -1,0 +1,40 @@
+<html>
+<head>
+</head>
+<base href="/keeper/"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta name="viewport"
+      content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<title>咨询医生</title>
+<script src="js/libs/jquery-2.1.3.min.js"></script>
+<script src="js/libs/rem.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="js/pay/telConsultPay.js?ver=1.2"></script>
+<link rel="stylesheet" href="/keeper/styles/main.less" type="text/css"/>
+<link rel="stylesheet" href="/keeper/styles/pay/commonPay.less" type="text/css"/>
+<link rel="stylesheet" href="/keeper/styles/pay/telConsultPay.less" type="text/css"/>
+<body onload="doRefresh()">
+<div class="telConsultPay bg1 pay-com">
+    <div class="item-price tc">
+        <span class="headline c4 f20 bg1">你需支付</span>
+        <div class="price c5">电话咨询费用￥<span id="price">30</span>元</div>
+    </div>
+
+    <button class="btn f4 c0" onclick="wechatPay()" >确认支付</button>
+    <dl class="remind-text bg1">
+        <dt class="tc c3 f6">温馨提示</dt>
+        <dd class="c4 f3">
+            <span >1.</span>出现异常：电话中断，医生会主动拔打电话
+        </dd>
+        <dd class="c4 f3">
+            <span >2.</span>若未拨通电话，请及时联系客服<a href="tel:4006237120">400-623-7120</a><br>
+            电话：<a href="tel:18001350891">18001350891</a>
+        </dd>
+
+    </dl>
+
+</div>
+</body>
+</html>
