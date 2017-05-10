@@ -55,7 +55,43 @@ define(['appConsultDoctorHome'], function(app){
                         data: {
                             public: true
                         }
-                    });
+                    })
+                    //电话咨询
+                    .state('telConsultPaySuccess', {
+                        url: '/telConsultPaySuccess',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'telConsultPaySuccessCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.telConsultPaySuccessCtrl',
+                                    ['js/controllers/consultDoctorHome/telConsultPaySuccessCtrl.js',
+                                        'styles/consultDoctorHome/telConsultPaySuccess.less?ver='+picVersion,
+                                    ],
+                                    'js/views/consultDoctorHome/telConsultPaySuccess.html?ver='+picVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('telConnecting', {
+                        url: '/telConnecting',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'telConnectingCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.telConnectingCtrl',
+                                    ['js/controllers/consultDoctorHome/telConnectingCtrl.js',
+                                        'styles/consultDoctorHome/telConnecting.less?ver='+picVersion,
+                                    ],
+                                    'js/views/consultDoctorHome/telConnecting.html?ver='+picVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                ;
 
 
 
