@@ -244,12 +244,8 @@ input {
 .wjy_com{
     max-width: 80%;
 }
-.wjy_c{
-    height:115px;
-    background-color: #fff;
-}
 .wjy_input{
-    border:2px solid #bbb;
+    border:1.5px solid #ddd;
     position: fixed;
     bottom:0;
     width: 98%;
