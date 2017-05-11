@@ -110,7 +110,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                             JSONObject jsonObj = new JSONObject();
                             jsonObj.put("type", "4");
                             jsonObj.put("notifyType","7777");
-                            jsonObj.put("sendMsg",sendMsg);
+                            jsonObj.put("sendMsg", sendMsg);
                             TextWebSocketFrame payFeeRemindMsg = new TextWebSocketFrame(jsonObj.toJSONString());
                             channel.writeAndFlush(payFeeRemindMsg.retain());
                             return ;
@@ -118,21 +118,27 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                     }
                 }else{
                     boolean flag = consultMemberRedsiCacheService.cheackMemberTimeOut(userId);
-                    if(flag){ //会员过期提醒
+                    if(!flag){ //会员过期提醒
                         Date nowDate = new Date();
                         long timeLong = nowDate.getTime();
                         String memberTime = consultMemberRedsiCacheService.getConsultMember(userId + memberRedisCachVo.MEMBER_END_DATE);
-                        long meTime = Long.valueOf(memberTime);
+                        long meTime = Long.valueOf(DateUtils.StrToDate(memberTime,"yyyy-MM-dd HH:mm:ss").getTime());
                         if(timeLong > meTime){  //咨询时间到
-                            sendMsg = "亲爱的，本次咨询时间已到，如需继续咨询请您\n"+
-                                    "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>戳这里购买服务》</a>";
-                            JSONObject jsonObj = new JSONObject();
-                            jsonObj.put("type", "4");
-                            jsonObj.put("notifyType","7777");
-                            jsonObj.put("sendMsg",sendMsg);
-                            TextWebSocketFrame payFeeRemindMsg = new TextWebSocketFrame(jsonObj.toJSONString());
-                            channel.writeAndFlush(payFeeRemindMsg.retain());
-                            return ;
+                            if(sessionId == null){
+                                JSONObject jsonObj = new JSONObject();
+                                jsonObj.put("type", "4");
+                                jsonObj.put("notifyType","8888");
+                                TextWebSocketFrame payFeeRemindMsg = new TextWebSocketFrame(jsonObj.toJSONString());
+                                channel.writeAndFlush(payFeeRemindMsg.retain());
+                                return ;
+                            }else{
+                                JSONObject jsonObj = new JSONObject();
+                                jsonObj.put("type", "4");
+                                jsonObj.put("notifyType","7777");
+                                TextWebSocketFrame payFeeRemindMsg = new TextWebSocketFrame(jsonObj.toJSONString());
+                                channel.writeAndFlush(payFeeRemindMsg.retain());
+                                return ;
+                            }
                         }
                     }
                 }
@@ -226,6 +232,8 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                 consultSession = ConsultSessionManager.INSTANCE.createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5mtq");
             }else if(msgMap.get("source").equals("h5YZUser") && msgMap.get("senderId") != null){
                 consultSession = ConsultSessionManager.INSTANCE.createUserH5ConsultSession((String) msgMap.get("senderId"), channel, "h5YouZan");
+            }else if(msgMap.get("source").equals("h5GuoWei") && msgMap.get("senderId") != null){
+                consultSession = ConsultSessionManager.INSTANCE.createUserH5ConsultSession((String)msgMap.get("senderId"),channel,"h5GuoWei");
             }
             //保存聊天记录
             if (consultSession != null) {
