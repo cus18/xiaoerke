@@ -244,17 +244,21 @@ input {
 .wjy_com{
     max-width: 80%;
 }
-.wjy_input{
-    border:1.5px solid #ddd;
+.box-input{
     position: fixed;
     bottom:0;
+    padding-bottom: 15px;
     width: 98%;
     left: 1%;
     margin: 0 auto;
-    padding: 14px 0 15px 0;
     background-color: #FFFFFF;
-    border-radius: 5px;
     z-index: 5;
+}
+.wjy_input{
+    border:1px solid #ddd;
+    padding: 14px 0 15px 0;
+    border-radius: 5px;
+
 }
 .wjy_input input{
     width: 97%;
