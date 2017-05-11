@@ -591,7 +591,7 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
                 $scope.lookMore = true;
             }
             $scope.$on('$ionicView.enter', function(){
-                var now = moment().format("YYYY-MM-DD HH:mm:ss");
+               /* var now = moment().format("YYYY-MM-DD HH:mm:ss");
                 if ($scope.consultContent[0] != undefined) {
                     now = $scope.consultContent[0].dateTime;
                 }
@@ -606,6 +606,6 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
                         filterMediaData(value);
                         $scope.consultContent.splice(0, 0, value);
                     });
-                });
+                });*/
             });
         }]);
