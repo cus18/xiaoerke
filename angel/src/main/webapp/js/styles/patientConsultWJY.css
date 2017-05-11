@@ -246,7 +246,7 @@ input {
 }
 .wjy_input{
     position: fixed;
-    bottom:1px;
+    bottom:0;
     width: 95%;
     left: 2%;
     margin: 0 auto;
