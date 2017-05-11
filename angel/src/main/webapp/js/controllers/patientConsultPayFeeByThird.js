@@ -590,4 +590,22 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
                 $scope.fucengLock = false;
                 $scope.lookMore = true;
             }
+            $scope.$on('$ionicView.enter', function(){
+                var now = moment().format("YYYY-MM-DD HH:mm:ss");
+                if ($scope.consultContent[0] != undefined) {
+                    now = $scope.consultContent[0].dateTime;
+                }
+                GetWJYHistoryRecord.save({
+                    "userId": $scope.patientId,
+                    "dateTime": now,
+                    "pageSize": 10,
+                    "token": "",
+                    "mtqUserImg": patientImg
+                }, function (data) {
+                    $.each(data.consultDataList, function (index, value) {
+                        filterMediaData(value);
+                        $scope.consultContent.splice(0, 0, value);
+                    });
+                });
+            });
         }]);
