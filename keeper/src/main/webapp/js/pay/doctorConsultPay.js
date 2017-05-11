@@ -268,7 +268,13 @@ $(document).ready(function(){
                     });
                 }
                 else {
-                    window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+service;
+                    //window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+service;
+                    if(thirdName=="GuoWei"){
+                        window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+service+"/"+thirdName;
+                    }
+                    else{
+                        window.location.href = angelWebUrl +"angel/patient/consult#/doctorConsultPaySuccess/"+service+"/"+"no";
+                    }
                 }
             },
             error: function () {
