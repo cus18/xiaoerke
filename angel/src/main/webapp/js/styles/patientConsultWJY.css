@@ -245,6 +245,7 @@ input {
     max-width: 80%;
 }
 .wjy_input{
+    border:1px solid #ddd;
     position: fixed;
     bottom:0;
     width: 95%;
