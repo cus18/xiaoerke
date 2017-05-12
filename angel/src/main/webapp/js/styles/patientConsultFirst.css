@@ -68,7 +68,7 @@ img {
     height: 0;
 }
 
-[scroll-glue-bottom], {
+[scroll-glue-bottom] {
     overflow-y: scroll;
 }
 /*会话内容*/

@@ -284,6 +284,6 @@ textarea {
     height: 0;
 }
 
-[scroll-glue-bottom], {
+[scroll-glue-bottom] {
     overflow-y: scroll;
 }

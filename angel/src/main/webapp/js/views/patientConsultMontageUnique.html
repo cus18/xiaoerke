@@ -55,14 +55,17 @@
             </div>
         </div>
     </div>
-    <div class="wjy_fuceng  remind-user" ng-if="fucengLock">
+    <!--图片 介绍咨询服务-->
+    <div class="wjy_fuceng  remind-user tc" ng-if="fucengLock">
         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_fu1.png" width="70%" height="auto"/>
         <br>
         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_fu2.png" width="70%" height="auto"/>
     </div>
-    <div class="wjy_alert" ng-if="alertFlag">
+    <!--提示消息不能为空-->
+    <div class="wjy_alert  remind-noMessage tc" ng-if="alertFlag">
         <img src="http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/wjy/wjy_alert.png" width="197" height="52"/>
     </div>
+    <!--消息图片放大-->
     <div class="imgBar" ng-if="imgBarFlag" ng-click="hideImageBar()">
        <img width="auto" height="100%" id="imageBar" ng-src="{{imgSrc}}"/>
     </div>

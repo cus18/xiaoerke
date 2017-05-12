@@ -12,72 +12,10 @@ table{
     background-color: #fff;
     width: 100%;
 }
-.consultTitle{
-    height: 44px;
-    font: 16px/44px 'Microsoft Yahei';
-    color:#fff;
-    width: 100%;
-    background-color: #1FC3C5;
-    text-align: center;
-    position: fixed;
-    z-index:999;
-}
-.consultTitle span {
-    display: inline-block;
-    float: left;
-    padding: 9px 10px;
-    line-height: 24px;
-}
-.consultTitle span img{
-    width: 25px;
-    height: 25px;
-}
-.consultTitle span:nth-child(2){
-    float: right;
-}
-.consultDisplay {
-    padding: 0 0 106px 0;
-    background-color: #f9f9f9;
-}
-.consultDisplay::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-}
-.consultInput {
-    height: 35px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #fff;
-}
-.consultInput img {
-    width: 25px;
-    height: 25px;
-}
-.consultInput div{
-    float: left;
-    padding: 8px 10px;
-    line-height: 25px;
-    border-radius: 5px;
-}
-.consultInput .textInput img{
-    width: 20px;
-    height: 20px;
-    margin-top: 2px;
-    float: right;
-}
-.consultInput .textInput{
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 0 10px;
-    width: 70%;
-    margin: 5px 0px 5px 5px;
-}
+
 input {
     overflow:auto;
     word-break:break-all;
-    width: 90%;
-    height: 25px;
     line-height: 25px;
     box-sizing: border-box;
     border: none;
@@ -164,11 +102,7 @@ input {
     width:100%;
     position:relative
 }
-.input{
-    width:99%;
-    height:60px;
-    border:1px solid #ccc
-}
+
 .com_form p{
     height:28px;
     line-height:28px;
@@ -247,5 +181,10 @@ input {
     width:100%;
     z-index:1;
     margin-top:15px;
-    text-align: center;
+}
+.consultPageCommon .remind-noMessage{
+    position: absolute;
+    width:100%;
+    z-index:1;
+    margin-top:30px;
 }
