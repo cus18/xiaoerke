@@ -25,13 +25,26 @@
                 <div class="com_color6 com_font18" ng-repeat="item in description" ng-if="(description.length)!=$index">{{item}}</div>
             </div>
         </div>
-        <div class="home_interactiveService home_introduce " ng-if = "nonConsultStatus==1">
+        <!--互动服务-->
+        <div class="home_interactiveService home_introduce item-com" ng-if = "nonConsultStatus==1">
             <div class="introduce_title com_font15 com_color3"><span>互动服务</span></div>
-            <div class="content" ng-click="goNonTimeConsult()">
+            <div class="content " ng-click="goNonTimeConsult()">
                 <img width="40" height="40" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/icon_interactiveService.png">
                 <div class="com_font16 com_color3">点名咨询</div>
                 <div class="com_font12 com_color9 details">通过文字、图片进行咨询</div>
                 <div class="price com_bold com_font15">{{nonRealPayPrice}}元/次</div>
+            </div>
+        </div>
+        <!--电话咨询-->
+        <div class="home_telConsult home_introduce item-com" ng-if= "true">
+            <div class="introduce_title com_font15 com_color3"><span>电话咨询</span></div>
+            <div class="content" >
+                <img width="40" height="40" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/telConsult/icon_phone.png">
+                <div class="com_font16 com_color3">电话咨询</div>
+                <div class="com_font12 com_color9 details">时间段 6:00—8:00 14:00—16:00 </div>
+                <div class="price com_bold com_font15">30元/15分钟</div>
+                <a class="btn able " ng-if="true" ng-click="goConsult()">立即咨询</a>
+                <a class="btn unable" ng-if="false">立即咨询</a>
             </div>
         </div>
         <div class="home_comment" ng-click="goCommentDetails()">

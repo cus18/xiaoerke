@@ -6,10 +6,15 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
         $scope.commentShow = false;//显示评论列表
         $scope.commentList = [];//保存评论列表
         $scope.goDetails = false;//评论详情页
+        //点击 点名咨询
         $scope.goNonTimeConsult=function(){
             window.location.href="nonRealTimeConsult#/NonTimeUserFirstConsult/"+$stateParams.id+","+$scope.nonRealPayPrice;
-
         };
+        //点击 电话咨询
+        $scope.goConsult=function(){
+            window.location.href="/keeper/wxPay/patientPay.do?serviceType=telConsultPay";
+        };
+
 
         $scope.$on('$ionicView.beforeEnter',function() {
             //"00034ads0d764sdsa66a2d6esd0e8ddf";
