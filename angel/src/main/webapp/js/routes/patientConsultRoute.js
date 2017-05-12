@@ -121,7 +121,10 @@ define(['appPatientConsult'], function(app){
                                     ['js/controllers/patientConsultPayFeeByThird.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
                                         'js/libs/jquery.qqFace.js',"js/libs/jquery.browser.min.js",
-                                        'js/styles/patientConsultPayFeeByThird.css','js/libs/jquery.base64.js'],
+                                        'js/libs/jquery.base64.js',
+                                        'js/styles/consultPageCommon.css',
+                                        'js/styles/patientConsultPayFeeByThird.css'
+                                    ],
                                     'js/views/patientConsultPayFeeByThird.html?ver='+patientConsultVersion);
                             }
                         },
@@ -137,9 +140,13 @@ define(['appPatientConsult'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultMontageCtrl',
                                     ['js/controllers/patientConsultMontageCtrl.js',
-                                        'js/libs/scrollglue.js','js/libs/moment.min.js',
-                                        'js/libs/jquery.qqFace.js',"js/libs/jquery.browser.min.js",
-                                        'js/styles/patientConsultMontage.css'],
+                                        'js/libs/scrollglue.js',
+                                        'js/libs/moment.min.js',
+                                        'js/libs/jquery.qqFace.js',
+                                        "js/libs/jquery.browser.min.js",
+                                        'js/styles/consultPageCommon.css',
+                                        'js/styles/patientConsultMontage.css'
+                                    ],
                                     'js/views/patientConsultMontage.html?ver='+patientConsultVersion);
                             }
                         },
