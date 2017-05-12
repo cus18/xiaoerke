@@ -30,8 +30,8 @@ ul,li,dl,dd{
   list-style: none;
 }
 .scroll-content {
-  background: #f1f4f5;
-  top:45px;
+  background: #fff;
+  top:0;
 }
 .scroll-content.ionic-scroll > .scroll {
   position: absolute;

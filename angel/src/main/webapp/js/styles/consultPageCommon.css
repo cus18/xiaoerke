@@ -242,3 +242,10 @@ input {
     font-size: 17px;
     color: #08b7c2;
 }
+.consultPageCommon .remind-user{
+    position: absolute;
+    width:100%;
+    z-index:1;
+    margin-top:15px;
+    text-align: center;
+}

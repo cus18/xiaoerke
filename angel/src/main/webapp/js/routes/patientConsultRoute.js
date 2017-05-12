@@ -102,8 +102,13 @@ define(['appPatientConsult'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultMontageUnique',
                                     ['js/controllers/patientConsultMontageUnique.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
-                                        'js/libs/jquery.qqFace.js',"js/libs/jquery.browser.min.js",
-                                        'js/styles/patientConsultMontageUnique.css','js/libs/jquery.base64.js'],
+                                        'js/libs/jquery.qqFace.js',
+                                        "js/libs/jquery.browser.min.js",
+                                        'js/styles/patientConsultMontageUnique.css',
+                                        'js/libs/jquery.base64.js',
+                                        'js/styles/consultPageCommon.css',
+                                        'js/styles/patientConsultMontageUnique.css'
+                                    ],
                                     'js/views/patientConsultMontageUnique.html?ver='+patientConsultVersion);
                             }
                         },
