@@ -1,9 +1,9 @@
 angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
     .controller('patientConsultMontageUnique', ['$scope', '$location', '$anchorScroll',
         'GetSessionId', 'GetUserLoginStatus', '$upload', '$sce', '$stateParams',
-        'CreateOrUpdateWJYPatientInfo', 'GetUserCurrentConsultContent', '$http', 'GetWJYHistoryRecord', '$ionicScrollDelegate',
+        'CreateOrUpdateWJYPatientInfo', 'GetUserCurrentConsultContent', '$http', 'GetWJYHistoryRecord', '$ionicScrollDelegate','GetUserHeadImgWechat',
         function ($scope, $location, $anchorScroll, GetSessionId, GetUserLoginStatus, $upload, $sce, $stateParams,
-                  CreateOrUpdateWJYPatientInfo, GetUserCurrentConsultContent, $http, GetWJYHistoryRecord, $ionicScrollDelegate) {
+                  CreateOrUpdateWJYPatientInfo, GetUserCurrentConsultContent, $http, GetWJYHistoryRecord, $ionicScrollDelegate,GetUserHeadImgWechat) {
 
             $scope.consultContent = [];
             $scope.info = {};
@@ -40,12 +40,15 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
 
                 //
                 var id = $stateParams.userId;
-                if($stateParams.headImg == null || $stateParams.headImg == ''){
-                    patientImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
-                }else{
-                    patientImg = $.base64.decode($stateParams.headImg);
+                GetUserHeadImgWechat.get({"userId":id},function(data){
+                    console.log("data", data);
+                    if(data.status == '0'){
+                        patientImg = $.base64.decode(data.headImgUrl);
+                    }else{
+                        patientImg = "http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png";
+                    }
                     console.log(patientImg);
-                }
+                });
                 $scope.patientName = $stateParams.name == null ? $stateParams.userId : $stateParams.name;
                 $scope.patientId = id;
                 GetSessionId.get({"userId": $scope.patientId}, function (data) {

@@ -94,7 +94,7 @@ define(['appPatientConsult'], function(app){
                         }
                     })
                     .state('patientConsultMontageUnique', {
-                        url: '/patientConsultMontageUnique/:userId,:name,:headImg',
+                        url: '/patientConsultMontageUnique/:userId,:name',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'patientConsultMontageUnique',
                         resolve: {
@@ -103,7 +103,7 @@ define(['appPatientConsult'], function(app){
                                     ['js/controllers/patientConsultMontageUnique.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
                                         'js/libs/jquery.qqFace.js',"js/libs/jquery.browser.min.js",
-                                        'js/styles/patientConsultWJY.css','js/libs/jquery.base64.js'],
+                                        'js/styles/patientConsultMontageUnique.css','js/libs/jquery.base64.js'],
                                     'js/views/patientConsultMontageUnique.html?ver='+patientConsultVersion);
                             }
                         },
@@ -112,7 +112,7 @@ define(['appPatientConsult'], function(app){
                         }
                     })
                     .state('patientConsultPayFeeByThird', {
-                        url: '/patientConsultPayFeeByThird/:userId,:name,:source,:headImg',
+                        url: '/patientConsultPayFeeByThird/:userId,:name,:source',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'patientConsultPayFeeByThird',
                         resolve: {
@@ -121,7 +121,7 @@ define(['appPatientConsult'], function(app){
                                     ['js/controllers/patientConsultPayFeeByThird.js',
                                         'js/libs/scrollglue.js','js/libs/moment.min.js',
                                         'js/libs/jquery.qqFace.js',"js/libs/jquery.browser.min.js",
-                                        'js/styles/patientConsultWJY.css','js/libs/jquery.base64.js'],
+                                        'js/styles/patientConsultPayFeeByThird.css','js/libs/jquery.base64.js'],
                                     'js/views/patientConsultPayFeeByThird.html?ver='+patientConsultVersion);
                             }
                         },

@@ -55,6 +55,9 @@ define(['appPatientConsult'], function (app) {
         })
         .factory('GetConfig',['$resource',function ($resource){
             return $resource('util/getConfig');
+        }])
+        .factory('GetUserHeadImgWechat',['$resource',function ($resource){
+            return $resource('consult/cooperate/getCoopUserHeadImgByWechat');
         }]);
 
 })

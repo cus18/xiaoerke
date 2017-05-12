@@ -262,4 +262,12 @@ public class UserInfoServiceImpl implements UserInfoService {
         System.out.println("======================= response ==="+response.get("sys_user_id")+"===="+response.get("result"));
         return response;
     }
+
+    public User getUserInfoByLoginName(String userName){
+        User user = null ;
+        if(StringUtils.isNotNull(userName)){
+           user = userdao.getByLoginName(new User(null, userName));
+        }
+        return user ;
+    }
 }
