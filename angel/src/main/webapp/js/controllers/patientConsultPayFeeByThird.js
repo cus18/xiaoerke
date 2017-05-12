@@ -586,13 +586,16 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
                 val = val.replace(/\[em_75\]/g, '/<L>');
                 return val;
             };
-
+            //点击 浮层的立即咨询
+            $scope.goConsult = function () {
+                $scope.fucengLock = false;
+            };
             //让输入框在失去焦点的时候，重新获取焦点，输入键盘就会一直存在
             $scope.getautoFocus = function () {
                /* $("#saytext").focus();*/
                 $scope.fucengLock = false;
                 $scope.lookMore = true;
-            }
+            };
             $scope.$on('$ionicView.enter', function(){
                /* var now = moment().format("YYYY-MM-DD HH:mm:ss");
                 if ($scope.consultContent[0] != undefined) {

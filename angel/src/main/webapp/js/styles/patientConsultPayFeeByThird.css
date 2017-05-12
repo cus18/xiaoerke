@@ -30,6 +30,28 @@
 .patientConsultPayFeeByThird .remind2 a{
     color:#fe717b;
 }
+.consultPageCommon.patientConsultPayFeeByThird .remind-user{
+    height:100%;
+    background-color:#add0f9;
+    margin-top:0;
+    z-index:6;
+    display:table;
+}
+.patientConsultPayFeeByThird .pic-wrap{
+    position: relative;
+    display:table-cell;
+    vertical-align:middle;
+
+}
+.patientConsultPayFeeByThird .pic-wrap .btn{
+    position: absolute;
+    width:80%;
+    left:10%;
+    height:100px;
+    bottom:7%;
+    background-color: transparent;
+
+}
 .imgBar{
     position: absolute;
     z-index:8;
