@@ -56,7 +56,7 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
                     if (data.status == "0") {
                         $scope.sessionId = data.sessionId;
                         $scope.lookMore = true;
-                        $scope.fucengLock = false;
+                      /*  $scope.fucengLock = false;*/
                     } else if (data.status == "1") {
                         $scope.sessionId = "";
                         /*var val = {
@@ -70,7 +70,7 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
                             "pageSize": 10, "token": "", "mtqUserImg": patientImg
                         }, function (data) {
                             if (data.consultDataList.length != 0) {
-//                                $scope.fucengLock = false;
+                         // $scope.fucengLock = false;
                             } else {
                                 $scope.lookMore = false;
                             }
@@ -593,7 +593,6 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
             //让输入框在失去焦点的时候，重新获取焦点，输入键盘就会一直存在
             $scope.getautoFocus = function () {
                /* $("#saytext").focus();*/
-                $scope.fucengLock = false;
                 $scope.lookMore = true;
             };
             $scope.$on('$ionicView.enter', function(){
