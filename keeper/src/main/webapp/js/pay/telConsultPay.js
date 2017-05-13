@@ -59,10 +59,10 @@ var doRefresh = function(){
 //确认支付
 function wechatPay (){
     $.ajax({
-        url:"account/user/phoneConsultPay",// 跳转到 action
+        url:"account/user/consultPhonePay",// 跳转到 action
         async:true,
         type:'get',
-        data:{patientRegisterId:consultId,payPrice:parseFloat(payPrice)*100},
+        data:{payPrice:parseFloat(payPrice)*100},
         cache:false,
         success:function(data) {
             var obj = eval('(' + data + ')');
