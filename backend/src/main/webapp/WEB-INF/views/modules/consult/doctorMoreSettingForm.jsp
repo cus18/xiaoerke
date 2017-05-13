@@ -99,11 +99,12 @@
 					}
 				})
 			}
+			$("input[name='isPhoneConsult']").each(function(){
+			if (this.value==$("#isPhoneConsult").val()){
+				this.checked = true;
+			}
+			});
 		});
-
-		function kick(time){
-
-		}
 
 		function savePersonalData(){
 			if($("#hospital").val()==""){
@@ -126,10 +127,13 @@
 					timeid +=timeList[i].value+",";
 				}
 			}
+
+			var isPhoneConsult = $("input[name='isPhoneConsult']:checked").val();
+
 			$.ajax({
 	             type: "post",
 	             url: "${ctx}/consult/doctorInfoOper",
-	             data: {userId:"${user.id}",password:$("#password").val(),name:"${user.name}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),practitionerCertificateNo:$("#practitionerCertificateNo").val(),skill:$("#skill").val(),description:$("#description").val(),sort:$("#sort").val(),starDoctor:$('input:radio[name="starDoctor"]:checked').val(),microMallAddress:$("#microMallAddress").val(),"nonRealPayPrice":$("#nonRealPayPrice").val(),"timeid":timeid},
+	             data: {userId:"${user.id}",password:$("#password").val(),name:"${user.name}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),practitionerCertificateNo:$("#practitionerCertificateNo").val(),skill:$("#skill").val(),description:$("#description").val(),sort:$("#sort").val(),starDoctor:$('input:radio[name="starDoctor"]:checked').val(),microMallAddress:$("#microMallAddress").val(),"nonRealPayPrice":$("#nonRealPayPrice").val(),"timeid":timeid,"isPhoneConsult":isPhoneConsult,"phonePayPrice":$("#phonePayPrice").val()},
 	             dataType: "json",
 	             success: function(data){
 	             	if("suc"==data.result){
@@ -303,6 +307,7 @@
 			<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
 			<input type="hidden" value="${doctor.id}"/>
 			<input type="hidden" id="timeid" value="${doctor.timeid}"/>
+			<input type="hidden" id="isPhoneConsult" value="${doctor.isPhoneConsult}"/>
 			<div class="control-group">
 				<label class="control-label">密码:</label>
 				<div class="controls">
@@ -385,6 +390,21 @@
 				<div class="controls">
 					<input id="nonRealPayPrice" value="${doctor.nonRealPayPrice}" htmlEscape="false" maxlength="50" class="input-medium"/>
 					<span class="help-inline">非实时咨询价格</span>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">开通电话咨询:</label>
+				<div class="controls">
+					<label><input name="isPhoneConsult" type="radio" value="1" />是</label>
+					<label><input name="isPhoneConsult" type="radio" value="0" checked >否</label>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">电话咨询价格:</label>
+				<div class="controls">
+					<input id="phonePayPrice" value="${doctor.phonePayPrice}" htmlEscape="false" maxlength="50" class="input-medium"/>
+					<span class="help-inline">非实时电话咨询价格</span>
 				</div>
 			</div>
 

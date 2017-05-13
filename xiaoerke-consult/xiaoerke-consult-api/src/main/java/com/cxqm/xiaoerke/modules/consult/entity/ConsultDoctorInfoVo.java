@@ -64,6 +64,8 @@ public class ConsultDoctorInfoVo {
     private String nonRealPayPrice;
 
     private String timeid;
+    private String phonePayPrice;
+    private String isPhoneConsult;
 
     //会话状态
     private Date createTime;
@@ -346,5 +348,21 @@ public class ConsultDoctorInfoVo {
 
     public void setTimeid(String timeid) {
         this.timeid = timeid;
+    }
+
+    public String getPhonePayPrice() {
+        return phonePayPrice;
+    }
+
+    public void setPhonePayPrice(String phonePayPrice) {
+        this.phonePayPrice = phonePayPrice;
+    }
+
+    public String getIsPhoneConsult() {
+        return isPhoneConsult;
+    }
+
+    public void setIsPhoneConsult(String isPhoneConsult) {
+        this.isPhoneConsult = isPhoneConsult;
     }
 }
