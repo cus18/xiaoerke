@@ -34,6 +34,12 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
                 $scope.description = data.description.split(" ");//医生介绍
                 $scope.rate = data.rate*100;//医生有用百分比
                 $scope.gender = data.gender;
+
+                $scope.isPhoneConsult = data.isPhoneConsult;//医生名字
+                $scope.phonePayPrice = data.phonePayPrice;//医生名字
+                $scope.consultTime = data.consultTime;//医生名字
+
+
                 $scope.nonConsultStatus = data.nonConsultStatus;//医生是否开通 图文咨询
                 for (i = $scope.description.length - 1;  i >= 0; i--) {
                     if ($scope.description[i] === '') {
