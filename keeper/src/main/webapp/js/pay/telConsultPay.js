@@ -6,12 +6,13 @@ var GetQueryString = function(name)
     if(r!=null)return  unescape(r[2]); return null;
 }
 var payPrice = GetQueryString("payPrice");
+$("#price").html(payPrice+"元");
 
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
 var doRefresh = function(){
     var timestamp;//时间戳
     var nonceStr;//随机字符串
-    var signature;//得到的签名
+    var signature;//得到的签名4
     var appid;//得到的签名
     $.ajax({
         url:"wechatInfo/getConfig",// 跳转到 action
