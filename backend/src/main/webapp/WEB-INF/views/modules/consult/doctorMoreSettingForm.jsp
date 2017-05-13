@@ -86,8 +86,25 @@
 					return false;
 				}
 			});
+
+			var checkeds = $("#timeid").val();
+			var checkArray =checkeds.split(",");
+			var checkBoxAll = $("input[name='timeList']");
+			for(var i=0;i<checkArray.length;i++){
+				$.each(checkBoxAll,function(j,checkbox){
+					//获取复选框的value属性
+					var checkValue=$(checkbox).val();
+					if(checkArray[i]==checkValue){
+						$(checkbox).attr("checked",true);
+					}
+				})
+			}
 		});
-		
+
+		function kick(time){
+
+		}
+
 		function savePersonalData(){
 			if($("#hospital").val()==""){
 				alertx("请填写医院！");
@@ -101,10 +118,18 @@
 				alertx("请填写擅长！");
 				return;
 			}
+
+			var timeList=document.getElementsByName("timeList");
+			var timeid = "";
+			for(var i=0;i<timeList.length;i++){
+				if(timeList[i].checked==true){
+					timeid +=timeList[i].value+",";
+				}
+			}
 			$.ajax({
 	             type: "post",
 	             url: "${ctx}/consult/doctorInfoOper",
-	             data: {userId:"${user.id}",password:$("#password").val(),name:"${user.name}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),practitionerCertificateNo:$("#practitionerCertificateNo").val(),skill:$("#skill").val(),description:$("#description").val(),sort:$("#sort").val(),starDoctor:$('input:radio[name="starDoctor"]:checked').val(),microMallAddress:$("#microMallAddress").val(),"nonRealPayPrice":$("#nonRealPayPrice").val()},
+	             data: {userId:"${user.id}",password:$("#password").val(),name:"${user.name}",gender:$("#gender").val(),type:$("#type").val(),title:$("#title").val(),hospital:$("#hospital").val(),department:$("#department").val(),practitionerCertificateNo:$("#practitionerCertificateNo").val(),skill:$("#skill").val(),description:$("#description").val(),sort:$("#sort").val(),starDoctor:$('input:radio[name="starDoctor"]:checked').val(),microMallAddress:$("#microMallAddress").val(),"nonRealPayPrice":$("#nonRealPayPrice").val(),"timeid":timeid},
 	             dataType: "json",
 	             success: function(data){
 	             	if("suc"==data.result){
@@ -277,6 +302,7 @@
 			<form:hidden path="email" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 			<sys:ckfinder input="email" type="files" uploadPath="/mytask" selectMultiple="false"/> --%>
 			<input type="hidden" value="${doctor.id}"/>
+			<input type="hidden" id="timeid" value="${doctor.timeid}"/>
 			<div class="control-group">
 				<label class="control-label">密码:</label>
 				<div class="controls">
@@ -361,6 +387,148 @@
 					<span class="help-inline">非实时咨询价格</span>
 				</div>
 			</div>
+
+			<div class="control-group"  style="margin-left: -100px">
+				<label class="control-label">上午:</label>
+				<div class="controls">
+					<table style="width: 600px">
+						<tr>
+							<td>
+							<span>
+								<input id="7" name="timeList" class="" type="checkbox" value="7" onclick="kick('7')">
+								<label for="7"><span id="05:00span" name="spanList">07:00-08:00</span></label>
+							</span>
+							</td>
+							<td>
+							<span>
+								<input id="8" name="timeList" class="" type="checkbox" value="8" onclick="kick('8')">
+								<label for="8"><span id="05:15span" name="spanList">08:00-09:00</span></label>
+							</span>
+							</td>
+							<td>
+							<span>
+								<input id="9" name="timeList" class="" type="checkbox" value="9" onclick="kick('9')">
+								<label for="9"><span id="05:30span" name="spanList">09:00-10:00</span></label>
+							</span>
+							</td>
+							<td>
+							<span>
+								<input id="10" name="timeList" class="" type="checkbox" value="10" onclick="kick('10')">
+								<label for="10"><span id="05:45span" name="spanList">10:00-11:00</span></label>
+							</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+							<span>
+								<input id="11" name="timeList" class="" type="checkbox" value="11" onclick="kick('11')">
+								<label for="11"><span id="06:00span" name="spanList">11:00-12:00</span></label>
+							</span>
+							</td>
+						</tr>
+					</table>
+				</div>
+			<%--</div>--%>
+
+			<%--<div class="control-group"  style="margin-left: -100px">--%>
+				<label class="control-label">下午:</label>
+				<div class="controls">
+					<table style="width: 600px">
+						<tr>
+							<td>
+							<span>
+								<input id="12" name="timeList" class="" type="checkbox" value="12" onclick="kick('12')">
+								<label for="12"><span id="12:00span" name="spanList">12:00-13:00</span></label>
+								<span id="12:00showInfo" name="showInfoList"></span>
+							</span>
+							</td>
+							<td>
+							<span>
+								<input id="13" name="timeList" class="" type="checkbox" value="13" onclick="kick('13')">
+								<label for="13"><span id="13:00span" name="spanList">13:00-14:00</span></label>
+								<span id="13:00showInfo" name="showInfoList"></span>
+							</span>
+							</td>
+							<td>
+							<span>
+								<input id="14" name="timeList" class="" type="checkbox" value="14" onclick="kick('14')">
+								<label for="14"><span id="13:15span" name="spanList">14:00-15:00</span></label>
+								<span id="13:15showInfo" name="showInfoList">&nbsp;&nbsp;&nbsp;</span>
+							</span>
+							</td>
+							<td>
+							<span>
+								<input id="15" name="timeList" class="" type="checkbox" value="15" onclick="kick('15')">
+								<label for="15"><span id="13:30span" name="spanList">15:00-16:00</span></label>
+								<span id="13:30showInfo" name="showInfoList">&nbsp;&nbsp;&nbsp;</span>
+							</span>
+							</td>
+							<td>
+							<span>
+								<input id="16" name="timeList" class="" type="checkbox" value="16" onclick="kick('16')">
+								<label for="16"><span id="13:30span" name="spanList">16:00-17:00</span></label>
+								<span id="13:30showInfo" name="showInfoList">&nbsp;&nbsp;&nbsp;</span>
+							</span>
+							</td>
+							<td>
+							<span>
+								<input id="17" name="timeList" class="" type="checkbox" value="17" onclick="kick('17')">
+								<label for="17"><span id="13:45span" name="spanList">17:00-18:00</span></label>
+								<span id="13:45showInfo" name="showInfoList">&nbsp;&nbsp;&nbsp;</span>
+							</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+							<span>
+								<input id="18" name="timeList" class="" type="checkbox" value="18" onclick="kick('18')">
+								<label for="18"><span id="14:00span" name="spanList">18:00-19:00</span></label>
+								<span id="14:00showInfo" name="showInfoList">&nbsp;&nbsp;&nbsp;</span>
+							</span>
+							</td>
+							<td>
+							<span>
+								<input id="19" name="timeList" class="" type="checkbox" value="19" onclick="kick('19')">
+								<label for="19"><span id="14:00span" name="spanList">19:00-20:00</span></label>
+								<span id="14:00showInfo" name="showInfoList">&nbsp;&nbsp;&nbsp;</span>
+							</span>
+							</td>
+							<td>
+							<span>
+								<input id="20" name="timeList" class="" type="checkbox" value="20" onclick="kick('20')">
+								<label for="20""><span id="14:15span" name="spanList">20:00-21:00</span></label>
+								<span id="14:15showInfo" name="showInfoList">&nbsp;&nbsp;&nbsp;</span>
+							</span>
+							</td>
+							<td>
+							<span>
+								<input id="21" name="timeList" class="" type="checkbox" value="21" onclick="kick('21')">
+								<label for="21"><span id="14:30span" name="spanList">21:00-22:00</span></label>
+								<span id="14:30showInfo" name="showInfoList">&nbsp;&nbsp;&nbsp;</span>
+							</span>
+							</td>
+							<td>
+							<span>
+								<input id="22" name="timeList" class="" type="checkbox" value="22" onclick="kick('22')">
+								<label for="22"><span id="14:45span" name="spanList">22:00-23:00</span></label>
+								<span id="14:45showInfo" name="showInfoList">&nbsp;&nbsp;&nbsp;</span>
+							</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+							<span>
+								<input id="23" name="timeList" class="" type="checkbox" value="23" onclick="kick('23')">
+								<label for="23"><span id="15:00span" name="spanList">23:00-24:00</span></label>
+								<span id="15:00showInfo" name="showInfoList">&nbsp;&nbsp;&nbsp;</span>
+							</span>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+
 
 			<div class="control-group">
 				<label class="control-label">排序:</label>
