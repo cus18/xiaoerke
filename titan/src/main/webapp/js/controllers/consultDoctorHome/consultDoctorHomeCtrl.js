@@ -10,9 +10,10 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
         $scope.goNonTimeConsult=function(){
             window.location.href="nonRealTimeConsult#/NonTimeUserFirstConsult/"+$stateParams.id+","+$scope.nonRealPayPrice;
         };
+
         //点击 电话咨询
-        $scope.goConsult=function(){
-            window.location.href="/keeper/wxPay/patientPay.do?serviceType=telConsultPay";
+        $scope.goToPay=function(){
+            window.location.href="http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=59,"+$scope.phonePayPrice;
         };
 
 

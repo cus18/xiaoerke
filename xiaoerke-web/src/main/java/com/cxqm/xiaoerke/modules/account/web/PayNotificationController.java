@@ -312,36 +312,36 @@ public class PayNotificationController {
                 payRecord.setId((String) map.get("out_trade_no"));
                 payRecord.setStatus("success");
                 payRecord.setReceiveDate(new Date());
-                Map<String, Object> consultPhoneMap = insuranceService.getPayRecordById(payRecord.getId());
-                Map<String, Object> mapVo = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt((String) consultPhoneMap.get("order_id")));
-                if ("待支付".equals(mapVo.get("state"))) {
-                    String consultPhoneId = consultPhoneMap.get("order_id").toString();
-                    System.out.println("orderId:" + consultPhoneId);
-                    if (consultPhoneMap.get("fee_type").toString().equals("consultPhone")) {
-
-                        ConsultPhoneRegisterServiceVo consultPhoneVo = new ConsultPhoneRegisterServiceVo();
-                        consultPhoneVo.setId(Integer.parseInt(consultPhoneId));
-                        consultPhoneVo.setState("1");
-                        consultPhoneVo.setUpdateTime(new Date());
-
-
-                        consultPhonePatientService.updateOrderInfoBySelect(consultPhoneVo);
-
-                        payRecord.setDoctorId((String) mapVo.get("doctorId"));
-
-                        payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
-                        Map<String, Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(consultPhoneId));
-                        HashMap<String, Object> hashMap = new HashMap<String, Object>();
-                        hashMap.put("userId", consultOrder.get("sys_user_id"));
-                        User userInfo = systemService.getUserById((String) consultOrder.get("sys_user_id"));
-                        String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) consultOrder.get("date"), "yyyy/MM/dd"));
-                        PatientMsgTemplate.consultPhoneSuccess2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (String) consultOrder.get("date"), week, (String) consultOrder.get("beginTime"), (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"));
-                        Map<String, Object> parameter = systemService.getWechatParameter();
-                        String token = (String) parameter.get("token");
-                        String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/phoneConsult#/orderDetail" + (String) consultOrder.get("doctorId") + "," + (Integer) consultOrder.get("orderId") + ",phone";
-                        PatientMsgTemplate.consultPhoneSuccess2Wechat((String) consultOrder.get("doctorName"), (String) consultOrder.get("date"), week, (String) consultOrder.get("beginTime"), (String) consultOrder.get("endTime"), (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"), userInfo.getOpenid(), token, url);
-                    }
-                }
+//                Map<String, Object> consultPhoneMap = insuranceService.getPayRecordById(payRecord.getId());
+//                Map<String, Object> mapVo = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt((String) consultPhoneMap.get("order_id")));
+//                if ("待支付".equals(mapVo.get("state"))) {
+//                    String consultPhoneId = consultPhoneMap.get("order_id").toString();
+//                    System.out.println("orderId:" + consultPhoneId);
+//                    if (consultPhoneMap.get("fee_type").toString().equals("consultPhone")) {
+//
+//                        ConsultPhoneRegisterServiceVo consultPhoneVo = new ConsultPhoneRegisterServiceVo();
+//                        consultPhoneVo.setId(Integer.parseInt(consultPhoneId));
+//                        consultPhoneVo.setState("1");
+//                        consultPhoneVo.setUpdateTime(new Date());
+//
+//
+//                        consultPhonePatientService.updateOrderInfoBySelect(consultPhoneVo);
+//
+//                        payRecord.setDoctorId((String) mapVo.get("doctorId"));
+//
+//                        payRecordService.updatePayInfoByPrimaryKeySelective(payRecord, "");
+//                        Map<String, Object> consultOrder = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(consultPhoneId));
+//                        HashMap<String, Object> hashMap = new HashMap<String, Object>();
+//                        hashMap.put("userId", consultOrder.get("sys_user_id"));
+//                        User userInfo = systemService.getUserById((String) consultOrder.get("sys_user_id"));
+//                        String week = DateUtils.getWeekOfDate(DateUtils.StrToDate((String) consultOrder.get("date"), "yyyy/MM/dd"));
+//                        PatientMsgTemplate.consultPhoneSuccess2Msg((String) consultOrder.get("babyName"), (String) consultOrder.get("doctorName"), (String) consultOrder.get("date"), week, (String) consultOrder.get("beginTime"), (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"));
+//                        Map<String, Object> parameter = systemService.getWechatParameter();
+//                        String token = (String) parameter.get("token");
+//                        String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "/titan/phoneConsult#/orderDetail" + (String) consultOrder.get("doctorId") + "," + (Integer) consultOrder.get("orderId") + ",phone";
+//                        PatientMsgTemplate.consultPhoneSuccess2Wechat((String) consultOrder.get("doctorName"), (String) consultOrder.get("date"), week, (String) consultOrder.get("beginTime"), (String) consultOrder.get("endTime"), (String) consultOrder.get("phone"), (String) consultOrder.get("orderNo"), userInfo.getOpenid(), token, url);
+//                    }
+//                }
             }
             return XMLUtil.setXML("SUCCESS", "");
         } catch (Exception e) {

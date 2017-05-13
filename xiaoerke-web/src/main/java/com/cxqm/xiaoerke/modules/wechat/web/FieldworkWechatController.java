@@ -328,6 +328,9 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getTitanWebUrl() + "titan/nonRealTimeConsult#/NonTimeUserFindDoctor";
         } else if (url.startsWith("58")) {  //打卡活动
             url = getBabyCoinURL(request, openid, sysPropertyVoWithBLOBsVo);
+        } else if (url.startsWith("59")) {
+            String[] parameters = request.getQueryString().split(",");
+            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wxPay/patientPay.do?serviceType=telConsultPay" +"&payPrice=" + parameters[1];;
         } else if (url.startsWith("77177")) {
             url = getCoopConsultUserURL(request, openid, sysPropertyVoWithBLOBsVo);
         }

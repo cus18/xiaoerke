@@ -36,14 +36,14 @@
             </div>
         </div>
         <!--电话咨询-->
-        <div class="home_telConsult home_introduce item-com" ng-if= "isPhoneConsult == 'true'">
+        <div class="home_telConsult home_introduce item-com" ng-if= "isPhoneConsult == 'true'" ng-click="goToPay()">
             <div class="introduce_title com_font15 com_color3"><span>电话咨询</span></div>
             <div class="content" >
                 <img width="40" height="40" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/telConsult/icon_phone.png">
                 <div class="com_font16 com_color3">电话咨询</div>
                 <div class="com_font12 com_color9 details">时间段 {{consultTime}} </div>
                 <div class="price com_bold com_font15">{{phonePayPrice}}元/15分钟</div>
-                <a class="btn able " ng-if="true" ng-click="goConsult()">立即咨询</a>
+                <a class="btn able " ng-if="true" >立即咨询</a>
                 <a class="btn unable" ng-if="false">立即咨询</a>
             </div>
         </div>
