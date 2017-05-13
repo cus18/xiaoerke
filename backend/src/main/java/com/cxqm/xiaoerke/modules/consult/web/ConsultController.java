@@ -216,6 +216,7 @@ public class ConsultController extends BaseController {
 		model.addAttribute("sessionMap", map.get("sessionMap"));
 		model.addAttribute("lectureList", map.get("lectureList"));
 		model.addAttribute("departmentList", map.get("departmentList"));
+		model.addAttribute("timeid", map.get("timeid"));
 		return "modules/consult/doctorMoreSettingForm";
 	}
 

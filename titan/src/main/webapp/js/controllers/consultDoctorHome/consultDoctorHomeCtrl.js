@@ -118,9 +118,7 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
 
         //跳转首次咨询
         $scope.goConsultDoctor = function () {
-           /* location.href="nonRealTimeConsult#/NonTimeUserFirstConsult/"+$stateParams.id;*/
             window.location.href="nonRealTimeConsult#/NonTimeUserFirstConsult/"+$stateParams.id+","+$scope.nonRealPayPrice;
-
         }
     }]);
 

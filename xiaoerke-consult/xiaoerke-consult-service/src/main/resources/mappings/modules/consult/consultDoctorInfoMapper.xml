@@ -32,11 +32,13 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="sessionid" property="sessionid" jdbcType="VARCHAR" />
+    <result column="phone_time_id" property="timeid" jdbcType="VARCHAR" />
+
 
   </resultMap>
   <sql id="Base_Column_List" >
     id, sys_user_id, password,gender,name, title, hospital, department,practitionerCertificateNo, skill, description, grab_session, send_message, receive_differential_notification,
-    create_date, update_date,type,open_id,consult_num,evaluate,nonrealtime_status,star_doctor,sort,microMallAddress,nonRealPayPrice
+    create_date, update_date,type,open_id,consult_num,evaluate,nonrealtime_status,star_doctor,sort,microMallAddress,nonRealPayPrice,phone_time_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -156,6 +158,10 @@
       <if test="microMallAddress != null" >
         microMallAddress,
       </if>
+      <if test="timeid != null" >
+        phone_time_id,
+      </if>
+
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -217,6 +223,9 @@
       </if>
       <if test="microMallAddress != null" >
         #{microMallAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="timeid != null" >
+        #{timeid,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -282,6 +291,9 @@
       </if>
       <if test="nonRealPayPrice != null" >
         nonRealPayPrice = #{nonRealPayPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="timeid != null" >
+        phone_time_id = #{timeid,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

@@ -63,6 +63,8 @@ public class ConsultDoctorInfoVo {
 
     private String nonRealPayPrice;
 
+    private String timeid;
+
     //会话状态
     private Date createTime;
     private String status;
@@ -336,5 +338,13 @@ public class ConsultDoctorInfoVo {
 
     public void setNonRealPayPrice(String nonRealPayPrice) {
         this.nonRealPayPrice = nonRealPayPrice;
+    }
+
+    public String getTimeid() {
+        return timeid;
+    }
+
+    public void setTimeid(String timeid) {
+        this.timeid = timeid;
     }
 }
