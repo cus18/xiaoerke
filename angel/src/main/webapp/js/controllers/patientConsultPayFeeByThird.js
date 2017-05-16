@@ -40,7 +40,9 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
 
                 //
                 var id = $stateParams.userId;
-                GetUserHeadImgWechat.get({"userId":id},function(data){
+                $scope.patientId = id;
+                console.log(id);
+                GetUserHeadImgWechat.get({"userId":$scope.patientId},function(data){
                     console.log("data", data);
                     if(data.status == '0'){
                         patientImg = $.base64.decode(data.headImgUrl);
@@ -50,7 +52,6 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
                     console.log(patientImg);
                 });
                 $scope.patientName = $stateParams.name == null ? $stateParams.userId : $stateParams.name;
-                $scope.patientId = id;
                 GetSessionId.get({"userId": $scope.patientId}, function (data) {
                     console.log("data", data);
                     if (data.status == "0") {
@@ -295,6 +296,9 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
                     }).success(function (data, status, headers, config) {
                         $ionicScrollDelegate.scrollBottom();
                         $scope.fucengLock = false;
+                        if(data.status == "failure"){
+                            return ;
+                        }
                         var patientValMessage = {
                             "type": 1,
                             "content": data.showFile,
@@ -302,6 +306,7 @@ angular.module('controllers', ['luegg.directives', 'ngFileUpload', 'ionic'])
                             "senderId": $scope.patientId,
                             "senderName": $scope.patientName,
                             "sessionId": parseInt($scope.sessionId),
+                            "source": $scope.source,
                             "avatar": patientImg //"http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/dkf%2Fconsult%2Fyonghumoren.png"
                         };
                         if (!window.WebSocket) {

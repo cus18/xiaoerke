@@ -1,9 +1,6 @@
 package com.cxqm.xiaoerke.modules.activity.web;
 
-import com.cxqm.xiaoerke.common.utils.IdGen;
-import com.cxqm.xiaoerke.common.utils.SpringContextHolder;
-import com.cxqm.xiaoerke.common.utils.StringUtils;
-import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.account.exception.BalanceNotEnoughException;
 import com.cxqm.xiaoerke.modules.account.exception.BusinessPaymentExceeption;
 import com.cxqm.xiaoerke.modules.activity.entity.RedpackageActivityInfoVo;
@@ -22,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -252,6 +252,7 @@ public class ActivitiesController {
             String token = tokenId;
             String url = sysPropertyVoWithBLOBsVo.getTitanWebUrl()+"/titan/appWfdb#/myCard/"+type+","+moneyCount;
             String openid = openId;
+//            String templateId = "U-0n4vv3HTXzOE4iD5hZ1siCjbpFVTPpFsXrxs4ASK8";    //shengchan
             String templateId = "U-0n4vv3HTXzOE4iD5hZ1siCjbpFVTPpFsXrxs4ASK8";
             WechatMessageUtil.templateModel(first, keyword1, keyword2, keyword3, keyword4, remark, token, url, openid, templateId);
         }

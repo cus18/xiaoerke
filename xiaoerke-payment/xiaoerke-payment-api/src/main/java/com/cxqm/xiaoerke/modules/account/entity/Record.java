@@ -48,7 +48,7 @@ public abstract class Record implements Comparable<Record>{
     }
 
     public int compareTo(Record o) {
-      boolean flag =   this.getReceiveDate().getTime() - o.getReceiveDate().getTime()>0;
+      boolean flag =   this.getReceiveDate().getTime() -( o.getReceiveDate()==null?new Date().getTime():o.getReceiveDate().getTime())>0;
       if(flag){
         return -1;
       }
