@@ -33,10 +33,14 @@
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="sessionid" property="sessionid" jdbcType="VARCHAR" />
 
+    <result column="phone_time_id" property="timeid" jdbcType="VARCHAR" />
+    <result column="phone_pay_price" property="phonePayPrice" jdbcType="VARCHAR" />
+    <result column="is_phone_consult" property="isPhoneConsult" jdbcType="VARCHAR" />
+
   </resultMap>
   <sql id="Base_Column_List" >
     id, sys_user_id, password,gender,name, title, hospital, department,practitionerCertificateNo, skill, description, grab_session, send_message, receive_differential_notification,
-    create_date, update_date,type,open_id,consult_num,evaluate,nonrealtime_status,star_doctor,sort,microMallAddress,nonRealPayPrice
+    create_date, update_date,type,open_id,consult_num,evaluate,nonrealtime_status,star_doctor,sort,microMallAddress,nonRealPayPrice,phone_time_id,phone_pay_price,is_phone_consult
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -156,6 +160,16 @@
       <if test="microMallAddress != null" >
         microMallAddress,
       </if>
+      <if test="timeid != null" >
+        phone_time_id,
+      </if>
+      <if test="phonePayPrice != null" >
+        phone_pay_price,
+      </if>
+      <if test="isPhoneConsult != null" >
+        is_phone_consult,
+      </if>
+
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -218,6 +232,16 @@
       <if test="microMallAddress != null" >
         #{microMallAddress,jdbcType=VARCHAR},
       </if>
+      <if test="timeid != null" >
+        #{timeid,jdbcType=VARCHAR},
+      </if>
+      <if test="phonePayPrice != null" >
+        #{phonePayPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="isPhoneConsult != null" >
+        #{isPhoneConsult,jdbcType=VARCHAR},
+      </if>
+
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.cxqm.xiaoerke.modules.consult.entity.ConsultDoctorInfoVo" >
@@ -282,6 +306,15 @@
       </if>
       <if test="nonRealPayPrice != null" >
         nonRealPayPrice = #{nonRealPayPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="timeid != null" >
+        phone_time_id = #{timeid,jdbcType=VARCHAR},
+      </if>
+      <if test="phonePayPrice != null" >
+        phone_pay_price =#{phonePayPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="isPhoneConsult != null" >
+        is_phone_consult = #{isPhoneConsult,jdbcType=CHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

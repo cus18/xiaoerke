@@ -1,7 +1,7 @@
 angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstConsultCtrl', [
         '$scope','$upload','$state','$stateParams','BabyBaseInfo','CreateSession','GetConsultDoctorHomepageInfo',
     function ($scope,$upload,$state,$stateParams,BabyBaseInfo,CreateSession,GetConsultDoctorHomepageInfo) {
-            $scope.nonRealPayPrice="6.6";//doctor price;
+            $scope.nonRealPayPrice=$stateParams.nonRealPayPrice;//doctor price;
             var recordLogs = function(val){
                 $.ajax({
                     url:"util/recordLogs",// 跳转到 action
@@ -189,7 +189,7 @@ angular.module('controllers', ['ngFileUpload']).controller('NonTimeUserFirstCons
                     recordLogs("FSS_YHD_TWY_TW");
                     //$state.go("NonTimeUserConversation",{"sessionId":data.sessionId})
                     /*location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=51,"+data.sessionId;*/
-                    location.href = "http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=51,"+data.sessionId+","+$scope.nonRealPayPrice;
+                    location.href = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=51,"+data.sessionId+","+$scope.nonRealPayPrice;
                 })
             };
             $scope.$on('$ionicView.beforeEnter',function() {

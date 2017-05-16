@@ -187,10 +187,10 @@ public class AccountUserController {
     String consultPhonePay(HttpServletRequest request, HttpSession session) throws Exception {
         DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
 
-        String consultPhoneServiceId = request.getParameter("patientRegisterId");
-        Map<String, Object> consultMap = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(consultPhoneServiceId));
-        if ("待支付".equals(consultMap.get("state"))) {
-            request.setAttribute("payPrice", consultMap.get("price"));
+//        String consultPhoneServiceId = request.getParameter("patientRegisterId");
+//        Map<String, Object> consultMap = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt(consultPhoneServiceId));
+//        if ("待支付".equals(consultMap.get("state"))) {
+//            request.setAttribute("payPrice", consultMap.get("price"));
             //获取统一支付接口参数
             Map prepayInfo = accountService.getPrepayInfo(request, session, "consultPhone");
             prepayInfo.put("feeType", "consultPhone");
@@ -199,10 +199,10 @@ public class AccountUserController {
             String userId = UserUtils.getUser().getId();//patientRegisterService.getUserIdByPatientRegisterId(patientRegisterId);
             String payParameter = accountService.assemblyPayParameter(request, prepayInfo, session, userId, null);
             return payParameter;
-        }
-        SortedMap<Object, Object> params = new TreeMap<Object, Object>();
-        params.put("agent", "7");
-        return JSONObject.fromObject(params).toString();
+//        }
+//        SortedMap<Object, Object> params = new TreeMap<Object, Object>();
+//        params.put("agent", "7");
+//        return JSONObject.fromObject(params).toString();
     }
 
 

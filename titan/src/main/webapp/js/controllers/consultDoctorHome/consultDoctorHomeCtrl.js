@@ -10,9 +10,10 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
         $scope.goNonTimeConsult=function(){
             window.location.href="nonRealTimeConsult#/NonTimeUserFirstConsult/"+$stateParams.id+","+$scope.nonRealPayPrice;
         };
+
         //点击 电话咨询
-        $scope.goConsult=function(){
-            window.location.href="/keeper/wxPay/patientPay.do?serviceType=telConsultPay";
+        $scope.goToPay=function(){
+            window.location.href="http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=59,"+$scope.phonePayPrice;
         };
 
 
@@ -34,6 +35,12 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
                 $scope.description = data.description.split(" ");//医生介绍
                 $scope.rate = data.rate*100;//医生有用百分比
                 $scope.gender = data.gender;
+
+                $scope.isPhoneConsult = data.isPhoneConsult;//医生名字
+                $scope.phonePayPrice = data.phonePayPrice;//医生名字
+                $scope.consultTime = data.consultTime;//医生名字
+
+
                 $scope.nonConsultStatus = data.nonConsultStatus;//医生是否开通 图文咨询
                 for (i = $scope.description.length - 1;  i >= 0; i--) {
                     if ($scope.description[i] === '') {
@@ -118,9 +125,7 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
 
         //跳转首次咨询
         $scope.goConsultDoctor = function () {
-           /* location.href="nonRealTimeConsult#/NonTimeUserFirstConsult/"+$stateParams.id;*/
             window.location.href="nonRealTimeConsult#/NonTimeUserFirstConsult/"+$stateParams.id+","+$scope.nonRealPayPrice;
-
         }
     }]);
 

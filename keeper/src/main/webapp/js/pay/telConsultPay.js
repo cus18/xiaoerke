@@ -1,9 +1,19 @@
+//页面初始化执行,用户初始化页面参数信息以及微信的支付接口
+var GetQueryString = function(name)
+{
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return  unescape(r[2]); return null;
+}
+var payPrice = GetQueryString("payPrice");
+
 
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
 var doRefresh = function(){
+    $("#price").html(payPrice);
     var timestamp;//时间戳
     var nonceStr;//随机字符串
-    var signature;//得到的签名
+    var signature;//得到的签名4
     var appid;//得到的签名
     $.ajax({
         url:"wechatInfo/getConfig",// 跳转到 action
@@ -49,10 +59,10 @@ var doRefresh = function(){
 //确认支付
 function wechatPay (){
     $.ajax({
-        url:"account/user/nonRealTimeConsultPay",// 跳转到 action
+        url:"account/user/consultPhonePay",// 跳转到 action
         async:true,
         type:'get',
-        data:{patientRegisterId:consultId,payPrice:parseFloat(nonRealPayPrice)*100},
+        data:{payPrice:parseFloat(payPrice)*100},
         cache:false,
         success:function(data) {
             var obj = eval('(' + data + ')');
@@ -77,7 +87,7 @@ function wechatPay (){
                 paySign:obj.paySign,  // 支付签名
                 success: function (res) {
                     if(res.errMsg == "chooseWXPay:ok" ) {
-                        window.location.href = "/titan/consultDoctorHome#/telConsultPaySuccess";
+                        window.location.href = "http://s201.xiaork.com/titan/consultDoctorHome#/telConsultPaySuccess";
                     }else{
                         alert("支付失败,请重新支付")
                     }

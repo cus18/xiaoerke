@@ -316,7 +316,48 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         returnMap.put("evaluationList",evaluationList);
         returnMap.put("allEvaluationNum",allEvaluationList.size());
         returnMap.put("personNum",num);
+        returnMap.put("isPhoneConsult","false");
+        returnMap.put("phonePayPrice","");
+        Date d = new Date();
+        int hours = d.getHours();
+        if("1".equals(vo.getIsPhoneConsult())&&vo.getTimeid().indexOf(hours+"")>-1){
+            returnMap.put("isPhoneConsult","true");
+            returnMap.put("phonePayPrice",vo.getPhonePayPrice());
+            returnMap.put("consultTime",StringtoInt(vo.getTimeid()));
+
+        };
         return returnMap;
+    }
+
+    public String StringtoInt(String str) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        List<Integer> group = null;
+        int ret[] = new int[str.split(",").length];
+        String[] st = str.split(",");
+        StringTokenizer toKenizer = new StringTokenizer(str, ",");
+        int i = 0;
+        while (toKenizer.hasMoreElements()) {
+            ret[i++] = Integer.valueOf(toKenizer.nextToken());
+        }
+        for (int value : ret) {
+            if (group == null || group.get(group.size() - 1) + 1 != value) {
+                group = new ArrayList<Integer>();
+                result.add(group);
+            }
+            group.add(value);
+        }
+
+        String subStr = "";
+        for(List<Integer> times:result){
+            if(times.size() == 1){
+                subStr += times.get(0)+":00--"+(times.get(0)+1)+":00"+"    ";
+            } else {
+                subStr += times.get(0)+":00--"+times.get(times.size()-1)+":00"+"    ";
+            }
+
+        }
+        return subStr;
+
     }
 
     @Override
