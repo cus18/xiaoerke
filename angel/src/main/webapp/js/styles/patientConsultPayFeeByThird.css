@@ -45,9 +45,10 @@
 }
 .patientConsultPayFeeByThird .pic-wrap .btn{
     position: absolute;
-    width:80%;
-    left:10%;
-    height:100px;
+    z-index:7;
+    width:90%;
+    left:5%;
+    height:130px;
     bottom:7%;
     background-color: transparent;
 
