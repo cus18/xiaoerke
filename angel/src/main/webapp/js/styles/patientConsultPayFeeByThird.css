@@ -13,6 +13,7 @@
     border:1px solid #ddd;
     padding: 14px 0 15px 0;
     border-radius: 5px;
+    bottom:25px;
 
 }
 
@@ -35,12 +36,23 @@
     background-color:#add0f9;
     margin-top:0;
     z-index:6;
-    display:table;
+    /*display:table;*/
 }
 .patientConsultPayFeeByThird .pic-wrap{
-    position: relative;
-    display:table-cell;
-    vertical-align:middle;
+    position: absolute;
+    width:100%;
+    top:50%;
+    margin-top:-220px;
+   /* display:table-cell;
+    vertical-align:middle;*/
+
+}
+.patientConsultPayFeeByThird .pic-wrap .pic-btn{
+    position: absolute;
+    z-index:7;
+    bottom:18px;
+    margin-left:-120px;
+    left:50%;
 
 }
 .patientConsultPayFeeByThird .pic-wrap .btn{
