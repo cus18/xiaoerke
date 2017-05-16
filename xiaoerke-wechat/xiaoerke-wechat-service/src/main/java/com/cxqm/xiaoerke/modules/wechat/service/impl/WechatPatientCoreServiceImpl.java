@@ -1128,6 +1128,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                 String title = "恭喜您有好友加入啦~ ";
                 // 到账模板：U-0n4vv3HTXzOE4iD5hZ1siCjbpFVTPpFsXrxs4ASK8
                 String templateId = "b_ZMWHZ8sUa44JrAjrcjWR2yUt8yqtKtPU8NXaJEkzg"; //生产环境 业务动态提醒ID
+ //               String templateId = "cTAAFl0Qn1hIiwj_PV-O-HPQ1P6RRHj-TQHGcr_mUdo";
                 String keyword1 = "您已成功邀请" + vo.getTotalInvitation() + "位好友";
                 String keyword2 = "已集齐卡片" + vo.getTotalInvitation() / 2 + "张，福利卡" + vo.getCardBig() + "张";
                 String remark = "点击立即抽奖";
