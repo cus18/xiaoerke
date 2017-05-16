@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.common.dataSource.DataSourceInstances;
 import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.*;
 import com.cxqm.xiaoerke.modules.activity.service.OlyGamesService;
+import com.cxqm.xiaoerke.modules.alipay.util.httpClient.StringUtil;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultCoopUserInfoService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultEvaluateCoopService;
@@ -57,6 +58,10 @@ public class ConsultH5CoopController {
 
     @Autowired
     private SysPropertyServiceImpl sysPropertyService;
+
+
+    @Autowired
+    private OlyGamesService olyGamesService;
 
     //jiangzg add
     private ConsultCoopUserInfoMongoDBServiceImpl consultCoopUserInfoMongoDBService = SpringContextHolder.getBean("consultCoopUserInfoMongoDBServiceImpl");
@@ -658,9 +663,6 @@ public class ConsultH5CoopController {
         return jsonObject;
     }
 
-    @Autowired
-    private OlyGamesService olyGamesService;
-
     /**
      * 获取微信第三方用户的头像
      * jiangzg 2016-8-23 12:00:37
@@ -668,22 +670,25 @@ public class ConsultH5CoopController {
     @RequestMapping(value = "/getCoopUserHeadImgByWechat", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    Map<String,Object> getCoopUserHeadImgByWechat(@RequestBody Map params) {
+    Map<String,Object> getCoopUserHeadImgByWechat(@RequestParam(required = true) String userId) {
         Map<String,Object>  resultMap = new HashMap<String,Object> ();
-        String openId = String.valueOf(params.get("userId"));
-        String headImgUrl = olyGamesService.getWechatMessage(openId);//头像
-        try {
-            if (StringUtils.isNotNull(headImgUrl) && null != headImgUrl) {
-                resultMap.put("status","0");
-                headImgUrl = new String(org.springframework.security.crypto.codec.Base64.encode(headImgUrl.getBytes("utf-8")), "utf-8");
-            } else {
-                resultMap.put("status","1");
-                headImgUrl = "default";
+        if(StringUtils.isNotNull(userId)){
+            String headImgUrl = olyGamesService.getWechatMessage(userId);//头像
+            try {
+                if (StringUtils.isNotNull(headImgUrl) && null != headImgUrl) {
+                    resultMap.put("status","0");
+                    headImgUrl = new String(org.springframework.security.crypto.codec.Base64.encode(headImgUrl.getBytes("utf-8")), "utf-8");
+                } else {
+                    resultMap.put("status","1");
+                    headImgUrl = "default";
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            resultMap.put("headImgUrl",headImgUrl);
+        }else{
+            resultMap.put("status","1");
         }
-        resultMap.put("headImgUrl",headImgUrl);
         return resultMap;
     }
 }

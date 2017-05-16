@@ -18,6 +18,16 @@ public class PunchCardRewardsVo {
 
     private Float cashAmount;
 
+    private Integer dayTh;
+
+    public Integer getDayTh() {
+        return dayTh;
+    }
+
+    public void setDayTh(Integer dayTh) {
+        this.dayTh = dayTh;
+    }
+
     public String getId() {
         return id;
     }

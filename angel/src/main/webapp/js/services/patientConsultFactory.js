@@ -47,7 +47,9 @@ define(['appPatientConsult'], function (app) {
         .factory('BabyCoinInit',['$resource',function ($resource){
             return $resource('babyCoin/babyCoinInit');
         }])
-
+        .factory('GetUserHeadImgWechat',['$resource',function ($resource){
+            return $resource('consult/cooperate/getCoopUserHeadImgByWechat');
+        }])
         //公用数据邀请分享地址
         .factory('inviteUrlData', function() {
             var inviteUrl = "http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=41,";
@@ -55,9 +57,5 @@ define(['appPatientConsult'], function (app) {
         })
         .factory('GetConfig',['$resource',function ($resource){
             return $resource('util/getConfig');
-        }])
-        .factory('GetUserHeadImgWechat',['$resource',function ($resource){
-            return $resource('consult/cooperate/getCoopUserHeadImgByWechat');
         }]);
-
 })
