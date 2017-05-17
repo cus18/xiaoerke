@@ -407,7 +407,15 @@ public class FieldworkWechatController {
                         if (source.contains("-")) {
                             source = "h5" + source.split("-")[1];
                         }
-                        url = sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/patient/consult#" + "/patientConsultPayFeeByThird/" + openid + "," + user.getName() + "," + source;
+                        if(source.contains("GuoWei")){
+                            if(!user.getName().startsWith("GuoWei")){
+                                url = sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/patient/consult#" + "/patientConsultPayFeeByThird/" + openid + "," + "GuoWei-"+user.getName() + "," + source;
+                            }else{
+                                url = sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/patient/consult#" + "/patientConsultPayFeeByThird/" + openid + "," + user.getName() + "," + source;
+                            }
+                        }else{
+                            url = sysPropertyVoWithBLOBsVo.getAngelWebUrl() + "angel/patient/consult#" + "/patientConsultPayFeeByThird/" + openid + "," + user.getName() + "," + source;
+                        }
                     } else {
                         //第三方微信接入接口
                     }
