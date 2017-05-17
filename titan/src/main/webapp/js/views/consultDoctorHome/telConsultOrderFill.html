@@ -1,0 +1,24 @@
+<ion-view view-title="" class="telConsultOrderFill">
+    <ion-content class=" bg1" style="top:0;">
+       <div class="remind-text f2 c0 ">
+           提示：急诊不适合电话诊疗／咨询，请即刻前往当地医院急诊
+       </div>
+        <ul class="fill-wrap f4 c3">
+            <li>
+               <span class="fl">患者姓名（必填）:</span>
+                <input class="" type="text"  ng-model="info.userName">
+            </li>
+            <li>
+                <span class="fl">接听电话：</span>
+                <input type="text" placeholder="请输入手机号（必填）" ng-model="info.phoneNum" maxlength="11">
+            </li>
+            <li>
+                <span class="fl">疾病名称：</span>
+                <input type="text" placeholder="请输入疾病名称">
+            </li>
+        </ul>
+        <div>
+        </div>
+        <button ng-click = "submitOrder()" ng-disabled="( info.phoneNum.length<11 || info.phoneNum==null || info.userName==null)" class="foot-btn f6">提交订单</button >
+    </ion-content>
+</ion-view>

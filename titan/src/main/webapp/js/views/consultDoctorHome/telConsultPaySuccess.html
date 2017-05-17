@@ -1,15 +1,22 @@
 <ion-view view-title="">
     <ion-content class="telConsultPaySuccess" style="top:0;">
        <div class="main">
-           <img class="my-img2" width="70%" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/telConsult/paySuccess.png">
-           <a class="foot-btn btn c0 tc " href="tel:" >呼叫医生</a>
+           <div class="f4 c3">
+               <img class="my-img2" width="70%" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/telConsult/paySuccess.png">
+               <div class="info">
+                   <div class="">医生将在五分钟内尽快与您联系，请保持手机通畅。</div>
+                   <div class="time">接通时间：15分钟</div>
+                   <div class="phone">接通电话：18200000000</div>
+               </div>
+           </div>
+           <button class="foot-btn btn c0 tc " ng-click="lookOrderDetail()" >查看详情页</button>
            <dl class="remind-text bg1">
                <dt class="tc c3 f6">温馨提示</dt>
                <dd class="c4 f3">
-                   <span >1.</span> 出现异常：电话中断，医生会主动拔打电话
-               </dd>
+               <span >1.</span> 电话咨询为一次性通话，正常通话结束后无法再转接。
+           </dd>
                <dd class="c4 f3">
-                   <span >2.</span> 若未拨通电话，请及时联系客服<a href="tel:4006237120">400-623-7120</a><br>
+                   <span >2.</span> 若通话意外断线，请及时拨打客服<a href="tel:4006237120">400-623-7120</a><br>
                    电话：<a href="tel:18001350891">18001350891</a>
                </dd>
 
