@@ -1,0 +1,47 @@
+<ion-view view-title="" class="telConsultOrderList">
+    <ion-content class="telConsultPaySuccess" style="top:0;">
+       <div class="item-classify f4 tc bg1">
+           <a class="fl " ng-class="{'cur': itemClassify=='waitingCall'}" ng-click="selectClassify('waitingCall')">待通话</a>
+           <a class="fl " ng-class="{'cur':itemClassify=='called'}" ng-click="selectClassify('called')">已通话</a>
+           <i class="line"></i>
+       </div>
+        <div class="apart1"></div>
+        <!--待接通列表-->
+        <ul ng-if="itemClassify=='waitingCall'" class="show-list ">
+            <li ng-repeat="item in WaitingCallList" class="info bg1">
+                <div class="info-doctor">
+                    <img class="fl my-img1" width="55" height="auto" ng-src="{{item.doctorAvatar}}">
+                    <div class="doctor-detail fl">
+                        <div class="f6 doctor-name"> {{item.doctorName}}</div>
+                        <div class="f4 c3">{{item.doctorTitle}}</div>
+
+                    </div>
+                    <div class="price fr f4 c3">通话价格：{{item.price}}元/分钟</div>
+                </div>
+                <div class="info-user f4 c3">
+                    <div class="user-name fl">患者：{{item.userName}}</div>
+                    <div class="user-phone fr">接听手机号：{{item.userPhone}}</div>
+                </div>
+            </li>
+        </ul>
+
+        <!--已接通列表-->
+        <ul ng-if="itemClassify=='called'" class="show-list ">
+            <li ng-repeat="item in CalledList" class="info bg1">
+                <div class="info-doctor">
+                    <img class="fl my-img1" width="55" height="auto" ng-src="{{item.doctorAvatar}}">
+                    <div class="doctor-detail fl">
+                        <div class="f6 doctor-name"> {{item.doctorName}}</div>
+                        <div class="f4 c3">{{item.doctorTitle}}</div>
+
+                    </div>
+                    <div class="price fr f4 c3">通话价格：{{item.price}}元/分钟</div>
+                </div>
+                <div class="info-user f4 c3">
+                    <div class="user-name fl">患者：{{item.userName}}</div>
+                    <div class="user-phone fr">接听手机号：{{item.userPhone}}</div>
+                </div>
+            </li>
+        </ul>
+    </ion-content>
+</ion-view>

@@ -4,6 +4,10 @@ angular.module('controllers', ['ionic']).controller('telConsultPaySuccessCtrl', 
 
         $scope.evaluationList = [];
 
+        $scope.lookOrderDetail=function(){
+            $state.go("telConsultOrderList")
+        };
+
         $scope.goNonTimeConsult=function(){
             window.location.href="nonRealTimeConsult#/NonTimeUserFirstConsult/"+$stateParams.id+","+$scope.nonRealPayPrice;
         };

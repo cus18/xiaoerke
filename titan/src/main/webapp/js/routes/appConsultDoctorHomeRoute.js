@@ -91,6 +91,40 @@ define(['appConsultDoctorHome'], function(app){
                             public: true
                         }
                     })
+                    .state('telConsultOrderFill', {
+                        url: '/telConsultOrderFill/:price',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'telConsultOrderFillCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.telConsultOrderFillCtrl',
+                                    ['js/controllers/consultDoctorHome/telConsultOrderFillCtrl.js',
+                                        'styles/consultDoctorHome/telConsultOrderFill.less?ver='+picVersion,
+                                    ],
+                                    'js/views/consultDoctorHome/telConsultOrderFill.html?ver='+picVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
+                    .state('telConsultOrderList', {
+                        url: '/telConsultOrderList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'telConsultOrderListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.telConsultOrderListCtrl',
+                                    ['js/controllers/consultDoctorHome/telConsultOrderListCtrl.js',
+                                        'styles/consultDoctorHome/telConsultOrderList.less?ver='+picVersion,
+                                    ],
+                                    'js/views/consultDoctorHome/telConsultOrderList.html?ver='+picVersion);
+                            }
+                        },
+                        data: {
+                            public: true
+                        }
+                    })
                 ;
 
 
