@@ -39,6 +39,7 @@ public class SMSMessageUtil {
     public static String sendMsg(String phoneNum, String content) {
         //短信开关
         String msgStatus = Global.getConfig("shortMessageSwitch");
+        LogUtils.saveLog("sendmsg",phoneNum+"-"+content+"-");//短信
         if("on".equals(msgStatus)&&phoneNum!=""&&content !=null){
             System.out.print("短信发送："+phoneNum+"|"+content);
             content = content+"【宝大夫】";
@@ -51,8 +52,9 @@ public class SMSMessageUtil {
                 ChangzhuaoMessageBean messageBean = parseXml(result);
                 String status = messageBean.getReturnstatus();
                 String Prompt = messageBean.getMessage();
+                LogUtils.saveLog("msgStatus",phoneNum+"-"+status);//短信
                 if("Faild".equals(status)){
-                    LogUtils.saveLog("00000008"+phoneNum+"-"+content+"-"+Prompt);//短信
+                    LogUtils.saveLog("sendMsgFail","00000008"+phoneNum+"-"+content+"-"+Prompt);//短信
                 }
             } catch (Exception e) {
                 e.printStackTrace();
