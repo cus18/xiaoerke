@@ -331,25 +331,25 @@ define(['appPatientConsult'], function(app){
                         }
                     })
 
-                    //.state('patientConsultYKDL', {
-                    //    url: '/patientConsultYKDL/:id',
-                    //    templateProvider: function() { return lazyDeferred.promise; },
-                    //    controller: 'patientConsultYKDLCtrl',
-                    //    resolve: {
-                    //        load: function($templateCache, $ocLazyLoad, $q, $http) {
-                    //            loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultYKDLCtrl',
-                    //                ['js/controllers/patientConsultYKDLCtrl.js',
-                    //                    'js/libs/scrollglue.js','js/libs/moment.min.js',
-                    //                    'js/libs/jquery.qqFace.js',"js/libs/jquery.browser.min.js",
-                    //                    'js/styles/patientConsultYKDL.css',
-                    //                    'js/styles/main.css'],
-                    //                'js/views/patientConsultYKDL.html?ver='+patientConsultVersion);
-                    //        }
-                    //    },
-                    //    data: {
-                    //        public: true
-                    //    }
-                    //});
+                    .state('patientConsultYKDL', {
+                       url: '/patientConsultYKDL/:id',
+                       templateProvider: function() { return lazyDeferred.promise; },
+                       controller: 'patientConsultYKDLCtrl',
+                       resolve: {
+                           load: function($templateCache, $ocLazyLoad, $q, $http) {
+                               loadFunction($templateCache, $ocLazyLoad, $q, $http,'patientConsultYKDLCtrl',
+                                   ['js/controllers/patientConsultYKDLCtrl.js',
+                                       'js/libs/scrollglue.js','js/libs/moment.min.js',
+                                       'js/libs/jquery.qqFace.js',"js/libs/jquery.browser.min.js",
+                                       'js/styles/patientConsultYKDL.css',
+                                       'js/styles/main.css'],
+                                   'js/views/patientConsultYKDL.html?ver='+patientConsultVersion);
+                           }
+                       },
+                       data: {
+                           public: true
+                       }
+                    });
 
                 //$urlRouterProvider.otherwise('patientConsultFirst');
                 $urlRouterProvider.otherwise('patientConsultYKDL');
