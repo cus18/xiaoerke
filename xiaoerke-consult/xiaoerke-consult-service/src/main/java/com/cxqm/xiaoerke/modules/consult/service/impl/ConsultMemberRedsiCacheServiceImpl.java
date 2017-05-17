@@ -219,7 +219,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
                     String content = "亲爱的，快速问诊避免焦急等待，请您\n\n<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=35&from=fdsa'>>>猛戳这里购买吧！</a>";
                     if (prompt) WechatUtil.sendMsgToWechat(token, openid, content);
                     String path = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=56";
-                    content = "问题不急， 尝试下点名咨询哦\n\n<a href='" + path +"'>>>点名咨询医生</a>\n\n不想掏钱？ 还可以 戳戳手指，邀请好友关注宝大夫， 免费机会就来喽！\n\n<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
+                    content = "问题不急，或咨询妇产科、外科、眼科等其他专科，请前往点名咨询\n\n<a href='" + path +"'>>>点名咨询医生</a>\n\n不想掏钱？ 还可以 戳戳手指，邀请好友关注宝大夫， 免费机会就来喽！\n\n<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
                     if (prompt) WechatUtil.sendMsgToWechat(token, openid, content);
 //                    sendNonRealTimeMsg(openid,token,sysPropertyVoWithBLOBsVo.getKeeperWebUrl());
                     LogUtils.saveLog("ZXTS_MYMFJH", openid);
@@ -229,7 +229,7 @@ public class ConsultMemberRedsiCacheServiceImpl implements ConsultMemberRedsiCac
             String content = "亲爱的，快速问诊避免焦急等待，请您\n\n<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=35&from=fdsa'>>>猛戳这里购买吧！</a>";
             WechatUtil.sendMsgToWechat(token, openid, content);
             String path = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=56";
-            content = "问题不急， 尝试下点名咨询哦\n\n<a href='" + path +"'>>>点名咨询医生</a>\n\n不想掏钱？ 还可以 戳戳手指，邀请好友关注宝大夫， 免费机会就来喽！\n\n<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
+            content = "问题不急，或咨询妇产科、外科、眼科等其他专科，请前往点名咨询\n\n<a href='" + path +"'>>>点名咨询医生</a>\n\n不想掏钱？ 还可以 戳戳手指，邀请好友关注宝大夫， 免费机会就来喽！\n\n<a href='" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wechatInfo/getUserWechatMenId?url=42,ZXYQ_RK_1_backend'>>>邀请好友赚机会</a>";
             WechatUtil.sendMsgToWechat(token, openid, content);
             LogUtils.saveLog("ZXTS_SYMFJH", openid);
             return false;
