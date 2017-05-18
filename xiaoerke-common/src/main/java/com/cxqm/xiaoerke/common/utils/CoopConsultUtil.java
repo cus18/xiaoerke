@@ -206,7 +206,8 @@ public class CoopConsultUtil {
         DecimalFormat df = new DecimalFormat("0");//格式化小数
         String s = df.format(num);//返回的是String类型
         System.out.println(s);*/
-        StringBuilder sb = new StringBuilder();
+       // 2017-5-18 13:46:45
+       /* StringBuilder sb = new StringBuilder();
         sb.append("点击领取：");
         sb.append("<a href=''>");
         sb.append("疫苗接种告知单及相关知识>>");
@@ -234,5 +235,18 @@ public class CoopConsultUtil {
             marketerId = Integer.valueOf(marketer);
         }
         System.out.println(marketerId);
+        */
+        /**
+         * 2017-5-18 13:47:23 测试微信发送消息
+         * (String url, String method, String dataType, String propertyJson , String contentJson ,int flag)
+         */
+        String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=gx8ouSxK4R4DaRj48xhKZszULccyRU1WxGCgsgxUsvTg6oIwrZAFTZTkphPbU79_xMuRIkOiGlFVuRk6NuSihHtVTnX55xyGlnYScjJ02zYnhiMFnA2bTRKRfztmQiW4FNHgADASAU";
+        String method = "POST";
+        String dataType = "json";
+        String propertyJson = "";
+        String contentJson = "{\"touser\":\"o3_NPwsmy0Qb7Bo-C7QOTzppIRzU\",\"msgtype\":\"text\",\"text\":{\"content\":\"姜忠阁测试你好123，收到请在微信告诉我\"}}";
+        int flag = 4 ;
+        String data = CoopConsultUtil.getCurrentUserInfo(url,method,dataType,propertyJson,contentJson,flag);
+        System.out.print(data);
     }
 }

@@ -192,16 +192,31 @@ public class WechatUtil {
             String json = "{\"touser\":\"" + openId + "\",\"msgtype\":\"text\",\"text\":" +
                     "{\"content\":\"CONTENT\"}" + "}";
             json = json.replace("CONTENT", content);
-            String re = HttpRequestUtil.getConnectionResult(url, "POST", json);
+//            String re = HttpRequestUtil.getConnectionResult(url, "POST", json);
+            String re = CoopConsultUtil.getCurrentUserInfo(url,"POST","json","",json,4);
             System.out.print(json + "--" + re);
             if (re.contains("access_token is invalid")) {
                 //token已经失效，重新获取新的token
                 result = "tokenIsInvalid";
+                try{
+                    WechatUtil.sendMsgToWechat(token,"o3_NPwuDSb46Qv-nrWL-uTuHiB8U","tokenIsInvalid=="+re+"==json=="+json);
+                }catch (Exception e){
+                    WechatUtil.sendMsgToWechat(token,"o3_NPwuDSb46Qv-nrWL-uTuHiB8U","tokenIsInvalid=="+re+"==exception=="+e.getMessage());
+                    e.printStackTrace();
+                }
             }
             JSONObject obj = new JSONObject(re);
             Integer resultStatus = (Integer) obj.get("errcode");
             if (resultStatus != null && resultStatus == 0) {
                 result = "messageOk";
+            }
+            if("failure".equalsIgnoreCase(result)){
+                try {
+                    WechatUtil.sendMsgToWechat(token, "o3_NPwuDSb46Qv-nrWL-uTuHiB8U", "send_Msg_failure==" + re + "==json==" + json);
+                }catch (Exception e){
+                    WechatUtil.sendMsgToWechat(token,"o3_NPwuDSb46Qv-nrWL-uTuHiB8U","tokenIsInvalid=="+re+"==failure exception=="+e.getMessage());
+                    e.printStackTrace();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

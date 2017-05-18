@@ -169,6 +169,7 @@ public class HttpRequestUtil {
                 OutputStream os=connection.getOutputStream();
                 BufferedOutputStream bos=new BufferedOutputStream(os);
                 bos.write(content.getBytes("utf-8"));
+                bos.flush();
                 bos.close();
             }
             InputStream is=connection.getInputStream();

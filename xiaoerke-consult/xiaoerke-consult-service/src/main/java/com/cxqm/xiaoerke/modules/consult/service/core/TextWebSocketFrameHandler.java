@@ -95,7 +95,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                 ConsultMemberVo consultMemberVo = consultMemberRedsiCacheService.getConsultMemberInfo(userId);
                 if(consultMemberVo == null){  //第一次咨询
                      //List<ConsultSessionStatusVo> consultSessionStatusVoList = consultRecordService.querySessionStatusList(new Query().addCriteria(new Criteria().where("userId").is(userId).and("source").regex(userSource)).with(new Sort(Sort.Direction.DESC, "createDate")));
-                    Query query = (new Query()).addCriteria(where("userId").is(userId)).with(new Sort(Sort.Direction.DESC, "createDate"));
+                    Query query = (new Query()).addCriteria(where("userId").is(userId)).with(new Sort(Sort.Direction.ASC, "createDate"));
                     ConsultSessionStatusVo consultSessionStatusVo = consultRecordService.findOneConsultSessionStatusVo(query);
                     // 推送消息
                     if(consultSessionStatusVo == null){
@@ -103,17 +103,26 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                     }else{
                         Date nowDate = new Date();
                         long timeLong = nowDate.getTime();
-                        if(timeLong - consultSessionStatusVo.getCreateDate().getTime() > 30*60*1000){
-                            //咨询时间到，如继续咨询请付费
-                            sendMsg = "亲爱的，本次咨询时间已到，如需继续咨询请您\n"+
-                                    "<a href='"+sysPropertyVoWithBLOBsVo.getKeeperWebUrl()+"keeper/wxPay/patientPay.do?serviceType=doctorConsultPay'>戳这里购买服务》</a>";
-                            JSONObject jsonObj = new JSONObject();
-                            jsonObj.put("type", "4");
-                            jsonObj.put("notifyType","7777");
-                            jsonObj.put("sendMsg", sendMsg);
-                            TextWebSocketFrame payFeeRemindMsg = new TextWebSocketFrame(jsonObj.toJSONString());
-                            channel.writeAndFlush(payFeeRemindMsg.retain());
-                            return ;
+                        if(sessionId != null){
+                            if(timeLong - consultSessionStatusVo.getCreateDate().getTime() > 30*60*1000){
+                                //咨询时间到，如继续咨询请付费
+                                JSONObject jsonObj = new JSONObject();
+                                jsonObj.put("type", "4");
+                                jsonObj.put("notifyType","7777");
+                                TextWebSocketFrame payFeeRemindMsg = new TextWebSocketFrame(jsonObj.toJSONString());
+                                channel.writeAndFlush(payFeeRemindMsg.retain());
+                                return ;
+                            }
+                        }else{
+                            if(timeLong - consultSessionStatusVo.getCreateDate().getTime() > 30*60*1000){
+                                //需付费咨询
+                                JSONObject jsonObj = new JSONObject();
+                                jsonObj.put("type", "4");
+                                jsonObj.put("notifyType","8888");
+                                TextWebSocketFrame payFeeRemindMsg = new TextWebSocketFrame(jsonObj.toJSONString());
+                                channel.writeAndFlush(payFeeRemindMsg.retain());
+                                return ;
+                            }
                         }
                     }
                 }else{
@@ -473,12 +482,16 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                 sendResult = WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), richConsultSession.getUserId(), stringBuilder.toString());*/
                 if(!sendResult.equals("messageOk")){
                     if (sendResult.equals("tokenIsInvalid")) {
+                        WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), "o3_NPwuDSb46Qv-nrWL-uTuHiB8U", csUserId+"=tokenIsInvalid info =="+sendResult+"="+userWechatParam.get("token")+"=UId="+richConsultSession.getUserId()+"=MSG="+stringBuilder.toString());
                         updateWechatParameter();
                     }
+                    WechatUtil.sendMsgToWechat((String) userWechatParam.get("token"), "o3_NPwuDSb46Qv-nrWL-uTuHiB8U", csUserId+"=发送失败"+sendResult+"=UId="+richConsultSession.getUserId()+"=MSG="+stringBuilder.toString()+"==token="+userWechatParam.get("token"));
                     Channel csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(csUserId);
                     JSONObject jsonObj = new JSONObject();
                     jsonObj.put("type", "4");
                     jsonObj.put("notifyType", "0016");
+                    jsonObj.put("sendResult",sendResult);
+                    jsonObj.put("token",userWechatParam.get("token")+"=UId="+richConsultSession.getUserId()+"=MSG="+stringBuilder.toString());
                     TextWebSocketFrame frame = new TextWebSocketFrame(jsonObj.toJSONString());
                     if (csChannel != null && csChannel.isActive()) {
                         csChannel.writeAndFlush(frame.retain());
