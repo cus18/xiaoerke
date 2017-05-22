@@ -237,7 +237,7 @@ public class FieldworkWechatController {
             url = sysPropertyVoWithBLOBsVo.getWisdomWebUrl() + "wisdom/umbrella#/umbrellaInvite";
         } else if ("34".equals(url)) {
             url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "angel/patient/consult#/customerService";
-        } else if ("35".equals(url)) {
+        } else if (url.startsWith("35")) {
             String[] parameters = request.getQueryString().split(",");
             if(parameters.length>1){
                 url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wxPay/patientPay.do?serviceType=doctorConsultPay&thirdName="+parameters[1] ;
