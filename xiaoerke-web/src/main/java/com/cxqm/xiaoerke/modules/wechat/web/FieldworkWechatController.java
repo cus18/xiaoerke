@@ -238,7 +238,13 @@ public class FieldworkWechatController {
         } else if ("34".equals(url)) {
             url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "angel/patient/consult#/customerService";
         } else if ("35".equals(url)) {
-            url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wxPay/patientPay.do?serviceType=doctorConsultPay";
+            String[] parameters = request.getQueryString().split(",");
+            if(parameters.length>1){
+                url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wxPay/patientPay.do?serviceType=doctorConsultPay&thirdName="+parameters[1] ;
+            }else {
+                url = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "keeper/wxPay/patientPay.do?serviceType=doctorConsultPay";
+            }
+
         } else if ("36".equals(url)) {
             url = sysPropertyVoWithBLOBsVo.getWisdomWebUrl() + "wisdom/firstPage/heightForecast";
         } else if ("37".equals(url)) {
