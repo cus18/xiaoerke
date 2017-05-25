@@ -185,7 +185,6 @@ public class WechatUtil {
      * @param content 发送内容
      */
     public static String sendMsgToWechat(String token, String openId, String content) {
-        LogUtils.saveLog(content, openId);
         String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + token;
         String result = "failure";
         try {
@@ -198,12 +197,6 @@ public class WechatUtil {
             if (re.contains("access_token is invalid")) {
                 //token已经失效，重新获取新的token
                 result = "tokenIsInvalid";
-                try{
-                    WechatUtil.sendMsgToWechat(token,"o3_NPwuDSb46Qv-nrWL-uTuHiB8U","tokenIsInvalid=="+re+"==json=="+json);
-                }catch (Exception e){
-                    WechatUtil.sendMsgToWechat(token,"o3_NPwuDSb46Qv-nrWL-uTuHiB8U","tokenIsInvalid=="+re+"==exception=="+e.getMessage());
-                    e.printStackTrace();
-                }
             }
             JSONObject obj = new JSONObject(re);
             Integer resultStatus = (Integer) obj.get("errcode");
@@ -211,12 +204,7 @@ public class WechatUtil {
                 result = "messageOk";
             }
             if("failure".equalsIgnoreCase(result)){
-                try {
-                    WechatUtil.sendMsgToWechat(token, "o3_NPwuDSb46Qv-nrWL-uTuHiB8U", "send_Msg_failure==" + re + "==json==" + json);
-                }catch (Exception e){
-                    WechatUtil.sendMsgToWechat(token,"o3_NPwuDSb46Qv-nrWL-uTuHiB8U","tokenIsInvalid=="+re+"==failure exception=="+e.getMessage());
-                    e.printStackTrace();
-                }
+                LogUtils.saveLog("send_Msg_failure==" + re + "==json==" + json, "Jzgo3_NPwuDSb46Qv-nrWL-uTuHiB8U");
             }
         } catch (Exception e) {
             e.printStackTrace();

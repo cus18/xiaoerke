@@ -1831,7 +1831,9 @@ angular.module('controllers', ['luegg.directives'])
                     });
                 }
                 else if (notifyData.notifyType == "0016") {
-                    $window.confirm("您的消息没有发送成功！")
+                    console.log("token==="+notifyData.token);
+                    console.log("info=="+notifyData.sendResult);
+                    $window.confirm("您的消息没有发送成功！"+"=info="+notifyData.sendResult+"=token="+notifyData.token)
                 }
                 else if (notifyData.notifyType == "0010") {
                     //通知接诊员，转接的处理情况，rejected为拒绝，accept为转接受理了
