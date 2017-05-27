@@ -29,17 +29,18 @@
         <div class="home_interactiveService home_introduce item-com" ng-if = "nonConsultStatus==1">
             <div class="introduce_title com_font15 com_color3"><span>互动服务</span></div>
             <div class="content " ng-click="goNonTimeConsult()">
-                <img width="40" height="40" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/icon_interactiveService.png">
+                <img class="icon" width="40" height="40" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/icon_interactiveService.png">
                 <div class="com_font16 com_color3">点名咨询</div>
                 <div class="com_font12 com_color9 details">通过文字、图片进行咨询</div>
-                <div class="price com_bold com_font15">{{nonRealPayPrice}}元/次</div>
+                <div class="price com_bold com_font15">{{nonRealPayPrice}}2元/次</div>
+                <!--<img class="childrenDay-discount" width="60" height="auto" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultPayVersion1.2/childrenDay_discount.png">-->
             </div>
         </div>
         <!--电话咨询-->
         <div class="home_telConsult home_introduce item-com" ng-if= "isPhoneConsult == 'true'" ng-click="goFillOrder()">
             <div class="introduce_title com_font15 com_color3"><span>电话咨询</span></div>
             <div class="content" >
-                <img width="40" height="40" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/telConsult/icon_phone.png">
+                <img class="icon" width="40" height="40" src="http://xiaoerke-wxapp-pic.oss-cn-hangzhou.aliyuncs.com/consultDoctor/telConsult/icon_phone.png">
                 <div class="com_font16 com_color3">电话咨询</div>
                 <div class="com_font12 com_color9 details">时间段 {{consultTime}} </div>
                 <div class="price com_bold com_font15">{{phonePayPrice}}元/15分钟</div>
