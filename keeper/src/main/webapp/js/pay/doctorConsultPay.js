@@ -21,7 +21,7 @@ $(document).ready(function(){
     var cashNum2;
     var cashNum3;
     //服务方式
-    var service=2;
+    var service=3;
     //宝宝币是否使用
     var oSwitch=true;
     //最终需要支付的金额
