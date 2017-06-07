@@ -21,7 +21,7 @@ $(document).ready(function(){
     var cashNum2;
     var cashNum3;
     //服务方式
-    var service=3;
+    var service=2;
     //宝宝币是否使用
     var oSwitch=true;
     //最终需要支付的金额
@@ -67,11 +67,11 @@ $(document).ready(function(){
                     console.log("后台数据显示：",data);
 
                     cash1 = data.payType1SumMoney;
-                  /*  cashNum1 = data.payType1UseBabycoin/10;*/
+                    /*  cashNum1 = data.payType1UseBabycoin/10;*/
                     cashNum1 = data.payType1UseBabycoin;
 
                     cash2 = data.payType2SumMoney;
-                   /* cashNum2 = data.payType2UseBabycoin/10;*/
+                    /* cashNum2 = data.payType2UseBabycoin/10;*/
                     cashNum2 = data.payType2UseBabycoin;
 
                     cash3 = data.payType3SumMoney;
