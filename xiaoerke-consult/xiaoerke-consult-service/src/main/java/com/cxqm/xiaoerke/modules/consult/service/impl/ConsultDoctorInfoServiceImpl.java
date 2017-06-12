@@ -316,8 +316,8 @@ public class ConsultDoctorInfoServiceImpl implements ConsultDoctorInfoService {
         returnMap.put("evaluationList",evaluationList);
         returnMap.put("allEvaluationNum",allEvaluationList.size());
         returnMap.put("personNum",num);
-        returnMap.put("isPhoneConsult","false");
-        returnMap.put("phonePayPrice","");
+        returnMap.put("isPhoneConsult",vo.getIsPhoneConsult());
+        returnMap.put("phonePayPrice",vo.getPhonePayPrice());
         Date d = new Date();
         int hours = d.getHours();
         if("1".equals(vo.getIsPhoneConsult())&&vo.getTimeid().indexOf(hours+"")>-1){
