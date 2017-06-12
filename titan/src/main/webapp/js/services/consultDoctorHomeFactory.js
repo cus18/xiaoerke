@@ -15,7 +15,7 @@ define(['appConsultDoctorHome'], function (app) {
         }])
 
         .factory('CreateConnect',['$resource',function ($resource){
-            return $resource('consultOrder/getConnect/consultPhone');
+            return $resource('consultPhone/consultOrder/getConnect');
         }]);
     
 });

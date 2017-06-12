@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
+import com.cxqm.xiaoerke.modules.consult.service.ConsultDoctorInfoService;
 import com.cxqm.xiaoerke.modules.healthRecords.entity.BabyIllnessInfoVo;
 import com.cxqm.xiaoerke.modules.healthRecords.service.HealthRecordsService;
 import com.cxqm.xiaoerke.modules.order.dao.*;
@@ -79,6 +80,10 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
             
     @Autowired
     private ConsultPhoneManuallyConnectRecordDao consultPhoneManuallyConnectRecordDao;
+
+    @Autowired
+    private ConsultDoctorInfoService consultDoctorInfoService;
+
 
     /**
      * 查询电话咨询的订单
@@ -160,22 +165,21 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
 
     @Override
     public String createConsultOrder(String babyName, String phoneNum, String illnessDesc, String doctorId) throws CreateOrderException {
-//        HashMap<String, Object> doctorInfo = doctorInfoService.findDoctorDetailInfoByUserId(doctorId);
+        HashMap<String, Object> doctorInfo = consultDoctorInfoService.getConsultDoctorHomepageInfo(doctorId);
         ConsultPhoneRegisterServiceVo vo = new ConsultPhoneRegisterServiceVo();
         vo.setBabyName(babyName);
         vo.setDoctorId(doctorId);
         vo.setPhoneNum(phoneNum);
         consultPhoneRegisterServiceDao.insertSelective(vo);
 
-        User user = systemService.getUserById(doctorId);
-
-        HashMap<String, Object> result = CCPRestSDK.callback(phoneNum,user.getLoginName(),
-                "01057115120", "01057115120", null,
-                "true", null, 123+"",
-                "15", null, "0",
-                "1", "10", null);
-        String statusCode = (String) result.get("statusCode");
-        return statusCode;
+//        User user = systemService.getUserById(doctorId);
+//        HashMap<String, Object> result = CCPRestSDK.callback(phoneNum,user.getLoginName(),
+//                "01057115120", "01057115120", null,
+//                "true", null, 123+"",
+//                "15", null, "0",
+//                "1", "10", null);
+//        String statusCode = (String) result.get("statusCode");
+        return (String) doctorInfo.get("phonePayPrice");
     }
 
     @Override

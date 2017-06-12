@@ -153,7 +153,7 @@ public class ConsultOrderUserController {
             e.printStackTrace();
             resultMap.put("state","false");
         }
-        resultMap.put("resultState",resultState);
+        resultMap.put("phonePayPrice",resultState);
         return  resultMap;
     }
 
