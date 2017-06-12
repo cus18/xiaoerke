@@ -92,7 +92,7 @@ define(['appConsultDoctorHome'], function(app){
                         }
                     })
                     .state('telConsultOrderFill', {
-                        url: '/telConsultOrderFill/:price',
+                        url: '/telConsultOrderFill/:doctorid',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'telConsultOrderFillCtrl',
                         resolve: {

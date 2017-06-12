@@ -13,7 +13,7 @@ angular.module('controllers', ['ionic']).controller('consultDoctorHomeCtrl', [
 
         //点击 电话咨询
         $scope.goFillOrder=function(){
-            $state.go('telConsultOrderFill',{"price":$scope.nonRealPayPrice});
+            $state.go('telConsultOrderFill',{"doctorid":$stateParams.id});
             // window.location.href="http://s251.baodf.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=59,"+$scope.phonePayPrice;
         };
 

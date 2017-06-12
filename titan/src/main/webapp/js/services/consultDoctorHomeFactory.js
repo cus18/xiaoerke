@@ -12,6 +12,10 @@ define(['appConsultDoctorHome'], function (app) {
         }])
         .factory('FindDoctorAllEvaluation',['$resource',function ($resource){
             return $resource(doctor + 'findDoctorAllEvaluation');
+        }])
+
+        .factory('CreateConnect',['$resource',function ($resource){
+            return $resource('consultOrder/getConnect/consultPhone');
         }]);
     
 });
