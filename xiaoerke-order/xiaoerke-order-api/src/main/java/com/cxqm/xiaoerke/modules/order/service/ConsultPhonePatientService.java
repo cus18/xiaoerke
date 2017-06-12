@@ -22,6 +22,9 @@ public interface ConsultPhonePatientService {
 
     int PatientRegister(String openid, String babyId, String babyName, Date birthDay, String phoneNum, String illnessDesc, int sysConsultPhoneId) throws CreateOrderException;
 
+    String createConsultOrder(String babyName,String phoneNum, String illnessDesc, String doctorId) throws CreateOrderException;
+
+
     List<HashMap<String,Object>> getOrderList(String userId);
 
     Float cancelOrder(Integer phoneConsultaServiceId,String cancelReason,String cancelState) throws CancelOrderException;//cancelState:0是取消订单，号源设置为可用，2是删除号源

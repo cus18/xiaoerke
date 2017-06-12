@@ -18,6 +18,7 @@ import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.sys.entity.BabyBaseInfoVo;
 import com.cxqm.xiaoerke.modules.sys.entity.PatientVo;
 import com.cxqm.xiaoerke.modules.sys.entity.SysPropertyVoWithBLOBsVo;
+import com.cxqm.xiaoerke.modules.sys.entity.User;
 import com.cxqm.xiaoerke.modules.sys.service.DoctorInfoService;
 import com.cxqm.xiaoerke.modules.sys.service.SysPropertyServiceImpl;
 import com.cxqm.xiaoerke.modules.sys.service.SystemService;
@@ -155,6 +156,26 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
             throw new CreateOrderException();
         }
         return vo.getId();
+    }
+
+    @Override
+    public String createConsultOrder(String babyName, String phoneNum, String illnessDesc, String doctorId) throws CreateOrderException {
+//        HashMap<String, Object> doctorInfo = doctorInfoService.findDoctorDetailInfoByUserId(doctorId);
+        ConsultPhoneRegisterServiceVo vo = new ConsultPhoneRegisterServiceVo();
+        vo.setBabyName(babyName);
+        vo.setDoctorId(doctorId);
+        vo.setPhoneNum(phoneNum);
+        consultPhoneRegisterServiceDao.insertSelective(vo);
+
+        User user = systemService.getUserById(doctorId);
+
+        HashMap<String, Object> result = CCPRestSDK.callback(phoneNum,user.getLoginName(),
+                "01057115120", "01057115120", null,
+                "true", null, 123+"",
+                "15", null, "0",
+                "1", "10", null);
+        String statusCode = (String) result.get("statusCode");
+        return statusCode;
     }
 
     @Override

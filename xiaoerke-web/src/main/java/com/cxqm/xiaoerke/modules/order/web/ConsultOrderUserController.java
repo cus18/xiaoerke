@@ -5,6 +5,7 @@ import com.cxqm.xiaoerke.common.dataSource.DataSourceSwitch;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
 import com.cxqm.xiaoerke.common.utils.IdGen;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.utils.DateUtil;
 import com.cxqm.xiaoerke.modules.interaction.service.PatientRegisterPraiseService;
 import com.cxqm.xiaoerke.modules.order.entity.ConsultPhoneRegisterServiceVo;
@@ -121,6 +122,32 @@ public class ConsultOrderUserController {
         int resultState = 0;
         try {
             resultState = consultPhonePatientService.PatientRegister(openid, babyId, babyName, birthDay, phoneNum, illnessDesc, sysConsultPhoneId);
+
+        } catch (CreateOrderException e) {
+            e.printStackTrace();
+            resultMap.put("state","false");
+        }
+        resultMap.put("resultState",resultState);
+        return  resultMap;
+    }
+
+    /**
+     * 生成订单
+     * */
+    @RequestMapping(value = "consultOrder/getConnect",method = {RequestMethod.GET,RequestMethod.POST})
+    public
+    @ResponseBody
+    Map<String,Object> getConnect(@RequestBody Map<String, Object> params){
+        DataSourceSwitch.setDataSourceType(DataSourceInstances.WRITE);
+        String  babyName =(String)params.get("babyName");
+        String  phoneNum =(String)params.get("phoneNum");
+        String  illnessDesc =(String)params.get("illnessDesc");
+        String  doctorId = (String)params.get("doctorId");
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        String resultState ="";
+        try {
+            resultState = consultPhonePatientService.createConsultOrder(babyName,phoneNum, illnessDesc, doctorId);
+//
 
         } catch (CreateOrderException e) {
             e.printStackTrace();
