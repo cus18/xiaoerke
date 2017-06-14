@@ -313,10 +313,9 @@ public class PayNotificationController {
                 payRecord.setId((String) map.get("out_trade_no"));
                 payRecord.setStatus("success");
                 payRecord.setReceiveDate(new Date());
-                Map<String, Object> consultPhoneMap = insuranceService.getPayRecordById(payRecord.getId());
-                ConsultPhoneRegisterServiceVo vo = consultPhonePatientService.selectByPrimaryKey(1);
-                        User user = systemService.getUserById((String) consultPhoneMap.get(""));
-                CCPRestSDK.callback(vo.getPhoneNum(),user.getLoginName(),
+//                Map<String, Object> consultPhoneMap = insuranceService.getPayRecordById(payRecord.getOrderId());
+                ConsultPhoneRegisterServiceVo vo = consultPhonePatientService.selectByPrimaryKey(Integer.parseInt(payRecord.getOrderId()));
+                CCPRestSDK.callback(vo.getPhoneNum(),vo.getPhoneNum(),
                 "01057115120", "01057115120", null,
                 "true", null, 123+"",
                 "15", null, "0",
