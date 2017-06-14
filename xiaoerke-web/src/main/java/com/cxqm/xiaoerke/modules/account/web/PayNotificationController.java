@@ -316,7 +316,7 @@ public class PayNotificationController {
                 Map<String, Object> consultPhoneMap = insuranceService.getPayRecordById(payRecord.getId());
 
                 ConsultPhoneRegisterServiceVo vo = consultPhonePatientService.selectByPrimaryKey((Integer) consultPhoneMap.get("order_id"));
-                CCPRestSDK.callback(vo.getPhoneNum(),vo.getPhoneNum(),
+                CCPRestSDK.callback(vo.getSysPatientId(),vo.getPhoneNum(),
                 "01057115120", "01057115120", null,
                 "true", null, 123+"",
                 "15", null, "0",
