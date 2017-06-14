@@ -7,7 +7,7 @@ angular.module('controllers', ['ionic']).controller('telConsultOrderFillCtrl', [
         // 点击 提交订单
         $scope.submitOrder=function(){
             CreateConnect.save({"babyName":$scope.info.userName,"phoneNum":$scope.info.phoneNum,"illnessDesc":$scope.info.illness,"doctorId":$stateParams.doctorid},function (data) {
-                window.location.href="http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=59,"+data.phonePayPrice+","+data.orderid
+                window.location.href="http://s201.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s201.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=59,"+data.payPrice+","+data.orderid
             })
         };
 
