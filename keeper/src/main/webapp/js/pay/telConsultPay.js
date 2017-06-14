@@ -6,7 +6,7 @@ var GetQueryString = function(name)
     if(r!=null)return  unescape(r[2]); return null;
 }
 var payPrice = GetQueryString("payPrice");
-
+var patientRegisterId = GetQueryString("patientRegisterId");
 
 //页面初始化执行,用户初始化页面参数信息以及微信的支付接口
 var doRefresh = function(){
@@ -62,7 +62,7 @@ function wechatPay (){
         url:"account/user/consultPhonePay",// 跳转到 action
         async:true,
         type:'get',
-        data:{payPrice:parseFloat(payPrice)*100},
+        data:{payPrice:parseFloat(payPrice)*100,"patientRegisterId":patientRegisterId},
         cache:false,
         success:function(data) {
             var obj = eval('(' + data + ')');
