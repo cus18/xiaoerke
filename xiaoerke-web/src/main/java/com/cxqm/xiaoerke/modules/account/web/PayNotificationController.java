@@ -9,6 +9,7 @@ import com.cxqm.xiaoerke.modules.account.entity.PayRecord;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.account.service.PayRecordService;
 import com.cxqm.xiaoerke.modules.consult.entity.*;
+import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
 import com.cxqm.xiaoerke.modules.consult.service.BabyCoinService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultMemberRedsiCacheService;
 import com.cxqm.xiaoerke.modules.consult.service.ConsultSessionPropertyService;
@@ -312,7 +313,16 @@ public class PayNotificationController {
                 payRecord.setId((String) map.get("out_trade_no"));
                 payRecord.setStatus("success");
                 payRecord.setReceiveDate(new Date());
-//                Map<String, Object> consultPhoneMap = insuranceService.getPayRecordById(payRecord.getId());
+                Map<String, Object> consultPhoneMap = insuranceService.getPayRecordById(payRecord.getId());
+                ConsultPhoneRegisterServiceVo vo = consultPhonePatientService.selectByPrimaryKey(1);
+                        User user = systemService.getUserById((String) consultPhoneMap.get(""));
+                CCPRestSDK.callback(vo.getPhoneNum(),user.getLoginName(),
+                "01057115120", "01057115120", null,
+                "true", null, 123+"",
+                "15", null, "0",
+                "1", "10", null);
+//        String statusCode = (String) result.get("statusCode");
+
 //                Map<String, Object> mapVo = consultPhonePatientService.getPatientRegisterInfo(Integer.parseInt((String) consultPhoneMap.get("order_id")));
 //                if ("待支付".equals(mapVo.get("state"))) {
 //                    String consultPhoneId = consultPhoneMap.get("order_id").toString();
