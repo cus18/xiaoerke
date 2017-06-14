@@ -169,8 +169,9 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
         ConsultPhoneRegisterServiceVo vo = new ConsultPhoneRegisterServiceVo();
         User user = systemService.getUserById(doctorId);
         vo.setBabyName(babyName);
-        vo.setDoctorId(user.getLoginName());
         vo.setPhoneNum(phoneNum);
+        vo.setCreateTime(new Date());
+        vo.setSysPatientId(user.getLoginName());
         consultPhoneRegisterServiceDao.insertSelective(vo);
 
 
