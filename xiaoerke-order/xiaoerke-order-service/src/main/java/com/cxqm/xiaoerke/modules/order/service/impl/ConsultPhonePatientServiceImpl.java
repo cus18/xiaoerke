@@ -167,12 +167,13 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     public String createConsultOrder(String babyName, String phoneNum, String illnessDesc, String doctorId) throws CreateOrderException {
         HashMap<String, Object> doctorInfo = consultDoctorInfoService.getConsultDoctorHomepageInfo(doctorId);
         ConsultPhoneRegisterServiceVo vo = new ConsultPhoneRegisterServiceVo();
+        User user = systemService.getUserById(doctorId);
         vo.setBabyName(babyName);
-        vo.setDoctorId(doctorId);
+        vo.setDoctorId(user.getLoginName());
         vo.setPhoneNum(phoneNum);
         consultPhoneRegisterServiceDao.insertSelective(vo);
 
-//        User user = systemService.getUserById(doctorId);
+
 //        HashMap<String, Object> result = CCPRestSDK.callback(phoneNum,user.getLoginName(),
 //                "01057115120", "01057115120", null,
 //                "true", null, 123+"",
