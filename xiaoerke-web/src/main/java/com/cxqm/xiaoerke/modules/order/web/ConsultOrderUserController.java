@@ -144,16 +144,14 @@ public class ConsultOrderUserController {
         String  illnessDesc =(String)params.get("illnessDesc");
         String  doctorId = (String)params.get("doctorId");
         Map<String,Object> resultMap = new HashMap<String, Object>();
-        String resultState ="";
         try {
-            resultState = consultPhonePatientService.createConsultOrder(babyName,phoneNum, illnessDesc, doctorId);
+            resultMap = consultPhonePatientService.createConsultOrder(babyName,phoneNum, illnessDesc, doctorId);
 //
 
         } catch (CreateOrderException e) {
             e.printStackTrace();
             resultMap.put("state","false");
         }
-        resultMap.put("orderid",resultState);
         return  resultMap;
     }
 

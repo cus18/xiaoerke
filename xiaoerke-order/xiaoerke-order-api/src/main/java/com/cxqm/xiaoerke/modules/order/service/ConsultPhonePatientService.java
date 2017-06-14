@@ -22,7 +22,7 @@ public interface ConsultPhonePatientService {
 
     int PatientRegister(String openid, String babyId, String babyName, Date birthDay, String phoneNum, String illnessDesc, int sysConsultPhoneId) throws CreateOrderException;
 
-    String createConsultOrder(String babyName,String phoneNum, String illnessDesc, String doctorId) throws CreateOrderException;
+    Map<String,Object> createConsultOrder(String babyName,String phoneNum, String illnessDesc, String doctorId) throws CreateOrderException;
 
 
     List<HashMap<String,Object>> getOrderList(String userId);

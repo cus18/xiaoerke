@@ -2,6 +2,7 @@ package com.cxqm.xiaoerke.modules.order.service.impl;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
 import com.cxqm.xiaoerke.common.utils.DateUtils;
+import com.cxqm.xiaoerke.common.utils.ObjectUtils;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.sdk.CCPRestSDK;
@@ -164,7 +165,8 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
     }
 
     @Override
-    public String createConsultOrder(String babyName, String phoneNum, String illnessDesc, String doctorId) throws CreateOrderException {
+    public Map<String,Object> createConsultOrder(String babyName, String phoneNum, String illnessDesc, String doctorId) throws CreateOrderException {
+        HashMap<String, Object> resultMap = new HashMap<String, Object>();
         HashMap<String, Object> doctorInfo = consultDoctorInfoService.getConsultDoctorHomepageInfo(doctorId);
         ConsultPhoneRegisterServiceVo vo = new ConsultPhoneRegisterServiceVo();
         User user = systemService.getUserById(doctorId);
@@ -181,7 +183,9 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
 //                "15", null, "0",
 //                "1", "10", null);
 //        String statusCode = (String) result.get("statusCode");
-        return vo.getId().toString();
+        resultMap.put("payPrice",(String) doctorInfo.get("phonePayPrice"));
+        resultMap.put("orderid",vo.getId());
+        return resultMap;
     }
 
     @Override
