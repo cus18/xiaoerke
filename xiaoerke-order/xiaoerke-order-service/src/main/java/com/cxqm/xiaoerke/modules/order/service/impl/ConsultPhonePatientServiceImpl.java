@@ -181,7 +181,7 @@ public class ConsultPhonePatientServiceImpl implements ConsultPhonePatientServic
 //                "15", null, "0",
 //                "1", "10", null);
 //        String statusCode = (String) result.get("statusCode");
-        return (String) doctorInfo.get("phonePayPrice");
+        return vo.getId().toString();
     }
 
     @Override
