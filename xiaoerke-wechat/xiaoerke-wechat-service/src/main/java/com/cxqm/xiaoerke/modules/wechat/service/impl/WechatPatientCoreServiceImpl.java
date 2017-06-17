@@ -235,23 +235,32 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         } else {
             Map userWechatParam = sessionRedisCache.getWeChatParamFromRedis("user");
             String token = (String) userWechatParam.get("token");
-            try {
-                //关键字回复功能
-                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD) || !consultMemberRedsiCacheService.consultChargingCheck(xmlEntity.getFromUserName(), token, true)) {
-                    LogUtils.saveLog(xmlEntity.getFromUserName(), "关键字拦截");
-                    return "success";
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            String customerService = Global.getConfig("wechat.customservice");
-            if ("false".equals(customerService)) {
-                Runnable thread = new processConsultMessageThread(xmlEntity);
-                threadExecutorSingle.execute(thread);
-                return "";
-            } else if ("true".equals(customerService)) {
-                respMessage = transferToCustomer(xmlEntity);
-            }
+            String path = sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/fieldwork/wechat/author?url=" + sysPropertyVoWithBLOBsVo.getKeeperWebUrl() + "/keeper/wechatInfo/getUserWechatMenId?url=56";
+            StringBuilder sb = new StringBuilder();
+            sb.append("欢迎咨询宝大夫， 如需咨询医生请戳\n" +
+                    "\n" );
+            sb.append("<a href='" + path +"'>");
+            sb.append("》》点名咨询医生");
+            sb.append("</a>");
+            WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), sb.toString());
+//
+//            try {
+//                //关键字回复功能
+//                if (keywordRecovery(xmlEntity, token, OperationPromotionStatusVo.KEY_WORD) || !consultMemberRedsiCacheService.consultChargingCheck(xmlEntity.getFromUserName(), token, true)) {
+//                    LogUtils.saveLog(xmlEntity.getFromUserName(), "关键字拦截");
+//                    return "success";
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            String customerService = Global.getConfig("wechat.customservice");
+//            if ("false".equals(customerService)) {
+//                Runnable thread = new processConsultMessageThread(xmlEntity);
+//                threadExecutorSingle.execute(thread);
+//                return "";
+//            } else if ("true".equals(customerService)) {
+//                respMessage = transferToCustomer(xmlEntity);
+//            }
         }
         return respMessage;
     }
