@@ -238,7 +238,7 @@ public class FieldworkWechatController {
             CookieUtils.setCookie(response, "openId", openid==null?"":openid,60*60*24*30,ConstantUtil.DOMAIN_VALUE);
             memberService.sendExtendOldMemberWechatMessage(openid);
         }
-        if("41".equalsIgnoreCase(url)){
+        if(url.startsWith("41")){
             url = getBabyCoinURL(request, openid);
         }
         if("42".equalsIgnoreCase(url)){
@@ -251,8 +251,9 @@ public class FieldworkWechatController {
         String url;//判断新老用户
         WechatAttention attention = wechatAttentionService.getAttentionByOpenId(openid);
         if(attention == null){//新用户
-            String oldOpenId = java.net.URLDecoder.decode(request.getParameter("oldOpenId"), "utf-8");
-            String marketer = java.net.URLDecoder.decode(request.getParameter("marketer"), "utf-8");
+            String[] parameters = request.getQueryString().split(",");
+            String oldOpenId = java.net.URLDecoder.decode(parameters[1], "utf-8");
+            String marketer = java.net.URLDecoder.decode(parameters[2], "utf-8");
             url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/patientConsultInviteNew?="+oldOpenId+"&marketer="+marketer;
             LogUtils.saveLog("ZXYQ_YQK_NEW","oldOpenId="+oldOpenId+"openid="+openid+"marketer"+marketer);
         }else {//老用户

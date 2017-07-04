@@ -1,18 +1,19 @@
 angular.module('controllers', [])
     .controller('patientConsultInvitePageCtrl',['$scope','GetAttentionInfo',
         function ($scope,GetAttentionInfo) {
+            $scope.minename = '您的朋友';
             $scope.invitePageInit = function(){
-                loadShare();
                 $('#invitePageContent').click(function(){
                     $('#invitePageShade').show();
                 });
                 GetAttentionInfo.save({},function(data){
-                    $scope.minename = data.wechat_name;
+                    $scope.minename = data.attentionInfo.wechat_name;
+                    loadShare();
                 });
             }
             //分享到朋友圈或者微信
             var loadShare = function(){
-                var share = "http://s120.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s251.baodf.com/keeper/wechatInfo/getUserWechatMenId?url=41&oldOpenId='sdfsdfsd'&marketer='1100001231'";
+                var share = "http://s120.xiaork.com/keeper/wechatInfo/fieldwork/wechat/author?url=http://s120.xiaork.com/keeper/wechatInfo/getUserWechatMenId?url=41,'12','1100001231',";//最后url=41，openid,marketer
                 // if(version=="a"){
                 version="a";
                 var timestamp;//时间戳
@@ -58,7 +59,7 @@ angular.module('controllers', [])
                                     }
                                 });
                                 wx.onMenuShareAppMessage({
-                                    title: $scope.minename + '向你推荐', // 分享标题
+                                    title: $scope.minename  + '向你推荐', // 分享标题
                                     desc: '在这里可以免费咨询三甲医院儿科专家', // 分享描述
                                     link: share, // 分享链接
                                     imgUrl: 'http://xiaoerke-pc-baodf-pic.oss-cn-beijing.aliyuncs.com/invite/patientConsultInvitePage.jpg', // 分享图标
