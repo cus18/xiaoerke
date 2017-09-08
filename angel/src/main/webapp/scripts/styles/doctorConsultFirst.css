@@ -58,7 +58,7 @@ div#ddjr {
     height: 0;
 }
 
-.reply-content .myreply, .reply-content .pubilcreply, .reply-content .diagnosis {
+.reply-content .myreply, .reply-content .pubilcreply, .reply-content .diagnosis, .reply-content .diagnosticImg {
     cursor: pointer;
     font: 12px/35px 'Microsoft Yahei';
     color: #333;
@@ -86,6 +86,10 @@ div#ddjr {
     overflow: hidden;
     text-overflow: ellipsis;
     position: relative;
+}
+.rcontentContentImg{
+    height: 44px;
+    margin-bottom: 12px;
 }
 
 .group-title {

@@ -1,6 +1,7 @@
 package com.cxqm.xiaoerke.modules.operation.service.impl;
 
 import com.cxqm.xiaoerke.common.persistence.Page;
+import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.modules.consult.dao.ConsultSessionDao;
 import com.cxqm.xiaoerke.modules.operation.dao.SysStatisticsDao;
 import com.cxqm.xiaoerke.modules.operation.entity.ChannelInfo;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -218,7 +220,23 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Page<WechatAttention> userChannelSearch(Page<WechatAttention> param, String openid,String nickname ,String todayAttention, String todayConsult) {
-        Page page = wechatattentionDao.findUserChannelList(param,openid,nickname,todayAttention,todayConsult);
+        List<String> openidlist = new ArrayList<String>();
+        Page<WechatAttention> page = new Page<WechatAttention>();
+        if(StringUtils.isNotNull(nickname)){
+            openidlist = wechatattentionDao.getOpenIdListByNickName(nickname);
+        }
+        if(StringUtils.isNotNull(openid)){
+            if(StringUtils.isNull(nickname)){
+                openidlist.add(openid);
+            }else{
+                if(!openidlist.contains(openid)){
+                    openidlist = new ArrayList<String>();
+                }
+            }
+        }
+        if(openidlist.size()>0){
+            page = wechatattentionDao.findUserChannelList(param,openidlist,todayAttention,todayConsult);
+        }
         return page;
     }
 }

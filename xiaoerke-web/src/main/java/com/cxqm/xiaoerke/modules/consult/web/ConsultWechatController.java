@@ -156,6 +156,14 @@ public class ConsultWechatController extends BaseController {
                     consultPayUserService.sendMessageToConsult(openId, 4);
                 }
                 consultSession = sessionRedisCache.getConsultSessionBySessionId(sessionId);
+                /**
+                 * 2016-9-8 17:42:43 jiangzg 增加消息数量
+                 */
+                if(consultSession != null){
+                    int currentNum = consultSession.getConsultNum() + 1;
+                    consultSession.setConsultNum(currentNum);
+                    sessionRedisCache.putSessionIdConsultSessionPair(sessionId,consultSession);
+                }
                 csChannel = ConsultSessionManager.INSTANCE.getUserChannelMapping().get(consultSession.getCsUserId());
                 System.out.println("csChannel------" + csChannel);
                 if (csChannel == null) {
@@ -179,6 +187,10 @@ public class ConsultWechatController extends BaseController {
                 consultSession.setUserName(userName);
                 consultSession.setSource(source);
                 consultSession.setServerAddress(serverAddress);
+                /**
+                 * 新增咨询次数字段 jiangzg 2016-9-8 17:33:17
+                 */
+                consultSession.setConsultNum(1);
                 //创建会话，发送消息给用户，给用户分配接诊员
                 createWechatConsultSessionMap = ConsultSessionManager.INSTANCE.createUserWXConsultSession(consultSession);
                 if (createWechatConsultSessionMap != null) {
@@ -241,6 +253,10 @@ public class ConsultWechatController extends BaseController {
                             messageContent = voiceHandle(messageType, messageContent, sessionId, consultSession, obj);
                         }
                     }
+                    /**
+                     * jiangzg add 2016-9-8 17:44:45 增加消息数量
+                     */
+                    obj.put("consultNum",consultSession.getConsultNum());
                     System.out.println("here csChannel is" + csChannel);
                     TextWebSocketFrame frame = new TextWebSocketFrame(obj.toJSONString());
                     csChannel.writeAndFlush(frame.retain());

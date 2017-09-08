@@ -250,6 +250,10 @@ public enum ConsultSessionManager {
             consultSession.setConsultNumber(sessionCount + 1);
             consultSessionService.saveConsultInfo(consultSession);
             sessionId = consultSession.getId();
+            /**
+             * jiangzg 2016-9-8 18:19:33 新增消息记录数
+             */
+            consultSession.setConsultNum(1);
             sessionRedisCache.putSessionIdConsultSessionPair(sessionId, consultSession);
             sessionRedisCache.putUserIdSessionIdPair(userId, sessionId);
             /**
@@ -276,6 +280,10 @@ public enum ConsultSessionManager {
             csobj.put("sessionId", consultSession.getId());
             TextWebSocketFrame csframe = new TextWebSocketFrame(csobj.toJSONString());
             channel.writeAndFlush(csframe.retain());
+        }else{
+            int currentNum = consultSession.getConsultNum() + 1;
+            consultSession.setConsultNum(currentNum);
+            sessionRedisCache.putSessionIdConsultSessionPair(sessionId , consultSession);
         }
         return consultSession;
     }

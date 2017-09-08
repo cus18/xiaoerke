@@ -55,5 +55,7 @@ public interface WechatAttentionDao {
     //jiangzhongge add 根据用户openid查询用户最后一次关注的状态
     Map findLastAttentionStatusByOpenId(@Param("userId") String userId);
 
-    Page<WechatAttention> findUserChannelList(Page<WechatAttention> page,@Param("openid") String openid,@Param("nickname") String nickname,@Param("todayAttention") String todayAttention,@Param("todayConsult") String todayConsult);
+    List<String> getOpenIdListByNickName(@Param("nickname") String nickname);
+
+    Page<WechatAttention> findUserChannelList(Page<WechatAttention> page,@Param("openidlist") List<String> openidlist,@Param("todayAttention") String todayAttention,@Param("todayConsult") String todayConsult);
 }
