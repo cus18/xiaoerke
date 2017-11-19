@@ -31,7 +31,7 @@
     select id, scene,week,starttime, endtime,priority,content
     from message_content_conf
     where 1=1
-      and week in(0,DAYOFMONTH(NOW()))
+      and week in(0,DAYOFWEEK(NOW()))
       and  now() > starttime
       and   endtime >now()
       and scene = #{scene}
