@@ -151,7 +151,7 @@ public class ConsultSessionServiceImpl implements ConsultSessionService {
         }
         Long listNum = sessionRedisCache.num4InstantConsultationList();
 //        instantSet.size()>=20||
-        if(listNum>=20){
+        if(listNum>=1){
             return false;
         }
         sessionRedisCache.addInstantConsultationList(openid);
