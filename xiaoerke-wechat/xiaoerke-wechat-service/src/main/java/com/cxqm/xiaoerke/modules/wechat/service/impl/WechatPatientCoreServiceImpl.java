@@ -808,10 +808,9 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         if (StringUtils.isNotNull(EventKey)) {
             marketer = EventKey.replace("qrscene_", "");
         }
-        this.insertAttentionInfo(xmlEntity, token, marketer);
         //宝宝币
         babyCoinHandler(xmlEntity, token, marketer);
-
+        this.insertAttentionInfo(xmlEntity, token, marketer);
         //特定渠道优惠
         specificChanneldeal(xmlEntity, token);
 
