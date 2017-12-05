@@ -44,7 +44,7 @@ define(['appPatientConsult'], function (app) {
         }])
         //获取用户宝宝币
         .factory('BabyCoinInit',['$resource',function ($resource){
-            return $resource(babyCoin + 'babyCoinInit');
+            return $resource('babyCoin/babyCoinInit');
         }])
 
 })
