@@ -353,7 +353,8 @@ public class ConsultDoctorController extends BaseController {
                 } else if ("wxcxqm".equalsIgnoreCase(richConsultSession.getSource())) {
 
                     ConsultSessionPropertyVo consultSessionPropertyVo = consultSessionPropertyService.findConsultSessionPropertyByUserId(richConsultSession.getUserId());
-                    if(consultSessionPropertyVo.getMonthTimes() == 3){
+
+                    if(consultSessionPropertyVo!=null && consultSessionPropertyVo.getMonthTimes() == 3){
                         LogUtils.saveLog("ZXYQ_RK_TS_3",consultSessionPropertyVo.getSysUserId());
                     }
                     //判断是否有权限推送消息
