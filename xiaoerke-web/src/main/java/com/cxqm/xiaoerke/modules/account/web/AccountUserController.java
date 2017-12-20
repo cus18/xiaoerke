@@ -253,7 +253,7 @@ public class AccountUserController {
 
 		//是否用宝宝币抵扣金额数
 		String openId = WechatUtil.getOpenId(session, request);
-		String useBabyCoin = request.getParameter("useBabyCoin");
+		String useBabyCoin = request.getParameter("useBabyCoinPay");
 		BabyCoinVo babyCoinVo = new BabyCoinVo();
 		babyCoinVo.setOpenId(openId);
 		babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
