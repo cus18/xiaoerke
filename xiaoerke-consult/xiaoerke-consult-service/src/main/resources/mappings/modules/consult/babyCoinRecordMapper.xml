@@ -3,7 +3,7 @@
 <mapper namespace="com.cxqm.xiaoerke.modules.consult.dao.BabyCoinRecordDao" >
   <resultMap id="BaseResultMap" type="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="balance" property="balance" jdbcType="DECIMAL" />
+    <result column="balance" property="balance" jdbcType="DOUBLE" />
     <result column="open_id" property="openId" jdbcType="VARCHAR" />
     <result column="source" property="source" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -38,7 +38,7 @@
       source, create_time, create_by, 
       update_time, session_id, pay_status, 
       back_3)
-    values (#{id,jdbcType=INTEGER}, #{balance,jdbcType=DECIMAL}, #{openId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{balance,jdbcType=DOUBLE}, #{openId,jdbcType=VARCHAR}, 
       #{source,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{sessionId,jdbcType=INTEGER}, #{payStatus,jdbcType=VARCHAR},
       #{back3,jdbcType=VARCHAR})
@@ -82,7 +82,7 @@
         #{id,jdbcType=INTEGER},
       </if>
       <if test="balance != null" >
-        #{balance,jdbcType=DECIMAL},
+        #{balance,jdbcType=DOUBLE},
       </if>
       <if test="openId != null" >
         #{openId,jdbcType=VARCHAR},
@@ -114,7 +114,7 @@
     update baby_coin_record
     <set >
       <if test="balance != null" >
-        balance = #{balance,jdbcType=DECIMAL},
+        balance = #{balance,jdbcType=DOUBLE},
       </if>
       <if test="openId != null" >
         open_id = #{openId,jdbcType=VARCHAR},
@@ -145,7 +145,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo" >
     update baby_coin_record
-    set balance = #{balance,jdbcType=DECIMAL},
+    set balance = #{balance,jdbcType=DOUBLE},
       open_id = #{openId,jdbcType=VARCHAR},
       source = #{source,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},

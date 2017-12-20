@@ -5,7 +5,7 @@ import java.util.Date;
 public class BabyCoinRecordVo {
     private Integer id;
 
-    private Long balance;
+    private double balance;
 
     private String openId;
 
@@ -33,11 +33,11 @@ public class BabyCoinRecordVo {
         this.id = id;
     }
 
-    public Long getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(Long balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

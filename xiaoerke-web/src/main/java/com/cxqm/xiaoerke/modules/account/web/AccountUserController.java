@@ -253,13 +253,13 @@ public class AccountUserController {
 
 		//是否用宝宝币抵扣金额数
 		String openId = WechatUtil.getOpenId(session, request);
-		String useBabyCoin = request.getParameter("useBabyCoinPay");
+		String useBabyCoin = (String)request.getParameter("useBabyCoinPay");
 		BabyCoinVo babyCoinVo = new BabyCoinVo();
 		babyCoinVo.setOpenId(openId);
 		babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
-		if(babyCoinVo != null && babyCoinVo.getCash()>0 && useBabyCoin.equals("true")){//用宝宝币抵钱
+		if(babyCoinVo != null && babyCoinVo.getCash()>0 && useBabyCoin!=null && useBabyCoin.equals("true")){//用宝宝币抵钱
 			//当前用户所拥有的宝宝币<99直接扣光宝宝币，并计算实际金额
-			if(babyCoinVo.getCash() <= Long.valueOf(ConstantUtil.CONSUL_AMOUNT)){
+			if(babyCoinVo.getCash() <= Float.valueOf(ConstantUtil.CONSUL_AMOUNT) *10){
 				String orderPrice =request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).
 						intValue()*100):request.getParameter("payPrice");
 				String payPrice = String.valueOf(Long.valueOf(orderPrice) - babyCoinVo.getCash() * 10);
