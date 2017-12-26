@@ -383,7 +383,7 @@ public class AccountServiceImpl implements AccountService {
         Map<String,String> resultMap = new HashMap<String, String>();
         String openId = WechatUtil.getOpenId(session,request);
         //获取需要支付的金额  单位(分)
-        String order_price = request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).intValue()*100):request.getParameter("payPrice");
+        String order_price = request.getAttribute("payPrice")!=null?String.valueOf((Float.parseFloat(request.getAttribute("payPrice").toString()))*100):request.getParameter("payPrice");
         //生成的商户订单号
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
         String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串
@@ -397,7 +397,7 @@ public class AccountServiceImpl implements AccountService {
             parameters.put("body", "会员服务费");//描述
         }
         parameters.put("out_trade_no", out_trade_no);//商户订单号
-        parameters.put("total_fee", order_price);//金额
+        parameters.put("total_fee", Integer.valueOf(order_price));//金额
         parameters.put("spbill_create_ip",request.getRemoteAddr());//终端ip
 
         if(serviceType.equals("appointService")){
@@ -434,8 +434,7 @@ public class AccountServiceImpl implements AccountService {
         if(StringUtils.isNull(patientRegisterId) || "undefined".equals(patientRegisterId)){
             patientRegisterId = "noData";
         }
-        String orderPrice =request.getAttribute("payPrice")!=null?String.valueOf(((Float)request.getAttribute("payPrice")).
-                intValue()*100):request.getParameter("payPrice");
+        String orderPrice = request.getAttribute("payPrice")!=null?String.valueOf((Float.parseFloat(request.getAttribute("payPrice").toString()))*100):request.getParameter("payPrice");
         String outTradeNo = PrepayInfo.get("out_trade_no");
         String openId = WechatUtil.getOpenId(session, request);
         try {
