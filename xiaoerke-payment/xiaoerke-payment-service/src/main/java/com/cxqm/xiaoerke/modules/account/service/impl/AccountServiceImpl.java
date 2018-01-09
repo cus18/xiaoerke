@@ -375,10 +375,16 @@ public class AccountServiceImpl implements AccountService {
         Map<String, String> resultMap = new HashMap<String, String>();
         String openId = WechatUtil.getOpenId(session, request);
         //获取需要支付的金额  单位(分)
-        Object orderPrice = request.getAttribute("payPrice") != null ? (Float)(request.getAttribute("payPrice")) * 100 : request.getParameter("payPrice");
+        String order_price = "";
+        if(request.getAttribute("payPrice")!=null){
+            float price = (Float.valueOf(request.getAttribute("payPrice").toString()))*100;
+            order_price = String.valueOf((int) price);
+        }else{
+            order_price = request.getParameter("payPrice");
+        }
         //生成的商户订单号
         String out_trade_no = IdGen.uuid();//Sha1Util.getNonceStr();
-        String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串
+        String noncestr = IdGen.uuid();//Sha1Util.getNonceStr();//生成随机字符串\
         SortedMap<Object, Object> parameters = new TreeMap<Object, Object>();
         parameters.put("appid", ConstantUtil.APP_ID);//微信服务号的appid
         parameters.put("mch_id", ConstantUtil.PARTNER);//商户号
@@ -389,7 +395,8 @@ public class AccountServiceImpl implements AccountService {
             parameters.put("body", "会员服务费");//描述
         }
         parameters.put("out_trade_no", out_trade_no);//商户订单号
-        parameters.put("total_fee", orderPrice);//金额
+
+        parameters.put("total_fee", order_price);//金额
         parameters.put("spbill_create_ip", request.getRemoteAddr());//终端ip
 
         if (serviceType.equals("appointService")) {

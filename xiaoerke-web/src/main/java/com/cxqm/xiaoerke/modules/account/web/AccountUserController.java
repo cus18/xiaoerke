@@ -254,10 +254,9 @@ public class AccountUserController {
         if (babyCoinVo != null && useBabyCoin != null && useBabyCoin.equals("true")) {//用宝宝币抵钱
             //当前用户所拥有的宝宝币<99直接扣光宝宝币，并计算实际金额
             if (babyCoinVo.getCash() <= Float.valueOf(ConstantUtil.CONSUL_AMOUNT) * 10) {
-                String orderPrice = request.getAttribute("payPrice") != null ? String.valueOf(((Float) request.getAttribute("payPrice")).
-                        intValue() * 100) : request.getParameter("payPrice");
-                String payPrice = String.valueOf(Long.valueOf(orderPrice) - babyCoinVo.getCash() * 10);
-                request.setAttribute("payPrice", payPrice);
+                Float payPrice = Float.valueOf(request.getParameter("payPrice"));
+                payPrice = payPrice - Float.valueOf(String.valueOf(babyCoinVo.getCash()))*10;
+                request.setAttribute("payPrice", (Float)payPrice/100.0);
                 babyCoinVo.setCash(0l);
                 int coinFlag = babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
                 if (coinFlag <= 0)
