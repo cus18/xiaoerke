@@ -256,7 +256,7 @@ public class AccountUserController {
             if (babyCoinVo.getCash() <= Float.valueOf(ConstantUtil.CONSUL_AMOUNT) * 10) {
                 Float payPrice = Float.valueOf(request.getParameter("payPrice"));
                 payPrice = payPrice - Float.valueOf(String.valueOf(babyCoinVo.getCash()))*10;
-                request.setAttribute("payPrice", (Float)payPrice/100.0);
+                request.setAttribute("payPrice", payPrice/100.0);
             } else {
                 throw new ServiceException("baby coin greater than 99");
             }
