@@ -6,6 +6,7 @@ import com.cxqm.xiaoerke.common.service.ServiceException;
 import com.cxqm.xiaoerke.common.utils.ConstantUtil;
 import com.cxqm.xiaoerke.common.utils.StringUtils;
 import com.cxqm.xiaoerke.common.utils.WechatUtil;
+import com.cxqm.xiaoerke.common.web.Servlets;
 import com.cxqm.xiaoerke.modules.account.service.AccountService;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinRecordVo;
 import com.cxqm.xiaoerke.modules.consult.entity.BabyCoinVo;
@@ -14,6 +15,7 @@ import com.cxqm.xiaoerke.modules.consult.service.SessionRedisCache;
 import com.cxqm.xiaoerke.modules.order.service.ConsultPhonePatientService;
 import com.cxqm.xiaoerke.modules.order.service.PatientRegisterService;
 import com.cxqm.xiaoerke.modules.sys.entity.PerAppDetInfoVo;
+import com.cxqm.xiaoerke.modules.sys.utils.LogUtils;
 import com.cxqm.xiaoerke.modules.sys.utils.UserUtils;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -257,6 +259,7 @@ public class AccountUserController {
                 Float payPrice = Float.valueOf(request.getParameter("payPrice"));
                 payPrice = payPrice - Float.valueOf(String.valueOf(babyCoinVo.getCash()))*10;
                 request.setAttribute("payPrice", payPrice/100.0);
+                LogUtils.saveLog(Servlets.getRequest(), "发起扣除宝宝币支付", "宝宝币个数为"+ babyCoinVo.getCash());
             } else {
                 throw new ServiceException("baby coin greater than 99");
             }
