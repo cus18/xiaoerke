@@ -257,20 +257,6 @@ public class AccountUserController {
                 Float payPrice = Float.valueOf(request.getParameter("payPrice"));
                 payPrice = payPrice - Float.valueOf(String.valueOf(babyCoinVo.getCash()))*10;
                 request.setAttribute("payPrice", (Float)payPrice/100.0);
-                babyCoinVo.setCash(0l);
-                int coinFlag = babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
-                if (coinFlag <= 0)
-                    throw new ServiceException("baby coin update failure!!!");
-                BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
-                babyCoinRecordVo.setBalance(-Double.valueOf(payPrice) / 100);
-                babyCoinRecordVo.setCreateTime(new Date());
-                babyCoinRecordVo.setCreateBy(openId);
-                babyCoinRecordVo.setOpenId(openId);
-                babyCoinRecordVo.setSessionId(sessionRedisCache.getSessionIdByUserId(openId));
-                babyCoinRecordVo.setSource("weixin");
-                int recordflag = babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
-                if (recordflag <= 0)
-                    throw new ServiceException("baby coin record update failure!!!");
             } else {
                 throw new ServiceException("baby coin greater than 99");
             }
