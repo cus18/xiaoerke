@@ -538,7 +538,7 @@ public class PayNotificationController {
                         babyCoinRecordVo.setCreateBy(openid);
                         babyCoinRecordVo.setOpenId(openid);
                         babyCoinRecordVo.setSessionId(sessionRedisCache.getSessionIdByUserId(openid));
-                        babyCoinRecordVo.setSource("weixin");
+                        babyCoinRecordVo.setSource("consultPay");
                         babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
                     }
                 }
