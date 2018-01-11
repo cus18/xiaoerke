@@ -6,19 +6,13 @@ angular.module('controllers', [])
             $scope.marketer = '';
             $scope.invitePageInit = function(){
                 BabyCoinInit.save({},function(data){
+                    $scope.openid = data.babyCoinVo.openId;
+                    $scope.marketer = data.babyCoinVo.marketer ;
+                    $scope.minename = data.babyCoinVo.nickName;
                 })
+                loadShare();
                 $('#invitePageContent').click(function(){
                     $('#invitePageShade').show();
-                });
-                GetAttentionInfo.save({},function(data){
-                    $scope.minename = data.attentionInfo.wechat_name;
-                    GetUserOpenId.save({},function(data){
-                        $scope.openid = data.openid;
-                        GetBabyCoinInfo.save({},function(data){
-                            $scope.marketer = data.babyCoinCash ;
-                            loadShare();
-                        });
-                    });
                 });
             }
             //分享到朋友圈或者微信
