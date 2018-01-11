@@ -7,6 +7,8 @@ public class BabyCoinRecordVo {
 
     private double balance;
 
+    private String strBalance;
+
     private String openId;
 
     private String source;
@@ -55,6 +57,14 @@ public class BabyCoinRecordVo {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getStrBalance() {
+        return strBalance;
+    }
+
+    public void setStrBalance(String strBalance) {
+        this.strBalance = strBalance;
     }
 
     public Date getCreateTime() {
