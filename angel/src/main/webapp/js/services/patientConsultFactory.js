@@ -35,7 +35,7 @@ define(['appPatientConsult'], function (app) {
             return $resource('patient/getAttentionInfo');
         }])
         .factory('GetBabyCoinInfo', ['$resource', function ($resource) {
-            return $resource('babyCoin/getBabyCoinInfo');
+            return $resource('babyCoin/getBabyCoin');
         }])
 
         //非实时咨询确认
