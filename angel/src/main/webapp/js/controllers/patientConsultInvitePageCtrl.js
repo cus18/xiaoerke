@@ -9,8 +9,8 @@ angular.module('controllers', [])
                     $scope.openid = data.babyCoinVo.openId;
                     $scope.marketer = data.babyCoinVo.marketer ;
                     $scope.minename = data.babyCoinVo.nickName;
+                    loadShare();
                 })
-                loadShare();
                 $('#invitePageContent').click(function(){
                     $('#invitePageShade').show();
                 });
