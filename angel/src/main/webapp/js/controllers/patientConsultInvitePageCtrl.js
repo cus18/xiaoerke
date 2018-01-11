@@ -9,6 +9,9 @@ angular.module('controllers', [])
                     $scope.openid = data.babyCoinVo.openId;
                     $scope.marketer = data.babyCoinVo.marketer ;
                     $scope.minename = data.babyCoinVo.nickName;
+                    if($scope.minename == undefined){
+                        $scope.minename = '您的朋友';
+                    }
                     loadShare();
                 })
                 $('#invitePageContent').click(function(){
