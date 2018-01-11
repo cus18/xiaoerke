@@ -922,7 +922,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         babyCoinRecordVo.setCreateTime(new Date());
                         babyCoinRecordVo.setCreateBy(openId);
                         babyCoinRecordVo.setOpenId(openId);
-                        babyCoinRecordVo.setSource("weixin");
+                        babyCoinRecordVo.setSource("invitePresent");
                         int recordflag = babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
 
                         //给当前用户推送消息
