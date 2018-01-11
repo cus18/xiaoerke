@@ -527,21 +527,19 @@ public class PayNotificationController {
                     babyCoinVo.setCash(babyCoinVo.getCash() - (long) babyCash);
 
                     BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
-                    babyCoinRecordVo.setOpenId(openid);
+                    babyCoinRecordVo.setSessionId(sessionId);
                     List<BabyCoinRecordVo> babyCoinRecordVos = babyCoinService.selectByBabyCoinRecordVo(babyCoinRecordVo);
                     //扣过了不再扣
                     if (babyCoinRecordVos == null || babyCoinRecordVos.size() == 0) {
                         babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
+                        babyCoinRecordVo.setBalance(babyCash);
+                        babyCoinRecordVo.setCreateTime(new Date());
+                        babyCoinRecordVo.setCreateBy(openid);
+                        babyCoinRecordVo.setOpenId(openid);
+                        babyCoinRecordVo.setSessionId(sessionRedisCache.getSessionIdByUserId(openid));
+                        babyCoinRecordVo.setSource("weixin");
+                        babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
                     }
-
-                    babyCoinRecordVo.setBalance(babyCash);
-                    babyCoinRecordVo.setCreateTime(new Date());
-                    babyCoinRecordVo.setCreateBy(openid);
-                    babyCoinRecordVo.setOpenId(openid);
-                    babyCoinRecordVo.setSessionId(sessionRedisCache.getSessionIdByUserId(openid));
-                    babyCoinRecordVo.setSource("weixin");
-                    babyCoinService.insertBabyCoinRecord(babyCoinRecordVo);
-
                 }
             }
             return XMLUtil.setXML("SUCCESS", "");

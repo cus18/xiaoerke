@@ -28,6 +28,9 @@
     <if test="openId != null" >
       and open_id = #{openId,jdbcType=VARCHAR} order by create_time desc
     </if>
+    <if test="sessionId != null" >
+      and session_id = #{sessionId,jdbcType=INTEGER}
+    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from baby_coin_record
