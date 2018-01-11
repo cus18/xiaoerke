@@ -12,6 +12,7 @@ import com.cxqm.xiaoerke.modules.wechat.entity.SysWechatAppintInfoVo;
 import com.cxqm.xiaoerke.modules.wechat.service.WechatAttentionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -48,14 +49,14 @@ public class BabyCoinController {
      */
     @RequestMapping(value = "/createInviteCard", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map<String, Object> createInviteCard(HttpSession session, HttpServletRequest request) {
+    public Map<String, Object> createInviteCard(@RequestBody Map<String, Object> params,HttpSession session, HttpServletRequest request) {
         HashMap<String, Object> response = new HashMap<String, Object>();
         String openId = WechatUtil.getOpenId(session, request);//"oogbDwD_2BTQpftPu9QClr-mCw7U"
-
+        String oldOpenId = String.valueOf(params.get("oldOpenId"));
+        String marketer = String.valueOf(params.get("marketer"));
         BabyCoinVo babyCoinVo = getBabyCoin(response, openId);
-
-        String userQRCode = olyGamesService.getUserQRCode(babyCoinVo.getMarketer());//二维码
-        String headImgUrl = olyGamesService.getWechatMessage(openId);//头像
+        String userQRCode = olyGamesService.getUserQRCode(marketer);//二维码
+        String headImgUrl = olyGamesService.getWechatMessage(oldOpenId);//头像
         response.put("userQRCode", userQRCode);
         response.put("headImgUrl", headImgUrl);
         response.put("babyCoinVo", babyCoinVo);

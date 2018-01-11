@@ -1,14 +1,10 @@
 angular.module('controllers', [])
-    .controller('patientConsultInviteNewCtrl', ['$scope', 'CreateInviteCard',
-        function ($scope, CreateInviteCard) {
+    .controller('patientConsultInviteNewCtrl', ['$scope', 'CreateInviteCard','$stateParams',
+        function ($scope, CreateInviteCard,$stateParams) {
 
-            var reg = new RegExp("(^|&)" + "oldOpenId" + "=([^&]*)(&|$)", "i");
-            var r = window.location.search.substr(1).match(reg);
-            var oldOpenId = unescape(r[2])
-            alert(oldOpenId);
-            //var marketer = GetQueryString("marketer");
-            alert(marketer);
-            CreateInviteCard.save({}, function (data) {
+            $scope.marketer = $stateParams.marketer;
+            $scope.oldOpenId = $stateParams.oldOpenId;
+            CreateInviteCard.save({"marketer":$scope.marketer,"oldOpenId":$scope.oldOpenId}, function (data) {
                 $scope.headImgUrl = {
                     'background': 'url(' + data.headImgUrl + ')',
                     'background-size': '100% 100%'

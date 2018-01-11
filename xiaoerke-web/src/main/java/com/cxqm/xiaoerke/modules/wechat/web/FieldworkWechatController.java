@@ -242,7 +242,7 @@ public class FieldworkWechatController {
             memberService.sendExtendOldMemberWechatMessage(openid);
         }
         if(url.startsWith("41")){
-            url = getBabyCoinURL(request, openid);
+            url = getBabyCoinURL(request, "oogbDwJHcUYsQjmGjSnfJTJ9psZ8");
         }
         if("42".equalsIgnoreCase(url)){
             url = ConstantUtil.ANGEL_WEB_URL+"angel/patient/consult#/patientConsultInvitePage";
@@ -257,7 +257,7 @@ public class FieldworkWechatController {
             String[] parameters = request.getQueryString().split(",");
             String oldOpenId = java.net.URLDecoder.decode(parameters[1], "utf-8");
             String marketer = java.net.URLDecoder.decode(parameters[2], "utf-8");
-            url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/patientConsultInviteNew?="+oldOpenId+"&marketer="+marketer;
+            url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/patientConsultInviteNew/"+oldOpenId+","+marketer;
             LogUtils.saveLog("ZXYQ_YQK_NEW","oldOpenId="+oldOpenId+"openid="+openid+"marketer"+marketer);
         }else {//老用户
             url = ConstantUtil.ANGEL_WEB_URL + "angel/patient/consult#/patientConsultInviteOld";
