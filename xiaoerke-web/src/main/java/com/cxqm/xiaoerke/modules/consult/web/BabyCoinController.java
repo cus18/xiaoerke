@@ -54,7 +54,7 @@ public class BabyCoinController {
         String openId = WechatUtil.getOpenId(session, request);//"oogbDwD_2BTQpftPu9QClr-mCw7U"
         String oldOpenId = String.valueOf(params.get("oldOpenId"));
         String marketer = String.valueOf(params.get("marketer"));
-        BabyCoinVo babyCoinVo = getBabyCoin(response, openId);
+        BabyCoinVo babyCoinVo = getBabyCoin(response, oldOpenId);
         String userQRCode = olyGamesService.getUserQRCode(marketer);//二维码
         String headImgUrl = olyGamesService.getWechatMessage(oldOpenId);//头像
         response.put("userQRCode", userQRCode);
