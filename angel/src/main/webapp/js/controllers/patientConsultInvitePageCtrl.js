@@ -9,7 +9,7 @@ angular.module('controllers', [])
                     $scope.openid = data.babyCoinVo.openId;
                     $scope.marketer = data.babyCoinVo.marketer ;
                     $scope.minename = data.babyCoinVo.nickName;
-                    if($scope.minename == undefined){
+                    if($scope.minename == undefined || $scope.minename==''){
                         $scope.minename = '您的朋友';
                     }
                     loadShare();
