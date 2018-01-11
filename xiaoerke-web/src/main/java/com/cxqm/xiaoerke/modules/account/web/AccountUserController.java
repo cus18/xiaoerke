@@ -259,7 +259,7 @@ public class AccountUserController {
                 Float payPrice = Float.valueOf(request.getParameter("payPrice"));
                 payPrice = payPrice - Float.valueOf(String.valueOf(babyCoinVo.getCash()))*10;
                 request.setAttribute("payPrice", payPrice/100.0);
-                LogUtils.saveLog(Servlets.getRequest(), "发起扣除宝宝币支付", "宝宝币个数为"+ babyCoinVo.getCash());
+                LogUtils.saveLog(Servlets.getRequest(), openId+" 发起扣除宝宝币支付", "宝宝币个数为"+ babyCoinVo.getCash());
             } else {
                 throw new ServiceException("baby coin greater than 99");
             }

@@ -516,8 +516,9 @@ public class PayNotificationController {
 					BabyCoinVo babyCoinVo = new BabyCoinVo();
 					babyCoinVo.setOpenId(openid);
 					babyCoinVo = babyCoinService.selectByBabyCoinVo(babyCoinVo);
-					Float babyCash = (Float.valueOf(ConstantUtil.CONSUL_AMOUNT) * 100 - payRecord.getAmount())/10;//使用宝宝币数
-					babyCoinVo.setCash(babyCoinVo.getCash() - Long.valueOf(babyCash.toString()));
+
+					double babyCash = ( Double.valueOf(ConstantUtil.CONSUL_AMOUNT) * 100 - Double.valueOf(insuranceMap.get("amount").toString()))/10;//使用宝宝币数
+					babyCoinVo.setCash(babyCoinVo.getCash() - (long) babyCash);
 					babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
 
 					BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
