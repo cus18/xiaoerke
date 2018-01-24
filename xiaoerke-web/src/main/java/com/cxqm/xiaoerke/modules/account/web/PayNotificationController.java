@@ -527,11 +527,12 @@ public class PayNotificationController {
                     BabyCoinRecordVo babyCoinRecordVo = new BabyCoinRecordVo();
                     babyCoinRecordVo.setSessionId(sessionId);
                     List<BabyCoinRecordVo> babyCoinRecordVos = babyCoinService.selectByBabyCoinRecordVo(babyCoinRecordVo);
+                    LogUtils.saveLog("咨询收费充值", openid);
+                    HttpRequestUtil.wechatpost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/notifyPayInfo2Distributor?openId=" + openid,
+                            "openId=" + openid);
                     //扣过了不再扣
                     if (babyCoinRecordVos == null || babyCoinRecordVos.size() == 0) {
-                        LogUtils.saveLog("咨询收费充值", openid);
-                        HttpRequestUtil.wechatpost(ConstantUtil.ANGEL_WEB_URL + "angel/consult/wechat/notifyPayInfo2Distributor?openId=" + openid,
-                                "openId=" + openid);
+
                         babyCoinService.updateBabyCoinByOpenId(babyCoinVo);
                         babyCoinRecordVo.setBalance(-babyCash);
                         babyCoinRecordVo.setCreateTime(new Date());
