@@ -321,6 +321,19 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
             WechatUtil.sendMsgToWechat(token, xmlEntity.getFromUserName(), msg);
             WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6fe8844t0Ewt49JlUhW7ukzDQ", 1);
             WechatUtil.sendNoTextMsgToWechat(token, xmlEntity.getFromUserName(), "XdHp8YKja_ft7lQr3o6fe-amTDnt4DhnNviDaW7kTNc", 1);
+        }  else if (EventKey.indexOf("YY0018") > -1) {
+            Map parameter = systemService.getWechatParameter();
+            String token = (String) parameter.get("token");
+            WechatUtil.sendMsgToWechat(token,xmlEntity.getFromUserName(),"欢迎来到宝大夫，请按照下方操作领走精品食谱，儿歌，绘本，动画片等资源。\n" +
+                    "\n" +
+                    "1·将海报图片（见下方）发送到朋友圈，集齐10个赞。\n" +
+                    " 或  随机分享到母婴相关的5个微信群即可；\n" +
+                    "\n" +
+                    "2·截图发给宝大夫客服（客服二维码见下方图片）\n" +
+                    "\n" +
+                    "以上操作完成后请静待客服把众多资源送到您手里。关注宝大夫后期会有更多福利送不停哦。");
+            WechatUtil.sendNoTextMsgToWechat(token,xmlEntity.getFromUserName(),"XdHp8YKja_ft7lQr3o6feyoI5F7e9v8waWTGfb56bcg",1);
+            WechatUtil.sendNoTextMsgToWechat(token,xmlEntity.getFromUserName(),"XdHp8YKja_ft7lQr3o6fe41AjIlPrqLyUz5-S99mCls",1);
         } else if (EventKey.indexOf("doc") > -1) {
             Map<String, Object> map = wechatInfoDao.getDoctorInfo(EventKey.replace("doc", ""));
             article.setTitle("您已经成功关注" + map.get("hospitalName") + map.get("name") + "医生，点击即可预约");
@@ -1014,7 +1027,7 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
         session.setAttribute("openId", xmlEntity.getFromUserName());
         LogUtils.saveLog(request, "00000001");//注：参数含义请参照sys_log_mapping表，如00000001表示“微信宝大夫用户版公众平台关注”
         String EventKey = xmlEntity.getEventKey();
-        if (EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma") <= -1 && EventKey.indexOf("baoxian_000001") <= -1 && EventKey.indexOf("YY0016") <= -1) {
+        if (EventKey.indexOf("xuanjianghuodong_zhengyuqiao_saoma") <= -1 && EventKey.indexOf("baoxian_000001") <= -1 && EventKey.indexOf("YY0016") <= -1&& EventKey.indexOf("YY0018") <= -1) {
 //			List<Article> articleList = new ArrayList<Article>();
 //			Article article = new Article();
 //			article.setTitle("对孩子健康负责的家长必看！万人推荐！");
