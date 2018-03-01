@@ -947,6 +947,10 @@ public class WechatPatientCoreServiceImpl implements WechatPatientCoreService {
                         //给推荐人推送消息
                         WechatBean wechatBean = WechatUtil.getWechatName(token, openId);
                         String nickName = wechatBean.getNickname();
+                        if(wechatAttentionVo !=null && wechatAttentionVo.getWechat_name()!=null){
+                            nickName = wechatAttentionVo.getWechat_name();
+                        }
+
                         if (StringUtils.isNull(nickName)) {
                             nickName = "了一位朋友";
                         }

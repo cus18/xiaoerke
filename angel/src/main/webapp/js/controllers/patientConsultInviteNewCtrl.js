@@ -10,9 +10,10 @@ angular.module('controllers', [])
                     'background-size': '100% 100%'
                 };
                 $scope.headImgNickName = data.babyCoinVo.nickName;
-                $scope.userQRCode = {
+                /*$scope.userQRCode = {
                     'background': 'url(' + data.userQRCode + ')',
                     'background-size': '100% 100%'
-                };
+                };*/
+                $scope.userQRCode = data.userQRCode;
             });
         }])
